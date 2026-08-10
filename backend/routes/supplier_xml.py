@@ -52,16 +52,23 @@ CANDIDATES: Dict[str, List[str]] = {
     "stock_code":  ["stokkodu", "stockcode", "sku", "urunkodu", "stok_kodu"],
     "model_ref":   ["modelkodu", "model", "urunkartiid", "grupkodu", "anaurunkodu",
                     "productcardid", "modelcode", "urunid", "id"],
-    "price":       ["satisfiyati", "indirimlifiyat", "fiyat", "price", "salesprice", "tutar"],
+    "price":       ["urunbayifiyat", "bayifiyati", "satisfiyati", "indirimlifiyat", "fiyat",
+                    "price", "salesprice", "tutar"],
     "list_price":  ["piyasafiyati", "listprice", "eskifiyat", "psf"],
     "currency":    ["parabirimi", "currency", "doviz"],
     "stock":       ["stokadedi", "stok", "miktar", "quantity", "stock", "adet"],
     "vat":         ["kdvorani", "kdv", "vat", "taxrate"],
     "color":       ["renk", "color"],
     "size":        ["beden", "size", "numara", "olcu"],
+    "kdv_included": ["kdvdahil", "vatincluded", "kdv_dahil"],
+    "gender":      ["cinsiyet", "gender"],
+    "fabric":      ["kumas", "fabric"],
+    "desi":        ["desi", "kargodesi"],
+    "product_url": ["urunurl", "producturl", "link", "url"],
 }
 IMAGE_TAGS = ["resim", "image", "img", "picture", "foto", "gorsel", "resimler", "images"]
-VARIANT_CONTAINER = ["varyantlar", "variants", "varyasyonlar", "secenekler", "options"]
+VARIANT_CONTAINER = ["urunsecenek", "varyantlar", "variants", "varyasyonlar",
+                     "secenekler", "urunsecenekleri", "options"]
 VARIANT_ITEM = ["varyant", "variant", "varyasyon", "secenek", "option"]
 
 
@@ -223,6 +230,29 @@ def _int(s: Any, default: int = 0) -> int:
     return int(_num(s, default))
 
 
+def _truthy(s: Any) -> bool:
+    return str(s or "").strip().lower() in ("1", "true", "evet", "yes", "var", "dahil")
+
+
+def sale_price(cost: float, *, vat_rate: float, vat_included: bool, markup: float) -> float:
+    """Tedarikçi fiyatından müşteriye gösterilecek fiyatı hesaplar.
+
+    Beslemedeki fiyat BAYİ (maliyet) fiyatıdır ve `KDVDahil=false` ise KDV
+    HARİÇtir. Olduğu gibi yayınlanırsa ürünler maliyetine — KDV düşünce
+    ZARARINA — satılır. Bu yüzden:
+
+        satış = maliyet × kâr_katsayısı  (+ KDV, fiyata dahil değilse)
+
+    `kâr_katsayısı` ayarlardan gelir (`price_markup`). Tanımlanmazsa 1.0
+    kullanılır ve içe aktarma sonucunda UYARI dönülür — sessizce marjsız
+    fiyat yazmamak için.
+    """
+    base = max(0.0, float(cost)) * max(0.0, float(markup))
+    if not vat_included:
+        base *= 1 + (max(0.0, float(vat_rate)) / 100.0)
+    return round(base, 2)
+
+
 def parse_item(item: ET.Element, mapping: Dict[str, str]) -> Dict[str, Any]:
     """Bir XML ürün düğümünü ara temsile çevirir."""
     cm = _children_map(item)
@@ -242,6 +272,11 @@ def parse_item(item: ET.Element, mapping: Dict[str, str]) -> Dict[str, Any]:
         "list_price": _num(g("list_price")),
         "currency": g("currency") or "TRY",
         "vat": _num(g("vat"), 10.0),
+        "vat_included": _truthy(g("kdv_included")),
+        "gender": g("gender"),
+        "fabric": g("fabric"),
+        "desi": _num(g("desi")),
+        "supplier_url": g("product_url"),
         "images": _collect_images(item),
         "variants": [],
     }
@@ -269,8 +304,11 @@ def parse_item(item: ET.Element, mapping: Dict[str, str]) -> Dict[str, Any]:
                 "supplier_stock_code": vg("stock_code") or "",
                 "color": color,
                 "size": size,
+                "fabric": vg("fabric"),
                 "stock": _int(vg("stock")),
-                "price": _num(vg("price")) or rec["price"],
+                "cost": _num(vg("price")) or rec["price"],
+                "vat": _num(vg("vat")) or rec["vat"],
+                "vat_included": _truthy(vg("kdv_included")) or rec["vat_included"],
                 "ref": vg("barcode") or vg("stock_code") or f"{color}-{size}".strip("-"),
             })
     else:
@@ -280,8 +318,11 @@ def parse_item(item: ET.Element, mapping: Dict[str, str]) -> Dict[str, Any]:
             "supplier_stock_code": rec["supplier_stock_code"],
             "color": g("color"),
             "size": g("size"),
+            "fabric": rec["fabric"],
             "stock": _int(g("stock")),
-            "price": rec["price"],
+            "cost": rec["price"],
+            "vat": rec["vat"],
+            "vat_included": rec["vat_included"],
             "ref": rec["supplier_barcode"] or rec["supplier_stock_code"] or "0",
         })
     return rec
@@ -355,7 +396,7 @@ def _now_iso() -> str:
 
 
 # ─────────────────────────── aktarım ───────────────────────────
-async def _build_product_doc(rec: Dict[str, Any], supplier: str) -> Dict[str, Any]:
+async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float = 1.0) -> Dict[str, Any]:
     """Ara temsili ürün dökümanına çevirir; kodları BİZ üretiriz."""
     model_code = await supplier_codes.get_or_create_model_code(db, supplier, rec["model_ref"])
 
@@ -364,14 +405,21 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str) -> Dict[str, An
         codes = await supplier_codes.get_or_create_variant_codes(
             db, supplier, rec["model_ref"], v.get("ref") or "0")
         total_stock += int(v.get("stock") or 0)
+        _cost = float(v.get("cost") or rec["price"] or 0)
         variants.append({
             "id": generate_id(),
             "barcode": codes["barcode"],            # BİZİM barkodumuz
             "stock_code": codes["stock_code"],      # BİZİM stok kodumuz
             "color": v.get("color") or "",
             "size": v.get("size") or "",
+            "fabric": v.get("fabric") or "",
             "stock": int(v.get("stock") or 0),
-            "price": float(v.get("price") or rec["price"]),
+            # cost_price = tedarikçiye ödediğimiz; price = müşteriye gösterilen.
+            "cost_price": _cost,
+            "price": sale_price(_cost,
+                                vat_rate=float(v.get("vat") or rec["vat"] or 0),
+                                vat_included=bool(v.get("vat_included")),
+                                markup=markup),
             # Tedarikçi kodları yalnız eşleme için saklanır, müşteriye gösterilmez.
             "supplier_barcode": v.get("supplier_barcode") or "",
             "supplier_stock_code": v.get("supplier_stock_code") or "",
@@ -387,11 +435,17 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str) -> Dict[str, An
         "barcode": primary.get("barcode", ""),
         "stock_code": primary.get("stock_code", ""),
         "model_code": model_code,
-        "price": float(rec.get("price") or 0),
+        "cost_price": float(rec.get("price") or 0),
+        "price": (primary.get("price") if primary else 0) or sale_price(
+            float(rec.get("price") or 0), vat_rate=float(rec.get("vat") or 0),
+            vat_included=bool(rec.get("vat_included")), markup=markup),
         "list_price": float(rec.get("list_price") or 0) or None,
         "currency": rec.get("currency") or "TRY",
         "vat_rate": float(rec.get("vat") or 10),
         "stock": total_stock,
+        "gender": rec.get("gender") or "",
+        "desi": rec.get("desi") or 0,
+        "supplier_url": rec.get("supplier_url") or "",
         "images": rec.get("images") or [],
         "variants": variants,
         "is_active": True,
@@ -411,6 +465,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
     """
     cfg = await get_config()
     supplier = cfg.get("supplier_name") or "modayakamoz"
+    markup = float(cfg.get("price_markup") or 1.0)
     records, _ = await load_items()
     if limit:
         records = records[:limit]
@@ -425,7 +480,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
             existing = await db.products.find_one(
                 {"supplier_key": key}, {"_id": 0, "id": 1})
 
-            doc = await _build_product_doc(rec, supplier)
+            doc = await _build_product_doc(rec, supplier, markup)
             doc["supplier_key"] = key
 
             if existing:
@@ -444,7 +499,13 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
             logger.error(f"[supplier_xml] ürün aktarılamadı ({rec.get('name')!r}): {e}")
 
     result = {"created": created, "updated": updated, "skipped": skipped,
-              "failed": failed, "total": len(records), "at": _now_iso()}
+              "failed": failed, "total": len(records),
+              "price_markup": markup, "at": _now_iso()}
+    if markup <= 1.0:
+        # Besleme BAYİ fiyatı verir; katsayısız yayınlamak maliyetine satmaktır.
+        result["warning"] = ("price_markup ayarlanmamis (1.0). Urunler bayi fiyatina "
+                             "satisa acildi, kar marji YOK. Ayarlardan price_markup girin.")
+        logger.warning("[supplier_xml] price_markup=1.0 — urunler marjsiz fiyatlandi")
     await db.settings.update_one({"id": SETTINGS_ID},
                                  {"$set": {"last_import": result}}, upsert=True)
     logger.info(f"[supplier_xml] ürün aktarımı: {result}")
@@ -523,6 +584,7 @@ async def read_config(_admin=Depends(require_admin)):
         "configured": bool(cfg.get("url_enc")),
         "supplier_name": cfg.get("supplier_name") or "modayakamoz",
         "enabled": bool(cfg.get("enabled")),
+        "price_markup": float(cfg.get("price_markup") or 1.0),
         "mapping": cfg.get("mapping") or {},
         "last_import": cfg.get("last_import"),
         "last_stock_sync": cfg.get("last_stock_sync"),
@@ -537,6 +599,15 @@ async def write_config(payload: dict, _admin=Depends(require_admin)):
         update["url_enc"] = encrypt(str(payload["url"]).strip())
     if "enabled" in payload:
         update["enabled"] = bool(payload["enabled"])
+    if payload.get("price_markup") is not None:
+        try:
+            _m = float(payload["price_markup"])
+        except (TypeError, ValueError):
+            raise HTTPException(status_code=400, detail="price_markup sayi olmali.")
+        if _m < 1.0:
+            raise HTTPException(status_code=400,
+                                detail="price_markup 1.0'dan kucuk olamaz (zararina satis).")
+        update["price_markup"] = _m
     if payload.get("supplier_name"):
         update["supplier_name"] = str(payload["supplier_name"]).strip()
     if isinstance(payload.get("mapping"), dict):

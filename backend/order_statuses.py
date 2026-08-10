@@ -251,12 +251,12 @@ DEFAULT_STATUS_TEMPLATES = {
     "order_cancel_refunded": {
         "sms": "Sayin {customer_name}, iptal edilen {order_number} numarali siparisinizin odemesi iade edilmistir. Tutar bankaniza bagli 1-7 is gununde hesabiniza yansir.",
         "email_subject": "İptal Bedeliniz İade Edildi — {order_number}",
-        "email_body": "<p>Merhaba {customer_name},</p><p>İptal edilen <b>{order_number}</b> numaralı siparişinizin ödemesi tarafınıza iade edilmiştir.</p><p>İade tutarının hesabınıza/kartınıza yansıması bankanıza bağlı olarak 1-7 iş günü sürebilir.</p><p>FACETTE'i tercih ettiğiniz için teşekkür ederiz.</p>",
+        "email_body": "<p>Merhaba {customer_name},</p><p>İptal edilen <b>{order_number}</b> numaralı siparişinizin ödemesi tarafınıza iade edilmiştir.</p><p>İade tutarının hesabınıza/kartınıza yansıması bankanıza bağlı olarak 1-7 iş günü sürebilir.</p><p>{store_name} markasını tercih ettiğiniz için teşekkür ederiz.</p>",
     },
     "order_refunded": {
         "sms": "Sayin {customer_name}, {order_number} numarali siparisinizin iade bedeli odendi.",
         "email_subject": "İade Bedeliniz Ödendi — {order_number}",
-        "email_body": "<p>Merhaba {customer_name},</p><p><b>{order_number}</b> numaralı siparişinizin iade bedeli hesabınıza/kartınıza iade edilmiştir.</p><p>İade tutarının hesabınıza yansıması bankanıza bağlı olarak 1-7 iş günü sürebilir.</p><p>FACETTE'i tercih ettiğiniz için teşekkür ederiz.</p>",
+        "email_body": "<p>Merhaba {customer_name},</p><p><b>{order_number}</b> numaralı siparişinizin iade bedeli hesabınıza/kartınıza iade edilmiştir.</p><p>İade tutarının hesabınıza yansıması bankanıza bağlı olarak 1-7 iş günü sürebilir.</p><p>{store_name} markasını tercih ettiğiniz için teşekkür ederiz.</p>",
     },
     "order_partial_refunded": {
         "sms": "Sayin {customer_name}, {order_number} numarali siparisiniz icin kismi iade yapildi.",
@@ -281,7 +281,7 @@ DEFAULT_STATUS_TEMPLATES = {
     "order_delivered": {
         "sms": "Sayin {customer_name}, {order_number} numarali siparisiniz teslim edildi. Bizi tercih ettiginiz icin tesekkurler.",
         "email_subject": "Siparişiniz Teslim Edildi — {order_number}",
-        "email_body": "<p>Merhaba {customer_name},</p><p><b>{order_number}</b> numaralı siparişiniz teslim edildi. FACETTE'i tercih ettiğiniz için teşekkür ederiz.</p>",
+        "email_body": "<p>Merhaba {customer_name},</p><p><b>{order_number}</b> numaralı siparişiniz teslim edildi. {store_name} markasını tercih ettiğiniz için teşekkür ederiz.</p>",
     },
     "order_undelivered": {
         "sms": "Sayin {customer_name}, {order_number} numarali siparisiniz teslim edilemedi. En kisa surede sizinle iletisime gececegiz.",

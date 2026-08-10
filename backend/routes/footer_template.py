@@ -60,39 +60,82 @@ _DEFAULT = {
         },
         {
             "title": "İletişim",
+            # E-posta ve telefon calisma aninda company_info'dan doldurulur
+            # (_with_company). Buraya sabit deger yazilmaz.
             "static": [
-                "info@facette.com.tr",
-                "+90 543 330 03 10",
                 "Pazartesi-Cumartesi 09:00 - 18:00",
             ],
         },
     ],
     "newsletter": {
-        "title": "Facette Kulübü seni bekliyor",
+        "title": "",
         "description": "Yeni koleksiyonlar, özel kampanyalar ve sana özel fırsatlardan ilk sen haberdar ol.",
         "placeholder": "E-posta adresin",
     },
     "social": {
-        "instagram": "https://instagram.com/facette",
+        "instagram": "",
         "facebook": "",
         "twitter": "",
     },
-    "copyright": "© 2026 Facette. Tüm hakları saklıdır.",
+    "copyright": "",
 }
+
+
+
+async def _with_company(doc: dict) -> dict:
+    """Footer'daki bos marka alanlarini company.py'den doldurur.
+
+    Footer varsayilanlarina marka adi/e-postasi GOMULMEZ: ayar bos birakildiginda
+    dogru deger sirket bilgilerinden gelir, yeni markada elle duzeltme gerekmez.
+    Admin panelden bir alani doldurmussa ona DOKUNULMAZ.
+    """
+    out = dict(doc or {})
+    try:
+        import company as _company
+        c = await _company.get_company(db)
+    except Exception:
+        return out
+
+    store = c.get("store_name") or ""
+    if not (out.get("copyright") or "").strip() and store:
+        year = datetime.now(timezone.utc).year
+        out["copyright"] = f"© {year} {store}. Tüm hakları saklıdır."
+
+    nl = dict(out.get("newsletter") or {})
+    if not (nl.get("title") or "").strip() and store:
+        nl["title"] = f"{store} Kulübü seni bekliyor"
+        out["newsletter"] = nl
+
+    soc = dict(out.get("social") or {})
+    for key, field in (("instagram", "instagram"), ("facebook", "facebook"), ("twitter", "x")):
+        if not (soc.get(key) or "").strip() and c.get(field):
+            soc[key] = c[field]
+    out["social"] = soc
+
+    # İletişim sütununa e-posta/telefonu basa ekle (yoksa).
+    contact = [v for v in (c.get("contact_email"), c.get("contact_phone")) if v]
+    if contact:
+        cols = [dict(col) for col in (out.get("columns") or [])]
+        for col in cols:
+            if str(col.get("title") or "").strip().lower() in ("iletişim", "iletisim", "contact"):
+                statics = list(col.get("static") or [])
+                col["static"] = contact + [s for s in statics if s not in contact]
+        out["columns"] = cols
+    return out
 
 
 @public_router.get("")
 async def get_footer_template():
     """Frontend Footer.jsx için public endpoint."""
     doc = await db.settings.find_one({"id": "footer"}, {"_id": 0})
-    return doc or _DEFAULT
+    return await _with_company(doc or _DEFAULT)
 
 
 @admin_router.get("")
 async def admin_get_footer_template(current_user: dict = Depends(require_admin)):
     """Admin (yönetim için)."""
     doc = await db.settings.find_one({"id": "footer"}, {"_id": 0})
-    return doc or _DEFAULT
+    return await _with_company(doc or _DEFAULT)
 
 
 @admin_router.put("")

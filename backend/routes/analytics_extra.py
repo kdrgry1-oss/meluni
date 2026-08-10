@@ -244,7 +244,11 @@ async def google_merchant_feed():
     olmasın diye status='active' filtresiyle yalnızca yayındakiler dahil.
     """
     import os
-    site_url = os.environ.get("SITE_URL", "https://facette.com.tr")
+    import company as _company
+    # Feed basligi ve varsayilan marka adi company.py'den (env/panel) gelir.
+    _c = await _company.get_company(db)
+    shop_name = _c.get("store_name") or ""
+    site_url = (_c.get("site_url") or os.environ.get("SITE_URL") or "").rstrip("/")
     items_xml = []
     # Yayında olan ürünler: `is_active=True` veya `status=active` veya filtre yok.
     q = {"$or": [{"is_active": True}, {"status": "active"}, {"is_active": {"$exists": False}, "status": {"$exists": False}}]}
@@ -253,7 +257,7 @@ async def google_merchant_feed():
         name = p.get("name", "")
         desc = p.get("description") or name
         img = (p.get("images") or [None])[0] or ""
-        brand = p.get("brand") or "FACETTE"
+        brand = p.get("brand") or shop_name
         cat = p.get("category_name") or "Giyim"
         price = p.get("sale_price") or p.get("price") or 0
         variants = p.get("variants") or []
@@ -282,9 +286,9 @@ async def google_merchant_feed():
     xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
 <channel>
-  <title>FACETTE</title>
+  <title>{escape(shop_name)}</title>
   <link>{site_url}</link>
-  <description>FACETTE Google Merchant Product Feed</description>
+  <description>{escape(shop_name)} Google Merchant Product Feed</description>
   {''.join(items_xml)}
 </channel>
 </rss>"""

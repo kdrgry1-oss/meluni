@@ -29,6 +29,16 @@ _PW_MIN_AGE_HOURS = 24         # min yaş: 1 gün (yalnız kullanıcı-başlatan
 _PW_MAX_AGE_DAYS = 365         # max ömür: 365 gün (login'de flag)
 
 
+
+async def _store_name() -> str:
+    """Marka adi — company.py (env/panel). E-posta konu/metinlerinde kullanilir."""
+    try:
+        import company as _company
+        return (await _company.get_company(db)).get("store_name") or ""
+    except Exception:
+        return ""
+
+
 async def _sms_mfa_possible() -> bool:
     """Giriş sırasında SMS ile MFA gerçekten yapılabilir mi?
 
@@ -185,18 +195,19 @@ async def register(request: Request):
             "expires_at": int(datetime.now(timezone.utc).timestamp()) + 7 * 24 * 3600,
             "used": False, "created_at": datetime.now(timezone.utc).isoformat(),
         })
-        _site = _os2.environ.get("SITE_URL", "https://facette.com.tr").rstrip("/")
+        _site = (_os2.environ.get("SITE_URL") or "").rstrip("/")
+        _brand_name = await _store_name()
         _vlink = f"{_site}/api/auth/verify-email?token={vtok}"
         _vhtml = (
             f'<div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;color:#2a2a2a">'
             f'<h2 style="font-weight:600">E-posta adresini doğrula</h2>'
-            f'<p>FACETTE hesabın oluşturuldu. Adresini doğrulamak için:</p>'
+            f'<p>{_brand_name} hesabın oluşturuldu. Adresini doğrulamak için:</p>'
             f'<p style="margin:24px 0"><a href="{_vlink}" style="background:#1a1a1a;color:#fff;'
             f'padding:12px 28px;text-decoration:none;border-radius:4px">E-postamı Doğrula</a></p>'
             f'<p style="font-size:12px;color:#888">Link 7 gün geçerlidir. Bu işlemi sen yapmadıysan yok say.</p></div>'
         )
         from email_smtp import send_smtp_email
-        await send_smtp_email(db, email, "E-posta Doğrulama — FACETTE", _vhtml)
+        await send_smtp_email(db, email, f"E-posta Doğrulama — {_brand_name}", _vhtml)
     except Exception as _ve:
         logger.warning(f"verification email failed for {email}: {_ve}")
     # Hoş geldin e-postası (best-effort; kaydı asla bloklamaz)
@@ -240,7 +251,7 @@ async def register(request: Request):
             to_email=email,
             variables={
                 "customer_name": (user.get("first_name") or "").strip() or "değerli müşterimiz",
-                "site_url": _os.environ.get("SITE_URL", "https://facette.com.tr").rstrip("/"),
+                "site_url": (_os.environ.get("SITE_URL") or "").rstrip("/"),
                 "coupon_code": coupon_code,
                 "coupon_discount": coupon_discount,
                 "coupon_block": coupon_block,  # her zaman geçilir (boşsa "") → {coupon_block} literal kalmaz
@@ -272,7 +283,7 @@ async def verify_email(token: str = ""):
     """E-posta doğrulama linki hedefi. Geçerli token → email_verified=True; siteye döner."""
     from fastapi.responses import RedirectResponse
     import os as _os
-    site = _os.environ.get("SITE_URL", "https://facette.com.tr").rstrip("/")
+    site = (_os.environ.get("SITE_URL") or "").rstrip("/")
     now_ts = int(datetime.now(timezone.utc).timestamp())
     rec = None
     if token:
@@ -505,6 +516,7 @@ async def guest_convert_send_code(payload: dict, request: Request):
         "created_at": now.isoformat(),
     })
     try:
+        _brand_name = await _store_name()
         _html = (
             f'<div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;color:#2a2a2a">'
             f'<h2 style="font-weight:600">Hesap Oluşturma Doğrulama Kodu</h2>'
@@ -513,7 +525,7 @@ async def guest_convert_send_code(payload: dict, request: Request):
             f'<p style="font-size:12px;color:#888">Kod 10 dakika geçerlidir. Bu işlemi siz yapmadıysanız bu e-postayı yok sayın.</p></div>'
         )
         from email_smtp import send_smtp_email
-        await send_smtp_email(db, email, "Hesap Doğrulama Kodu — FACETTE", _html)
+        await send_smtp_email(db, email, f"Hesap Doğrulama Kodu — {_brand_name}", _html)
     except Exception as _e:
         logger.warning(f"guest-convert kod maili başarısız: {_e}")
     return {"sent": True, "email_masked": _mask_email(email)}
@@ -953,9 +965,10 @@ async def forgot_password_email(request: Request, req: EmailResetReq):
         "created_at": now.isoformat(),
     })
 
-    site = _os.environ.get("SITE_URL", "https://facette.com.tr").rstrip("/")
+    site = (_os.environ.get("SITE_URL") or "").rstrip("/")
     link = f"{site}/sifre-sifirla?token={reset_token}"
     name = (user.get("first_name") or "").strip()
+    _brand_name = await _store_name()
     from email_layout import email_shell
     html = email_shell(
         icon="🔒",
@@ -963,7 +976,7 @@ async def forgot_password_email(request: Request, req: EmailResetReq):
         title="Şifrenizi sıfırlayın",
         intro_html=(
             "Merhaba " + (name or "değerli müşterimiz") + ",<br>"
-            "Facette hesabınız için bir şifre sıfırlama talebi aldık. "
+            f"{_brand_name} hesabınız için bir şifre sıfırlama talebi aldık. "
             "Yeni bir şifre belirlemek için aşağıdaki butona tıklamanız yeterli."
         ),
         cta_text="ŞİFREYİ SIFIRLA", cta_url=link,
@@ -974,7 +987,7 @@ async def forgot_password_email(request: Request, req: EmailResetReq):
     )
     try:
         from email_smtp import send_smtp_email
-        res = await send_smtp_email(db, user["email"], "Şifre Sıfırlama — FACETTE", html)
+        res = await send_smtp_email(db, user["email"], f"Şifre Sıfırlama — {_brand_name}", html)
         if not res.get("success"):
             logger.warning(f"reset email send failed for {email}: {res.get('response')}")
     except Exception as e:

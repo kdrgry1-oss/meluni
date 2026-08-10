@@ -1,6 +1,6 @@
 """
 =============================================================================
-newsletter.py — "Facette Kulübü" bülten aboneliği
+newsletter.py — marka kulübü bülten aboneliği
 =============================================================================
 Footer üstündeki bülten bloğu ve genel e-posta abonelikleri için basit,
 tekilleştirilmiş kayıt. İzin (İYS/EPOSTA) NetGSM entegratörü üzerinden
@@ -16,6 +16,22 @@ from fastapi import APIRouter, Depends, Request, HTTPException
 from datetime import datetime, timezone
 
 from .deps import db, require_admin, generate_id
+
+
+async def _brand() -> str:
+    """Marka adi — company.py'den (env/panel). Okunamazsa bos doner ve
+    mesaj markasiz ama anlasilir kalir."""
+    try:
+        import company as _company
+        return (await _company.get_company(db)).get("store_name") or ""
+    except Exception:
+        return ""
+
+
+def _club(brand: str) -> str:
+    """'meluni Kulübü' / marka bos ise sade 'Kulüp'."""
+    return f"{brand} Kulübü" if brand else "Kulüp"
+
 
 public_router = APIRouter(prefix="/newsletter", tags=["newsletter-public"])
 admin_router = APIRouter(prefix="/admin/newsletter", tags=["newsletter-admin"])
@@ -49,7 +65,7 @@ async def subscribe(payload: dict, request: Request):
     if existing:
         # Zaten kayıtlı — sessizce başarı döndür (kullanıcıya "zaten abonesiniz").
         return {"success": True, "already": True,
-                "message": "Zaten Facette Kulübü üyesisiniz."}
+                "message": f"Zaten {_club(await _brand())} üyesisiniz."}
 
     await db.newsletter_subscribers.insert_one({
         "id": generate_id(),
@@ -78,7 +94,7 @@ async def subscribe(payload: dict, request: Request):
         pass
 
     return {"success": True, "already": False,
-            "message": "Facette Kulübü'ne hoş geldiniz!"}
+            "message": f"{_club(await _brand())}'ne hoş geldiniz!"}
 
 
 @admin_router.get("/subscribers")

@@ -1954,7 +1954,9 @@ async def _run_visual_index_refresh():
 async def _supplier_xml_enabled() -> bool:
     """Besleme ayarlanmış ve açık mı? Kapalıyken cron boşuna indirmesin."""
     try:
-        cfg = await db.settings.find_one({"id": "supplier_xml"}, {"_id": 0, "enabled": 1, "url_enc": 1}) or {}
+        # Bu modülde `db` global değil; diğer işler gibi deps'ten alıyoruz.
+        from routes.deps import db as _db
+        cfg = await _db.settings.find_one({"id": "supplier_xml"}, {"_id": 0, "enabled": 1, "url_enc": 1}) or {}
         return bool(cfg.get("enabled")) and bool(cfg.get("url_enc"))
     except Exception:
         return False

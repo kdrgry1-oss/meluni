@@ -213,7 +213,7 @@ async def _order_notify_vars(order: dict, **extra) -> dict:
                   f'style="width:100%;">{items_rows}</table></div>') if items_rows else ""
 
     base_url = (_os.environ.get("FRONTEND_PUBLIC_URL") or _os.environ.get("REACT_APP_BACKEND_URL")
-                or _os.environ.get("SITE_URL") or "https://facette.com.tr").rstrip("/")
+                or _os.environ.get("SITE_URL") or "").rstrip("/")
     onum = order.get("order_number") or order.get("id") or ""
     order_link = f"{base_url}/order-success/{onum}" if base_url else "#"
     order_date = str(order.get("created_at") or "")[:10]
@@ -1759,6 +1759,11 @@ async def dispatch_purchase_capi(order_id: str, source: str = "") -> bool:
     callback'i + iyzico webhook'u + admin onayı aynı anda tetiklense bile
     tek event çıkar. Kullanıcı verisi (email/telefon hash'i, IP, UA, ttclid)
     sipariş kaydından okunur — tarayıcı gerekmez."""
+    import os as _os_capi
+    import company as _company_capi
+    _co_capi = await _company_capi.get_company(db)
+    _brand_name = _co_capi.get("store_name") or ""
+    _site_url = (_co_capi.get("site_url") or _os_capi.environ.get("SITE_URL") or "").rstrip("/")
     try:
         # KVKK: consent gate AÇIKSA ve sipariş 'ad_tracking_consent' taşımıyorsa server Purchase'ı
         # da GÖNDERME (D'nin server-tarafı tamamlanması). Atlanınca capi_purchase_sent İŞARETLENMEZ
@@ -1843,7 +1848,7 @@ async def dispatch_purchase_capi(order_id: str, source: str = "") -> bool:
         items_payload = [{
             "item_id": str(it.get("product_id") or it.get("sku") or ""),
             "item_name": it.get("name") or "",
-            "item_brand": it.get("brand") or "FACETTE",
+            "item_brand": it.get("brand") or _brand_name,
             "item_variant": f"{it.get('size','')} {it.get('color','')}".strip(),
             "price": float(it.get("unit_price") or it.get("price") or 0),
             "quantity": int(it.get("quantity") or 1),
@@ -1864,7 +1869,7 @@ async def dispatch_purchase_capi(order_id: str, source: str = "") -> bool:
                 "discount": float(order_doc.get("discount") or 0),
                 "payment_type": order_doc.get("payment_method") or "",
             },
-            event_source_url="https://www.facette.com.tr",
+            event_source_url=_site_url,
         )
         logger.info(f"CAPI purchase gönderildi order={order_number} src={source}")
         return True
@@ -2088,6 +2093,11 @@ async def update_order_status(
                 return
             from services.capi.orchestrator import dispatch_event
             addr = order_doc.get("shipping_address") or {}
+            # CAPI event_source_url — marka alan adi (env/panel), sabit degil.
+            import os as _os_c2
+            import company as _company_c2
+            _site_url = ((await _company_c2.get_company(db)).get("site_url")
+                         or _os_c2.environ.get("SITE_URL") or "").rstrip("/")
             user_data_kwargs = {
                 "email": addr.get("email") or order_doc.get("email"),
                 "phone": addr.get("phone") or order_doc.get("phone"),
@@ -2132,7 +2142,7 @@ async def update_order_status(
                     "order_id": order_doc.get("order_number") or order_id,
                     "coupon": order_doc.get("coupon_code"),
                 },
-                event_source_url="https://www.facette.com.tr",
+                event_source_url=_site_url,
             )
         except Exception as _capi_err:
             logger.warning(f"CAPI dispatch failed for order {order_id}: {_capi_err}")
@@ -3971,7 +3981,7 @@ async def create_invoice_for_order(
                         f"satış bedeline dahil olup KDV matrahına eklenmiştir.")
 
         # BEYAZ ETİKET: e-fatura tedarikçi bilgisi öncelik — e-fatura sağlayıcı ayarı →
-        # merkezî Firma Bilgileri (company_info) → gömülü FACETTE varsayılanı.
+        # merkezî Firma Bilgileri (company_info) → env varsayılanı.
         try:
             from company import get_company as _get_company
             _co = await _get_company(db)
@@ -3983,14 +3993,14 @@ async def create_invoice_for_order(
             issue_date=issue_date,
             issue_time=issue_time,
             supplier_vkn=dogan_settings.get("vkn") or _co.get("tax_number") or "7810816779",
-            supplier_name=dogan_settings.get("supplier_name") or _co.get("company_name") or "FACETTE DIŞ TİC. A.Ş.",
+            supplier_name=dogan_settings.get("supplier_name") or _co.get("company_name") or "",
             supplier_district=dogan_settings.get("supplier_district") or "KÜÇÜKÇEKMECE",
             supplier_city=dogan_settings.get("supplier_city") or "İstanbul",
             supplier_street=dogan_settings.get("supplier_street") or _co.get("address") or "İkitelli O.S.B. İmsan San. Sit. D BLOK NO:3",
             supplier_tax_office=dogan_settings.get("supplier_tax_office") or _co.get("tax_office") or "HALKALI VERGİ DAİRESİ BAŞKANLIĞI",
             supplier_phone=dogan_settings.get("supplier_phone") or _co.get("phone") or "",
             supplier_email=dogan_settings.get("supplier_email") or _co.get("email") or "",
-            supplier_website=dogan_settings.get("supplier_website") or _co.get("website") or "facette.com.tr",
+            supplier_website=dogan_settings.get("supplier_website") or _co.get("website") or "",
             customer_vkn_or_tckn=customer_vkn,
             customer_name=customer_name,
             customer_district=ship_addr.get("district") or "",
@@ -4218,12 +4228,12 @@ async def create_invoice_for_order(
             issue_date=issue_date,
             issue_time=issue_time,
             supplier_vkn=dogan_settings.get("vkn") or _co.get("tax_number") or "7810816779",
-            supplier_name=dogan_settings.get("supplier_name") or _co.get("company_name") or "FACETTE DIŞ TİC. A.Ş.",
+            supplier_name=dogan_settings.get("supplier_name") or _co.get("company_name") or "",
             supplier_district=dogan_settings.get("supplier_district") or "KÜÇÜKÇEKMECE",
             supplier_city=dogan_settings.get("supplier_city") or "İstanbul",
             supplier_street=dogan_settings.get("supplier_street") or _co.get("address") or "İkitelli O.S.B. İmsan San. Sit. D BLOK NO:3",
             supplier_tax_office=dogan_settings.get("supplier_tax_office") or _co.get("tax_office") or "HALKALI VERGİ DAİRESİ BAŞKANLIĞI",
-            supplier_website=dogan_settings.get("supplier_website") or _co.get("website") or "facette.com.tr",
+            supplier_website=dogan_settings.get("supplier_website") or _co.get("website") or "",
             customer_vkn=customer_vkn,
             customer_id_scheme=_ef_scheme,
             customer_tax_office=bill.get("tax_office") or "",
@@ -4269,7 +4279,7 @@ async def create_invoice_for_order(
         if not sender_alias:
             # GÖNDERİCİ = GÖNDERİCİ BİRİM (GB) etiketi olmalıdır; POSTA KUTUSU (PK) DEĞİL.
             # Doğan'da iki ayrı etiket vardır:
-            #   • Posta Etiketi (PK)  = urn:mail:defaultpk@facette.com  → ALICI posta kutusu
+            #   • Posta Etiketi (PK)  = urn:mail:defaultpk@<alan-adi>  → ALICI posta kutusu
             #   • Birim Etiketi (GB)  = urn:mail:defaultgb@facette.com  → GÖNDERİCİ birim
             # CheckUser invoice_alias PK (defaultpk) döndürür; onu gönderici verince Doğan
             # "Kullanıcının Gönderici ... işlem yetkisi yoktur!" hatası verir. Bu yüzden
@@ -5961,7 +5971,8 @@ async def mng_cargo_webhook(payload: dict, request: Request):
     parametresi, MNG'ye tanımlı URL'deki gizli anahtarla eşleşmeli. Anahtar hem env
     (MNG_WEBHOOK_SECRET) hem de settings(mng_kargo).webhook_secret üzerinden okunur."""
     import hmac as _hmac
-    _secret = (os.environ.get("MNG_WEBHOOK_SECRET") or "").strip()
+    import os as _os_mng
+    _secret = (_os_mng.environ.get("MNG_WEBHOOK_SECRET") or "").strip()
     if not _secret:
         _mset = await db.settings.find_one({"id": "mng_kargo"}, {"_id": 0, "webhook_secret": 1}) or {}
         _secret = (_mset.get("webhook_secret") or "").strip()
