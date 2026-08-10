@@ -22,6 +22,7 @@ Tasarım notları:
 """
 from __future__ import annotations
 
+import asyncio
 import re
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
@@ -516,17 +517,44 @@ async def _feed_url() -> str:
 async def fetch_feed() -> ET.Element:
     """Beslemeyi indirir ve kökü döndürür."""
     url = await _feed_url()
-    async with httpx.AsyncClient(timeout=180.0, follow_redirects=True) as client:
-        async with client.stream("GET", url) as resp:
-            resp.raise_for_status()
-            chunks, total = [], 0
-            async for chunk in resp.aiter_bytes():
-                total += len(chunk)
-                if total > _MAX_BYTES:
-                    raise HTTPException(status_code=413,
-                                        detail=f"Besleme {_MAX_BYTES // 1048576} MB sınırını aştı.")
-                chunks.append(chunk)
-    raw = b"".join(chunks)
+    # Tedarikçi 34 MB'lık XML'i istek anında üretiyor: ilk bayt gelene kadar
+    # dakikalarca sessiz kalabiliyor. Tek bir "180 sn" değeri hem bağlanmayı
+    # hem de bu bekleyişi kapsadığı için ReadTimeout ile düşüyorduk.
+    timeout = httpx.Timeout(connect=30.0, read=600.0, write=60.0, pool=60.0)
+    last_err: Exception | None = None
+    raw = b""
+
+    for attempt in range(1, 4):
+        try:
+            async with httpx.AsyncClient(timeout=timeout, follow_redirects=True) as client:
+                async with client.stream("GET", url) as resp:
+                    resp.raise_for_status()
+                    chunks, total = [], 0
+                    async for chunk in resp.aiter_bytes():
+                        total += len(chunk)
+                        if total > _MAX_BYTES:
+                            raise HTTPException(
+                                status_code=413,
+                                detail=f"Besleme {_MAX_BYTES // 1048576} MB sınırını aştı.")
+                        chunks.append(chunk)
+            raw = b"".join(chunks)
+            logger.info(f"[supplier_xml] besleme indirildi: {len(raw)/1048576:.1f} MB "
+                        f"({attempt}. deneme)")
+            break
+        except HTTPException:
+            raise
+        except (httpx.ReadTimeout, httpx.ConnectTimeout, httpx.RemoteProtocolError) as e:
+            last_err = e
+            logger.warning(f"[supplier_xml] indirme {attempt}. denemede basarisiz: "
+                           f"{type(e).__name__}")
+            if attempt < 3:
+                await asyncio.sleep(5 * attempt)
+
+    if not raw:
+        raise HTTPException(
+            status_code=504,
+            detail=f"Besleme 3 denemede indirilemedi ({type(last_err).__name__ if last_err else '?'}). "
+                   "Tedarikçi yanıt vermiyor olabilir, birkaç dakika sonra tekrar deneyin.")
     try:
         return ET.fromstring(raw)
     except ET.ParseError as e:
@@ -660,6 +688,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
     low_stock = deactivated = deleted = 0
     _CAT_CACHE["map"] = None  # taze oku: panelden kategori eklenmiş olabilir
     records, _ = await load_items()
+    await _set_status(phase=f"{len(records)} ürün işleniyor", total=len(records))
     if limit:
         records = records[:limit]
 
@@ -864,9 +893,56 @@ async def preview(_admin=Depends(require_admin)):
 
 @router.post("/import")
 async def run_import(payload: dict | None = None, _admin=Depends(require_admin)):
+    """İçe aktarmayı ARKA PLANDA başlatır ve hemen döner.
+
+    6.475 ürünlük iş istek-yanıt döngüsüne sığmıyor: besleme indirmesi
+    dakikalarca sürebiliyor, üstüne nginx 600 sn'de kesiyor ve istemcinin
+    bağlantısı koptuğunda iş yarıda kalmış görünüyordu. Artık iş sunucuda
+    bağımsız çalışır; ilerleme /import-status ile sorulur.
+    """
     p = payload or {}
-    return await import_products(only_new=bool(p.get("only_new", True)),
-                                 limit=int(p.get("limit") or 0))
+    st = (await get_config()).get("import_status") or {}
+    if st.get("running"):
+        raise HTTPException(status_code=409,
+                            detail=f"Zaten bir içe aktarma sürüyor (başlangıç: {st.get('started_at')}).")
+
+    only_new = bool(p.get("only_new", True))
+    limit = int(p.get("limit") or 0)
+
+    async def _job():
+        await _set_status(running=True, started_at=_now_iso(), phase="besleme indiriliyor",
+                          result=None, error=None)
+        try:
+            res = await import_products(only_new=only_new, limit=limit)
+            await _set_status(running=False, finished_at=_now_iso(), phase="tamamlandı",
+                              result=res, error=None)
+            logger.info(f"[supplier_xml] ice aktarma bitti: {res}")
+        except Exception as e:
+            await _set_status(running=False, finished_at=_now_iso(), phase="hata",
+                              result=None, error=f"{type(e).__name__}: {e}")
+            logger.exception("[supplier_xml] ice aktarma basarisiz")
+
+    asyncio.create_task(_job())
+    return {"started": True,
+            "message": "İçe aktarma arka planda başladı. Durum: GET /api/supplier-xml/import-status"}
+
+
+async def _set_status(**fields) -> None:
+    await db.settings.update_one(
+        {"id": SETTINGS_ID},
+        {"$set": {f"import_status.{k}": v for k, v in fields.items()}},
+        upsert=True)
+
+
+@router.get("/import-status")
+async def import_status(_admin=Depends(require_admin)):
+    """Arka plandaki içe aktarmanın durumu + anlık ürün/kategori sayısı."""
+    st = (await get_config()).get("import_status") or {}
+    return {
+        **st,
+        "products": await db.products.count_documents({}),
+        "categories": await db.categories.count_documents({}),
+    }
 
 
 @router.post("/sync-stock")
