@@ -1951,6 +1951,39 @@ async def _run_visual_index_refresh():
         logger.error(f"[cron] görsel indeks yenileme hatası: {e}")
 
 
+async def _supplier_xml_enabled() -> bool:
+    """Besleme ayarlanmış ve açık mı? Kapalıyken cron boşuna indirmesin."""
+    try:
+        cfg = await db.settings.find_one({"id": "supplier_xml"}, {"_id": 0, "enabled": 1, "url_enc": 1}) or {}
+        return bool(cfg.get("enabled")) and bool(cfg.get("url_enc"))
+    except Exception:
+        return False
+
+
+async def _supplier_xml_stock_tick():
+    """Tedarikçi beslemesinden stok/fiyat eşitleme (günde 4)."""
+    if not await _supplier_xml_enabled():
+        return
+    try:
+        from routes.supplier_xml import sync_stock
+        res = await sync_stock()
+        logger.info(f"[cron] tedarikçi stok senkronu: {res}")
+    except Exception as e:
+        logger.error(f"[cron] tedarikçi stok senkron hatası: {e}")
+
+
+async def _supplier_xml_import_tick():
+    """Beslemeye yeni eklenen ürünleri sisteme aç (günde 1). Mevcutlara dokunmaz."""
+    if not await _supplier_xml_enabled():
+        return
+    try:
+        from routes.supplier_xml import import_products
+        res = await import_products(only_new=True)
+        logger.info(f"[cron] tedarikçi yeni ürün aktarımı: {res}")
+    except Exception as e:
+        logger.error(f"[cron] tedarikçi ürün aktarım hatası: {e}")
+
+
 def start_scheduler():
     global _scheduler
     if _scheduler is not None:
@@ -2249,6 +2282,22 @@ def start_scheduler():
         CronTrigger(hour=3, minute=0),
         id="pii_retention_purge",
         next_run_time=datetime.now(timezone.utc) + timedelta(minutes=3),
+        max_instances=1, coalesce=True,
+    )
+    # ── Tedarikçi XML beslemesi ─────────────────────────────────────────
+    # Stok/fiyat: günde 4 kez (00, 06, 12, 18 UTC).
+    # Yeni ürünler: günde 1 kez (04:30 UTC) — stok turlarından ayrı saatte,
+    # ikisi aynı anda çalışıp beslemeyi iki kez indirmesin.
+    _add(
+        _supplier_xml_stock_tick,
+        CronTrigger(hour="0,6,12,18", minute=15),
+        id="supplier_xml_stock_sync",
+        max_instances=1, coalesce=True,
+    )
+    _add(
+        _supplier_xml_import_tick,
+        CronTrigger(hour=4, minute=30),
+        id="supplier_xml_import_new",
         max_instances=1, coalesce=True,
     )
     # DHL/MNG kargo durum taramasi — her 30 dk (site siparisleri; takip linki -> Kargoya Verildi, teslim -> Teslim Edildi)

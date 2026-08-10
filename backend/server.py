@@ -51,6 +51,7 @@ from routes.seo import router as seo_router
 from routes.size_tables import router as size_tables_router, public_router as size_tables_public_router
 from routes.manufacturing import router as manufacturing_router, suppliers_router as manufacturing_suppliers_router
 from routes.decision_board import router as decision_board_router
+from routes.supplier_xml import router as supplier_xml_router
 from routes.ai_chatbot import router as ai_chatbot_router
 from routes.whatsapp_webhook import router as whatsapp_webhook_router
 from routes.meta_messaging_webhook import router as meta_messaging_webhook_router
@@ -690,6 +691,7 @@ api_router.include_router(auth_router)
 api_router.include_router(products_router)
 api_router.include_router(orders_router)
 api_router.include_router(categories_router)
+api_router.include_router(supplier_xml_router)
 api_router.include_router(banners_router)
 api_router.include_router(cms_router)
 api_router.include_router(pages_router)
