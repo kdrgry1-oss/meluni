@@ -6,6 +6,7 @@ from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
+from pymongo.errors import DuplicateKeyError
 import os
 import logging
 from pathlib import Path
@@ -137,7 +138,17 @@ async def lifespan(app: FastAPI):
     logger.info("Starting Facette E-Commerce API...")
     
     try:
-        # Create admin user if not exists
+        # Create admin user if not exists.
+        # A2: `--workers N` ile calisirken her worker acilista bu blogu ayri
+        # ayri calistiriyor. Ikisi de "admin yok" gorup FARKLI rastgele
+        # parolalarla kayit ekliyordu; parola dosyasina biri yaziliyor,
+        # giriste digeri donuyor ve HICBIR parola calismiyordu (email uzerindeki
+        # tekil indeks de bu yuzden E11000 ile kurulamiyordu).
+        # Cozum: once tekil indeksi kur, sonra insert'i yarisa dayanikli yap.
+        try:
+            await db.users.create_index("email", unique=True)
+        except Exception:
+            pass
         admin = await db.users.find_one({"email": "admin@facette.com"})
         if not admin:
             from routes.deps import hash_password, generate_id
@@ -151,18 +162,25 @@ async def lifespan(app: FastAPI):
             if len(_admin_pw) < 8:
                 _admin_pw = _secrets.token_urlsafe(16)
                 _generated = True
-            await db.users.insert_one({
-                "id": generate_id(),
-                "email": "admin@facette.com",
-                "password": hash_password(_admin_pw),
-                "first_name": "Admin",
-                "last_name": "User",
-                "is_admin": True,
-                "is_super_admin": True,
-                "is_active": True,
-                "must_change_password": _generated,
-                "created_at": datetime.now(timezone.utc).isoformat()
-            })
+            try:
+                await db.users.insert_one({
+                    "id": generate_id(),
+                    "email": "admin@facette.com",
+                    "password": hash_password(_admin_pw),
+                    "first_name": "Admin",
+                    "last_name": "User",
+                    "is_admin": True,
+                    "is_super_admin": True,
+                    "is_active": True,
+                    "must_change_password": _generated,
+                    "created_at": datetime.now(timezone.utc).isoformat()
+                })
+            except DuplicateKeyError:
+                # Baska bir worker yarisi kazandi. Parola dosyasini YAZMA:
+                # bizim uretti gimiz parola hicbir kayda ait degil, yazarsak
+                # kullanici calismayan bir parolayla ugrasir.
+                logger.info("Admin baska bir worker tarafindan olusturuldu, atlaniyor.")
+                _generated = False
             if _generated:
                 try:
                     _pdir = os.path.join(os.path.dirname(__file__), "data")
