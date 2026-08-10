@@ -139,6 +139,23 @@ Dönen `detected_mapping` alanlarını kontrol edin. Bir alan yanlış tanınmı
 
 `enabled: false` iken cron beslemeyi indirmez.
 
+### Bu beslemede doğrulanmış değerler
+
+Besleme indirilip 6475 ürün üzerinde test edildi:
+
+| | |
+|---|---|
+| Ürün / varyant / görsel | 6.475 · 19.242 · 27.076 |
+| Ürün düğümü | `Root > Urunler > Urun` |
+| Fiyat alanı | `UrunBayiFiyat` (ürün) · `BayiFiyati` (varyant) |
+| Varyant kapsayıcı | `UrunSecenek > Secenek` |
+| KDV | `KdvOrani`, `KDVDahil=false` → **fiyat KDV hariç** |
+
+> **Fiyat uyarısı:** `BayiFiyati` **bayi (maliyet)** fiyatıdır ve KDV içermez.
+> `price_markup` girmezseniz ürünler maliyetine satışa açılır ve KDV düşünce
+> zarar edersiniz. Örnek: maliyet 434,93 TL · KDV %10 →
+> katsayı 1.0 → 478,42 TL · katsayı 1.8 → 861,16 TL · katsayı 2.2 → 1.052,53 TL.
+
 ### Ürün kodları bize ait
 
 Tedarikçinin barkodu/stok kodu **yalnızca eşleme anahtarı** olarak saklanır.
@@ -159,7 +176,57 @@ aktarıldığında **aynı** kodları alır, yeniden numaralandırma olmaz.
 
 ---
 
-## 7. Yayına alma
+## 7. Ürün görsellerini AI ile yeniden üretme
+
+Tedarikçi görselleri onlarca bayide aynı anda kullanılıyor. Bu modül, ürünün
+mevcut görsellerinden ve verdiğiniz referans görselden besleyerek **tek istekte
+beş kendi fotoğrafınızı** üretir: ön · sol · sağ · arka · detay.
+
+### Kurulum
+
+```bash
+curl -X PUT https://api.meluni.com.tr/api/ai-images/settings \
+  -H "Authorization: Bearer <admin-token>" -H "Content-Type: application/json" \
+  -d '{"api_key":"<openai-anahtari>","model":"gpt-image-1","size":"1024x1536"}'
+```
+
+Anahtar şifreli saklanır. Depolama için R2 açık olmalı — kapalıysa üretilen
+görsel kaydedilemez ve istek 503 döner.
+
+### Üretim
+
+```bash
+curl -X POST https://api.meluni.com.tr/api/ai-images/products/<urun-id>/regenerate \
+  -H "Authorization: Bearer <token>" -H "Content-Type: application/json" \
+  -d '{"reference_url":"https://.../referans.jpg","attach":true}'
+```
+
+| Alan | Anlamı |
+|---|---|
+| `reference_url` | Referans görsel (opsiyonel). Verilmezse ürünün kendi görselleri kullanılır. |
+| `poses` | Üretilecek pozlar. Varsayılan beşi birden. |
+| `attach` | `true` ise üretilenler ürün kartına **eklenir**; mevcut görseller silinmez. |
+
+Beş poz **eşzamanlı** üretilir. Bir poz başarısız olursa diğerleri etkilenmez;
+yanıtın `errors` alanında sağlayıcının hata metni birebir döner (kota, içerik
+reddi, geçersiz anahtar gibi nedenleri gizlemeden görürsünüz).
+
+### Prompt'ları değiştirme
+
+Sonuçlar kötüyse prompt'u panelden düzeltin, kod değişmez:
+
+```bash
+curl -X PUT .../api/ai-images/settings -d '{"prompts":{"back":"<yeni metin>"}}'
+curl -X POST .../api/ai-images/prompts/reset    # fabrika ayarına dön
+```
+
+Her prompt'ta ortak bir **ürün koruma kuralı** var: kesim, desen yönü, renk,
+doku, düğme/fermuar ve etiket konumu değişmemeli. Bu cümleyi silerseniz model
+ürünü "güzelleştirmeye" çalışıp başka bir ürüne çevirir.
+
+---
+
+## 8. Yayına alma
 
 `main`'e push → GitHub Actions → Railway (backend) + Cloudflare (frontend).
 Yol filtreli: yalnız `backend/` değiştiyse backend, yalnız `frontend/`
@@ -176,5 +243,6 @@ değiştiyse frontend deploy olur.
 - [ ] `https://api.meluni.com.tr/api/health` yanıt veriyor
 - [ ] Panele giriş yapılabiliyor (SMS istemiyor)
 - [ ] Sipariş e-postasında marka adı doğru, "Facette" geçmiyor
-- [ ] XML önizleme doğru alanları tanıyor
+- [ ] XML önizleme doğru alanları tanıyor (fiyat `UrunBayiFiyat`, varyant `UrunSecenek`)
+- [ ] `price_markup` ayarlandı — 1.0 ise ürünler maliyetine satışa açılır
 - [ ] Aktarılan üründe barkod `200…` ile başlıyor, stok kodu `MEL-` önekli
