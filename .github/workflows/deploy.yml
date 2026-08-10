@@ -90,6 +90,17 @@ jobs:
           fi
           yarn build
           test -f build/index.html || { echo "::error::build/index.html üretilmedi"; exit 1; }
+
+          # CRA degiskeni DERLEME ANINDA gomer. Kabukta "VAR=x cmd1 && cmd2"
+          # yazildiginda VAR yalniz cmd1'e gecer; boyle bir hatada derleme
+          # sessizce API adressiz cikar ve site "giris yapilamiyor" der.
+          # Adresin gercekten gomuldugunu dogruluyoruz.
+          host="$(printf '%s' "${REACT_APP_BACKEND_URL}" | sed -e 's|^https\?://||' -e 's|/.*$||')"
+          if ! grep -rqF "${host}" build/static/js/; then
+            echo "::error::REACT_APP_BACKEND_URL (${host}) derlemeye gomulmemis — paket bozuk, deploy durduruldu."
+            exit 1
+          fi
+          echo "API adresi derlemede dogrulandi: ${host}"
           echo "derleme boyutu: $(du -sh build | cut -f1)"
 
       - name: SSH anahtarını hazırla
