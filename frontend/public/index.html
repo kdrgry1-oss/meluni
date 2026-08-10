@@ -130,12 +130,12 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <!-- LCP görseli ve diğer tüm ürün görselleri bu CDN'den gelir → bağlantıyı
              erkenden kur (preconnect), ilk görsel daha hızlı boyansın. -->
-        <link rel="preconnect" href="https://cdn.facette.com.tr" crossorigin />
-        <link rel="dns-prefetch" href="https://cdn.facette.com.tr" />
+        <link rel="preconnect" href="%REACT_APP_CDN_URL%" crossorigin />
+        <link rel="dns-prefetch" href="%REACT_APP_CDN_URL%" />
         <!-- [perf 2026-06-22] API host: homepage urun + page-blocks fetch'i buradan gelir
              (client-render SPA'da kritik yol). Baglanti onceden isinsin -> icerik daha hizli. -->
-        <link rel="preconnect" href="https://api.facette.com.tr" crossorigin />
-        <link rel="dns-prefetch" href="https://api.facette.com.tr" />
+        <link rel="preconnect" href="%REACT_APP_BACKEND_URL%" crossorigin />
+        <link rel="dns-prefetch" href="%REACT_APP_BACKEND_URL%" />
         <!-- Analitik/piksel host'ları için dns-prefetch (bağlantı ısınması) -->
         <link rel="dns-prefetch" href="https://us.i.posthog.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -154,7 +154,7 @@
         work correctly both with client-side routing and a non-root public URL.
         Learn how to configure a non-root public URL by running `npm run build`.
         -->
-        <title>FACETTE | Yeni Sezon Kadın Giyim & Moda</title>
+        <title>%REACT_APP_SITE_TITLE%</title>
 
         <!-- ===== Favicon / App ikonları ===== -->
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -164,33 +164,33 @@
         <link rel="manifest" href="/site.webmanifest" />
 
         <!-- ===== SEO (ana sayfa varsayılanları; ürün/kategori sayfaları react-helmet ile ezer) ===== -->
-        <meta name="description" content="FACETTE — kadın modasında yeni sezon koleksiyonu. Zamansız elbise, pantolon, ceket ve aksesuar parçaları. Hızlı kargo, güvenli ödeme, kolay iade." />
+        <meta name="description" content="%REACT_APP_SITE_DESC%" />
         <meta name="robots" content="index, follow, max-image-preview:large" />
-        <link rel="canonical" href="https://facette.com.tr/" />
+        <link rel="canonical" href="%REACT_APP_SITE_URL%/" />
 
         <!-- Open Graph (WhatsApp / Facebook / LinkedIn paylaşım kartı) -->
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="FACETTE" />
+        <meta property="og:site_name" content="%REACT_APP_SITE_NAME%" />
         <meta property="og:locale" content="tr_TR" />
-        <meta property="og:title" content="FACETTE | Yeni Sezon Kadın Giyim & Moda" />
+        <meta property="og:title" content="%REACT_APP_SITE_TITLE%" />
         <meta property="og:description" content="Kadın modasında yeni sezon koleksiyonu: zamansız parçalar, elbise, pantolon, ceket, aksesuar." />
-        <meta property="og:url" content="https://facette.com.tr/" />
-        <meta property="og:image" content="https://facette.com.tr/og-image.jpg" />
+        <meta property="og:url" content="%REACT_APP_SITE_URL%/" />
+        <meta property="og:image" content="%REACT_APP_SITE_URL%/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
 
         <!-- Twitter / X kartı -->
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="FACETTE | Yeni Sezon Kadın Giyim & Moda" />
+        <meta name="twitter:title" content="%REACT_APP_SITE_TITLE%" />
         <meta name="twitter:description" content="Kadın modasında yeni sezon koleksiyonu: zamansız parçalar, elbise, pantolon, ceket, aksesuar." />
-        <meta name="twitter:image" content="https://facette.com.tr/og-image.jpg" />
+        <meta name="twitter:image" content="%REACT_APP_SITE_URL%/og-image.jpg" />
 
         <!-- Yapısal veri: Organization + WebSite (Google sitelinks arama kutusu) -->
         <script type="application/ld+json">
-        {"@context":"https://schema.org","@type":"Organization","name":"FACETTE","url":"https://facette.com.tr/","logo":"https://facette.com.tr/logo.png"}
+        {"@context":"https://schema.org","@type":"Organization","name":"%REACT_APP_SITE_NAME%","url":"%REACT_APP_SITE_URL%/","logo":"%REACT_APP_SITE_URL%/logo.png"}
         </script>
         <script type="application/ld+json">
-        {"@context":"https://schema.org","@type":"WebSite","name":"FACETTE","url":"https://facette.com.tr/","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://facette.com.tr/arama?q={search_term_string}"},"query-input":"required name=search_term_string"}}
+        {"@context":"https://schema.org","@type":"WebSite","name":"%REACT_APP_SITE_NAME%","url":"%REACT_APP_SITE_URL%/","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"%REACT_APP_SITE_URL%/arama?q={search_term_string}"},"query-input":"required name=search_term_string"}}
         </script>
 
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>

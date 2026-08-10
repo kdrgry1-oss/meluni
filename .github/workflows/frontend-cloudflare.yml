@@ -1,0 +1,101 @@
+name: Frontend → Cloudflare Pages
+
+# Storefront + admin panelini derleyip Cloudflare Pages'e yayinlar.
+#
+# Gerekli repository secret'lari:
+#   CLOUDFLARE_API_TOKEN   - Cloudflare > My Profile > API Tokens
+#                            (izin: Account > Cloudflare Pages > Edit)
+#   CLOUDFLARE_ACCOUNT_ID  - Cloudflare panelinin sag sutunundaki Account ID
+#   REACT_APP_BACKEND_URL  - orn. https://api.meluni.com.tr
+# Opsiyonel:
+#   CF_PAGES_PROJECT       - Pages proje adi (varsayilan: meluni)
+#   REACT_APP_CDN_HOST     - gorsel CDN alan adi (bos ise devre disi)
+
+on:
+  push:
+    branches: [main, master, claude/meluni-entegrasyon-rzv2le]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-cloudflare.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-frontend
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Pages deploy
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Gerekli secret'lari dogrula
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
+        run: |
+          set -euo pipefail
+          missing=""
+          [ -n "$CF_TOKEN" ]   || missing="$missing CLOUDFLARE_API_TOKEN"
+          [ -n "$CF_ACCOUNT" ] || missing="$missing CLOUDFLARE_ACCOUNT_ID"
+          [ -n "$BACKEND_URL" ] || missing="$missing REACT_APP_BACKEND_URL"
+          if [ -n "$missing" ]; then
+            echo "::error::Eksik repository secret'lari:$missing"
+            exit 1
+          fi
+
+      - name: Bagimliliklari kur
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Derle
+        working-directory: frontend
+        env:
+          # CRA degiskenleri derleme aninda gomulur; calisma aninda degistirilemez.
+          # DIKKAT: bunlar uretilen JS icinde herkese aciktir, gizli deger konmaz.
+          REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
+          REACT_APP_CDN_HOST: ${{ secrets.REACT_APP_CDN_HOST }}
+          # public/index.html icindeki %REACT_APP_*% yer tutucularini doldurur
+          # (title/meta/OG/JSON-LD). Bos kalirlarsa CRA yer tutucuyu OLDUGU GIBI
+          # birakir ve sayfa kaynaginda gorunur — asagidaki kontrol onu yakalar.
+          REACT_APP_SITE_NAME: ${{ secrets.REACT_APP_SITE_NAME || 'meluni' }}
+          REACT_APP_SITE_URL: ${{ secrets.REACT_APP_SITE_URL || 'https://meluni.com.tr' }}
+          REACT_APP_SITE_TITLE: ${{ secrets.REACT_APP_SITE_TITLE || 'meluni | Yeni Sezon Kadın Giyim & Moda' }}
+          REACT_APP_SITE_DESC: ${{ secrets.REACT_APP_SITE_DESC || 'meluni — yeni sezon koleksiyonu. Hızlı kargo, güvenli ödeme, kolay iade.' }}
+          REACT_APP_CDN_URL: ${{ secrets.REACT_APP_CDN_URL || secrets.REACT_APP_SITE_URL || 'https://meluni.com.tr' }}
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: yarn build
+
+      - name: Yer tutucu kalmis mi
+        working-directory: frontend
+        run: |
+          set -euo pipefail
+          if grep -o '%REACT_APP_[A-Z_]*%' build/index.html 2>/dev/null | sort -u | grep .; then
+            echo "::error::Yukaridaki degiskenler tanimsiz kaldi; sayfa kaynaginda ham yer tutucu gorunur."
+            exit 1
+          fi
+          echo "Yer tutucularin tumu dolduruldu."
+
+      - name: Cloudflare Pages'e yayinla
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy frontend/build
+            --project-name=${{ secrets.CF_PAGES_PROJECT || 'meluni' }}
+            --branch=${{ github.ref_name }}
