@@ -1,0 +1,103 @@
+name: Deploy
+
+# Sunucuya SSH ile deploy. Baglantiyi GitHub'in runner'i kurar.
+#
+# Gerekli repository secret'lari (Settings > Secrets and variables > Actions):
+#   SSH_HOST         - sunucu IP / hostname
+#   SSH_USER         - deploy kullanicisi
+#   SSH_PRIVATE_KEY  - deploy icin uretilmis OZEL anahtar (parolasiz)
+#   SSH_KNOWN_HOSTS  - `ssh-keyscan -p <port> -H <host>` ciktisi
+# Opsiyonel:
+#   SSH_PORT         - varsayilan 22
+#   DEPLOY_PATH      - varsayilan /home/<SSH_USER>/apps/meluni
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Deploy edilecek git ref (bos birakilirsa mevcut branch)"
+        required: false
+        default: ""
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: SSH deploy
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 20
+
+    steps:
+      - name: Kodu al
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+          fetch-depth: 0
+
+      - name: Gerekli secret'lari dogrula
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          missing=""
+          [ -n "$SSH_HOST" ] || missing="$missing SSH_HOST"
+          [ -n "$SSH_USER" ] || missing="$missing SSH_USER"
+          [ -n "$SSH_PRIVATE_KEY" ] || missing="$missing SSH_PRIVATE_KEY"
+          if [ -n "$missing" ]; then
+            echo "::error::Eksik repository secret'lari:$missing"
+            echo "Bkz. docs/SUNUCU-ENTEGRASYON.md"
+            exit 1
+          fi
+
+      - name: SSH anahtarini hazirla
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            # Secret verilmediyse host anahtarini ilk baglantida ogreniyoruz.
+            # Guvenli olan SSH_KNOWN_HOSTS secret'ini tanimlamaktir.
+            echo "::warning::SSH_KNOWN_HOSTS tanimli degil; host anahtari dogrulanmadan aliniyor (MITM riski)."
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > ~/.ssh/known_hosts 2>/dev/null
+          fi
+          chmod 644 ~/.ssh/known_hosts
+          test -s ~/.ssh/known_hosts
+
+      - name: Deploy
+        env:
+          DEPLOY_HOST: ${{ secrets.SSH_HOST }}
+          DEPLOY_USER: ${{ secrets.SSH_USER }}
+          DEPLOY_PORT: ${{ secrets.SSH_PORT || '22' }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          SSH_KEY: /home/runner/.ssh/id_deploy
+        run: |
+          set -euo pipefail
+          chmod +x scripts/deploy.sh
+          if [ -z "${DEPLOY_PATH}" ]; then
+            unset DEPLOY_PATH
+          fi
+          ./scripts/deploy.sh
+
+      - name: Anahtari temizle
+        if: always()
+        run: rm -f ~/.ssh/id_deploy

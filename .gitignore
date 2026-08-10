@@ -1,0 +1,39 @@
+# Ortam degiskenleri - ASLA commit edilmez
+.env
+.env.*
+!.env.example
+
+# SSH anahtarlari / sertifikalar - ASLA commit edilmez
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+*.ppk
+
+# Bagimliliklar
+node_modules/
+vendor/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Build ciktilari
+dist/
+build/
+out/
+.next/
+.nuxt/
+
+# Loglar ve gecici dosyalar
+*.log
+logs/
+tmp/
+.cache/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
