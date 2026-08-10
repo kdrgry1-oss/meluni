@@ -32,7 +32,12 @@ export default function SupplierXml() {
   const load = async () => {
     try {
       const r = await fetch(`${API}/supplier-xml/config`, { headers: headers() });
-      if (r.ok) setCfg((c) => ({ ...c, ...(await r.json()) }));
+      // await'i setCfg'nin ok fonksiyonu İÇİNDE kullanamayız: o fonksiyon
+      // async değil. Önce çözüp sonra state'e yazıyoruz.
+      if (r.ok) {
+        const d = await r.json();
+        setCfg((c) => ({ ...c, ...d }));
+      }
     } catch (e) {
       setMsg({ type: "error", text: `Ayar okunamadı: ${e.message}` });
     } finally {
