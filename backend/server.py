@@ -54,6 +54,7 @@ from routes.manufacturing import router as manufacturing_router, suppliers_route
 from routes.decision_board import router as decision_board_router
 from routes.supplier_xml import router as supplier_xml_router
 from routes.ai_product_images import router as ai_product_images_router
+from routes.dropship import router as dropship_router
 from routes.ai_chatbot import router as ai_chatbot_router
 from routes.whatsapp_webhook import router as whatsapp_webhook_router
 from routes.meta_messaging_webhook import router as meta_messaging_webhook_router
@@ -712,6 +713,7 @@ api_router.include_router(orders_router)
 api_router.include_router(categories_router)
 api_router.include_router(supplier_xml_router)
 api_router.include_router(ai_product_images_router)
+api_router.include_router(dropship_router)
 api_router.include_router(banners_router)
 api_router.include_router(cms_router)
 api_router.include_router(pages_router)

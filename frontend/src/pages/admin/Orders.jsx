@@ -32,6 +32,7 @@ import { FolderOpen, RefreshCw, Printer, FileText, FileCheck, MessageSquare, Pac
 import JourneyFunnel from "./JourneyFunnel";
 import axios from "axios";
 import OrderEventsLog from "../../components/admin/OrderEventsLog";
+import DropshipPanel from "../../components/admin/DropshipPanel";
 import MultiSelect from "../../components/admin/MultiSelect";
 import OrderMarketplaceInfo from "../../components/admin/OrderMarketplaceInfo";
 import OrderPaymentDetail from "../../components/admin/OrderPaymentDetail";
@@ -2178,6 +2179,7 @@ export default function AdminOrders({ unpaidView = false }) {
 
               <OrderMarketplaceInfo order={selectedOrder} />
               <OrderPaymentDetail order={selectedOrder} />
+              <DropshipPanel orderId={selectedOrder.id} />
               <OrderEventsLog orderId={selectedOrder.id} />
             </div>
           )}
