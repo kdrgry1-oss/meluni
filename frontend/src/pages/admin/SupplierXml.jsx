@@ -17,6 +17,7 @@ export default function SupplierXml() {
     url: "",
     supplier_name: "modayakamoz",
     price_markup: 2.0,
+    min_stock: 5,
     enabled: false,
     url_masked: "",
     last_import: null,
@@ -50,6 +51,7 @@ export default function SupplierXml() {
       const body = {
         supplier_name: cfg.supplier_name,
         price_markup: Number(cfg.price_markup),
+        min_stock: Number(cfg.min_stock),
         enabled: !!cfg.enabled,
       };
       // Adres yalnız yeni girildiyse gönderilir; boşsa mevcut (şifreli) adres korunur.
@@ -154,6 +156,20 @@ export default function SupplierXml() {
               value={cfg.supplier_name}
               onChange={(e) => setCfg({ ...cfg, supplier_name: e.target.value })}
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Asgari stok eşiği</label>
+            <input
+              className={field}
+              type="number"
+              min="0"
+              value={cfg.min_stock}
+              onChange={(e) => setCfg({ ...cfg, min_stock: e.target.value })}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Tedarikçi stoğu bu sayıya <b>eşit veya altındaysa</b> o beden hiç
+              açılmaz. Sipariş gelip malı bulamamayı önler.
+            </p>
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Kâr katsayısı</label>

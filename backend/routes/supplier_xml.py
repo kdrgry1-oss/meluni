@@ -37,6 +37,12 @@ import supplier_codes
 router = APIRouter(prefix="/supplier-xml", tags=["supplier-xml"])
 
 SETTINGS_ID = "supplier_xml"
+
+
+class _SkipProduct(Exception):
+    """Ürün iş kuralı gereği aktarılmaz (hata değil, kasıtlı atlama)."""
+
+
 _MAX_BYTES = 80 * 1024 * 1024  # 80 MB — kaçak büyümeye karşı üst sınır
 
 
@@ -83,6 +89,13 @@ _KEEP_LOWER = {"ve", "ile", "için"}
 # "Kadı" beslemede geçen bir yazım hatası.
 _GENDER_PREFIX = ("kadın", "kadin", "kadı", "erkek", "unisex", "çocuk", "cocuk")
 NAME_MAX_LEN = 70
+
+# STOK EŞİĞİ — dropshipping güvenliği.
+# Tedarikçide stoğu az kalan bir bedeni satışa açmak, sipariş gelince malı
+# bulamamak demektir: müşteriye iptal, Trendyol'da satıcı puanı kaybı.
+# Eşik VARYANT bazında uygulanır; stoğu bol bedenler ayakta kalır, yalnız
+# riskli beden düşer. Gerçek beslemede 4.461 varyant bu kurala takılıyor.
+MIN_STOCK_DEFAULT = 5
 
 
 def _tr_title_word(w: str) -> str:
@@ -517,7 +530,8 @@ def _now_iso() -> str:
 
 
 # ─────────────────────────── aktarım ───────────────────────────
-async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float = 1.0) -> Dict[str, Any]:
+async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float = 1.0,
+                             min_stock: int = MIN_STOCK_DEFAULT) -> Dict[str, Any]:
     """Ara temsili ürün dökümanına çevirir; kodları BİZ üretiriz."""
     model_code = await supplier_codes.get_or_create_model_code(db, supplier, rec["model_ref"])
 
@@ -545,6 +559,10 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
             "supplier_barcode": v.get("supplier_barcode") or "",
             "supplier_stock_code": v.get("supplier_stock_code") or "",
         })
+
+    # Tüm bedenleri eşiğin altındaysa ürünü hiç açmıyoruz.
+    if not variants:
+        raise _SkipProduct(f"tüm bedenler stok <= {min_stock}")
 
     primary = variants[0] if variants else {}
 
@@ -598,6 +616,8 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
     cfg = await get_config()
     supplier = cfg.get("supplier_name") or "modayakamoz"
     markup = float(cfg.get("price_markup") or 1.0)
+    min_stock = int(cfg.get("min_stock", MIN_STOCK_DEFAULT))
+    low_stock = deactivated = 0
     records, _ = await load_items()
     if limit:
         records = records[:limit]
@@ -607,12 +627,13 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
         if not rec.get("name"):
             skipped += 1
             continue
+        existing = None
         try:
             key = supplier_codes.supplier_key(supplier, rec["model_ref"])
             existing = await db.products.find_one(
                 {"supplier_key": key}, {"_id": 0, "id": 1})
 
-            doc = await _build_product_doc(rec, supplier, markup)
+            doc = await _build_product_doc(rec, supplier, markup, min_stock)
             doc["supplier_key"] = key
 
             if existing:
@@ -626,13 +647,28 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
             else:
                 await db.products.insert_one(doc)
                 created += 1
+        except _SkipProduct:
+            # İş kuralı gereği atlandı — HATA DEĞİL, ayrı sayılır.
+            low_stock += 1
+            if existing:
+                # Daha önce açılmıştı, artık eşiğin altında: satıştan kaldır.
+                # Silmek yerine pasife alıyoruz; geçmiş siparişler ürüne
+                # referans veriyor olabilir, silinirse sipariş detayı bozulur.
+                await db.products.update_one({"id": existing["id"]}, {"$set": {
+                    "is_active": False, "status": "passive",
+                    "deactivated_reason": f"tedarikçi stoğu <= {min_stock}",
+                    "deactivated_at": _now_iso(),
+                }})
+                deactivated += 1
         except Exception as e:
             failed += 1
             logger.error(f"[supplier_xml] ürün aktarılamadı ({rec.get('name')!r}): {e}")
 
     result = {"created": created, "updated": updated, "skipped": skipped,
               "failed": failed, "total": len(records),
-              "price_markup": markup, "at": _now_iso()}
+              "price_markup": markup, "min_stock": min_stock,
+              "low_stock_skipped": low_stock, "deactivated": deactivated,
+              "at": _now_iso()}
     if markup <= 1.0:
         # Besleme BAYİ fiyatı verir; katsayısız yayınlamak maliyetine satmaktır.
         result["warning"] = ("price_markup ayarlanmamis (1.0). Urunler bayi fiyatina "
@@ -648,6 +684,7 @@ async def sync_stock() -> Dict[str, Any]:
     """Stok ve fiyatı besleme ile eşitler. Ürün açmaz."""
     cfg = await get_config()
     supplier = cfg.get("supplier_name") or "modayakamoz"
+    min_stock = int(cfg.get("min_stock", MIN_STOCK_DEFAULT))
     records, _ = await load_items()
 
     touched = missing = failed = 0
@@ -671,7 +708,11 @@ async def sync_stock() -> Dict[str, Any]:
             for v in (product.get("variants") or []):
                 src = by_code.get(v.get("stock_code"))
                 if src is not None:
-                    v["stock"] = int(src.get("stock") or 0)
+                    _st = int(src.get("stock") or 0)
+                    # Eşiğin altına düşen beden SATILAMAZ hale gelir. Stoğu
+                    # olduğu gibi yazsak "son 3 ürün" diye satılır ve sipariş
+                    # gelince tedarikçide bulunamaz — iptal ve puan kaybı.
+                    v["stock"] = _st if _st > min_stock else 0
                     if src.get("price"):
                         v["price"] = float(src["price"])
                 else:
@@ -717,6 +758,7 @@ async def read_config(_admin=Depends(require_admin)):
         "supplier_name": cfg.get("supplier_name") or "modayakamoz",
         "enabled": bool(cfg.get("enabled")),
         "price_markup": float(cfg.get("price_markup") or 1.0),
+        "min_stock": int(cfg.get("min_stock", MIN_STOCK_DEFAULT)),
         "mapping": cfg.get("mapping") or {},
         "last_import": cfg.get("last_import"),
         "last_stock_sync": cfg.get("last_stock_sync"),
@@ -740,6 +782,14 @@ async def write_config(payload: dict, _admin=Depends(require_admin)):
             raise HTTPException(status_code=400,
                                 detail="price_markup 1.0'dan kucuk olamaz (zararina satis).")
         update["price_markup"] = _m
+    if payload.get("min_stock") is not None:
+        try:
+            _ms = int(payload["min_stock"])
+        except (TypeError, ValueError):
+            raise HTTPException(status_code=400, detail="min_stock tam sayı olmalı.")
+        if _ms < 0:
+            raise HTTPException(status_code=400, detail="min_stock negatif olamaz.")
+        update["min_stock"] = _ms
     if payload.get("supplier_name"):
         update["supplier_name"] = str(payload["supplier_name"]).strip()
     if isinstance(payload.get("mapping"), dict):
