@@ -161,6 +161,9 @@ _GENDER_ROOTS = {"kadın": "Kadın", "kadin": "Kadın", "erkek": "Erkek",
                  "unisex": "Unisex", "çocuk": "Çocuk", "cocuk": "Çocuk"}
 _OTHER_CAT = "Diğer"
 
+# Kategori adı → id önbelleği. Her içe aktarmanın başında sıfırlanır.
+_CAT_CACHE: Dict[str, Any] = {"map": None}
+
 
 def normalize_category(raw: str, gender: str) -> tuple[str, str]:
     """(ana_kategori, alt_kategori) döndürür."""
@@ -182,13 +185,44 @@ def normalize_category(raw: str, gender: str) -> tuple[str, str]:
     return root, (sub or _OTHER_CAT)
 
 
+def _cat_key(name: str) -> str:
+    """Kategori adını karşılaştırma için sadeleştirir.
+
+    "T-Shirt" / "T-shirt" / "Tshirt" / "t shirt" aynı kategoridir; besleme
+    bunları farklı yazıyor ve ham hâliyle her biri ayrı kategori üretir.
+    """
+    s = (name or "").strip().lower()
+    s = s.replace("ı", "i").replace("İ", "i")
+    return re.sub(r"[^a-z0-9çğöşü]", "", s)
+
+
 async def _ensure_category(name: str, parent_id: Optional[str]) -> str:
-    """Kategoriyi bulur, yoksa oluşturur; id döndürür. Aynı ad + aynı ebeveyn
-    ikinci kez oluşturulmaz (her içe aktarmada kopya birikmesin)."""
+    """Kategoriyi bulur, yoksa oluşturur; id döndürür.
+
+    Eşleşme sırası:
+      1) Aynı ad + aynı üst kategori (tam eşleşme).
+      2) MEVCUT kategorilerde aynı ada sahip olan — nerede olursa olsun.
+         Elde hazır kategori varsa (ör. kök seviyede "Elbise") onu KULLANIRIZ;
+         yanına ikinci bir "Kadın > Elbise" açmak katalogu ikiye böler.
+      3) Yoksa yeni oluşturulur.
+    """
     q = {"name": name, "parent_id": parent_id}
     doc = await db.categories.find_one(q, {"_id": 0, "id": 1})
     if doc:
         return doc["id"]
+
+    # 2) Ad bazlı eşleşme — yazım farkına dayanıklı.
+    # Tüm kategorileri her üründe taramak 6.475 üründe ağır olur; bir kez
+    # okuyup bellekte tutuyoruz ve yeni oluşturdukça güncelliyoruz.
+    key = _cat_key(name)
+    if _CAT_CACHE["map"] is None:
+        _CAT_CACHE["map"] = {}
+        async for c in db.categories.find({}, {"_id": 0, "id": 1, "name": 1}):
+            _CAT_CACHE["map"].setdefault(_cat_key(c.get("name")), c["id"])
+    hit = _CAT_CACHE["map"].get(key)
+    if hit:
+        logger.info(f"[supplier_xml] mevcut kategoriyle eslesti: {name}")
+        return hit
     from .categories import generate_slug
     from .deps import generate_short_id
     cid = await generate_short_id("categories")
@@ -203,6 +237,8 @@ async def _ensure_category(name: str, parent_id: Optional[str]) -> str:
         "created_at": _now_iso(),
     })
     logger.info(f"[supplier_xml] kategori olusturuldu: {name} (parent={parent_id})")
+    if _CAT_CACHE["map"] is not None:
+        _CAT_CACHE["map"].setdefault(_cat_key(name), cid)
     return cid
 
 
@@ -618,6 +654,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
     markup = float(cfg.get("price_markup") or 1.0)
     min_stock = int(cfg.get("min_stock", MIN_STOCK_DEFAULT))
     low_stock = deactivated = deleted = 0
+    _CAT_CACHE["map"] = None  # taze oku: panelden kategori eklenmiş olabilir
     records, _ = await load_items()
     if limit:
         records = records[:limit]
