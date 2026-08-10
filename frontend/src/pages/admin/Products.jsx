@@ -1782,6 +1782,9 @@ export default function AdminProducts() {
       unit: product.unit || "ADET",
       keywords: product.keywords || "",
       supplier: product.supplier || "",
+      // Tedarikçinin KISALTILMAMIŞ ham adı — yalnız yönetim görür, kaydedilmez.
+      supplier_original_name: product.supplier_original_name || "",
+      supplier_url: product.supplier_url || "",
       manufacturer: product.manufacturer || "MELUNİ",
       max_installment: product.max_installment || 9,
       purchase_price: product.purchase_price || 0,
@@ -2580,6 +2583,41 @@ export default function AdminProducts() {
                             placeholder="Örn: V Yaka Saten Elbise"
                             required
                           />
+                          {/* Vitrindeki ad anlamına göre kısaltılır; ham ad
+                              tedarikçide ararken gerekiyor. Müşteriye GİTMEZ:
+                              supplier_original_name public yanıttan temizlenir. */}
+                          {formData.supplier_original_name && (
+                            <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50/60 px-3 py-2">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="text-[10px] uppercase tracking-wide bg-black text-white px-1.5 py-0.5 rounded">
+                                  yalnız yönetim
+                                </span>
+                                <span className="text-[11px] font-semibold text-gray-600">
+                                  Tedarikçideki tam ad (kısaltılmamış)
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => navigator.clipboard?.writeText(formData.supplier_original_name)}
+                                  className="text-[11px] text-blue-600 hover:underline ml-auto"
+                                >
+                                  kopyala
+                                </button>
+                              </div>
+                              <p className="text-xs text-gray-700 break-words">
+                                {formData.supplier_original_name}
+                              </p>
+                              {formData.supplier_url && (
+                                <a
+                                  href={formData.supplier_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[11px] text-blue-600 hover:underline"
+                                >
+                                  tedarikçi sayfası
+                                </a>
+                              )}
+                            </div>
+                          )}
                         </div>
                         <div>
                           <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Kategoriler (birden fazla seçilebilir)</label>

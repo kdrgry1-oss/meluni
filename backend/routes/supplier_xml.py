@@ -88,7 +88,8 @@ _TR_UP = {"i": "İ", "ı": "I", "ö": "Ö", "ü": "Ü", "ş": "Ş", "ç": "Ç", 
 _KEEP_LOWER = {"ve", "ile", "için"}
 # Baştaki cinsiyet kelimesi: ayrı alanda (gender) ve kategoride zaten var.
 # "Kadı" beslemede geçen bir yazım hatası.
-_GENDER_PREFIX = ("kadın", "kadin", "kadı", "erkek", "unisex", "çocuk", "cocuk")
+_GENDER_PREFIX = ("kadın", "kadin", "kadı", "kadınlar", "kadinlar", "erkek",
+                  "erkekler", "unisex", "çocuk", "cocuk")
 NAME_MAX_LEN = 70
 
 # STOK EŞİĞİ — dropshipping güvenliği.
@@ -109,12 +110,125 @@ def _tr_title_word(w: str) -> str:
     return _TR_UP.get(w[0], w[0].upper()) + w[1:]
 
 
+# ── Adı ANLAMINA göre kısaltma ──────────────────────────────────────────
+#
+# Baştan/sondan karakter kesmek yanlış: "…Dalgıç Pantolon" → "…Dalgıç" gibi
+# ürünün ne olduğunu silen sonuçlar çıkıyordu. Türkçe ad öbeği SONA dayalıdır:
+#
+#     [cinsiyet] [kol] [yaka] [detay] [boy] [kumaş] [TÜR]
+#     Kadın      Kısa Kollu  V Yakalı  Dantel Detaylı  Viskon  Bluz
+#
+# Yani ad zaten anlamlı sırada geliyor; yapılacak iş kesmek değil, hangi
+# niteleyicinin bilgi taşıdığına karar verip gerisini atmak:
+#
+#   1) Yapısal/pazarlama dolgusu atılır  ("belden", "önden", "rahat kalıp").
+#   2) Kalanlar öbeklere ayrılıp sınıflandırılır (kol / yaka / detay / desen /
+#      boy / bel / kumaş).
+#   3) HER SINIFTAN TEK öbek kalır — aynı özelliği iki kez anlatan adlarda
+#      BAŞ ADA EN YAKIN olan kazanır (Türkçede baş ada yaklaştıkça niteleyici
+#      ürünü daha çok tanımlar).
+#   4) Tür (son kelime) her hâlükârda korunur.
+#
+# Ölçüt örneği (kullanıcı):
+#   ham  : Kadın Yüksek Bel Belden Kuşaklı üst Dalgıç Alt Dantel Detaylı Dalgıç Pantolon
+#   çıktı: Yüksek Bel Dantel Detaylı Dalgıç Pantolon
+
+# Sınıf işaretçileri: öbeği KAPATAN kelimeler. Öbek, işaretçiden önce biriken
+# niteleyicilerle birlikte tek parça sayılır ("Dantel" + "Detaylı").
+_CLASS_MARKERS: Dict[str, str] = {}
+for _cls, _words in {
+    "kol":   ["kollu", "kol", "kolsuz", "askılı", "askili", "kolsuzu"],
+    "yaka":  ["yaka", "yakalı", "yakali", "kruvaze", "kapüşonlu", "kapşonlu"],
+    "detay": ["detaylı", "detayli", "detay", "cepli", "düğmeli", "fermuarlı",
+              "yırtmaçlı", "büzgülü", "kuşaklı", "bağcıklı", "bağlamalı",
+              "pileli", "fırfırlı", "nervürlü", "lastikli", "astarlı",
+              "dantelli", "likralı", "ribanalı", "şardonlu", "volanlı"],
+    "desen": ["baskılı", "desenli", "çizgili", "kareli", "puantiyeli",
+              "payetli", "nakışlı", "işlemeli", "renkli"],
+    "boy":   ["mini", "midi", "maksi", "uzun", "kısa", "crop", "diz"],
+    "bel":   ["bel", "beli", "belli", "paça", "paçalı", "fit", "kalıplı",
+              "oversize", "regular", "slim"],
+    "kumaş": ["viskon", "krep", "süprem", "triko", "keten", "kadife", "dalgıç",
+              "sandy", "modal", "janjan", "aerobin", "bürümcük", "atlas",
+              "tül", "dantel", "deri", "kot", "denim", "file", "fitilli",
+              "kaşkorse", "örme", "poplin", "gabardin", "scuba", "şifon",
+              "saten", "pamuklu", "dokuma", "iplik", "jean", "süet", "polar",
+              "gipeli", "bürgü"],
+}.items():
+    for _w in _words:
+        _CLASS_MARKERS[_w] = _cls
+del _cls, _words, _w
+
+# Yapısal/konumsal dolgu: nereye dikildiğini söyler, ürünün ne olduğunu değil.
+_FILLER_WORDS = {
+    "belden", "önden", "onden", "arkadan", "yandan", "yanlardan", "yanları",
+    "omuzdan", "omuzlardan", "boyundan", "yakadan", "sırttan", "önü", "ön",
+    "arka", "arkası", "üstü", "altı", "içi", "dışı", "kısmı", "bölümü", "ucu",
+    "üst", "alt", "sırt", "göğüs", "kumaş", "kumaşı", "kesim", "kesimli",
+    # pazarlama sıfatları
+    "ithal", "rahat", "günlük", "şık", "kaliteli", "mükemmel", "uygun",
+    "konforlu", "yeni", "sezon", "sezonun", "trend", "basic", "yazlık",
+    "kışlık", "baharlık", "için", "adet", "tam", "doğru", "çok", "premium",
+    "-", "–", "—",              # bölünemeyen kısa adlarda tire tek başına kalıyor
+}
+# Öbeği bütünüyle çöpe atan kelimeler: taşıdıkları niteleyici de pazarlama.
+# ("Rahat Kalıp", "Kışlık Model", "Winagain Serisi" → tamamı gider.)
+_KILLER_WORDS = {"kalıp", "kalıbı", "model", "modeli", "serisi", "stil",
+                 "stili", "kombin", "kombini", "duruş", "konfor", "şıklığı",
+                 "şıklığına", "şıklık"}
+
+# Kendinden ÖNCEKİ kelimeye dilbilgisel olarak bağlı işaretçiler. Tek başına
+# öbek olamazlar: "Kısa Kollu" bir özelliktir, "Kısa" + "Kollu" iki değil.
+_ABSORB_MARKERS = {"detaylı", "detayli", "detay", "kollu", "kol", "yaka",
+                   "yakalı", "yakali", "baskılı", "desenli", "işlemeli"}
+
+# Uzunluk taşarsa hangi sınıf önce gider (küçük = önce atılır).
+_CLASS_RANK = {"other": 0, "boy": 1, "desen": 2, "yaka": 3, "kol": 4,
+               "detay": 5, "bel": 6, "kumaş": 7}
+
+
+def _clean_word(w: str) -> str:
+    return w.lower().strip(".,;:()\"'’“”")
+
+
+def _phrases(words: List[str], drop_marketing: bool = True) -> List[tuple]:
+    """Kelime dizisini (metin, sınıf) öbeklerine ayırır."""
+    out: List[tuple] = []
+    buf: List[str] = []
+    for w in words:
+        lw = _clean_word(w)
+        if not lw:
+            continue
+        if lw in _KILLER_WORDS:
+            if drop_marketing:
+                buf = []        # biriken niteleyici de pazarlamaydı
+            continue
+        if lw in _FILLER_WORDS:
+            continue
+        cls = _CLASS_MARKERS.get(lw)
+        if lw in _ABSORB_MARKERS and not buf and out:
+            # "Dantel Detaylı", "Kısa Kollu": bu işaretçiler kendinden ÖNCEKİ
+            # kelimeye bağlıdır. Ayrı öbek sayılırsa "Dantel" kumaş, "Detaylı"
+            # başka bir detay olur; "Kısa" boy, "Kollu" tek başına kalır.
+            prev_text, _prev_cls = out.pop()
+            out.append((f"{prev_text} {w}", cls))
+            continue
+        buf.append(w)
+        if cls:
+            out.append((" ".join(buf), cls))
+            buf = []
+    if buf:
+        out.append((" ".join(buf), "other"))
+    return out
+
+
 def normalize_name(raw: str, max_len: int = NAME_MAX_LEN) -> str:
-    """Tedarikçi ürün adını mağaza için düzenler.
+    """Tedarikçi ürün adını mağaza için ANLAMINA göre kısaltır.
 
     Beslemedeki ad alanı çoğu üründe pazarlama metni taşıyor; en uzunu 206
-    karakter. Kartta taşıyor, SEO'da da zararlı. Gerçek ad tirenin SOLUNDA
-    kalıyor, sağı açıklamaya ait — kesme noktası orası.
+    karakter. Gerçek ad tirenin SOLUNDA kalıyor, sağı açıklamaya ait —
+    önce oradan bölünür, sonra kalan niteleyiciler elenir. Kısaltılmamış ham
+    ad ürünün `supplier_original_name` alanında saklanır (yalnız yönetim).
     """
     s = _WS_RX.sub(" ", (raw or "").strip())
     if not s:
@@ -128,25 +242,115 @@ def normalize_name(raw: str, max_len: int = NAME_MAX_LEN) -> str:
     # Çok kısa bir baş kaldıysa bölme ("Bluz - Beyaz" → "Bluz" olmasın).
     if len(head) >= 20:
         s = head
-
     if len(s) > max_len and "," in s:
         cand = s.split(",", 1)[0].strip()
         if len(cand) >= 20:
             s = cand
 
+    # Tamamı BÜYÜK yazılmış adlar ("ŞANELKAPAKLI ÇOBAN DİKİŞ …") vitrinde
+    # bağırıyor. _tr_title_word kısaltmaları (XL, T-SHIRT) korumak için büyük
+    # kelimelere dokunmaz; bu yüzden ad genelinde büyük harf baskınsa önce
+    # küçültüyoruz.
+    _letters = [c for c in s if c.isalpha()]
+    if len(_letters) > 6 and sum(c.isupper() for c in _letters) / len(_letters) > 0.7:
+        # Türkçe küçültme: str.lower() "İ"yi birleşik "i̇", "I"yı "i" yapar.
+        s = s.replace("İ", "i").replace("I", "ı").lower()
+
     s = " ".join(_tr_title_word(w) for w in s.split())
+    words = s.split()
+    if len(words) < 3:
+        return s[:max_len].rstrip(" ,-–—")
 
-    # Ardışık tekrarları at ("Bluz Bluz").
-    out = []
-    for w in s.split():
-        if not out or out[-1].lower() != w.lower():
-            out.append(w)
-    s = " ".join(out)
+    # Ürün TÜRÜ (baş ad) asla elenmez ve sona yazılır. Çoğu adda son kelimedir,
+    # ama pazarlama metni araya girince olmuyor ("… Pamuklu Kumaş" gibi). Bu
+    # yüzden önce TANINAN bir tür aranır, yoksa sondaki ilk anlamlı kelime.
+    kind_idx = None
+    for k in range(len(words) - 1, -1, -1):
+        if _type_of_word(words[k]):
+            kind_idx = k
+            break
+    if kind_idx is None:
+        for k in range(len(words) - 1, -1, -1):
+            lw = _clean_word(words[k])
+            if lw and lw not in _FILLER_WORDS and lw not in _KILLER_WORDS:
+                kind_idx = k
+                break
+    if kind_idx is None:
+        kind_idx = len(words) - 1
+    kind = words[kind_idx]
+    head_from = kind_idx
+    # Tür ortada kaldıysa hemen solundaki sınıfsız kelime ona aittir
+    # ("Deniz Şortu", "Yağmurluk Takım"); ayırırsak öbek yanlış yere bağlanıyor.
+    if kind_idx > 0:
+        prev = _clean_word(words[kind_idx - 1])
+        if (prev and prev not in _CLASS_MARKERS and prev not in _FILLER_WORDS
+                and prev not in _KILLER_WORDS and not _type_of_word(prev)):
+            head_from = kind_idx - 1
+            kind = f"{words[head_from]} {kind}"
+    rest = words[:head_from] + words[kind_idx + 1:]
+    parts = _phrases(rest)
+    if not parts:
+        # Pazarlama temizliği her şeyi yuttu ("Jogger Eşofman Altı Rahat Kalıp"
+        # → yalnız "Eşofman"). Ürünü adsız bırakmaktansa daha yumuşak geç.
+        parts = _phrases(rest, drop_marketing=False)
 
-    if len(s) > max_len:
-        cut = s[:max_len].rsplit(" ", 1)[0].rstrip(" ,-–—")
-        s = cut if len(cut) >= 25 else s[:max_len].rstrip(" ,-–—")
-    return s
+    # Bitişik aynı sınıflar tek özelliktir ("Janjan Krep" iki ayrı kumaş değil).
+    merged: List[tuple] = []
+    for text, cls in parts:
+        if merged and merged[-1][1] == cls and cls != "other":
+            merged[-1] = (f"{merged[-1][0]} {text}", cls)
+        else:
+            merged.append((text, cls))
+
+    # Her sınıftan tek öbek: baş ada EN YAKIN olan kazanır.
+    keep_idx = {}
+    for i, (_t, cls) in enumerate(merged):
+        if cls != "other":
+            keep_idx[cls] = i
+    kept = [(i, t, c) for i, (t, c) in enumerate(merged)
+            if c == "other" or keep_idx.get(c) == i]
+
+    # Tekrarı at ("… Dalgıç … Dalgıç"), ama öbeği PARÇALAMA: "Kısa Kollu"daki
+    # "Kısa", ilerideki "Kısa Modal"la aynı kelime diye silinirse geriye anlamsız
+    # "Kollu" kalır. Bu yüzden yalnız TEK KELİMELİK öbekler kelime tekrarına
+    # takılır; çok kelimeli öbek ancak tıpatıp aynıysa elenir.
+    kind_words = {_clean_word(w) for w in kind.split()}
+    seen_words: set = set(kind_words)
+    seen_texts: set = set()
+    deduped = []
+    for i, t, c in reversed(kept):          # sağdan sola: baş ada yakın olan kalır
+        ws = t.split()
+        if len(ws) > 1:                     # "Sporcu Atlet … Atlet" → "Sporcu … Atlet"
+            ws = [w for w in ws if _clean_word(w) not in kind_words] or ws
+        low = " ".join(_clean_word(w) for w in ws)
+        if low in seen_texts or (len(ws) == 1 and low in seen_words):
+            continue
+        seen_texts.add(low)
+        seen_words.update(_clean_word(w) for w in ws)
+        deduped.append((i, " ".join(ws), c))
+    deduped.reverse()
+
+    def _join(items) -> str:
+        return " ".join([t for _i, t, _c in items] + [kind]).strip()
+
+    # Hâlâ uzunsa: en az bilgi taşıyan sınıftan başlayarak, en soldakini at.
+    while len(_join(deduped)) > max_len and len(deduped) > 1:
+        victim = min(range(len(deduped)),
+                     key=lambda k: (_CLASS_RANK.get(deduped[k][2], 0), -deduped[k][0]))
+        deduped.pop(victim)
+    if len(deduped) == 1 and len(_join(deduped)) > max_len:
+        # Tek öbek kaldı ve o da uzun: atarsak geriye yalnız tür kalır
+        # ("Premium Motorcu Kurye Yağmurluk … Takım" → "Takım"). Öbeği atmak
+        # yerine baştan sığdığı kadar kelime alıyoruz — sınıflandırılmamış
+        # metinde de ilk kelimeler ürünü tanımlar.
+        i, t, c = deduped[0]
+        ws = t.split()
+        while ws and len(" ".join(ws)) + 1 + len(kind) > max_len:
+            ws.pop()
+        deduped = [(i, " ".join(ws), c)] if ws else []
+
+    out = _join(deduped)
+    return out if out else s[:max_len].rstrip(" ,-–—")
 
 
 
@@ -166,8 +370,56 @@ _OTHER_CAT = "Diğer"
 _CAT_CACHE: Dict[str, Any] = {"map": None}
 
 
-def normalize_category(raw: str, gender: str) -> tuple[str, str]:
-    """(ana_kategori, alt_kategori) döndürür."""
+# Ürün TÜRÜNÜ addan çıkarma. Beslemenin Kategori alanı 230 üründe ürün adıyla
+# çelişiyor ("Düşük Bel Oversize Keten Pantolon" → Kategori: Bluz). Türkçede
+# ürün türü adın SON kelimesidir ve tedarikçinin kategori alanından daha
+# güvenilir çıktı.
+_TYPE_FROM_NAME = {
+    "pantolon": "Pantolon", "elbise": "Elbise", "bluz": "Bluz",
+    "takım": "Takım", "takim": "Takım", "etek": "Etek",
+    "gömlek": "Gömlek", "gomlek": "Gömlek",
+    "tişört": "T-Shirt", "tisort": "T-Shirt", "t-shirt": "T-Shirt", "tshirt": "T-Shirt",
+    "şort": "Şort", "sort": "Şort", "tulum": "Tulum", "ceket": "Ceket",
+    "kazak": "Kazak", "hırka": "Hırka", "hirka": "Hırka",
+    "sweatshirt": "Sweatshirt", "sweat": "Sweatshirt", "atlet": "Atlet",
+    "body": "Body", "mont": "Mont", "yelek": "Yelek", "kimono": "Kimono",
+    "eşofman": "Eşofman", "esofman": "Eşofman", "tunik": "Tunik",
+    "trençkot": "Trençkot", "kaban": "Kaban", "bikini": "Bikini", "mayo": "Mayo",
+}
+
+# Tedarikçinin kategorisi addan çıkandan DAHA ÖZEL olduğu durumlar: burada
+# ada güvenmek bilgi kaybettirir (Abiye zaten bir elbisedir, Jean bir pantolon).
+_KEEP_SUPPLIER_CAT = {"abiye", "jean", "kot", "gecelik", "pijama", "sabahlık"}
+
+
+def _type_of_word(word: str) -> str:
+    """Tek kelimeden ürün türü. Türkçe çekim eklerini tolere eder.
+
+    Besleme "Deniz Şortu", "Elbisesi" gibi iyelik ekli yazıyor; düz sözlük
+    araması bunları kaçırıp ürünü türsüz bırakıyordu.
+    """
+    w = _clean_word(word)
+    for cut in (0, 1, 2, 3):
+        stem = w[:-cut] if cut else w
+        if len(stem) >= 3 and stem in _TYPE_FROM_NAME:
+            return _TYPE_FROM_NAME[stem]
+    return ""
+
+
+def _type_from_name(name: str) -> str:
+    """Ürün adının son kelimesinden türü çıkarır; tanımazsa boş döner."""
+    words = (name or "").strip().split()
+    return _type_of_word(words[-1]) if words else ""
+
+
+def normalize_category(raw: str, gender: str, name: str = "") -> tuple[str, str]:
+    """(ana_kategori, alt_kategori) döndürür.
+
+    Ürün adı verilirse ve adın son kelimesi tanınan bir tür ise, tedarikçinin
+    kategorisiyle çeliştiğinde ADA güvenilir — besleme 230 üründe hatalı
+    kategori veriyor. Tedarikçi kategorisi daha özel olduğunda (Abiye, Jean)
+    ona dokunulmaz.
+    """
     root = _GENDER_ROOTS.get((gender or "").strip().lower(), "")
     sub = _WS_RX.sub(" ", (raw or "").strip())
 
@@ -183,6 +435,12 @@ def normalize_category(raw: str, gender: str) -> tuple[str, str]:
     # Büyük/küçük harf farkı ayrı kategori üretmesin: "T-shirt" → "T-Shirt"
     sub = "-".join(_tr_title_word(part) for part in sub.split("-")) if sub else ""
     sub = " ".join(_tr_title_word(w) for w in sub.split()) if sub else ""
+
+    by_name = _type_from_name(name)
+    if by_name and by_name.lower() != (sub or "").lower():
+        if (sub or "").lower() not in _KEEP_SUPPLIER_CAT:
+            sub = by_name
+
     return root, (sub or _OTHER_CAT)
 
 
@@ -635,7 +893,8 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
 
     primary = variants[0] if variants else {}
 
-    _cat_root, _cat_sub = normalize_category(rec.get("category"), rec.get("gender"))
+    _cat_root, _cat_sub = normalize_category(rec.get("category"), rec.get("gender"),
+                                             rec.get("name") or "")
     _root_id = await _ensure_category(_cat_root, None)
     _cat_id = await _ensure_category(_cat_sub, _root_id)
 
