@@ -215,7 +215,7 @@ export default function CapiLogs() {
         <button onClick={() => setTab("audit")}
           className={`px-4 py-2 text-sm font-medium border-b-2 ${tab === "audit" ? "border-black text-black" : "border-transparent text-gray-500 hover:text-black"}`}
           data-testid="tab-audit">
-          🔎 Denetim (Meta Purchase)
+          🔎 Denetim (Purchase)
         </button>
       </div>
 
@@ -295,6 +295,49 @@ export default function CapiLogs() {
             </div>
           ) : (
             <>
+              {/* Teşhis + sağlayıcı config durumu (neden 0?) */}
+              {(audit.diagnosis || (audit.provider_status && audit.provider_status.length >= 0)) && (
+                <div className={`border rounded-lg p-4 ${audit.diagnosis ? "bg-amber-50 border-amber-200" : "bg-white"}`}>
+                  {audit.diagnosis && (
+                    <p className="text-sm text-amber-800 mb-2">⚠️ {audit.diagnosis}</p>
+                  )}
+                  <div className="flex flex-wrap items-center gap-3 text-xs">
+                    <span className="text-gray-500">
+                      Ham log — bu sağlayıcı: <b>{audit.raw_counts?.this_provider_all_time ?? 0}</b> ·
+                      tümü: <b>{audit.raw_counts?.all_providers_all_time ?? 0}</b>
+                    </span>
+                    {audit.raw_counts?.provider_distribution && (
+                      <span className="text-gray-400">
+                        [{Object.entries(audit.raw_counts.provider_distribution).map(([k, v]) => `${k}:${v}`).join(" · ")}]
+                      </span>
+                    )}
+                  </div>
+                  {(audit.provider_status || []).length === 0 ? (
+                    <p className="text-xs text-red-600 mt-2">Bu sağlayıcı için pixel kaydı yok.</p>
+                  ) : (
+                    <table className="w-full text-xs mt-2">
+                      <thead className="text-gray-500"><tr>
+                        <th className="text-left py-1">Pixel</th><th className="py-1">is_active</th>
+                        <th className="py-1">capi_enabled</th><th className="py-1">tag_id</th><th className="py-1">token</th>
+                      </tr></thead>
+                      <tbody>
+                        {audit.provider_status.map((s, i) => {
+                          const chk = (b) => b ? <span className="text-emerald-600">✓</span> : <span className="text-red-600">✗</span>;
+                          return (
+                            <tr key={i} className="border-t text-center">
+                              <td className="py-1 text-left font-mono">{s.name}</td>
+                              <td className="py-1">{chk(s.is_active)}</td>
+                              <td className="py-1">{chk(s.capi_enabled)}</td>
+                              <td className="py-1">{chk(s.has_tag_id)}</td>
+                              <td className="py-1">{chk(s.has_token)}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              )}
               {/* Coverage */}
               <div className="bg-white border rounded-lg p-4">
                 <h3 className="font-semibold text-sm mb-1">

@@ -655,12 +655,61 @@ async def capi_audit(
         "send_latency_ms": None,  # KAYIT YOK — per-event süre ölçülmüyor (event akışını değiştirmemek için eklenmedi)
     }
 
+    # ── Sağlayıcı CONFIG durumu + ham log sayıları (neden 0? teşhisi) — secret DÖNMEZ ──
+    _pix = await db.marketing_pixels.find(
+        {"provider": provider},
+        {"_id": 0, "id": 1, "name": 1, "is_active": 1, "capi_enabled": 1,
+         "tag_id": 1, "access_token": 1, "vault_key": 1, "env_token_key": 1},
+    ).to_list(50)
+    provider_status = [{
+        "name": p.get("name") or p.get("id"),
+        "is_active": bool(p.get("is_active")),
+        "capi_enabled": bool(p.get("capi_enabled")),
+        "has_tag_id": bool(str(p.get("tag_id") or "").strip()),
+        "has_token": bool(str(p.get("access_token") or "").strip()
+                          or str(p.get("vault_key") or "").strip()
+                          or str(p.get("env_token_key") or "").strip()),
+    } for p in _pix]
+    raw_provider_total = await db.capi_event_logs.count_documents({"provider": provider})
+    raw_all_total = await db.capi_event_logs.count_documents({})
+    prov_dist = {}
+    async for _row in db.capi_event_logs.aggregate([{"$group": {"_id": "$provider", "n": {"$sum": 1}}}]):
+        prov_dist[_row["_id"] or "?"] = _row["n"]
+
+    _diag = None
+    if total_p == 0:
+        if raw_provider_total == 0:
+            if not provider_status:
+                _diag = (f"'{provider}' için hiç pixel kaydı yok — panelden CAPI pixel ekleyin "
+                         f"(provider={provider}).")
+            else:
+                _bad = [s for s in provider_status
+                        if not (s["is_active"] and s["capi_enabled"] and s["has_tag_id"] and s["has_token"])]
+                if _bad:
+                    _diag = (f"'{provider}' için HİÇ ham log yok VE config eksik "
+                             f"(is_active/capi_enabled/tag_id/token). Server event GÖNDERİLMİYOR → "
+                             f"bu bir CONFIG sorunu (audit sorgusu değil). Eksikleri tamamlayın.")
+                else:
+                    _diag = (f"'{provider}' config tam görünüyor ama hiç ham log yok → gerçek bir "
+                             f"Purchase henüz bu sağlayıcıya dispatch edilmemiş ya da her denemede "
+                             f"skip/exception oluyor olabilir.")
+        else:
+            _diag = (f"'{provider}' ham log VAR ({raw_provider_total}) ama Purchase coverage 0 → "
+                     f"event_name/filtre uyuşmazlığı olabilir (Logs sekmesinden ham kayda bakın).")
+
     return {
         "ok": True,
         "generated_at": now.isoformat(),
         "provider": provider,
         "sample_size": total_p,
         "window_since": since,
+        "provider_status": provider_status,
+        "raw_counts": {
+            "this_provider_all_time": raw_provider_total,
+            "all_providers_all_time": raw_all_total,
+            "provider_distribution": prov_dist,
+        },
+        "diagnosis": _diag,
         "purchase_coverage": coverage,
         "fbp_source": fbp_src,
         "purchase_source_path": src_path,
