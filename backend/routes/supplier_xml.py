@@ -619,6 +619,7 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
             "stock": int(v.get("stock") or 0),
             # cost_price = tedarikçiye ödediğimiz; price = müşteriye gösterilen.
             "cost_price": _cost,
+            "purchase_price": _cost,
             "price": sale_price(_cost,
                                 vat_rate=float(v.get("vat") or rec["vat"] or 0),
                                 vat_included=bool(v.get("vat_included")),
@@ -653,7 +654,11 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
         "barcode": primary.get("barcode", ""),
         "stock_code": primary.get("stock_code", ""),
         "model_code": model_code,
+        # Panel "purchase_price" alanını okuyor, kendi hesabımız "cost_price"
+        # kullanıyor. İkisini de yazıyoruz; ikisi de müşteriye kapalı alanlar
+        # listesinde (_PRODUCT_INTERNAL_FIELDS).
         "cost_price": float(rec.get("price") or 0),
+        "purchase_price": float(rec.get("price") or 0),
         "price": (primary.get("price") if primary else 0) or sale_price(
             float(rec.get("price") or 0), vat_rate=float(rec.get("vat") or 0),
             vat_included=bool(rec.get("vat_included")), markup=markup),
