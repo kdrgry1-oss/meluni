@@ -148,7 +148,7 @@ function ChatTab({ onUpdate }) {
   const quickPrompts = [
     { label: "Kargo süresi", text: "S: Kargo kaç günde gelir? C: Siparişleriniz 2-3 iş günü içinde kargoya verilir, 1-2 gün sonra elinize ulaşır." },
     { label: "Beden tablosu", text: "Talimat: XL bedeni 42-44 numara olarak söyle, S 36-38, M 38-40, L 40-42." },
-    { label: "İade politikası", text: "S: İade nasıl yapılır? C: Ürünü orijinal ambalajıyla 14 gün içinde kargo ile gönderebilirsiniz, ücretsiz iade kodumuz: FACETTE." },
+    { label: "İade politikası", text: "S: İade nasıl yapılır? C: Ürünü orijinal ambalajıyla 14 gün içinde kargo ile gönderebilirsiniz, ücretsiz iade kodumuzu müşteri hizmetlerinden alabilirsiniz." },
   ];
 
   return (

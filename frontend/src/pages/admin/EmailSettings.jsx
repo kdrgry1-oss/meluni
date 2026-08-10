@@ -15,7 +15,7 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
  *   host     = api.zeptomail.com | api.zeptomail.eu (bölge)
  */
 export default function EmailSettings() {
-  const [cfg, setCfg] = useState({ enabled: true, username: "", from_name: "FACETTE",
+  const [cfg, setCfg] = useState({ enabled: true, username: "", from_name: "",
     order_from_email: "", order_from_name: "", order_reply_to: "" });
   const [region, setRegion] = useState("com"); // com | eu
   const [token, setToken] = useState("");
@@ -34,7 +34,7 @@ export default function EmailSettings() {
         setCfg({
           enabled: d.enabled !== false,
           username: d.username || "",
-          from_name: d.from_name || "FACETTE",
+          from_name: d.from_name || "",
           order_from_email: d.order_from_email || "",
           order_from_name: d.order_from_name || "",
           order_reply_to: d.order_reply_to || "",
@@ -148,7 +148,7 @@ export default function EmailSettings() {
               </div>
               <div>
                 <label className={lbl}>Gönderen Adı</label>
-                <input className={field} value={cfg.from_name} onChange={(e) => setCfg({ ...cfg, from_name: e.target.value })} placeholder="FACETTE" />
+                <input className={field} value={cfg.from_name} onChange={(e) => setCfg({ ...cfg, from_name: e.target.value })} placeholder="Şirket Bilgileri'nden gelir" />
               </div>
             </div>
             <p className="text-[11px] text-gray-400">
@@ -177,7 +177,7 @@ export default function EmailSettings() {
               </div>
               <div>
                 <label className={lbl}>Sipariş Gönderen Adı</label>
-                <input className={field} placeholder="FACETTE Sipariş"
+                <input className={field} placeholder="Sipariş"
                   value={cfg.order_from_name}
                   onChange={(e) => setCfg({ ...cfg, order_from_name: e.target.value })} />
               </div>

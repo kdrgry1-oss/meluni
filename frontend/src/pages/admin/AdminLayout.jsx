@@ -213,7 +213,7 @@ export default function AdminLayout() {
           data-testid="admin-logo-home"
           className="text-base font-bold tracking-[0.2em] shrink-0 text-white hover:text-gray-300 transition-colors"
         >
-          FACETTE
+          {(process.env.REACT_APP_SITE_NAME || "YÖNETİM").toUpperCase()}
         </Link>
 
         {/* Desktop Nav — overflow yok; sekmeler kompakt */}
