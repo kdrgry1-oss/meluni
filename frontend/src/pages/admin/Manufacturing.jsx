@@ -500,7 +500,7 @@ export default function Manufacturing() {
   const grandTotal = (form.colors.length ? form.colors : [""]).reduce((s, c) => s + rowTotal(c), 0);
 
   return (
-    <div className="p-6 max-w-7xl mx-auto" data-testid="manufacturing-page">
+    <div className="p-6 w-full" data-testid="manufacturing-page">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
