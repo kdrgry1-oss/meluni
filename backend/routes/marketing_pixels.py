@@ -22,7 +22,7 @@ Güvenlik: active-public sadece AKTİF pixel'lerin KAYITLI snippet'lerini döner
 Admin dışında kimse yeni kod ekleyemez.
 =============================================================================
 """
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Optional, List
 import logging
 from fastapi import APIRouter, Depends, HTTPException, Response
@@ -421,6 +421,28 @@ async def capi_queue_run_now(current_user: dict = Depends(require_admin)):
     return res
 
 
+def _capi_logs_query(provider=None, event_name=None, ok=None, date_from=None, date_to=None) -> dict:
+    """CAPI log filtre sorgusu. date_from/date_to = 'YYYY-MM-DD' (gün bazlı, dahil).
+    created_at ISO string olduğundan aralık string karşılaştırmasıyla çözülür."""
+    q = {}
+    if provider: q["provider"] = provider
+    if event_name: q["event_name"] = event_name
+    if ok is not None: q["ok"] = ok
+    rng = {}
+    if date_from:
+        rng["$gte"] = f"{str(date_from)[:10]}T00:00:00"
+    if date_to:
+        # Bitiş gününü DAHİL etmek için ertesi günün başlangıcından küçük (< to+1 00:00).
+        try:
+            _d = datetime.strptime(str(date_to)[:10], "%Y-%m-%d") + timedelta(days=1)
+            rng["$lt"] = _d.strftime("%Y-%m-%dT00:00:00")
+        except Exception:
+            pass
+    if rng:
+        q["created_at"] = rng
+    return q
+
+
 @router.get("/capi/logs")
 async def capi_logs(
     current_user: dict = Depends(require_admin),
@@ -429,15 +451,54 @@ async def capi_logs(
     provider: Optional[str] = None,
     event_name: Optional[str] = None,
     ok: Optional[bool] = None,
+    date_from: Optional[str] = None,
+    date_to: Optional[str] = None,
 ):
-    """Son CAPI gönderim loglarını filtreyle getir."""
-    q = {}
-    if provider: q["provider"] = provider
-    if event_name: q["event_name"] = event_name
-    if ok is not None: q["ok"] = ok
+    """Son CAPI gönderim loglarını filtreyle getir (tarih aralığı destekli)."""
+    q = _capi_logs_query(provider, event_name, ok, date_from, date_to)
     items = await db.capi_event_logs.find(q, {"_id": 0}).sort("created_at", -1).skip(skip).limit(min(limit, 500)).to_list(limit)
     total = await db.capi_event_logs.count_documents(q)
     return {"items": items, "total": total}
+
+
+@router.get("/capi/logs/export")
+async def capi_logs_export(
+    current_user: dict = Depends(require_admin),
+    provider: Optional[str] = None,
+    event_name: Optional[str] = None,
+    ok: Optional[bool] = None,
+    date_from: Optional[str] = None,
+    date_to: Optional[str] = None,
+    limit: int = 50000,
+):
+    """Filtrelenmiş CAPI loglarını CSV olarak indir (PII'siz). match_signals düzleştirilir."""
+    import csv as _csv
+    import io as _io
+    q = _capi_logs_query(provider, event_name, ok, date_from, date_to)
+    rows = await db.capi_event_logs.find(q, {"_id": 0}).sort("created_at", -1).limit(min(int(limit or 50000), 200000)).to_list(None)
+    buf = _io.StringIO()
+    cols = ["created_at", "provider", "event_name", "event_id", "ok", "status", "from_retry", "is_test",
+            "s_email", "s_phone", "s_external_id", "s_fbp", "s_fbc", "s_ttclid", "s_ttp", "s_ip", "s_ua", "ip_version",
+            "message"]
+    w = _csv.writer(buf)
+    w.writerow(cols)
+    for r in rows:
+        ms = r.get("match_signals") or {}
+        msg = r.get("error") or r.get("response") or ""
+        msg = str(msg).replace("\n", " ")[:300]
+        w.writerow([
+            r.get("created_at", ""), r.get("provider", ""), r.get("event_name", ""), r.get("event_id", ""),
+            r.get("ok", ""), r.get("status", ""), r.get("from_retry", ""), r.get("is_test", ""),
+            ms.get("email", ""), ms.get("phone", ""), ms.get("external_id", ""), ms.get("fbp", ""),
+            ms.get("fbc", ""), ms.get("ttclid", ""), ms.get("ttp", ""), ms.get("ip", ""), ms.get("ua", ""),
+            ms.get("ip_version", ""), msg,
+        ])
+    fname = f"capi_logs_{(date_from or 'all')}_{(date_to or 'all')}.csv"
+    return Response(
+        content=buf.getvalue(),
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{fname}"'},
+    )
 
 
 @router.get("/capi/queue")

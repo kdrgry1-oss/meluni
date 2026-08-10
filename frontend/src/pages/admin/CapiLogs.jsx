@@ -46,7 +46,7 @@ export default function CapiLogs() {
   const [auditProvider, setAuditProvider] = useState("meta");
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState({ provider: "", event_name: "", ok: "" });
+  const [filters, setFilters] = useState({ provider: "", event_name: "", ok: "", date_from: "", date_to: "" });
   const [queueFilter, setQueueFilter] = useState("");  // "" | "true" (dead) | "false" (pending)
   const [expandedRow, setExpandedRow] = useState(null);
 
@@ -61,12 +61,37 @@ export default function CapiLogs() {
       if (filters.provider) params.append("provider", filters.provider);
       if (filters.event_name) params.append("event_name", filters.event_name);
       if (filters.ok !== "") params.append("ok", filters.ok);
+      if (filters.date_from) params.append("date_from", filters.date_from);
+      if (filters.date_to) params.append("date_to", filters.date_to);
       const res = await axios.get(`${API}/marketing-pixels/capi/logs?${params}`, auth);
       setLogs(res.data?.items || []);
       setTotal(res.data?.total || 0);
     } catch (e) {
       toast.error("Loglar yüklenemedi: " + (e?.response?.data?.detail || e.message));
     } finally { setLoading(false); }
+  };
+
+  const exportLogs = async () => {
+    try {
+      const params = new URLSearchParams();
+      if (filters.provider) params.append("provider", filters.provider);
+      if (filters.event_name) params.append("event_name", filters.event_name);
+      if (filters.ok !== "") params.append("ok", filters.ok);
+      if (filters.date_from) params.append("date_from", filters.date_from);
+      if (filters.date_to) params.append("date_to", filters.date_to);
+      const res = await axios.get(`${API}/marketing-pixels/capi/logs/export?${params}`, { ...auth, responseType: "blob" });
+      const url = window.URL.createObjectURL(new Blob([res.data], { type: "text/csv" }));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `capi_logs_${filters.date_from || "all"}_${filters.date_to || "all"}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      toast.success("CSV indirildi");
+    } catch (e) {
+      toast.error("Export başarısız: " + (e?.response?.data?.detail || e.message));
+    }
   };
 
   const loadQueue = async () => {
@@ -212,6 +237,21 @@ export default function CapiLogs() {
             <option value="true">✓ Başarılı</option>
             <option value="false">✗ Hatalı</option>
           </select>
+          <span className="text-gray-400 text-xs ml-1">Tarih:</span>
+          <input type="date" value={filters.date_from} onChange={(e) => setFilters({ ...filters, date_from: e.target.value })}
+            className="border px-2 py-1 rounded text-xs" data-testid="filter-date-from" title="Başlangıç günü" />
+          <span className="text-gray-400 text-xs">–</span>
+          <input type="date" value={filters.date_to} onChange={(e) => setFilters({ ...filters, date_to: e.target.value })}
+            className="border px-2 py-1 rounded text-xs" data-testid="filter-date-to" title="Bitiş günü (dahil)" />
+          {(filters.date_from || filters.date_to) && (
+            <button onClick={() => setFilters({ ...filters, date_from: "", date_to: "" })}
+              className="text-xs text-gray-500 underline hover:no-underline" data-testid="filter-date-clear">temizle</button>
+          )}
+          <button onClick={exportLogs}
+            className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded text-xs hover:bg-emerald-100 ml-auto"
+            data-testid="capi-export">
+            ⬇ Export (CSV)
+          </button>
         </div>
       ) : tab === "queue" ? (
         <div className="flex items-center gap-2 text-sm">
