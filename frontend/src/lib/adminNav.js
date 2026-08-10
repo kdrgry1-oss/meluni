@@ -141,6 +141,10 @@ export const navigationGroups = [
     label: "Entegrasyonlar",
     icon: Cable,
     children: [
+      // Dropshipping'in giriş kapısı: besleme ayarı, ürün aktarımı, stok
+      // senkronu. Sayfa vardı ama menüde bağlantısı yoktu — adresi bilmeyen
+      // ulaşamıyordu.
+      { label: "Tedarikçi XML (Dropshipping)", path: "/admin/tedarikci-xml", icon: Cable },
       { label: "Ödeme Tipleri", path: "/admin/odeme-tipleri", icon: CreditCard },
       { label: "Pazaryerleri Hub", path: "/admin/pazaryerleri", icon: Store },
       { label: "Amazon SP-API", path: "/admin/amazon", icon: Store },
