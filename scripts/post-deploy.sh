@@ -64,9 +64,14 @@ log "backend bağımlılıkları kuruluyor"
 ln -sfn "${SHARED_DIR}/.env" "${RELEASE_DIR}/backend/.env"
 
 # ── Frontend ────────────────────────────────────────────────────────────
-# CI derlemesi `frontend/build` olarak gelir. Gelmediyse nginx eski release'i
-# servis etmeye devam eder; bunu sessizce geçmek "site güncellenmedi"
-# şikayetinin en sık sebebi, o yüzden gürültülü uyarıyoruz.
+# CI derlemesi `frontend/build` olarak gelir.
+#
+# DİKKAT — burada bir kez site komple düştü: nginx'in kökü
+# `current/frontend/build` olduğu ve `current` her deployda YENİ release'e
+# çevrildiği için, derlemesiz bir release "yalnız backend'i günceller"
+# DEĞİL, storefront'un tamamını 404 yapar (ana sayfa dahil). Bu yüzden
+# derleme gelmediyse sessizce geçmiyoruz: bir önceki release'in derlemesini
+# devralıyoruz, o da yoksa deploy'u düşürüyoruz (deploy.sh geri alır).
 if [ -d frontend/build ] && [ -n "$(ls -A frontend/build 2>/dev/null)" ]; then
   log "frontend derlemesi bulundu ($(du -sh frontend/build | cut -f1))"
   # nginx www-data olarak çalışır; ev dizini 750 olduğu için derlemeye
@@ -75,8 +80,23 @@ if [ -d frontend/build ] && [ -n "$(ls -A frontend/build 2>/dev/null)" ]; then
   chmod o+x "${RELEASE_DIR}" 2>/dev/null || true
   chmod -R o+rX "${RELEASE_DIR}/frontend/build" 2>/dev/null || true
 else
-  warn "frontend/build YOK — bu release yalnız backend'i günceller."
-  warn "CI'da derleme adımı çalıştı mı? (Actions > Deploy > 'Frontend derle')"
+  warn "frontend/build YOK — derlenmiş dosyalar pakete girmemiş."
+  warn "Yerelden:  EXTRA_PATHS=frontend/build ... bash scripts/deploy.sh"
+  warn "CI'da   :  Actions > Deploy > 'Frontend derle' adımı çalıştı mı?"
+
+  PREV_BUILD="$(ls -dt "${DEPLOY_PATH}"/releases/*/frontend/build 2>/dev/null \
+                | grep -v "^${RELEASE_DIR}/" | head -n 1 || true)"
+  if [ -n "${PREV_BUILD}" ]; then
+    log "önceki derleme devralınıyor: ${PREV_BUILD}"
+    mkdir -p "${RELEASE_DIR}/frontend"
+    cp -a "${PREV_BUILD}" "${RELEASE_DIR}/frontend/build"
+    chmod o+x "${RELEASE_DIR}" 2>/dev/null || true
+    chmod -R o+rX "${RELEASE_DIR}/frontend/build" 2>/dev/null || true
+    warn "storefront ESKİ derlemeyle çalışıyor — backend güncel, arayüz değil."
+  else
+    die "frontend/build yok ve devralınacak eski derleme de yok.
+     Bu release aktif edilirse storefront komple 404 olur; deploy geri alınıyor."
+  fi
 fi
 
 # ── Servisi yeniden başlat ──────────────────────────────────────────────
