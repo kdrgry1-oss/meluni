@@ -617,7 +617,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
     supplier = cfg.get("supplier_name") or "modayakamoz"
     markup = float(cfg.get("price_markup") or 1.0)
     min_stock = int(cfg.get("min_stock", MIN_STOCK_DEFAULT))
-    low_stock = deactivated = 0
+    low_stock = deactivated = deleted = 0
     records, _ = await load_items()
     if limit:
         records = records[:limit]
@@ -651,15 +651,22 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
             # İş kuralı gereği atlandı — HATA DEĞİL, ayrı sayılır.
             low_stock += 1
             if existing:
-                # Daha önce açılmıştı, artık eşiğin altında: satıştan kaldır.
-                # Silmek yerine pasife alıyoruz; geçmiş siparişler ürüne
-                # referans veriyor olabilir, silinirse sipariş detayı bozulur.
-                await db.products.update_one({"id": existing["id"]}, {"$set": {
-                    "is_active": False, "status": "passive",
-                    "deactivated_reason": f"tedarikçi stoğu <= {min_stock}",
-                    "deactivated_at": _now_iso(),
-                }})
-                deactivated += 1
+                # Daha önce açılmıştı, artık eşiğin altında.
+                # Hiç sipariş edilmemişse SİL — katalogda ölü kayıt bırakmaz.
+                # Sipariş edilmişse yalnız pasife al: geçmiş siparişler ürüne
+                # referans veriyor, silinirse sipariş detayı bozulur.
+                has_order = await db.orders.find_one(
+                    {"items.product_id": existing["id"]}, {"_id": 1})
+                if has_order:
+                    await db.products.update_one({"id": existing["id"]}, {"$set": {
+                        "is_active": False, "status": "passive",
+                        "deactivated_reason": f"tedarikçi stoğu <= {min_stock}",
+                        "deactivated_at": _now_iso(),
+                    }})
+                    deactivated += 1
+                else:
+                    await db.products.delete_one({"id": existing["id"]})
+                    deleted += 1
         except Exception as e:
             failed += 1
             logger.error(f"[supplier_xml] ürün aktarılamadı ({rec.get('name')!r}): {e}")
@@ -668,6 +675,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
               "failed": failed, "total": len(records),
               "price_markup": markup, "min_stock": min_stock,
               "low_stock_skipped": low_stock, "deactivated": deactivated,
+              "deleted": deleted,
               "at": _now_iso()}
     if markup <= 1.0:
         # Besleme BAYİ fiyatı verir; katsayısız yayınlamak maliyetine satmaktır.
