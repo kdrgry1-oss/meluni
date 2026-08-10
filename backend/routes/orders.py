@@ -766,6 +766,74 @@ async def list_deleted_orders(
     return {"orders": items, "total": total, "page": page, "limit": limit}
 
 
+@router.get("/payment-trace")
+async def payment_trace(
+    phone: str = Query(..., description="Müşteri telefonu (herhangi bir biçimde)"),
+    days: int = Query(10, ge=1, le=180),
+    current_user: dict = Depends(require_admin),
+):
+    """Bir telefon numarasının son N gündeki TÜM sipariş + kart ödeme denemelerini döndürür.
+    'Kartımdan çekildi ama teslim olmadı / hala çekiliyor' vakalarını numaradan tespit için.
+    Kayıtlar: orders (payment_status/needs_reconciliation/paymentId) + card_attempts (PII'siz:
+    IP/BIN/durum/zaman). Ham kart / tam PII DÖNMEZ."""
+    digits = re.sub(r"\D", "", phone or "")
+    tail = digits[-10:]
+    if len(tail) < 7:
+        raise HTTPException(status_code=400, detail="Geçerli bir telefon numarası girin")
+    since_iso = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+    q = {
+        "$or": [
+            {"phone": {"$regex": tail}},
+            {"shipping_address.phone": {"$regex": tail}},
+            {"customer_phone": {"$regex": tail}},
+            {"billing_address.phone": {"$regex": tail}},
+        ],
+        "created_at": {"$gte": since_iso},
+    }
+    orders = await db.orders.find(
+        q,
+        {"_id": 0, "id": 1, "order_number": 1, "created_at": 1, "total": 1, "grand_total": 1,
+         "payment_method": 1, "payment_status": 1, "status": 1, "needs_reconciliation": 1,
+         "iyzico_payment_id": 1, "payment_id": 1, "cargo_status": 1, "tracking_number": 1},
+    ).sort("created_at", -1).to_list(300)
+
+    out = []
+    total_success = 0
+    total_fail = 0
+    for o in orders:
+        oid = o.get("id")
+        attempts = await db.card_attempts.find(
+            {"order_id": oid}, {"_id": 0, "status": 1, "bin": 1, "created_at": 1, "ip": 1},
+        ).sort("ts", 1).to_list(100)
+        succ = sum(1 for a in attempts if a.get("status") == "success")
+        fail = len(attempts) - succ
+        total_success += succ
+        total_fail += fail
+        out.append({
+            "order_number": o.get("order_number"),
+            "created_at": o.get("created_at"),
+            "total": o.get("grand_total") or o.get("total"),
+            "payment_method": o.get("payment_method"),
+            "payment_status": o.get("payment_status"),
+            "status": o.get("status"),
+            "needs_reconciliation": bool(o.get("needs_reconciliation")),
+            "iyzico_payment_id": o.get("iyzico_payment_id") or o.get("payment_id") or "",
+            "cargo_status": o.get("cargo_status") or "",
+            "tracking_number": o.get("tracking_number") or "",
+            "attempts_success": succ,
+            "attempts_fail": fail,
+            "attempts": attempts,
+        })
+    return {
+        "phone_tail": tail,
+        "days": days,
+        "order_count": len(out),
+        "summary": {"attempts_success": total_success, "attempts_fail": total_fail},
+        "orders": out,
+        "note": "card_attempts PII'siz (IP/BIN/durum/zaman). Gerçek banka çekimi kesin kaynağı iyzico panelidir; buradaki 'attempts_success' başarılı 3DS denemesini, orders.payment_status='paid' onaylı ödemeyi gösterir.",
+    }
+
+
 @router.get("/{order_id}")
 async def get_order(
     order_id: str,

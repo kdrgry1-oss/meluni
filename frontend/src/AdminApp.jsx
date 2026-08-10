@@ -64,6 +64,7 @@ import Influencers from "./pages/admin/Influencers";
 import AmazonSpApi from "./pages/admin/AmazonSpApi";
 import Compliance from "./pages/admin/Compliance";
 import CapiLogs from "./pages/admin/CapiLogs";
+import PaymentTrace from "./pages/admin/PaymentTrace";
 import ReportsAdvanced from "./pages/admin/ReportsAdvanced";
 import ProfitabilityAnalysis from "./pages/admin/ProfitabilityAnalysis";
 import ReportsInsights from "./pages/admin/ReportsInsights";
@@ -144,6 +145,7 @@ export default function AdminApp() {
         <Route path="amazon" element={<AmazonSpApi />} />
         <Route path="dpp-uyum" element={<Compliance />} />
         <Route path="ayarlar/capi-loglar" element={<CapiLogs />} />
+        <Route path="odeme-izi" element={<PaymentTrace />} />
         <Route path="raporlar/iade-ve-trend" element={<Navigate to="/admin/raporlar/urun" replace />} />
         <Route path="raporlar/konum-kanal" element={<Navigate to="/admin/raporlar/satis" replace />} />
         <Route path="ayarlar/sosyal-giris" element={<SocialAuthSettings />} />

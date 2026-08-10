@@ -26,6 +26,7 @@ export const navigationGroups = [
       { label: "İptaller", path: "/admin/iptaller", icon: XCircle },
       { label: "Havale/EFT Bildirimleri", path: "/admin/havale-bildirimleri", icon: CreditCard },
       { label: "Ödeme Kaydı Bulunmayan", path: "/admin/odeme-bekleyen-siparisler", icon: AlertTriangle },
+      { label: "Ödeme İzi (Numaradan)", path: "/admin/odeme-izi", icon: CreditCard },
       { label: "Silinen Siparişler", path: "/admin/silinen-siparisler", icon: Trash2 },
     ],
   },
