@@ -150,6 +150,7 @@ export const navigationGroups = [
       { label: "Aktarılamayanlar", path: "/admin/aktarilamayanlar", icon: FileText },
       { label: "Marka Eşleştirme", path: "/admin/marka-eslestir", icon: Store },
       { label: "Kategori Eşleştirme", path: "/admin/kategori-eslestir", icon: Store },
+      { label: "Tedarikçi XML", path: "/admin/tedarikci-xml", icon: Cable },
       { label: "Otomasyon Durumu", path: "/admin/otomasyon", icon: Cable },
       { label: "Güvenlik Paneli", path: "/admin/guvenlik-paneli", icon: Shield },
       { label: "Sistem Sağlığı", path: "/admin/sistem-sagligi", icon: Cable },
