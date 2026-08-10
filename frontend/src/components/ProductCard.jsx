@@ -154,7 +154,7 @@ export default function ProductCard({ product, listId = "", listName = "", index
       <Link to={`/${targetSlug}`} onClick={handleSelect} aria-label={product.name}>
         <div
           ref={imageContainerRef}
-          className="relative aspect-[2/3] bg-white overflow-hidden"
+          className="relative aspect-[3/4] bg-white overflow-hidden"
           onMouseEnter={() => { if (hasMultipleImages) setGalleryReady(true); }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
@@ -166,7 +166,7 @@ export default function ProductCard({ product, listId = "", listName = "", index
           <img
             src={optimizeImg(images[0] || "/placeholder.jpg", 700)}
             alt={product.name}
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-contain"
             loading="lazy"
             decoding="async"
           />
@@ -178,7 +178,7 @@ export default function ProductCard({ product, listId = "", listName = "", index
               src={optimizeImg(im, 700)}
               alt=""
               aria-hidden="true"
-              className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-150 ${currentImageIndex === i + 1 ? "opacity-100" : "opacity-0"}`}
+              className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-150 ${currentImageIndex === i + 1 ? "opacity-100" : "opacity-0"}`}
               decoding="async"
             />
           ))}
@@ -188,7 +188,7 @@ export default function ProductCard({ product, listId = "", listName = "", index
               src={optimizeImg(activeSib.image, 700)}
               alt=""
               aria-hidden="true"
-              className="absolute inset-0 w-full h-full object-cover object-top"
+              className="absolute inset-0 w-full h-full object-contain"
               decoding="async"
             />
           )}

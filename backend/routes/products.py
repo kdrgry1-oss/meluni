@@ -1417,6 +1417,7 @@ _PRODUCT_INTERNAL_FIELDS = (
     # Tedarikçi XML aktarımının yazdığı izler: kimden, hangi kodla ve hangi
     # adresten aldığımız müşteriye gitmemeli (rakip aynı tedarikçiyi bulur).
     "supplier_barcode", "supplier_stock_code", "supplier_model_ref", "supplier_url",
+    "supplier_original_name", "supplier_category_raw",
     "margin", "profit", "profit_margin", "kar", "kar_marji", "ticimax_fields",
     "markup_rate", "use_default_markup",
     "admin_notes", "internal_notes", "vendor", "vendor_id",

@@ -72,6 +72,127 @@ VARIANT_CONTAINER = ["urunsecenek", "varyantlar", "variants", "varyasyonlar",
 VARIANT_ITEM = ["varyant", "variant", "varyasyon", "secenek", "option"]
 
 
+
+# ─────────────────────── ürün adı düzenleme ───────────────────────
+_DASH_RX = re.compile(r'\s+[–—]\s+|\s+-\s+')
+_WS_RX = re.compile(r'\s+')
+# Türkçe büyük harf eşlemesi: str.upper() "i"yi "I" yapar, doğrusu "İ".
+_TR_UP = {"i": "İ", "ı": "I", "ö": "Ö", "ü": "Ü", "ş": "Ş", "ç": "Ç", "ğ": "Ğ"}
+_KEEP_LOWER = {"ve", "ile", "için"}
+# Baştaki cinsiyet kelimesi: ayrı alanda (gender) ve kategoride zaten var.
+# "Kadı" beslemede geçen bir yazım hatası.
+_GENDER_PREFIX = ("kadın", "kadin", "kadı", "erkek", "unisex", "çocuk", "cocuk")
+NAME_MAX_LEN = 70
+
+
+def _tr_title_word(w: str) -> str:
+    if not w:
+        return w
+    if w.lower() in _KEEP_LOWER:
+        return w.lower()
+    if w.isupper() and len(w) > 1:
+        return w  # T-SHIRT, XL gibi kısaltmalara dokunma
+    return _TR_UP.get(w[0], w[0].upper()) + w[1:]
+
+
+def normalize_name(raw: str, max_len: int = NAME_MAX_LEN) -> str:
+    """Tedarikçi ürün adını mağaza için düzenler.
+
+    Beslemedeki ad alanı çoğu üründe pazarlama metni taşıyor; en uzunu 206
+    karakter. Kartta taşıyor, SEO'da da zararlı. Gerçek ad tirenin SOLUNDA
+    kalıyor, sağı açıklamaya ait — kesme noktası orası.
+    """
+    s = _WS_RX.sub(" ", (raw or "").strip())
+    if not s:
+        return ""
+
+    first = s.split(" ", 1)
+    if len(first) == 2 and first[0].lower() in _GENDER_PREFIX:
+        s = first[1].strip()
+
+    head = _DASH_RX.split(s, 1)[0].strip()
+    # Çok kısa bir baş kaldıysa bölme ("Bluz - Beyaz" → "Bluz" olmasın).
+    if len(head) >= 20:
+        s = head
+
+    if len(s) > max_len and "," in s:
+        cand = s.split(",", 1)[0].strip()
+        if len(cand) >= 20:
+            s = cand
+
+    s = " ".join(_tr_title_word(w) for w in s.split())
+
+    # Ardışık tekrarları at ("Bluz Bluz").
+    out = []
+    for w in s.split():
+        if not out or out[-1].lower() != w.lower():
+            out.append(w)
+    s = " ".join(out)
+
+    if len(s) > max_len:
+        cut = s[:max_len].rsplit(" ", 1)[0].rstrip(" ,-–—")
+        s = cut if len(cut) >= 25 else s[:max_len].rstrip(" ,-–—")
+    return s
+
+
+
+# ─────────────────────── kategori ağacı ───────────────────────
+# Beslemede kategori adları düzensiz: erkek ürünleri "Erkek-T-Shirt" gibi
+# cinsiyeti ADIN İÇİNDE taşıyor, "Erkek-T-Shirt" ile "Erkek-T-shirt" ayrı
+# sayılıyor (599 + 175 ürün), 292 ürünün kategorisi boş. Ham hâliyle
+# aktarılırsa menüde 69 dağınık başlık çıkar.
+#
+# Kurduğumuz yapı:  Kadın > Elbise ,  Erkek > T-Shirt
+# Cinsiyet ANA kategori olur, alt kategori addan arındırılır.
+_GENDER_ROOTS = {"kadın": "Kadın", "kadin": "Kadın", "erkek": "Erkek",
+                 "unisex": "Unisex", "çocuk": "Çocuk", "cocuk": "Çocuk"}
+_OTHER_CAT = "Diğer"
+
+
+def normalize_category(raw: str, gender: str) -> tuple[str, str]:
+    """(ana_kategori, alt_kategori) döndürür."""
+    root = _GENDER_ROOTS.get((gender or "").strip().lower(), "")
+    sub = _WS_RX.sub(" ", (raw or "").strip())
+
+    # "Erkek-T-Shirt" → kök "Erkek", alt "T-Shirt"
+    if "-" in sub:
+        head, _, tail = sub.partition("-")
+        if head.strip().lower() in _GENDER_ROOTS:
+            root = root or _GENDER_ROOTS[head.strip().lower()]
+            sub = tail.strip()
+
+    if not root:
+        root = "Diğer"
+    # Büyük/küçük harf farkı ayrı kategori üretmesin: "T-shirt" → "T-Shirt"
+    sub = "-".join(_tr_title_word(part) for part in sub.split("-")) if sub else ""
+    sub = " ".join(_tr_title_word(w) for w in sub.split()) if sub else ""
+    return root, (sub or _OTHER_CAT)
+
+
+async def _ensure_category(name: str, parent_id: Optional[str]) -> str:
+    """Kategoriyi bulur, yoksa oluşturur; id döndürür. Aynı ad + aynı ebeveyn
+    ikinci kez oluşturulmaz (her içe aktarmada kopya birikmesin)."""
+    q = {"name": name, "parent_id": parent_id}
+    doc = await db.categories.find_one(q, {"_id": 0, "id": 1})
+    if doc:
+        return doc["id"]
+    from .categories import generate_slug
+    from .deps import generate_short_id
+    cid = await generate_short_id("categories")
+    slug_base = generate_slug(f"{name}")
+    # Aynı slug başka bir ebeveynde olabilir (Kadın>Ceket, Erkek>Ceket).
+    if await db.categories.find_one({"slug": slug_base}, {"_id": 0, "id": 1}):
+        slug_base = f"{slug_base}-{cid}"
+    await db.categories.insert_one({
+        "id": cid, "name": name, "slug": slug_base, "description": "",
+        "image": "", "image_url": "", "parent_id": parent_id,
+        "sort_order": 0, "is_active": True, "source": "supplier_xml",
+        "created_at": _now_iso(),
+    })
+    logger.info(f"[supplier_xml] kategori olusturuldu: {name} (parent={parent_id})")
+    return cid
+
+
 def _tag(el: ET.Element) -> str:
     """Namespace'i atılmış, küçük harfli etiket adı."""
     t = el.tag
@@ -426,12 +547,23 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
         })
 
     primary = variants[0] if variants else {}
+
+    _cat_root, _cat_sub = normalize_category(rec.get("category"), rec.get("gender"))
+    _root_id = await _ensure_category(_cat_root, None)
+    _cat_id = await _ensure_category(_cat_sub, _root_id)
+
     return {
         "id": generate_id(),
-        "name": rec["name"],
+        "name": normalize_name(rec["name"]),
+        "supplier_original_name": rec["name"],
         "description": rec.get("description") or "",
         "brand": rec.get("brand") or "",
-        "category_path": rec.get("category") or "",
+        # Kategori ağacı: cinsiyet ANA, beslemedeki kategori ALT.
+        "category_id": _cat_id,
+        "category_name": _cat_sub,
+        "category_root": _cat_root,
+        "category_path": f"{_cat_root} > {_cat_sub}",
+        "supplier_category_raw": rec.get("category") or "",
         "barcode": primary.get("barcode", ""),
         "stock_code": primary.get("stock_code", ""),
         "model_code": model_code,
