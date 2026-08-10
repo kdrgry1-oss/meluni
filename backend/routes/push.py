@@ -110,6 +110,6 @@ async def send_push_to_admins(title: str, body: str, data: dict = None) -> int:
 async def push_test(current_user: dict = Depends(require_admin)):
     """Yönetici: tüm kayıtlı admin cihazlarına modern FCM v1 test bildirimi."""
     n = await send_push_to_admins("Test Bildirimi",
-                                  "Facette admin push (FCM v1) çalışıyor ✅",
+                                  "Meluni admin push (FCM v1) çalışıyor ✅",
                                   {"type": "test"})
     return {"success": True, "sent": n}

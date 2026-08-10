@@ -73,7 +73,7 @@ def _load_jwt_secret() -> str:
 
 JWT_SECRET = _load_jwt_secret()
 JWT_ALGORITHM = "HS256"  # strict — prevents 'alg=none' attacks
-JWT_ISSUER = "facette-api"
+JWT_ISSUER = "meluni-api"
 
 # Logger
 logger = logging.getLogger(__name__)
@@ -261,7 +261,7 @@ async def register_failed_login_ip(ip: str) -> None:
 
 # A1.3 (GÜVENLİK): Cloudflare'in eklediği paylaşımlı gizli header ile "istek gerçekten
 # CF üzerinden mi geldi" doğrulaması. CF Transform Rule ile her isteğe
-# `X-Facette-Edge: <secret>` eklenir; origin bu secret'ı bilir. Böylece origin'e
+# `X-Meluni-Edge: <secret>` eklenir; origin bu secret'ı bilir. Böylece origin'e
 # DOĞRUDAN (CF'i baypas ederek) gelen bir saldırgan `cf-connecting-ip` header'ını
 # spoof edip rate-limit/lockout/blocklist anahtarını rotasyonlayamaz.
 #   - CF_EDGE_SECRET set + header eşleşiyorsa → cf-connecting-ip güvenilir (gerçek client).
@@ -279,7 +279,7 @@ def _edge_trusted(request) -> bool:
         return True
     try:
         import hmac as _hmac
-        hdr = (request.headers.get("x-facette-edge") or "").strip()
+        hdr = (request.headers.get("x-meluni-edge") or "").strip()
         return bool(hdr) and _hmac.compare_digest(hdr, _CF_EDGE_SECRET)
     except Exception:
         return False
@@ -439,12 +439,12 @@ async def require_admin(credentials: HTTPAuthorizationCredentials = Depends(secu
         raise HTTPException(status_code=401, detail="Hesap devre dışı")
     # GÜVENLİK: Yalnız GERÇEK panel personeli admin erişebilir. Panel personeli
     # create_panel_user ile oluşur → 'created_by' + 'role_id' taşır; ya da is_super_admin /
-    # varsayılan admin@facette.com. Bunların HİÇBİRİ yoksa hesap bir MÜŞTERİdir (eski/bozuk
+    # varsayılan admin@meluni.com.tr. Bunların HİÇBİRİ yoksa hesap bir MÜŞTERİdir (eski/bozuk
     # veride is_admin=True kalmış register kaydı — 'role' alanı bile yok) → admin erişimi REDDEDİLİR.
     _is_staff = (
         (user.get("created_by") not in (None, ""))
         or bool(user.get("is_super_admin"))
-        or user.get("email") == "admin@facette.com"
+        or user.get("email") == "admin@meluni.com.tr"
         or (user.get("role_id") not in (None, ""))
     )
     if user.get("role") == "customer" or not _is_staff:
@@ -473,12 +473,12 @@ async def verify_admin_token(token: str) -> dict:
         raise HTTPException(status_code=401, detail="Hesap devre dışı")
     # GÜVENLİK: Yalnız GERÇEK panel personeli admin erişebilir. Panel personeli
     # create_panel_user ile oluşur → 'created_by' + 'role_id' taşır; ya da is_super_admin /
-    # varsayılan admin@facette.com. Bunların HİÇBİRİ yoksa hesap bir MÜŞTERİdir (eski/bozuk
+    # varsayılan admin@meluni.com.tr. Bunların HİÇBİRİ yoksa hesap bir MÜŞTERİdir (eski/bozuk
     # veride is_admin=True kalmış register kaydı — 'role' alanı bile yok) → admin erişimi REDDEDİLİR.
     _is_staff = (
         (user.get("created_by") not in (None, ""))
         or bool(user.get("is_super_admin"))
-        or user.get("email") == "admin@facette.com"
+        or user.get("email") == "admin@meluni.com.tr"
         or (user.get("role_id") not in (None, ""))
     )
     if user.get("role") == "customer" or not _is_staff:
@@ -492,14 +492,14 @@ async def get_effective_permissions(user: dict) -> list:
     """Kullanicinin etkin yetki listesini dondurur.
 
     Kural (admin_rbac /me/permissions ile birebir ayni):
-      - email == 'admin@facette.com' VEYA role_id yok  -> ['*'] (super admin)
+      - email == 'admin@meluni.com.tr' VEYA role_id yok  -> ['*'] (super admin)
       - aksi halde rol kaydindaki permissions listesi
     """
     # GÜVENLİK: eskiden boş role_id → ["*"] (süper-admin) idi → rolsüz oluşturulan
     # personel sessizce tam yetki alıyordu. Artık süper-admin YALNIZCA e-posta
     # eşleşmesi VEYA açık is_super_admin bayrağı ile. Rolsüz kullanıcı → [] (fail-closed).
     u = user or {}
-    if u.get("email") == "admin@facette.com" or u.get("is_super_admin") is True:
+    if u.get("email") == "admin@meluni.com.tr" or u.get("is_super_admin") is True:
         return ["*"]
     role_id = u.get("role_id") or ""
     if not role_id:

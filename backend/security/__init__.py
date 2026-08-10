@@ -1,4 +1,4 @@
-"""Production security & observability layer for Facette.
+"""Production security & observability layer for Meluni.
 
 Submodules:
 - crypto:        AES-256-GCM (Fernet) field-level encryption for secrets/PII

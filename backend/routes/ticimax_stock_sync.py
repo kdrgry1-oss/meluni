@@ -122,7 +122,7 @@ async def sync_ticimax_stock(
         not_found, errors, duration_sec
       }
     """
-    # Facette stok master — Ticimax stok senkronu varsayılan KAPALI; stoğu EZMESİN.
+    # Meluni stok master — Ticimax stok senkronu varsayılan KAPALI; stoğu EZMESİN.
     # Yalnızca settings.ticimax.stock_sync_enabled=True ise çalışır.
     _cfg = await db.settings.find_one({"id": "ticimax"}) or {}
     if not _cfg.get("stock_sync_enabled"):
@@ -131,7 +131,7 @@ async def sync_ticimax_stock(
             "disabled": True,
             "updated_variants": 0,
             "matched_products": 0,
-            "message": "Ticimax stok senkronu kapalı (Facette stok master). Stok yalnızca sipariş/iptal/iade ile yönetilir.",
+            "message": "Ticimax stok senkronu kapalı (Meluni stok master). Stok yalnızca sipariş/iptal/iade ile yönetilir.",
         }
     started = datetime.now(timezone.utc)
     from ticimax_client import get_products, get_product_count  # type: ignore
@@ -345,7 +345,7 @@ async def sync_ticimax_stock_async(
 
 
 # ═══════════════════════════════════════════════════════════════════
-# KATEGORİ SENKRONİZASYONU — Ticimax → Facette
+# KATEGORİ SENKRONİZASYONU — Ticimax → Meluni
 # "En Yeniler" dahil tüm kategori üyeliklerini + is_new bayrağını eşitler.
 # ═══════════════════════════════════════════════════════════════════
 import re as _re_cat
@@ -588,7 +588,7 @@ async def sync_ticimax_categories(
     sync_all_categories: bool = Query(True, description="True: tüm kategori üyeliklerini eşitle; False: sadece is_new + En Yeniler"),
     current_user: dict = Depends(require_admin),
 ):
-    """Ticimax ürün kategorilerini Facette'e eşitler.
+    """Ticimax ürün kategorilerini Meluni'e eşitler.
 
     - Tüm kategori üyeliklerini Ticimax'taki haliyle eşitler (sync_all_categories=True).
     - is_new bayrağını Ticimax 'Yeni Ürün' değerine göre ayarlar.

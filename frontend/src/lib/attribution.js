@@ -4,18 +4,18 @@
  * What it does:
  * 1. On first load, captures utm_source/medium/campaign/term/content, gclid, fbclid,
  *    referrer and landing page.
- * 2. Persists a server-assigned `facette_sid` in localStorage.
+ * 2. Persists a server-assigned `meluni_sid` in localStorage.
  * 3. Calls POST /api/attribution/track-visit so sessions accumulate touches over time.
  *
  * Usage: import and invoke once at the top of the app root (e.g. in App.js useEffect).
- * The returned session_id is auto-attached to orders via window.__FACETTE_SID__.
+ * The returned session_id is auto-attached to orders via window.__MELUNI_SID__.
  */
 import axios from "axios";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-const SID_KEY = "facette_sid";
-const UTM_KEY = "facette_attr_first";
-const AFF_COOKIE = "facette_aff";
+const SID_KEY = "meluni_sid";
+const UTM_KEY = "meluni_attr_first";
+const AFF_COOKIE = "meluni_aff";
 const AFF_TTL_DAYS = 30;
 
 function setCookie(name, value, days) {
@@ -103,7 +103,7 @@ export async function trackVisit() {
     const { data } = await axios.post(`${API}/attribution/track-visit`, payload, { timeout: 5000 });
     if (data?.session_id) {
       localStorage.setItem(SID_KEY, data.session_id);
-      window.__FACETTE_SID__ = data.session_id;
+      window.__MELUNI_SID__ = data.session_id;
       if (hasNewUtm) {
         // Persist first-touch for debug/display
         localStorage.setItem(UTM_KEY, JSON.stringify({ ...utm, channel: data.channel, ts: new Date().toISOString() }));
@@ -115,6 +115,6 @@ export async function trackVisit() {
 }
 
 export function getSessionId() {
-  try { return window.__FACETTE_SID__ || localStorage.getItem(SID_KEY) || null; }
+  try { return window.__MELUNI_SID__ || localStorage.getItem(SID_KEY) || null; }
   catch (_) { return null; }
 }

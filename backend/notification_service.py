@@ -295,7 +295,7 @@ async def _email_send(db, to: str, subject: str, html: str,
 async def _order_sender(db, event: str) -> Dict:
     """Sipariş yaşam-döngüsü maillerinin (order_*) gönderen kimliğini çözer.
     Panelden (Ayarlar → E-posta) ayarlanan `order_from_email` doluysa sipariş
-    mailleri o adresten gider (ör. siparis@facette.com.tr); pazarlama/işlemsel
+    mailleri o adresten gider (ör. siparis@meluni.com.tr); pazarlama/işlemsel
     itibar ayrımı korunur. Boşsa varsayılan gönderen kullanılır (davranış değişmez).
     Yalnız `order_` ile başlayan MÜŞTERİ olayları için; admin/şifre/pazarlama hariç."""
     if not str(event or "").startswith("order_"):

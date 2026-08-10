@@ -306,13 +306,13 @@ async def temu_egress_ip(current_user=Depends(require_admin)):
 
 @router.post("/products")
 async def temu_create_product(req: ProductCreateReq, current_user=Depends(require_admin)):
-    # 🎯 FACETTE SABİT VARSAYILANLAR (gap-fill): ürünün taşımadığı ortak özellikleri
+    # 🎯 MELUNİ SABİT VARSAYILANLAR (gap-fill): ürünün taşımadığı ortak özellikleri
     # (Menşei/Cinsiyet/Yaş Grubu/Ortam/Ek Özellik/Kutu Durumu/Persona/Performans +
     # Üretici/İthalatçı GPSR) Temu attribute'larına ekle. Mevcut değer DOKUNULMAZ.
-    from facette_defaults import FACETTE_FIXED_ATTR_DEFAULTS, FACETTE_COMPANY, _norm as _fnorm
+    from meluni_defaults import MELUNI_FIXED_ATTR_DEFAULTS, MELUNI_COMPANY, _norm as _fnorm
     attrs_in = dict(req.attributes or {})
     _have = {_fnorm(k) for k in attrs_in}
-    for k, v in FACETTE_FIXED_ATTR_DEFAULTS.items():
+    for k, v in MELUNI_FIXED_ATTR_DEFAULTS.items():
         if _fnorm(k) not in _have:
             attrs_in[k] = v
     # BEYAZ ETİKET: GPSR üretici bilgisi merkezî Firma Bilgileri'nden (varsa) — koddan değil.
@@ -322,9 +322,9 @@ async def temu_create_product(req: ProductCreateReq, current_user=Depends(requir
         _co = await _get_company(_db)
     except Exception:
         _co = {}
-    for label, val in (("Üretici Adı", _co.get("company_name") or FACETTE_COMPANY["company_name"]),
-                       ("Üretici Mail Adresi", _co.get("email") or FACETTE_COMPANY["email"]),
-                       ("Üretici Adres Bilgisi", _co.get("address") or FACETTE_COMPANY["address"])):
+    for label, val in (("Üretici Adı", _co.get("company_name") or MELUNI_COMPANY["company_name"]),
+                       ("Üretici Mail Adresi", _co.get("email") or MELUNI_COMPANY["email"]),
+                       ("Üretici Adres Bilgisi", _co.get("address") or MELUNI_COMPANY["address"])):
         if _fnorm(label) not in _have:
             attrs_in[label] = val
     payload = {

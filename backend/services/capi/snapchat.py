@@ -54,7 +54,7 @@ def _build_user(ud: dict) -> dict:
 def _build_custom(event: dict) -> dict:
     items = event.get("items") or []
     ids = [str(it.get("item_id") or it.get("id") or "") for it in items]
-    brands = list({(it.get("item_brand") or "FACETTE") for it in items})
+    brands = list({(it.get("item_brand") or "MELUNİ") for it in items})
     cd = {
         "currency": event.get("currency") or "TRY",
         "price": float(event.get("value") or 0.0),
@@ -103,7 +103,7 @@ async def send(
         "event_tag": event_name,
         "timestamp": _ts,
         "event_id": event_id,
-        "page_url": event_source_url or "https://www.facette.com.tr",
+        "page_url": event_source_url or "https://www.meluni.com.tr",
         **_build_user(user_data),
         **_build_custom(event_payload),
     }
@@ -132,6 +132,6 @@ async def test_connection(pixel_id: str, access_token: str,
         event_time=None,
         user_data={"em": "abc",
                    "client_ip_address": "8.8.8.8",
-                   "client_user_agent": "Mozilla/5.0 FacetteTest"},
+                   "client_user_agent": "Mozilla/5.0 MeluniTest"},
         event_payload={"value": 0, "currency": "TRY"},
     )

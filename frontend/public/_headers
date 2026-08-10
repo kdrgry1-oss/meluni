@@ -14,9 +14,9 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(self)
   Cross-Origin-Opener-Policy: same-origin
   # CSP: aşağıdaki satırı, sitede kullanılan TÜM 3. parti host'lar (GTM, Google,
-  # Meta, TikTok, iyzico, fontlar, api.facette.com.tr) test edildikten SONRA aç.
+  # Meta, TikTok, iyzico, fontlar, api.meluni.com.tr) test edildikten SONRA aç.
   # Yanlış CSP storefront'u/analitiği kırabileceğinden varsayılan KAPALI bırakıldı.
-  # Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://analytics.tiktok.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://api.facette.com.tr https://www.google-analytics.com; frame-ancestors 'self'; object-src 'none'; base-uri 'self'
+  # Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://analytics.tiktok.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://api.meluni.com.tr https://www.google-analytics.com; frame-ancestors 'self'; object-src 'none'; base-uri 'self'
 
 # HTML her zaman taze
 /

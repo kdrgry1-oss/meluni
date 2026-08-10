@@ -190,7 +190,7 @@ async def main():
                 "is_active": p.get("is_active", True),
                 "in_stock": False,
                 "urun_karti_id": kart_id,
-                "manufacturer": p.get("manufacturer") or "FACETTE",
+                "manufacturer": p.get("manufacturer") or "MELUNİ",
                 "category_id": p.get("category_id"),
                 "category_name": p.get("category_name"),
                 "images": p.get("images") or [],

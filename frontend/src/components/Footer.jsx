@@ -16,7 +16,7 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const SERIF = { fontFamily: 'Georgia, "Times New Roman", "Playfair Display", serif' };
 
 /**
- * NewsletterBand — footer'ın hemen üstünde "Facette Kulübü seni bekliyor" bandı.
+ * NewsletterBand — footer'ın hemen üstünde "Meluni Kulübü seni bekliyor" bandı.
  * Metinler admin footer ayarındaki `newsletter` alanından okunur.
  */
 // KVKK / ticari-ileti onay metni — kutucuk etiketiyle AYNI; abone kaydına ve İYS'ye
@@ -30,7 +30,7 @@ function NewsletterBand({ nl }) {
   const [state, setState] = useState("idle"); // idle | loading | done | error
   const [msg, setMsg] = useState("");
 
-  const title = nl?.title || "Facette Kulübü seni bekliyor";
+  const title = nl?.title || "Meluni Kulübü seni bekliyor";
   const description =
     nl?.description ||
     "Yeni koleksiyonlar, özel kampanyalar ve sana özel fırsatlardan ilk sen haberdar ol.";
@@ -68,7 +68,7 @@ function NewsletterBand({ nl }) {
     <section className="bg-neutral-100 border-t border-neutral-200" data-testid="newsletter-band">
       <div className="container-main py-14 md:py-20">
         <div className="max-w-2xl mx-auto text-center">
-          <p className="text-[11px] tracking-[0.35em] uppercase text-neutral-700 mb-4">Facette Kulübü</p>
+          <p className="text-[11px] tracking-[0.35em] uppercase text-neutral-700 mb-4">Meluni Kulübü</p>
           <h3 className="text-3xl md:text-5xl font-light tracking-tight text-black leading-none">
             {title}
           </h3>
@@ -152,7 +152,7 @@ const DEFAULT_COLUMNS = [
     { to: "/sayfa/gizlilik", label: "Gizlilik Politikası" },
   ]},
   { title: "İletişim", static: [
-    "info@facette.com.tr", "+90 543 330 03 10", "Pazartesi-Cumartesi 09:00 - 18:00",
+    "info@meluni.com.tr", "+90 543 330 03 10", "Pazartesi-Cumartesi 09:00 - 18:00",
   ]},
 ];
 
@@ -237,12 +237,12 @@ export default function Footer() {
   // Sosyal linkler footer ayarından gelir; girilmemişse markanın varsayılan hesaplarına düşer.
   const _socialCfg = tpl?.social || {};
   const social = {
-    instagram: _socialCfg.instagram || "https://instagram.com/facette",
-    tiktok: _socialCfg.tiktok || "https://www.tiktok.com/@facetteofficial",
+    instagram: _socialCfg.instagram || "https://instagram.com/meluni",
+    tiktok: _socialCfg.tiktok || "https://www.tiktok.com/@meluniofficial",
     facebook: _socialCfg.facebook || "https://www.facebook.com/faceette",
     twitter: _socialCfg.twitter || "",
   };
-  const copyright = tpl?.copyright || `© ${new Date().getFullYear()} Facette – Tüm hakları saklıdır.`;
+  const copyright = tpl?.copyright || `© ${new Date().getFullYear()} Meluni – Tüm hakları saklıdır.`;
 
   return (
     <>
@@ -255,7 +255,7 @@ export default function Footer() {
           <div className="max-w-md">
             <Link to="/" className="inline-block mb-5">
               {/* Koyu footer → logo beyaza zorlanır (brightness-0 + invert) */}
-              <img src="/logo.webp" alt="FACETTE" className="h-6 md:h-7 w-auto brightness-0 invert" />
+              <img src="/logo.webp" alt="MELUNİ" className="h-6 md:h-7 w-auto brightness-0 invert" />
             </Link>
             <p className="text-sm text-white/60 leading-none italic">
               inspired by who you are.

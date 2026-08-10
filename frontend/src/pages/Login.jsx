@@ -92,7 +92,7 @@ export default function Login() {
       if (!window.AppleID?.auth) return;
       try {
         window.AppleID.auth.init({
-          clientId: socialProviders.apple_client_id,   // Services ID (ör. com.facette.web)
+          clientId: socialProviders.apple_client_id,   // Services ID (ör. com.meluni.web)
           scope: "name email",
           redirectURI: `${window.location.origin}/giris`,  // Apple'da Return URL olarak kayıtlı olmalı
           usePopup: true,

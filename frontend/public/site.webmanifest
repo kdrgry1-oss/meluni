@@ -1,7 +1,7 @@
 {
-  "name": "FACETTE",
-  "short_name": "FACETTE",
-  "description": "FACETTE — Yeni Sezon Kadın Giyim & Moda",
+  "name": "MELUNİ",
+  "short_name": "MELUNİ",
+  "description": "MELUNİ — Yeni Sezon Kadın Giyim & Moda",
   "icons": [
     { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }

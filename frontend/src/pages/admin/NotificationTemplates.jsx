@@ -125,7 +125,7 @@ export default function NotificationTemplates() {
   };
 
   const seedForce = async () => {
-    if (!window.confirm("Tüm e-posta şablonları yeni FACETTE tasarımına (logo · içerik · INSTAGRAM·TIKTOK) güncellenecek. Manuel düzenlediğiniz şablonlara dokunulmaz. Devam edilsin mi?")) return;
+    if (!window.confirm("Tüm e-posta şablonları yeni MELUNİ tasarımına (logo · içerik · INSTAGRAM·TIKTOK) güncellenecek. Manuel düzenlediğiniz şablonlara dokunulmaz. Devam edilsin mi?")) return;
     try {
       const r = await axios.post(`${API}/notifications/templates/seed?force=true`, {}, auth);
       toast.success(`${r.data.updated || 0} şablon güncellendi · ${r.data.created || 0} yeni oluşturuldu`);

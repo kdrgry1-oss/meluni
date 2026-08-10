@@ -32,7 +32,7 @@ class TrendyolClient:
         encoded_credentials = base64.b64encode(credentials.encode()).decode()
         return {
             "Authorization": f"Basic {encoded_credentials}",
-            "User-Agent": f"{self.supplier_id} - FacetteIntegration",
+            "User-Agent": f"{self.supplier_id} - MeluniIntegration",
             "Content-Type": "application/json",
             "Accept": "application/json"
         }

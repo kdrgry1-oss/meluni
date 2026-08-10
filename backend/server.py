@@ -1,5 +1,5 @@
 """
-Facette E-Commerce API - Main Server
+Meluni E-Commerce API - Main Server
 Modular architecture with routes
 """
 from fastapi import FastAPI, APIRouter
@@ -135,7 +135,7 @@ from routes.deps import client, db
 async def lifespan(app: FastAPI):
     """Application lifespan - startup and shutdown"""
     # Startup
-    logger.info("Starting Facette E-Commerce API...")
+    logger.info("Starting Meluni E-Commerce API...")
     
     try:
         # Create admin user if not exists.
@@ -149,7 +149,7 @@ async def lifespan(app: FastAPI):
             await db.users.create_index("email", unique=True)
         except Exception:
             pass
-        admin = await db.users.find_one({"email": "admin@facette.com"})
+        admin = await db.users.find_one({"email": "admin@meluni.com.tr"})
         if not admin:
             from routes.deps import hash_password, generate_id
             from datetime import datetime, timezone
@@ -165,7 +165,7 @@ async def lifespan(app: FastAPI):
             try:
                 await db.users.insert_one({
                     "id": generate_id(),
-                    "email": "admin@facette.com",
+                    "email": "admin@meluni.com.tr",
                     "password": hash_password(_admin_pw),
                     "first_name": "Admin",
                     "last_name": "User",
@@ -192,16 +192,16 @@ async def lifespan(app: FastAPI):
                         os.chmod(_pf, 0o600)
                     except Exception:
                         pass
-                    logger.warning(f"Admin olusturuldu (admin@facette.com). Ilk sifre: {_pf} dosyasinda. "
+                    logger.warning(f"Admin olusturuldu (admin@meluni.com.tr). Ilk sifre: {_pf} dosyasinda. "
                                    "Giris sonrasi degistirin; dosyayi silin.")
                 except Exception:
                     logger.warning("Admin olusturuldu; rastgele sifre dosyaya yazilamadi — "
                                    "sifre-sifirlama ile giris yapin.")
             else:
-                logger.info("Admin olusturuldu (admin@facette.com) — ADMIN_INITIAL_PASSWORD kullanildi.")
+                logger.info("Admin olusturuldu (admin@meluni.com.tr) — ADMIN_INITIAL_PASSWORD kullanildi.")
         elif not admin.get("is_super_admin"):
             await db.users.update_one(
-                {"email": "admin@facette.com"},
+                {"email": "admin@meluni.com.tr"},
                 {"$set": {"is_super_admin": True}},
             )
 
@@ -471,7 +471,7 @@ async def lifespan(app: FastAPI):
 _docs_enabled = os.environ.get("ENABLE_API_DOCS", "").strip() == "1" or \
     os.environ.get("ENVIRONMENT", "production").strip().lower() in ("dev", "development", "local")
 app = FastAPI(
-    title="Facette E-Commerce API",
+    title="Meluni E-Commerce API",
     version="3.0",
     description="Modular E-Commerce API with Iyzico, Trendyol, MNG Kargo, GIB integrations",
     lifespan=lifespan,
@@ -889,7 +889,7 @@ api_router.include_router(inbound_mail_router)
 @api_router.get("/")
 async def root():
     return {
-        "message": "Facette E-Commerce API",
+        "message": "Meluni E-Commerce API",
         "version": "3.0",
         "status": "running"
     }

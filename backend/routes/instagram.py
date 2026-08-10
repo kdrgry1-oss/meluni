@@ -1,8 +1,8 @@
 """
 =============================================================================
-instagram.py — @facette Instagram akışı (etiketli/gönderi feed'i)
+instagram.py — @meluni Instagram akışı (etiketli/gönderi feed'i)
 =============================================================================
-Instagram Graph API token'ı ile @facette hesabının son gönderilerini VEYA
+Instagram Graph API token'ı ile @meluni hesabının son gönderilerini VEYA
 hesabın etiketlendiği gönderileri (tagged) çeker, db.instagram_posts'a yazar;
 anasayfadaki InstaShop bileşeni bunları gösterir.
 
@@ -45,9 +45,9 @@ _GRAPH = "https://graph.facebook.com/v23.0"
 # OAuth (tek tık bağlantı) — kullanıcı token'ı Graph Explorer'dan almak zorunda kalmaz:
 # panel "Facebook ile Bağlan" der → Facebook onay ekranı → bu callback'e döner →
 # code'u token'a çeviren, IG hesabını bulan ve senkronu başlatan sunucudur.
-_API_PUBLIC_BASE = (os.environ.get("PUBLIC_API_BASE") or "https://api.facette.com.tr/api").rstrip("/")
+_API_PUBLIC_BASE = (os.environ.get("PUBLIC_API_BASE") or "https://api.meluni.com.tr/api").rstrip("/")
 _OAUTH_REDIRECT_URI = f"{_API_PUBLIC_BASE}/instagram/oauth/callback"
-_ADMIN_RETURN_URL = (os.environ.get("SITE_URL") or "https://www.facette.com.tr").rstrip("/") + "/admin/instagram"
+_ADMIN_RETURN_URL = (os.environ.get("SITE_URL") or "https://www.meluni.com.tr").rstrip("/") + "/admin/instagram"
 _OAUTH_SCOPE = "instagram_basic,pages_show_list"
 
 

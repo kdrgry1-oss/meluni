@@ -123,9 +123,9 @@ export default function EmailSettings() {
 
             <div>
               <label className={lbl}>Gönderen E-posta Adresi</label>
-              <input className={field} placeholder="info@facette.com.tr" value={cfg.username}
+              <input className={field} placeholder="info@meluni.com.tr" value={cfg.username}
                 onChange={(e) => setCfg({ ...cfg, username: e.target.value.trim() })} autoComplete="off" />
-              <p className="text-[11px] text-gray-400 mt-1">ZeptoMail'de doğrulanmış domain altında bir adres olmalı (facette.com.tr).</p>
+              <p className="text-[11px] text-gray-400 mt-1">ZeptoMail'de doğrulanmış domain altında bir adres olmalı (meluni.com.tr).</p>
             </div>
 
             <div>
@@ -164,14 +164,14 @@ export default function EmailSettings() {
               Sipariş yaşam-döngüsü mailleri (onay, kargo, teslim, iptal, iade, havale) bu adresten gider.
               Şifre sıfırlama, üyelik ve pazarlama mailleri <b>etkilenmez</b>. Boş bırakırsan sipariş
               mailleri de yukarıdaki adresten gider. <br/>
-              <b>Not:</b> Adres doğrulanmış domaine ait olmalı (<code>@facette.com.tr</code> zaten doğrulu).
+              <b>Not:</b> Adres doğrulanmış domaine ait olmalı (<code>@meluni.com.tr</code> zaten doğrulu).
               Yanıt adresini takip ettiğin bir kutuya (ör. <code>info@…</code>) ayarla — müşteri sipariş
               mailine cevap yazarsa oraya düşer.
             </p>
             <div className="grid md:grid-cols-3 gap-4">
               <div>
                 <label className={lbl}>Sipariş Gönderen E-posta</label>
-                <input className={field} placeholder="siparis@facette.com.tr" autoComplete="off"
+                <input className={field} placeholder="siparis@meluni.com.tr" autoComplete="off"
                   value={cfg.order_from_email}
                   onChange={(e) => setCfg({ ...cfg, order_from_email: e.target.value.trim() })} />
               </div>
@@ -183,7 +183,7 @@ export default function EmailSettings() {
               </div>
               <div>
                 <label className={lbl}>Sipariş Yanıt Adresi (Reply-To)</label>
-                <input className={field} placeholder="info@facette.com.tr" autoComplete="off"
+                <input className={field} placeholder="info@meluni.com.tr" autoComplete="off"
                   value={cfg.order_reply_to}
                   onChange={(e) => setCfg({ ...cfg, order_reply_to: e.target.value.trim() })} />
               </div>

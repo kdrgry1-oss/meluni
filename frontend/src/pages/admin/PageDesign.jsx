@@ -251,8 +251,8 @@ export default function PageDesign() {
           type: "hero_slider",
           title: "Hero Slider",
           images: [
-            "https://cdn.facette.com.tr/pagedesign/en-yeniler-dc2e-1920.webp",
-            "https://cdn.facette.com.tr/pagedesign/ae79c961-ba0b-49e3-b274-2c6cc78ab700-1920.webp"
+            "https://cdn.meluni.com.tr/pagedesign/en-yeniler-dc2e-1920.webp",
+            "https://cdn.meluni.com.tr/pagedesign/ae79c961-ba0b-49e3-b274-2c6cc78ab700-1920.webp"
           ],
           links: ["/kategori/en-yeniler", "/kategori/sale"],
           is_active: true,
@@ -262,7 +262,7 @@ export default function PageDesign() {
           id: "full",
           type: "full_banner",
           title: "Bloom Together",
-          images: ["https://cdn.facette.com.tr/pagedesign/title-cb23757c-6-1920.webp"],
+          images: ["https://cdn.meluni.com.tr/pagedesign/title-cb23757c-6-1920.webp"],
           links: ["/kategori/en-yeniler"],
           is_active: true,
           sort_order: 2
@@ -272,8 +272,8 @@ export default function PageDesign() {
           type: "half_banners",
           title: "Kategori Bannerları",
           images: [
-            "https://cdn.facette.com.tr/pagedesign/title-65777bd3-0-1920.webp",
-            "https://cdn.facette.com.tr/pagedesign/title-7b3e27f9-5-1920.webp"
+            "https://cdn.meluni.com.tr/pagedesign/title-65777bd3-0-1920.webp",
+            "https://cdn.meluni.com.tr/pagedesign/title-7b3e27f9-5-1920.webp"
           ],
           links: ["/kategori/gomlek", "/kategori/aksesuar"],
           is_active: true,

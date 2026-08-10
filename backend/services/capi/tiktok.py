@@ -142,7 +142,7 @@ async def send(
             "event_id": event_id,
             "user": _build_user(user_data, field_flags),
             "properties": _build_properties(event_payload),
-            "page": {"url": event_source_url or "https://www.facette.com.tr"},
+            "page": {"url": event_source_url or "https://www.meluni.com.tr"},
         }],
     }
     if test_event_code:
@@ -171,7 +171,7 @@ async def test_connection(pixel_id: str, access_token: str,
         event_name="lead", event_id=f"test-{int(datetime.now().timestamp())}",
         event_time=None,
         user_data={"client_ip_address": "8.8.8.8",
-                   "client_user_agent": "Mozilla/5.0 FacetteTest"},
+                   "client_user_agent": "Mozilla/5.0 MeluniTest"},
         event_payload={"value": 0, "currency": "TRY"},
         test_event_code=test_event_code,
     )

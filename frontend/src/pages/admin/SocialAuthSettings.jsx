@@ -104,7 +104,7 @@ export default function SocialAuthSettings() {
           {f("facebook_app_id", "App ID")}
           {f("facebook_app_secret", "App Secret", "password")}
         </div>
-        {f("facebook_redirect_uri", "Redirect URI (ör. https://facette.com/auth/facebook/callback)")}
+        {f("facebook_redirect_uri", "Redirect URI (ör. https://meluni.com.tr/auth/facebook/callback)")}
       </section>
     </div>
   );

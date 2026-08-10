@@ -18,7 +18,7 @@ const CHANNEL_STYLE = {
   whatsapp:    { border: "#25D366", bg: "#25D366", label: "WhatsApp" },
   instagram:   { border: "#E4405F", bg: "linear-gradient(135deg,#FFDC80,#E4405F,#833AB4)", label: "Instagram" },
   messenger:   { border: "#0084FF", bg: "linear-gradient(135deg,#00C6FF,#0078FF)", label: "Messenger" },
-  site:        { border: "#6366F1", bg: "#6366F1", label: "Facette Site" },
+  site:        { border: "#6366F1", bg: "#6366F1", label: "Meluni Site" },
 };
 
 const ChannelBadge = ({ channel }) => {

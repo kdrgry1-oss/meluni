@@ -64,7 +64,7 @@ function _normVal(s) {
   return x.replace(/[^a-z0-9]/g, "");
 }
 
-// FACETTE sabit varsayılan değerleri (backend/facette_defaults.py FACETTE_FIXED_ATTR_DEFAULTS ile
+// MELUNİ sabit varsayılan değerleri (backend/meluni_defaults.py MELUNI_FIXED_ATTR_DEFAULTS ile
 // uyumlu). Bu özelliklere DEĞER EŞLEŞTİRMESİ GEREKMEZ — her üründe bu sabit değer gönderilir.
 const FIXED_DEFAULT_VALUES = {
   "menşei": "Türkiye", "cinsiyet": "Kadın", "yaş grubu": "Yetişkin",

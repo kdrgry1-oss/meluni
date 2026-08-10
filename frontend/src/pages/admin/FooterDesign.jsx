@@ -123,7 +123,7 @@ function HtmlEditor({ tpl, setTpl }) {
         onChange={(e) => setTpl({ ...tpl, custom_html: e.target.value })}
         rows={20}
         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-black"
-        placeholder='<div class="container-main py-12 text-white">\n  <h3>Facette</h3>\n  <p>Contact us at info@facette.com.tr</p>\n</div>'
+        placeholder='<div class="container-main py-12 text-white">\n  <h3>Meluni</h3>\n  <p>Contact us at info@meluni.com.tr</p>\n</div>'
         data-testid="footer-html-textarea"
       />
     </div>
@@ -210,9 +210,9 @@ function StructuredEditor({ tpl, setTpl }) {
         </div>
       </div>
 
-      {/* Newsletter — "Facette Kulübü" bandı */}
+      {/* Newsletter — "Meluni Kulübü" bandı */}
       <div className="bg-white border rounded-xl p-4" data-testid="newsletter-editor">
-        <h2 className="text-sm font-bold uppercase tracking-wider mb-1">Bülten Bandı (Facette Kulübü)</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wider mb-1">Bülten Bandı (Meluni Kulübü)</h2>
         <p className="text-xs text-gray-500 mb-3">Footer'ın hemen üstünde görünen abonelik bandının metinleri.</p>
         <div className="grid gap-3">
           <div>
@@ -221,7 +221,7 @@ function StructuredEditor({ tpl, setTpl }) {
               value={(tpl.newsletter || {}).title || ""}
               onChange={(e) => setTpl({ ...tpl, newsletter: { ...(tpl.newsletter || {}), title: e.target.value } })}
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-              placeholder="Facette Kulübü seni bekliyor" />
+              placeholder="Meluni Kulübü seni bekliyor" />
           </div>
           <div>
             <label className="block text-xs uppercase tracking-wider text-gray-500 mb-1">Açıklama</label>

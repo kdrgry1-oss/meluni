@@ -94,7 +94,7 @@ async def get_maintenance_status():
         "maintenance_title": settings.get("maintenance_title") or "Sitemiz sizin için yenileniyor",
         "maintenance_message": settings.get("maintenance_message") or "Çok yakında, daha iyi bir alışveriş deneyimiyle buradayız. Anlayışınız için teşekkür ederiz.",
         "logo_url": settings.get("logo_url") or "",
-        "site_name": settings.get("site_name") or "FACETTE",
+        "site_name": settings.get("site_name") or "MELUNİ",
     }
 
 @router.get("")
@@ -104,7 +104,7 @@ async def get_settings():
     if not settings:
         settings = {
             "id": "main",
-            "site_name": "FACETTE",
+            "site_name": "MELUNİ",
             "logo_url": "",
             "free_shipping_limit": 500,
             "rotating_texts": [],
@@ -173,7 +173,7 @@ def _seed_default_banks():
         "bank_name": "TÜRKİYE İŞ BANKASI",
         "branch": "CUMHURİYET CADDESİ ESENYURT ŞUBESİ",
         "iban": "TR86 0006 4000 0011 4540 1414 67",
-        "account_holder": "FACETTE DIŞ TİC. A.Ş",
+        "account_holder": "MELUNİ DIŞ TİC. A.Ş",
         "is_default": True,
     }]
 
@@ -368,7 +368,7 @@ async def get_email_smtp(current_user: dict = Depends(require_admin)):
         "port": int(s.get("port", 465)),
         "secure": s.get("secure", "ssl"),
         "username": s.get("username", ""),
-        "from_name": s.get("from_name", "FACETTE"),
+        "from_name": s.get("from_name", "MELUNİ"),
         # Sipariş maillerinin ayrı gönderen kimliği (ör. siparis@...). Boşsa sipariş
         # mailleri de varsayılan gönderenden gider. Pazarlama (SES) ile işlemsel (Zoho)
         # itibar ayrımının tamamlayıcısı: sipariş mailleri şifre/pazarlamadan ayrışır.
@@ -390,7 +390,7 @@ async def save_email_smtp(payload: Dict[str, Any], current_user: dict = Depends(
         "port": int(payload.get("port") or 465),
         "secure": (str(payload.get("secure") or "ssl")).strip().lower(),
         "username": (str(payload.get("username") or "")).strip(),
-        "from_name": (str(payload.get("from_name") or "FACETTE")).strip(),
+        "from_name": (str(payload.get("from_name") or "MELUNİ")).strip(),
         # Sipariş maili gönderen kimliği (opsiyonel; boş → varsayılan gönderen).
         "order_from_email": (str(payload.get("order_from_email") or "")).strip(),
         "order_from_name": (str(payload.get("order_from_name") or "")).strip(),
@@ -420,7 +420,7 @@ async def test_email_smtp(payload: Dict[str, Any], current_user: dict = Depends(
     cfg = await get_smtp_config(db)
     res = await send_smtp_email(
         db, to,
-        "Facette SMTP Test",
+        "Meluni SMTP Test",
         "<p>Bu bir test e-postasıdır. Zoho SMTP ayarlarınız çalışıyor 🎉</p>",
     )
     if not res.get("success"):

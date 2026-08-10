@@ -161,7 +161,7 @@ async def import_products_color_based():
                 "price": safe_float(first_row.get('SATISFIYATI')),
                 "sale_price": safe_float(first_row.get('INDIRIMLIFIYAT')) or None,
                 "category_name": safe_str(first_row.get('BREADCRUMBKAT')) or "Giyim",
-                "brand": safe_str(first_row.get('MARKA')) or "FACETTE",
+                "brand": safe_str(first_row.get('MARKA')) or "MELUNİ",
                 "is_active": safe_int(first_row.get('KARTAKTIF')) == 1,
                 "is_featured": safe_int(first_row.get('VITRIN')) == 1,
                 "is_new": safe_int(first_row.get('YENIURUN')) == 1,

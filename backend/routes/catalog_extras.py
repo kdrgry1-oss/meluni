@@ -306,7 +306,7 @@ async def create_manual_order(payload: dict, current_user: dict = Depends(requir
         "source": "admin_manual",
         "created_by_admin": current_user.get("email", ""),
         "note": payload.get("note", ""),
-        "platform": "facette",
+        "platform": "meluni",
         "attribution": {"channel": "admin_manual", "source": "", "medium": "", "campaign": ""},
         "created_at": _now(),
         "updated_at": _now(),
@@ -536,7 +536,7 @@ def _src_match_ex(source):
     s = (source or "all").strip().lower()
     if s in ("", "all", "tum", "tümü", "hepsi"):
         return {}
-    if s in ("site", "facette", "web", "kendi"):
+    if s in ("site", "meluni", "web", "kendi"):
         return {"platform": {"$nin": _MARKETPLACES_EX}, "marketplace": {"$nin": _MARKETPLACES_EX}}
     return {"$or": [{"platform": s}, {"marketplace": s}]}
 

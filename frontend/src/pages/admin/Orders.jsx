@@ -87,7 +87,7 @@ const cargoCompanies = [
   { value: "PTT", label: "PTT Kargo" },
 ];
 
-const ORDERS_VIEW_KEY = "facette_orders_view";
+const ORDERS_VIEW_KEY = "meluni_orders_view";
 const _loadOrdersView = () => { try { return JSON.parse(localStorage.getItem(ORDERS_VIEW_KEY) || "{}") || {}; } catch (e) { return {}; } };
 
 export default function AdminOrders({ unpaidView = false }) {
@@ -982,7 +982,7 @@ export default function AdminOrders({ unpaidView = false }) {
             <input type="text" placeholder="Kupon Kodu" className="border px-3 py-1.5 rounded text-sm" value={filters.coupon_code} onChange={e => setFilters({...filters, coupon_code: e.target.value})} onKeyDown={onFilterKey} />
             <MultiSelect className="w-44" placeholder="Tüm Platformlar" value={filters.platform} onChange={(v) => setFilters({ ...filters, platform: v })}
               options={[
-                { value: "facette", label: "Web Sitesi (Facette)" },
+                { value: "meluni", label: "Web Sitesi (Meluni)" },
                 { value: "trendyol", label: "Trendyol" },
                 { value: "hepsiburada", label: "Hepsiburada" },
                 { value: "amazon", label: "Amazon" },

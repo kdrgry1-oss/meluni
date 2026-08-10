@@ -15,16 +15,16 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 // Default/Fallback content
 const DEFAULT_HERO_BANNERS = [
-  { id: 1, image: "https://cdn.facette.com.tr/pagedesign/en-yeniler-dc2e-1920.webp", link: "/en-yeniler" },
-  { id: 2, image: "https://cdn.facette.com.tr/pagedesign/ae79c961-ba0b-49e3-b274-2c6cc78ab700-1920.webp", link: "/sale" }
+  { id: 1, image: "https://cdn.meluni.com.tr/pagedesign/en-yeniler-dc2e-1920.webp", link: "/en-yeniler" },
+  { id: 2, image: "https://cdn.meluni.com.tr/pagedesign/ae79c961-ba0b-49e3-b274-2c6cc78ab700-1920.webp", link: "/sale" }
 ];
 
 const DEFAULT_INSTASHOP = [
-  { id: 1, image: "https://cdn.facette.com.tr/pagedesign/orj-ce09fd5d-c580-40eb-87f2-e4637265bad9-1920.webp", link: "/basic-atki" },
-  { id: 2, image: "https://cdn.facette.com.tr/pagedesign/orj-114d3d37-9c7f-495c-8bc2-28d32781818d-1920.webp", link: "/ceket" },
-  { id: 3, image: "https://cdn.facette.com.tr/pagedesign/orj-e18eff06-8597-4f10-92cb-64b11151a74d-1920.webp", link: "/kaban" },
-  { id: 4, image: "https://cdn.facette.com.tr/pagedesign/orj-fa071a71-bcaf-452b-90d5-e8cb0c352fe0-1920.webp", link: "/pantolon" },
-  { id: 5, image: "https://cdn.facette.com.tr/pagedesign/orj-87d15ba0-0081-4b65-acc5-b12328de368b-1920.webp", link: "/elbise" }
+  { id: 1, image: "https://cdn.meluni.com.tr/pagedesign/orj-ce09fd5d-c580-40eb-87f2-e4637265bad9-1920.webp", link: "/basic-atki" },
+  { id: 2, image: "https://cdn.meluni.com.tr/pagedesign/orj-114d3d37-9c7f-495c-8bc2-28d32781818d-1920.webp", link: "/ceket" },
+  { id: 3, image: "https://cdn.meluni.com.tr/pagedesign/orj-e18eff06-8597-4f10-92cb-64b11151a74d-1920.webp", link: "/kaban" },
+  { id: 4, image: "https://cdn.meluni.com.tr/pagedesign/orj-fa071a71-bcaf-452b-90d5-e8cb0c352fe0-1920.webp", link: "/pantolon" },
+  { id: 5, image: "https://cdn.meluni.com.tr/pagedesign/orj-87d15ba0-0081-4b65-acc5-b12328de368b-1920.webp", link: "/elbise" }
 ];
 
 // Bir slayt görsel mi video mu — uzantıdan belirlenir (aynı images[] dizisi ikisini de taşır).
@@ -708,7 +708,7 @@ function ShopTile({ post, onShop }) {
 }
 
 function InstaShop({ block }) {
-  // Gerçek @facette akışı: backend /instagram/feed. Boşsa bloktaki elle görsellere düşer.
+  // Gerçek @meluni akışı: backend /instagram/feed. Boşsa bloktaki elle görsellere düşer.
   const [feed, setFeed] = useState(null);
   const [modalPost, setModalPost] = useState(null);
   const scrollerRef = useRef(null);
@@ -737,9 +737,9 @@ function InstaShop({ block }) {
       {/* Başlık + hemen altında Instagram daveti — ortalı */}
       <div className="text-center mb-8 md:mb-10 px-4">
         <h2 className="text-3xl md:text-5xl font-light tracking-tight text-black leading-none">Get The Look</h2>
-        <a href="https://instagram.com/facette" target="_blank" rel="noopener noreferrer"
+        <a href="https://instagram.com/meluni" target="_blank" rel="noopener noreferrer"
           className="mt-3.5 inline-flex items-center gap-2 text-sm md:text-[15px] font-light text-gray-500 hover:text-black border-b border-gray-300 hover:border-black pb-1 transition-colors">
-          <Instagram size={16} /> Instagram'da bize katılın @facette
+          <Instagram size={16} /> Instagram'da bize katılın @meluni
         </a>
       </div>
       {/* Carousel — TAM GENİŞLİK (sağdan sola tüm alan) */}
@@ -1039,16 +1039,16 @@ export default function Home() {
 
           {/* Full Width Banner */}
           <Link to="/en-yeniler" className="block">
-            <img src={optimizeImg("https://cdn.facette.com.tr/pagedesign/title-cb23757c-6-1920.webp", 1920)} alt="" className="w-full h-auto block" loading="lazy" decoding="async" />
+            <img src={optimizeImg("https://cdn.meluni.com.tr/pagedesign/title-cb23757c-6-1920.webp", 1920)} alt="" className="w-full h-auto block" loading="lazy" decoding="async" />
           </Link>
 
           {/* Two Half-Width Banners */}
           <div className="grid grid-cols-2">
             <Link to="/gomlek" className="block">
-              <img src={optimizeImg("https://cdn.facette.com.tr/pagedesign/title-65777bd3-0-1920.webp", 1000)} alt="" className="w-full h-auto block" loading="lazy" decoding="async" />
+              <img src={optimizeImg("https://cdn.meluni.com.tr/pagedesign/title-65777bd3-0-1920.webp", 1000)} alt="" className="w-full h-auto block" loading="lazy" decoding="async" />
             </Link>
             <Link to="/aksesuar" className="block">
-              <img src={optimizeImg("https://cdn.facette.com.tr/pagedesign/title-7b3e27f9-5-1920.webp", 1000)} alt="" className="w-full h-auto block" loading="lazy" decoding="async" />
+              <img src={optimizeImg("https://cdn.meluni.com.tr/pagedesign/title-7b3e27f9-5-1920.webp", 1000)} alt="" className="w-full h-auto block" loading="lazy" decoding="async" />
             </Link>
           </div>
 

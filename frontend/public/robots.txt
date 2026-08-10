@@ -12,4 +12,4 @@ Disallow: /admin
 Disallow: /siparis-takip
 
 # Sitemap (dinamik — ürünler, kategoriler ve sayfalar)
-Sitemap: https://api.facette.com.tr/sitemap.xml
+Sitemap: https://api.meluni.com.tr/sitemap.xml

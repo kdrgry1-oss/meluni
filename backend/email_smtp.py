@@ -5,9 +5,9 @@ Fonksiyon adlari korunmustur; cagiran tum moduller degismeden calisir.
 
 settings.id="email_smtp" alanlari (ayar sayfasiyla uyumlu):
   enabled   : bool  -> gonderim aktif mi
-  username  : str   -> GONDEREN e-posta adresi (or. info@facette.com.tr)
+  username  : str   -> GONDEREN e-posta adresi (or. info@meluni.com.tr)
   password  : str   -> ZeptoMail "Send Mail Token" (API anahtari)
-  from_name : str   -> gonderen adi (or. FACETTE)
+  from_name : str   -> gonderen adi (or. MELUNİ)
   host      : str   -> 'eu' iceriyorsa api.zeptomail.eu, aksi halde api.zeptomail.com
 """
 import httpx
@@ -30,7 +30,7 @@ def is_configured(cfg: dict) -> bool:
 
 
 def _endpoint(cfg: dict) -> str:
-    # Facette hesabi Zoho EU (Avrupa) veri merkezinde → varsayilan EU endpoint.
+    # Meluni hesabi Zoho EU (Avrupa) veri merkezinde → varsayilan EU endpoint.
     # Yalnizca host ACIKCA ".com" (US) ise US endpoint kullanilir. Boylece host bos/eksik
     # olsa bile EU'ya gider (US endpoint EU token'ini reddedip "mail gitmiyor"a yol aciyordu).
     host = (cfg.get("host") or "").lower()
@@ -49,7 +49,7 @@ async def send_smtp_email(db, to: str, subject: str, html: str,
                           from_name=None, reply_to=None, text=None, wrap=True,
                           from_email=None) -> dict:
     """Tek aliciya ZeptoMail API ile mail. Doner: {success, response}.
-    wrap=True (varsayilan): HTML markali FACETTE kabuguna (logo + sosyal footer) sarilir.
+    wrap=True (varsayilan): HTML markali MELUNİ kabuguna (logo + sosyal footer) sarilir.
     Zaten markaliysa tekrar sarilmaz (idempotent). Boylece sistemden cikan TUM mailler
     -- uyelik, sifre, s3 durum bildirimi, toplu, test -- istisnasiz ayni tasarimda gider.
     Markasiz gitmesi gereken ozel durumlar icin wrap=False gecilebilir."""
@@ -65,7 +65,7 @@ async def send_smtp_email(db, to: str, subject: str, html: str,
                 from email_layout import set_brand as _set_brand
                 _set_brand(await get_company(db))
             except Exception:
-                pass  # marka uygulanamazsa FACETTE varsayılanıyla devam
+                pass  # marka uygulanamazsa MELUNİ varsayılanıyla devam
             from email_layout import render_email
             html = render_email(subject, html or "")
         except Exception:
@@ -74,10 +74,10 @@ async def send_smtp_email(db, to: str, subject: str, html: str,
     # from_email: çağrı bazında gönderen adresini geçersiz kılar (ör. sipariş mailleri
     # siparis@... adresinden gitsin diye). Boşsa varsayılan yapılandırılmış gönderen
     # (cfg.username) kullanılır → mevcut davranış korunur. ZeptoMail'de gönderilen adres
-    # DOĞRULANMIŞ domaine ait olmalıdır (facette.com.tr doğrulandığı için @facette.com.tr
+    # DOĞRULANMIŞ domaine ait olmalıdır (meluni.com.tr doğrulandığı için @meluni.com.tr
     # adresleri çalışır).
     sender = (str(from_email).strip() if from_email else "") or cfg.get("username")
-    name = from_name or cfg.get("from_name") or "FACETTE"
+    name = from_name or cfg.get("from_name") or "MELUNİ"
     payload = {
         "from": {"address": sender, "name": name},
         "to": [{"email_address": {"address": to}}],

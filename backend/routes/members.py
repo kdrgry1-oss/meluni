@@ -252,7 +252,7 @@ async def create_member(payload: dict, current_user: dict = Depends(require_admi
     doc = {
         "id": generate_id(),
         "email": email,
-        "password": hash_password(payload.get("password", "Facette123!")),
+        "password": hash_password(payload.get("password", "Meluni123!")),
         "first_name": payload.get("first_name", ""),
         "last_name": payload.get("last_name", ""),
         "phone": payload.get("phone", ""),

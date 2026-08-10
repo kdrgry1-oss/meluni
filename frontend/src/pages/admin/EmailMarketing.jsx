@@ -108,14 +108,14 @@ export default function EmailMarketing() {
         </div>
         <div className="grid md:grid-cols-2 gap-3">
           {field("AWS Bölgesi", "region", "text", "eu-west-1")}
-          {field("Gönderen adresi (doğrulanmış)", "from_email", "text", "club@facette.com.tr")}
+          {field("Gönderen adresi (doğrulanmış)", "from_email", "text", "club@meluni.com.tr")}
           {field("IAM Access Key ID", "access_key")}
           {field("IAM Secret Access Key", "secret_key", "password", "••••••")}
-          {field("Gönderen adı", "from_name", "text", "Facette")}
+          {field("Gönderen adı", "from_name", "text", "Meluni")}
           {/* Yanıt adresi: görünen gönderen gerçek bir posta kutusu olmayabilir
               (club@... yalnız gönderim için). Müşteri yanıtı kaybolmasın diye
               okunan bir adrese yönlendirilir. */}
-          {field("Yanıt adresi (ops.)", "reply_to", "text", "info@facette.com.tr")}
+          {field("Yanıt adresi (ops.)", "reply_to", "text", "info@meluni.com.tr")}
           {field("Configuration Set (ops.)", "configuration_set", "text", "açılma/bounce takibi")}
         </div>
         <div className="flex flex-wrap items-center gap-3 pt-2">

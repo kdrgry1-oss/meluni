@@ -77,7 +77,7 @@ def _build_custom_data(event: dict) -> dict:
         "order_id": str(event.get("order_id") or ""),
         "content_category": event.get("category") or "",
         "content_name": event.get("content_name") or "",
-        "content_brand": event.get("content_brand") or "FACETTE",
+        "content_brand": event.get("content_brand") or "MELUNİ",
     }
     if event.get("search_string"):
         cd["search_string"] = event["search_string"]
@@ -107,7 +107,7 @@ async def send(
             "action_source": "web",
             "event_time": int(event_time),
             "event_id": event_id,
-            "event_source_url": event_source_url or "https://www.facette.com.tr",
+            "event_source_url": event_source_url or "https://www.meluni.com.tr",
             "user_data": _build_user(user_data),
             "custom_data": _build_custom_data(event_payload),
         }],
@@ -141,7 +141,7 @@ async def test_connection(pixel_id: str, access_token: str,
         event_time=None,
         user_data={"em": "abc123",
                    "client_ip_address": "8.8.8.8",
-                   "client_user_agent": "Mozilla/5.0 FacetteTest"},
+                   "client_user_agent": "Mozilla/5.0 MeluniTest"},
         event_payload={"value": 0, "currency": "TRY"},
         test_event_code="1",
     )

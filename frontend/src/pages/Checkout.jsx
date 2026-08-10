@@ -106,7 +106,7 @@ export default function Checkout() {
     const sig = _cartSig();
     let h = "empty";
     try { if (sig) h = btoa(unescape(encodeURIComponent(sig))).replace(/[^A-Za-z0-9]/g, "").slice(0, 40); } catch { h = String(sig).length + "_" + (sig.length ? sig.charCodeAt(0) : 0); }
-    return "facette_idem_" + h;
+    return "meluni_idem_" + h;
   };
   const _getIdemKey = () => {
     const storeKey = _idemStoreKey();
@@ -123,7 +123,7 @@ export default function Checkout() {
       const rm = [];
       for (let i = 0; i < window.sessionStorage.length; i++) {
         const key = window.sessionStorage.key(i);
-        if (key && key.indexOf("facette_idem_") === 0) rm.push(key);
+        if (key && key.indexOf("meluni_idem_") === 0) rm.push(key);
       }
       rm.forEach((k) => window.sessionStorage.removeItem(k));
     } catch { /* yoksay */ }
@@ -381,7 +381,7 @@ export default function Checkout() {
   // Kayıtlı adres yoksa (misafir dahil) tarayıcıda daha önce girilen adresi otomatik yükle
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("facette_last_address");
+      const saved = localStorage.getItem("meluni_last_address");
       if (!saved) return;
       const a = JSON.parse(saved);
       if (!a || (!a.first_name && !a.address)) return;
@@ -394,7 +394,7 @@ export default function Checkout() {
   // Girilen adresi tarayıcıda hatırla → sonraki siparişte otomatik gelsin
   useEffect(() => {
     if (shippingAddress && (shippingAddress.first_name || shippingAddress.address)) {
-      try { localStorage.setItem("facette_last_address", JSON.stringify(shippingAddress)); } catch {}
+      try { localStorage.setItem("meluni_last_address", JSON.stringify(shippingAddress)); } catch {}
     }
   }, [shippingAddress]);
 
@@ -448,7 +448,7 @@ export default function Checkout() {
         size: it.size || "", color: it.color || "",
         list_price: it.list_price || it.price,
         sale_price: it.sale_price || it.price,
-        brand: it.brand || "FACETTE",
+        brand: it.brand || "MELUNİ",
         breadcrumb: it.breadcrumb || "",
       })),
       discount, shipping_cost: shippingCost,
@@ -475,7 +475,7 @@ export default function Checkout() {
         size: it.size || "", color: it.color || "",
         list_price: it.list_price || it.price,
         sale_price: it.sale_price || it.price,
-        brand: it.brand || "FACETTE",
+        brand: it.brand || "MELUNİ",
         breadcrumb: it.breadcrumb || "",
       })),
       coupon: appliedCoupon?.code || "",
@@ -555,7 +555,7 @@ export default function Checkout() {
       country: shippingAddress.country || "TR",
       zipcode: shippingAddress.zipcode || shippingAddress.postal_code || "",
       street: shippingAddress.address || "",
-      // Üye → user id; misafir → stabil first-party visitor id (facette_sid).
+      // Üye → user id; misafir → stabil first-party visitor id (meluni_sid).
       // Aynı değer server-side Purchase'ta da external_id olur → browser↔server dedup + external_id coverage.
       external_id: user?.id || getSessionId() || "",
     };
@@ -569,7 +569,7 @@ export default function Checkout() {
         size: it.size || "", color: it.color || "",
         list_price: it.list_price || it.price,
         sale_price: it.sale_price || it.price,
-        brand: it.brand || "FACETTE",
+        brand: it.brand || "MELUNİ",
         breadcrumb: it.breadcrumb || "",
       })),
       coupon: appliedCoupon?.code || "",
@@ -760,7 +760,7 @@ export default function Checkout() {
         total: grandTotal,
         payment_method: paymentMethod,
         attribution_session_id:
-          (typeof window !== "undefined" && (window.__FACETTE_SID__ || localStorage.getItem("facette_sid"))) || null,
+          (typeof window !== "undefined" && (window.__MELUNI_SID__ || localStorage.getItem("meluni_sid"))) || null,
         // Reklam tıklama kimlikleri (ttclid/fbc/gclid …) siparişe kaydedilir:
         // ödeme onayı iyzico webhook'undan (tarayıcısız) geldiğinde CAPI
         // purchase event'inde atıf için kullanılır.
@@ -770,7 +770,7 @@ export default function Checkout() {
         // KVKK: çerez bildirimindeki 'pazarlama' onayı — consent gate açıkken tarayıcısız
         // (webhook) server Purchase CAPI'si buna göre gönderilir/atlanır.
         ad_tracking_consent: (() => {
-          try { return !!JSON.parse(localStorage.getItem("facette_cookie_consent") || "{}").marketing; }
+          try { return !!JSON.parse(localStorage.getItem("meluni_cookie_consent") || "{}").marketing; }
           catch (_) { return false; }
         })(),
         // Çift sipariş koruması: aynı sepetin tekrar gönderimi yeni sipariş açmaz.
@@ -849,7 +849,7 @@ export default function Checkout() {
           country: shippingAddress.country || "TR",
           zipcode: shippingAddress.zipcode || shippingAddress.postal_code || "",
           street: shippingAddress.address || "",
-          // Üye → user id; misafir → stabil first-party visitor id (facette_sid).
+          // Üye → user id; misafir → stabil first-party visitor id (meluni_sid).
       // Aynı değer server-side Purchase'ta da external_id olur → browser↔server dedup + external_id coverage.
       external_id: user?.id || getSessionId() || "",
         };
@@ -862,7 +862,7 @@ export default function Checkout() {
             size: it.size || "", color: it.color || "",
             list_price: it.list_price || it.price,
             sale_price: it.sale_price || it.price,
-            brand: it.brand || "FACETTE",
+            brand: it.brand || "MELUNİ",
             breadcrumb: it.breadcrumb || "",
           })),
           coupon: appliedCoupon?.code || "",
@@ -1132,7 +1132,7 @@ export default function Checkout() {
                         <label className="block text-xs text-gray-700 mb-1">Firma Ünvanı *</label>
                         <input value={corporateData.company_name}
                           onChange={(e) => setCorporateData({ ...corporateData, company_name: e.target.value })}
-                          placeholder="Örn. Facette Tekstil A.Ş."
+                          placeholder="Örn. Meluni Tekstil A.Ş."
                           className="w-full border px-3 py-2 text-sm focus:outline-none focus:border-stone-900"
                           data-testid="corp-company-name-input" />
                       </div>
@@ -1183,7 +1183,7 @@ export default function Checkout() {
                               const mappedItems = (items || []).map((it) => ({
                                 item_id: String(it.product_id || it.productId || it.id || it.sku || ""),
                                 item_name: it.name || "",
-                                item_brand: it.brand || "FACETTE",
+                                item_brand: it.brand || "MELUNİ",
                                 item_category: it.category || it.categoryName || "",
                                 item_variant: `${it.size || ""} ${it.color || ""}`.trim(),
                                 price: Number(it.price) || 0,

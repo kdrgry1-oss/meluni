@@ -157,13 +157,13 @@ export default function Vendors() {
     });
   };
 
-  const seedFacette = async () => {
+  const seedMeluni = async () => {
     try {
       const token = localStorage.getItem('token');
       await axios.post(`${API}/vendors/seed-default`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      toast.success('FACETTE üretici eklendi');
+      toast.success('MELUNİ üretici eklendi');
       fetchVendors();
     } catch (err) {
       toast.error(err.response?.data?.detail || 'Hata oluştu');
@@ -179,10 +179,10 @@ export default function Vendors() {
         </div>
         <div className="flex gap-3">
           <button
-            onClick={seedFacette}
+            onClick={seedMeluni}
             className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-semibold hover:bg-purple-700 transition-colors"
           >
-            FACETTE Üretici Ekle
+            MELUNİ Üretici Ekle
           </button>
           <button
             onClick={() => { resetForm(); setModalOpen(true); }}

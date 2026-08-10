@@ -350,7 +350,7 @@ def create_shipment(
     vergi_no: str = "",
     kapida_odeme: int = 0,
     mal_bedeli_odeme: str = "",
-    platform_adi: str = "FACETTE",
+    platform_adi: str = "MELUNİ",
     platform_kodu: str = "",
 ) -> Dict:
     """

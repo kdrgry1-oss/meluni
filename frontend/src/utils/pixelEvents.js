@@ -35,7 +35,7 @@ function mapCartItems(items = [], coupon = "") {
     return {
       item_id: String(i.product_id || i.productId || i.id || ""),
       item_name: i.name || i.title || "",
-      item_brand: i.brand || "FACETTE",
+      item_brand: i.brand || "MELUNİ",
       item_category: i.category || i.categoryName || "",
       item_variant: `${i.size || ""} ${i.color || ""}`.trim(),
       price,
@@ -57,7 +57,7 @@ export function trackViewContent({ product_id, name, category, price, brand, col
   return trackViewItem({
     product: {
       id: product_id, name, category_name: category,
-      brand: brand || "FACETTE", color: color || "",
+      brand: brand || "MELUNİ", color: color || "",
       sale_price: Number(price) || 0, price: Number(price) || 0,
       // Meta content_ids için: seçili bedenin Ticimax varyant id'si (varsa)
       catalog_id: (variant_id != null && variant_id !== "") ? variant_id : undefined,
@@ -84,7 +84,7 @@ export function trackInitiateCheckout({ total, items = [], coupon = "", discount
   const mapped = items.map((i) => ({
     item_id: String(i.product_id || i.productId || i.id || ""),
     item_name: i.name || i.title || "",
-    item_brand: i.brand || "FACETTE",
+    item_brand: i.brand || "MELUNİ",
     item_category: i.category || i.categoryName || "",
     item_variant: `${i.size || ""} ${i.color || ""}`.trim(),
     price: Number(i.price) || 0,
@@ -109,7 +109,7 @@ export function trackPurchase({ order_id, total, items = [], coupon = "", curren
   const mapped = items.map((i) => ({
     item_id: String(i.product_id || i.productId || i.id || ""),
     item_name: i.name || i.title || "",
-    item_brand: i.brand || "FACETTE",
+    item_brand: i.brand || "MELUNİ",
     item_category: i.category || i.categoryName || "",
     item_variant: `${i.size || ""} ${i.color || ""}`.trim(),
     price: Number(i.price) || 0,

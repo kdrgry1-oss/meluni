@@ -347,7 +347,7 @@ export default function MarketingPixels() {
                 <label className="block text-xs text-gray-700 mb-1">Tenant ID <span className="text-gray-500">(SaaS — boş = tek mağaza)</span></label>
                 <input value={form.tenant_id}
                   onChange={(e) => setForm({ ...form, tenant_id: e.target.value })}
-                  placeholder="ör. facette / brandX"
+                  placeholder="ör. meluni / brandX"
                   className="w-full border px-3 py-2 text-xs rounded font-mono bg-white" />
               </div>
             </div>

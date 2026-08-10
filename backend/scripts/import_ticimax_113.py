@@ -96,7 +96,7 @@ def build_typed_fields(row, matched_by_barcode):
         return str(val).strip()
 
     out["description"] = _s("ACIKLAMA")
-    out["brand"] = _s("MARKA") or "FACETTE"
+    out["brand"] = _s("MARKA") or "MELUNİ"
     out["supplier"] = _s("TEDARIKCI")
     out["gtip_code"] = _s("GTIPKODU")
     out["keywords"] = _s("ANAHTARKELIME")

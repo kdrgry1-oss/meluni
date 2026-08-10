@@ -104,7 +104,7 @@ async def main(kart_ids: List[int]):
         category_leaf = _category_leaf(breadcrumb)
         cat_doc = cat_by_name.get(category_leaf.lower()) if category_leaf else None
         description = _s(p.get("Aciklama") or p.get("UrunAciklamasi"))
-        vendor = _s(p.get("Tedarikci") or "FACETTE")
+        vendor = _s(p.get("Tedarikci") or "MELUNİ")
         # Üye fiyatı (eğer varsa)
         member_price = list_price
         try:

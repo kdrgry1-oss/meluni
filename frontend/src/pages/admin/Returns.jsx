@@ -12,7 +12,7 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 // Web Sitesi (site iadeleri) en başta, sonra Trendyol. Yeni bir pazaryeri
 // entegrasyonu aktifleştiğinde (örn. Hepsiburada claim çekimi) buraya eklenir.
 const PLATFORMS = [
-  { key: "facette", label: "Web Sitesi", badge: "W", color: "bg-gray-800" },
+  { key: "meluni", label: "Web Sitesi", badge: "W", color: "bg-gray-800" },
   { key: "trendyol", label: "Trendyol", badge: "T", color: "bg-orange-500" },
   { key: "hepsiburada", label: "Hepsiburada", badge: "H", color: "bg-amber-600" },
 ];
@@ -116,7 +116,7 @@ export default function Returns() {
   const [exporting, setExporting] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
-  const [platform, setPlatform] = useState("facette");
+  const [platform, setPlatform] = useState("meluni");
   // Web Sitesi sekmesi doğrudan sipariş bazlı iade akışını (RooftrReturns) gösterir; alt-sekme yok.
   const [statusTab, setStatusTab] = useState("all");
   const [tabCounts, setTabCounts] = useState({});
@@ -160,7 +160,7 @@ export default function Returns() {
   const fetchClaims = useCallback(async () => {
     // Web Sitesi sekmesi kendi verisini gömülü <SiteReturns/> ile customer_returns'ten
     // ceker; bu yuzden Trendyol claims endpoint'ini cagirmaya gerek yok.
-    if (platform === "facette") {
+    if (platform === "meluni") {
       setClaims([]); setTotal(0); setTabCounts({}); setStats({}); setLoading(false);
       return;
     }
@@ -874,7 +874,7 @@ export default function Returns() {
         </div>
 
         {/* Web Sitesi sekmesi: doğrudan sipariş bazlı iade akışı (alt-sekme yok — üstte zaten "Web Sitesi" yazıyor) */}
-        {platform === "facette" && <RooftrReturns embedded gpStart={gpStart}
+        {platform === "meluni" && <RooftrReturns embedded gpStart={gpStart}
           onGiderCreated={(gp) => { setGpData(gp); setGpModalOpen(true); /* önizleme: numara YAZDIR'da atanır, burada advance YOK */ }}
           onBulkGider={(gps, nextNo) => { setBulkPrintData(gps); const nn = pad6(nextNo); setGpStart(nn); localStorage.setItem("gp_next_no", nn); setTimeout(() => window.print(), 500); }} />}
 
@@ -1293,7 +1293,7 @@ function GiderPusulasiSlip({ data, overlay, offX = 0, offY = 0, guides = false }
       {Gt(5, 4, 1.7, "No: 3  34307 Küçükçekmece/İST.")}
       {Gt(5, 7.5, 1.7, "Halkalı V.D.: 781 081 6779")}
       {Gt(5, 11, 1.7, "Ticaret Sicil No: 203113-5")}
-      {Gt(5, 14.5, 1.7, "iletisim@facette.com.tr")}
+      {Gt(5, 14.5, 1.7, "iletisim@meluni.com.tr")}
       <div style={{ position: "absolute", left: "52mm", top: "4mm", width: "13mm", height: "13mm", border: "0.3mm solid " + G, borderRadius: "50%", textAlign: "center", fontSize: "1.4mm", color: G, lineHeight: "13mm" }}>T.C.</div>
       {Gt(48, 27, 1.9, "İL KODU: 34", { fontWeight: 700 })}
       {Gt(52, 34, 2.0, "SERİ A", { fontWeight: 700 })}

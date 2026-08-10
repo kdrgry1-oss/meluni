@@ -1,11 +1,11 @@
 """
-FACETTE sabit öznitelik varsayılanları — TÜM pazaryerleri (Trendyol / Hepsiburada / Temu) için ORTAK.
+MELUNİ sabit öznitelik varsayılanları — TÜM pazaryerleri (Trendyol / Hepsiburada / Temu) için ORTAK.
 
 Tasarım:
 - Pazaryerine BAĞIMSIZ. Değerler İSİMLE tutulur (value_id değil); her pazaryeri push
   çekirdeği bu değeri kendi value_id'sine ADA GÖRE çözer (TR ↔ Türkiye gibi).
 - Push'a GAP-FILL olarak eklenir: ürün/varyant/kategori o özelliği ZATEN taşıyorsa
-  DOKUNULMAZ; yalnız boş kalan özelliğe FACETTE sabiti yazılır.
+  DOKUNULMAZ; yalnız boş kalan özelliğe MELUNİ sabiti yazılır.
 - Eşleşme yoksa (kategoride o özellik yoksa / değer enum'a uymuyorsa) mevcut akış
   AYNEN korunur, sessizce atlanır → hiçbir push'u bozmaz.
 - Hiçbir pazaryeri modülüne import bağımlılığı YOKTUR (yalnız bu modül dışa verir).
@@ -14,14 +14,14 @@ Tasarım:
 import re as _re
 
 # Üretici / İthalatçı (GPSR / "Ürün Denetim Bilgileri") tek kaynak.
-FACETTE_COMPANY = {
-    "company_name": "FACETTE DIŞ TİCARET A.Ş.",
-    "email": "info@facette.com.tr",
+MELUNI_COMPANY = {
+    "company_name": "MELUNİ DIŞ TİCARET A.Ş.",
+    "email": "info@meluni.com.tr",
     "address": "İkitelli O.S.B. İmsan San. Sit. D BLOK NO:3",
 }
 
 # Düz sabitler (ada göre). Üretici/İthalatçı GPSR alanları aşağıdaki resolver ile ayrı ele alınır.
-FACETTE_FIXED_ATTR_DEFAULTS = {
+MELUNI_FIXED_ATTR_DEFAULTS = {
     "Menşei": "Türkiye",
     "Cinsiyet": "Kadın",
     "Yaş Grubu": "Yetişkin",
@@ -44,22 +44,22 @@ def _norm(s) -> str:
     return " ".join(s.split())
 
 
-_FIXED_NORM = {_norm(k): v for k, v in FACETTE_FIXED_ATTR_DEFAULTS.items()}
+_FIXED_NORM = {_norm(k): v for k, v in MELUNI_FIXED_ATTR_DEFAULTS.items()}
 
 
-def facette_company_value(attr_name):
-    """Üretici/İthalatçı (GPSR) bir özellik adını FACETTE şirket bilgisine eşler.
+def meluni_company_value(attr_name):
+    """Üretici/İthalatçı (GPSR) bir özellik adını MELUNİ şirket bilgisine eşler.
     'Üretici Adı', 'Birincil/İkincil/Üçüncül İthalatçı Adı' → firma adı;
     '...Mail...' → e-posta; '...Adres...' → adres. Değilse None (akış bozulmaz).
     """
     field = company_field_for_attr(attr_name)
-    return FACETTE_COMPANY[field] if field else None
+    return MELUNI_COMPANY[field] if field else None
 
 
 def company_field_for_attr(attr_name):
     """GPSR üretici/ithalatçı özellik adının hangi şirket alanına denk geldiğini döndürür:
     'company_name' | 'email' | 'address' | None.
-    İSİM-EŞLEME TEK KAYNAK — hem push gap-fill (facette_company_value) hem kategori
+    İSİM-EŞLEME TEK KAYNAK — hem push gap-fill (meluni_company_value) hem kategori
     şirket-doldurma (category_mapping._resolve_company_value) bunu kullanır.
     """
     if not attr_name:
@@ -77,12 +77,12 @@ def company_field_for_attr(attr_name):
     return None  # tanımadığımız alt-alan (telefon/vergi no…) → dokunma
 
 
-def facette_fixed_value_for(attr_name):
-    """Pazaryeri özellik ADINA FACETTE sabit varsayılanını döndürür; eşleşmezse None.
+def meluni_fixed_value_for(attr_name):
+    """Pazaryeri özellik ADINA MELUNİ sabit varsayılanını döndürür; eşleşmezse None.
     Push çekirdekleri yalnız BOŞ kalan özellik için çağırır (gap-fill)."""
     if not attr_name:
         return None
-    cv = facette_company_value(attr_name)
+    cv = meluni_company_value(attr_name)
     if cv:
         return cv
     return _FIXED_NORM.get(_norm(attr_name))

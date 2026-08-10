@@ -40,7 +40,7 @@ export default function NotificationSettings() {
   const [testing, setTesting] = useState(false);
   const [testChannel, setTestChannel] = useState("sms");
   const [testTo, setTestTo] = useState("");
-  const [testMsg, setTestMsg] = useState("Facette test ✓");
+  const [testMsg, setTestMsg] = useState("Meluni test ✓");
   const [pushTitle, setPushTitle] = useState("");
   const [pushBody, setPushBody] = useState("");
   const [pushSending, setPushSending] = useState(false);

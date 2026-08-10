@@ -69,7 +69,7 @@ async def send_stockout_alert_email(admin=Depends(require_admin)):
     s = data["summary"]
     if not items:
         return {"ok": False, "message": "Uyarılacak ürün yok"}
-    lines = [f"Facette Stok Tükenme Uyarısı\n",
+    lines = [f"Meluni Stok Tükenme Uyarısı\n",
              f"🔴 Kritik (≤14g): {s['critical']}",
              f"🟠 Yüksek (≤30g): {s['high']}",
              f"🟡 Uyarı: {s['warning']}",

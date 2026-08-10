@@ -102,7 +102,7 @@ export default function AIAssistant() {
 function ChatTab({ onUpdate }) {
   const [messages, setMessages] = useState([
     { role: "system",
-      text: "Merhaba! Ben Facette AI Asistan. Beni 3 şekilde eğitebilirsin:\n\n" +
+      text: "Merhaba! Ben Meluni AI Asistan. Beni 3 şekilde eğitebilirsin:\n\n" +
             "1. Soru-Cevap çifti — örn: 'S: Kargo kaç günde gelir? C: 2-3 iş günü içinde teslim edilir.'\n" +
             "2. Talimat — örn: 'Müşteriye her zaman çok kibar ol' veya 'XL bedeni 42 numara olarak söyle'\n" +
             "3. Düz soru — bana bir soru sor, cevaplayayım, doğruysa kaydet diyebilirsin.\n\n" +

@@ -283,7 +283,7 @@ export default function Manufacturing() {
       season,
       // Alış fiyatı KDV DAHİL taşınır (birim fiyat KDV hariç girilir, %10 KDV eklenir)
       purchase_price: Number((Number(item.unit_price || 0) * 1.10).toFixed(2)),
-      manufacturer: item.partner_name || "FACETTE",
+      manufacturer: item.partner_name || "MELUNİ",
       variants,
     }));
     navigate("/admin/urunler?newFromMfg=1");

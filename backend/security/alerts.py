@@ -32,7 +32,7 @@ SMTP_HOST = os.environ.get("ALERT_SMTP_HOST")
 SMTP_PORT = int(os.environ.get("ALERT_SMTP_PORT") or "587")
 SMTP_USER = os.environ.get("ALERT_SMTP_USER")
 SMTP_PASS = os.environ.get("ALERT_SMTP_PASSWORD")
-SMTP_FROM = os.environ.get("ALERT_SMTP_FROM") or SMTP_USER or "alerts@facette.com"
+SMTP_FROM = os.environ.get("ALERT_SMTP_FROM") or SMTP_USER or "alerts@meluni.com.tr"
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 RESEND_FROM = os.environ.get("RESEND_FROM") or SMTP_FROM
 THROTTLE_SECONDS = int(os.environ.get("ALERT_THROTTLE_SECONDS") or "300")  # 5 min default
@@ -141,7 +141,7 @@ async def send_alert(
         return {"alert_id": aid, "throttled": True, "delivered": {"smtp": False, "resend": False}}
 
     target = to_email or ALERT_TO_EMAIL
-    subject = f"[Facette {level.upper()}] {title}"[:200]
+    subject = f"[Meluni {level.upper()}] {title}"[:200]
     text = (
         f"{title}\n\n"
         f"Level: {level}\nKind: {kind}\nTime: {datetime.now(timezone.utc).isoformat()}\n\n"

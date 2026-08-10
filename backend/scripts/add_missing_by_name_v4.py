@@ -186,7 +186,7 @@ async def main():
                 "is_active": True,
                 "in_stock": False,
                 "urun_karti_id": kart_id,
-                "manufacturer": "FACETTE",
+                "manufacturer": "MELUNİ",
                 "category_id": None, "category_name": None,
                 "images": [],
                 "created_at": now, "updated_at": now,

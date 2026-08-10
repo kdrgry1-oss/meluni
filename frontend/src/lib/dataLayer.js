@@ -83,11 +83,11 @@ export function collectClickIds() {
 }
 
 // ── KVKK/Consent gate (VARSAYILAN KAPALI) ────────────────────────────────────
-// Flag backend'ten gelir (MarketingPixelsInjector → window.__FACETTE_CONSENT_GATE__).
+// Flag backend'ten gelir (MarketingPixelsInjector → window.__MELUNI_CONSENT_GATE__).
 // Gate KAPALIYKEN hiçbir şey değişmez (mevcut davranış). Gate AÇIKKEN yalnız kullanıcı
 // pazarlama çerezlerine AÇIK onay ("marketing":true) verdiyse Meta/CAPI'ye gönderilir.
 // GA4 dataLayer push'u ayrıca Google Consent Mode ile yönetildiği için burada gate edilmez.
-const _CONSENT_LS_KEY = "facette_cookie_consent";
+const _CONSENT_LS_KEY = "meluni_cookie_consent";
 function _marketingConsentGranted() {
   try {
     const s = localStorage.getItem(_CONSENT_LS_KEY);
@@ -97,7 +97,7 @@ function _marketingConsentGranted() {
 }
 function _adTrackingBlocked() {
   if (typeof window === "undefined") return false;
-  if (window.__FACETTE_CONSENT_GATE__ !== true) return false;  // gate kapalı → engel yok
+  if (window.__MELUNI_CONSENT_GATE__ !== true) return false;  // gate kapalı → engel yok
   return _marketingConsentGranted() !== true;                  // gate açık → yalnız açık onayda gönder
 }
 
@@ -147,7 +147,7 @@ async function pushEvent(eventName, eventData, userInfo = {}) {
         payment_type: eventData.payment_type || "",
         shipping_tier: eventData.shipping_tier || "",
         // Liste / atıf
-        affiliation: eventData.affiliation || "FACETTE Online",
+        affiliation: eventData.affiliation || "MELUNİ Online",
         item_list_id: eventData.list_id || "",
         item_list_name: eventData.list_name || "",
         // Promosyon
@@ -304,7 +304,7 @@ async function pushEvent(eventName, eventData, userInfo = {}) {
       payment_type: eventData.payment_type || "",
       shipping_tier: eventData.shipping_tier || "",
       // Liste / atıf
-      affiliation: eventData.affiliation || "FACETTE Online",
+      affiliation: eventData.affiliation || "MELUNİ Online",
       list_id: eventData.list_id || "",
       list_name: eventData.list_name || "",
       promotion_id: eventData.promotion_id || "",
@@ -349,7 +349,7 @@ function productToItem(p, variant = null, opts = {}) {
       : (p.id || p.product_id || p.sku || p.stock_code || "")
     ),
     item_name: p.name || "",
-    item_brand: p.brand || p.vendor || "FACETTE",
+    item_brand: p.brand || p.vendor || "MELUNİ",
     item_category: crumbs[0] || p.category_name || "",
     item_variant: variant
       ? `${variant.size || ""} ${variant.color || p.color || ""}`.trim()
@@ -370,7 +370,7 @@ function productToItem(p, variant = null, opts = {}) {
     item_list_id: opts.listId || "",
     item_list_name: opts.listName || "",
     index: opts.index ?? undefined,
-    affiliation: opts.affiliation || "FACETTE Online",
+    affiliation: opts.affiliation || "MELUNİ Online",
     // Promosyon
     coupon: opts.coupon || "",
     promotion_id: opts.promotionId || "",

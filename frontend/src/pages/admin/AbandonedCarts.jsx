@@ -96,7 +96,7 @@ export default function AbandonedCarts() {
                 <td className="p-3 text-xs text-gray-500">{new Date(s.updated_at).toLocaleString("tr-TR")}</td>
                 <td className="p-3 text-right">
                   {s.email && (
-                    <a href={`mailto:${s.email}?subject=Sepetinizi%20Unuttunuz%20mu?&body=Merhaba,%20Facette%20sepetinizde%20%E2%82%BA${s.total}%20tutarinda%20${s.items?.length}%20ürün%20mevcut.%20Dönüş%20yaparak%20%25X%20indirim%20kazanabilirsiniz.`} className="inline-flex items-center gap-1 text-xs text-blue-600 hover:bg-blue-50 px-2 py-1 rounded">
+                    <a href={`mailto:${s.email}?subject=Sepetinizi%20Unuttunuz%20mu?&body=Merhaba,%20Meluni%20sepetinizde%20%E2%82%BA${s.total}%20tutarinda%20${s.items?.length}%20ürün%20mevcut.%20Dönüş%20yaparak%20%25X%20indirim%20kazanabilirsiniz.`} className="inline-flex items-center gap-1 text-xs text-blue-600 hover:bg-blue-50 px-2 py-1 rounded">
                       <Mail size={12} /> Mail
                     </a>
                   )}

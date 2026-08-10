@@ -234,7 +234,7 @@ class HepsiburadaClient:
         if isinstance(items, dict):
             items = [items]
         payload = json.dumps(items, ensure_ascii=False).encode("utf-8")
-        boundary = "----HBFacette" + uuid.uuid4().hex
+        boundary = "----HBMeluni" + uuid.uuid4().hex
         body = b""
         body += ("--" + boundary + "\r\n").encode()
         body += b'Content-Disposition: form-data; name="file"; filename="integrator.json"\r\n'
@@ -271,7 +271,7 @@ class HepsiburadaClient:
             items = [items]
         body_obj = {"merchantId": merchant_id or self.merchant_id, "items": items}
         payload = json.dumps(body_obj, ensure_ascii=False).encode("utf-8")
-        boundary = "----HBFacetteTicket" + uuid.uuid4().hex
+        boundary = "----HBMeluniTicket" + uuid.uuid4().hex
         body = b""
         body += ("--" + boundary + "\r\n").encode()
         body += b'Content-Disposition: form-data; name="file"; filename="integrator-ticket-upload.json"\r\n'

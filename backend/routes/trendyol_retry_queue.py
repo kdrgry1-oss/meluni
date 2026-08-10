@@ -144,7 +144,7 @@ async def process_queue(db: AsyncIOMotorDatabase) -> dict:
     import os as _os
     backend_url = _os.environ.get("INTERNAL_BACKEND_URL", "http://localhost:8001")
     # Admin user için temporary token oluştur
-    admin = await db.users.find_one({"email": "admin@facette.com"})
+    admin = await db.users.find_one({"email": "admin@meluni.com.tr"})
     if not admin:
         return {"processed": 0, "succeeded": 0, "still_stuck": len(barcodes), "error": "Admin user yok"}
     from routes.deps import create_token

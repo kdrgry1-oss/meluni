@@ -6,7 +6,7 @@ import { MessageSquare, CheckCircle2, XCircle, Clock, Star, Trash2, Download, St
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const authHeaders = () => ({ Authorization: `Bearer ${localStorage.getItem("token")}` });
 
-// Trendyol Facette mağazasından 4-5★ yorumları toplu çekme paneli. Ürünleri barkodla
+// Trendyol Meluni mağazasından 4-5★ yorumları toplu çekme paneli. Ürünleri barkodla
 // Trendyol listelemesine eşleştirir, public storefront'tan yorumları çeker, product_reviews'a yazar.
 const SYNC_STATUS_META = {
   cekildi:   { label: "Çekildi",     cls: "bg-emerald-100 text-emerald-800 border-emerald-200" },
@@ -97,7 +97,7 @@ function TrendyolReviewSync() {
     <div className="bg-white border rounded-xl p-4" data-testid="trendyol-review-sync">
       <div className="flex items-center gap-2 mb-1">
         <Store size={18} className="text-orange-500" />
-        <h2 className="text-sm font-bold uppercase tracking-wider">Trendyol Yorumları (Facette Mağazası)</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wider">Trendyol Yorumları (Meluni Mağazası)</h2>
       </div>
       <p className="text-xs text-gray-500 mb-3">
         Site ürünlerini barkodla Trendyol listelemene eşleştirir ve <b>{minRating}★ ve üzeri</b> yorumları çeker.
@@ -114,7 +114,7 @@ function TrendyolReviewSync() {
           <input
             value={workerUrl}
             onChange={(e) => setWorkerUrl(e.target.value)}
-            placeholder="https://facette-ty.hesabin.workers.dev"
+            placeholder="https://meluni-ty.hesabin.workers.dev"
             className="flex-1 border border-amber-300 rounded px-3 py-2 text-sm"
           />
           <button onClick={saveWorker} className="px-3 py-2 bg-amber-600 text-white rounded-lg text-sm hover:bg-amber-700">

@@ -84,13 +84,13 @@ export async function setupPushNotifications() {
 
 /**
  * GÜVENLİK: deep-link / push payload'ından SADECE aynı-origin relatif bir yol üret.
- * `facette://order/5` → `/order/5`. Dış host (evil.com), mutlak URL, javascript:,
+ * `meluni://order/5` → `/order/5`. Dış host (evil.com), mutlak URL, javascript:,
  * `//` protokol-relatif veya scheme içeren değerler reddedilir (açık yönlendirme /
  * keyfi navigasyon engeli).
  */
 function safeDeepLinkPath(raw) {
   let s = String(raw || "").trim();
-  s = s.replace(/^facette:\/\//i, "/");
+  s = s.replace(/^meluni:\/\//i, "/");
   // Sadece "/" ile başlayan, "//" olmayan, scheme/backslash içermeyen yollar
   if (!s.startsWith("/")) return null;
   if (s.startsWith("//")) return null;
@@ -116,7 +116,7 @@ export async function checkAppVersion() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  DEEP LINKS — facette://order/123                                          */
+/*  DEEP LINKS — meluni://order/123                                          */
 /* -------------------------------------------------------------------------- */
 export function setupDeepLinks() {
   if (!isNative || !App) return;

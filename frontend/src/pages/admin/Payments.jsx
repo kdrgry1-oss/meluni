@@ -139,7 +139,7 @@ export default function Payments() {
               <div>
                 <label className="block text-[11px] font-bold text-gray-500 uppercase mb-1">Hesap Sahibi</label>
                 <input value={form.account_holder} onChange={(e) => setForm({ ...form, account_holder: e.target.value })}
-                  className="w-full border rounded-lg px-3 py-2 text-sm" placeholder="FACETTE DIŞ TİC. A.Ş" />
+                  className="w-full border rounded-lg px-3 py-2 text-sm" placeholder="MELUNİ DIŞ TİC. A.Ş" />
               </div>
               <label className="flex items-center gap-2 text-sm text-gray-700 self-end pb-2 cursor-pointer">
                 <input type="checkbox" checked={form.is_default}

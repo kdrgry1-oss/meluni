@@ -1,4 +1,4 @@
-"""Facette Meta Pixel + CAPI kaydını gerçek Pixel ID ve token ile günceller.
+"""Meluni Meta Pixel + CAPI kaydını gerçek Pixel ID ve token ile günceller.
 PDF'ten alınan: Pixel ID 1309645730719851 + CAPI access token.
 """
 import asyncio
@@ -57,7 +57,7 @@ async def main():
         {"$set": {
             "key": vault_key,
             "value_enc": enc,
-            "description": "CAPI meta token — Facette Pixel",
+            "description": "CAPI meta token — Meluni Pixel",
             "scope": "capi",
             "updated_at": now_iso,
         }, "$setOnInsert": {"created_at": now_iso}},
@@ -67,7 +67,7 @@ async def main():
     existing = await db.marketing_pixels.find_one({"provider": "meta"})
     data = {
         "provider": "meta",
-        "name": "Meta Pixel (Facette)",
+        "name": "Meta Pixel (Meluni)",
         "tag_id": PIXEL_ID,
         "head_snippet": meta_head_snippet(PIXEL_ID),
         "body_snippet": "",

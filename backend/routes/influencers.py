@@ -525,7 +525,7 @@ async def create_campaign_cargo(campaign_id: str, current_user: dict = Depends(r
     # SMS bildirimi (influencer'a)
     sms_res = await _send_direct_sms(
         phone,
-        f"Merhaba {inf.get('name','')}, Facette numune gonderiniz hazirlandi. Takip: {siparis_no}",
+        f"Merhaba {inf.get('name','')}, Meluni numune gonderiniz hazirlandi. Takip: {siparis_no}",
     )
 
     return {"success": True, "cargo_barcode": barkod, "tracking_no": siparis_no, "sms": sms_res}
@@ -562,10 +562,10 @@ async def influencer_cargo_webhook(payload: dict, request: Request):
     sms_text = None
     if "teslim" in status_lower or "delivered" in status_lower:
         new_cargo_status = "delivered"
-        sms_text = "Facette numune gonderiniz teslim edildi. Icerik standartlari: 9:16 dikey format, @facette mention. Iyi cekimler!"
+        sms_text = "Meluni numune gonderiniz teslim edildi. Icerik standartlari: 9:16 dikey format, @meluni mention. Iyi cekimler!"
     elif "kargo" in status_lower or "shipped" in status_lower or "yola" in status_lower:
         new_cargo_status = "shipped"
-        sms_text = f"Facette numune gonderiniz kargoya verildi. Takip: {tracking}"
+        sms_text = f"Meluni numune gonderiniz kargoya verildi. Takip: {tracking}"
 
     await db.influencer_campaigns.update_one(
         {"id": camp["id"]},

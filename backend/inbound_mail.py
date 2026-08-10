@@ -1,6 +1,6 @@
 """
 Cloudflare Email Routing -> gelen mail webhook alıcısı.
-info@facettedijital.com'a gelen mailler buraya düşer, db.inbound_mails'e yazılır.
+info@melunidijital.com'a gelen mailler buraya düşer, db.inbound_mails'e yazılır.
 """
 import os
 import hmac

@@ -26,12 +26,12 @@ router = APIRouter(prefix="/admin/vault", tags=["secrets-vault"])
 
 def _is_super_admin(user: dict) -> bool:
     """Super-admins can reveal raw secrets. Field is `is_super_admin` on the
-    user document. The bootstrap admin (admin@facette.com) is implicit super."""
+    user document. The bootstrap admin (admin@meluni.com.tr) is implicit super."""
     if not user:
         return False
     if user.get("is_super_admin"):
         return True
-    return user.get("email") == "admin@facette.com"
+    return user.get("email") == "admin@meluni.com.tr"
 
 
 class SecretIn(BaseModel):

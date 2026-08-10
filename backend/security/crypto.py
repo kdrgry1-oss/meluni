@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 def _derive_key_from_jwt(secret: str) -> bytes:
     """HKDF-SHA256 → 32 bytes → urlsafe base64 (Fernet input)."""
-    salt = b"facette-secrets-vault-v1"
+    salt = b"meluni-secrets-vault-v1"
     info = b"aes256-gcm-master"
     # Simple HKDF (extract+expand)
     prk = hmac.new(salt, secret.encode("utf-8"), hashlib.sha256).digest()

@@ -335,7 +335,7 @@ export default function OrderSuccess() {
         {/* Help */}
         <div className="text-center mt-16 pt-12 border-t border-gray-100">
           <p className="text-xs text-gray-500 tracking-wide">
-            Sorularınız için: <a href="mailto:destek@facette.com.tr" className="underline hover:text-black">destek@facette.com.tr</a>
+            Sorularınız için: <a href="mailto:destek@meluni.com.tr" className="underline hover:text-black">destek@meluni.com.tr</a>
           </p>
         </div>
       </div>

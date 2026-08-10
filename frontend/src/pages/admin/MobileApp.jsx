@@ -363,7 +363,7 @@ export default function MobileApp() {
                      className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm" />
             </div>
             <div>
-              <label className="text-xs text-gray-600">Data (JSON, opsiyonel) — örn: {`{"deep_link":"facette://order/123"}`}</label>
+              <label className="text-xs text-gray-600">Data (JSON, opsiyonel) — örn: {`{"deep_link":"meluni://order/123"}`}</label>
               <textarea value={push.data_json} onChange={(e) => setPush({ ...push, data_json: e.target.value })}
                         rows={2}
                         className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs font-mono" />

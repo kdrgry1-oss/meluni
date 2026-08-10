@@ -91,7 +91,7 @@ async def _site_base() -> str:
             return url
     except Exception:
         pass
-    return (os.environ.get("SITE_URL") or "https://facette.com.tr").rstrip("/")
+    return (os.environ.get("SITE_URL") or "https://meluni.com.tr").rstrip("/")
 
 
 # ── SES ayarları ────────────────────────────────────────────────────────────
@@ -114,7 +114,7 @@ async def get_settings(current_user: dict = Depends(require_admin)):
 @admin_router.put("/settings")
 async def save_settings(payload: dict, current_user: dict = Depends(require_admin)):
     # reply_to: görünen gönderen (from_email) gerçek bir posta kutusu OLMAYABİLİR
-    # (ör. club@facette.com.tr yalnız gönderim için). Müşteri maili yanıtlarsa yanıtın
+    # (ör. club@meluni.com.tr yalnız gönderim için). Müşteri maili yanıtlarsa yanıtın
     # kaybolmaması için okunan bir adrese yönlendirilir.
     allowed = {"enabled", "region", "access_key", "secret_key", "from_email", "from_name",
                "configuration_set", "reply_to"}
@@ -142,8 +142,8 @@ async def send_test(payload: dict, current_user: dict = Depends(require_admin)):
     cfg = await get_ses_config(db)
     if not is_configured(cfg):
         raise HTTPException(status_code=400, detail="SES ayarları eksik/pasif. Bölge, anahtarlar ve gönderen adresi girip aktifleştirin.")
-    html = _wrap("Facette — SES Test", "<p>Bu bir <b>AWS SES</b> test e-postasıdır. Bu mail size ulaştıysa pazarlama kanalı çalışıyor. 🎉</p>", unsub_url="")
-    r = await send_ses_email(cfg, to, "Facette — SES Test", html, cfg.get("reply_to") or "")
+    html = _wrap("Meluni — SES Test", "<p>Bu bir <b>AWS SES</b> test e-postasıdır. Bu mail size ulaştıysa pazarlama kanalı çalışıyor. 🎉</p>", unsub_url="")
+    r = await send_ses_email(cfg, to, "Meluni — SES Test", html, cfg.get("reply_to") or "")
     if not r.get("success"):
         raise HTTPException(status_code=400, detail=f"Gönderilemedi: {r.get('error') or 'bilinmeyen hata'}")
     return {"success": True, "message_id": r.get("message_id", "")}
@@ -163,12 +163,12 @@ async def audience(current_user: dict = Depends(require_admin)):
 
 
 def _wrap(subject: str, body_html: str, unsub_url: str) -> str:
-    """Kampanya HTML'ini FACETTE marka kabuğuna sarar (işlemsel maillerle aynı görünüm) +
+    """Kampanya HTML'ini MELUNİ marka kabuğuna sarar (işlemsel maillerle aynı görünüm) +
     abonelikten-çık satırı ekler (İYS/KVKK gereği ticari e-postada zorunlu)."""
     unsub = ""
     if unsub_url:
         unsub = (f'<p style="text-align:center;font-size:11px;color:#9a9a9a;margin-top:24px">'
-                 f'Bu e-postayı Facette Kulübü üyesi olduğunuz için aldınız. '
+                 f'Bu e-postayı Meluni Kulübü üyesi olduğunuz için aldınız. '
                  f'<a href="{unsub_url}" style="color:#9a9a9a;text-decoration:underline">Abonelikten çık</a></p>')
     content = (body_html or "") + unsub
     try:
@@ -277,7 +277,7 @@ async def list_campaigns(limit: int = 50, current_user: dict = Depends(require_a
 
 # ── SES BOUNCE / ŞİKÂYET BİLDİRİMİ (AWS SNS webhook) ──────────────────────────
 # AWS kurulumu: SES → Configuration set → Event destination → SNS topic →
-#   Subscription: HTTPS → https://api.facette.com.tr/api/email-marketing/ses-webhook?key=<SECRET>
+#   Subscription: HTTPS → https://api.meluni.com.tr/api/email-marketing/ses-webhook?key=<SECRET>
 # SECRET: ortam değişkeni SES_WEBHOOK_SECRET ya da settings.email_ses.webhook_secret.
 # GÜVENLİK fail-closed: secret yoksa/yanlışsa 403. (Aksi halde herkes sahte bounce
 # gönderip abonelerinizi kara listeye attırabilirdi.)
@@ -380,7 +380,7 @@ async def unsubscribe(e: str = "", t: str = ""):
 <title>Abonelik</title></head>
 <body style="font-family:system-ui,Arial,sans-serif;background:#fafafa;margin:0;padding:0">
 <div style="max-width:460px;margin:12vh auto;background:#fff;border:1px solid #eee;border-radius:14px;padding:40px 32px;text-align:center">
-<div style="font-size:22px;letter-spacing:.3em;font-weight:600;color:#111">FACETTE</div>
+<div style="font-size:22px;letter-spacing:.3em;font-weight:600;color:#111">MELUNİ</div>
 <p style="color:#444;margin-top:20px;line-height:1.6">{msg}</p>
 </div></body></html>"""
     return HTMLResponse(content=html)

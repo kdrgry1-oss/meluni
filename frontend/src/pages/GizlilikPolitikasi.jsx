@@ -12,7 +12,7 @@ export default function GizlilikPolitikasi() {
         <div className="prose prose-sm max-w-none text-gray-700 space-y-6 leading-relaxed">
           <section>
             <h2 className="text-lg font-medium text-gray-900">1. Toplanan Veriler</h2>
-            <p>Facette olarak, sipariş ifası ve müşteri hizmetleri amacıyla ad-soyad, iletişim
+            <p>Meluni olarak, sipariş ifası ve müşteri hizmetleri amacıyla ad-soyad, iletişim
             (telefon, e-posta), teslimat/fatura adresi ve sipariş bilgilerinizi toplarız.
             Pazaryeri (Amazon, Trendyol vb.) entegrasyonlarında ilgili platformdan gelen
             sipariş ve alıcı bilgileri yalnızca siparişin yerine getirilmesi için işlenir.</p>
@@ -48,13 +48,13 @@ export default function GizlilikPolitikasi() {
           <section>
             <h2 className="text-lg font-medium text-gray-900">6. Haklarınız (KVKK)</h2>
             <p>Verilerinize erişim, düzeltme, silme ve işlemeye itiraz haklarına sahipsiniz.
-            Talepleriniz için <a href="mailto:kvkk@facette.com.tr" className="underline">kvkk@facette.com.tr</a>
+            Talepleriniz için <a href="mailto:kvkk@meluni.com.tr" className="underline">kvkk@meluni.com.tr</a>
             adresine başvurabilirsiniz.</p>
           </section>
 
           <section>
             <h2 className="text-lg font-medium text-gray-900">7. İletişim</h2>
-            <p>Gizlilik ve güvenlikle ilgili sorular için: <a href="mailto:security@facette.com.tr" className="underline">security@facette.com.tr</a></p>
+            <p>Gizlilik ve güvenlikle ilgili sorular için: <a href="mailto:security@meluni.com.tr" className="underline">security@meluni.com.tr</a></p>
           </section>
         </div>
       </main>

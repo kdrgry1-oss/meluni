@@ -1,4 +1,4 @@
-"""R2 public URL'lerini (pub-...r2.dev) Cloudflare özel domainine (cdn.facette.com.tr)
+"""R2 public URL'lerini (pub-...r2.dev) Cloudflare özel domainine (cdn.meluni.com.tr)
 çevirir. Özel domain + Image Transformations (cdn-cgi/image) ile dinamik AVIF/resize
 sağlanır. Ürün görselleri için kaynak boyutu en büyüğe (1280), pagedesign için 1920'ye
 sabitlenir ki cdn-cgi her zaman aşağı ölçeklensin (keskin kalır).
@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
 
 OLD_HOST = "pub-287559dafa814b76bdf81ca894c818bf.r2.dev"
-NEW_HOST = "cdn.facette.com.tr"
+NEW_HOST = "cdn.meluni.com.tr"
 FRONTEND = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "frontend", "src")
 FILES = ["pages/Home.jsx", "components/Header.jsx", "pages/admin/PageDesign.jsx", "lib/img.js"]
 

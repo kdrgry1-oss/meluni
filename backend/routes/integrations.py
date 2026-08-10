@@ -19,7 +19,7 @@ import httpx
 import hashlib
 
 from .deps import db, logger, get_current_user, require_admin, generate_id, generate_short_id
-from facette_defaults import facette_fixed_value_for  # tüm-pazaryeri sabit varsayılan (gap-fill)
+from meluni_defaults import meluni_fixed_value_for  # tüm-pazaryeri sabit varsayılan (gap-fill)
 
 router = APIRouter(tags=["Integrations"])
 
@@ -49,8 +49,8 @@ from .integrations_common import (
     log_integration_event,
     _ms_to_iso,
     _decrement_stock_for_imported_order,
-    _facette_product_image,
-    _facette_match_for_codes,
+    _meluni_product_image,
+    _meluni_match_for_codes,
     _to_float_tr,
     _hb_norm,
     get_integration_logs,

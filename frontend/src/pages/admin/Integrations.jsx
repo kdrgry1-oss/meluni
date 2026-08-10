@@ -647,13 +647,13 @@ export default function Integrations() {
               <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">🟢 Canlı</span>
             </div>
             <p className="text-sm text-gray-600 mb-2">
-              Facette XML export feed'inden tüm ürünleri tek tıkla içe aktar
+              Meluni XML export feed'inden tüm ürünleri tek tıkla içe aktar
             </p>
             {xmlLastSync && (
               <p className="text-xs text-gray-400 mb-2">Son senkronizasyon: {new Date(xmlLastSync).toLocaleString("tr-TR")}</p>
             )}
             <div className="text-xs text-gray-500 bg-gray-50 rounded p-2 mb-4 font-mono break-all">
-              facette.com.tr/XMLExport/7BECCB0A782647BFAB843E68AD11E468
+              meluni.com.tr/XMLExport/7BECCB0A782647BFAB843E68AD11E468
             </div>
             <div className="flex flex-wrap gap-3 pt-3 border-t">
               <button

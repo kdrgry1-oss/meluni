@@ -5,7 +5,7 @@ AMAÇ:
   Ticimax'in "destekalanı"na benzer yardım/yönerge alanı. İçerik KODA GÖMÜLÜ
   DEĞİLDİR — admin panelinden düzenlenebilir. Böylece bu sistemi kullanan her
   firma kendi bilgilerini, kendi yönergelerini girebilir; başka bir firma
-  Facette'i kullandığında varsayılan metinler yerine kendi içeriğini yazar.
+  Meluni'i kullandığında varsayılan metinler yerine kendi içeriğini yazar.
 
 TASARIM:
   - db.settings id="help_content" tek dokümanda { sections: [...] } saklanır.

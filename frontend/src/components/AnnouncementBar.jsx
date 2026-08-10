@@ -35,7 +35,7 @@ export default function AnnouncementBar() {
       .catch(() => {});
     // Bu oturumda kapatıldıysa gösterme
     try {
-      if (sessionStorage.getItem("facette_ann_closed") === "1") setClosed(true);
+      if (sessionStorage.getItem("meluni_ann_closed") === "1") setClosed(true);
     } catch { /* sessionStorage yoksa yoksay */ }
     return () => { alive = false; };
   }, []);
@@ -68,7 +68,7 @@ export default function AnnouncementBar() {
       <button
         onClick={() => {
           setClosed(true);
-          try { sessionStorage.setItem("facette_ann_closed", "1"); } catch { /* yoksay */ }
+          try { sessionStorage.setItem("meluni_ann_closed", "1"); } catch { /* yoksay */ }
         }}
         className="absolute right-3 top-1/2 -translate-y-1/2 opacity-70 hover:opacity-100 text-sm"
         aria-label="Kapat"

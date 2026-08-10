@@ -1,5 +1,5 @@
 """
-Ticimax SOAP Web Service Client  –  facette.com.tr
+Ticimax SOAP Web Service Client  –  meluni.com.tr
 Default WS Key (UyeKodu): AKG0M8DTRSEBAIA898JA6HW22EDIU3 (override via DB settings)
 
 Gerçek WSDL imzaları (doğrulanmış):
@@ -23,7 +23,7 @@ from typing import List, Dict, Optional, Any
 warnings.filterwarnings("ignore")
 logger = logging.getLogger(__name__)
 
-TICIMAX_DOMAIN  = os.environ.get("TICIMAX_DOMAIN") or "facette.ticimaxeticaret.com"
+TICIMAX_DOMAIN  = os.environ.get("TICIMAX_DOMAIN") or "meluni.ticimaxeticaret.com"
 TICIMAX_API_KEY = os.environ.get("TICIMAX_API_KEY") or "AKG0M8DTRSEBAIA898JA6HW22EDIU3"
 RATE_LIMIT_SLEEP = 13   # Ticimax rate limit: 12 sn, biz 13 sn bekliyoruz
 

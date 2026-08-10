@@ -204,7 +204,7 @@ async def _generate(rid: str, period_days: int):
         data_json = json.dumps(data, ensure_ascii=False, default=str)
 
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        ctx = (f"Bugün: {today}. Firma: Facette — Türk kadın giyim; kendi sitesi + Trendyol + Hepsiburada. "
+        ctx = (f"Bugün: {today}. Firma: Meluni — Türk kadın giyim; kendi sitesi + Trendyol + Hepsiburada. "
                f"FCSS=İlkbahar/Yaz, FCFW=Sonbahar/Kış. Mevcut satış hızı kodlaması SABİT eşik "
                f"(yeşil=haftada 5+, sarı=1-4, kırmızı=ayda 0-2); alternatif DİNAMİK yüzdelik (üst %30 / orta %40 / alt %30). "
                f"Bu metodoloji hakkında da net pozisyon al.\n\nVERİ PAKETİ (son {period_days} gün + 90 gün + 52 hafta):\n{data_json}")

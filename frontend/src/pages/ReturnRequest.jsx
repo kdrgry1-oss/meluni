@@ -170,7 +170,7 @@ export default function ReturnRequest() {
           {/* Anlaşmalı kargo no — alt satır notu (yedek) */}
           <div className="border-t border-gray-100 pt-3 text-xs text-gray-500 space-y-1">
             <p>Anlaşmalı No: <b className="font-mono text-gray-700">{contractNo}</b></p>
-            <p>Şube barkodu okutamazsa, gönderiyi <b>FACETTE</b> anlaşmalı müşteri numaramız <b>{contractNo}</b> ile teslim edebilirsiniz.</p>
+            <p>Şube barkodu okutamazsa, gönderiyi <b>MELUNİ</b> anlaşmalı müşteri numaramız <b>{contractNo}</b> ile teslim edebilirsiniz.</p>
           </div>
         </div>
         <a href="/hesabim" className="inline-block text-xs uppercase tracking-[0.15em] mt-6 underline underline-offset-4">Hesabıma Dön</a>

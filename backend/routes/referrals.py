@@ -320,7 +320,7 @@ async def my_referral(current_user: dict = Depends(require_auth)):
         from company import get_site_url
         base = await get_site_url(db)
     except Exception:
-        base = "https://facette.com.tr"
+        base = "https://meluni.com.tr"
     return {
         "enabled": enabled,
         "code": code,

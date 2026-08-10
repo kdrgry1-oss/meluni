@@ -19,7 +19,7 @@ import httpx
 import hashlib
 
 from .deps import db, logger, get_current_user, require_admin, generate_id, generate_short_id, _search_tr_regex
-from facette_defaults import facette_fixed_value_for  # tüm-pazaryeri sabit varsayılan (gap-fill)
+from meluni_defaults import meluni_fixed_value_for  # tüm-pazaryeri sabit varsayılan (gap-fill)
 
 router = APIRouter(tags=["Integrations-Common"])
 
@@ -379,7 +379,7 @@ def _ms_to_iso(v):
         pass
     return str(v)
 async def _decrement_stock_for_imported_order(order_data: dict, source: str):
-    """Facette stok master — yeni içe aktarılan pazaryeri/Ticimax siparişi için
+    """Meluni stok master — yeni içe aktarılan pazaryeri/Ticimax siparişi için
     idempotent stok DÜŞÜMÜ. Aynı sipariş tekrar senkronlanırsa stock_movements
     guard'ı çift düşümü engeller. Kalemde barkod yoksa o kalem atlanır."""
     try:
@@ -404,7 +404,7 @@ async def _decrement_stock_for_imported_order(order_data: dict, source: str):
         })
     except Exception as _e:
         logger.error(f"[stock] import decrement failed ({source}): {_e}")
-def _facette_product_image(prod):
+def _meluni_product_image(prod):
     for im in (prod.get("images") or []):
         if isinstance(im, str) and im:
             return im
@@ -413,8 +413,8 @@ def _facette_product_image(prod):
             if u:
                 return u
     return prod.get("image") or prod.get("main_image") or ""
-async def _facette_match_for_codes(codes):
-    """Kod adaylarıyla (barkod / stok kodu / sku) FACETTE ürün+varyant eşler. -> (product, kod, yontem) | None"""
+async def _meluni_match_for_codes(codes):
+    """Kod adaylarıyla (barkod / stok kodu / sku) MELUNİ ürün+varyant eşler. -> (product, kod, yontem) | None"""
     seen, clean = set(), []
     for c in codes:
         c = str(c).strip() if c is not None else ""
@@ -525,7 +525,7 @@ GIB_MODE = os.environ.get('GIB_MODE', 'test')
 GIB_USERNAME = os.environ.get('GIB_USERNAME', '')
 GIB_PASSWORD = os.environ.get('GIB_PASSWORD', '')
 GIB_VKN = os.environ.get('GIB_VKN', '')
-GIB_COMPANY_NAME = os.environ.get('GIB_COMPANY_NAME', 'FACETTE')
+GIB_COMPANY_NAME = os.environ.get('GIB_COMPANY_NAME', 'MELUNİ')
 def is_gib_configured():
     return bool(GIB_USERNAME and GIB_PASSWORD and GIB_VKN and len(GIB_VKN) == 10)
 @router.get("/gib/status")
@@ -1325,13 +1325,13 @@ async def upload_rooftr_products_excel(
             # İNDİRİM: yalnızca Ticimax'te GERÇEK indirim varsa (0 < INDIRIMLIFIYAT < SATISFIYATI)
             # sale_price ayarlanır. Aksi halde None → 'sale_price = list_price' damgası YAPILMAZ.
             # (Eski 'or list_price' deseni sale_price'ı fiyata eşitleyip hem üstü-çizili gösterimi
-            #  gizliyor hem de Facette panelinden ELLE girilen indirimi eziyordu — "dün gitti" sebebi.)
+            #  gizliyor hem de Meluni panelinden ELLE girilen indirimi eziyordu — "dün gitti" sebebi.)
             _ind_raw = (_f(first["INDIRIMLIFIYAT"]) if _has("INDIRIMLIFIYAT") else 0.0)
             sale_price = _ind_raw if (_ind_raw and 0 < _ind_raw < list_price) else None
             member_price_1 = (_f(first["UYETIPIFIYAT1"]) if _has("UYETIPIFIYAT1") else 0.0) or list_price
             cost_price = _f(first["ALISFIYATI"]) if _has("ALISFIYATI") else 0.0
             vat_rate = _f(first["KDVORANI"], 10) if _has("KDVORANI") else 10
-            vendor = _cell(first, "TEDARIKCI", "FACETTE")
+            vendor = _cell(first, "TEDARIKCI", "MELUNİ")
             description = _cell(first, "ACIKLAMA")
             breadcrumb = _cell(first, "BREADCRUMBKAT")
             category_leaf = _category_from_breadcrumb(breadcrumb)
@@ -1402,7 +1402,7 @@ async def upload_rooftr_products_excel(
                 "variants": variants,
             }
             # sale_price'ı SADECE Ticimax'te gerçek indirim varsa yaz. İndirim yoksa güncellemede
-            # bu alanı HİÇ dokunma → Facette panelinden elle girilen indirim KORUNUR.
+            # bu alanı HİÇ dokunma → Meluni panelinden elle girilen indirim KORUNUR.
             if sale_price is not None:
                 update_doc["sale_price"] = sale_price
             if cat_doc:
@@ -1415,7 +1415,7 @@ async def upload_rooftr_products_excel(
                 # Mevcut bir ürünü içe-aktarımda ASLA yeniden ADLANDIRMA ve RENGİNİ DEĞİŞTİRME.
                 # Önceden kart_id ile yanlış renk-kardeşi eşleşip 'name'/'color' eziliyordu →
                 # "...Ceket Ekru" ürünü "...Siyah"a dönüp kayboluyordu. Ad/renk artık YALNIZ
-                # YENİ üründe yazılır; mevcut kayıtta Facette panelindeki küratörlü ad korunur.
+                # YENİ üründe yazılır; mevcut kayıtta Meluni panelindeki küratörlü ad korunur.
                 _set_doc.pop("name", None)
                 _ec = str(existing.get("color") or "").strip().lower()
                 _color_ok = (not _ec) or _ec == (renk or "").strip().lower()
@@ -1459,7 +1459,7 @@ async def upload_rooftr_products_excel(
         "filename": file.filename,
         "stats": stats,
     }
-XML_FEED_URL = "https://www.facette.com.tr/XMLExport/7BECCB0A782647BFAB843E68AD11E468"
+XML_FEED_URL = "https://www.meluni.com.tr/XMLExport/7BECCB0A782647BFAB843E68AD11E468"
 _NS = {"g": "http://base.google.com/ns/1.0"}
 def _xml_text(item: ET.Element, tag: str, ns: dict = _NS) -> str:
     el = item.find(tag, ns)
@@ -1523,7 +1523,7 @@ async def import_xml_products(
                 conn = http.client.HTTPConnection(host, port, timeout=timeout)
             conn.sock = sock  # pinli IP'ye bağlı soketi kullan (yeniden çözme YOK)
             path = (p.path or "/") + (("?" + p.query) if p.query else "")
-            conn.request("GET", path, headers={"Host": host, "User-Agent": "FacetteFeed/1.0", "Accept": "*/*"})
+            conn.request("GET", path, headers={"Host": host, "User-Agent": "MeluniFeed/1.0", "Accept": "*/*"})
             resp = conn.getresponse()
             if resp.status in (301, 302, 303, 307, 308):
                 raise HTTPException(status_code=400, detail="Feed yönlendirme yapıyor (SSRF koruması)")
@@ -1609,7 +1609,7 @@ async def import_xml_products(
             product_type  = _xml_text(item, "g:product_type")
             goog_cat      = _xml_text(item, "g:google_product_category")
             category_name = product_type or goog_cat
-            brand         = _xml_text(item, "g:brand") or "FACETTE"
+            brand         = _xml_text(item, "g:brand") or "MELUNİ"
             product_url   = _xml_text(item, "g:link")
             mpn           = _xml_text(item, "g:mpn")
             label_0       = _xml_text(item, "g:custom_label_0")

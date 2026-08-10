@@ -5,7 +5,7 @@ import { useAuth } from "./AuthContext";
 
 const FavoritesContext = createContext();
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-const LS_KEY = "facette_favorites";
+const LS_KEY = "meluni_favorites";
 
 const readLocal = () => {
   try {

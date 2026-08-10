@@ -64,8 +64,8 @@ async def list_rooftr_return_orders(
     çağırır.
     """
     # "Web Sitesi" iadeleri = pazaryeri (Trendyol/Hepsiburada) DISI tum siparisler.
-    # Eski hali yalnizca platform/source=ticimax idi -> yeni site siparisleri (platform=facette)
-    # iade/iptal edilince hicbir sekmede gorunmuyordu. Pazaryeri disi her kaynak (facette + ticimax + bos) dahil.
+    # Eski hali yalnizca platform/source=ticimax idi -> yeni site siparisleri (platform=meluni)
+    # iade/iptal edilince hicbir sekmede gorunmuyordu. Pazaryeri disi her kaynak (meluni + ticimax + bos) dahil.
     # Web Sitesi iadeleri = YALNIZCA pazaryeri (Trendyol/HB) DIŞI siparişler.
     # Pazaryeri siparişleri (elle iade durumuna çekilse bile) BURAYA DÜŞMEZ; kendi
     # pazaryeri sekmesinde (Trendyol/Hepsiburada) listelenir — 'ait olduğu panel' kuralı.
@@ -639,7 +639,7 @@ async def refresh_order_dates(
 # başka çift olan iade varsa sil sistem genelinde")
 # ----------------------------------------------------------------------------
 # Ticimax import'u bazı siparişleri hem BARE ticimax kaydı (telefon YOK, iade
-# köprüsü/pusula YOK) hem de gerçek facette kaydı (telefon + return_request +
+# köprüsü/pusula YOK) hem de gerçek meluni kaydı (telefon + return_request +
 # customer_returns + gider_pusulası VAR) olarak iki kez oluşturdu → iade
 # panelinde AYNI sipariş no iki satır. Bu uç aynı order_number'lı iade
 # kayıtlarını gruplar, hangisi BARE-junk hangisi GERÇEK tespit eder; confirm=false
@@ -756,7 +756,7 @@ async def merge_ambiguous_duplicate_returns(
     current_user: dict = Depends(require_admin),
 ):
     """BELİRSİZ mükerrer gruplar: aynı order_number'da iki kayıt da iade köprüsü (customer_returns)
-    taşıyor. GERÇEK kayıt telefonlu facette kaydıdır; twin (telefonsuz ticimax backfill) silinmeden
+    taşıyor. GERÇEK kayıt telefonlu meluni kaydıdır; twin (telefonsuz ticimax backfill) silinmeden
     ÖNCE köprü (customer_returns) + varsa gider_pusulası order_id/return_id'si KEEP kaydına
     TAŞINIR (order_id ile çözülen panel köprüsü kopmasın). Sonra twin arşivlenip silinir."""
     base_filter = {

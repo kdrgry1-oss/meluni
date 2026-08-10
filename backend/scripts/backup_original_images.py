@@ -153,7 +153,7 @@ async def main():
     print(f"[backup] {total} ürün, görseller yedekleniyor → {ORIGINALS_DIR}", flush=True)
     stats = {}
     done = 0
-    async with httpx.AsyncClient(headers={"User-Agent": "Mozilla/5.0 facette-backup"}) as http:
+    async with httpx.AsyncClient(headers={"User-Agent": "Mozilla/5.0 meluni-backup"}) as http:
         cursor = db.products.find({}, {"id": 1, "slug": 1, "name": 1, "images": 1})
         async for product in cursor:
             await process_product(http, product, stats)

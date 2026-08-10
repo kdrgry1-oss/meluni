@@ -15,7 +15,7 @@ import httpx
 import hashlib
 
 from .deps import db, logger, get_current_user, require_admin, generate_id, generate_short_id, get_effective_permissions
-from facette_defaults import facette_fixed_value_for  # tüm-pazaryeri sabit varsayılan (gap-fill)
+from meluni_defaults import meluni_fixed_value_for  # tüm-pazaryeri sabit varsayılan (gap-fill)
 
 router = APIRouter(tags=["Integrations-Trendyol"])
 
@@ -130,7 +130,7 @@ async def get_trendyol_headers():
     encoded = base64.b64encode(credentials.encode()).decode()
     return {
         "Authorization": f"Basic {encoded}",
-        "User-Agent": f'{config["supplier_id"]} - FacetteIntegration',
+        "User-Agent": f'{config["supplier_id"]} - MeluniIntegration',
         "Content-Type": "application/json"
     }
 def calculate_trendyol_price(base_price: float, product_data: dict, trendyol_config: dict) -> float:
@@ -1503,16 +1503,16 @@ async def sync_products_to_trendyol(
             else:
                 _push(m_ty_id, custom=lval)
 
-        # 🎯 FACETTE SABİT VARSAYILANLAR (gap-fill, EN SON):
+        # 🎯 MELUNİ SABİT VARSAYILANLAR (gap-fill, EN SON):
         # Menşei=Türkiye · Cinsiyet=Kadın · Yaş Grubu=Yetişkin · Ortam/Koleksiyon=Casual/Günlük ·
         # Ek Özellik=Mevcut Değil · Kutu Durumu=Kutu Yok · Persona=Fashion Forward ·
-        # Performans=Cool & Comfort · Üretici/İthalatçı (GPSR)=FACETTE bilgileri.
+        # Performans=Cool & Comfort · Üretici/İthalatçı (GPSR)=MELUNİ bilgileri.
         # Yalnız ürünün DOLDURMADIĞI (processed olmayan) Trendyol özelliğine yazılır; listeli
         # alanlar ADIYLA value_id'ye çözülür (Türkiye→TR), serbest alanlar custom gider.
         for m_ty_id, m_meta in meta.items():
             if m_ty_id in processed:
                 continue
-            fv = facette_fixed_value_for(m_meta.get("name") or "")
+            fv = meluni_fixed_value_for(m_meta.get("name") or "")
             if not fv:
                 continue
             name_map = m_meta.get("value_name_to_id") or {}
@@ -4661,7 +4661,7 @@ async def get_trendyol_claims(
     Tüm claim'ler İADE'dir (İptal ayrı menüde, sipariş durumu üzerinden).
     `status` = durum sekmesi anahtarı: all / talep_olusturulan / kargoya_verilen /
     aksiyon_bekleyen / onaylanan / reddedilen.
-    `platform` = 'facette' (web/site iadeleri) veya bir pazaryeri anahtarı
+    `platform` = 'meluni' (web/site iadeleri) veya bir pazaryeri anahtarı
     (trendyol, hepsiburada, ...). Ayrım `_claim_is_site_order` kuralıyla yapılır.
     """
     # Sekme kovası eşlemesi artık _claim_bucket(c) helper'ında (status + kargo takip durumu).
@@ -4759,7 +4759,7 @@ async def get_trendyol_claims(
     elif _plt in ("trendyol", ""):
         platform_scoped = [c for c in deduped
                            if str(c.get("platform") or "").lower() != "hepsiburada"]
-    elif _plt in ("facette", "site", "web"):
+    elif _plt in ("meluni", "site", "web"):
         # DENETİM HATA-5: site iadeleri bu koleksiyonda DEĞİL (customer_returns'te) —
         # eskiden tüm pazaryeri kayıtları dönüyordu. Site sinyali taşıyanlar süzülür
         # (pratikte boş liste), pazaryeri kayıtları asla dönmez.
@@ -6294,7 +6294,7 @@ async def sync_product_to_trendyol(product_id: str, current_user: dict = Depends
     """Tekil ürün senkronu — TOPLU (doğru/validasyonlu) yola DELEGE eder.
 
     Eski tekil implementasyon ayrı ve eksik bir kopyaydı: required-attribute gap-fill,
-    Facette sabit varsayılanları, kategori meta/allowCustom doğrulaması ve value-id
+    Meluni sabit varsayılanları, kategori meta/allowCustom doğrulaması ve value-id
     doğrulaması YOKTU. Bu yüzden mp_attr_id KeyError, int('XXS') çökmesi ve enum reddi
     gibi hatalar veriyor; per-ürün "Trendyol'a Gönder" ve "Başarısız Aktarımlar → tekrar
     dene" butonlarını kırıyordu. Artık toplu senkron gövdesine yönlendirir → tek ve doğru

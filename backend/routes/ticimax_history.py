@@ -57,10 +57,10 @@ def _deep(o, depth=0):
     return str(o)
 
 
-# Eski mağaza verileri artık bu domainde (facette.com.tr YENİ siteyi gösteriyor;
-# Railway'deki TICIMAX_DOMAIN env'i eski günlerden www.facette.com.tr kalmış olabilir —
+# Eski mağaza verileri artık bu domainde (meluni.com.tr YENİ siteyi gösteriyor;
+# Railway'deki TICIMAX_DOMAIN env'i eski günlerden www.meluni.com.tr kalmış olabilir —
 # history modülü her çağrıda domaini ZORLA doğru adrese çevirir).
-HISTORY_DOMAIN_DEFAULT = "facette.ticimaxeticaret.com"
+HISTORY_DOMAIN_DEFAULT = "meluni.ticimaxeticaret.com"
 
 
 async def _api_key() -> str:

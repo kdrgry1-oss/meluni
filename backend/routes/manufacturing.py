@@ -412,7 +412,7 @@ async def create_product_from_manufacturing(record_id: str, current_user: dict =
         "name": rec.get("product_name") or "",
         "stock_code": rec.get("stock_code") or "",
         "variants": variants,
-        "manufacturer": rec.get("partner_name") or "FACETTE",
+        "manufacturer": rec.get("partner_name") or "MELUNİ",
         "purchase_price": float(rec.get("unit_price") or 0),
         "is_active": False,  # taslak — fiyat/görsel tamamlanınca yayına alınır
         "notes": f"İmalat kaydından aktarıldı: {rec.get('code')}",

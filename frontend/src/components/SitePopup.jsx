@@ -48,7 +48,7 @@ export default function SitePopup() {
         const p = list.find((x) => x && (x.content || x.image || x.name || x.newsletter));
         if (!p) return;
         if (p.show_once) {
-          try { if (localStorage.getItem(`facette_popup_${p.id}`) === "1") return; } catch { /* yoksay */ }
+          try { if (localStorage.getItem(`meluni_popup_${p.id}`) === "1") return; } catch { /* yoksay */ }
         }
         setPopup(p);
         const show = () => { if (alive) { setVisible(true); cleanupExit(); if (timer) clearTimeout(timer); } };
@@ -74,7 +74,7 @@ export default function SitePopup() {
   const close = () => {
     setVisible(false);
     if (popup.show_once) {
-      try { localStorage.setItem(`facette_popup_${popup.id}`, "1"); } catch { /* yoksay */ }
+      try { localStorage.setItem(`meluni_popup_${popup.id}`, "1"); } catch { /* yoksay */ }
     }
   };
 

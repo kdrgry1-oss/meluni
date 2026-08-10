@@ -59,7 +59,7 @@ const CARGO_COMPANIES = [
 
 export default function AdminSettings() {
   const [settings, setSettings] = useState({
-    site_name: "FACETTE",
+    site_name: "MELUNİ",
     logo_url: "",
     shipping_fee: 0,
     cargo_fees: {},
@@ -236,7 +236,7 @@ export default function AdminSettings() {
                 <label className="block text-xs text-gray-600 mb-1">Mağaza Adresi (feed linklerinde kullanılır)</label>
                 <input
                   type="text"
-                  placeholder="https://facette.com.tr"
+                  placeholder="https://meluni.com.tr"
                   value={settings.site_url || ""}
                   onChange={(e) => setSettings({ ...settings, site_url: e.target.value })}
                   className="w-full border px-2 py-1.5 rounded text-sm"
@@ -436,7 +436,7 @@ export default function AdminSettings() {
               <label className="block text-sm font-medium mb-1">Firma Ünvanı</label>
               <input type="text" value={settings.company_info?.company_name || ""}
                 onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), company_name: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="FACETTE DIŞ. TİC.A.Ş" />
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="MELUNİ DIŞ. TİC.A.Ş" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Vergi Kimlik No (VKN)</label>
@@ -454,7 +454,7 @@ export default function AdminSettings() {
               <label className="block text-sm font-medium mb-1">Web Sitesi</label>
               <input type="text" value={settings.company_info?.website || ""}
                 onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), website: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="facette.com.tr" />
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="meluni.com.tr" />
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium mb-1">Adres</label>
@@ -472,7 +472,7 @@ export default function AdminSettings() {
               <label className="block text-sm font-medium mb-1">Firma E-postası</label>
               <input type="email" value={settings.company_info?.email || ""}
                 onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), email: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="info@facette.com.tr" />
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="info@meluni.com.tr" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Firma Telefonu</label>

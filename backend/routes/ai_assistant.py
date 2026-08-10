@@ -43,7 +43,7 @@ router = APIRouter(prefix="/ai-assistant", tags=["ai-assistant"])
 #
 # Niyet algılama bot'a delege edilir; LLM kararını JSON olarak verir.
 
-CHAT_INTENT_SYSTEM = """Sen Facette mağazasının AI asistan eğitim arabirimisin.
+CHAT_INTENT_SYSTEM = """Sen Meluni mağazasının AI asistan eğitim arabirimisin.
 Admin sana 3 niyetten birini iletir:
 1) TEACH_QA  — Soru-Cevap çifti veriyor, KB'ye eklenecek.
 2) INSTRUCT  — Persona/davranış talimatı (örn: "müşteriye nazik ol", "beden tablosu: XL=42")

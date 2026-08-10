@@ -55,7 +55,7 @@ def _source_cond(source: Optional[str]) -> dict:
     s = (source or "all").strip().lower()
     if s in ("", "all", "toplu", "hepsi", "tum", "tümü"):
         return {}
-    if s in ("site", "facette", "web", "kendi"):
+    if s in ("site", "meluni", "web", "kendi"):
         # Site = pazaryeri olmayan: platform da marketplace da pazaryeri listesinde DEĞİL
         # (alan hiç yoksa $nin yine eşleşir → boş platform site sayılır).
         return {"platform": {"$nin": _MARKETPLACES}, "marketplace": {"$nin": _MARKETPLACES}}
@@ -1177,7 +1177,7 @@ async def profitability(
         _days_range = max(1, (_d1 - _d0).days + 1)
     except Exception:
         _days_range = 30
-    _CH_ALIAS = {"facette": "site", "": "site", "web": "site", "admin_manual": "manual", "admin": "manual"}
+    _CH_ALIAS = {"meluni": "site", "": "site", "web": "site", "admin_manual": "manual", "admin": "manual"}
     from collections import defaultdict as _dd
 
     # Ana kırılım: (kategori, kanal) → ciro, maliyet, adet, sipariş. Maliyet: purchase_price köprüsü.
@@ -1303,7 +1303,7 @@ async def category_report(
 ):
     s, e = _iso_range(start_date, end_date, days_default=90)
     # items -> product: product_id VEYA barkod (üst/varyant) ile eşleştir (pazaryeri kalemleri
-    # productCode taşır, Facette id'siyle eşleşmez → barkod köprüsü şart). Kategori adı: kategori
+    # productCode taşır, Meluni id'siyle eşleşmez → barkod köprüsü şart). Kategori adı: kategori
     # dokümanı > ürünün category_name'i > kalemin kendi category'si > (Kategorisiz).
     pipeline = [
         {"$match": _base_match(s, e, source)},
@@ -1484,7 +1484,7 @@ async def cancel_return_products(
                 {"$ifNull": ["$items.price", {"$ifNull": ["$items.unit_price", 0]}]}]}},
         }},
     ]
-    _SRC = {"site": "Site", "facette": "Site", "trendyol": "Trendyol", "hepsiburada": "Hepsiburada", "temu": "Temu"}
+    _SRC = {"site": "Site", "meluni": "Site", "trendyol": "Trendyol", "hepsiburada": "Hepsiburada", "temu": "Temu"}
     rows: dict = {}
     _agg = [r async for r in db.orders.aggregate(pipeline)]
     # KISMİ İADE: yalnız gerçekten iade edilen kalem İade'ye yazılır (ürün raporunun
@@ -1493,8 +1493,8 @@ async def cancel_return_products(
         list({r["_id"].get("on") for r in _agg
               if r["_id"].get("kind") == "return" and r["_id"].get("on")}))
     for r in _agg:
-        # 'facette' etiketi de Site'dır (DENETİM HATA-3 eki) — aynı ürünün iki satırı birleşsin
-        _pl = "site" if (r["_id"]["plat"] or "site") in ("site", "facette") else r["_id"]["plat"]
+        # 'meluni' etiketi de Site'dır (DENETİM HATA-3 eki) — aynı ürünün iki satırı birleşsin
+        _pl = "site" if (r["_id"]["plat"] or "site") in ("site", "meluni") else r["_id"]["plat"]
         key = (r["_id"]["name"], _pl)
         d = rows.setdefault(key, {"name": r["_id"]["name"],
                                   "platform": _SRC.get(_pl, _pl or "Site"),

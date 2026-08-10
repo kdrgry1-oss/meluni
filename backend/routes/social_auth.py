@@ -45,7 +45,7 @@ router = APIRouter(prefix="/auth", tags=["social-auth"])
 
 class SocialSettingsReq(BaseModel):
     apple_enabled: bool = False
-    apple_client_id: Optional[str] = ""       # Services ID, ör. com.facette.web
+    apple_client_id: Optional[str] = ""       # Services ID, ör. com.meluni.web
     apple_team_id: Optional[str] = ""
     apple_key_id: Optional[str] = ""
     apple_private_key: Optional[str] = ""     # PEM
@@ -160,7 +160,7 @@ async def _upsert_social_user(provider: str, provider_id: str, email: str, name:
     first_name, _, last_name = (name or "").partition(" ")
     new_user = {
         "id": generate_id(),
-        "email": (email or f"{provider}_{provider_id}@facette.com").lower(),
+        "email": (email or f"{provider}_{provider_id}@meluni.com.tr").lower(),
         "first_name": first_name or "",
         "last_name": last_name or "",
         "password": "",  # sosyal girişli

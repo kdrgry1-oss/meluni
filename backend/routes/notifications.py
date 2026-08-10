@@ -173,7 +173,7 @@ _DEFAULT_TEMPLATES = {
     ("order_undelivered", "sms"):
         "Kargonuz teslim edilemedi, subede bekliyor. Takip: {tracking_number}. {store_name}",
     ("order_cancelled", "sms"):
-        "{order_number} numarali siparisiniz iptal edildi. Bilgi: destek@facette.com",
+        "{order_number} numarali siparisiniz iptal edildi. Bilgi: destek@meluni.com.tr",
     ("order_awaiting_payment", "sms"):
         "Merhaba {customer_name}, {order_number} numarali siparisiniz alindi. Havale/EFT odemenizi bekliyoruz; detaylar e-postanizda. {store_name}",
     ("order_payment_reminder", "sms"):
@@ -199,7 +199,7 @@ _DEFAULT_TEMPLATES = {
 
 # =============================================================================
 # Markalı HTML e-posta şablonları — tümü email_layout.email_shell ile üretilir
-# (üstte FACETTE logosu · ortada bilgiler · altta INSTAGRAM·TIKTOK + telif).
+# (üstte MELUNİ logosu · ortada bilgiler · altta INSTAGRAM·TIKTOK + telif).
 # {customer_name} vb. placeholder'lar korunur; gönderimde render_template doldurur.
 # =============================================================================
 
@@ -385,10 +385,10 @@ _EMAIL_HTML_TEMPLATES = {
         ),
     },
     "welcome": {
-        "subject": "Aramıza hoş geldin · FACETTE",
+        "subject": "Aramıza hoş geldin · MELUNİ",
         "body": email_shell(
             icon="✓", eyebrow="HOŞ GELDİN", title="Aramıza hoş geldin",
-            intro_html="Merhaba {customer_name}, FACETTE ailesine katıldığın için teşekkür ederiz. Yeni sezon parçalarını ve sana özel fırsatları keşfetmeye hemen başlayabilirsin.",
+            intro_html="Merhaba {customer_name}, MELUNİ ailesine katıldığın için teşekkür ederiz. Yeni sezon parçalarını ve sana özel fırsatları keşfetmeye hemen başlayabilirsin.",
             body_html="{coupon_block}",
             cta_text="ALIŞVERİŞE BAŞLA", cta_url="{site_url}",
         ),
@@ -396,9 +396,9 @@ _EMAIL_HTML_TEMPLATES = {
 }
 
 
-# FACETTE Muli marka e-posta şablonları (email_templates.py) — eski ZaraHome tasarımını override eder.
+# MELUNİ Muli marka e-posta şablonları (email_templates.py) — eski ZaraHome tasarımını override eder.
 try:
-    from email_templates import FACETTE_EMAIL_TEMPLATES as _FET
+    from email_templates import MELUNI_EMAIL_TEMPLATES as _FET
     _EMAIL_HTML_TEMPLATES = _FET
 except Exception:
     pass
@@ -427,7 +427,7 @@ async def seed_templates(
                 subj = ev["name"] if ch == "email" else ""
                 if ch == "email" and not body:
                     body = email_shell(
-                        eyebrow="FACETTE", title=ev["name"],
+                        eyebrow="MELUNİ", title=ev["name"],
                         intro_html="Merhaba {customer_name}, " + ev["name"].lower() + " bildirimini sizinle paylaşıyoruz.",
                     )
 
@@ -523,7 +523,7 @@ async def send_test_template(req: TestTemplateReq, current_user: dict = Depends(
         "total": float(order.get("total") or 0),
         "status_label": ev_name,
         "otp_code": "123456",
-        "cart_url": "https://facette.com.tr/sepet",
+        "cart_url": "https://meluni.com.tr/sepet",
     }
 
     to_phone = req.to.strip() if req.channel in ("sms", "whatsapp") else None

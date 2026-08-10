@@ -8,7 +8,7 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 // Platform etiketi — en başta web sitemiz, sonra pazaryerleri
 const PLATFORM_LABELS = {
   "": "Web Sitesi",
-  facette: "Web Sitesi",
+  meluni: "Web Sitesi",
   trendyol: "Trendyol",
   hepsiburada: "Hepsiburada",
   temu: "Temu",

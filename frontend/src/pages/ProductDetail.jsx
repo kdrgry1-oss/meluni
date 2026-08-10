@@ -125,7 +125,7 @@ function shippingCutoff(cfg) {
 }
 
 // Son gezilen ürünler — localStorage'da küçük anlık görüntü (snapshot) listesi.
-const RV_KEY = "facette_recently_viewed";
+const RV_KEY = "meluni_recently_viewed";
 const readRecentlyViewed = () => {
   try { return JSON.parse(localStorage.getItem(RV_KEY) || "[]"); } catch { return []; }
 };
@@ -294,7 +294,7 @@ export default function ProductDetail() {
     // Edge SEO middleware (functions/_middleware.js) zaten JSON-LD bastıysa
     // client tarafında tekrar ekleme — Google'da duplicate Product/Breadcrumb olmasın.
     if (typeof document !== "undefined" && document.querySelector('script[data-seo="edge"]')) return;
-    const origin = (typeof window !== "undefined" && window.location && window.location.origin) || "https://facette.com.tr";
+    const origin = (typeof window !== "undefined" && window.location && window.location.origin) || "https://meluni.com.tr";
     const canonical = `${origin}/urun/${product.slug || product.id}`;
     const price = product.sale_price || product.price;
     const inStock = Array.isArray(product.variants) && product.variants.length > 0
@@ -1320,7 +1320,7 @@ export default function ProductDetail() {
                   {r.comment && <p className="text-sm text-gray-600 leading-relaxed">{r.comment}</p>}
                   {r.admin_reply && (
                     <div className="mt-2 ml-3 pl-3 border-l-2 border-black/10">
-                      <p className="text-[11px] font-medium text-gray-500 mb-0.5">FACETTE</p>
+                      <p className="text-[11px] font-medium text-gray-500 mb-0.5">MELUNİ</p>
                       <p className="text-xs text-gray-600">{r.admin_reply}</p>
                     </div>
                   )}

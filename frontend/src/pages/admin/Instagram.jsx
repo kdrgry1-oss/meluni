@@ -1,7 +1,7 @@
 /**
  * Instagram.jsx — Admin > Instagram Akışı
- * @facette gönderilerini Graph API token'ı ile otomatik çeker VEYA elle ekler.
- * Anasayfadaki "#FACETTE × YOU" bölümü /api/instagram/feed'i gösterir.
+ * @meluni gönderilerini Graph API token'ı ile otomatik çeker VEYA elle ekler.
+ * Anasayfadaki "#MELUNİ × YOU" bölümü /api/instagram/feed'i gösterir.
  */
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -197,7 +197,7 @@ export default function AdminInstagram() {
       <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><IgIcon size={22} /> Instagram Akışı</h1>
-          <p className="text-sm text-gray-500 mt-1">Anasayfadaki “#FACETTE × YOU” bölümünü besler.</p>
+          <p className="text-sm text-gray-500 mt-1">Anasayfadaki “#MELUNİ × YOU” bölümünü besler.</p>
         </div>
         <div className="flex gap-2">
           {settings.token_set && (
@@ -242,9 +242,9 @@ export default function AdminInstagram() {
           <b>Bir kez yapılacak app ayarı:</b> uygulamanızda <b>Facebook Login</b> ürünü ekli olmalı ve
           <b> Facebook Login → Settings → Valid OAuth Redirect URIs</b> alanına şu adres eklenmeli:
           <div className="flex items-center gap-2 mt-1">
-            <code className="bg-gray-100 px-2 py-1 rounded text-[10px] break-all">{settings.oauth_redirect_uri || "https://api.facette.com.tr/api/instagram/oauth/callback"}</code>
+            <code className="bg-gray-100 px-2 py-1 rounded text-[10px] break-all">{settings.oauth_redirect_uri || "https://api.meluni.com.tr/api/instagram/oauth/callback"}</code>
             <button type="button" className="text-emerald-700 font-bold underline shrink-0"
-              onClick={() => { navigator.clipboard?.writeText(settings.oauth_redirect_uri || "https://api.facette.com.tr/api/instagram/oauth/callback"); toast.success("Kopyalandı"); }}>
+              onClick={() => { navigator.clipboard?.writeText(settings.oauth_redirect_uri || "https://api.meluni.com.tr/api/instagram/oauth/callback"); toast.success("Kopyalandı"); }}>
               kopyala
             </button>
           </div>
@@ -385,7 +385,7 @@ export default function AdminInstagram() {
           </div>
         </div>
         <p className="text-xs text-gray-500 mb-3">
-          <b>Göster</b> = anasayfa “#FACETTE × YOU” bölümünde çıkar. Her gönderiye <b>ürün bağla</b> → müşteri anasayfada
+          <b>Göster</b> = anasayfa “#MELUNİ × YOU” bölümünde çıkar. Her gönderiye <b>ürün bağla</b> → müşteri anasayfada
           görselin üzerine gelince (mobilde dokununca) o ürünler şık kartlarla belirir.
         </p>
         {filteredPosts.length === 0 ? (

@@ -12,7 +12,7 @@ router = APIRouter(prefix="/upload", tags=["upload"])
 # Geriye dönük uyumluluk: bazı kayıtlarda görsel URL'si /api/files/... olarak saklandı
 files_router = APIRouter(prefix="/files", tags=["upload"])
 
-APP_NAME = "facette"
+APP_NAME = "meluni"
 UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 

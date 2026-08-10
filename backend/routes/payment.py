@@ -285,10 +285,10 @@ def _build_initialize_payload(order: dict, callback_url: str) -> dict:
     binfo = order.get("billing_info") or {}
 
     first = (ship.get("first_name") or "").strip() or "Müşteri"
-    last = (ship.get("last_name") or "").strip() or "Facette"
+    last = (ship.get("last_name") or "").strip() or "Meluni"
     contact = f"{first} {last}".strip()
     _raw_email = (ship.get("email") or order.get("email") or "").strip()
-    email = _raw_email if re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", _raw_email) else "siparis@facette.com.tr"
+    email = _raw_email if re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", _raw_email) else "siparis@meluni.com.tr"
     address = (ship.get("address") or "Adres").strip()
     city = (ship.get("city") or "İstanbul").strip()
     zipcode = str(ship.get("postal_code") or ship.get("zip_code") or "34000")
@@ -1000,7 +1000,7 @@ async def get_installments(payload: dict, request: Request):
 # =============================================================================
 # İYZİCO WEBHOOK (İşyeri Bildirimleri) — sunucudan sunucuya ödeme onayı
 # Kurulum (iyzico paneli): Ayarlar → Firma Ayarları → İşyeri Bildirimleri →
-#   URL: https://api.facette.com.tr/api/payment/webhook
+#   URL: https://api.meluni.com.tr/api/payment/webhook
 # Müşteri ödeme sonrası sekmeyi kapatsa bile onay buraya düşer: sipariş
 # iyzico'dan retrieve ile DOĞRULANARAK finalize edilir ve CAPI purchase
 # (TikTok CompletePayment, Meta Purchase …) sunucudan gönderilir.

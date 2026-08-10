@@ -361,7 +361,7 @@ async def _update_existing_trendyol_order(_db, existing, data, number, restock_s
 
 async def _reconcile_trendyol_terminal(client, days_back=30, slice_days=15):
     """STATUSSUZ uzlaştırma: statussuz çekiş tüm durumları getirir; terminal duruma
-    (iptal/iade) geçmiş ama Facette'te güncellenmemiş siparişleri İptaller/İadeler'e
+    (iptal/iade) geçmiş ama Meluni'te güncellenmemiş siparişleri İptaller/İadeler'e
     yansıtır/ekler. Satıcı/stok iptalleri (claim üretmeyen, status=Cancelled list
     sorgusunda güvenilir gelmeyen) buradan GARANTİ yakalanır. Volume için tarih
     dilimlerine bölünür. TEK SEFERLİK geniş backfill için days_back büyük verilir."""
@@ -554,7 +554,7 @@ async def _run_trendyol_status_wide_pass():
 async def _run_trendyol_deep_backfill_once():
     """TEK SEFERLİK derin uzlaştırma — geçmişteki TÜM Trendyol iptallerini (satıcı/stok
     dahil) sisteme taşır: 365 güne kadar STATUSSUZ tarama, terminal duruma geçmiş ama
-    Facette'te güncellenmemiş siparişleri İptaller'e indirir. Yeni flag
+    Meluni'te güncellenmemiş siparişleri İptaller'e indirir. Yeni flag
     (trendyol_terminal_backfill) ile YALNIZCA BİR KEZ çalışır; sonra no-op. Sonrasında
     günlük iptalleri 5 dk'lık anlık auto pull (14 gün, terminal flip) yakalar."""
     try:
@@ -943,7 +943,7 @@ async def _send_abandoned_cart_reminders():
         html = (
             "<h2>Sepetinizdeki ürünler tükeniyor!</h2>"
             "<p>Seçtiğiniz ürünleri tamamlamak için hazır bir alışveriş sepetiniz var.</p>"
-            "<p><a href=\"https://facette.com.tr\" style=\"background:#000;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none\">Sepete Dön</a></p>"
+            "<p><a href=\"https://meluni.com.tr\" style=\"background:#000;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none\">Sepete Dön</a></p>"
             "<p style=\"font-size:12px;color:#888;margin-top:24px\">Bu e-posta otomatik gönderilmiştir.</p>"
         )
         ok, failed, errs = await _send_email_via_resend(recipients, subject, html)
@@ -1225,7 +1225,7 @@ def _parse_tr_dt(s: str):
 
 
 async def _dhl_cargo_poll_tick():
-    """Her 5 dk: site (facette) siparislerini MNG/DHL e-Commerce API'sinden sorgula.
+    """Her 5 dk: site (meluni) siparislerini MNG/DHL e-Commerce API'sinden sorgula.
       - GONDERI_NO / takip linki olustuysa -> 'shipped' (Kargoya Verildi) + bildirim
       - Teslim edildiyse -> 'delivered' (Teslim Edildi) + delivered_at + bildirim
     Bildirimler Ayarlar > Siparis Durumlari (sms/email) secimine gore gonderilir.
@@ -1266,7 +1266,7 @@ async def _dhl_cargo_poll_tick():
 
     cutoff = (datetime.now(timezone.utc) - timedelta(days=45)).isoformat()
     q = {
-        "platform": {"$in": ["facette", "site", None]},
+        "platform": {"$in": ["meluni", "site", None]},
         "status": {"$in": ["confirmed", "processing", "preparing", "ready_to_ship",
                             "shipped", "in_transit", "out_for_delivery"]},
         "$or": [
@@ -1573,7 +1573,7 @@ async def _notify_back_in_stock():
     db.product_stock_flags ile her favorilenen ürünün stok durumu izlenir; bildirim
     YALNIZCA 0→var geçişinde (ve restok döngüsü başına bir kez) atılır. İlk görülmede
     (flag yok → prev=None) bildirim ATILMAZ; bu deploy sonrası toplu spam'i önler.
-    Stok master'ı Facette olduğundan (sipariş/iptal/iade/admin/pazaryeri fark etmez)
+    Stok master'ı Meluni olduğundan (sipariş/iptal/iade/admin/pazaryeri fark etmez)
     bu periyodik kontrol tüm stok-giriş yollarını tek noktadan yakalar.
     """
     import os
@@ -1584,7 +1584,7 @@ async def _notify_back_in_stock():
         logger.warning(f"[scheduler] back-in-stock skip (import): {e}")
         return
     now_iso = datetime.now(timezone.utc).isoformat()
-    site = os.environ.get("SITE_URL", "https://facette.com.tr").rstrip("/")
+    site = os.environ.get("SITE_URL", "https://meluni.com.tr").rstrip("/")
     try:
         fav_pids = await db.favorites.distinct("product_id")
         if not fav_pids:
@@ -2060,7 +2060,7 @@ def start_scheduler():
         max_instances=1,
         coalesce=True,
     )
-    # Instagram akışı — auto_sync açık + token varsa her 30 dk @facette gönderilerini tazeler.
+    # Instagram akışı — auto_sync açık + token varsa her 30 dk @meluni gönderilerini tazeler.
     try:
         from routes.instagram import auto_sync_instagram
         _add(
@@ -2251,9 +2251,9 @@ def start_scheduler():
     #     max_instances=1,
     #     coalesce=True,
     # )
-    # Ticimax canlı stok senkronu — KAPALI (Facette stok master'ı; Ticimax stoğu
+    # Ticimax canlı stok senkronu — KAPALI (Meluni stok master'ı; Ticimax stoğu
     # bu sistemi EZMESİN). Kullanıcı kararı: stok yalnızca sipariş/iptal/iade ile
-    # Facette içinde yönetilir. Gerekirse settings.ticimax_stock_sync_enabled=true
+    # Meluni içinde yönetilir. Gerekirse settings.ticimax_stock_sync_enabled=true
     # yapıp elle tetiklenebilir, ama otomatik job artık çalışmaz.
     # _scheduler.add_job(
     #     _ticimax_sync_stock, "interval", hours=2, id="ticimax_stock_sync",
@@ -2265,7 +2265,7 @@ def start_scheduler():
         try:
             from routes.production_hooks import send_stockout_alert_email
             class _SystemAdmin:
-                def get(self, k, *a): return "system@facette.com" if k == "email" else None
+                def get(self, k, *a): return "system@meluni.com.tr" if k == "email" else None
             await send_stockout_alert_email(admin=_SystemAdmin())
             logger.info("[scheduler] daily stockout alert sent")
         except Exception as e:

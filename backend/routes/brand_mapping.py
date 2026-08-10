@@ -11,10 +11,10 @@ NASIL ÇALIŞIR?
   `brand_mappings` koleksiyonunda her satır:
     {
       "brand_id": "<sistem marka id>",
-      "brand_name": "FACETTE",
+      "brand_name": "MELUNİ",
       "marketplace": "trendyol" | "hepsiburada" | ...
       "marketplace_brand_id": "1234",
-      "marketplace_brand_name": "FACETTE",
+      "marketplace_brand_name": "MELUNİ",
       "status": "matched" | "unmatched",
       "updated_at": "..."
     }

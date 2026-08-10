@@ -14,7 +14,7 @@ router = APIRouter()
 
 WEBHOOK_SECRET = os.environ.get("MAIL_WEBHOOK_SECRET", "")
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
-MAIL_FROM = os.environ.get("MAIL_FROM", "Facette <info@facette.com.tr>")
+MAIL_FROM = os.environ.get("MAIL_FROM", "Meluni <info@meluni.com.tr>")
 
 
 # --- GELEN MAIL (Cloudflare Worker buraya POST eder) ---
@@ -66,7 +66,7 @@ async def send_test(request: Request, x_webhook_secret: str | None = Header(defa
     to = body.get("to")
     if not to:
         raise HTTPException(status_code=400, detail="'to' alanı gerekli")
-    subject = body.get("subject", "Facette test maili")
+    subject = body.get("subject", "Meluni test maili")
     html = body.get("html", "<p>Bu bir test mailidir. Resend + Railway çalışıyor 🎉</p>")
     result = await send_email(to=to, subject=subject, html=html)
     return {"ok": True, "id": result.get("id")}

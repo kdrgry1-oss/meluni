@@ -47,13 +47,13 @@ export default function Category() {
   // Mobilde ilk yüklemede 2'li (Mango usulü); desktop'ta 4'lü varsayılan.
   // Kullanıcı daha önce bilinçli seçim yaptıysa (localStorage) o korunur.
   const [gridCols, setGridColsState] = useState(() => {
-    const saved = parseInt(localStorage.getItem("facette_plp_grid") || "", 10);
+    const saved = parseInt(localStorage.getItem("meluni_plp_grid") || "", 10);
     if ([1, 2, 4].includes(saved)) return saved;
     return typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4;
   });
   const setGridCols = (n) => {
     setGridColsState(n);
-    try { localStorage.setItem("facette_plp_grid", String(n)); } catch (e) {}
+    try { localStorage.setItem("meluni_plp_grid", String(n)); } catch (e) {}
   };
 
   // --- Uygulanmış (URL'deki) filtreler ---

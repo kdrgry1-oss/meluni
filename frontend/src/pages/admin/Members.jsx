@@ -358,7 +358,7 @@ export default function Members() {
                 ["first_name", "Ad", "text"],
                 ["last_name", "Soyad", "text"],
                 ["phone", "Telefon", "text"],
-                ["password", "Geçici Şifre (boş = Facette123!)", "text"],
+                ["password", "Geçici Şifre (boş = Meluni123!)", "text"],
               ].map(([k, lbl, typ]) => (
                 <div key={k}>
                   <label className="text-xs text-gray-500">{lbl}</label>

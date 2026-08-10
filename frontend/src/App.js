@@ -72,8 +72,8 @@ function LegacyOrderRedirect() {
 function App() {
   useEffect(() => {
     // UTM/referrer yakalama — render'ı bloklamaması için mount sonrası.
-    if (typeof window !== "undefined" && !window.__FACETTE_TRACKED__) {
-      window.__FACETTE_TRACKED__ = true;
+    if (typeof window !== "undefined" && !window.__MELUNI_TRACKED__) {
+      window.__MELUNI_TRACKED__ = true;
       trackVisit();
     }
     // Capacitor native bootstrap (web mode'da no-op)

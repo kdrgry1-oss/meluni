@@ -28,7 +28,7 @@ async def reset():
     hashed = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
     
     result = await db.users.update_one(
-        {"email": "admin@facette.com"},
+        {"email": "admin@meluni.com.tr"},
         {"$set": {"password": hashed}},
         upsert=False
     )
@@ -39,7 +39,7 @@ async def reset():
         from datetime import datetime, timezone
         await db.users.insert_one({
             "id": str(uuid.uuid4()),
-            "email": "admin@facette.com",
+            "email": "admin@meluni.com.tr",
             "password": hashed,
             "first_name": "Admin",
             "last_name": "User",
@@ -47,10 +47,10 @@ async def reset():
             "is_active": True,
             "created_at": datetime.now(timezone.utc).isoformat()
         })
-        print("Admin user CREATED: admin@facette.com (parola ADMIN_RESET_PASSWORD ile ayarlandı)")
+        print("Admin user CREATED: admin@meluni.com.tr (parola ADMIN_RESET_PASSWORD ile ayarlandı)")
     else:
         print(f"Admin password RESET. Matched: {result.matched_count}, Modified: {result.modified_count}")
-        print("Login: admin@facette.com (parola ADMIN_RESET_PASSWORD ile ayarlandı)")
+        print("Login: admin@meluni.com.tr (parola ADMIN_RESET_PASSWORD ile ayarlandı)")
 
 if __name__ == "__main__":
     asyncio.run(reset())

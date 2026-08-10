@@ -553,9 +553,9 @@ async def profit_by_channel(
             "status": 1, "items": 1, "total": 1, "shipping_cost": 1,
         }},
     ]
-    # Kanal adı normalizasyonu: mağaza siparişleri platform='facette' taşır → komisyon
+    # Kanal adı normalizasyonu: mağaza siparişleri platform='meluni' taşır → komisyon
     # haritasındaki 'site'; admin manuel siparişler → 'manual'.
-    _CH_ALIAS = {"facette": "site", "": "site", "web": "site",
+    _CH_ALIAS = {"meluni": "site", "": "site", "web": "site",
                  "admin_manual": "manual", "admin": "manual", "manuel": "manual"}
     rows: dict = defaultdict(lambda: {
         "orders": 0, "revenue": 0.0, "cost": 0.0, "shipping": 0.0,

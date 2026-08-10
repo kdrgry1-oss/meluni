@@ -75,11 +75,11 @@ function megaColumnsOf(tab) {
 // Menu images for right side
 const MENU_IMAGES = {
   giyim: [
-    "https://cdn.facette.com.tr/pagedesign/title-65777bd3-0-1920.webp",
-    "https://cdn.facette.com.tr/pagedesign/title-7b3e27f9-5-1920.webp"
+    "https://cdn.meluni.com.tr/pagedesign/title-65777bd3-0-1920.webp",
+    "https://cdn.meluni.com.tr/pagedesign/title-7b3e27f9-5-1920.webp"
   ],
   aksesuar: [
-    "https://cdn.facette.com.tr/pagedesign/title-7b3e27f9-5-1920.webp"
+    "https://cdn.meluni.com.tr/pagedesign/title-7b3e27f9-5-1920.webp"
   ]
 };
 
@@ -367,8 +367,8 @@ export default function Header({ hideMenu = false }) {
 
                   {/* Mobil logo — Mango tarzı: hamburger'ın hemen yanında, sol hizalı, küçük.
                       Masaüstünde gizli; masaüstü logosu aşağıdaki ortalanmış Link'te. */}
-                  <Link to="/" className="lg:hidden flex-shrink-0" data-testid="header-logo-mobile" aria-label="FACETTE">
-                    <img src="/logo.webp" alt="FACETTE" className={`h-4 ${heroOverlay ? "brightness-0 invert" : ""}`} />
+                  <Link to="/" className="lg:hidden flex-shrink-0" data-testid="header-logo-mobile" aria-label="MELUNİ">
+                    <img src="/logo.webp" alt="MELUNİ" className={`h-4 ${heroOverlay ? "brightness-0 invert" : ""}`} />
                   </Link>
 
                   {/* iPad (lg, ~1024-1280px) sıkışması: sekmeler lg'de daha kompakt (küçük punto,
@@ -412,7 +412,7 @@ export default function Header({ hideMenu = false }) {
 
             {/* Center: Logo — sadece masaüstünde (mobil logo yukarıda, sol blokta) */}
             <Link to="/" className="hidden lg:block flex-shrink-0 mx-4" data-testid="header-logo">
-              <img src="/logo.webp" alt="FACETTE" className={`h-5 xl:h-6 ${heroOverlay ? "brightness-0 invert" : ""}`} />
+              <img src="/logo.webp" alt="MELUNİ" className={`h-5 xl:h-6 ${heroOverlay ? "brightness-0 invert" : ""}`} />
             </Link>
 
             {/* Right: Icons (mobile: search icon + account + favorites + cart, Mango tarzı; desktop: full set) */}
@@ -550,7 +550,7 @@ export default function Header({ hideMenu = false }) {
         <div className={`mobile-menu ${mobileMenuOpen ? "open" : ""}`}>
           <div className="flex items-center justify-between px-5 h-14 border-b border-black/5">
             <Link to="/" onClick={() => setMobileMenuOpen(false)}>
-              <img src="/logo.webp" alt="FACETTE" className="h-5" />
+              <img src="/logo.webp" alt="MELUNİ" className="h-5" />
             </Link>
             <button onClick={() => setMobileMenuOpen(false)} className="-mr-2 p-2" aria-label="Kapat">
               <X size={20} strokeWidth={1.4} />
@@ -643,15 +643,15 @@ export default function Header({ hideMenu = false }) {
 
       {/* Search Overlay */}
       {searchOpen && (
-        <div className="fixed inset-x-0 top-0 h-[100dvh] bg-white z-[60] overflow-y-auto overscroll-contain" style={{ animation: "facetteSearchIn .2s ease-out" }}>
+        <div className="fixed inset-x-0 top-0 h-[100dvh] bg-white z-[60] overflow-y-auto overscroll-contain" style={{ animation: "meluniSearchIn .2s ease-out" }}>
           {/* Mobil klavye düzeltmesi: 100dvh (dinamik viewport) — klavye açılınca kap
               küçülür, içerik klavyenin arkasında kalmaz; overscroll-contain ile arka
               sayfa kaymaz. Mobilde üst boşluklar kısaltıldı. */}
-          <style>{`@keyframes facetteSearchIn{from{opacity:0}to{opacity:1}}@keyframes facetteSearchUp{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}`}</style>
-          <div className="px-5 md:px-10 pt-4 md:pt-5 pb-40 md:pb-16" style={{ animation: "facetteSearchUp .28s ease-out" }}>
+          <style>{`@keyframes meluniSearchIn{from{opacity:0}to{opacity:1}}@keyframes meluniSearchUp{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}`}</style>
+          <div className="px-5 md:px-10 pt-4 md:pt-5 pb-40 md:pb-16" style={{ animation: "meluniSearchUp .28s ease-out" }}>
             {/* Üst bar: logo + kapat */}
             <div className="flex items-center justify-between mb-4 md:mb-12">
-              <Link to="/" onClick={closeSearch} aria-label="FACETTE"><img src="/logo.webp" alt="FACETTE" className="h-5" /></Link>
+              <Link to="/" onClick={closeSearch} aria-label="MELUNİ"><img src="/logo.webp" alt="MELUNİ" className="h-5" /></Link>
               <button onClick={closeSearch} className="inline-flex items-center gap-1.5 text-[11px] tracking-[0.18em] uppercase hover:opacity-60 transition-opacity" aria-label="Kapat">
                 Kapat <X size={18} strokeWidth={1.4} />
               </button>

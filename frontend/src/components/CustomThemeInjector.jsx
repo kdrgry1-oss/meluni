@@ -21,8 +21,8 @@ export default function CustomThemeInjector() {
   useEffect(() => {
     if (isAdmin) {
       // Admin'e girildiyse enjekte edilmiş tema kodunu KALDIR (güvenlik + admin UI bozulmasın).
-      document.getElementById("facette-custom-css")?.remove();
-      document.getElementById("facette-custom-js")?.remove();
+      document.getElementById("meluni-custom-css")?.remove();
+      document.getElementById("meluni-custom-js")?.remove();
       injected.current = false;
       return;
     }
@@ -33,16 +33,16 @@ export default function CustomThemeInjector() {
       if (!alive) return;
       const css = r.data?.custom_css || "";
       const js = r.data?.custom_js || "";
-      if (css && !document.getElementById("facette-custom-css")) {
+      if (css && !document.getElementById("meluni-custom-css")) {
         const st = document.createElement("style");
-        st.id = "facette-custom-css";
+        st.id = "meluni-custom-css";
         st.textContent = css;
         document.head.appendChild(st);
       }
-      if (js && !document.getElementById("facette-custom-js")) {
+      if (js && !document.getElementById("meluni-custom-js")) {
         try {
           const sc = document.createElement("script");
-          sc.id = "facette-custom-js";
+          sc.id = "meluni-custom-js";
           sc.textContent = js;
           document.body.appendChild(sc);
         } catch (e) { /* tema JS hatası mağazayı kırmasın */ }

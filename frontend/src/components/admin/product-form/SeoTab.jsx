@@ -40,7 +40,7 @@ export default function SeoTab({ formData, setFormData }) {
             value={formData.meta_title || ""}
             onChange={(e) => setFormData({ ...formData, meta_title: e.target.value })}
             className="w-full border-gray-200 border-2 px-4 py-3 rounded-xl focus:border-black outline-none font-bold"
-            placeholder="Örn: En Şık Gece Elbiseleri | Facette"
+            placeholder="Örn: En Şık Gece Elbiseleri | Meluni"
             data-testid="product-seo-meta-title"
           />
         </div>

@@ -6,7 +6,7 @@ Kullanım:
     python3 ticimax_pull_via_storefront.py 2889 2879 2840 2839
 
 Strateji:
-  1. https://www.facette.com.tr/sitemap/products/0.xml ile tüm ürün URL'lerini al
+  1. https://www.meluni.com.tr/sitemap/products/0.xml ile tüm ürün URL'lerini al
   2. URL sonundaki "-<ID>" suffix'i hedef URUNKARTIID'lerle eşleştir
   3. Her ürün sayfasındaki `var productDetailModel = {...};` JSON'unu parse et
   4. products + productVariantData + productImages + breadCrumb verilerini
@@ -29,9 +29,9 @@ from dotenv import load_dotenv
 sys.path.insert(0, "/app/backend")
 load_dotenv("/app/backend/.env")
 
-BASE = "https://www.facette.com.tr"
+BASE = "https://www.meluni.com.tr"
 SITEMAP = f"{BASE}/sitemap/products/0.xml"
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; FacetteSync/1.0)"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; MeluniSync/1.0)"}
 
 
 def _slugify(text: str) -> str:
@@ -84,7 +84,7 @@ def _find_target_urls(target_ids: Set[int]) -> Dict[int, str]:
     """Sitemap'ten hedef URUNKARTIID'lere ait URL'leri bul."""
     r = requests.get(SITEMAP, timeout=30, headers=HEADERS)
     r.raise_for_status()
-    urls = re.findall(r"<loc>(https://www\.facette\.com\.tr/[^<]+)</loc>", r.text)
+    urls = re.findall(r"<loc>(https://www\.meluni\.com\.tr/[^<]+)</loc>", r.text)
     found: Dict[int, str] = {}
     for u in urls:
         m = re.search(r"-(\d{3,6})$", u)
@@ -118,7 +118,7 @@ def _build_product_doc(pdm: dict, kart_id: int, page_url: str,
     """productDetailModel → bizim DB product schema'mıza dönüştür."""
     name = (pdm.get("productName") or "").strip()
     stock_code = (pdm.get("stockCode") or "").strip()
-    brand = (pdm.get("brandName") or "FACETTE").strip()
+    brand = (pdm.get("brandName") or "MELUNİ").strip()
     description = (pdm.get("productShortDescription") or name).strip()
 
     bc = pdm.get("breadCrumb") or []
@@ -205,7 +205,7 @@ def _build_product_doc(pdm: dict, kart_id: int, page_url: str,
         "member_price_1": list_price_kdv_inc,
         "cost_price": cost_price,
         "vat_rate": vat_rate,
-        "vendor": brand or "FACETTE",
+        "vendor": brand or "MELUNİ",
         "description": description,
         "category_name": category_leaf,
         "breadcrumb": breadcrumb_str,

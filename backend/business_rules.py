@@ -92,11 +92,11 @@ RULE_CATALOG = [
              "ve Conversions API'ye event GÖNDERİLMEZ (KVKK/GDPR uyumu). KAPALI (varsayılan) = mevcut "
              "davranış (onaydan bağımsız gönderilir). Açmadan önce çerez bildirimi kabul oranını göz "
              "önünde bulundurun — açık onay düşükse Meta event hacmi ciddi düşebilir."},
-    {"group": "Pazarlama & İzleme", "key": "marketing.capi_guest_external_id", "label": "CAPI: Misafir siparişlerde external_id = ziyaretçi kimliği (facette_sid)",
+    {"group": "Pazarlama & İzleme", "key": "marketing.capi_guest_external_id", "label": "CAPI: Misafir siparişlerde external_id = ziyaretçi kimliği (meluni_sid)",
      "type": "toggle", "default": True, "options": [True, False],
      "help": "AÇIK (varsayılan): üye olmayan (misafir) siparişlerin server-side Meta/TikTok Purchase "
              "event'inde external_id, siparişe bağlı stabil first-party ziyaretçi kimliği (attribution "
-             "session_id = tarayıcıdaki facette_sid) olarak gönderilir. Tarayıcı Purchase'ı da aynı değeri "
+             "session_id = tarayıcıdaki meluni_sid) olarak gönderilir. Tarayıcı Purchase'ı da aynı değeri "
              "kullandığından browser↔server eşleşir ve external_id coverage (EMQ) yükselir. Yalnız additive "
              "bir eşleşme sinyalidir; ödeme/sipariş/dedup akışını ETKİLEMEZ. KAPALI = yalnız üyelerde external_id "
              "(eski davranış) — anlık geri alma."},

@@ -489,7 +489,7 @@ function ProfilePane({ user, editing, setEditing, form, setForm, onSubmit, mkt =
 
       <aside className="bg-black text-white p-6 md:p-8 flex flex-col justify-between">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-gray-400 mb-3">Facette Üye Avantajı</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-gray-400 mb-3">Meluni Üye Avantajı</p>
           <h3 className="text-lg font-light leading-snug mb-4">
             Yeni koleksiyona üyelere özel <span className="font-semibold">erken erişim</span>.
           </h3>

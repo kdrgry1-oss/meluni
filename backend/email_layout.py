@@ -1,11 +1,11 @@
 """
-email_layout.py — FACETTE markalı tek tip e-posta kabuğu (shell)
+email_layout.py — MELUNİ markalı tek tip e-posta kabuğu (shell)
 =============================================================================
 Sitedeki TÜM transactional e-postalar (sipariş bildirimleri, şifre sıfırlama,
 iade vs.) bu kabuğu kullanır:
 
     ┌──────────────────────────┐
-    │        FACETTE           │  ← üstte logo
+    │        MELUNİ           │  ← üstte logo
     │        ┌────┐            │
     │        │ ◻ │            │  ← ikon kutusu
     │        └────┘            │
@@ -15,7 +15,7 @@ iade vs.) bu kabuğu kullanır:
     │      [  CTA BUTON  ]     │
     │      bilgi kutusu        │
     │  INSTAGRAM · TIKTOK      │  ← altta sosyal + telif
-    │  © FACETTE               │
+    │  © MELUNİ               │
     └──────────────────────────┘
 
 ÖNEMLİ — PLACEHOLDER GÜVENLİĞİ:
@@ -39,18 +39,18 @@ _MUTED  = "#6b6b6b"   # gövde metni
 _FAINT  = "#9a9a93"   # eyebrow / footer
 _NOTE   = "#f3f1ec"   # bilgi kutusu arka planı
 
-INSTAGRAM_URL = "https://www.instagram.com/facette"
-TIKTOK_URL    = "https://www.tiktok.com/@facette"
+INSTAGRAM_URL = "https://www.instagram.com/meluni"
+TIKTOK_URL    = "https://www.tiktok.com/@meluni"
 # E-posta header logosu — mutlak HTTPS PNG (Outlook .webp render etmez).
-# facette.com.tr/logo.png frontend/public içinde yayınlanır (Cloudflare CDN).
-LOGO_URL      = "https://facette.com.tr/logo.png"
+# meluni.com.tr/logo.png frontend/public içinde yayınlanır (Cloudflare CDN).
+LOGO_URL      = "https://meluni.com.tr/logo.png"
 
 # BEYAZ ETİKET — e-posta markası ayardan gelir (koddan değil). send_smtp_email her gönderim
-# öncesi set_brand(company) çağırır; ayar boşsa aşağıdaki FACETTE varsayılanları kullanılır.
+# öncesi set_brand(company) çağırır; ayar boşsa aşağıdaki MELUNİ varsayılanları kullanılır.
 _BRAND = {
-    "store_name": "FACETTE",
+    "store_name": "MELUNİ",
     "logo_url": LOGO_URL,
-    "site": "facette.com.tr",
+    "site": "meluni.com.tr",
     "instagram": INSTAGRAM_URL,
     "tiktok": TIKTOK_URL,
 }
@@ -97,8 +97,8 @@ def email_shell(*, eyebrow="", title="", intro_html="", icon="",
     bölümler atlanır. İçerik argümanları {placeholder} içerebilir — korunur."""
     yr = str(year or datetime.now(timezone.utc).year)
     if site is None:
-        site = _BRAND.get("site") or "facette.com.tr"
-    _store = _BRAND.get("store_name") or "FACETTE"
+        site = _BRAND.get("site") or "meluni.com.tr"
+    _store = _BRAND.get("store_name") or "MELUNİ"
     _logo = _BRAND.get("logo_url") or LOGO_URL
     P = []
     # Sentinel — render_email zaten markalı maili tekrar sarmasın diye.
@@ -117,7 +117,7 @@ def email_shell(*, eyebrow="", title="", intro_html="", icon="",
         'style="width:600px;max-width:600px;background:' + _CARD + ';">'
     )
 
-    # Header — gerçek logo görseli (resim engellenirse alt="FACETTE" görünür)
+    # Header — gerçek logo görseli (resim engellenirse alt="MELUNİ" görünür)
     P.append(
         '<tr><td style="padding:32px 24px 28px;text-align:center;">'
         '<img src="' + _logo + '" alt="' + _store + '" width="150" '
@@ -220,6 +220,6 @@ def render_email(subject: str = "", inner_html: str = "") -> str:
     low = html.lower()
     if ("<!--fct-shell-->" in low) or (LOGO_URL.lower() in low):
         return html  # zaten markalı
-    # Konudan temiz bir başlık türet ("... — 913BS" / "... — FACETTE" kuyruğunu at)
+    # Konudan temiz bir başlık türet ("... — 913BS" / "... — MELUNİ" kuyruğunu at)
     title = (subject or "").split(" — ")[0].strip()
     return email_shell(title=title, intro_html=html, preheader=(subject or "").strip())

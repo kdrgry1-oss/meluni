@@ -16,7 +16,7 @@ görselleri aynı işlemden geçirir.
   immutable set edilmişti. Bu, Cloudflare edge cache + ziyaretçi tarayıcı
   cache'inde eski (büyük) sürümün bir süre daha servis edilebileceği anlamına
   gelir. Anında etkisi görmek için Cloudflare panelinden
-  cdn.facette.com.tr/uploads/* için "Purge Cache" yapılması gerekir (bu
+  cdn.meluni.com.tr/uploads/* için "Purge Cache" yapılması gerekir (bu
   script'in API erişimi yok, hesapta CF API token yapılandırılmamış).
 
 Kullanım:
@@ -120,7 +120,7 @@ def main():
 
     global db
     mongo_url = os.environ["MONGO_URL"]
-    db_name = os.environ.get("DB_NAME", "facette")
+    db_name = os.environ.get("DB_NAME", "meluni")
     client = MongoClient(mongo_url)
     db = client[db_name]
 

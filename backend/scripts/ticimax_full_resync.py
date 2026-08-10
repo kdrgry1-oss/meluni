@@ -110,7 +110,7 @@ async def main():
         member_price_1 = _f(first["UYETIPIFIYAT1"]) or list_price
         cost_price = _f(first["ALISFIYATI"])
         vat_rate = _f(first["KDVORANI"], 10)
-        vendor = _s(first["TEDARIKCI"], "FACETTE")
+        vendor = _s(first["TEDARIKCI"], "MELUNİ")
         description = _s(first["ACIKLAMA"])
         breadcrumb = _s(first["BREADCRUMBKAT"])
         category_leaf = _category_from_breadcrumb(breadcrumb)

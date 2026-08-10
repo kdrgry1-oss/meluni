@@ -185,7 +185,7 @@ async def seed_default_home_blocks(
         }
 
     now = datetime.now(timezone.utc).isoformat()
-    base = "https://cdn.facette.com.tr/pagedesign"
+    base = "https://cdn.meluni.com.tr/pagedesign"
     default_blocks = [
         {
             "type": "hero_slider",

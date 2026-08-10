@@ -181,7 +181,7 @@ def render_size_table_image(
     sizes: list,          # e.g. ["S", "M", "L", "XL"]
     columns: list,        # e.g. ["Göğüs", "Bel", "Kalça", "Omuz"]
     values: dict,         # {"S": {"Göğüs": "96", "Bel": "80", ...}, ...}
-    brand: str = "FACETTE",
+    brand: str = "MELUNİ",
     unit: str = "cm",
     product_size: str = "",
     model_info: dict = None,
@@ -440,7 +440,7 @@ async def generate_size_table_image(product_id: str, current_user: dict = Depend
         if not isinstance(_u, str) or not _u or _u.startswith("data:"):
             continue
         if not _u.startswith("http"):
-            _u = "https://api.facette.com.tr" + (_u if _u.startswith("/") else "/" + _u)
+            _u = "https://api.meluni.com.tr" + (_u if _u.startswith("/") else "/" + _u)
         _tries += 1
         try:
             import httpx as _httpx

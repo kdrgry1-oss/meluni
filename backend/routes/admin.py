@@ -32,9 +32,9 @@ async def get_dashboard_stats(
         _pf = (platform or "all").strip().lower()
         if _pf in ("", "all", "hepsi", "tumu", "tümü"):
             plat_match = {}
-        elif _pf in ("site", "facette", "web", "storefront"):
+        elif _pf in ("site", "meluni", "web", "storefront"):
             plat_match = {"$or": [
-                {"platform": {"$in": ["facette", "web", "site", "storefront"]}},
+                {"platform": {"$in": ["meluni", "web", "site", "storefront"]}},
                 {"platform": {"$in": [None, ""]}},
                 {"platform": {"$exists": False}},
             ]}
@@ -200,7 +200,7 @@ async def get_dashboard_stats(
             available_platforms = []
             for r in _pl_agg:
                 _key = r.get("_id")
-                if _key in (None, "", "facette", "web", "site", "storefront"):
+                if _key in (None, "", "meluni", "web", "site", "storefront"):
                     continue  # 'Sadece Site' seçeneği ayrı ekleniyor
                 available_platforms.append({"platform": str(_key), "count": r.get("count", 0)})
         except Exception:
@@ -257,7 +257,7 @@ async def get_users(
     _staff_or = [
         {"created_by": {"$exists": True, "$nin": [None, ""]}},
         {"is_super_admin": True},
-        {"email": "admin@facette.com"},
+        {"email": "admin@meluni.com.tr"},
         {"role_id": {"$exists": True, "$nin": [None, ""]}},
     ]
     query = {"is_admin": True, "$or": _staff_or}

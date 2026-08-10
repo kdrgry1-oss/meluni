@@ -114,7 +114,7 @@ COMMON_TRANSFER_RULES = [
     _f("transfer_return_status", "İade Talep ve Durum Aktarımı", type="switch", default=False),
     _f("transfer_due_date", "Sipariş Ödeme Vade Tarihi Aktar", type="switch", default=False),
     _f("transfer_delivery_date", "Sipariş Teslim Tarihi Aktar", type="switch", default=False),
-    _f("brand_name", "Varsayılan Marka Adı", placeholder="FACETTE"),
+    _f("brand_name", "Varsayılan Marka Adı", placeholder="MELUNİ"),
     _f("marketplace_group", "MarketPlace Grup", default="Varsayılan"),
     _f("cargo_duration_days", "Kargo Süresi (Gün)", type="number", default=2),
     _f("warranty", "Garanti Süresi", default="Varsayılan"),

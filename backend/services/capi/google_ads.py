@@ -49,7 +49,7 @@ def _items_to_ga4(items: list) -> list:
             "quantity": int(it.get("quantity") or 1),
             "currency": it.get("currency") or "TRY",
             "discount": float(it.get("discount") or 0),
-            "affiliation": it.get("affiliation") or "FACETTE Online",
+            "affiliation": it.get("affiliation") or "MELUNİ Online",
         }
         for k in ("item_category2", "item_category3", "item_category4", "item_category5"):
             if it.get(k):
@@ -112,7 +112,7 @@ async def send(
         "shipping": float(event_payload.get("shipping") or 0.0),
         "payment_type": event_payload.get("payment_type") or "",
         "shipping_tier": event_payload.get("shipping_tier") or "",
-        "affiliation": event_payload.get("affiliation") or "FACETTE Online",
+        "affiliation": event_payload.get("affiliation") or "MELUNİ Online",
         "item_list_id": event_payload.get("list_id") or "",
         "item_list_name": event_payload.get("list_name") or "",
     }

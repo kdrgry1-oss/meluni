@@ -71,7 +71,7 @@ class ProductBase(BaseModel):
     sale_price: Optional[float] = None
     category_id: Optional[str] = None
     category_name: Optional[str] = None
-    brand: str = "FACETTE"
+    brand: str = "MELUNİ"
     images: List[str] = []
     variants: List[ProductVariant] = []
     is_active: bool = True
@@ -177,7 +177,7 @@ class OrderBase(BaseModel):
     total: float
     payment_method: str  # credit_card, bank_transfer, cash_on_delivery
     notes: Optional[str] = None
-    platform: str = "facette"  # facette, trendyol, etc.
+    platform: str = "meluni"  # meluni, trendyol, etc.
 
 class OrderCreate(OrderBase):
     pass
@@ -241,7 +241,7 @@ class MenuItem(BaseModel):
 class SiteSettings(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = "main"
-    site_name: str = "FACETTE"
+    site_name: str = "MELUNİ"
     logo_url: str = ""
     favicon_url: str = ""
     free_shipping_limit: float = 500
@@ -315,7 +315,7 @@ class VariantOption(VariantOptionBase):
 DEFAULT_CAMPAIGN_DIRECTIVES = (
     "İçerik Standartları:\n"
     "• Format: 9:16 dikey video (Reels/TikTok/Shorts)\n"
-    "• Marka mention: @facette etiketi zorunlu\n"
+    "• Marka mention: @meluni etiketi zorunlu\n"
     "• Min. süre: 15 saniye, ürün net görünmeli\n"
     "• Story'de takip linki (swipe-up) + indirim kuponu paylaşılmalı\n"
     "• Paylaşım sonrası içerik linki sisteme girilmeli"

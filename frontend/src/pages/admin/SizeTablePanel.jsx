@@ -321,7 +321,7 @@ export default function SizeTablePanel({ productId, productName = "", variants =
 
       <div className="mt-4 bg-blue-50 border border-blue-200 p-3 rounded text-xs text-blue-800">
         <b>Nasıl çalışır?</b> Görsel, ürünün son görseli olarak eklenir ve <b>Trendyol / Hepsiburada / Temu</b> entegrasyonlarına otomatik aktarılır.
-        Facette sitesinde müşteriye bu görsel gösterilmez — bunun yerine beden seçim alanının altında stil ile
+        Meluni sitesinde müşteriye bu görsel gösterilmez — bunun yerine beden seçim alanının altında stil ile
         uyumlu bir <b>HTML ölçü tablosu</b> gösterilir.
       </div>
     </div>
