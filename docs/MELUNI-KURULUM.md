@@ -10,7 +10,7 @@ Railway > proje > **Variables**. Yıldızlı olanlar **her marka için yeniden �
 
 | Değişken | Değer | Not |
 |---|---|---|
-| `MONGO_URL` * | Atlas bağlantı dizesi | meluni'ye **ayrı** cluster/DB |
+| `MONGO_URL` * | MongoDB bağlantı dizesi | meluni'ye **ayrı** DB — seçenekler: [`VERITABANI.md`](VERITABANI.md) |
 | `SECRETS_MASTER_KEY` * | `Fernet.generate_key()` çıktısı | Facette'inkini **kullanmayın** |
 | `JWT_SECRET` * | 32+ rastgele karakter | Facette'inkini **kullanmayın** |
 | `SITE_URL` | `https://meluni.com.tr` | e-posta/feed linkleri + ödeme allowlist |
