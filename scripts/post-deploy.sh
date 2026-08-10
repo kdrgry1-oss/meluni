@@ -69,6 +69,11 @@ ln -sfn "${SHARED_DIR}/.env" "${RELEASE_DIR}/backend/.env"
 # şikayetinin en sık sebebi, o yüzden gürültülü uyarıyoruz.
 if [ -d frontend/build ] && [ -n "$(ls -A frontend/build 2>/dev/null)" ]; then
   log "frontend derlemesi bulundu ($(du -sh frontend/build | cut -f1))"
+  # nginx www-data olarak çalışır; ev dizini 750 olduğu için derlemeye
+  # ulaşamaz ve storefront 403 döner. Dizinlere geçiş, dosyalara okuma izni
+  # veriyoruz. shared/.env'e DOKUNULMUYOR — o 600 kalır.
+  chmod o+x "${RELEASE_DIR}" 2>/dev/null || true
+  chmod -R o+rX "${RELEASE_DIR}/frontend/build" 2>/dev/null || true
 else
   warn "frontend/build YOK — bu release yalnız backend'i günceller."
   warn "CI'da derleme adımı çalıştı mı? (Actions > Deploy > 'Frontend derle')"
