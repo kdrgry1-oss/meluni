@@ -1414,6 +1414,9 @@ async def get_product_stock_movements(product_id: str, limit: int = Query(300, g
 _PRODUCT_INTERNAL_FIELDS = (
     "cost_price", "purchase_price", "alis_fiyati", "buy_price", "supplier", "tedarikci",
     "supplier_code", "member_price_1", "member_price_2", "member_price_3", "member_price",
+    # Tedarikçi XML aktarımının yazdığı izler: kimden, hangi kodla ve hangi
+    # adresten aldığımız müşteriye gitmemeli (rakip aynı tedarikçiyi bulur).
+    "supplier_barcode", "supplier_stock_code", "supplier_model_ref", "supplier_url",
     "margin", "profit", "profit_margin", "kar", "kar_marji", "ticimax_fields",
     "markup_rate", "use_default_markup",
     "admin_notes", "internal_notes", "vendor", "vendor_id",
