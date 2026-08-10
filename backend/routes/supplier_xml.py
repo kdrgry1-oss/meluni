@@ -573,6 +573,10 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
 
     variants, total_stock = [], 0
     for v in rec["variants"]:
+        # Eşiğin altındaki beden HİÇ açılmaz. Kod üretmeden önce eliyoruz;
+        # aksi halde satılmayacak varyantlara barkod harcanır.
+        if int(v.get("stock") or 0) <= min_stock:
+            continue
         codes = await supplier_codes.get_or_create_variant_codes(
             db, supplier, rec["model_ref"], v.get("ref") or "0")
         total_stock += int(v.get("stock") or 0)
