@@ -17,6 +17,7 @@ döner ve `matched=False` ile işaretlenir — sessizce yanlış kod vermeyiz.
 """
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from typing import Any, Dict, List
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -125,3 +126,58 @@ async def order_procurement(order_id: str, _admin=Depends(require_admin)):
             if unmatched else ""
         ),
     }
+
+
+# ─────────────────── otomasyon uçları ───────────────────
+# Dış yazılım şu döngüyü kurar:
+#   1) GET  /dropship/pending            → tedarikçiye geçilmemiş siparişler
+#   2) kendi tarafında tedarikçiye sipariş verir
+#   3) POST /dropship/orders/{id}/mark-ordered  → işaretler
+# Böylece aynı sipariş iki kez geçilmez.
+
+# ÖDEME KURALI: yalnız GERÇEKTEN ödenmiş siparişler listelenir. Ödenmemiş
+# siparişe tedarikçiden mal almak doğrudan zarardır; 3DS yarıda kalan veya
+# havalesi gelmemiş siparişler bu listeye ASLA girmez.
+_PAID_Q = {"payment_status": "paid", "status": {"$in": ["confirmed", "preparing", "processing"]}}
+
+
+@router.get("/pending")
+async def pending_orders(limit: int = 200, _admin=Depends(require_admin)):
+    """Tedarikçiye henüz geçilmemiş, ÖDENMİŞ siparişlerin alım listesi."""
+    limit = max(1, min(limit, 500))
+    q = {**_PAID_Q, "supplier_ordered_at": {"$exists": False}}
+    orders = await db.orders.find(q, {"_id": 0, "id": 1}).sort("created_at", 1).to_list(limit)
+
+    out = []
+    for o in orders:
+        try:
+            out.append(await order_procurement(o["id"], _admin=True))
+        except HTTPException:
+            continue
+    return {"count": len(out), "orders": out}
+
+
+@router.post("/orders/{order_id}/mark-ordered")
+async def mark_ordered(order_id: str, payload: dict | None = None,
+                       _admin=Depends(require_admin)):
+    """Siparişi 'tedarikçiye geçildi' diye işaretler.
+
+    Sipariş DURUMUNA ve ödeme alanlarına DOKUNMAZ — yalnız kendi izleme
+    alanlarımızı yazar. Aynı sipariş ikinci kez işaretlenirse already=True
+    döner ve üzerine yazılmaz (mükerrer sipariş uyarısı yazılımda görünsün).
+    """
+    o = await db.orders.find_one(
+        {"$or": [{"id": order_id}, {"order_number": order_id}]},
+        {"_id": 0, "id": 1, "supplier_ordered_at": 1})
+    if not o:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı.")
+    if o.get("supplier_ordered_at"):
+        return {"success": True, "already": True,
+                "supplier_ordered_at": o["supplier_ordered_at"]}
+
+    now = datetime.now(timezone.utc).isoformat()
+    await db.orders.update_one({"id": o["id"]}, {"$set": {
+        "supplier_ordered_at": now,
+        "supplier_order_ref": str((payload or {}).get("reference") or "")[:120],
+    }})
+    return {"success": True, "already": False, "supplier_ordered_at": now}
