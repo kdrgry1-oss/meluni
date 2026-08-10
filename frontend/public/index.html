@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="tr">
+    <head>
+    <!-- build-rebuild -->
+        <!-- İstemci yüklenme/hata telemetrisi — EN ÖNCE (bundle çökmesini bile yakalar).
+             Sunucu IP+UA damgalar; admin panelden hangi cihaz/IP açıldı/açılamadı + hata görülür. -->
+        <script>
+            (function () {
+                try {
+                    var API = "%REACT_APP_BACKEND_URL%";
+                    if (!API || API.charAt(0) === "%") {
+                        // white-label fallback: www.<domain> -> api.<domain>
+                        API = location.origin.replace("://www.", "://api.");
+                        if (API === location.origin) API = location.origin.replace("://", "://api.");
+                    }
+                    var SENT = {};
+                    function conn() {
+                        try { var c = navigator.connection; return c ? (c.effectiveType || "") : ""; } catch (e) { return ""; }
+                    }
+                    function beacon(status, extra) {
+                        try {
+                            if (status === "ok" && SENT.ok) return;
+                            if (status === "ok") SENT.ok = 1;
+                            var p = {
+                                status: status, url: location.href, referrer: document.referrer || "",
+                                screen: (window.screen ? (screen.width + "x" + screen.height) : ""), conn: conn()
+                            };
+                            if (extra) { for (var k in extra) { if (extra.hasOwnProperty(k)) p[k] = extra[k]; } }
+                            var body = JSON.stringify(p);
+                            var url = API + "/api/client-log";
+                            // text/plain: CORS 'simple request' → preflight yok; sunucu JSON'u yine ayrıştırır.
+                            if (navigator.sendBeacon) {
+                                navigator.sendBeacon(url, new Blob([body], { type: "text/plain;charset=UTF-8" }));
+                            } else {
+                                var x = new XMLHttpRequest();
+                                x.open("POST", url, true);
+                                x.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+                                x.send(body);
+                            }
+                        } catch (e) {}
+                    }
+                    window.__fctBeacon = beacon;
+                    window.addEventListener("error", function (e) {
+                        beacon("error", {
+                            message: (e && e.message) ? String(e.message).slice(0, 500) : "",
+                            source: (e && e.filename) ? String(e.filename).slice(0, 200) : "",
+                            line: (e && e.lineno) || 0, col: (e && e.colno) || 0
+                        });
+                    });
+                    window.addEventListener("unhandledrejection", function (e) {
+                        var m = "";
+                        try { m = (e && e.reason && (e.reason.message || e.reason)) || ""; } catch (x) {}
+                        beacon("unhandledrejection", { message: String(m).slice(0, 500) });
+                    });
+                    // React render çökmesi window.onerror'a düşmez → console.error'a gider. Onu da yakala
+                    // (mount_fail'in GERÇEK sebebini görmek için). Yalnız hata-benzeri mesajları beacon'la.
+                    try {
+                        var _ce = console.error;
+                        var _ceSent = 0;
+                        console.error = function () {
+                            try {
+                                if (_ceSent < 4) {
+                                    var a = arguments[0];
+                                    var m = (a && a.stack) ? a.stack : (a && a.message ? a.message : String(a || ""));
+                                    if (arguments[1] && arguments[1].stack) m = m + " :: " + arguments[1].stack;
+                                    if (m && /error|cannot read|undefined is not|null is not|is not a function|not defined|Minified React/i.test(m)) {
+                                        _ceSent++;
+                                        beacon("error", { message: String(m).slice(0, 600), source: "console" });
+                                    }
+                                }
+                            } catch (x) {}
+                            return _ce.apply(console, arguments);
+                        };
+                    } catch (x) {}
+                    // Uygulama mount olursa 'ok' beacon (bir kez). React #root'a çocuk ekleyince.
+                    var okTries = 0;
+                    var okT = setInterval(function () {
+                        okTries++;
+                        var r = document.getElementById("root");
+                        if (r && r.children && r.children.length > 0) { beacon("ok"); clearInterval(okT); }
+                        else if (okTries > 40) clearInterval(okT); // ~8sn sonra bırak (mount_fail'i self-heal atar)
+                    }, 200);
+                } catch (e) {}
+            })();
+        </script>
+        <!-- Google Tag Manager -->
+        <script>
+            // [perf 2026-06-22] dataLayer erken hazir (erken event'ler kuyruga girer);
+            // gtm.js yuklemesi requestIdleCallback ile ertelendi -> ilk render TBT dusur.
+            // Storefront'ta GTM'e bagli consent banner YOK -> guvenli.
+            window.dataLayer = window.dataLayer || [];
+            (function (w, d, s, l, i) {
+                function loadGTM() {
+                    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+                    var f = d.getElementsByTagName(s)[0],
+                        j = d.createElement(s),
+                        dl = l != 'dataLayer' ? '&l=' + l : '';
+                    j.async = true;
+                    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                    f.parentNode.insertBefore(j, f);
+                }
+                if ('requestIdleCallback' in w) { w.requestIdleCallback(loadGTM, { timeout: 4000 }); }
+                else { setTimeout(loadGTM, 2500); }
+            })(window, document, 'script', 'dataLayer', 'GTM-THJQQDL');
+        </script>
+        <!-- End Google Tag Manager -->
+        <!-- Google Tag Manager (PWQH4P45) -->
+        <script>
+            // İkinci GTM container — THJQQDL ile aynı deferred (requestIdleCallback) desende yüklenir.
+            window.dataLayer = window.dataLayer || [];
+            (function (w, d, s, l, i) {
+                function loadGTM2() {
+                    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+                    var f = d.getElementsByTagName(s)[0],
+                        j = d.createElement(s),
+                        dl = l != 'dataLayer' ? '&l=' + l : '';
+                    j.async = true;
+                    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                    f.parentNode.insertBefore(j, f);
+                }
+                if ('requestIdleCallback' in w) { w.requestIdleCallback(loadGTM2, { timeout: 4000 }); }
+                else { setTimeout(loadGTM2, 2500); }
+            })(window, document, 'script', 'dataLayer', 'GTM-PWQH4P45');
+        </script>
+        <!-- End Google Tag Manager (PWQH4P45) -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <!-- LCP görseli ve diğer tüm ürün görselleri bu CDN'den gelir → bağlantıyı
+             erkenden kur (preconnect), ilk görsel daha hızlı boyansın. -->
+        <link rel="preconnect" href="https://cdn.facette.com.tr" crossorigin />
+        <link rel="dns-prefetch" href="https://cdn.facette.com.tr" />
+        <!-- [perf 2026-06-22] API host: homepage urun + page-blocks fetch'i buradan gelir
+             (client-render SPA'da kritik yol). Baglanti onceden isinsin -> icerik daha hizli. -->
+        <link rel="preconnect" href="https://api.facette.com.tr" crossorigin />
+        <link rel="dns-prefetch" href="https://api.facette.com.tr" />
+        <!-- Analitik/piksel host'ları için dns-prefetch (bağlantı ısınması) -->
+        <link rel="dns-prefetch" href="https://us.i.posthog.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+        <!--
+        manifest.json provides metadata used when your web app is installed on a
+        user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+        -->
+        <!--
+        Notice the use of %PUBLIC_URL% in the tags above.
+        It will be replaced with the URL of the `public` folder during the build.
+        Only files inside the `public` folder can be referenced from the HTML.
+
+        Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+        work correctly both with client-side routing and a non-root public URL.
+        Learn how to configure a non-root public URL by running `npm run build`.
+        -->
+        <title>FACETTE | Yeni Sezon Kadın Giyim & Moda</title>
+
+        <!-- ===== Favicon / App ikonları ===== -->
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+
+        <!-- ===== SEO (ana sayfa varsayılanları; ürün/kategori sayfaları react-helmet ile ezer) ===== -->
+        <meta name="description" content="FACETTE — kadın modasında yeni sezon koleksiyonu. Zamansız elbise, pantolon, ceket ve aksesuar parçaları. Hızlı kargo, güvenli ödeme, kolay iade." />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
+        <link rel="canonical" href="https://facette.com.tr/" />
+
+        <!-- Open Graph (WhatsApp / Facebook / LinkedIn paylaşım kartı) -->
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="FACETTE" />
+        <meta property="og:locale" content="tr_TR" />
+        <meta property="og:title" content="FACETTE | Yeni Sezon Kadın Giyim & Moda" />
+        <meta property="og:description" content="Kadın modasında yeni sezon koleksiyonu: zamansız parçalar, elbise, pantolon, ceket, aksesuar." />
+        <meta property="og:url" content="https://facette.com.tr/" />
+        <meta property="og:image" content="https://facette.com.tr/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        <!-- Twitter / X kartı -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="FACETTE | Yeni Sezon Kadın Giyim & Moda" />
+        <meta name="twitter:description" content="Kadın modasında yeni sezon koleksiyonu: zamansız parçalar, elbise, pantolon, ceket, aksesuar." />
+        <meta name="twitter:image" content="https://facette.com.tr/og-image.jpg" />
+
+        <!-- Yapısal veri: Organization + WebSite (Google sitelinks arama kutusu) -->
+        <script type="application/ld+json">
+        {"@context":"https://schema.org","@type":"Organization","name":"FACETTE","url":"https://facette.com.tr/","logo":"https://facette.com.tr/logo.png"}
+        </script>
+        <script type="application/ld+json">
+        {"@context":"https://schema.org","@type":"WebSite","name":"FACETTE","url":"https://facette.com.tr/","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://facette.com.tr/arama?q={search_term_string}"},"query-input":"required name=search_term_string"}}
+        </script>
+
+        <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
+    </head>
+    <body>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-THJQQDL"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        <!-- Google Tag Manager (noscript) (PWQH4P45) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWQH4P45"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) (PWQH4P45) -->
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+        <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+        <!-- End of app content -->
+        <script>
+            !(function (t, e) {
+                var o, n, p, r;
+                e.__SV ||
+                    ((window.posthog = e),
+                    (e._i = []),
+                    (e.init = function (i, s, a) {
+                        function g(t, e) {
+                            var o = e.split(".");
+                            2 == o.length && ((t = t[o[0]]), (e = o[1])),
+                                (t[e] = function () {
+                                    t.push(
+                                        [e].concat(
+                                            Array.prototype.slice.call(
+                                                arguments,
+                                                0,
+                                            ),
+                                        ),
+                                    );
+                                });
+                        }
+                        ((p = t.createElement("script")).type =
+                            "text/javascript"),
+                            (p.crossOrigin = "anonymous"),
+                            (p.async = !0),
+                            (p.src =
+                                s.api_host.replace(
+                                    ".i.posthog.com",
+                                    "-assets.i.posthog.com",
+                                ) + "/static/array.js"),
+                            (r =
+                                t.getElementsByTagName(
+                                    "script",
+                                )[0]).parentNode.insertBefore(p, r);
+                        var u = e;
+                        for (
+                            void 0 !== a ? (u = e[a] = []) : (a = "posthog"),
+                                u.people = u.people || [],
+                                u.toString = function (t) {
+                                    var e = "posthog";
+                                    return (
+                                        "posthog" !== a && (e += "." + a),
+                                        t || (e += " (stub)"),
+                                        e
+                                    );
+                                },
+                                u.people.toString = function () {
+                                    return u.toString(1) + ".people (stub)";
+                                },
+                                o =
+                                    "init me ws ys ps bs capture je Di ks register register_once register_for_session unregister unregister_for_session Ps getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty Es $s createPersonProfile Is opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing Ss debug xs getPageViewId captureTraceFeedback captureTraceMetric".split(
+                                        " ",
+                                    ),
+                                n = 0;
+                            n < o.length;
+                            n++
+                        )
+                            g(u, o[n]);
+                        e._i.push([i, s, a]);
+                    }),
+                    (e.__SV = 1));
+            })(document, window.posthog || []);
+            var _phInit = function () {
+                posthog.init("phc_xAvL2Iq4tFmANRE7kzbKwaSqp1HJjN7x48s3vr0CMjs", {
+                    api_host: "https://us.i.posthog.com",
+                    person_profiles: "identified_only",
+                    disable_session_recording: true, // [perf 2026-06-22] session replay kapali -> recorder.js yuklenmez (mobil TBT/ag kazanci)
+                });
+            };
+            // [perf 2026-06-22] PostHog init idle'a ertelendi -> ilk render ana is parcacigini blokemesin
+            if ("requestIdleCallback" in window) {
+                requestIdleCallback(_phInit, { timeout: 4000 });
+            } else {
+                setTimeout(_phInit, 2500);
+            }
+        </script>
+        <script>
+            // CSS SELF-HEAL: Instagram/Facebook gibi in-app tarayıcılar 'no-cache' başlığını yok
+            // sayıp eski index.html'i önbelleğe alabiliyor → yeni deploy'un hash'li CSS'ine 404 →
+            // site STİLSİZ (ham HTML, üst üste) açılıyor. Yüklemeden sonra ana CSS gerçekten
+            // uygulanmış mı kontrol et; uygulanmadıysa cache-bust'lı bir kez tazele (sessionStorage
+            // bayrağı sonsuz döngüyü önler).
+            (function () {
+                // Bir kez tazelendiyse TEKRAR deneme. Guard hem URL param (_r) hem sessionStorage:
+                // in-app tarayıcıda (Instagram/FB/WhatsApp) sessionStorage sıfırlanabildiğinden URL
+                // param'ı KALICI guard'dır → sonsuz reload döngüsü OLMAZ.
+                function healedAlready() {
+                    if (/[?&]_r=/.test(location.search)) return true;
+                    try { return sessionStorage.getItem("__heal") === "1"; } catch (e) { return false; }
+                }
+                function cssApplied() {
+                    var links = document.querySelectorAll('link[rel="stylesheet"][href*="/static/css/"]');
+                    if (!links.length) return true; // CSS linki yoksa (inline stil) kontrol etme
+                    var sheets = document.styleSheets;
+                    for (var i = 0; i < sheets.length; i++) {
+                        var href = sheets[i].href || "";
+                        if (href.indexOf("/static/css/") > -1) {
+                            try {
+                                if (sheets[i].cssRules && sheets[i].cssRules.length > 0) return true;
+                            } catch (e) { return true; } // erişilemiyorsa yüklenmiş say (güvenli)
+                        }
+                    }
+                    return false;
+                }
+                // MOBİL BEYAZ EKRAN: eski cache'lenmiş index.html silinmiş JS bundle'a 404 verince
+                // React #root'a HİÇBİR ŞEY basamaz → bomboş ekran. Bunu "mount oldu mu" ile yakala.
+                function appMounted() {
+                    var r = document.getElementById("root");
+                    return !!(r && r.children && r.children.length > 0);
+                }
+                // ?_r= KULLANICIYA GÖSTERİLMEZ. Bu parametre yalnızca önbellek atlatma + sonsuz
+                // döngü guard'ıdır; adres çubuğunda kalması gereksiz ve profesyonelce değil
+                // (hiçbir normal site böyle bir iz bırakmaz). Uygulama BAŞARIYLA açıldığı anda
+                // history.replaceState ile sessizce silinir — sayfa yeniden yüklenmez, geçmiş
+                // kirlenmez. Başarısızlıkta SİLİNMEZ, çünkü orada döngü guard'ı olarak gerekli.
+                function stripHealParam() {
+                    try {
+                        if (location.search.indexOf("_r=") === -1) return;
+                        if (!window.history || !history.replaceState) return;
+                        var parts = location.search.replace(/^\?/, "").split("&");
+                        var keep = [];
+                        for (var i = 0; i < parts.length; i++) {
+                            if (parts[i] && parts[i].indexOf("_r=") !== 0) keep.push(parts[i]);
+                        }
+                        var s = keep.length ? "?" + keep.join("&") : "";
+                        history.replaceState(null, "", location.pathname + s + location.hash);
+                    } catch (e) {}
+                }
+                // Mount olur olmaz temizle (check() 3.5 sn beklediğinden parametre o kadar süre
+                // görünür kalmasın). En fazla ~12 sn dener, sonra bırakır.
+                (function () {
+                    if (location.search.indexOf("_r=") === -1) return;
+                    var tries = 0;
+                    var t = setInterval(function () {
+                        tries++;
+                        var r = document.getElementById("root");
+                        if (r && r.children && r.children.length > 0) { stripHealParam(); clearInterval(t); }
+                        else if (tries > 60) clearInterval(t);
+                    }, 200);
+                })();
+
+                // Tazeleme denendi ama uygulama yine açılmadı → SESSİZ BEYAZ EKRAN BIRAKMA.
+                // Sebep genelde ÇOK ESKİ TARAYICI (bundle'daki modern sözdizimi parse edilemez)
+                // ya da JS'i engelleyen bir eklenti/kurumsal filtredir; ikisi de reload ile
+                // düzelmez. Kullanıcı en azından ne olduğunu görsün ve destek için tarayıcı
+                // bilgisini iletebilsin. NOT: Bu blok ESKİ tarayıcıda da çalışmalı → sadece ES5
+                // (var / function / string birleştirme; ok fonksiyonu, const, template literal YOK).
+                function showFallback() {
+                    try {
+                        var r = document.getElementById("root");
+                        if (!r || (r.children && r.children.length > 0)) return;
+                        try { if (window.__fctBeacon) window.__fctBeacon("mount_fail", { heal: true }); } catch (e) {}
+                        var ua = (navigator && navigator.userAgent) ? navigator.userAgent : "";
+                        r.innerHTML =
+                            '<div style="min-height:70vh;display:flex;flex-direction:column;align-items:center;' +
+                            'justify-content:center;gap:14px;padding:24px;text-align:center;' +
+                            'font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif">' +
+                            '<div style="font-size:18px;font-weight:700;color:#111">Sayfa yüklenemedi</div>' +
+                            '<div style="font-size:14px;color:#666;max-width:380px;line-height:1.5">' +
+                            'Tarayıcınız bu sayfayı açamadı. Lütfen tarayıcınızı güncelleyin ya da ' +
+                            'Chrome/Edge/Safari\'nin güncel bir sürümüyle deneyin. Reklam engelleyici ' +
+                            'veya kurumsal güvenlik filtresi de sayfayı engelliyor olabilir.</div>' +
+                            '<button id="fct-retry" style="padding:10px 22px;background:#111;color:#fff;' +
+                            'border:none;border-radius:2px;font-size:13px;cursor:pointer">Tekrar dene</button>' +
+                            '<div style="font-size:10px;color:#bbb;max-width:380px;word-break:break-all">' + ua + '</div>' +
+                            '</div>';
+                        var b = document.getElementById("fct-retry");
+                        if (b) b.onclick = function () {
+                            try { sessionStorage.removeItem("__heal"); } catch (e) {}
+                            location.replace(location.pathname);
+                        };
+                    } catch (e) {}
+                }
+                // CSS 404/bayatsa: mevcut <link>'i cache-bust query ile YENİDEN ekle (tam reload gerekmez).
+                function reinjectMainCss() {
+                    try {
+                        var l = document.querySelector('link[rel="stylesheet"][href*="/static/css/"]');
+                        if (!l) return;
+                        var href = l.getAttribute("href");
+                        if (/[?&]_c=/.test(href)) return;
+                        var n = document.createElement("link");
+                        n.rel = "stylesheet";
+                        n.href = href + (href.indexOf("?") > -1 ? "&" : "?") + "_c=" + Date.now();
+                        document.head.appendChild(n);
+                    } catch (e) {}
+                }
+                function check() {
+                    try {
+                        // YALNIZ #root GERÇEKTEN boşken reload et. Mount OLMUŞ sayfayı CSS
+                        // yanlış-negatifi (stylesheet DOM'da ama cssRules o an okunamıyor) yüzünden
+                        // ASLA reload etme — gereksiz beyaz flash + scroll sıfırlama olurdu.
+                        if (appMounted()) {
+                            try { sessionStorage.removeItem("__heal"); } catch (e) {}
+                            stripHealParam(); // URL temizlensin — kullanıcı ?_r= görmesin
+                            if (!cssApplied()) reinjectMainCss(); // reload yerine YALNIZ CSS'i tazele
+                            return; // uygulama açık — her şey yolunda
+                        }
+                        if (healedAlready()) { showFallback(); return; } // bir kez denendi; döngü YOK → sessiz beyaz ekran yerine MESAJ
+                        try { sessionStorage.setItem("__heal", "1"); } catch (e) {}
+                        try { if (window.__fctBeacon) window.__fctBeacon("heal_reload"); } catch (e) {}
+                        var u = location.pathname +
+                            (location.search ? location.search + "&" : "?") + "_r=" + Date.now() +
+                            location.hash;
+                        location.replace(u); // cache-bust ile TAZE index.html + taze bundle çek
+                    } catch (e) {}
+                }
+                // React mount + CSS için cömert süre (yavaş mobil ağ / in-app tarayıcıda erken/YANLIŞ
+                // reload etme — 3.5sn çok kısaydı, mount olacakken 'bekleyip redirect' yapıyordu). 6.5sn.
+                function schedule() { setTimeout(check, 6500); }
+                if (document.readyState === "complete") schedule();
+                else window.addEventListener("load", schedule);
+            })();
+        </script>
+    </body>
+</html>

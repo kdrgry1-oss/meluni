@@ -1,0 +1,13 @@
+# Capacitor müşteri app — yerel üretilen/derlenen dosyalar
+node_modules/
+
+# Native projeler (yerelde `npx cap add ios/android` ile üretilir).
+# İstersen bunları commit'leyip ekipçe paylaşabilirsin — o zaman aşağıdaki 2 satırı sil.
+ios/
+android/
+
+# Derleme çıktıları
+*.ipa
+*.apk
+*.aab
+.DS_Store

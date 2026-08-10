@@ -1,0 +1,114 @@
+{
+  "project_name": "FACETTE E-Commerce Storefront",
+  "theme_strategy": {
+    "mode": "dark",
+    "archetype": "5 (Luxury)",
+    "description": "Miu Miu ve Prada esinli, sessiz lüks (quiet luxury) ve editöryel kurguya sahip, premium dark mode. İçerik ve fotoğraf odaklı, minimal arayüz."
+  },
+  "typography": {
+    "fonts": {
+      "heading": "'Cormorant Garamond', serif",
+      "body": "'Mulish', sans-serif"
+    },
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-[#FAFAFA] uppercase",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-[#FAFAFA]",
+      "h3": "text-xl sm:text-2xl font-light text-[#FAFAFA]",
+      "body": "text-base font-light text-[#D1D1D1] tracking-wide leading-relaxed",
+      "body_small": "text-sm font-light text-[#A3A3A3] tracking-wide",
+      "overline": "text-xs font-semibold uppercase tracking-[0.2em] text-[#D4AF37]"
+    },
+    "rules": "Hiyerarşide kontrast yarat. Mulish fontunu küçük yazılarda (body, menü, buton) geniş harf aralığı (tracking-widest) ile kullan. Cormorant Garamond fontunu devasa, ince ve zarif başlıklar için kullan."
+  },
+  "colors": {
+    "css_variables": {
+      "--background": "#0F0F11",
+      "--surface": "#1A1A1D",
+      "--surface-hover": "#222225",
+      "--primary-accent": "#D4AF37",
+      "--text-primary": "#FAFAFA",
+      "--text-secondary": "#A3A3A3",
+      "--border-color": "#2C2C2E",
+      "--error": "#FF3B30",
+      "--success": "#34C759"
+    },
+    "rules": "Kesinlikle saf siyah (#000000) kullanma. Arka plan her zaman #0F0F11. D4AF37 (Altın) rengini CTA, vurgu veya aktif durumlarda ölçülü kullan."
+  },
+  "spacing_and_layout": {
+    "general": "Standart tasarımlara göre 2x daha fazla boşluk kullan (örn. p-12, py-24, gap-12). Lüks, boşluklarda (negative space) yatar.",
+    "container": "max-w-[1440px] mx-auto px-4 md:px-8",
+    "grid_systems": {
+      "lookbook_bento": "Asimetrik grid. grid-cols-1 md:grid-cols-12 gap-4 md:gap-8. Büyük görseller col-span-8 row-span-2, destekleyici görseller col-span-4.",
+      "plp_grid": "Cardless (Kartsız) grid. grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-12 md:gap-y-16."
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#D4AF37] text-[#0F0F11] font-bold tracking-[0.15em] uppercase text-sm py-4 px-8 rounded-none hover:bg-[#FAFAFA] transition-colors duration-300",
+      "secondary": "bg-transparent text-[#FAFAFA] border border-[#D4AF37] font-semibold tracking-[0.15em] uppercase text-sm py-4 px-8 rounded-none hover:bg-[#D4AF37] hover:text-[#0F0F11] transition-colors duration-300",
+      "ghost": "text-[#A3A3A3] hover:text-[#D4AF37] tracking-[0.15em] uppercase text-sm transition-colors duration-300 underline underline-offset-4"
+    },
+    "header": {
+      "style": "sticky top-0 z-50 backdrop-blur-xl bg-[#0F0F11]/80 border-b border-[#2C2C2E]/50.",
+      "announcement_bar": "bg-[#D4AF37] text-[#0F0F11] text-xs font-bold tracking-widest uppercase py-2 text-center"
+    },
+    "product_card": {
+      "style": "Kartsız (Cardless) yapı. Arka plan yok, kenarlık yok.",
+      "image": "Görsel konteyneri aspect-[3/4] veya aspect-[4/5]. Hover durumunda görsel scale-105 olmalı (duration-700 ease-out).",
+      "details": "Görselin altında sola dayalı. Üstte marka/isim (Mulish text-sm), altta fiyat (Mulish text-sm text-[#D4AF37])."
+    },
+    "inputs_and_forms": {
+      "style": "Shadcn UI Input, Select, Checkbox kullan. Vercel tarzı yuvarlak hatları kaldır (rounded-none). Arka plan bg-transparent, border-b border-[#2C2C2E], focus:border-[#D4AF37]."
+    }
+  },
+  "page_blueprints": {
+    "home": {
+      "hero": "Tam ekran (h-screen) hero görsel/video. Gradient overlay (siyah/50'den saydama). Merkezde H1 (FACETTE) ve Primary CTA (Keşfet).",
+      "editorial_categories": "Büyük, asimetrik tipografi ve tam genişlikte görsellerle kategori geçişleri.",
+      "product_scroller": "Yatay kaydırılabilir, ürünlerin arasında büyük boşluklar olan (gap-12) öne çıkan ürünler.",
+      "lookbook": "Bento asimetrik grid ile sezon koleksiyonu mozaik görünümü.",
+      "newsletter": "Minimalist, devasa bir başlık ('GİZLİ DÜNYAMIZA KATILIN') ve sadece email inputu ile zarif bir form."
+    },
+    "category_plp": {
+      "header": "Sol üstte sade breadcrumb. Sağ üstte filtre ve sıralama (Shadcn Dropdown veya Sheet).",
+      "layout": "Sol menü kullanma. Filtreleri Sheet (çekmece) olarak aç, böylece ürün alanı tam ekranı kaplasın.",
+      "grid": "Ürünler büyük (2, 3 veya 4 kolon). Kenarlıksız cardless yapı."
+    },
+    "product_detail_pdp": {
+      "layout": "Desktop için 50/50 veya 60/40 Split Screen. Sol taraf büyük aşağı kaydırılabilir veya carousel görsel galerisi (aspect-[3/4]). Sağ taraf sticky (sabit) ürün bilgileri.",
+      "actions": "Beden ve renk varyantları için yuvarlak, 1px kenarlıklı zarif seçim kutuları (Shadcn Radio Group özel stili).",
+      "content": "Açıklama alanı HTML içerik alacak, akordiyon (Shadcn Accordion) kullanılarak 'Detaylar', 'Beden Önerisi', 'Teslimat' gizlenecek."
+    },
+    "cart_and_checkout": {
+      "cart": "Sayfadan ziyade Shadcn Sheet kullanarak sağdan açılan şık bir sepet. Sepet boşsa 'Sepetiniz lüksle dolmayı bekliyor' gibi zarif metinler.",
+      "checkout": "Adım adım, distraction-free (dikkat dağıtmayan) ödeme sayfası. Form alanları zarif, iyzico mock entegrasyonu."
+    },
+    "auth_and_account": {
+      "login": "Ortada tek kolonlu minimal form, ekranın diğer yarısı yüksek kaliteli editoryal görsel.",
+      "account": "Sade yan menü (Siparişlerim, Adreslerim, Favoriler). Veriler tablo (Shadcn Table) yerine geniş satır kartları olarak listelenmeli."
+    }
+  },
+  "motion_and_animations": {
+    "scrolling": "Kesinlikle yumuşak kaydırma (Smooth Scrolling - e.g., Lenis) kullanılmalı. Sayfa aşağı kaydıkça öğelere ağırlık hissi verir.",
+    "hover": "Görsellerde çok yavaş bir büyüme (scale-105, 1.2s ease-out). Butonlarda keskin renk değişimi.",
+    "entrance": "Staggered fade-up (aşağıdan yukarı beliren) metinler. Liste elemanları birbiri ardına gelmeli."
+  },
+  "media": {
+    "hero_background": "https://images.unsplash.com/photo-1779912217733-0b7df75b5083?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwyfHxmYXNoaW9uJTIwZWRpdG9yaWFsJTIwbW9kZWwlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODA0OTY2MDd8MA&ixlib=rb-4.1.0&q=85",
+    "lookbook_1": "https://images.unsplash.com/photo-1779911915361-11658900633c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHw0fHxmYXNoaW9uJTIwZWRpdG9yaWFsJTIwbW9kZWwlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODA0OTY2MDd8MA&ixlib=rb-4.1.0&q=85",
+    "lookbook_2": "https://images.unsplash.com/photo-1771072426459-1ab467cd80f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwzfHxmYXNoaW9uJTIwZWRpdG9yaWFsJTIwbW9kZWwlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODA0OTY2MDd8MA&ixlib=rb-4.1.0&q=85",
+    "runway_model": "https://images.pexels.com/photos/14604107/pexels-photo-14604107.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "product_1": "https://images.pexels.com/photos/8306359/pexels-photo-8306359.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "product_2": "https://images.pexels.com/photos/35596695/pexels-photo-35596695.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "auth_bg": "https://images.unsplash.com/photo-1779911915533-51df473c20d2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwZWRpdG9yaWFsJTIwbW9kZWwlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODA0OTY2MDd8MA&ixlib=rb-4.1.0&q=85"
+  },
+  "instructions_to_main_agent": [
+    "Projeyi React JS + Tailwind CSS ile oluştur. TypeScript (tsx) KULLANMA. Sadece .js/.jsx kullan.",
+    "Verilen fontları (Cormorant Garamond ve Mulish) index.css içinde Google Fonts veya benzeri yolla import et.",
+    "Tüm bileşenlerde test edilebilirlik için 'data-testid' özniteliklerini ekle (örn: data-testid='add-to-cart-btn').",
+    "Lucide-react ikon kütüphanesini kullan.",
+    "Shadcn UI bileşenlerini kullanırken, Vercel/SaaS görünümünü yok etmek için yuvarlak köşeleri (rounded) sıfırla (rounded-none).",
+    "Tasarımı uygularken KESİNLİKLE JSON içerisindeki media URL'lerini kullan, placeholder (yer tutucu) görsel KULLANMA.",
+    "Formlar, modal/dialog, sepet (sheet) işlemleri için Shadcn yapılarını özelleştir."
+  ]
+}

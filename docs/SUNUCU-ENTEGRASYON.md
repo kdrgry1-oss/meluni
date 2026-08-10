@@ -123,24 +123,47 @@ SSH_KEY=~/.ssh/meluni_deploy \
 
 ---
 
-## 5. Uygulamaya ozel adimlari ekleyin
+## 5. Uygulamaya ozel adimlar
 
-`scripts/post-deploy.sh` su an bos calisiyor. Yigina gore ilgili satirlari acin:
+`scripts/post-deploy.sh` yigini **kendisi tespit eder**; ayrica bir sey
+yazmaniza gerek yok:
+
+| Repoda bulunan dosya | Calisan adimlar |
+|---|---|
+| `package.json` | `npm ci --omit=dev`, `build` script'i varsa `npm run build` |
+| `composer.json` | `composer install --no-dev -o`, `artisan` varsa `migrate --force` + cache |
+| `requirements.txt` | `shared/venv` olusturur, `pip install -r requirements.txt` |
+| hicbiri | Statik site kabul edilir, sadece dosyalar kopyalanir |
+
+Tespiti ezmek isterseniz sunucudaki `shared/.env` icine `APP_STACK=node`
+gibi bir satir yazin.
+
+### Servisin yeniden baslatilmasi
+
+Kod kopyalandiktan sonra uygulamanin yeni surumle calismasi icin
+`shared/.env` dosyasina **birini** ekleyin:
 
 ```bash
-# Node.js
-npm ci --omit=dev && npm run build && pm2 reload meluni --update-env
-
-# PHP / Laravel
-composer install --no-dev --optimize-autoloader --no-interaction
-php artisan migrate --force && sudo systemctl reload php8.3-fpm
-
-# Python
-"${DEPLOY_PATH}/shared/venv/bin/pip" install -r requirements.txt
-sudo systemctl restart meluni
+APP_SERVICE=meluni      # systemd kullaniyorsaniz
+# veya
+PM2_APP=meluni          # PM2 kullaniyorsaniz
 ```
 
-`sudo systemctl restart` kullanacaksaniz deploy kullanicisina parolasiz yetki verin.
+Ikisi de bossa deploy basarili sayilir ama servis eski kodu calistirmaya
+devam eder; script bu durumda uyari basar. Statik sitelerde bu normaldir.
+
+### Saglik kontrolu (onerilir)
+
+```bash
+HEALTH_URL=http://127.0.0.1:3000/
+```
+
+Bu satir varsa deploy sonrasi adres 15 kez denenir. Cevap vermezse
+**release otomatik olarak geri alinir** ve site ayakta kalir.
+
+### Parolasiz sudo
+
+`APP_SERVICE` kullanacaksaniz deploy kullanicisina yetki verin.
 Sunucuda `root` olarak:
 
 ```bash

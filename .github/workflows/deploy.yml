@@ -11,9 +11,10 @@ name: Deploy
 #   SSH_PORT         - varsayilan 22
 #   DEPLOY_PATH      - varsayilan /home/<SSH_USER>/apps/meluni
 
+# NOT: Uretim barindirmasi Railway (backend) + Cloudflare (frontend).
+# Bu VPS/SSH akisi ALTERNATIF (self-hosting) yoldur ve otomatik tetiklenmez;
+# yalnizca Actions > Run workflow ile elle calistirilir.
 on:
-  push:
-    branches: [main, master]
   workflow_dispatch:
     inputs:
       ref:

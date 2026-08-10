@@ -1,0 +1,30 @@
+{
+  "name": "facette-customer-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Facette müşteri (storefront) mobil uygulaması — Capacitor kabuğu. Web tarafı ../frontend build'inden gelir (REACT_APP_APP_TARGET=customer).",
+  "scripts": {
+    "build:web": "cd ../frontend && npm run build:customer",
+    "sync": "cap sync",
+    "copy": "cap copy",
+    "add:ios": "cap add ios",
+    "add:android": "cap add android",
+    "open:ios": "cap open ios",
+    "open:android": "cap open android",
+    "ship": "npm run build:web && cap sync"
+  },
+  "dependencies": {
+    "@capacitor/android": "7",
+    "@capacitor/app": "7",
+    "@capacitor/core": "7",
+    "@capacitor/ios": "7",
+    "@capacitor/network": "7",
+    "@capacitor/preferences": "7",
+    "@capacitor/push-notifications": "7",
+    "@capacitor/splash-screen": "7",
+    "@capacitor/status-bar": "7"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "7"
+  }
+}

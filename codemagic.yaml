@@ -1,0 +1,153 @@
+# Codemagic — Facette iOS (App Store) bulut derleme tarifi.
+# Yerel Xcode/Mac GEREKMEZ: Codemagic bulut Mac'te güncel Xcode ile derler ve
+# doğrudan TestFlight'a yükler.
+#
+# ÖN KOŞULLAR (Codemagic panelinde, bir kez):
+#   1) Team settings → Integrations → App Store Connect → API key ekle
+#      (App Store Connect'ten indirdiğin .p8 + Key ID + Issuer ID).
+#      Bu entegrasyona verdiğin İSİM aşağıdaki `app_store_connect: CodemagicKey`
+#      ile AYNI olmalı.
+#   2) App Store Connect'teki uygulamanın (Facette Admin) Bundle ID'si `com.facette.app`
+#      olmalı (farklıysa aşağıdaki bundle_identifier'ı ona göre değiştir).
+# NOT: Canlı backend adresi (api.facette.com.tr) yaml'a GÖMÜLÜ (gizli değil) — env var GEREKMEZ.
+
+workflows:
+  ios-facette:
+    name: Facette iOS (App Store)
+    instance_type: mac_mini_m2
+    max_build_duration: 90
+    integrations:
+      app_store_connect: CodemagicKey     # ← Codemagic'te eklediğin API key adı
+    environment:
+      vars:
+        XCODE_WORKSPACE: "App.xcworkspace"
+        XCODE_SCHEME: "App"
+        BUNDLE_ID: "tr.com.facette.admin"
+      node: 20
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Web build (React) + Capacitor sync
+        script: |
+          cd frontend
+          yarn install --frozen-lockfile || yarn install
+          # Canlı API adresi (Cloudflare'dekiyle aynı) — doğrudan gömülü, env var gerekmez.
+          echo "REACT_APP_BACKEND_URL=https://api.facette.com.tr" > .env
+          yarn build
+          npx cap sync ios
+      - name: CocoaPods
+        script: |
+          cd frontend/ios/App
+          pod install
+      - name: Kod imzalama + IPA derle (profil elle geçirilir)
+        script: |
+          set -e
+          keychain initialize
+
+          # --- Eski (özel anahtarı elimizde OLMAYAN) dağıtım sertifikalarını temizle ---
+          # Apple hesap başına en fazla 2 dağıtım sertifikasına izin verir. Dolu olduğunda
+          # bize ait yeni sertifika ÜRETİLEMEZ (409 hatası). Bu eski sertifikaların özel
+          # anahtarı bizde olmadığından ZATEN kullanılamaz — güvenle siliyoruz. Böylece
+          # her build tam 1 taze sertifika üretir; limit asla dolmaz. (App Store zaten
+          # yüklenen IPA'yı kendi tarafında yeniden imzaladığı için bu güvenlidir.)
+          for T in DISTRIBUTION IOS_DISTRIBUTION; do
+            IDS=$(app-store-connect certificates list --type "$T" --json 2>/dev/null | python3 -c "import sys,json,re; t=sys.stdin.read(); m=re.search(r'[\[{].*',t,re.S); d=json.loads(m.group(0)) if m else []; d=d.get('data',d) if isinstance(d,dict) else d; print(' '.join(c.get('id','') for c in d))" 2>/dev/null || true)
+            for CID in $IDS; do
+              [ -n "$CID" ] || continue
+              echo "Eski $T sertifikasi siliniyor $CID"
+              app-store-connect certificates delete "$CID" || true
+            done
+          done
+
+          # 1) Dağıtım sertifikasını kendi private key'imizle oluştur ve p12'yi kaydet.
+          openssl genrsa -out /tmp/dist_key.pem 2048
+          CERT_ID=$(app-store-connect create-certificate \
+            --type IOS_DISTRIBUTION \
+            --certificate-key @file:/tmp/dist_key.pem \
+            --save --json 2>&1 \
+            | python3 -c "import sys,json,re; t=sys.stdin.read(); m=re.search(r'\{.*\}',t,re.S); print(json.loads(m.group(0)).get('id','') if m else '')" 2>/dev/null || true)
+          echo "CERT_ID=$CERT_ID"
+          cat /tmp/cert_err.txt 2>/dev/null || true
+          keychain add-certificates
+
+          # 2) Hesaptaki TÜM bundle id'leri listele (platform filtresi OLMADAN) ve
+          #    com.facette.app'in resource id'sini çöz. fetch-signing-files'ın
+          #    platform=IOS filtresi mevcut (universal) bundle'ı göremiyordu.
+          app-store-connect bundle-ids list --json > /tmp/bids.json 2>/dev/null || app-store-connect list-bundle-ids --json > /tmp/bids.json 2>/dev/null || echo "[]" > /tmp/bids.json
+          echo "=== HESAPTAKI BUNDLE ID'LER (identifier | platform | resourceId) ==="
+          python3 -c "import json,re;t=open('/tmp/bids.json').read();m=re.search(r'\[.*\]',t,re.S);d=json.loads(m.group(0)) if m else [];[print(b.get('attributes',{}).get('identifier'),'|',b.get('attributes',{}).get('platform'),'|',b.get('id')) for b in d]" 2>/dev/null || cat /tmp/bids.json
+          BID_RES=$(python3 -c "import json,re;t=open('/tmp/bids.json').read();m=re.search(r'\[.*\]',t,re.S);d=json.loads(m.group(0)) if m else [];print(next((b['id'] for b in d if b.get('attributes',{}).get('identifier')=='$BUNDLE_ID'),''))" 2>/dev/null || true)
+          echo "$BUNDLE_ID resource id: '$BID_RES'"
+          if [ -z "$BID_RES" ]; then
+            echo "!!! $BUNDLE_ID bu hesapta KAYITLI DEĞİL. Yukarıdaki listeden doğru bundle id'yi Claude'a ilet."
+            exit 1
+          fi
+
+          # 3) App Store provizyon profilini DOĞRU bundle id + sertifika ile oluştur.
+          # NOT: yeni CLI'da bundle id POZİSYONEL argüman, sertifika --certificate-ids ile verilir.
+          app-store-connect create-profile \
+            --type IOS_APP_STORE \
+            --certificate-ids "$CERT_ID" \
+            --save \
+            "$BID_RES" 2>/tmp/prof_err.txt || cat /tmp/prof_err.txt
+
+          echo "=== keychain sertifikaları ==="
+          keychain list-certificates || true
+
+          # use-profiles projeyi manuel imzaya çevirsin (yedek — asıl imza aşağıda elle).
+          ( cd frontend/ios/App && xcode-project use-profiles ) || true
+
+          # --- İndirilen profilden TEAM ID + profil adını ÇIKAR ---
+          # Xcode profilleri UserData altına kaydeder; MobileDevice'ı da yedek tara.
+          TEAM_ID=""; PROFILE_NAME=""
+          for PP_DIR in \
+            "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles" \
+            "$HOME/Library/MobileDevice/Provisioning Profiles"; do
+            [ -d "$PP_DIR" ] || continue
+            echo "=== Profil klasörü: $PP_DIR ==="
+            ls -la "$PP_DIR" || true
+            for f in "$PP_DIR"/*.mobileprovision; do
+              [ -e "$f" ] || continue
+              security cms -D -i "$f" > /tmp/pp.plist 2>/dev/null || continue
+              APPID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" /tmp/pp.plist 2>/dev/null || echo "")
+              case "$APPID" in
+                *".$BUNDLE_ID")
+                  TEAM_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:com.apple.developer.team-identifier" /tmp/pp.plist 2>/dev/null)
+                  PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /tmp/pp.plist 2>/dev/null)
+                  ;;
+              esac
+            done
+          done
+          echo "SEÇİLEN → TEAM_ID=$TEAM_ID  PROFILE_NAME=$PROFILE_NAME"
+
+          # --- Archive + IPA ---
+          # CFBundleVersion (build no) her YÜKLEMEDE öncekinden BÜYÜK olmalı (Apple 409).
+          # Unix epoch saniyesi: daima artan, benzersiz, 32-bit sınıra 2106'ya kadar sığar.
+          # Info.plist'te CFBundleVersion=$(CURRENT_PROJECT_VERSION) olduğu için xcargs ile geçiyoruz.
+          BUILD_NO=$(date +%s)
+          echo "CFBundleVersion (build no) = $BUILD_NO"
+          cd frontend/ios/App
+          # GARANTI: build numarasini pbxproj'a Python ile DOGRUDAN yaz. Eslesme yoksa
+          # build DURUR (sessiz basarisizlik YOK). Info.plist CFBundleVersion=$(CURRENT_PROJECT_VERSION).
+          python3 -c "import re,sys; p='App.xcodeproj/project.pbxproj'; n='$BUILD_NO'; s=open(p).read(); s2,c=re.subn(r'CURRENT_PROJECT_VERSION = [0-9]+;', 'CURRENT_PROJECT_VERSION = '+n+';', s); open(p,'w').write(s2); print('pbxproj build no ->', n, '| degisen yer:', c); sys.exit(0 if c>0 else 1)"
+          grep -n "CURRENT_PROJECT_VERSION" App.xcodeproj/project.pbxproj | head
+          if [ -n "$TEAM_ID" ] && [ -n "$PROFILE_NAME" ]; then
+            xcode-project build-ipa \
+              --workspace "$XCODE_WORKSPACE" \
+              --scheme "$XCODE_SCHEME" \
+              --archive-xcargs "COMPILER_INDEX_STORE_ENABLE=NO CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=$TEAM_ID PROVISIONING_PROFILE_SPECIFIER=\"$PROFILE_NAME\" CODE_SIGN_IDENTITY=\"Apple Distribution\" CURRENT_PROJECT_VERSION=$BUILD_NO"
+          else
+            # use-profiles zaten uyguladıysa düz derleme de çalışır.
+            xcode-project build-ipa \
+              --workspace "$XCODE_WORKSPACE" \
+              --scheme "$XCODE_SCHEME" \
+              --archive-xcargs "CURRENT_PROJECT_VERSION=$BUILD_NO"
+          fi
+    artifacts:
+      - frontend/ios/App/build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true       # otomatik TestFlight'a yükle
+        # submit_to_app_store: false     # incelemeye göndermeyi sonra açarsın

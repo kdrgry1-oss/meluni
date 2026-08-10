@@ -1,0 +1,377 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap');
+
+/* Üst promo barı metnini GERÇEKTEN kalın göster. Yalnız font-weight:900 bazı
+   tarayıcılarda (900 font-face cache/fallback yüzünden yüklenmezse) ince kalıyordu.
+   -webkit-text-stroke harfleri şişirir → font 900 yüklenmese BİLE kalın görünür (dayanıklı).
+   currentColor ile herhangi bir bar renginde çalışır. CountdownBar bu class'ı kullanır. */
+.fct-topbar-heavy {
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  -webkit-text-stroke: 0.8px currentColor;
+  paint-order: stroke fill;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .inp {
+    @apply w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-black;
+  }
+}
+
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 5%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 5%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 5%;
+  --primary: 0 0% 5%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 5%;
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 40%;
+  --accent: 0 0% 96%;
+  --accent-foreground: 0 0% 5%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 90%;
+  --input: 0 0% 90%;
+  --ring: 0 0% 5%;
+  --radius: 0px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Mulish', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #fff;
+  color: #0a0a0a;
+  letter-spacing: 0.01em;
+}
+
+/* Override Tailwind defaults to favor lighter weights */
+.font-medium { font-weight: 400 !important; }
+.font-semibold { font-weight: 500 !important; }
+.font-bold { font-weight: 600 !important; }
+.font-light { font-weight: 300 !important; }
+.font-thin { font-weight: 300 !important; }
+.font-extralight { font-weight: 300 !important; }
+strong, b { font-weight: 500; }
+button { font-weight: 400; }
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out;
+}
+
+.animate-slide-right {
+  animation: slideRight 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hide scrollbar for horizontal snap-scroll carousels */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Button styles */
+.btn-primary {
+  @apply bg-black text-white px-6 py-3 text-sm font-medium tracking-wider uppercase transition-all duration-200 hover:bg-gray-900;
+}
+
+.btn-secondary {
+  @apply bg-white text-black border border-black px-6 py-3 text-sm font-medium tracking-wider uppercase transition-all duration-200 hover:bg-black hover:text-white;
+}
+
+/* Input styles */
+.input-minimal {
+  @apply w-full border-0 border-b border-gray-300 bg-transparent py-3 px-0 text-sm focus:outline-none focus:border-black transition-colors;
+}
+
+/* Product card hover */
+.product-card {
+  @apply relative overflow-hidden;
+}
+
+.product-card img {
+  @apply transition-transform duration-500;
+}
+
+.product-card:hover img {
+  @apply scale-100;
+}
+
+/* Search overlay */
+.search-overlay {
+  @apply fixed inset-0 bg-white z-50 flex items-start justify-center pt-32;
+}
+
+/* Mega menu */
+.mega-menu {
+  @apply absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-lg opacity-0 invisible transition-all duration-300;
+}
+
+.nav-item:hover .mega-menu {
+  @apply opacity-100 visible;
+}
+
+/* Admin sidebar */
+.admin-sidebar {
+  @apply fixed left-0 top-0 h-screen w-64 bg-gray-900 text-white overflow-y-auto;
+}
+
+.admin-sidebar-item {
+  @apply flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors;
+}
+
+.admin-sidebar-item.active {
+  @apply bg-gray-800 text-white border-l-2 border-white;
+}
+
+/* Toast */
+.toast-success {
+  @apply bg-green-500 text-white;
+}
+
+.toast-error {
+  @apply bg-red-500 text-white;
+}
+
+/* Skeleton loading */
+.skeleton {
+  @apply bg-gray-200 animate-pulse;
+}
+
+/* Responsive container */
+.container-main {
+  @apply max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8;
+}
+
+/* Accordion */
+.accordion-trigger[data-state="open"] svg {
+  transform: rotate(180deg);
+}
+
+/* Quick View Image */
+.quick-image {
+  @apply aspect-[2/3] w-full object-cover;
+}
+
+/* Badge */
+.badge-new {
+  @apply absolute top-2 left-2 bg-black text-white text-[10px] px-2 py-1 uppercase tracking-wider;
+}
+
+.badge-sale {
+  @apply absolute top-2 left-2 bg-red-500 text-white text-[10px] px-2 py-1 uppercase tracking-wider;
+}
+
+/* Price */
+.price-original {
+  @apply text-gray-400 line-through text-sm;
+}
+
+.price-sale {
+  @apply text-red-500 font-medium;
+}
+
+/* Size selector */
+.size-btn {
+  @apply min-w-[40px] h-10 border border-gray-300 flex items-center justify-center text-sm transition-all;
+}
+
+.size-btn:hover:not(.out-of-stock) {
+  @apply border-black;
+}
+
+.size-btn.selected {
+  @apply bg-black text-white border-black;
+}
+
+.size-btn.out-of-stock {
+  @apply opacity-30 cursor-not-allowed line-through;
+}
+
+/* Cart drawer */
+.cart-drawer {
+  @apply fixed right-0 top-0 h-screen w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300;
+}
+
+.cart-drawer.open {
+  @apply translate-x-0;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  @apply fixed inset-0 bg-white z-50 transform -translate-x-full transition-transform duration-300;
+}
+
+.mobile-menu.open {
+  @apply translate-x-0;
+}
+
+/* Image gallery */
+.gallery-thumb {
+  @apply w-16 h-20 object-cover cursor-pointer opacity-60 transition-opacity;
+}
+
+.gallery-thumb:hover,
+.gallery-thumb.active {
+  @apply opacity-100;
+}
+
+/* =========================================================================
+ * Admin Panel Tabloları
+ * -------------------------------------------------------------------------
+ * .admin-table         : Standart yoğunluk (geniş formlar, az satır).
+ * .admin-table-compact : Sıklaştırılmış satırlar. Products ve Orders gibi
+ *                        büyük listeleme sayfalarında kullanılır; amaç bir
+ *                        ekrana daha çok ürün/sipariş sığdırmak. Row hover'ı
+ *                        aynı kalır; yalnızca dikey padding ve yükseklikler
+ *                        daralır.
+ *   Kullanımı: <table className="admin-table admin-table-compact">
+ * ========================================================================= */
+.admin-table {
+  @apply w-full text-sm;
+}
+
+.admin-table th {
+  @apply text-left py-3 px-4 bg-gray-50 font-medium text-gray-600 uppercase text-xs tracking-wider;
+}
+
+.admin-table td {
+  @apply py-3 px-4 border-b border-gray-100;
+}
+
+.admin-table tr:hover td {
+  @apply bg-gray-50;
+}
+
+/* Ödeme bekleyen havale (kırmızı) / pending (sarı) satırlar hover'da vurgusunu KORUR —
+   aksi halde genel gri hover kırmızı şeridi eziyor ve "ödeme bekliyor" ayrımı kayboluyordu. */
+.admin-table tr.row-unpaid-havale:hover td {
+  @apply bg-red-50;
+}
+.admin-table tr.row-unpaid-pending:hover td {
+  @apply bg-yellow-50;
+}
+
+/* Compact variant — daha sıkı satırlar, daha küçük görsel thumbnail hover'lı alanlar.
+   Products.jsx ve Orders.jsx tablolarında uygulanır. Hücre içi padding düşer
+   ancak hover ve çerçeve davranışı korunur. */
+.admin-table-compact th {
+  @apply py-2 px-3 text-[11px];
+}
+
+.admin-table-compact td {
+  @apply py-1.5 px-3;
+}
+
+/* Ürün satırında görsel thumbnail için daha küçük tercih edilebilecek boyut.
+   Products.jsx'de "w-12 h-16" yerine compact kullanacağımız yardımcı: */
+.admin-thumb-sm {
+  @apply w-9 h-12 object-cover rounded border border-gray-100;
+}
+
+/* Status badges */
+.status-pending { @apply bg-yellow-100 text-yellow-700 px-2 py-1 text-xs rounded; }
+.status-confirmed { @apply bg-blue-100 text-blue-700 px-2 py-1 text-xs rounded; }
+.status-preparing { @apply bg-purple-100 text-purple-700 px-2 py-1 text-xs rounded; }
+.status-shipped { @apply bg-indigo-100 text-indigo-700 px-2 py-1 text-xs rounded; }
+.status-delivered { @apply bg-green-100 text-green-700 px-2 py-1 text-xs rounded; }
+.status-cancelled { @apply bg-red-100 text-red-700 px-2 py-1 text-xs rounded; }
+
+/* Action buttons for orders/products tables (Ticimax-like pills) */
+.tci-btn {
+  @apply relative inline-flex items-center justify-center w-8 h-8 rounded-md transition-all duration-150 active:scale-95 shrink-0;
+  margin-right: 4px;
+}
+.tci-btn-blue       { @apply bg-blue-100 text-blue-700 hover:bg-blue-200 hover:shadow; }
+.tci-btn-orange     { @apply bg-orange-100 text-orange-700 hover:bg-orange-200 hover:shadow; }
+.tci-btn-gray       { @apply bg-gray-100 text-gray-600 hover:bg-gray-200 hover:shadow; }
+.tci-btn-green      { @apply bg-green-50 text-green-700 hover:bg-green-100 hover:shadow; }
+.tci-btn-green-active { @apply bg-green-600 text-white hover:bg-green-700 shadow; }
+.tci-btn-red        { @apply bg-red-100 text-red-700 hover:bg-red-200 hover:shadow; }
+.tci-btn-red-active { @apply bg-red-600 text-white hover:bg-red-700 shadow; }
+.tci-btn-yellow     { @apply bg-yellow-100 text-yellow-700 hover:bg-yellow-200 hover:shadow; }
+.tci-btn-yellow-active { @apply bg-yellow-400 text-white hover:bg-yellow-500 shadow; }
+.tci-btn-purple     { @apply bg-purple-100 text-purple-700 hover:bg-purple-200 hover:shadow; }
+.tci-btn-pink       { @apply bg-pink-100 text-pink-700 hover:bg-pink-200 hover:shadow; }
+.tci-btn-pink-active { @apply bg-pink-500 text-white hover:bg-pink-600 shadow; }
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* AI açıklama önizlemesi (contentEditable) — boşken placeholder göster */
+.fct-rte:empty:before {
+  content: attr(data-ph);
+  color: #9ca3af;
+  font-style: italic;
+}

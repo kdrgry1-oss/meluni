@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Özel / oturum gerektiren sayfalar (dizine eklenmesin)
+Disallow: /sepet
+Disallow: /odeme
+Disallow: /hesabim
+Disallow: /giris
+Disallow: /kayit
+Disallow: /odeme-bildirimi
+Disallow: /admin
+Disallow: /siparis-takip
+
+# Sitemap (dinamik — ürünler, kategoriler ve sayfalar)
+Sitemap: https://api.facette.com.tr/sitemap.xml

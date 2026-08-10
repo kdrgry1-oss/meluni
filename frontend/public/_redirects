@@ -1,0 +1,7 @@
+# Cloudflare Pages 301 yönlendirmeleri
+# Eski sipariş-başarı URL'i tek canonical'a (order-success) kalıcı 301'lenir.
+# :splat = * ile eşleşen kısım (orderNumber). SEO: tek canonical, çift içerik yok.
+# NOT: Sadece açık 301 satırı; SPA fallback (index.html 200) Cloudflare tarafından otomatik korunur.
+# UYARI: public/404.html EKLEMEYİN — Cloudflare onu TÜM eşleşmeyen route'lara (SPA client
+# route'ları /admin, /urun/... dahil) not-found olarak servis edip SPA fallback'i EZER.
+/siparis-tamamlandi/*  /order-success/:splat  301

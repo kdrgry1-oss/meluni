@@ -1,0 +1,7897 @@
+{
+ "_aciklama": "Ticimax UrunTeknikDetaylari export + onceki snapshot birlesimi. Kurtarma: kart_id->barkod, sadece BOS doldurur.",
+ "kaynak": "UrunTeknikDetaylari__1_.xls + eski snapshot",
+ "urun_sayisi": 351,
+ "urunler": {
+  "2907": {
+   "stok_kodu": "FCSS0300001",
+   "urun_adi": "Mira Balenli Dantelli Büstiyer Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 64 Polyester % 33 Viskon % 3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Straplez",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528439",
+    "8684483528446",
+    "8684483528453",
+    "8684483528460",
+    "FCSS0300001"
+   ]
+  },
+  "2826": {
+   "stok_kodu": "FCSS2500001",
+   "urun_adi": "Era Baget Çanta Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Poliüretan",
+    "Ürün İçerik Bilgisi": "% 100 Poliüretan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Astar Durumu": "Astarlı",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483525537",
+    "FCSS2500001"
+   ]
+  },
+  "2761": {
+   "stok_kodu": "FCSS0900004",
+   "urun_adi": "Nova Pelerinli Gömlek Açık Mavi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Asimetrik Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483523267",
+    "8684483523274",
+    "8684483523281",
+    "FCSS0900004"
+   ]
+  },
+  "2820": {
+   "stok_kodu": "FCSS0400009",
+   "urun_adi": "Suni Deri Yakalı Ceket Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525346",
+    "8684483525353",
+    "FCSS0400009"
+   ]
+  },
+  "2686": {
+   "stok_kodu": "FCFW3200001",
+   "urun_adi": "Basic Atkı Taş",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483520914",
+    "FCFW3200001"
+   ]
+  },
+  "2976": {
+   "stok_kodu": "FCSS0600011",
+   "urun_adi": "Aveline Dantelli Saten Elbise Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Askılı",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%97 Polyester %3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529115",
+    "8684483529122",
+    "8684483529139",
+    "8684483529146",
+    "FCSS0600011"
+   ]
+  },
+  "2982": {
+   "stok_kodu": "FCSS0600012",
+   "urun_adi": "Maris Mini Triko Elbise Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Triko",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "%30 Viskon %30 Akrilik %30 Polyester %10 Naylon",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Merserize",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529627",
+    "8684483529634",
+    "FCSS0600012"
+   ]
+  },
+  "2641": {
+   "stok_kodu": "FCFW3100001",
+   "urun_adi": "Asimetrik Kesim Triko Panço Ekru",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483519727",
+    "FCFW3100001"
+   ]
+  },
+  "2668": {
+   "stok_kodu": "FCFW5500001",
+   "urun_adi": "Polo Yaka Süveter Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520570",
+    "8684483520587",
+    "FCFW5500001"
+   ]
+  },
+  "2708": {
+   "stok_kodu": "FCFW2800002",
+   "urun_adi": "Ekose Fular Mavi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Desen": "Ekose",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521461",
+    "FCFW2800002"
+   ]
+  },
+  "2888": {
+   "stok_kodu": "FCSS2000006",
+   "urun_adi": "Lace Crop Pantolon Takım Haki",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Yakasız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Crop",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483527449",
+    "8684483527456",
+    "8684483527463",
+    "8684483527470",
+    "FCSS2000006"
+   ]
+  },
+  "2909": {
+   "stok_kodu": "FCSS1800001",
+   "urun_adi": "Yüksek Bel Kapri Pantolon Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Tek Ebat",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483528293",
+    "8684483528309",
+    "8684483528316",
+    "8684483528323",
+    "8684483528330",
+    "FCSS1800001"
+   ]
+  },
+  "2135": {
+   "stok_kodu": "1967",
+   "urun_adi": "Kol Apoletli Rüzgarlıklı Oversize Trençkot Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "1967",
+    "868448351676",
+    "868448351677"
+   ]
+  },
+  "2899": {
+   "stok_kodu": "FCSS0900010",
+   "urun_adi": "Nerina Oversize Gömlek Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Modal",
+    "Materyal": "Modal",
+    "Ürün İçerik Bilgisi": "%85 Modal %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483528187",
+    "FCSS0900010"
+   ]
+  },
+  "2565": {
+   "stok_kodu": "KARGO",
+   "urun_adi": "KARGO",
+   "ozellikler": {},
+   "barkodlar": [
+    "KARGO"
+   ]
+  },
+  "2725": {
+   "stok_kodu": "FCSS3300001",
+   "urun_adi": "Polo Yaka Zıbınlı Sweatshirt Kırmızı",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Polo Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Regular"
+   },
+   "barkodlar": [
+    "8684483522437",
+    "8684483522444",
+    "8684483522451",
+    "8684483522468",
+    "FCSS3300001"
+   ]
+  },
+  "2817": {
+   "stok_kodu": "FCSS0400007",
+   "urun_adi": "Lumea Desenli Kısa Ceket Çok Renkli",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Desenli",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525308",
+    "8684483525315",
+    "FCSS0400007"
+   ]
+  },
+  "2794": {
+   "stok_kodu": "FCSS2100002",
+   "urun_adi": "Core Dik Yaka Kısa Kollu T-Shirt Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524394",
+    "8684483524400",
+    "8684483524417",
+    "8684483524424",
+    "FCSS2100002"
+   ]
+  },
+  "1974": {
+   "stok_kodu": "8684483511783",
+   "urun_adi": "Gri Düğme Detay Yüksek Bel Palazzo Pantolon Gri",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8684483511776",
+    "8684483511783",
+    "8684483511790",
+    "8684483511806",
+    "8684483517068"
+   ]
+  },
+  "2799": {
+   "stok_kodu": "FCSS1800007",
+   "urun_adi": "Pileli Balon Kesim Pantolon Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Baggy",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524738",
+    "8684483524745",
+    "8684483524752",
+    "8684483524769",
+    "FCSS1800007"
+   ]
+  },
+  "2760": {
+   "stok_kodu": "FCSS0900004",
+   "urun_adi": "Nova Pelerinli Gömlek Turuncu",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Asimetrik Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483523441",
+    "8684483523458",
+    "8684483523465",
+    "FCSS0900004"
+   ]
+  },
+  "2767": {
+   "stok_kodu": "FCSS0400005",
+   "urun_adi": "Lumen Vatkalı Ekose Ceket Kahverengi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "%92 Polyester %5 Likra %3 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Ekose",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523144",
+    "8684483523151",
+    "FCSS0400005"
+   ]
+  },
+  "2663": {
+   "stok_kodu": "FCFW0600006",
+   "urun_adi": "Önü biye Detay Mini Elbise Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Midi",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520426",
+    "8684483520433",
+    "8684483520440",
+    "8684483520457",
+    "FCFW0600006"
+   ]
+  },
+  "1971": {
+   "stok_kodu": "8684483511707",
+   "urun_adi": "Siyah Kapüşonlu Kısa Şişme Mont Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8684483511707",
+    "8684483511714",
+    "8684483511721"
+   ]
+  },
+  "2754": {
+   "stok_kodu": "FCSS2100001",
+   "urun_adi": "Uzun Kol Basic Tişört Off White",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%95 Pamuk %5 Likra",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483523410",
+    "8684483523427",
+    "8684483523434",
+    "FCSS2100001"
+   ]
+  },
+  "2883": {
+   "stok_kodu": "FCSS2700004",
+   "urun_adi": "Mini Bermuda Şort Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527562",
+    "8684483527579",
+    "8684483527586",
+    "8684483527593",
+    "FCSS2700004"
+   ]
+  },
+  "2913": {
+   "stok_kodu": "20212122325",
+   "urun_adi": "Siyah Bermuda Şort",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 95 Polyester % 5 Likra",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "20212122322",
+    "20212122323",
+    "20212122324",
+    "20212122325",
+    "20212122326"
+   ]
+  },
+  "2713": {
+   "stok_kodu": "FCFW0900004",
+   "urun_adi": "Clair Ekose Gömlek Yeşil",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Ekose",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Hakim",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521553",
+    "8684483521560",
+    "8684483521577",
+    "FCFW0900004"
+   ]
+  },
+  "2809": {
+   "stok_kodu": "FCSS0900007",
+   "urun_adi": "Rive Vatkalı Gömlek Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "% 90 Viskon % 10 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525223",
+    "8684483525230",
+    "FCSS0900007"
+   ]
+  },
+  "2696": {
+   "stok_kodu": "FCFW1300005",
+   "urun_adi": "Basic Uzun Kol Triko Kazak Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "%60 Viskon %40 Polyamid",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521171",
+    "8684483521188",
+    "FCFW1300005"
+   ]
+  },
+  "2890": {
+   "stok_kodu": "FCSS2000008",
+   "urun_adi": "Monarc Bluz Pantolon Takım Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%64 Polyester %33 Viskon %3 Elasthan",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Hakim",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527807",
+    "8684483527814",
+    "8684483527821",
+    "8684483527838",
+    "FCSS2000008"
+   ]
+  },
+  "2748": {
+   "stok_kodu": "FCSS0900003",
+   "urun_adi": "Fularlı Belden Oturtma Gömlek Haki",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%97 Pamuk %3 Elasthan",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483522772",
+    "8684483522789",
+    "8684483522796",
+    "8684483525872",
+    "FCSS0900003"
+   ]
+  },
+  "2749": {
+   "stok_kodu": "FCSS0900003",
+   "urun_adi": "Fularlı Belden Oturtma Gömlek Mavi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%97 Pamuk %3 Elasthan",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483522741",
+    "8684483522758",
+    "8684483522765",
+    "8684483525865",
+    "FCSS0900003"
+   ]
+  },
+  "2769": {
+   "stok_kodu": "FCSS3300003",
+   "urun_adi": "Pulse Crop Sweatshirt Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa/Mini",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483523731",
+    "8684483523748",
+    "8684483523755",
+    "8684483523762",
+    "8684483523779",
+    "FCSS3300003"
+   ]
+  },
+  "2615": {
+   "stok_kodu": "FCFW0400003",
+   "urun_adi": "Çizgili Belden Oturmalı Fular Detay Blazer Lacivert",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Desen": "Dokuma",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518775",
+    "8684483518782",
+    "8684483518799",
+    "8684483518805",
+    "FCFW0400003"
+   ]
+  },
+  "2729": {
+   "stok_kodu": "FCSS0700001",
+   "urun_adi": "Vela Kareli Midi Etek Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Desenli",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522277",
+    "8684483522284",
+    "8684483522291",
+    "8684483522307",
+    "FCSS0700001"
+   ]
+  },
+  "2654": {
+   "stok_kodu": "FCFW1000002",
+   "urun_adi": "Bağlamalı Balon Kol Hırka Sarı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Akrilik",
+    "Ürün İçerik Bilgisi": "% 80 Akrilik % 20 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Bel": "Normal Bel",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483520112",
+    "FCFW1000002"
+   ]
+  },
+  "2659": {
+   "stok_kodu": "FCFW0600005",
+   "urun_adi": "Şal Detay Saten Mini Elbise Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520129",
+    "8684483520136",
+    "8684483520143",
+    "8684483520150",
+    "FCFW0600005"
+   ]
+  },
+  "2590": {
+   "stok_kodu": "FCFW1800003",
+   "urun_adi": "Yandan Bağlamalı Palazzo Pantolon Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518492",
+    "8684483518508",
+    "8684483518515",
+    "8684483518522",
+    "8684483518690",
+    "FCFW1800003"
+   ]
+  },
+  "2632": {
+   "stok_kodu": "FCFW0400005",
+   "urun_adi": "Suni Deri Bomber Ceket Kahverengi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483519598",
+    "8684483519604",
+    "8684483519611",
+    "8684483519628",
+    "FCFW0400005"
+   ]
+  },
+  "2698": {
+   "stok_kodu": "FCFW1300005",
+   "urun_adi": "Basic Uzun Kol Triko Kazak Beyaz",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "%60 Viskon %40 Polyamid",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521133",
+    "8684483521140",
+    "FCFW1300005"
+   ]
+  },
+  "2763": {
+   "stok_kodu": "FCSS0900004",
+   "urun_adi": "Nova Pelerinli Gömlek Lacivert",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Asimetrik Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483523205",
+    "8684483523212",
+    "8684483523229",
+    "FCSS0900004"
+   ]
+  },
+  "2576": {
+   "stok_kodu": "FCFW2000001",
+   "urun_adi": "Şardonlu Kolsuz Bluz Pantolon Takıım Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "%100 Polyester %30 Viskon",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Kapama Şekli": "Şardonlu",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517693",
+    "8684483517709",
+    "8684483517716",
+    "8684483517723",
+    "8684483517792",
+    "FCFW2000001"
+   ]
+  },
+  "2872": {
+   "stok_kodu": "FCSS2000005",
+   "urun_adi": "Evrin Modal Bluz Etek Takım Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528903",
+    "8684483528910",
+    "8684483528927",
+    "8684483528934",
+    "FCSS2000005"
+   ]
+  },
+  "2583": {
+   "stok_kodu": "FCFW0400002",
+   "urun_adi": "Fermuarlı Oversize Ceket Kırmızı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Dokuma",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Balıkçı Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517822",
+    "FCFW0400002"
+   ]
+  },
+  "2603": {
+   "stok_kodu": "FCFW0100003",
+   "urun_adi": "Şal Detaylı Bluz Haki",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Tokalı",
+    "Desen": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük"
+   },
+   "barkodlar": [
+    "8684483518034",
+    "8684483518041",
+    "8684483518058",
+    "8684483518065",
+    "8684483518072",
+    "FCFW0100003"
+   ]
+  },
+  "2766": {
+   "stok_kodu": "FCSS0700002",
+   "urun_adi": "Nira Şortlu Mini Etek Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522994",
+    "8684483523007",
+    "8684483523014",
+    "8684483523021",
+    "FCSS0700002"
+   ]
+  },
+  "1909": {
+   "stok_kodu": "2021359932",
+   "urun_adi": "Siyah Mevsimlik Kısa Kaşe Kaban Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "2021359932"
+   ]
+  },
+  "2736": {
+   "stok_kodu": "FCSS0200003",
+   "urun_adi": "Pamuklu Transparan Kayık Yaka Body Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%50 Pamuk %50 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Kayık",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483522000",
+    "8684483522017",
+    "8684483522024",
+    "FCSS0200003"
+   ]
+  },
+  "1511": {
+   "stok_kodu": "8684483500329",
+   "urun_adi": "Antrasit Yüksek Bel Carrot Pantolon Antrasit",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483500299",
+    "8684483500305",
+    "8684483500312",
+    "8684483500329",
+    "8684483509605"
+   ]
+  },
+  "2980": {
+   "stok_kodu": "FCSS1800014",
+   "urun_adi": "Mold Balon Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%75 Polyester %25 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Baggy",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529498",
+    "8684483529504",
+    "8684483529511",
+    "8684483529528",
+    "FCSS1800014"
+   ]
+  },
+  "1969": {
+   "stok_kodu": "8684483511622",
+   "urun_adi": "Siyah Düğme Detay Yüksek Bel Palazzo Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8684483511622",
+    "8684483511639",
+    "8684483511646",
+    "8684483511653",
+    "8684483517075"
+   ]
+  },
+  "2642": {
+   "stok_kodu": "FCFW2900001",
+   "urun_adi": "Yumuşak Trico Balaclava Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483519758",
+    "FCFW2900001"
+   ]
+  },
+  "2136": {
+   "stok_kodu": "1967",
+   "urun_adi": "Kol Apoletli Rüzgarlıklı Oversize Trençkot Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "1967",
+    "868448351674",
+    "868448351675"
+   ]
+  },
+  "2622": {
+   "stok_kodu": "FCFW0900002",
+   "urun_adi": "Oversize Poplin Gömlek Bordo",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483519291",
+    "FCFW0900002"
+   ]
+  },
+  "2738": {
+   "stok_kodu": "FCSS0200002",
+   "urun_adi": "Pamuklu Transparan Dik Yaka Body Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%50 Pamuk %50 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483521942",
+    "8684483521959",
+    "8684483521966",
+    "FCSS0200002"
+   ]
+  },
+  "2617": {
+   "stok_kodu": "FCFW1800005",
+   "urun_adi": "Çizgili Yüksek Bel Palazzo Pantolon Lacivert",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Desen": "Dokuma",
+    "Cep": "Cepli",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518850",
+    "8684483518867",
+    "8684483518874",
+    "8684483518881",
+    "FCFW1800005"
+   ]
+  },
+  "2613": {
+   "stok_kodu": "FCFW0700002",
+   "urun_adi": "Çizgili Mini Etek Lacivert",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518812",
+    "8684483518829",
+    "8684483518836",
+    "8684483518843",
+    "FCFW0700002"
+   ]
+  },
+  "2775": {
+   "stok_kodu": "FCSS0600001",
+   "urun_adi": "Luna Fermuarlı Elbise Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%90 Pamuk %10 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Kısa/Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523649",
+    "8684483523656",
+    "8684483523663",
+    "8684483523670",
+    "FCSS0600001"
+   ]
+  },
+  "2844": {
+   "stok_kodu": "FCSS2700002",
+   "urun_adi": "Norya Mini Şort Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527159",
+    "8684483527166",
+    "8684483528712",
+    "8684483528729",
+    "FCSS2700002"
+   ]
+  },
+  "2604": {
+   "stok_kodu": "FCFW0100003",
+   "urun_adi": "Şal Detaylı Bluz Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Tokalı",
+    "Desen": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük"
+   },
+   "barkodlar": [
+    "8684483518089",
+    "8684483518096",
+    "8684483518102",
+    "8684483518119",
+    "8684483518126",
+    "FCFW0100003"
+   ]
+  },
+  "2684": {
+   "stok_kodu": "FCFW3200001",
+   "urun_adi": "Basic Atkı Kırmızı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483520938",
+    "FCFW3200001"
+   ]
+  },
+  "1818": {
+   "stok_kodu": "38942898948",
+   "urun_adi": "2'li Soft Touch Uzun Konç Çorap Vizon",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "38942898948"
+   ]
+  },
+  "2703": {
+   "stok_kodu": "FCFW0700003",
+   "urun_adi": "Mini Etek Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%65 Pamuk %35 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Fitted",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Normal Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521270",
+    "8684483521287",
+    "8684483521294",
+    "8684483521300",
+    "FCFW0700003"
+   ]
+  },
+  "2865": {
+   "stok_kodu": "FCFW2300001",
+   "urun_adi": "Aluna Volanlı Tulum Bej",
+   "ozellikler": {
+    "Cep": "Cepsiz",
+    "Kumaş Tipi": "Dokuma",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Oversize",
+    "Boy": "Mini",
+    "Kol Boyu": "KISA",
+    "Web Color": "Bej",
+    "Materyal": "Pamuklu",
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "%70 Polyester %30 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529238",
+    "8684483529245",
+    "FCFW2300001"
+   ]
+  },
+  "2841": {
+   "stok_kodu": "FCSS2000003",
+   "urun_adi": "Liora Crop Etek Takım Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Çiçekli",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Yuvarlak Yaka",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483526220",
+    "8684483528682",
+    "8684483528699",
+    "8684483528705",
+    "FCSS2000003"
+   ]
+  },
+  "2690": {
+   "stok_kodu": "FCFW0400008",
+   "urun_adi": "Kadife Yaka Bomber Süet Ceket Taş",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%55 Pamuk %45 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Kontrast Yaka",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521010",
+    "8684483521027",
+    "FCFW0400008"
+   ]
+  },
+  "2672": {
+   "stok_kodu": "FCFW1300002",
+   "urun_adi": "Fular Detaylı Kolej Kazak Lacivert",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520624",
+    "FCFW1300002"
+   ]
+  },
+  "1533": {
+   "stok_kodu": "8684483501081",
+   "urun_adi": "FC Lacivert Lastikli Yüksek Bel Palazzo Pantolon Lacivert",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483501074",
+    "8684483501081",
+    "8684483501098",
+    "8684483501104",
+    "8684483501111"
+   ]
+  },
+  "2733": {
+   "stok_kodu": "FCSS0200004",
+   "urun_adi": "Degaje Yaka Uzun Kol Body Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%90 Polyester %10 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Degaje",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522116",
+    "8684483522123",
+    "8684483522130",
+    "8684483522147",
+    "8684483522154",
+    "FCSS0200004"
+   ]
+  },
+  "2744": {
+   "stok_kodu": "FCSS0100002",
+   "urun_adi": "Omuz Dekolteli Bluz Mavi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%90 Polyester %10 Likra",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Boyundan Bağlama",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483522703",
+    "8684483522710",
+    "FCSS0100002"
+   ]
+  },
+  "2845": {
+   "stok_kodu": "FCSS2000004",
+   "urun_adi": "Delya Gömlek Şort Takım Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483526695",
+    "8684483526701",
+    "8684483526718",
+    "8684483526725",
+    "FCSS2000004"
+   ]
+  },
+  "1565": {
+   "stok_kodu": "8684483501982",
+   "urun_adi": "Bej Düğmeli Crop Blazer Ceket Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483501982",
+    "8684483501999",
+    "8684483502002"
+   ]
+  },
+  "1582": {
+   "stok_kodu": "8684483502361",
+   "urun_adi": "Lacivert Düğmeli Blazer Ceket Lacivert",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8684483502361",
+    "8684483502378",
+    "8684483502385",
+    "8684483502392"
+   ]
+  },
+  "1932": {
+   "stok_kodu": "8684483510625",
+   "urun_adi": "Zebra Desen Şifon Crop Bluz Desenli",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8684483510625",
+    "8684483510632",
+    "8684483510649"
+   ]
+  },
+  "2722": {
+   "stok_kodu": "FCSS3300002",
+   "urun_adi": "Dik Yaka Zıbınlı Sweatshirt Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%65 Pamuk %35 Polyester",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522550",
+    "8684483522567",
+    "8684483522574",
+    "8684483522581",
+    "FCSS3300002"
+   ]
+  },
+  "2879": {
+   "stok_kodu": "FCSS0400012",
+   "urun_adi": "Metal Aksesuarlı Crop Blazer Ceket Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Kanca",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Yakasız",
+    "Kalıp": "Salaş",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527227",
+    "8684483527234",
+    "FCSS0400012"
+   ]
+  },
+  "2730": {
+   "stok_kodu": "FCSS0400002",
+   "urun_adi": "Scarlet Gabardin Oversize Ceket Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%63 Polyester %32 Viskon %5 Elesthan",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Kapama Şekli": "Fermuarlı",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy"
+   },
+   "barkodlar": [
+    "8684483522260",
+    "FCSS0400002"
+   ]
+  },
+  "2889": {
+   "stok_kodu": "FCSS2000008",
+   "urun_adi": "Monarc Bluz Pantolon Takım Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%64 Polyester %33 Viskon %3 Elasthan",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Hakim",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527845",
+    "8684483527852",
+    "8684483527869",
+    "8684483527876",
+    "FCSS2000008"
+   ]
+  },
+  "2797": {
+   "stok_kodu": "FCSS1800008",
+   "urun_adi": "Pensli Straight Fit Pantolon Taş",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524646",
+    "8684483524653",
+    "8684483524660",
+    "8684483524677",
+    "8684483524684",
+    "FCSS1800008"
+   ]
+  },
+  "2876": {
+   "stok_kodu": "FCSS0700005",
+   "urun_adi": "Metal Aksesuarlı Kalem Etek Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527241",
+    "8684483527258",
+    "8684483527265",
+    "8684483527272",
+    "FCSS0700005"
+   ]
+  },
+  "2602": {
+   "stok_kodu": "FCFW0600002",
+   "urun_adi": "Dokulu Blazer Etek Takım Beyaz",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 95 Polyester % 5 Likra",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Dokulu",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Tek Ebat",
+    "Bel": "Standart",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483518331",
+    "8684483518348",
+    "8684483518355",
+    "8684483518362",
+    "FCFW0600002"
+   ]
+  },
+  "2854": {
+   "stok_kodu": "FCSS0900008",
+   "urun_adi": "Helia Oversize Gömlek Ekru",
+   "ozellikler": {
+    "Cep": "Cepsiz",
+    "Kumaş Tipi": "Dokuma",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Boy": "Regular",
+    "Kol Boyu": "UZUN",
+    "Web Color": "Ekru",
+    "Materyal": "Tencel",
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483529252",
+    "8684483529269",
+    "FCSS0900008"
+   ]
+  },
+  "2731": {
+   "stok_kodu": "FCSS0200004",
+   "urun_adi": "Degaje Yaka Uzun Kol Body Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%90 Polyester %10 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Degaje",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522215",
+    "8684483522222",
+    "8684483522239",
+    "8684483522246",
+    "8684483522253",
+    "FCSS0200004"
+   ]
+  },
+  "2795": {
+   "stok_kodu": "FCSS2100002",
+   "urun_adi": "Core Dik Yaka Kısa Kollu T-Shirt Mavi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524356",
+    "8684483524363",
+    "8684483524370",
+    "8684483524387",
+    "FCSS2100002"
+   ]
+  },
+  "2597": {
+   "stok_kodu": "FCFW1000001",
+   "urun_adi": "Havlu Kumaş Hırka Pembe",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Düğmeli",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518140",
+    "FCFW1000001"
+   ]
+  },
+  "2712": {
+   "stok_kodu": "FCFW0400010",
+   "urun_adi": "Noir Toggle Ceket Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Kanca",
+    "Desen": "Dokuma",
+    "Cep": "Çift Cep",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Orta",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483521508",
+    "8684483521515",
+    "FCFW0400010"
+   ]
+  },
+  "2852": {
+   "stok_kodu": "FCSS0900008",
+   "urun_adi": "Helia Oversize Gömlek Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483528828",
+    "8684483528835",
+    "FCSS0900008"
+   ]
+  },
+  "2599": {
+   "stok_kodu": "FCFW0700001",
+   "urun_adi": "Havlu Kumaş Etek Kırmızı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Desen": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518539",
+    "8684483518546",
+    "8684483518553",
+    "8684483518560",
+    "FCFW0700001"
+   ]
+  },
+  "1513": {
+   "stok_kodu": "8684483500237",
+   "urun_adi": "Antrasit Pile Detay Çıtçıtlı Ceket Antrasit",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483500220",
+    "8684483500237",
+    "8684483500244",
+    "8684483500251"
+   ]
+  },
+  "2772": {
+   "stok_kodu": "FCSS1800005",
+   "urun_adi": "Sienna Pileli Pantolon Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523519",
+    "8684483523526",
+    "8684483523533",
+    "8684483523540",
+    "8684483523557",
+    "FCSS1800005"
+   ]
+  },
+  "2901": {
+   "stok_kodu": "FCSS0700006",
+   "urun_adi": "Nerina Pareo Etek Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Modal",
+    "Ürün İçerik Bilgisi": "%85 Modal %15 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483528149",
+    "8684483528156",
+    "8684483528163",
+    "8684483528170",
+    "FCSS0700006"
+   ]
+  },
+  "2903": {
+   "stok_kodu": "FCSS0400013",
+   "urun_adi": "Maren Oversize Ceket Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%55 Pamuk %45 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528019",
+    "8684483528026",
+    "FCSS0400013"
+   ]
+  },
+  "2878": {
+   "stok_kodu": "FCSS0600008",
+   "urun_adi": "Çizgili Poplin Elbise Pembe",
+   "ozellikler": {
+    "Cep": "Cepsiz",
+    "Kumaş Tipi": "Dokuma",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Oversize",
+    "Boy": "Mini",
+    "Kol Boyu": "UZUN",
+    "Web Color": "Pembe",
+    "Materyal": "Polyester",
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "%97 Polyester %3 Viskon",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Çizgili",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483529351",
+    "8684483529368",
+    "FCSS0600008"
+   ]
+  },
+  "2819": {
+   "stok_kodu": "FCSS2000001",
+   "urun_adi": "Motion Paraşüt Ceket Şort Takım Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525360",
+    "8684483525377",
+    "8684483525384",
+    "FCSS2000001"
+   ]
+  },
+  "2910": {
+   "stok_kodu": "FCSS1800001",
+   "urun_adi": "Yüksek Bel Kapri Pantolon Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Tek Ebat",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483528248",
+    "8684483528255",
+    "8684483528262",
+    "8684483528279",
+    "8684483528286",
+    "FCSS1800001"
+   ]
+  },
+  "2902": {
+   "stok_kodu": "FCSS0400013",
+   "urun_adi": "Maren Oversize Ceket Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%55 Pamuk %45 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528088",
+    "8684483528095",
+    "FCSS0400013"
+   ]
+  },
+  "2737": {
+   "stok_kodu": "FCSS0200003",
+   "urun_adi": "Pamuklu Transparan Kayık Yaka Body Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%50 Pamuk %50 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Kayık",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483521973",
+    "8684483521980",
+    "8684483521997",
+    "FCSS0200003"
+   ]
+  },
+  "2631": {
+   "stok_kodu": "FCFW0400005",
+   "urun_adi": "Suni Deri Bomber Ceket Gri",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483519512",
+    "8684483519529",
+    "8684483519536",
+    "8684483519543",
+    "FCFW0400005"
+   ]
+  },
+  "2776": {
+   "stok_kodu": "FCSS0100004",
+   "urun_adi": "Fermuarlı Bluz Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%90 Pamuk %10 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523939",
+    "8684483523946",
+    "8684483523953",
+    "8684483523960",
+    "FCSS0100004"
+   ]
+  },
+  "2784": {
+   "stok_kodu": "FCSS0900006",
+   "urun_adi": "Knot Bağlamalı Gömlek Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuk Polyester",
+    "Ürün İçerik Bilgisi": "% 57 Pamuk % 43 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Hakim",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483524219",
+    "FCSS0900006"
+   ]
+  },
+  "2620": {
+   "stok_kodu": "FCFW0900002",
+   "urun_adi": "Oversize Poplin Gömlek Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483519338",
+    "FCFW0900002"
+   ]
+  },
+  "2832": {
+   "stok_kodu": "FCFW1300005",
+   "urun_adi": "Basic Uzun Kol Triko Kazak Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "%60 Viskon %40 Polyamid",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525827",
+    "8684483525834",
+    "FCFW1300005"
+   ]
+  },
+  "2693": {
+   "stok_kodu": "FCFW1200003",
+   "urun_adi": "Mirelle Dik Yaka Kaşe Kaban Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 95 Polyester  % 5 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483521058",
+    "FCFW1200003"
+   ]
+  },
+  "2639": {
+   "stok_kodu": "FCFW3100001",
+   "urun_adi": "Asimetrik Kesim Triko Panço Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483519765",
+    "FCFW3100001"
+   ]
+  },
+  "2804": {
+   "stok_kodu": "FCSS1800009",
+   "urun_adi": "Kareli Dökümlü Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 64 Polyester % 33 Viskon % 3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Ekose",
+    "Cep": "Cepli",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524967",
+    "8684483524974",
+    "8684483524981",
+    "8684483524998",
+    "FCSS1800009"
+   ]
+  },
+  "2656": {
+   "stok_kodu": "FCFW0600005",
+   "urun_adi": "Şal Detay Saten Mini Elbise Bordo",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520303",
+    "8684483520310",
+    "8684483520327",
+    "8684483520334",
+    "FCFW0600005"
+   ]
+  },
+  "2676": {
+   "stok_kodu": "FCFW0400006",
+   "urun_adi": "Limited Edition Kuşaklı Ceket Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520471",
+    "8684483520488",
+    "8684483520495",
+    "8684483520501",
+    "8684483520518",
+    "FCFW0400006"
+   ]
+  },
+  "2752": {
+   "stok_kodu": "FCSS0400003",
+   "urun_adi": "Noctia Pelerinli Ceket Mavi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%90 Pamuk %10 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "STANDART",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular"
+   },
+   "barkodlar": [
+    "8684483522833",
+    "8684483522840",
+    "FCSS0400003"
+   ]
+  },
+  "1965": {
+   "stok_kodu": "8684483511530",
+   "urun_adi": "Acı Kahve Mevsimlik Kısa Kaşe Kaban Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8684483511530"
+   ]
+  },
+  "2600": {
+   "stok_kodu": "FCFW0700001",
+   "urun_adi": "Havlu Kumaş Etek Pembe",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Desen": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518416",
+    "8684483518423",
+    "8684483518430",
+    "8684483518447",
+    "FCFW0700001"
+   ]
+  },
+  "2660": {
+   "stok_kodu": "FCFW0600005",
+   "urun_adi": "Şal Detay Saten Mini Elbise İndigo",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520389",
+    "8684483520396",
+    "8684483520402",
+    "8684483520419",
+    "FCFW0600005"
+   ]
+  },
+  "2828": {
+   "stok_kodu": "FCSS1100001",
+   "urun_adi": "Tina Straight Fit Jean Mavi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525551",
+    "8684483525568",
+    "8684483525575",
+    "8684483525582",
+    "8684483525599",
+    "8684483525964",
+    "FCSS1100001"
+   ]
+  },
+  "2670": {
+   "stok_kodu": "FCFW1800008",
+   "urun_adi": "Limited Edition Pensli Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520525",
+    "8684483520532",
+    "8684483520549",
+    "8684483520556",
+    "8684483520563",
+    "FCFW1800008"
+   ]
+  },
+  "1508": {
+   "stok_kodu": "8684483500404",
+   "urun_adi": "Bej Yüksek Bel Carrot Pantolon Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483500404",
+    "8684483500411",
+    "8684483500428",
+    "8684483500435",
+    "8684483509599"
+   ]
+  },
+  "2572": {
+   "stok_kodu": "FCFW0900001",
+   "urun_adi": "Kolu Volanlı Gömlek Lacivert",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester %30 Viskon",
+    "Materyal": "Polyester",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517334",
+    "FCFW0900001"
+   ]
+  },
+  "2829": {
+   "stok_kodu": "FCSS1100001",
+   "urun_adi": "Tina Straight Fit Jean Buz Mavisi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525650",
+    "8684483525667",
+    "8684483525674",
+    "8684483525681",
+    "8684483525698",
+    "8684483525988",
+    "FCSS1100001"
+   ]
+  },
+  "2616": {
+   "stok_kodu": "FCFW1800005",
+   "urun_adi": "Çizgili Yüksek Bel Palazzo Pantolon Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Desen": "Dokuma",
+    "Cep": "Cepli",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483519017",
+    "8684483519024",
+    "8684483519031",
+    "8684483519048",
+    "FCFW1800005"
+   ]
+  },
+  "1822": {
+   "stok_kodu": "8684483508486",
+   "urun_adi": "Camel Süet Düğmeli Ceket Camel",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8684483508486",
+    "8684483508493",
+    "8684483508509"
+   ]
+  },
+  "2821": {
+   "stok_kodu": "FCSS0400009",
+   "urun_adi": "Suni Deri Yakalı Ceket Mavi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525322",
+    "8684483525339",
+    "FCSS0400009"
+   ]
+  },
+  "2669": {
+   "stok_kodu": "FCFW1800008",
+   "urun_adi": "Limited Edition Pensli Pantolon Ekru",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520686",
+    "8684483520693",
+    "8684483520709",
+    "8684483520716",
+    "8684483520723",
+    "FCFW1800008"
+   ]
+  },
+  "2691": {
+   "stok_kodu": "FCFW0400008",
+   "urun_adi": "Kadife Yaka Bomber Süet Ceket Bordo",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%55 Pamuk %45 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Kontrast Yaka",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483520990",
+    "8684483521003",
+    "FCFW0400008"
+   ]
+  },
+  "2629": {
+   "stok_kodu": "FCFW0100005",
+   "urun_adi": "BANKA KOMİSYONU",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Kısa/Mini",
+    "Bel": "Lastikli"
+   },
+   "barkodlar": [
+    "8684483519390",
+    "FCFW0100005"
+   ]
+  },
+  "2681": {
+   "stok_kodu": "FCFW3200002",
+   "urun_adi": "Saç Örgü Atkı Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483520969",
+    "FCFW3200002"
+   ]
+  },
+  "2739": {
+   "stok_kodu": "FCSS0200002",
+   "urun_adi": "Pamuklu Transparan Dik Yaka Body Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%50 Pamuk %50 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483521911",
+    "8684483521928",
+    "8684483521935",
+    "FCSS0200002"
+   ]
+  },
+  "2812": {
+   "stok_kodu": "FCSS0900007",
+   "urun_adi": "Rive Vatkalı Gömlek Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "% 90 Viskon % 10 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524943",
+    "8684483524950",
+    "FCSS0900007"
+   ]
+  },
+  "2884": {
+   "stok_kodu": "FCSS2700004",
+   "urun_adi": "Mini Bermuda Şort Siyah",
+   "ozellikler": {
+    "Cep": "Cepli",
+    "Kumaş Tipi": "Dokuma",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Web Color": "Siyah",
+    "Materyal": "Polyester",
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527418",
+    "8684483527425",
+    "8684483529047",
+    "8684483529054",
+    "FCSS2700004"
+   ]
+  },
+  "2679": {
+   "stok_kodu": "FCFW0400007",
+   "urun_adi": "Nora Kaşe Blazer Mürdüm",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483520853",
+    "8684483520860",
+    "FCFW0400007"
+   ]
+  },
+  "2108": {
+   "stok_kodu": "2025140007",
+   "urun_adi": "Siyah Çift Renkli Elbise",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "2025140007",
+    "8684483515309"
+   ]
+  },
+  "2701": {
+   "stok_kodu": "FCFW1300004",
+   "urun_adi": "Basic Kısa Kol Triko Kazak Beyaz",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "%60 Viskon %40 Polyamid",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521072",
+    "8684483521089",
+    "FCFW1300004"
+   ]
+  },
+  "2591": {
+   "stok_kodu": "FCFW1800003",
+   "urun_adi": "Yandan Bağlamalı Palazzo Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518287",
+    "8684483518294",
+    "8684483518300",
+    "8684483518317",
+    "8684483518676",
+    "FCFW1800003"
+   ]
+  },
+  "2825": {
+   "stok_kodu": "FCSS2500001",
+   "urun_adi": "Era Baget Çanta Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Poliüretan",
+    "Ürün İçerik Bilgisi": "% 100 Poliüretan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Astar Durumu": "Astarlı",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483525544",
+    "FCSS2500001"
+   ]
+  },
+  "1143": {
+   "stok_kodu": "8683851511264",
+   "urun_adi": "Camel Kuşaklı Mevsimlik İnce Trençkot Camel",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8683851511264"
+   ]
+  },
+  "2800": {
+   "stok_kodu": "FCSS1800007",
+   "urun_adi": "Pileli Balon Kesim Pantolon Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Baggy",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525995",
+    "8684483526008",
+    "8684483526015",
+    "8684483526022",
+    "FCSS1800007"
+   ]
+  },
+  "2762": {
+   "stok_kodu": "FCSS0900004",
+   "urun_adi": "Nova Pelerinli Gömlek Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Asimetrik Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483523236",
+    "8684483523243",
+    "8684483523250",
+    "FCSS0900004"
+   ]
+  },
+  "2773": {
+   "stok_kodu": "FCSS0900005",
+   "urun_adi": "Dot Puantiyeli Gömlek Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Puantiye",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483523830",
+    "FCSS0900005"
+   ]
+  },
+  "2582": {
+   "stok_kodu": "FCFW0100001",
+   "urun_adi": "Yarasa Kol Kayık Yaka Bluz Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517457",
+    "8684483517464",
+    "8684483517471",
+    "8684483517730",
+    "FCFW0100001"
+   ]
+  },
+  "2593": {
+   "stok_kodu": "FCFW1800002",
+   "urun_adi": "Havlu Kumaş Pantolon Kırmızı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Dokuma",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483518577",
+    "8684483518584",
+    "8684483518591",
+    "8684483518607",
+    "FCFW1800002"
+   ]
+  },
+  "2777": {
+   "stok_kodu": "FCSS0100004",
+   "urun_adi": "Fermuarlı Bluz Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%90 Pamuk %10 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523601",
+    "8684483523618",
+    "8684483523625",
+    "8684483523632",
+    "FCSS0100004"
+   ]
+  },
+  "2652": {
+   "stok_kodu": "1440",
+   "urun_adi": "Apoletli Kısa Kaşe Kaban Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Kısa",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "1440",
+    "8684483520051",
+    "8684483520068",
+    "8684483520075"
+   ]
+  },
+  "2614": {
+   "stok_kodu": "FCFW0400003",
+   "urun_adi": "Çizgili Belden Oturmalı Fular Detay Blazer Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Desen": "Dokuma",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518935",
+    "8684483518942",
+    "8684483518959",
+    "8684483518966",
+    "FCFW0400003"
+   ]
+  },
+  "2750": {
+   "stok_kodu": "FCSS0400004",
+   "urun_adi": "Cue Süet Kısa Ceket Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%70 Polyester %30 Viskon",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Desen": "STANDART",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Kısa",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522871",
+    "8684483522888",
+    "8684483522895",
+    "8684483522901",
+    "FCSS0400004"
+   ]
+  },
+  "2783": {
+   "stok_kodu": "FCSS0900006",
+   "urun_adi": "Knot Bağlamalı Gömlek Açık Mavi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuk Polyester",
+    "Ürün İçerik Bilgisi": "% 57 Pamuk % 43 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Hakim",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483524264",
+    "FCSS0900006"
+   ]
+  },
+  "2803": {
+   "stok_kodu": "FCSS1800009",
+   "urun_adi": "Kareli Dökümlü Pantolon Lacivert",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 64 Polyester % 33 Viskon % 3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Ekose",
+    "Cep": "Cepli",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525124",
+    "8684483525131",
+    "8684483525148",
+    "8684483525155",
+    "FCSS1800009"
+   ]
+  },
+  "2636": {
+   "stok_kodu": "FCFW1300001",
+   "urun_adi": "Kalın Triko Kazak Kırmızı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Akrilik",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Kısa",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483519697",
+    "FCFW1300001"
+   ]
+  },
+  "2661": {
+   "stok_kodu": "FCFW0600006",
+   "urun_adi": "Önü biye Detay Mini Elbise Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Midi",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520204",
+    "8684483520211",
+    "8684483520228",
+    "8684483520235",
+    "FCFW0600006"
+   ]
+  },
+  "2665": {
+   "stok_kodu": "FCFW1200001",
+   "urun_adi": "Linea Apoletli Uzun Kaşe Kaban Antrasit",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520297",
+    "FCFW1200001"
+   ]
+  },
+  "2720": {
+   "stok_kodu": "FCSS0200001",
+   "urun_adi": "Dik Yaka Basic Body Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Orta"
+   },
+   "barkodlar": [
+    "8684483521584",
+    "8684483521591",
+    "8684483521607",
+    "8684483521614",
+    "8684483521621",
+    "FCSS0200001"
+   ]
+  },
+  "2724": {
+   "stok_kodu": "FCSS3300002",
+   "urun_adi": "Dik Yaka Zıbınlı Sweatshirt Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%65 Pamuk %35 Polyester",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522475",
+    "8684483522482",
+    "8684483522499",
+    "8684483522505",
+    "FCSS3300002"
+   ]
+  },
+  "2900": {
+   "stok_kodu": "FCSS0700006",
+   "urun_adi": "Nerina Pareo Etek Antrasit",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Modal",
+    "Ürün İçerik Bilgisi": "%85 Modal %15 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483528194",
+    "8684483528200",
+    "8684483528217",
+    "8684483528224",
+    "FCSS0700006"
+   ]
+  },
+  "2710": {
+   "stok_kodu": "FCFW2800002",
+   "urun_adi": "Ekose Fular Kırmızı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Desen": "Ekose",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521492",
+    "FCFW2800002"
+   ]
+  },
+  "2695": {
+   "stok_kodu": "FCFW1200003",
+   "urun_adi": "Mirelle Dik Yaka Kaşe Kaban Ekru",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 95 Polyester  % 5 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483521034",
+    "FCFW1200003"
+   ]
+  },
+  "2856": {
+   "stok_kodu": "FCSS0600007",
+   "urun_adi": "Velin Bağlamalı Midi Elbise Mavi",
+   "ozellikler": {
+    "Cep": "Cepsiz",
+    "Kumaş Tipi": "Dokuma",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Oversize",
+    "Boy": "Midi",
+    "Kol Boyu": "Kolsuz",
+    "Web Color": "Mavi",
+    "Materyal": "Polyester",
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Düz",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529344",
+    "FCSS0600007"
+   ]
+  },
+  "2664": {
+   "stok_kodu": "FCFW1200001",
+   "urun_adi": "Linea Apoletli Uzun Kaşe Kaban Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520464",
+    "FCFW1200001"
+   ]
+  },
+  "2886": {
+   "stok_kodu": "FCSS2000007",
+   "urun_adi": "Olisa Büstiyer Pantolon Takım Antrasit",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Yakasız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483527524",
+    "8684483527531",
+    "8684483527548",
+    "8684483527555",
+    "FCSS2000007"
+   ]
+  },
+  "2633": {
+   "stok_kodu": "FCFW1800007",
+   "urun_adi": "Suni Deri Yırtmaç Detay Pantolon Kahverengi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483519635",
+    "8684483519642",
+    "8684483519659",
+    "8684483519666",
+    "FCFW1800007"
+   ]
+  },
+  "2915": {
+   "stok_kodu": "FCSS0600010",
+   "urun_adi": "Celeste Danteli Uzun Elbise Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Çiçekli",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Kalp Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528538",
+    "8684483528545",
+    "8684483528552",
+    "8684483528569",
+    "FCSS0600010"
+   ]
+  },
+  "2680": {
+   "stok_kodu": "FCFW0400007",
+   "urun_adi": "Nora Kaşe Blazer Kahverengi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483520839",
+    "8684483520846",
+    "FCFW0400007"
+   ]
+  },
+  "2683": {
+   "stok_kodu": "FCFW3200002",
+   "urun_adi": "Saç Örgü Atkı Mint",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483520945",
+    "FCFW3200002"
+   ]
+  },
+  "1534": {
+   "stok_kodu": "8684483501135",
+   "urun_adi": "FC Bej Lastikli Yüksek Bel Palazzo Pantolon Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483501128",
+    "8684483501135",
+    "8684483501142",
+    "8684483501159",
+    "8684483501166"
+   ]
+  },
+  "2607": {
+   "stok_kodu": "FCFW1800004",
+   "urun_adi": "Düğme Detay Yüksek Bel Palazzo Pantolon Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518621",
+    "8684483518638",
+    "8684483518645",
+    "8684483518652",
+    "8684483518669",
+    "FCFW1800004"
+   ]
+  },
+  "2751": {
+   "stok_kodu": "FCSS0400003",
+   "urun_adi": "Noctia Pelerinli Ceket Somon",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%90 Pamuk %10 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "STANDART",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular"
+   },
+   "barkodlar": [
+    "8684483522857",
+    "8684483522864",
+    "FCSS0400003"
+   ]
+  },
+  "2634": {
+   "stok_kodu": "FCFW1800007",
+   "urun_adi": "Suni Deri Yırtmaç Detay Pantolon Gri",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483519550",
+    "8684483519567",
+    "8684483519574",
+    "8684483519581",
+    "FCFW1800007"
+   ]
+  },
+  "2699": {
+   "stok_kodu": "FCFW1300004",
+   "urun_adi": "Basic Kısa Kol Triko Kazak Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "%60 Viskon %40 Polyamid",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521119",
+    "8684483521126",
+    "FCFW1300004"
+   ]
+  },
+  "2595": {
+   "stok_kodu": "FCFW1800002",
+   "urun_adi": "Havlu Kumaş Pantolon Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Dokuma",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483518201",
+    "8684483518218",
+    "8684483518225",
+    "8684483518232",
+    "FCFW1800002"
+   ]
+  },
+  "2905": {
+   "stok_kodu": "FCSS0700007",
+   "urun_adi": "Mira Dantelli Mini Etek Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 64 Polyester % 33 Viskon % 3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528477",
+    "8684483528484",
+    "8684483528491",
+    "8684483528507",
+    "FCSS0700007"
+   ]
+  },
+  "2740": {
+   "stok_kodu": "FCSS0200002",
+   "urun_adi": "Pamuklu Transparan Dik Yaka Body Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%50 Pamuk %50 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483521881",
+    "8684483521898",
+    "8684483521904",
+    "FCSS0200002"
+   ]
+  },
+  "2742": {
+   "stok_kodu": "FCSS0900002",
+   "urun_adi": "Accent Nakışlı Oversize Gömlek Kırmızı",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%97 Pamuk %3 Elasthan",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "STANDART",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483522680",
+    "8684483522697",
+    "FCSS0900002"
+   ]
+  },
+  "2619": {
+   "stok_kodu": "FCFW1800006",
+   "urun_adi": "Yüksek Bel Kısa Kesim Çan Paça Jean Mavi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Kapama Şekli": "Kanca",
+    "Desen": "Dokuma",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Bel": "Standart",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483519185",
+    "8684483519192",
+    "8684483519208",
+    "8684483519215",
+    "8684483520877",
+    "8684483521065",
+    "FCFW1800006"
+   ]
+  },
+  "2857": {
+   "stok_kodu": "FCSS0600006",
+   "urun_adi": "Selis Sırt Dekolteli Mini Elbise Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%98 Polyester %2 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483526398",
+    "8684483526404",
+    "8684483528859",
+    "8684483528866",
+    "FCSS0600006"
+   ]
+  },
+  "2587": {
+   "stok_kodu": "FCFW0100002",
+   "urun_adi": "Önden Bağlamalı Fırfırlı Bluz Sarı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517860",
+    "8684483517877",
+    "8684483517884",
+    "FCFW0100002"
+   ]
+  },
+  "2711": {
+   "stok_kodu": "FCFW2800002",
+   "urun_adi": "Ekose Fular Yeşil",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Desen": "Ekose",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521485",
+    "FCFW2800002"
+   ]
+  },
+  "2807": {
+   "stok_kodu": "FCSS1800011",
+   "urun_adi": "Rufe Dökümlü Palazzo Pantolon Açık Gri",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525261",
+    "8684483525278",
+    "8684483525285",
+    "8684483525292",
+    "FCSS1800011"
+   ]
+  },
+  "2707": {
+   "stok_kodu": "FCFW0100006",
+   "urun_adi": "Volanlı Bluz Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Volan",
+    "Kalıp": "Fitted",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483521317",
+    "8684483521324",
+    "8684483521331",
+    "8684483521348",
+    "8684483521430",
+    "FCFW0100006"
+   ]
+  },
+  "2721": {
+   "stok_kodu": "FCSS3300002",
+   "urun_adi": "Dik Yaka Zıbınlı Sweatshirt Kırmızı",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%65 Pamuk %35 Polyester",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522598",
+    "8684483522604",
+    "8684483522611",
+    "8684483522628",
+    "FCSS3300002"
+   ]
+  },
+  "2643": {
+   "stok_kodu": "FCFW2900001",
+   "urun_adi": "Yumuşak Trico Balaclava Beyaz",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483519710",
+    "FCFW2900001"
+   ]
+  },
+  "2655": {
+   "stok_kodu": "FCFW1000002",
+   "urun_adi": "Bağlamalı Balon Kol Hırka Açık Mavi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Akrilik",
+    "Ürün İçerik Bilgisi": "% 80 Akrilik % 20 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Bel": "Normal Bel",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483520105",
+    "FCFW1000002"
+   ]
+  },
+  "2853": {
+   "stok_kodu": "FCSS0900008",
+   "urun_adi": "Helia Oversize Gömlek Kiremit",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483528804",
+    "8684483528811",
+    "FCSS0900008"
+   ]
+  },
+  "1073": {
+   "stok_kodu": "2022889443",
+   "urun_adi": "Siyah Kuşaklı Mevsimlik İnce Trençkot Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "2022889443"
+   ]
+  },
+  "1532": {
+   "stok_kodu": "8684483501036",
+   "urun_adi": "FC Siyah Lastikli Yüksek Bel Palazzo Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483501029",
+    "8684483501036",
+    "8684483501043",
+    "8684483501050",
+    "8684483501067"
+   ]
+  },
+  "1968": {
+   "stok_kodu": "8684483511585",
+   "urun_adi": "Acı Kahve Düğme Detay Yüksek Bel Palazzo Pantolon Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8684483511585",
+    "8684483511592",
+    "8684483511608",
+    "8684483511615",
+    "8684483516986"
+   ]
+  },
+  "2621": {
+   "stok_kodu": "FCFW0900002",
+   "urun_adi": "Oversize Poplin Gömlek Sarı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483519314",
+    "FCFW0900002"
+   ]
+  },
+  "2848": {
+   "stok_kodu": "FCSS1800013",
+   "urun_adi": "Helia Dökümlü Pantolon Kiremit",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483527029",
+    "8684483527036",
+    "8684483527043",
+    "8684483527050",
+    "FCSS1800013"
+   ]
+  },
+  "2822": {
+   "stok_kodu": "FCSS0700004",
+   "urun_adi": "Nina Mini Etek Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525452",
+    "8684483525469",
+    "8684483525476",
+    "8684483525483",
+    "FCSS0700004"
+   ]
+  },
+  "2981": {
+   "stok_kodu": "FCSS1800014",
+   "urun_adi": "Mold Balon Pantolon Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%75 Polyester %25 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Baggy",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529450",
+    "8684483529467",
+    "8684483529474",
+    "8684483529481",
+    "FCSS1800014"
+   ]
+  },
+  "2979": {
+   "stok_kodu": "FCSS1800015",
+   "urun_adi": "Shape Crop Fit Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%92 Pamuk %8 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529535",
+    "8684483529542",
+    "8684483529559",
+    "8684483529566",
+    "FCSS1800015"
+   ]
+  },
+  "2671": {
+   "stok_kodu": "FCFW1300002",
+   "urun_adi": "Fular Detaylı Kolej Kazak Kırmızı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520747",
+    "FCFW1300002"
+   ]
+  },
+  "1221": {
+   "stok_kodu": "8683851513299",
+   "urun_adi": "Gri Düğmeli Blazer Ceket Gri",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8683851513268",
+    "8683851513275",
+    "8683851513282",
+    "8683851513299"
+   ]
+  },
+  "2816": {
+   "stok_kodu": "FCSS0400008",
+   "urun_adi": "Rufe Kruvaze Oversize Blazer Vizon",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525049",
+    "8684483525056",
+    "FCSS0400008"
+   ]
+  },
+  "2596": {
+   "stok_kodu": "FCFW1000001",
+   "urun_adi": "Havlu Kumaş Hırka Kırmızı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Düğmeli",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518157",
+    "FCFW1000001"
+   ]
+  },
+  "2831": {
+   "stok_kodu": "aciklama",
+   "urun_adi": "aciklama",
+   "ozellikler": {},
+   "barkodlar": [
+    "aciklama"
+   ]
+  },
+  "2702": {
+   "stok_kodu": "FCFW1800009",
+   "urun_adi": "Carrot Fit Pantolon Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%65 Pamuk %35 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Fitted",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521232",
+    "8684483521249",
+    "8684483521256",
+    "8684483521263",
+    "FCFW1800009"
+   ]
+  },
+  "2774": {
+   "stok_kodu": "FCSS0600001",
+   "urun_adi": "Luna Fermuarlı Elbise Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%90 Pamuk %10 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Kısa/Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523977",
+    "8684483523984",
+    "8684483523991",
+    "8684483524004",
+    "FCSS0600001"
+   ]
+  },
+  "2779": {
+   "stok_kodu": "FCSS0100003",
+   "urun_adi": "Frame Çıtçıtlı Bluz Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%90 Pamuk %10 Likra",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Skinny",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523564",
+    "8684483523571",
+    "8684483523588",
+    "8684483523595",
+    "FCSS0100003"
+   ]
+  },
+  "2847": {
+   "stok_kodu": "FCSS1800013",
+   "urun_adi": "Helia Dökümlü Pantolon Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483527104",
+    "8684483527111",
+    "8684483527128",
+    "8684483527135",
+    "FCSS1800013"
+   ]
+  },
+  "2635": {
+   "stok_kodu": "FCFW1800007",
+   "urun_adi": "Suni Deri Yırtmaç Detay Pantolon Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483519475",
+    "8684483519482",
+    "8684483519499",
+    "8684483519505",
+    "FCFW1800007"
+   ]
+  },
+  "2908": {
+   "stok_kodu": "FCSS0300001",
+   "urun_adi": "Mira Balenli Dantelli Büstiyer Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 64 Polyester % 33 Viskon % 3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Straplez",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528347",
+    "8684483528354",
+    "8684483528361",
+    "8684483528378",
+    "FCSS0300001"
+   ]
+  },
+  "2877": {
+   "stok_kodu": "FCSS0600008",
+   "urun_adi": "Çizgili Poplin Elbise Sarı",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%97 Polyester %3 Viskon",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Çizgili",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483527388",
+    "8684483527395",
+    "FCSS0600008"
+   ]
+  },
+  "2673": {
+   "stok_kodu": "FCFW0600007",
+   "urun_adi": "Önden Düğmeli Triko Elbise Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520730",
+    "FCFW0600007"
+   ]
+  },
+  "2109": {
+   "stok_kodu": "2025140007",
+   "urun_adi": "Su Yeşili Çift Renkli Elbise",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "2025140007",
+    "8684483515316"
+   ]
+  },
+  "2849": {
+   "stok_kodu": "FCSS1800013",
+   "urun_adi": "Helia Dökümlü Pantolon Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483526770",
+    "8684483526787",
+    "8684483528767",
+    "8684483528774",
+    "FCSS1800013"
+   ]
+  },
+  "2685": {
+   "stok_kodu": "FCFW3200001",
+   "urun_adi": "Basic Atkı Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483520921",
+    "FCFW3200001"
+   ]
+  },
+  "2589": {
+   "stok_kodu": "FCFW1800003",
+   "urun_adi": "Yandan Bağlamalı Palazzo Pantolon Beyaz",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518379",
+    "8684483518386",
+    "8684483518393",
+    "8684483518409",
+    "8684483518683",
+    "FCFW1800003"
+   ]
+  },
+  "2743": {
+   "stok_kodu": "FCSS0100002",
+   "urun_adi": "Omuz Dekolteli Bluz Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%90 Polyester %10 Likra",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Boyundan Bağlama",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483522727",
+    "8684483522734",
+    "FCSS0100002"
+   ]
+  },
+  "2793": {
+   "stok_kodu": "FCSS2100002",
+   "urun_adi": "Core Dik Yaka Kısa Kollu T-Shirt Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524523",
+    "8684483524530",
+    "8684483524547",
+    "8684483524554",
+    "FCSS2100002"
+   ]
+  },
+  "2904": {
+   "stok_kodu": "FCSS1400001",
+   "urun_adi": "Terra Pamuklu Bağlamalı Kimono Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529061",
+    "FCSS1400001"
+   ]
+  },
+  "2873": {
+   "stok_kodu": "FCSS2000005",
+   "urun_adi": "Evrin Modal Bluz Etek Takım Lacivert",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527289",
+    "8684483527296",
+    "8684483527302",
+    "8684483527319",
+    "FCSS2000005"
+   ]
+  },
+  "1966": {
+   "stok_kodu": "8684483511547",
+   "urun_adi": "Siyah Kol Apoletli Kuşaklı Kaşe Kaban Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8684483511547",
+    "8684483511554",
+    "8684483511561"
+   ]
+  },
+  "2053": {
+   "stok_kodu": "2025140002",
+   "urun_adi": "Kahverengi Beli Lastikli Midi Etek Kahverengi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "2025140002",
+    "8684483513671",
+    "8684483513688"
+   ]
+  },
+  "2798": {
+   "stok_kodu": "FCSS1800008",
+   "urun_adi": "Pensli Straight Fit Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524479",
+    "8684483524486",
+    "8684483524493",
+    "8684483524509",
+    "8684483524516",
+    "FCSS1800008"
+   ]
+  },
+  "2893": {
+   "stok_kodu": "FCSS2000010",
+   "urun_adi": "Stella Panço Etek Takım Açık Yeşil",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Kayık",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528002",
+    "FCSS2000010"
+   ]
+  },
+  "2897": {
+   "stok_kodu": "FCSS3500001",
+   "urun_adi": "Maren Bermuda Şortolon Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%55 Pamuk %45 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528033",
+    "8684483528040",
+    "8684483528057",
+    "8684483528064",
+    "FCSS3500001"
+   ]
+  },
+  "1071": {
+   "stok_kodu": "202277111232",
+   "urun_adi": "Bej Kuşaklı Mevsimlik İnce Trençkot Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "202277111232"
+   ]
+  },
+  "2581": {
+   "stok_kodu": "FCFW0100001",
+   "urun_adi": "Yarasa Kol Kayık Yaka Bluz Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517495",
+    "8684483517501",
+    "8684483517518",
+    "8684483517747",
+    "FCFW0100001"
+   ]
+  },
+  "2578": {
+   "stok_kodu": "FCFW2000001",
+   "urun_adi": "Şardonlu Kolsuz Bluz Pantolon Takıım Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "%100 Polyester %30 Viskon",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Kapama Şekli": "Şardonlu",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517617",
+    "8684483517624",
+    "8684483517631",
+    "8684483517648",
+    "8684483517778",
+    "FCFW2000001"
+   ]
+  },
+  "1531": {
+   "stok_kodu": "8684483500985",
+   "urun_adi": "FC Gri Lastikli Yüksek Bel Palazzo Pantolon Gri",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483500978",
+    "8684483500985",
+    "8684483500992",
+    "8684483501005",
+    "8684483501012"
+   ]
+  },
+  "2584": {
+   "stok_kodu": "FCFW0400002",
+   "urun_adi": "Fermuarlı Oversize Ceket Ekru",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Dokuma",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Balıkçı Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517815",
+    "FCFW0400002"
+   ]
+  },
+  "2588": {
+   "stok_kodu": "FCFW0100002",
+   "urun_adi": "Önden Bağlamalı Fırfırlı Bluz Ekru",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517839",
+    "8684483517846",
+    "8684483517853",
+    "FCFW0100002"
+   ]
+  },
+  "2638": {
+   "stok_kodu": "FCFW1300001",
+   "urun_adi": "Kalın Triko Kazak Beyaz",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Akrilik",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Kısa",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483519673",
+    "FCFW1300001"
+   ]
+  },
+  "2574": {
+   "stok_kodu": "FCFW0400001",
+   "urun_adi": "Kemerli Süet Ceket Camel",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester",
+    "Materyal": "Süet",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Süet",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517273",
+    "8684483517280",
+    "FCFW0400001"
+   ]
+  },
+  "2657": {
+   "stok_kodu": "FCFW0600005",
+   "urun_adi": "Şal Detay Saten Mini Elbise Yağ Yeşili",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520341",
+    "8684483520358",
+    "8684483520365",
+    "8684483520372",
+    "FCFW0600005"
+   ]
+  },
+  "2727": {
+   "stok_kodu": "FCSS3300001",
+   "urun_adi": "Polo Yaka Zıbınlı Sweatshirt Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Polo Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Regular"
+   },
+   "barkodlar": [
+    "8684483522352",
+    "8684483522369",
+    "8684483522376",
+    "8684483522383",
+    "FCSS3300001"
+   ]
+  },
+  "2732": {
+   "stok_kodu": "FCSS0200004",
+   "urun_adi": "Degaje Yaka Uzun Kol Body Bordo",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%90 Polyester %10 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Degaje",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522161",
+    "8684483522178",
+    "8684483522185",
+    "8684483522192",
+    "8684483522208",
+    "FCSS0200004"
+   ]
+  },
+  "2705": {
+   "stok_kodu": "FCFW0100006",
+   "urun_adi": "Volanlı Bluz Bordo",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Volan",
+    "Kalıp": "Fitted",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483521393",
+    "8684483521409",
+    "8684483521416",
+    "8684483521423",
+    "8684483521454",
+    "FCFW0100006"
+   ]
+  },
+  "2861": {
+   "stok_kodu": "FCSS0400010",
+   "urun_adi": "Norya Fularlı Ceket Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527074",
+    "8684483528897",
+    "FCSS0400010"
+   ]
+  },
+  "2646": {
+   "stok_kodu": "FCFW2800001",
+   "urun_adi": "Düz Triko Fular Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483520082",
+    "FCFW2800001"
+   ]
+  },
+  "2914": {
+   "stok_kodu": "FCSS0600010",
+   "urun_adi": "Celeste Danteli Uzun Elbise Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Çiçekli",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Kalp Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528620",
+    "8684483528637",
+    "8684483528644",
+    "8684483528651",
+    "FCSS0600010"
+   ]
+  },
+  "2682": {
+   "stok_kodu": "FCFW3200002",
+   "urun_adi": "Saç Örgü Atkı Taş",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483520952",
+    "FCFW3200002"
+   ]
+  },
+  "2778": {
+   "stok_kodu": "FCSS0100003",
+   "urun_adi": "Frame Çıtçıtlı Bluz Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%90 Pamuk %10 Likra",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Skinny",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523892",
+    "8684483523908",
+    "8684483523915",
+    "8684483523922",
+    "FCSS0100003"
+   ]
+  },
+  "2728": {
+   "stok_kodu": "FCSS0700001",
+   "urun_adi": "Vela Kareli Midi Etek Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Desenli",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522314",
+    "8684483522321",
+    "8684483522338",
+    "8684483522345",
+    "FCSS0700001"
+   ]
+  },
+  "1535": {
+   "stok_kodu": "8684483501180",
+   "urun_adi": "FC Ekru Lastikli Yüksek Bel Palazzo Pantolon Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483501173",
+    "8684483501180",
+    "8684483501197",
+    "8684483501203",
+    "8684483501210"
+   ]
+  },
+  "2858": {
+   "stok_kodu": "FCSS0600005",
+   "urun_adi": "Nerel Kuşaklı Elbise Haki",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Salaş",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483526602",
+    "8684483528880",
+    "FCSS0600005"
+   ]
+  },
+  "2570": {
+   "stok_kodu": "FCSS0900001",
+   "urun_adi": "Yandan Bağlamalı Poplin Gömlek Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517303",
+    "8684483517310",
+    "8684483517327",
+    "FCSS0900001"
+   ]
+  },
+  "2623": {
+   "stok_kodu": "FCFW0900002",
+   "urun_adi": "Oversize Poplin Gömlek Beyaz",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483519277",
+    "FCFW0900002"
+   ]
+  },
+  "1967": {
+   "stok_kodu": "1967",
+   "urun_adi": "Kol Apoletli Rüzgarlıklı Oversize Trençkot Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "1967",
+    "8684483511578",
+    "8684483511769"
+   ]
+  },
+  "1072": {
+   "stok_kodu": "2022114453",
+   "urun_adi": "Haki Kuşaklı Mevsimlik İnce Trençkot Haki",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "2022114453"
+   ]
+  },
+  "2612": {
+   "stok_kodu": "FCFW0700002",
+   "urun_adi": "Çizgili Mini Etek Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518973",
+    "8684483518980",
+    "8684483518997",
+    "8684483519000",
+    "FCFW0700002"
+   ]
+  },
+  "2741": {
+   "stok_kodu": "FCSS0200004",
+   "urun_adi": "Degaje Yaka Uzun Kol Body Mavi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%90 Polyester %10 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Degaje",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522635",
+    "8684483522642",
+    "8684483522659",
+    "8684483522666",
+    "8684483522673",
+    "FCSS0200004"
+   ]
+  },
+  "2814": {
+   "stok_kodu": "FCSS0600002",
+   "urun_adi": "Alen Askılı Midi Elbise Siyah",
+   "ozellikler": {
+    "Cep": "Cepsiz",
+    "Kumaş Tipi": "Dokuma",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Kare Yaka",
+    "Kalıp": "Slim Fit",
+    "Boy": "Midi",
+    "Kol Boyu": "Kolsuz",
+    "Web Color": "Siyah",
+    "Materyal": "Polyester",
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529191",
+    "8684483529207",
+    "8684483529214",
+    "8684483529221",
+    "FCSS0600002"
+   ]
+  },
+  "2796": {
+   "stok_kodu": "FCSS1800008",
+   "urun_adi": "Pensli Straight Fit Pantolon Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524776",
+    "8684483524783",
+    "8684483524790",
+    "8684483524806",
+    "8684483524813",
+    "FCSS1800008"
+   ]
+  },
+  "2569": {
+   "stok_kodu": "FCSS0900001",
+   "urun_adi": "Yandan Bağlamalı Poplin Gömlek Sarı",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517358",
+    "8684483517365",
+    "8684483517372",
+    "FCSS0900001"
+   ]
+  },
+  "2719": {
+   "stok_kodu": "FCSS0200001",
+   "urun_adi": "Dik Yaka Basic Body Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Orta"
+   },
+   "barkodlar": [
+    "8684483521638",
+    "8684483521645",
+    "8684483521652",
+    "8684483521669",
+    "8684483521676",
+    "FCSS0200001"
+   ]
+  },
+  "2781": {
+   "stok_kodu": "FCSS1800006",
+   "urun_adi": "Sculpt Balon Pensli Pantolon Vizon",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Kanca",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Balon",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524097",
+    "8684483524103",
+    "8684483524110",
+    "8684483524127",
+    "FCSS1800006"
+   ]
+  },
+  "2566": {
+   "stok_kodu": "FCSS1800001",
+   "urun_adi": "Yüksek Bel Kapri Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Tek Ebat",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483517235",
+    "8684483517242",
+    "8684483517259",
+    "8684483517266",
+    "8684483517440",
+    "FCSS1800001"
+   ]
+  },
+  "2912": {
+   "stok_kodu": "FCSS3600001",
+   "urun_adi": "Daisy Dantel Bandana Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Çiçekli",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483528514",
+    "FCSS3600001"
+   ]
+  },
+  "2764": {
+   "stok_kodu": "FCSS0700002",
+   "urun_adi": "Nira Şortlu Mini Etek Açık Gri",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523472",
+    "8684483523489",
+    "8684483523496",
+    "8684483523502",
+    "FCSS0700002"
+   ]
+  },
+  "2577": {
+   "stok_kodu": "FCFW2000001",
+   "urun_adi": "Şardonlu Kolsuz Bluz Pantolon Takıım Antrasit",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "%100 Polyester %30 Viskon",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Kapama Şekli": "Şardonlu",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517655",
+    "8684483517662",
+    "8684483517679",
+    "8684483517686",
+    "8684483517785",
+    "FCFW2000001"
+   ]
+  },
+  "2791": {
+   "stok_kodu": "FCSS2100002",
+   "urun_adi": "Core Dik Yaka Kısa Kollu T-Shirt Sarı",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524691",
+    "8684483524707",
+    "8684483524714",
+    "8684483524721",
+    "FCSS2100002"
+   ]
+  },
+  "1505": {
+   "stok_kodu": "8684483500114",
+   "urun_adi": "Lacivert Yüksek Bel Carrot Pantolon Lacivert",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483500114",
+    "8684483500121",
+    "8684483500138",
+    "8684483500145",
+    "8684483509582"
+   ]
+  },
+  "2644": {
+   "stok_kodu": "FCFW2900001",
+   "urun_adi": "Yumuşak Trico Balaclava Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483519703",
+    "FCFW2900001"
+   ]
+  },
+  "2052": {
+   "stok_kodu": "2025140002",
+   "urun_adi": "Ekru Beli Lastikli Midi Etek Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "2025140002",
+    "8684483513657",
+    "8684483513664"
+   ]
+  },
+  "2978": {
+   "stok_kodu": "FCSS2000011",
+   "urun_adi": "Müslin Madonna Yaka Bluz Pantolon Takım Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Madonna",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529573",
+    "8684483529580",
+    "FCSS2000011"
+   ]
+  },
+  "2598": {
+   "stok_kodu": "FCFW1000001",
+   "urun_adi": "Havlu Kumaş Hırka Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Düğmeli",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518133",
+    "FCFW1000001"
+   ]
+  },
+  "2788": {
+   "stok_kodu": "FCSS0200005",
+   "urun_adi": "Slim Fit Askılı Bodysuit Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 95 Polyester % 5 Likra",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524172",
+    "8684483524189",
+    "8684483524196",
+    "8684483524202",
+    "FCSS0200005"
+   ]
+  },
+  "2765": {
+   "stok_kodu": "FCSS0700002",
+   "urun_adi": "Nira Şortlu Mini Etek Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523298",
+    "8684483523304",
+    "8684483523311",
+    "8684483523328",
+    "FCSS0700002"
+   ]
+  },
+  "2887": {
+   "stok_kodu": "FCSS2000006",
+   "urun_adi": "Lace Crop Pantolon Takım Sarı",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Yakasız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Crop",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483527609",
+    "8684483527616",
+    "8684483527623",
+    "8684483527630",
+    "FCSS2000006"
+   ]
+  },
+  "2714": {
+   "stok_kodu": "FCFW0900004",
+   "urun_adi": "Clair Ekose Gömlek Mavi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Ekose",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Hakim",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521522",
+    "8684483521539",
+    "8684483521546",
+    "FCFW0900004"
+   ]
+  },
+  "2567": {
+   "stok_kodu": "FCSS0900001",
+   "urun_adi": "Yandan Bağlamalı Poplin Gömlek Açık Pembe",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517419",
+    "8684483517426",
+    "8684483517433",
+    "FCSS0900001"
+   ]
+  },
+  "2658": {
+   "stok_kodu": "FCFW0600005",
+   "urun_adi": "Şal Detay Saten Mini Elbise Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520167",
+    "8684483520174",
+    "8684483520181",
+    "8684483520198",
+    "FCFW0600005"
+   ]
+  },
+  "1507": {
+   "stok_kodu": "8684483500190",
+   "urun_adi": "Lacivert Pile Detay Çıtçıtlı Ceket Lacivert",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483500183",
+    "8684483500190",
+    "8684483500206",
+    "8684483500213"
+   ]
+  },
+  "2592": {
+   "stok_kodu": "FCFW1800003",
+   "urun_adi": "Yandan Bağlamalı Palazzo Pantolon Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518249",
+    "8684483518256",
+    "8684483518263",
+    "8684483518270",
+    "8684483518614",
+    "FCFW1800003"
+   ]
+  },
+  "2653": {
+   "stok_kodu": "FCFW1000003",
+   "urun_adi": "Çizgili Şal Detay Oversize Hırka Mavi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520099",
+    "FCFW1000003"
+   ]
+  },
+  "2855": {
+   "stok_kodu": "FCSS0600007",
+   "urun_adi": "Velin Bağlamalı Midi Elbise Yeşil",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483526732",
+    "FCSS0600007"
+   ]
+  },
+  "1222": {
+   "stok_kodu": "8683851513336",
+   "urun_adi": "Kahverengi Düğmeli Blazer Ceket Kahverengi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8683851513305",
+    "8683851513312",
+    "8683851513329",
+    "8683851513336"
+   ]
+  },
+  "2892": {
+   "stok_kodu": "FCSS0600009",
+   "urun_adi": "Muse Straplez Elbise Siyah",
+   "ozellikler": {
+    "Cep": "Cepsiz",
+    "Kumaş Tipi": "Dokuma",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Straplez",
+    "Kalıp": "Dar Kalıp",
+    "Boy": "Midi",
+    "Kol Boyu": "Kolsuz",
+    "Web Color": "Siyah",
+    "Materyal": "Polyester",
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "%97 Polyester %3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Pötikare",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529375",
+    "8684483529382",
+    "8684483529399",
+    "8684483529405",
+    "FCSS0600009"
+   ]
+  },
+  "2906": {
+   "stok_kodu": "FCSS0700007",
+   "urun_adi": "Mira Dantelli Mini Etek Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 64 Polyester % 33 Viskon % 3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528385",
+    "8684483528392",
+    "8684483528408",
+    "8684483528415",
+    "FCSS0700007"
+   ]
+  },
+  "2977": {
+   "stok_kodu": "FCSS2000012",
+   "urun_adi": "Azura Biyeli Kimono Şort Takım Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529597",
+    "FCSS2000012"
+   ]
+  },
+  "2770": {
+   "stok_kodu": "FCSS1800005",
+   "urun_adi": "Sienna Pileli Pantolon Vizon",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523786",
+    "8684483523793",
+    "8684483523809",
+    "8684483523816",
+    "8684483523823",
+    "FCSS1800005"
+   ]
+  },
+  "2836": {
+   "stok_kodu": "FCSS0600003",
+   "urun_adi": "Rina Ekose Volanlı Elbise Kahverengi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "% 90 Pamuk % 10 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Ekose",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525896",
+    "8684483525902",
+    "8684483525919",
+    "FCSS0600003"
+   ]
+  },
+  "2891": {
+   "stok_kodu": "FCSS0600009",
+   "urun_adi": "Muse Straplez Elbise Açık Mavi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%97 Polyester %3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Pötikare",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Straplez",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527883",
+    "8684483527890",
+    "8684483527906",
+    "8684483527913",
+    "FCSS0600009"
+   ]
+  },
+  "2706": {
+   "stok_kodu": "FCFW0100006",
+   "urun_adi": "Volanlı Bluz Ekru",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Volan",
+    "Kalıp": "Fitted",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483521355",
+    "8684483521362",
+    "8684483521379",
+    "8684483521386",
+    "8684483521447",
+    "FCFW0100006"
+   ]
+  },
+  "2755": {
+   "stok_kodu": "FCSS2100001",
+   "urun_adi": "Uzun Kol Basic Tişört Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%95 Pamuk %5 Likra",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483523113",
+    "8684483523120",
+    "8684483523137",
+    "FCSS2100001"
+   ]
+  },
+  "2747": {
+   "stok_kodu": "FCSS0900003",
+   "urun_adi": "Fularlı Belden Oturtma Gömlek Bordo",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%97 Pamuk %3 Elasthan",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483522802",
+    "8684483522819",
+    "8684483522826",
+    "8684483525889",
+    "FCSS0900003"
+   ]
+  },
+  "2606": {
+   "stok_kodu": "FCFW0100003",
+   "urun_adi": "Şal Detaylı Bluz Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Tokalı",
+    "Desen": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük"
+   },
+   "barkodlar": [
+    "8684483517891",
+    "8684483517907",
+    "8684483517914",
+    "8684483517921",
+    "8684483517938",
+    "FCFW0100003"
+   ]
+  },
+  "2864": {
+   "stok_kodu": "FCFW2300001",
+   "urun_adi": "Aluna Volanlı Tulum Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Polyester %30 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483526350",
+    "8684483526367",
+    "FCFW2300001"
+   ]
+  },
+  "2813": {
+   "stok_kodu": "FCSS0600002",
+   "urun_adi": "Alen Askılı Midi Elbise Bordo",
+   "ozellikler": {
+    "Cep": "Cepsiz",
+    "Kumaş Tipi": "Dokuma",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Kare Yaka",
+    "Kalıp": "Slim Fit",
+    "Boy": "Midi",
+    "Kol Boyu": "Kolsuz",
+    "Web Color": "Bordo",
+    "Materyal": "Polyester",
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Desen": "Düz",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525162",
+    "8684483525179",
+    "8684483525186",
+    "8684483525193",
+    "FCSS0600002"
+   ]
+  },
+  "2785": {
+   "stok_kodu": "FCSS0700003",
+   "urun_adi": "Suni Deri Midi Etek Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524059",
+    "8684483524066",
+    "8684483524073",
+    "8684483524080",
+    "FCSS0700003"
+   ]
+  },
+  "2792": {
+   "stok_kodu": "FCSS2100002",
+   "urun_adi": "Core Dik Yaka Kısa Kollu T-Shirt Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524608",
+    "8684483524615",
+    "8684483524622",
+    "8684483524639",
+    "FCSS2100002"
+   ]
+  },
+  "2818": {
+   "stok_kodu": "FCSS2000001",
+   "urun_adi": "Motion Paraşüt Ceket Şort Takım Kırmızı",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525391",
+    "8684483525407",
+    "8684483525414",
+    "FCSS2000001"
+   ]
+  },
+  "2840": {
+   "stok_kodu": "FCSS2000002",
+   "urun_adi": "Velora Dantelli Saten Takım Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%97 Polyester %3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Straplez",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483526084",
+    "8684483526091",
+    "8684483526107",
+    "8684483526114",
+    "FCSS2000002"
+   ]
+  },
+  "2674": {
+   "stok_kodu": "FCFW0600007",
+   "urun_adi": "Önden Düğmeli Triko Elbise Vizon",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520594",
+    "FCFW0600007"
+   ]
+  },
+  "2780": {
+   "stok_kodu": "FCSS1800006",
+   "urun_adi": "Sculpt Balon Pensli Pantolon Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Kanca",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Balon",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524134",
+    "8684483524141",
+    "8684483524158",
+    "8684483524165",
+    "FCSS1800006"
+   ]
+  },
+  "2662": {
+   "stok_kodu": "FCFW0600006",
+   "urun_adi": "Önü biye Detay Mini Elbise Gri",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Midi",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520259",
+    "8684483520266",
+    "8684483520273",
+    "8684483520280",
+    "FCFW0600006"
+   ]
+  },
+  "2618": {
+   "stok_kodu": "FCFW0400004",
+   "urun_adi": "Fitted Kesim Denim Ceket Mavi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483519130",
+    "8684483519147",
+    "8684483519154",
+    "8684483519161",
+    "8684483520037",
+    "FCFW0400004"
+   ]
+  },
+  "2605": {
+   "stok_kodu": "FCFW0100003",
+   "urun_adi": "Şal Detaylı Bluz Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Tokalı",
+    "Desen": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük"
+   },
+   "barkodlar": [
+    "8684483517945",
+    "8684483517952",
+    "8684483517969",
+    "8684483517976",
+    "8684483517983",
+    "FCFW0100003"
+   ]
+  },
+  "2833": {
+   "stok_kodu": "FCFW1300004",
+   "urun_adi": "Basic Kısa Kol Triko Kazak Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "%60 Viskon %40 Polyamid",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525841",
+    "8684483525858",
+    "FCFW1300004"
+   ]
+  },
+  "1510": {
+   "stok_kodu": "8684483500343",
+   "urun_adi": "Bej Pile Detay Çıtçıtlı Ceket Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483500336",
+    "8684483500343",
+    "8684483500350",
+    "8684483500367"
+   ]
+  },
+  "2637": {
+   "stok_kodu": "FCFW1300001",
+   "urun_adi": "Kalın Triko Kazak Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Akrilik",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Kısa",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483519680",
+    "FCFW1300001"
+   ]
+  },
+  "2630": {
+   "stok_kodu": "FCFW0400005",
+   "urun_adi": "Suni Deri Bomber Ceket Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483519437",
+    "8684483519444",
+    "8684483519451",
+    "8684483519468",
+    "FCFW0400005"
+   ]
+  },
+  "2790": {
+   "stok_kodu": "FCSS2100002",
+   "urun_adi": "Core Dik Yaka Kısa Kollu T-Shirt Kırmızı",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524820",
+    "8684483524837",
+    "8684483524844",
+    "8684483524851",
+    "FCSS2100002"
+   ]
+  },
+  "2983": {
+   "stok_kodu": "FCSS0600012",
+   "urun_adi": "Maris Mini Triko Elbise Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Triko",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "%30 Viskon %30 Akrilik %30 Polyester %10 Naylon",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Merserize",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529603",
+    "8684483529610",
+    "FCSS0600012"
+   ]
+  },
+  "2898": {
+   "stok_kodu": "FCSS0900010",
+   "urun_adi": "Nerina Oversize Gömlek Antrasit",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Modal",
+    "Materyal": "Modal",
+    "Ürün İçerik Bilgisi": "%85 Modal %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483528231",
+    "FCSS0900010"
+   ]
+  },
+  "2627": {
+   "stok_kodu": "FCFW0900003",
+   "urun_adi": "Çizgili Oversize Gömlek Lacivert",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Uzun",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483519376",
+    "FCFW0900003"
+   ]
+  },
+  "2568": {
+   "stok_kodu": "FCSS0900001",
+   "urun_adi": "Yandan Bağlamalı Poplin Gömlek Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517389",
+    "8684483517396",
+    "8684483517402",
+    "FCSS0900001"
+   ]
+  },
+  "2838": {
+   "stok_kodu": "FCSS0600004",
+   "urun_adi": "Liora Midi Keten Elbise Lacivert",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Keten",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%40 Pamuk %40 Viskon %20 Keten",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Kayık",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Midi",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483526176",
+    "8684483526183",
+    "8684483528668",
+    "8684483528675",
+    "FCSS0600004"
+   ]
+  },
+  "2666": {
+   "stok_kodu": "FCFW1200001",
+   "urun_adi": "Linea Apoletli Uzun Kaşe Kaban Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520242",
+    "FCFW1200001"
+   ]
+  },
+  "2802": {
+   "stok_kodu": "FCSS1800010",
+   "urun_adi": "Suni Deri High Waist Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Suni Deri",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525926",
+    "8684483525933",
+    "8684483525940",
+    "8684483525957",
+    "FCSS1800010"
+   ]
+  },
+  "2667": {
+   "stok_kodu": "FCFW5500001",
+   "urun_adi": "Polo Yaka Süveter Beyaz",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520600",
+    "8684483520617",
+    "FCFW5500001"
+   ]
+  },
+  "2678": {
+   "stok_kodu": "FCFW1300003",
+   "urun_adi": "Arkadan Düğmeli Kazak Mint",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483520822",
+    "FCFW1300003"
+   ]
+  },
+  "2692": {
+   "stok_kodu": "FCFW0400008",
+   "urun_adi": "Kadife Yaka Bomber Süet Ceket Haki",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%55 Pamuk %45 Polyester",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Kontrast Yaka",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483520976",
+    "8684483520983",
+    "FCFW0400008"
+   ]
+  },
+  "2709": {
+   "stok_kodu": "FCFW2800002",
+   "urun_adi": "Ekose Fular Kahverengi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Desen": "Ekose",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483521478",
+    "FCFW2800002"
+   ]
+  },
+  "2880": {
+   "stok_kodu": "FCSS3400001",
+   "urun_adi": "Lace Midi Pelerin Sarı",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Askılı",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Yakasız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483527647",
+    "8684483527654",
+    "8684483527661",
+    "8684483527678",
+    "FCSS3400001"
+   ]
+  },
+  "2874": {
+   "stok_kodu": "FCSS0900009",
+   "urun_adi": "Taven Çizgili Gömlek Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Çizgili",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483528965",
+    "8684483528972",
+    "FCSS0900009"
+   ]
+  },
+  "2585": {
+   "stok_kodu": "FCFW0400002",
+   "urun_adi": "Fermuarlı Oversize Ceket Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Dokuma",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Balıkçı Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517808",
+    "FCFW0400002"
+   ]
+  },
+  "2839": {
+   "stok_kodu": "FCSS2000002",
+   "urun_adi": "Velora Dantelli Saten Takım Haki",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%97 Polyester %3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Straplez",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483526121",
+    "8684483526138",
+    "8684483526145",
+    "8684483526152",
+    "FCSS2000002"
+   ]
+  },
+  "2571": {
+   "stok_kodu": "FCFW0900001",
+   "urun_adi": "Kolu Volanlı Gömlek Sarı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester %30 Viskon",
+    "Materyal": "Polyester",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517341",
+    "FCFW0900001"
+   ]
+  },
+  "2882": {
+   "stok_kodu": "FCSS2700004",
+   "urun_adi": "Mini Bermuda Şort Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Mini",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483527722",
+    "8684483527739",
+    "8684483527746",
+    "8684483527753",
+    "FCSS2700004"
+   ]
+  },
+  "2694": {
+   "stok_kodu": "FCFW1200003",
+   "urun_adi": "Mirelle Dik Yaka Kaşe Kaban Açık Mavi",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 95 Polyester  % 5 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483521041",
+    "FCFW1200003"
+   ]
+  },
+  "2911": {
+   "stok_kodu": "FCSS3600002",
+   "urun_adi": "Flora Dantel Bandana Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 100 Polyester",
+    "Kapama Şekli": "Bağlamalı",
+    "Desen": "Çiçekli",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483528521",
+    "FCSS3600002"
+   ]
+  },
+  "2594": {
+   "stok_kodu": "FCFW1800002",
+   "urun_adi": "Havlu Kumaş Pantolon Pembe",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Dokuma",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483518454",
+    "8684483518461",
+    "8684483518478",
+    "8684483518485",
+    "FCFW1800002"
+   ]
+  },
+  "2815": {
+   "stok_kodu": "FCSS0400008",
+   "urun_adi": "Rufe Kruvaze Oversize Blazer Açık Gri",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Ceket Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525247",
+    "8684483525254",
+    "FCSS0400008"
+   ]
+  },
+  "2808": {
+   "stok_kodu": "FCSS1800011",
+   "urun_adi": "Rufe Dökümlü Palazzo Pantolon Vizon",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525063",
+    "8684483525070",
+    "8684483525087",
+    "8684483525094",
+    "FCSS1800011"
+   ]
+  },
+  "2753": {
+   "stok_kodu": "FCSS2700001",
+   "urun_adi": "Lumen Kısa Ekose Şort Kahverengi",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "%92 Polyester %5 Likra %3 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Ekose",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523168",
+    "8684483523175",
+    "8684483523182",
+    "8684483523199",
+    "FCSS2700001"
+   ]
+  },
+  "2896": {
+   "stok_kodu": "FCSS3500001",
+   "urun_adi": "Maren Bermuda Şortolon Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%55 Pamuk %45 Viskon",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483528101",
+    "8684483528118",
+    "8684483528125",
+    "8684483528132",
+    "FCSS3500001"
+   ]
+  },
+  "2771": {
+   "stok_kodu": "FCSS1800005",
+   "urun_adi": "Sienna Pileli Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "%65 Polyester %30 Viskon %5 Likra",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483523687",
+    "8684483523694",
+    "8684483523700",
+    "8684483523717",
+    "8684483523724",
+    "FCSS1800005"
+   ]
+  },
+  "2640": {
+   "stok_kodu": "FCFW3100001",
+   "urun_adi": "Asimetrik Kesim Triko Panço Bordo",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483519734",
+    "FCFW3100001"
+   ]
+  },
+  "2975": {
+   "stok_kodu": "FCSS0600011",
+   "urun_adi": "Aveline Dantelli Saten Elbise Haki",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Askılı",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%97 Polyester %3 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529153",
+    "8684483529160",
+    "8684483529177",
+    "8684483529184",
+    "FCSS0600011"
+   ]
+  },
+  "2810": {
+   "stok_kodu": "FCSS0900007",
+   "urun_adi": "Rive Vatkalı Gömlek Bordo",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "% 90 Viskon % 10 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525209",
+    "8684483525216",
+    "FCSS0900007"
+   ]
+  },
+  "1758": {
+   "stok_kodu": "8684483506727",
+   "urun_adi": "3'lü Soft Touch Uzun Konç Çorap Çok Renkli",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER"
+   },
+   "barkodlar": [
+    "8684483506710",
+    "8684483506727"
+   ]
+  },
+  "2827": {
+   "stok_kodu": "FCSS2500001",
+   "urun_adi": "Era Baget Çanta Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Poliüretan",
+    "Ürün İçerik Bilgisi": "% 100 Poliüretan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Astar Durumu": "Astarlı",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483525520",
+    "FCSS2500001"
+   ]
+  },
+  "2573": {
+   "stok_kodu": "FCFW0900001",
+   "urun_adi": "Kolu Volanlı Gömlek Beyaz",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "%100 Polyester %30 Viskon",
+    "Materyal": "Polyester",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517297",
+    "FCFW0900001"
+   ]
+  },
+  "2885": {
+   "stok_kodu": "FCSS2000007",
+   "urun_adi": "Olisa Büstiyer Pantolon Takım Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Yakasız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483527685",
+    "8684483527692",
+    "8684483527708",
+    "8684483527715",
+    "FCSS2000007"
+   ]
+  },
+  "2846": {
+   "stok_kodu": "FCSS2000004",
+   "urun_adi": "Delya Gömlek Şort Takım Haki",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Tam",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483529412",
+    "8684483529429",
+    "8684483529436",
+    "8684483529443",
+    "FCSS2000004"
+   ]
+  },
+  "2716": {
+   "stok_kodu": "FCSS0200001",
+   "urun_adi": "Dik Yaka Basic Body Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Orta"
+   },
+   "barkodlar": [
+    "8684483521782",
+    "8684483521799",
+    "8684483521805",
+    "8684483521812",
+    "8684483521829",
+    "FCSS0200001"
+   ]
+  },
+  "2726": {
+   "stok_kodu": "FCSS3300001",
+   "urun_adi": "Polo Yaka Zıbınlı Sweatshirt Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "Yetişkin",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Polo Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Regular"
+   },
+   "barkodlar": [
+    "8684483522390",
+    "8684483522406",
+    "8684483522413",
+    "8684483522420",
+    "FCSS3300001"
+   ]
+  },
+  "2830": {
+   "stok_kodu": "FCSS1100001",
+   "urun_adi": "Tina Straight Fit Jean Ekru",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525605",
+    "8684483525612",
+    "8684483525629",
+    "8684483525636",
+    "8684483525643",
+    "8684483525971",
+    "FCSS1100001"
+   ]
+  },
+  "2625": {
+   "stok_kodu": "FCFW0900002",
+   "urun_adi": "Oversize Poplin Gömlek Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483519239",
+    "FCFW0900002"
+   ]
+  },
+  "2580": {
+   "stok_kodu": "FCFW0100001",
+   "urun_adi": "Yarasa Kol Kayık Yaka Bluz Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517570",
+    "8684483517587",
+    "8684483517594",
+    "8684483517761",
+    "FCFW0100001"
+   ]
+  },
+  "1825": {
+   "stok_kodu": "8684483508226",
+   "urun_adi": "Acı Kahve Süet Düğmeli Ceket Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483508226",
+    "8684483508233",
+    "8684483508240"
+   ]
+  },
+  "2735": {
+   "stok_kodu": "FCSS0200003",
+   "urun_adi": "Pamuklu Transparan Kayık Yaka Body Acı Kahve",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%50 Pamuk %50 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Kayık",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483522031",
+    "8684483522048",
+    "8684483522055",
+    "FCSS0200003"
+   ]
+  },
+  "2801": {
+   "stok_kodu": "FCSS1800007",
+   "urun_adi": "Pileli Balon Kesim Pantolon Siyah",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Baggy",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Uzun",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483526039",
+    "8684483526046",
+    "8684483526053",
+    "8684483526060",
+    "FCSS1800007"
+   ]
+  },
+  "2811": {
+   "stok_kodu": "FCSS0900007",
+   "urun_adi": "Rive Vatkalı Gömlek Beyaz",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "% 90 Viskon % 10 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525100",
+    "8684483525117",
+    "FCSS0900007"
+   ]
+  },
+  "2586": {
+   "stok_kodu": "FCFW0600001",
+   "urun_adi": "Kolsuz Dar Kesim Maxi Elbise Gri",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "Kolsuz",
+    "Materyal": "Elasthan",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Kapama Şekli": "Fermuarlı",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517990",
+    "8684483518003",
+    "8684483518010",
+    "8684483518027",
+    "8684483518324",
+    "FCFW0600001"
+   ]
+  },
+  "2626": {
+   "stok_kodu": "FCFW0600003",
+   "urun_adi": "Kolsuz Piliseli Elbise Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "Kolsuz",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%90 Polyester %10 Elasthan",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Rahat Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Bel": "Normal Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483519352",
+    "8684483519369",
+    "FCFW0600003"
+   ]
+  },
+  "2579": {
+   "stok_kodu": "FCFW0100001",
+   "urun_adi": "Yarasa Kol Kayık Yaka Bluz Lacivert",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483517532",
+    "8684483517549",
+    "8684483517556",
+    "8684483517754",
+    "FCFW0100001"
+   ]
+  },
+  "2704": {
+   "stok_kodu": "FCFW0400009",
+   "urun_adi": "Yakasız Belden Oturtmalı Ceket Acı Kahve",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%65 Pamuk %35 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarlı",
+    "Yaka Tipi": "Yakasız",
+    "Kalıp": "Fitted",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483521195",
+    "8684483521201",
+    "8684483521218",
+    "8684483521225",
+    "FCFW0400009"
+   ]
+  },
+  "2723": {
+   "stok_kodu": "FCSS3300002",
+   "urun_adi": "Dik Yaka Zıbınlı Sweatshirt Vizon",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%65 Pamuk %35 Polyester",
+    "Kapama Şekli": "Çıtçıtlı",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Regular",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522512",
+    "8684483522529",
+    "8684483522536",
+    "8684483522543",
+    "FCSS3300002"
+   ]
+  },
+  "2768": {
+   "stok_kodu": "FCSS3300003",
+   "urun_adi": "Pulse Crop Sweatshirt Antrasit",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "%70 Pamuk %30 Polyester",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "V Yaka",
+    "Kalıp": "Bol Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Kısa/Mini",
+    "Kalınlık": "Kalın"
+   },
+   "barkodlar": [
+    "8684483523847",
+    "8684483523854",
+    "8684483523861",
+    "8684483523878",
+    "8684483523885",
+    "FCSS3300003"
+   ]
+  },
+  "2823": {
+   "stok_kodu": "FCSS0600003",
+   "urun_adi": "Rina Ekose Volanlı Elbise Yeşil",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "KISA",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Pamuklu",
+    "Ürün İçerik Bilgisi": "% 90 Pamuk % 10 Likra",
+    "Kapama Şekli": "Fermuarlı",
+    "Desen": "Ekose",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Bisiklet",
+    "Kalıp": "Dar Kalıp",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "KADIN",
+    "Boy": "Mini",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483525490",
+    "8684483525506",
+    "8684483525513",
+    "FCSS0600003"
+   ]
+  },
+  "2675": {
+   "stok_kodu": "FCFW0400006",
+   "urun_adi": "Limited Edition Kuşaklı Ceket Ekru",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Regular",
+    "Bel": "Normal Bel"
+   },
+   "barkodlar": [
+    "8684483520631",
+    "8684483520648",
+    "8684483520655",
+    "8684483520662",
+    "8684483520679",
+    "FCFW0400006"
+   ]
+  },
+  "2782": {
+   "stok_kodu": "FCSS1800006",
+   "urun_adi": "Sculpt Balon Pensli Pantolon Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester Karışımı",
+    "Ürün İçerik Bilgisi": "% 63 Polyester % 32 Viskon % 5 Elasthan",
+    "Kapama Şekli": "Kanca",
+    "Desen": "Düz",
+    "Cep": "Cepli",
+    "Astar Durumu": "Astarsız",
+    "Kalıp": "Balon",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Bel": "Yüksek Bel",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483524011",
+    "8684483524028",
+    "8684483524035",
+    "8684483524042",
+    "FCSS1800006"
+   ]
+  },
+  "2645": {
+   "stok_kodu": "FCFW2800001",
+   "urun_adi": "Düz Triko Fular Kırmızı",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN",
+    "Boy": "Normal Boy",
+    "Bel": "Standart"
+   },
+   "barkodlar": [
+    "8684483519741",
+    "FCFW2800001"
+   ]
+  },
+  "2715": {
+   "stok_kodu": "FCSS0200001",
+   "urun_adi": "Dik Yaka Basic Body Off White",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Orta"
+   },
+   "barkodlar": [
+    "8684483521836",
+    "8684483521843",
+    "8684483521850",
+    "8684483521867",
+    "8684483521874",
+    "FCSS0200001"
+   ]
+  },
+  "2718": {
+   "stok_kodu": "FCSS0200001",
+   "urun_adi": "Dik Yaka Basic Body Lacivert",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Örme",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Dik Yaka",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN",
+    "Boy": "Orta"
+   },
+   "barkodlar": [
+    "8684483521683",
+    "8684483521690",
+    "8684483521706",
+    "8684483521713",
+    "8684483521720",
+    "FCSS0200001"
+   ]
+  },
+  "2624": {
+   "stok_kodu": "FCFW0900002",
+   "urun_adi": "Oversize Poplin Gömlek Haki",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Kol Boyu": "UZUN",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483519253",
+    "FCFW0900002"
+   ]
+  },
+  "1314": {
+   "stok_kodu": "8683851515798",
+   "urun_adi": "Siyah Düğmeli Blazer Ceket Siyah",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER"
+   },
+   "barkodlar": [
+    "8683851515767",
+    "8683851515774",
+    "8683851515781",
+    "8683851515798",
+    "86838515157980"
+   ]
+  },
+  "2601": {
+   "stok_kodu": "FCFW0700001",
+   "urun_adi": "Havlu Kumaş Etek Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Materyal": "Viskon",
+    "Ürün İçerik Bilgisi": "Genç",
+    "Desen": "Dokuma",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Koleksiyon": "Türkiye",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483518164",
+    "8684483518171",
+    "8684483518188",
+    "8684483518195",
+    "FCFW0700001"
+   ]
+  },
+  "2734": {
+   "stok_kodu": "FCSS0200004",
+   "urun_adi": "Degaje Yaka Uzun Kol Body Bej",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "UZUN",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Polyester",
+    "Ürün İçerik Bilgisi": "%90 Polyester %10 Likra",
+    "Kapama Şekli": "Kapamasız",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Degaje",
+    "Kalıp": "Slim Fit",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Normal Boy",
+    "Kalınlık": "Orta"
+   },
+   "barkodlar": [
+    "8684483522062",
+    "8684483522079",
+    "8684483522086",
+    "8684483522093",
+    "8684483522109",
+    "FCSS0200004"
+   ]
+  },
+  "2875": {
+   "stok_kodu": "FCSS0900009",
+   "urun_adi": "Taven Çizgili Gömlek Mavi",
+   "ozellikler": {
+    "Cep": "Cepsiz",
+    "Kumaş Tipi": "Dokuma",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Gömlek Yaka",
+    "Kalıp": "Oversize",
+    "Boy": "Regular",
+    "Kol Boyu": "UZUN",
+    "Web Color": "Mavi",
+    "Materyal": "Pamuklu",
+    "Sezon": "SPRİNG-SUMMER",
+    "Ürün İçerik Bilgisi": "%100 Pamuk",
+    "Kapama Şekli": "Düğmeli",
+    "Desen": "Çizgili",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483529276",
+    "8684483529283",
+    "FCSS0900009"
+   ]
+  },
+  "2677": {
+   "stok_kodu": "FCFW1300003",
+   "urun_adi": "Arkadan Düğmeli Kazak Bej",
+   "ozellikler": {
+    "Sezon": "FALL-WİNTER",
+    "Ortam": "KADIN"
+   },
+   "barkodlar": [
+    "8684483520815",
+    "FCFW1300003"
+   ]
+  },
+  "2881": {
+   "stok_kodu": "FCSS3400001",
+   "urun_adi": "Lace Midi Pelerin Haki",
+   "ozellikler": {
+    "Sezon": "SPRİNG-SUMMER",
+    "Kol Boyu": "Askılı",
+    "Kumaş Tipi": "Dokuma",
+    "Materyal": "Tencel",
+    "Ürün İçerik Bilgisi": "%85 Tencel %15 Polyester",
+    "Desen": "Düz",
+    "Cep": "Cepsiz",
+    "Astar Durumu": "Astarsız",
+    "Yaka Tipi": "Yakasız",
+    "Kalıp": "Regular",
+    "Koleksiyon": "Casual / Günlük",
+    "Ortam": "Casual/Günlük",
+    "Boy": "Midi",
+    "Kalınlık": "İnce"
+   },
+   "barkodlar": [
+    "8684483527487",
+    "8684483527494",
+    "8684483527500",
+    "8684483527517",
+    "FCSS3400001"
+   ]
+  }
+ }
+}

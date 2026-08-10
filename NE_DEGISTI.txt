@@ -1,0 +1,27 @@
+HEPSİBURADA DEĞER-EŞLEŞTİRME EKRANI DÜZELTMESİ
+================================================
+
+SORUN:
+  Kategori Eşleştirme > "Değer Eşleştir" ekranı Hepsiburada için açılmıyordu
+  (boş kalıyor / "Değerler yüklenemedi"). Sebep: ekran her açılışta
+  /category-mapping/hepsiburada/{cat}/attributes?refresh=1 çağırıyor; bu da
+  HB'nin TÜM değerlerini (Renk ~1999, Beden ~414 ...) sayfa sayfa canlı çekiyor
+  → ~56 saniye → tarayıcı HTTP timeout → ekran boş. Bu yüzden Trendyol'daki gibi
+  değer eşleştirmesi HB'de yapılamıyordu.
+
+DÜZELTME (backend, tek dosya):
+  backend/routes/category_mapping.py > get_advanced_attributes()
+  - HB dalı artık CACHE-FIRST: kategori özellik+değer cache'i taze ve değerliyse
+    (_v==8, attributeValues dolu) ANINDA servis edilir (canlı çekim yapılmaz).
+  - Canlı çekim yalnızca cache yok / eski / değersizse VEYA yeni 'force=1'
+    parametresiyle açıkça istenirse yapılır.
+  - Transfer yolu (_hb_category_attributes_for → _build_hb_product_item) AYNI
+    cache'i kullanır; çekim mantığı değişmedi → ürün aktarımı etkilenmez.
+
+NOT:
+  - İlk açılışta cache yoksa yine bir kez ~1dk çekim olur, sonra anında.
+  - Mevcut eşli kategorilerin cache'i (Elbise, Pantolon, Bluz, Etek, Ceket, Kaban)
+    canlıda önceden ısıtıldı; bu kategoriler deploy sonrası anında açılır.
+  - İleride bir "Yenile" butonu için backend hazır: ?force=1 ile canlı çekim.
+
+DOĞRULAMA: python3 -c "import ast; ast.parse(open('backend/routes/category_mapping.py').read())"  → OK

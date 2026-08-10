@@ -1,50 +1,47 @@
-# meluni
+# Facette / Ruby Nova - E-Ticaret Yönetim Paneli
 
-Sunucuya SSH uzerinden otomatik deploy edilen proje deposu.
+Bu proje, Facette markası için geliştirilmiş, ürün yönetimi, sipariş takibi ve pazaryeri entegrasyonlarını (Trendyol, Ticimax vb.) kapsayan modern bir e-ticaret yönetim sistemidir.
 
-## Durum
+## Teknoloji Yığını
 
-Uygulama kodu henuz eklenmedi. Repoda su an sadece **deploy altyapisi** var:
-sunucu baglantisi, surumleme (release) yapisi ve otomatik yayina alma.
+- **Frontend:** React (Vite/CRA), TailwindCSS, Lucide Icons, Axios.
+- **Backend:** FastAPI (Python 3.9+), MongoDB (Motor/PyMongo), Uvicorn.
+- **Veritabanı:** MongoDB (JSON tabanlı esnek veri yapısı).
 
-## Icerik
+## Proje Yapısı ve Ürün Yönetimi
 
-| Yol | Aciklama |
-|---|---|
-| `.github/workflows/deploy.yml` | `main`'e push'ta SSH ile otomatik deploy |
-| `scripts/deploy.sh` | Deploy'un kendisi; CI'dan da yerelden de calisir |
-| `scripts/post-deploy.sh` | Sunucuda calisan build / migration / restart adimlari |
-| `scripts/server-setup.sh` | Sunucuda bir kez calistirilan ilk kurulum |
-| `docs/SUNUCU-ENTEGRASYON.md` | **Adim adim sunucu kurulum rehberi** |
-| `docs/DNS-CLOUDFLARE.md` | Cloudflare DNS kayitlari, SSL ve yonlendirmeler |
-| `.env.example` | Ortam degiskeni sablonu |
+Eğer ürünleri veya ilgili kodları arıyorsanız, şu dizinlere göz atabilirsiniz:
 
-## Hizli baslangic
+### 1. Ürün Yönetimi (Products)
+- **Backend Mantığı:** `backend/routes/products.py` — Ürün oluşturma, düzenleme, silme ve veritabanı işlemlerinin yapıldığı yerdir.
+- **Frontend Arayüzü:** `frontend/src/pages/admin/Products.jsx` — Admin panelindeki ürün listesi, filtreleme ve düzenleme modalı buradadır.
+- **Veri Yapısı:** MongoDB içerisindeki `products` koleksiyonunda saklanır.
 
-1. Deploy anahtarini uretin ve sunucuya tanitin.
-2. GitHub'da `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`, `SSH_KNOWN_HOSTS`
-   secret'larini tanimlayin.
-3. `main` branch'ine push edin.
+### 2. Entegrasyonlar (Integrations)
+- **Trendyol & Ticimax:** `backend/routes/integrations.py` — Tüm dış platform senkronizasyon mantığı (stok, fiyat, aktarım) buradadı.
+- **Trendyol Arayüzü:** `frontend/src/pages/admin/TrendyolEslestir.jsx` — Ürünlerin Trendyol ile eşleştirildiği ana ekrandır.
+- **Log Sistemi:** `frontend/src/pages/admin/TrendyolLogs.jsx` — Tüm aktarım işlemlerinin kayıtlarının tutulduğu ekrandır.
 
-Detaylar: [`docs/SUNUCU-ENTEGRASYON.md`](docs/SUNUCU-ENTEGRASYON.md)
+### 3. Diğer Önemli Dizinler
+- `backend/server.py`: Uygulamanın giriş noktası ve tüm router tanımlamaları.
+- `backend/routes/`: Kategoriler, Siparişler, Bannerlar ve Ayarlar için API uç noktaları.
+- `frontend/src/pages/admin/`: Admin panelindeki tüm sayfa bileşenleri.
 
-Alan adi ve yonlendirmeler: [`docs/DNS-CLOUDFLARE.md`](docs/DNS-CLOUDFLARE.md)
+## Kurulum ve Çalıştırma
 
-## Sunucudaki dizin yapisi
-
-```
-~/apps/meluni/
-├── current -> releases/<en-son>   # aktif surum
-├── releases/                      # son 5 surum (geri donus icin)
-├── shared/.env                    # gercek gizli degerler, repoya girmez
-└── tmp/
+### Backend
+```bash
+cd backend
+pip install -r requirements.txt
+python3 -m uvicorn server:app --reload --port 8000
 ```
 
-Deploy sirasinda `post-deploy.sh` hata verirse `current` otomatik olarak
-bir onceki release'e geri doner.
+### Frontend
+```bash
+cd frontend
+npm install
+npm run start
+```
 
-## Guvenlik
-
-- Parola, anahtar, token gibi hicbir gizli deger repoya commit edilmez.
-- Sunucu erisimi parola ile degil, deploy'a ozel SSH anahtari ile yapilir.
-- Gercek ortam degiskenleri yalnizca sunucudaki `shared/.env` dosyasinda durur.
+## Notlar
+Veritabanı verileri (ürünler, siparişler vb.) GitHub'da **tutulmaz**. Bu bilgiler yerel veya bulut MongoDB sunucunuzda saklanır. Kodları başka bir yere taşıdığınızda MongoDB yedeğinizi (dump) de taşımanız gerekir.
