@@ -559,7 +559,7 @@ export default function ProductDetail() {
         <Header />
         <div className="max-w-screen-2xl mx-auto px-4 py-8">
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="aspect-[2/3] bg-gray-100 animate-pulse" />
+            <div className="aspect-[3/4] bg-gray-100 animate-pulse" />
             <div className="space-y-4">
               <div className="h-8 bg-gray-100 w-3/4 animate-pulse" />
               <div className="h-6 bg-gray-100 w-1/3 animate-pulse" />
@@ -682,7 +682,7 @@ export default function ProductDetail() {
       <div className="max-w-screen-2xl mx-auto px-4 py-6">
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           {/* Image Gallery — mobile: swipe carousel, desktop: 2-col grid */}
-          <div className="lg:col-span-7 space-y-2 min-w-0">
+          <div className="lg:col-span-7 space-y-2 min-w-0 lg:max-w-[680px] lg:mx-auto">
             {/* Mobile: full-width snap carousel with dots */}
             <div className="lg:hidden -mx-4 relative">
               {user?.is_admin && (
@@ -707,7 +707,7 @@ export default function ProductDetail() {
                 {displayImages.map((img, index) => (
                   <div
                     key={index}
-                    className="snap-center shrink-0 w-screen aspect-[2/3] bg-stone-50 relative"
+                    className="snap-center shrink-0 w-screen aspect-[3/4] bg-stone-50 relative"
                     style={{ scrollSnapStop: "always" }}
                   >
                     {hasDiscount && index === 0 && (
@@ -718,7 +718,7 @@ export default function ProductDetail() {
                     <img
                       src={optimizeImg(img, 1200)}
                       alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-contain"
                       loading={index === 0 ? "eager" : "lazy"}
                       fetchPriority={index === 0 ? "high" : "auto"}
                       decoding="async"
@@ -749,7 +749,7 @@ export default function ProductDetail() {
                       key={index}
                       onClick={() => setSelectedImage(index)}
                       onMouseEnter={() => setSelectedImage(index)}
-                      className={`relative aspect-[2/3] bg-stone-50 overflow-hidden border transition-colors ${
+                      className={`relative aspect-[3/4] bg-stone-50 overflow-hidden border transition-colors ${
                         index === selectedImage ? "border-black" : "border-transparent hover:border-gray-300"
                       }`}
                       aria-label={`Görsel ${index + 1}`}
@@ -758,7 +758,7 @@ export default function ProductDetail() {
                       <img
                         src={optimizeImg(img, 200)}
                         alt=""
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain"
                         loading="lazy"
                         decoding="async"
                       />
@@ -768,7 +768,7 @@ export default function ProductDetail() {
               )}
               <div className="flex-1 min-w-0 lg:max-w-[480px]">
                 <div
-                  className="relative aspect-[2/3] bg-stone-50 overflow-hidden cursor-zoom-in"
+                  className="relative aspect-[3/4] bg-stone-50 overflow-hidden cursor-zoom-in"
                   onMouseEnter={() => setZoom((z) => ({ ...z, on: true }))}
                   onMouseLeave={() => setZoom({ on: false, x: 50, y: 50 })}
                   onMouseMove={(e) => {
@@ -803,7 +803,7 @@ export default function ProductDetail() {
                   <img
                     src={optimizeImg(displayImages[selectedImage] || displayImages[0], 1400)}
                     alt={product.name}
-                    className="w-full h-full object-cover object-top transition-transform duration-150 ease-out"
+                    className="w-full h-full object-contain transition-transform duration-150 ease-out"
                     style={zoom.on ? { transform: "scale(2.3)", transformOrigin: `${zoom.x}% ${zoom.y}%` } : undefined}
                     loading="eager"
                     fetchPriority="high"
@@ -1118,7 +1118,7 @@ export default function ProductDetail() {
                         title={p.name}
                       >
                         <div className="relative w-16 h-20 bg-stone-100 overflow-hidden">
-                          <img src={optimizeImg(img, 200)} alt={p.name} className="w-full h-full object-cover object-top group-hover:scale-[1.05] transition-transform duration-500" loading="lazy" decoding="async" />
+                          <img src={optimizeImg(img, 200)} alt={p.name} className="w-full h-full object-contain group-hover:scale-[1.05] transition-transform duration-500" loading="lazy" decoding="async" />
                         </div>
                         <p className="text-[9px] tabular-nums mt-1 truncate">
                           {priceView(p).hasDiscount ? (
@@ -1211,8 +1211,8 @@ export default function ProductDetail() {
                       className="snap-start shrink-0 w-[44vw]"
                       data-testid={`combo-product-${p.id}`}
                     >
-                      <Link to={`/${p.slug || p.id}`} className="block relative overflow-hidden bg-stone-100 aspect-[2/3]" aria-label={p.name}>
-                        <img src={optimizeImg(img, 700)} alt={p.name} className="w-full h-full object-cover object-top" loading="lazy" decoding="async" />
+                      <Link to={`/${p.slug || p.id}`} className="block relative overflow-hidden bg-stone-100 aspect-[3/4]" aria-label={p.name}>
+                        <img src={optimizeImg(img, 700)} alt={p.name} className="w-full h-full object-contain" loading="lazy" decoding="async" />
                         <button
                           type="button"
                           onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
@@ -1249,8 +1249,8 @@ export default function ProductDetail() {
                 const pv = priceView(p);
                 return (
                   <div key={p.id} className="group relative">
-                    <Link to={`/${p.slug || p.id}`} className="block relative overflow-hidden bg-stone-100 aspect-[2/3]" aria-label={p.name}>
-                      <img src={img} alt={p.name} className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]" loading="lazy" />
+                    <Link to={`/${p.slug || p.id}`} className="block relative overflow-hidden bg-stone-100 aspect-[3/4]" aria-label={p.name}>
+                      <img src={img} alt={p.name} className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]" loading="lazy" />
                       <button
                         type="button"
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
@@ -1385,8 +1385,8 @@ export default function ProductDetail() {
                 const pv = priceView(p);
                 return (
                   <Link key={p.id} to={`/${p.slug || p.id}`} className="group" data-testid={`recent-${p.id}`}>
-                    <div className="aspect-[2/3] bg-stone-100 overflow-hidden">
-                      <img src={optimizeImg(p.image, 500)} alt={p.name} className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500" loading="lazy" decoding="async" />
+                    <div className="aspect-[3/4] bg-stone-100 overflow-hidden">
+                      <img src={optimizeImg(p.image, 500)} alt={p.name} className="w-full h-full object-contain group-hover:scale-[1.03] transition-transform duration-500" loading="lazy" decoding="async" />
                     </div>
                     <p className="text-[12px] md:text-sm font-light text-black/85 line-clamp-1 mt-2">{p.name}</p>
                     <p className="text-[12px] md:text-sm tabular-nums mt-0.5">
