@@ -15,7 +15,8 @@ sunucu baglantisi, surumleme (release) yapisi ve otomatik yayina alma.
 | `scripts/deploy.sh` | Deploy'un kendisi; CI'dan da yerelden de calisir |
 | `scripts/post-deploy.sh` | Sunucuda calisan build / migration / restart adimlari |
 | `scripts/server-setup.sh` | Sunucuda bir kez calistirilan ilk kurulum |
-| `docs/SUNUCU-ENTEGRASYON.md` | **Adim adim kurulum rehberi** |
+| `docs/SUNUCU-ENTEGRASYON.md` | **Adim adim sunucu kurulum rehberi** |
+| `docs/DNS-CLOUDFLARE.md` | Cloudflare DNS kayitlari, SSL ve yonlendirmeler |
 | `.env.example` | Ortam degiskeni sablonu |
 
 ## Hizli baslangic
@@ -26,6 +27,8 @@ sunucu baglantisi, surumleme (release) yapisi ve otomatik yayina alma.
 3. `main` branch'ine push edin.
 
 Detaylar: [`docs/SUNUCU-ENTEGRASYON.md`](docs/SUNUCU-ENTEGRASYON.md)
+
+Alan adi ve yonlendirmeler: [`docs/DNS-CLOUDFLARE.md`](docs/DNS-CLOUDFLARE.md)
 
 ## Sunucudaki dizin yapisi
 
