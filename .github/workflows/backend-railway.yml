@@ -8,12 +8,9 @@ name: Backend → Railway
 # Opsiyonel:
 #   RAILWAY_SERVICE  - hedef servis adi (tek servisli projede gerekmez)
 
+# NOT: Barindirma kendi sunucumuzda (bkz. deploy.yml). Bu akis ALTERNATIF
+# yoldur ve otomatik tetiklenmez; yalniz Actions > Run workflow ile calisir.
 on:
-  push:
-    branches: [main, master, claude/meluni-entegrasyon-rzv2le]
-    paths:
-      - "backend/**"
-      - ".github/workflows/backend-railway.yml"
   workflow_dispatch:
 
 concurrency:

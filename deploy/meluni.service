@@ -1,0 +1,45 @@
+# meluni API — systemd servisi
+#
+# Kurulum:
+#   sudo cp deploy/meluni.service /etc/systemd/system/meluni.service
+#   sudo nano /etc/systemd/system/meluni.service     # <KULLANICI> düzenle
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now meluni
+#
+# Loglar:  sudo journalctl -u meluni -f
+
+[Unit]
+Description=meluni API (FastAPI/uvicorn)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=<KULLANICI>
+Group=<KULLANICI>
+
+# current bir symlink; deploy her release'de onu çevirir. WorkingDirectory
+# symlink'i çözerek ESKİ release'e sabitlenmesin diye backend'e tam yol veriyoruz
+# ve servisi her deployda restart ediyoruz.
+WorkingDirectory=/home/<KULLANICI>/apps/meluni/current/backend
+EnvironmentFile=/home/<KULLANICI>/apps/meluni/shared/.env
+
+ExecStart=/home/<KULLANICI>/apps/meluni/shared/venv/bin/uvicorn server:app \
+  --host 127.0.0.1 --port 8000 \
+  --workers 2 \
+  --proxy-headers --forwarded-allow-ips='*'
+
+Restart=always
+RestartSec=5
+KillSignal=SIGINT
+TimeoutStopSec=30
+
+# Güvenlik sınırlamaları
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/home/<KULLANICI>/apps/meluni
+
+[Install]
+WantedBy=multi-user.target

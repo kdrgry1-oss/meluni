@@ -1,25 +1,20 @@
 #!/usr/bin/env bash
 #
-# meluni - sunucuda, yeni release aktif edildikten HEMEN SONRA calisir.
+# meluni — sunucuda, yeni release aktif edildikten HEMEN SONRA çalışır.
 #
-# Calisma dizini: <DEPLOY_PATH>/current
-# Kullanilabilir degiskenler: DEPLOY_PATH, RELEASE_ID
+# Çalışma dizini: <DEPLOY_PATH>/current
+# Değişkenler:    DEPLOY_PATH, RELEASE_ID
 #
-# Bu script sifirdan farkli (non-zero) donerse deploy.sh otomatik olarak
-# bir onceki release'e geri doner. Yani buradaki her adim ayni zamanda
-# bir saglik kontroludur.
+# Sıfırdan farklı dönerse deploy.sh otomatik olarak bir önceki release'e
+# döner. Yani buradaki her adım aynı zamanda bir sağlık kontrolüdür.
 #
-# Uygulama yigini repodaki dosyalardan otomatik anlasilir:
-#   package.json      -> Node.js
-#   composer.json     -> PHP
-#   requirements.txt  -> Python
-#   hicbiri yok       -> statik site, sadece dosya kopyalama
+# Bu proje bir MONOREPO:
+#   backend/   FastAPI + uvicorn  → systemd servisi
+#   frontend/  React (craco)      → derlenmiş dosyalar, nginx servis eder
 #
-# Otomatik davranisi ezmek icin shared/.env icine yazabileceginiz degiskenler:
-#   APP_STACK=node|php|python|static   (otomatik tespiti devre disi birakir)
-#   APP_SERVICE=meluni                 (systemd servis adi)
-#   PM2_APP=meluni                     (PM2 uygulama adi)
-#   HEALTH_URL=http://127.0.0.1:3000/  (deploy sonrasi saglik kontrolu)
+# Frontend CI'da derlenir ve hazır `frontend/build` olarak gelir. Sunucuda
+# yeniden derlemiyoruz: 6475 ürünlük bir katalogla CRA derlemesi 1 GB'ın
+# üzerinde RAM ister ve küçük VPS'lerde OOM ile ölür.
 #
 set -euo pipefail
 
@@ -28,14 +23,13 @@ warn() { printf '\033[1;33m[post-deploy]\033[0m %s\n' "$*" >&2; }
 die()  { printf '\033[1;31m[post-deploy] HATA:\033[0m %s\n' "$*" >&2; exit 1; }
 
 RELEASE_DIR="$(pwd)"
-SHARED_DIR="${DEPLOY_PATH:-$(dirname "$(dirname "${RELEASE_DIR}")")}/shared"
+DEPLOY_PATH="${DEPLOY_PATH:-$(dirname "$(dirname "${RELEASE_DIR}")")}"
+SHARED_DIR="${DEPLOY_PATH}/shared"
+VENV="${SHARED_DIR}/venv"
 
 log "release : ${RELEASE_ID:-bilinmiyor}"
 log "dizin   : ${RELEASE_DIR}"
 
-# --- Ortam degiskenlerini oku ------------------------------------------
-# .env'i source etmiyoruz; icindeki degerler kabuk tarafindan
-# yorumlanmasin diye satir satir okuyoruz.
 read_env() {
   local key="$1" file="${SHARED_DIR}/.env"
   [ -f "${file}" ] || return 0
@@ -43,119 +37,72 @@ read_env() {
     | tail -n 1 | sed -e 's/^"//' -e 's/"$//' -e "s/^'//" -e "s/'$//"
 }
 
-APP_STACK="${APP_STACK:-$(read_env APP_STACK)}"
 APP_SERVICE="${APP_SERVICE:-$(read_env APP_SERVICE)}"
-PM2_APP="${PM2_APP:-$(read_env PM2_APP)}"
+APP_SERVICE="${APP_SERVICE:-meluni}"
 HEALTH_URL="${HEALTH_URL:-$(read_env HEALTH_URL)}"
-
-# --- Yigin tespiti ------------------------------------------------------
-if [ -z "${APP_STACK}" ]; then
-  if   [ -f package.json ];     then APP_STACK=node
-  elif [ -f composer.json ];    then APP_STACK=php
-  elif [ -f requirements.txt ]; then APP_STACK=python
-  else                               APP_STACK=static
-  fi
-  log "yigin   : ${APP_STACK} (otomatik tespit)"
-else
-  log "yigin   : ${APP_STACK} (.env ile belirtilmis)"
-fi
+HEALTH_URL="${HEALTH_URL:-http://127.0.0.1:8000/api/health}"
 
 need() {
-  command -v "$1" >/dev/null 2>&1 \
-    || die "'$1' sunucuda kurulu degil. Kurun ya da shared/.env icinde APP_STACK=static yapin."
+  command -v "$1" >/dev/null 2>&1 || die "'$1' sunucuda kurulu değil."
 }
 
-# --- Bagimliliklar ve build --------------------------------------------
-case "${APP_STACK}" in
-  node)
-    need node
-    need npm
-    if [ -f package-lock.json ]; then
-      log "npm ci --omit=dev"
-      npm ci --omit=dev --no-audit --no-fund
-    else
-      warn "package-lock.json yok; 'npm install' kullaniliyor (surumler sabit degil)"
-      npm install --omit=dev --no-audit --no-fund
-    fi
-    if node -e 'process.exit(require("./package.json").scripts?.build ? 0 : 1)' 2>/dev/null; then
-      log "npm run build"
-      npm run build
-    fi
-    ;;
+# ── Backend ─────────────────────────────────────────────────────────────
+[ -f backend/requirements.txt ] || die "backend/requirements.txt yok — yanlış release mi?"
+need python3
 
-  php)
-    need composer
-    log "composer install"
-    composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
-    if [ -f artisan ]; then
-      log "artisan migrate"
-      php artisan migrate --force
-      php artisan config:cache
-      php artisan route:cache
-    fi
-    ;;
+if [ ! -x "${VENV}/bin/python" ]; then
+  log "sanal ortam oluşturuluyor: ${VENV}"
+  python3 -m venv "${VENV}"
+fi
 
-  python)
-    need python3
-    VENV="${SHARED_DIR}/venv"
-    if [ ! -d "${VENV}" ]; then
-      log "sanal ortam olusturuluyor: ${VENV}"
-      python3 -m venv "${VENV}"
-    fi
-    log "pip install -r requirements.txt"
-    "${VENV}/bin/pip" install --quiet --upgrade pip
-    "${VENV}/bin/pip" install --quiet -r requirements.txt
-    ;;
+log "backend bağımlılıkları kuruluyor"
+"${VENV}/bin/pip" install --quiet --upgrade pip wheel
+# Sunucuda derleyici olmayabilir; mümkün olduğunca hazır tekerlek kullan.
+"${VENV}/bin/pip" install --quiet --prefer-binary -r backend/requirements.txt
 
-  static)
-    log "statik site; kurulacak bagimlilik yok"
-    ;;
+# .env'i backend'in yanına bağla — server.py onu kendi dizininden okuyor.
+ln -sfn "${SHARED_DIR}/.env" "${RELEASE_DIR}/backend/.env"
 
-  *)
-    die "bilinmeyen APP_STACK degeri: ${APP_STACK}"
-    ;;
-esac
+# ── Frontend ────────────────────────────────────────────────────────────
+# CI derlemesi `frontend/build` olarak gelir. Gelmediyse nginx eski release'i
+# servis etmeye devam eder; bunu sessizce geçmek "site güncellenmedi"
+# şikayetinin en sık sebebi, o yüzden gürültülü uyarıyoruz.
+if [ -d frontend/build ] && [ -n "$(ls -A frontend/build 2>/dev/null)" ]; then
+  log "frontend derlemesi bulundu ($(du -sh frontend/build | cut -f1))"
+else
+  warn "frontend/build YOK — bu release yalnız backend'i günceller."
+  warn "CI'da derleme adımı çalıştı mı? (Actions > Deploy > 'Frontend derle')"
+fi
 
-# --- Servisi yeniden baslat --------------------------------------------
-restarted=false
+# ── Servisi yeniden başlat ──────────────────────────────────────────────
+if sudo -n systemctl restart "${APP_SERVICE}" 2>/dev/null; then
+  log "systemd servisi yeniden başlatıldı: ${APP_SERVICE}"
+else
+  die "systemctl restart ${APP_SERVICE} başarısız. Parolasız sudo tanımlı mı?
+     sudo visudo -f /etc/sudoers.d/meluni-deploy
+     <kullanıcı> ALL=(root) NOPASSWD: /bin/systemctl restart ${APP_SERVICE}"
+fi
 
-if [ -n "${APP_SERVICE}" ]; then
-  if sudo -n systemctl restart "${APP_SERVICE}" 2>/dev/null; then
-    log "systemd servisi yeniden baslatildi: ${APP_SERVICE}"
-    restarted=true
-  else
-    die "systemctl restart ${APP_SERVICE} basarisiz. Parolasiz sudo yetkisi tanimli mi? Bkz. docs/SUNUCU-ENTEGRASYON.md Adim 5"
+# nginx yalnız yapılandırma değiştiyse gerekli; reload ucuz, her deployda yap.
+if sudo -n nginx -t >/dev/null 2>&1; then
+  sudo -n systemctl reload nginx 2>/dev/null || warn "nginx reload edilemedi"
+fi
+
+# ── Sağlık kontrolü ─────────────────────────────────────────────────────
+need curl
+log "sağlık kontrolü: ${HEALTH_URL}"
+for attempt in $(seq 1 20); do
+  if curl -fsS --max-time 5 "${HEALTH_URL}" >/dev/null 2>&1; then
+    log "sağlık kontrolü geçti (${attempt}. deneme)"
+    log "tamamlandı"
+    exit 0
   fi
-elif [ -n "${PM2_APP}" ]; then
-  need pm2
-  if pm2 describe "${PM2_APP}" >/dev/null 2>&1; then
-    log "pm2 reload: ${PM2_APP}"
-    pm2 reload "${PM2_APP}" --update-env
-  else
-    log "pm2 start: ${PM2_APP}"
-    pm2 start npm --name "${PM2_APP}" -- start
-  fi
-  pm2 save >/dev/null 2>&1 || true
-  restarted=true
-fi
+  [ "${attempt}" -eq 20 ] && break
+  sleep 3
+done
 
-if [ "${restarted}" = false ] && [ "${APP_STACK}" != "static" ]; then
-  warn "Servis yeniden baslatilmadi. shared/.env icine APP_SERVICE veya PM2_APP yazin,"
-  warn "aksi halde sunucu eski kodu calistirmaya devam eder."
-fi
-
-# --- Saglik kontrolu ----------------------------------------------------
-if [ -n "${HEALTH_URL}" ]; then
-  need curl
-  log "saglik kontrolu: ${HEALTH_URL}"
-  for attempt in $(seq 1 15); do
-    if curl -fsS --max-time 5 "${HEALTH_URL}" >/dev/null 2>&1; then
-      log "saglik kontrolu gecti (${attempt}. deneme)"
-      break
-    fi
-    [ "${attempt}" -eq 15 ] && die "saglik kontrolu 15 denemede gecmedi; release geri alinacak"
-    sleep 2
-  done
-fi
-
-log "tamamlandi"
+# Buraya düştüysek servis ayakta değil. Teşhisi kolaylaştırmak için son
+# logları bas — deploy geri alınacağı için bu çıktı tek ipucu olabilir.
+warn "sağlık kontrolü 20 denemede geçmedi; son loglar:"
+sudo -n journalctl -u "${APP_SERVICE}" -n 40 --no-pager 2>/dev/null || true
+die "servis ayağa kalkmadı, release geri alınıyor"

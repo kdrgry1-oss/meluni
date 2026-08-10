@@ -39,7 +39,20 @@ WORKDIR="$(mktemp -d)"
 trap 'rm -rf "${WORKDIR}"' EXIT
 
 log "Release paketi hazirlaniyor (${REVISION})"
-git archive --format=tar "${REVISION}" | gzip -9 > "${WORKDIR}/release.tar.gz"
+git archive --format=tar "${REVISION}" -o "${WORKDIR}/release.tar"
+
+# EXTRA_PATHS: git'te izlenmeyen ama pakete girmesi gereken yollar
+# (orn. CI'da uretilen frontend/build). Bosluklarla ayrilir.
+for extra in ${EXTRA_PATHS:-}; do
+  if [ -e "${extra}" ]; then
+    log "  + ${extra} ($(du -sh "${extra}" | cut -f1))"
+    tar -rf "${WORKDIR}/release.tar" "${extra}"
+  else
+    log "  ! ${extra} bulunamadi, atlaniyor"
+  fi
+done
+
+gzip -9 "${WORKDIR}/release.tar"
 printf '%s\n' "${REVISION}" > "${WORKDIR}/REVISION"
 
 log "Sunucuya baglaniliyor: ${TARGET}:${DEPLOY_PORT}"

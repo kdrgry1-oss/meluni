@@ -11,12 +11,9 @@ name: Frontend → Cloudflare Pages
 #   CF_PAGES_PROJECT       - Pages proje adi (varsayilan: meluni)
 #   REACT_APP_CDN_HOST     - gorsel CDN alan adi (bos ise devre disi)
 
+# NOT: Barindirma kendi sunucumuzda (bkz. deploy.yml). Bu akis ALTERNATIF
+# yoldur ve otomatik tetiklenmez; yalniz Actions > Run workflow ile calisir.
 on:
-  push:
-    branches: [main, master, claude/meluni-entegrasyon-rzv2le]
-    paths:
-      - "frontend/**"
-      - ".github/workflows/frontend-cloudflare.yml"
   workflow_dispatch:
 
 concurrency:

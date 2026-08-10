@@ -1,24 +1,30 @@
 name: Deploy
 
-# Sunucuya SSH ile deploy. Baglantiyi GitHub'in runner'i kurar.
+# meluni — kendi sunucumuza (SSH) deploy. GitHub'a push → sunucuda canlı.
 #
-# Gerekli repository secret'lari (Settings > Secrets and variables > Actions):
-#   SSH_HOST         - sunucu IP / hostname
-#   SSH_USER         - deploy kullanicisi
-#   SSH_PRIVATE_KEY  - deploy icin uretilmis OZEL anahtar (parolasiz)
-#   SSH_KNOWN_HOSTS  - `ssh-keyscan -p <port> -H <host>` ciktisi
+# Akış: frontend runner'da derlenir → derleme + backend kaynağı tek paket
+# hâlinde sunucuya gider → systemd servisi yeniden başlar → sağlık kontrolü.
+# Sağlık kontrolü geçmezse deploy.sh önceki release'e geri döner.
+#
+# Gerekli repository secret'ları (Settings > Secrets and variables > Actions):
+#   SSH_HOST              sunucu IP (83.150.214.157)
+#   SSH_USER              deploy kullanıcısı (kadir)
+#   SSH_PRIVATE_KEY       deploy için üretilmiş ÖZEL anahtar (parolasız)
+#   SSH_KNOWN_HOSTS       `ssh-keyscan -H <ip>` çıktısı
+#   REACT_APP_BACKEND_URL https://api.meluni.com.tr
 # Opsiyonel:
-#   SSH_PORT         - varsayilan 22
-#   DEPLOY_PATH      - varsayilan /home/<SSH_USER>/apps/meluni
+#   SSH_PORT (22), DEPLOY_PATH, REACT_APP_SITE_NAME/_SITE_URL
 
-# NOT: Uretim barindirmasi Railway (backend) + Cloudflare (frontend).
-# Bu VPS/SSH akisi ALTERNATIF (self-hosting) yoldur ve otomatik tetiklenmez;
-# yalnizca Actions > Run workflow ile elle calistirilir.
 on:
+  push:
+    branches:
+      - main
+      - master
+      - claude/meluni-entegrasyon-rzv2le
   workflow_dispatch:
     inputs:
       ref:
-        description: "Deploy edilecek git ref (bos birakilirsa mevcut branch)"
+        description: "Deploy edilecek git ref (boş bırakılırsa mevcut branch)"
         required: false
         default: ""
 
@@ -31,19 +37,18 @@ permissions:
 
 jobs:
   deploy:
-    name: SSH deploy
+    name: Sunucuya deploy
     runs-on: ubuntu-latest
     environment: production
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - name: Kodu al
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.ref || github.ref }}
-          fetch-depth: 0
 
-      - name: Gerekli secret'lari dogrula
+      - name: Gerekli secret'ları doğrula
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
@@ -55,12 +60,39 @@ jobs:
           [ -n "$SSH_USER" ] || missing="$missing SSH_USER"
           [ -n "$SSH_PRIVATE_KEY" ] || missing="$missing SSH_PRIVATE_KEY"
           if [ -n "$missing" ]; then
-            echo "::error::Eksik repository secret'lari:$missing"
-            echo "Bkz. docs/SUNUCU-ENTEGRASYON.md"
+            echo "::error::Eksik repository secret'ları:$missing — bkz. docs/SUNUCU-KURULUM.md"
             exit 1
           fi
 
-      - name: SSH anahtarini hazirla
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Frontend bağımlılıkları
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Frontend derle
+        working-directory: frontend
+        env:
+          # CRA bu değerleri DERLEME ANINDA gömer; sunucuda değiştirilemez.
+          REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
+          REACT_APP_SITE_NAME: ${{ secrets.REACT_APP_SITE_NAME }}
+          REACT_APP_SITE_URL: ${{ secrets.REACT_APP_SITE_URL }}
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: |
+          set -euo pipefail
+          if [ -z "${REACT_APP_BACKEND_URL}" ]; then
+            echo "::error::REACT_APP_BACKEND_URL secret'ı boş — frontend API'ye ulaşamaz."
+            exit 1
+          fi
+          yarn build
+          test -f build/index.html || { echo "::error::build/index.html üretilmedi"; exit 1; }
+          echo "derleme boyutu: $(du -sh build | cut -f1)"
+
+      - name: SSH anahtarını hazırla
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
@@ -68,17 +100,13 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
         run: |
           set -euo pipefail
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_deploy
           chmod 600 ~/.ssh/id_deploy
-
           if [ -n "$SSH_KNOWN_HOSTS" ]; then
             printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           else
-            # Secret verilmediyse host anahtarini ilk baglantida ogreniyoruz.
-            # Guvenli olan SSH_KNOWN_HOSTS secret'ini tanimlamaktir.
-            echo "::warning::SSH_KNOWN_HOSTS tanimli degil; host anahtari dogrulanmadan aliniyor (MITM riski)."
+            echo "::warning::SSH_KNOWN_HOSTS tanımlı değil; host anahtarı doğrulanmadan alınıyor."
             ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > ~/.ssh/known_hosts 2>/dev/null
           fi
           chmod 644 ~/.ssh/known_hosts
@@ -91,14 +119,14 @@ jobs:
           DEPLOY_PORT: ${{ secrets.SSH_PORT || '22' }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
           SSH_KEY: /home/runner/.ssh/id_deploy
+          # Derleme çıktısı git'te izlenmiyor; pakete elle ekletiyoruz.
+          EXTRA_PATHS: frontend/build
         run: |
           set -euo pipefail
           chmod +x scripts/deploy.sh
-          if [ -z "${DEPLOY_PATH}" ]; then
-            unset DEPLOY_PATH
-          fi
+          [ -n "${DEPLOY_PATH}" ] || unset DEPLOY_PATH
           ./scripts/deploy.sh
 
-      - name: Anahtari temizle
+      - name: Anahtarı temizle
         if: always()
         run: rm -f ~/.ssh/id_deploy
