@@ -159,6 +159,17 @@ async def dispatch_event(
     if not event_time:
         event_time = int(datetime.now(timezone.utc).timestamp())
 
+    # Olayın geldiği sayfa bilinmiyorsa (webhook, sunucu-taraflı tetikleme)
+    # mağazanın kendi adresi kullanılır. BEYAZ ETİKET: adres koda gömülmez,
+    # company.py'nin öncelik zincirinden gelir (panel → env). Adapter'larda
+    # sabit alan adı duruyordu; marka değişiminde elle düzeltilmesi gerekiyordu.
+    if not event_source_url:
+        try:
+            from company import get_site_url
+            event_source_url = await get_site_url(db)
+        except Exception:
+            event_source_url = None
+
     # Fetch active pixel configs
     query = {"is_active": True, "capi_enabled": True}
     if tenant_id:
