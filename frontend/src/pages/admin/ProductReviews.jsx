@@ -289,6 +289,22 @@ function LowRatingReviews() {
   const [loading, setLoading] = useState(false);
   const [stars, setStars] = useState([1, 2]); // seçili yıldızlar (çoklu, tek tek tıklanır)
   const [open, setOpen] = useState(true);
+  const [analysis, setAnalysis] = useState(null);
+  const [analyzing, setAnalyzing] = useState(false);
+
+  const analyze = async () => {
+    setAnalyzing(true);
+    try {
+      const { data } = await axios.get(`${API}/integrations/trendyol/reviews/analyze`, {
+        headers: authHeaders(),
+        params: { ratings: (stars.length ? stars : [1, 2]).join(","), limit: 300 },
+      });
+      setAnalysis(data);
+      if (!data?.reasons?.length) toast.info("Analiz için yeterli yorum yok");
+    } catch (e) {
+      toast.error("AI analizi başarısız: " + (e?.response?.data?.detail || e.message));
+    } finally { setAnalyzing(false); }
+  };
 
   const toggleStar = (n) =>
     setStars((prev) => (prev.includes(n) ? prev.filter((x) => x !== n) : [...prev, n].sort()));
@@ -333,6 +349,11 @@ function LowRatingReviews() {
               );
             })}
           </div>
+          <button onClick={analyze} disabled={analyzing}
+            className="text-xs px-2.5 py-1 rounded bg-violet-600 text-white hover:bg-violet-700 disabled:opacity-60 font-semibold"
+            data-testid="ai-analyze">
+            {analyzing ? "Analiz ediliyor…" : "🤖 AI Neden Analizi"}
+          </button>
           <button onClick={load} disabled={loading} className="text-xs border px-2 py-1 rounded hover:bg-gray-50">
             {loading ? "…" : "Yenile"}
           </button>
@@ -341,6 +362,31 @@ function LowRatingReviews() {
           </button>
         </div>
       </div>
+
+      {analysis?.reasons?.length > 0 && (
+        <div className="mt-3 border-t pt-3" data-testid="ai-analysis">
+          <div className="text-[11px] text-gray-500 mb-2">
+            🤖 AI şikayet-nedeni analizi — {analysis.total_reviews} yorumdan · {analysis.model} · <b>küçükten büyüğe</b> (kaç yorumda geçiyor)
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {analysis.reasons.map((r, i) => (
+              <div key={i} className="border rounded-lg px-3 py-2 bg-gray-50 min-w-[150px]" title={r.example || ""}>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-gray-800">{r.reason}</span>
+                  <span className="text-xs font-bold bg-red-100 text-red-700 rounded-full px-2 py-0.5">{r.count}</span>
+                </div>
+                <div className="mt-1 flex items-center gap-0.5">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <span key={n} className={`inline-block w-1.5 h-1.5 rounded-full ${n <= r.severity ? "bg-red-500" : "bg-gray-200"}`} />
+                  ))}
+                  <span className="text-[10px] text-gray-400 ml-1">ciddiyet</span>
+                </div>
+                {r.example && <div className="text-[10px] text-gray-400 mt-1 line-clamp-2">"{r.example}"</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       {open && (
         <div className="mt-3 max-h-[520px] overflow-y-auto divide-y">
           {rows.length === 0 ? (

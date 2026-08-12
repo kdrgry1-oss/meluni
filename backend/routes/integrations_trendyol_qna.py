@@ -1156,6 +1156,98 @@ async def trendyol_reviews_list(
     return {"items": rows, "count": len(rows)}
 
 
+@router.get("/trendyol/reviews/analyze")
+async def trendyol_reviews_analyze(
+    ratings: Optional[str] = None,
+    product_id: Optional[str] = None,
+    max_rating: Optional[int] = None,
+    limit: int = 250,
+    current_user: dict = Depends(require_admin),
+):
+    """AI ile şikayet-nedeni analizi: seçili düşük yıldızlı yorumları LLM'e verip
+    şikayet nedenlerini kategorilere ayırır ve KAÇ yorumda geçtiğini sayar. Küçükten büyüğe
+    sıralı döner. ChatGPT/OpenAI (Ayarlar → AI sağlayıcısı) kullanılır."""
+    q = {"source": "trendyol_public"}
+    if product_id:
+        q["product_id"] = product_id
+    _stars = [int(x) for x in str(ratings or "").split(",") if x.strip().isdigit() and 1 <= int(x) <= 5]
+    if _stars:
+        q["rating"] = {"$in": sorted(set(_stars))}
+    elif max_rating is not None:
+        q["rating"] = {"$lte": int(max_rating)}
+    else:
+        q["rating"] = {"$lte": 2}
+    rows = await db.product_reviews.find(
+        q, {"_id": 0, "rating": 1, "comment": 1, "title": 1},
+    ).sort("created_at", -1).limit(min(max(1, limit), 400)).to_list(None)
+    comments = []
+    for r in rows:
+        _t = (r.get("title") or "").strip()
+        _c = (r.get("comment") or "").strip()
+        _body = (f"{_t} {_c}").strip()
+        if _body:
+            comments.append(f"[{r.get('rating')}★] {_body}")
+    if not comments:
+        return {"ok": True, "total_reviews": 0, "reasons": [], "message": "Analiz edilecek yorum yok"}
+
+    from .ai_chatbot import get_ai_settings, _api_key_for, llm_chat
+    settings = await get_ai_settings()
+    api_key = _api_key_for(settings)
+    if not api_key:
+        raise HTTPException(status_code=400, detail="AI anahtarı tanımlı değil (Ayarlar → Yapay Zeka).")
+    provider = settings.get("provider") or "openai"
+    model = settings.get("model") or "gpt-5.4-mini"
+
+    sys_msg = (
+        "Sen bir e-ticaret ürün-yorum analistisin. Sana bir mağazanın DÜŞÜK PUANLI müşteri "
+        "yorumları verilir. Görevin: şikayet NEDENLERİNİ birbirinden ayrık kategorilere topla "
+        "(ör. 'Kalıp dar/küçük', 'Kumaş kalitesiz', 'Dikiş/işçilik kusuru', 'Beden-ölçü uyumsuz', "
+        "'Görselden/beklentiden farklı', 'Fiyat/değer', 'Kargo/paketleme', 'Koku/leke', 'Renk farklı'). "
+        "Her kategori için KAÇ farklı yorumda geçtiğini SAY. Kısa, Türkçe kategori adları kullan. "
+        "SADECE ve YALNIZCA şu JSON'u döndür (açıklama yazma): "
+        '{"reasons":[{"reason":"...","count":N,"severity":1-5,"example":"o kategoriden kısa bir alıntı"}]}. '
+        "severity: şikayetin ciddiyeti (5=iade/ürün kusuru, 1=küçük memnuniyetsizlik)."
+    )
+    user_text = "YORUMLAR:\n" + "\n".join(comments[:300])
+    try:
+        txt = await llm_chat(api_key, provider, model, sys_msg, user_text, max_tokens=1500)
+    except Exception as e:
+        logger.warning(f"[yorum-analiz] LLM hata: {e}")
+        raise HTTPException(status_code=502, detail=f"AI analizi başarısız: {str(e)[:200]}")
+
+    # JSON'u ayıkla (kod bloğu/etrafındaki metne dayanıklı).
+    import json as _json
+    import re as _re2
+    _raw = txt.strip()
+    _m = _re2.search(r"\{.*\}", _raw, _re2.DOTALL)
+    data = {}
+    if _m:
+        try:
+            data = _json.loads(_m.group(0))
+        except Exception:
+            data = {}
+    reasons = data.get("reasons") if isinstance(data, dict) else None
+    out = []
+    for r in (reasons or []):
+        if not isinstance(r, dict):
+            continue
+        try:
+            c = int(r.get("count") or 0)
+        except Exception:
+            c = 0
+        try:
+            sev = int(r.get("severity") or 0)
+        except Exception:
+            sev = 0
+        nm = str(r.get("reason") or "").strip()[:80]
+        if nm:
+            out.append({"reason": nm, "count": max(0, c), "severity": max(0, min(5, sev)),
+                        "example": str(r.get("example") or "").strip()[:220]})
+    out.sort(key=lambda x: x["count"])  # küçükten büyüğe (kullanıcı isteği)
+    return {"ok": True, "total_reviews": len(comments), "reasons": out,
+            "provider": provider, "model": model}
+
+
 @router.get("/trendyol/reviews/by-product")
 async def reviews_by_product(limit: int = 300, current_user: dict = Depends(require_admin)):
     """Hangi ürüne kaç Trendyol yorumu çekildiğini listeler (en çok yorumlu önce)."""
