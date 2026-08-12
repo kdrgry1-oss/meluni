@@ -291,13 +291,22 @@ function LowRatingReviews() {
   const [open, setOpen] = useState(true);
   const [analysis, setAnalysis] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
+  const [products, setProducts] = useState([]);       // ürün seçici (by-product)
+  const [productFilter, setProductFilter] = useState(""); // "" = tüm ürünler
+
+  useEffect(() => {
+    axios.get(`${API}/integrations/trendyol/reviews/by-product?limit=2000`, { headers: authHeaders() })
+      .then((r) => setProducts(r.data?.products || []))
+      .catch(() => {});
+  }, []);
 
   const analyze = async () => {
     setAnalyzing(true);
     try {
       const { data } = await axios.get(`${API}/integrations/trendyol/reviews/analyze`, {
         headers: authHeaders(),
-        params: { ratings: (stars.length ? stars : [1, 2]).join(","), limit: 300 },
+        params: { ratings: (stars.length ? stars : [1, 2]).join(","), limit: 300,
+          ...(productFilter ? { product_id: productFilter } : {}) },
       });
       setAnalysis(data);
       if (!data?.total_reviews) toast.info("Bu yıldız(lar)da kayıtlı yorum yok — önce Trendyol yorumlarını çekin ya da başka yıldız seçin.");
@@ -315,14 +324,15 @@ function LowRatingReviews() {
     try {
       const { data } = await axios.get(`${API}/integrations/trendyol/reviews/list`, {
         headers: authHeaders(),
-        params: { ratings: (stars.length ? stars : [1, 2, 3, 4, 5]).join(","), limit: 1000 },
+        params: { ratings: (stars.length ? stars : [1, 2, 3, 4, 5]).join(","), limit: 1000,
+          ...(productFilter ? { product_id: productFilter } : {}) },
       });
       setRows(data.items || []);
     } catch (_) {
       toast.error("Yorumlar yüklenemedi");
     } finally { setLoading(false); }
   };
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [stars]);
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, [stars, productFilter]);
 
   const fmt = (iso) => { try { return new Date(iso).toLocaleDateString("tr-TR"); } catch { return iso; } };
 
@@ -338,6 +348,14 @@ function LowRatingReviews() {
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
+          <select value={productFilter} onChange={(e) => setProductFilter(e.target.value)}
+            className="border px-2 py-1 rounded text-xs max-w-[240px]" data-testid="review-product-filter"
+            title="Ürün bazlı analiz için ürün seçin">
+            <option value="">Tüm ürünler</option>
+            {products.map((p) => (
+              <option key={p.product_id} value={p.product_id}>{p.name} ({p.count})</option>
+            ))}
+          </select>
           <div className="flex items-center gap-1">
             {[1, 2, 3, 4, 5].map((n) => {
               const on = stars.includes(n);
@@ -367,7 +385,7 @@ function LowRatingReviews() {
       {analysis?.reasons?.length > 0 && (
         <div className="mt-3 border-t pt-3" data-testid="ai-analysis">
           <div className="text-[11px] text-gray-500 mb-2">
-            🤖 Şikayet-nedeni analizi — <b>{analysis.total_reviews}</b> yorumdan · {analysis.method && analysis.method.startsWith("keyword") ? "anahtar-kelime" : (analysis.model || "AI")} · <b>küçükten büyüğe</b> (kaç yorumda geçiyor)
+            🤖 Şikayet-nedeni analizi · <b>{productFilter ? (products.find((p) => p.product_id === productFilter)?.name || "Seçili ürün") : "Tüm ürünler"}</b> — <b>{analysis.total_reviews}</b> yorumdan · {analysis.method && analysis.method.startsWith("keyword") ? "anahtar-kelime" : (analysis.model || "AI")} · <b>küçükten büyüğe</b> (kaç yorumda geçiyor)
           </div>
           <div className="flex flex-wrap gap-2">
             {analysis.reasons.map((r, i) => (

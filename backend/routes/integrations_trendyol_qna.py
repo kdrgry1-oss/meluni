@@ -1117,14 +1117,17 @@ async def trendyol_review_sync_status(current_user: dict = Depends(require_admin
 async def trendyol_reviews_list(
     approved: Optional[bool] = None,
     ratings: Optional[str] = None,
+    product_id: Optional[str] = None,
     max_rating: Optional[int] = None,
     min_rating: Optional[int] = None,
     limit: int = 300,
     current_user: dict = Depends(require_admin),
 ):
     """Tek tek Trendyol yorumlarını (admin görünümü) döndürür. `ratings=1,2` → sadece o
-    yıldızlar (tek tek seçim). approved=false → mağazada gizli olanlar. PII yok."""
+    yıldızlar (tek tek seçim). product_id → tek ürün. approved=false → mağazada gizli. PII yok."""
     q = {"source": "trendyol_public"}
+    if product_id:
+        q["product_id"] = product_id
     if approved is not None:
         q["approved"] = approved
     _stars = []
