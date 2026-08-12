@@ -100,7 +100,7 @@ function TrendyolReviewSync() {
         <h2 className="text-sm font-bold uppercase tracking-wider">Trendyol Yorumları (Meluni Mağazası)</h2>
       </div>
       <p className="text-xs text-gray-500 mb-3">
-        Site ürünlerini barkodla Trendyol listelemene eşleştirir ve <b>{minRating}★ ve üzeri</b> yorumları çeker.
+        Site ürünlerini barkodla Trendyol listelemene eşleştirir ve <b>TÜM yıldızlardaki</b> yorumları çeker. <b>{minRating}★ ve üzeri</b> mağazada gösterilir; altındakiler (ör. 1-2★) <b>gizli</b> — yalnız aşağıdaki "Düşük Yıldızlı Yorumlar" bölümünde görünür, ürün puanına katılmaz.
         Yorumlar ürün sayfasında müşteri yorumlarıyla birlikte görünür. Uzun sürebilir.
       </p>
 
@@ -128,12 +128,13 @@ function TrendyolReviewSync() {
       </div>
       <div className="flex flex-wrap items-center gap-3">
         <label className="text-sm flex items-center gap-2">
-          Alt yıldız:
+          Mağazada yayın eşiği:
           <select value={minRating} onChange={(e) => setMinRating(e.target.value)}
-            className="border border-gray-300 rounded px-2 py-1 text-sm">
-            <option value={3}>3, 4 ve 5 yıldız</option>
-            <option value={4}>4 ve 5 yıldız</option>
-            <option value={5}>Sadece 5 yıldız</option>
+            className="border border-gray-300 rounded px-2 py-1 text-sm" title="Bu ve üstü mağazada gösterilir; altındaki yıldızlar yine ÇEKİLİR ama gizli kalır (yalnız panelde)">
+            <option value={2}>2★+ yayında · 1★ gizli çekilir</option>
+            <option value={3}>3★+ yayında · 1-2★ gizli çekilir</option>
+            <option value={4}>4-5★ yayında · 1-3★ gizli çekilir</option>
+            <option value={5}>Sadece 5★ yayında · 1-4★ gizli çekilir</option>
           </select>
         </label>
         <button onClick={() => run(true)} disabled={busy || sync?.state?.status === "running"}
@@ -238,7 +239,7 @@ function TrendyolReviewSync() {
           <div><span className="text-gray-500">Eklenen:</span> <b className="text-emerald-600">{result.total_inserted ?? "—"}</b></div>
           <div><span className="text-gray-500">Güncellenen:</span> <b className="text-blue-600">{result.total_updated ?? "—"}</b></div>
           <div><span className="text-gray-500">Zaten var:</span> <b>{result.skipped_existing ?? "—"}</b></div>
-          <div><span className="text-gray-500">Düşük puan:</span> <b>{result.skipped_low_rating ?? "—"}</b></div>
+          <div><span className="text-gray-500">Gizli (düşük yıldız):</span> <b>{result.low_admin_only ?? result.skipped_low_rating ?? "—"}</b></div>
           <div><span className="text-gray-500">Mod:</span> <b>{result.dry_run ? "önizleme" : "gerçek"}</b></div>
           {Array.isArray(result.errors) && result.errors.length > 0 && (
             <div className="col-span-full text-red-600">Hatalar: {result.errors.length} (ilk: {JSON.stringify(result.errors[0])?.slice(0, 120)})</div>
