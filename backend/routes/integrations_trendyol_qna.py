@@ -1116,23 +1116,32 @@ async def trendyol_review_sync_status(current_user: dict = Depends(require_admin
 @router.get("/trendyol/reviews/list")
 async def trendyol_reviews_list(
     approved: Optional[bool] = None,
+    ratings: Optional[str] = None,
     max_rating: Optional[int] = None,
     min_rating: Optional[int] = None,
     limit: int = 300,
     current_user: dict = Depends(require_admin),
 ):
-    """Tek tek Trendyol yorumlarını (admin görünümü) döndürür. approved=false + max_rating=2
-    → 'müşteriye gösterilmeyen 1-2 yıldızlı yorumlar' listesi. PII yok (Trendyol kullanıcı adı)."""
+    """Tek tek Trendyol yorumlarını (admin görünümü) döndürür. `ratings=1,2` → sadece o
+    yıldızlar (tek tek seçim). approved=false → mağazada gizli olanlar. PII yok."""
     q = {"source": "trendyol_public"}
     if approved is not None:
         q["approved"] = approved
-    rq = {}
-    if max_rating is not None:
-        rq["$lte"] = int(max_rating)
-    if min_rating is not None:
-        rq["$gte"] = int(min_rating)
-    if rq:
-        q["rating"] = rq
+    _stars = []
+    for x in str(ratings or "").split(","):
+        x = x.strip()
+        if x.isdigit() and 1 <= int(x) <= 5:
+            _stars.append(int(x))
+    if _stars:
+        q["rating"] = {"$in": sorted(set(_stars))}
+    else:
+        rq = {}
+        if max_rating is not None:
+            rq["$lte"] = int(max_rating)
+        if min_rating is not None:
+            rq["$gte"] = int(min_rating)
+        if rq:
+            q["rating"] = rq
     rows = await db.product_reviews.find(
         q, {"_id": 0, "id": 1, "product_id": 1, "rating": 1, "title": 1, "comment": 1,
             "user_name": 1, "created_at": 1, "comment_date": 1, "approved": 1, "is_verified": 1},

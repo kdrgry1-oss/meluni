@@ -286,22 +286,25 @@ function TrendyolReviewSync() {
 function LowRatingReviews() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [maxStar, setMaxStar] = useState(2);
+  const [stars, setStars] = useState([1, 2]); // seçili yıldızlar (çoklu, tek tek tıklanır)
   const [open, setOpen] = useState(true);
+
+  const toggleStar = (n) =>
+    setStars((prev) => (prev.includes(n) ? prev.filter((x) => x !== n) : [...prev, n].sort()));
 
   const load = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(`${API}/integrations/trendyol/reviews/list`, {
         headers: authHeaders(),
-        params: { approved: false, max_rating: maxStar, limit: 1000 },
+        params: { ratings: (stars.length ? stars : [1, 2, 3, 4, 5]).join(","), limit: 1000 },
       });
       setRows(data.items || []);
     } catch (_) {
-      toast.error("Düşük yıldızlı yorumlar yüklenemedi");
+      toast.error("Yorumlar yüklenemedi");
     } finally { setLoading(false); }
   };
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [maxStar]);
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, [stars]);
 
   const fmt = (iso) => { try { return new Date(iso).toLocaleDateString("tr-TR"); } catch { return iso; } };
 
@@ -313,15 +316,22 @@ function LowRatingReviews() {
             🔒 Düşük Yıldızlı Yorumlar <span className="text-[10px] font-normal bg-red-50 text-red-700 border border-red-200 rounded px-1.5 py-0.5">Müşteriye GÖSTERİLMEZ</span>
           </h2>
           <p className="text-xs text-gray-500 mt-1">
-            Trendyol'dan çekilen ancak mağazada gizli (ürün puanına katılmayan) düşük puanlı yorumlar — yalnız sizin görmeniz için.
+            Yıldızlara tıklayarak Trendyol yorumlarını filtreleyin (çoklu seçim). Düşük yıldızlılar <b>Gizli</b> (mağazada görünmez, puana katılmaz); 4-5★ <b>Yayında</b>.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <select value={maxStar} onChange={(e) => setMaxStar(Number(e.target.value))} className="border px-2 py-1 rounded text-xs">
-            <option value={1}>Sadece 1★</option>
-            <option value={2}>1–2★</option>
-            <option value={3}>1–3★</option>
-          </select>
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1">
+            {[1, 2, 3, 4, 5].map((n) => {
+              const on = stars.includes(n);
+              return (
+                <button key={n} onClick={() => toggleStar(n)} data-testid={`star-filter-${n}`}
+                  className={`inline-flex items-center gap-0.5 px-2 py-1 rounded text-xs border transition-colors ${
+                    on ? "bg-yellow-400 border-yellow-500 text-black font-bold" : "bg-white border-gray-300 text-gray-500 hover:border-gray-400"}`}>
+                  {n}<Star size={11} className={on ? "fill-black text-black" : "text-gray-400"} />
+                </button>
+              );
+            })}
+          </div>
           <button onClick={load} disabled={loading} className="text-xs border px-2 py-1 rounded hover:bg-gray-50">
             {loading ? "…" : "Yenile"}
           </button>
@@ -343,6 +353,9 @@ function LowRatingReviews() {
                   ))}
                 </span>
                 <span className="text-xs font-medium text-gray-800">{r.product_name}</span>
+                {r.approved
+                  ? <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 rounded px-1">Yayında</span>
+                  : <span className="text-[10px] bg-red-50 text-red-700 border border-red-200 rounded px-1">Gizli</span>}
                 {r.is_verified && <span className="text-[10px] text-emerald-700">✓ doğrulanmış</span>}
                 <span className="text-[11px] text-gray-400 ml-auto">{fmt(r.created_at)} · {r.user_name}</span>
               </div>
