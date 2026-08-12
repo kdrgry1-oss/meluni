@@ -10,7 +10,7 @@ router = APIRouter(prefix="/admin", tags=["Admin"])
 
 @router.get("/dashboard-stats")
 async def get_dashboard_stats(
-    days: int = Query(30, ge=1, le=365),
+    days: int = Query(30, ge=0, le=365),
     platform: str = Query("all"),
     current_user: dict = Depends(require_admin)
 ):
@@ -22,11 +22,20 @@ async def get_dashboard_stats(
     """
     try:
         end_date = datetime.now(timezone.utc)
-        start_date = end_date - timedelta(days=days)
-        prev_start = start_date - timedelta(days=days)
+        today_midnight = end_date.replace(hour=0, minute=0, second=0, microsecond=0)
+        if days <= 0:
+            # "Bugün" — takvim günü 00:00'dan itibaren; kıyas dün (00:00–bugün 00:00).
+            start_date = today_midnight
+            prev_start = today_midnight - timedelta(days=1)
+            prev_end = today_midnight
+        else:
+            start_date = end_date - timedelta(days=days)
+            prev_start = start_date - timedelta(days=days)
+            prev_end = start_date
         start_iso = start_date.isoformat()
         prev_start_iso = prev_start.isoformat()
-        today_iso = end_date.replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
+        prev_end_iso = prev_end.isoformat()
+        today_iso = today_midnight.isoformat()
 
         # ── Platform filtresi (sadece site / sadece trendyol / sadece hb ...) ──
         _pf = (platform or "all").strip().lower()
@@ -67,7 +76,7 @@ async def get_dashboard_stats(
             return (r[0]["count"], r[0]["revenue"] or 0) if r else (0, 0)
 
         cnt_range, total_revenue = await _sum_range(start_iso)
-        prev_cnt, prev_revenue = await _sum_range(prev_start_iso, start_iso)
+        prev_cnt, prev_revenue = await _sum_range(prev_start_iso, prev_end_iso)
         cnt_today, revenue_today = await _sum_range(today_iso)
 
         total_orders = await db.orders.count_documents(plat_match if plat_match else {})

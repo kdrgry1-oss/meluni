@@ -83,7 +83,7 @@ export default function Dashboard() {
     avg_cart: 0,
     order_status_breakdown: {}
   });
-  const [dateRange, setDateRange] = useState("30"); // days
+  const [dateRange, setDateRange] = useState("0"); // days — varsayılan: bugün (0)
   const [platform, setPlatform] = useState("all"); // all | site | trendyol | hepsiburada | ...
 
   useEffect(() => {
@@ -125,6 +125,10 @@ export default function Dashboard() {
     marketplace: "Pazaryeri", trendyol: "Trendyol", hepsiburada: "Hepsiburada", "diğer": "Diğer",
   };
 
+  const trendLabel = ({ "0": "düne göre", "7": "önceki haftaya göre", "30": "geçen aya göre",
+    "90": "önceki döneme göre", "365": "geçen yıla göre" })[dateRange] || "önceki döneme göre";
+  const rangeLabel = ({ "0": "bugün", "7": "son 7 gün", "30": "son 30 gün",
+    "90": "son 90 gün", "365": "son 1 yıl" })[dateRange] || `son ${dateRange} gün`;
   const StatCard = ({ title, value, icon: Icon, trend, trendValue, color }) => (
     <div className="bg-white rounded-xl border p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-start justify-between">
@@ -135,7 +139,7 @@ export default function Dashboard() {
             <div className={`flex items-center gap-1 mt-2 text-sm ${trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {trend >= 0 ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
               <span>{Math.abs(trendValue || trend)}%</span>
-              <span className="text-gray-400 text-xs">geçen aya göre</span>
+              <span className="text-gray-400 text-xs">{trendLabel}</span>
             </div>
           )}
         </div>
@@ -219,6 +223,7 @@ export default function Dashboard() {
             onChange={(e) => setDateRange(e.target.value)}
             className="border px-3 py-2 rounded-lg text-sm"
           >
+            <option value="0">Bugün</option>
             <option value="7">Son 7 Gün</option>
             <option value="30">Son 30 Gün</option>
             <option value="90">Son 90 Gün</option>
@@ -237,14 +242,14 @@ export default function Dashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard
-          title="Toplam Sipariş"
-          value={stats.total_orders}
+          title={dateRange === "0" ? "Bugünkü Sipariş" : "Sipariş"}
+          value={stats.orders_in_range ?? stats.total_orders}
           icon={ShoppingCart}
           trend={stats.growth_orders}
           color="bg-blue-500"
         />
         <StatCard
-          title="Toplam Gelir"
+          title={dateRange === "0" ? "Bugünkü Gelir" : "Gelir"}
           value={`₺${(stats.total_revenue || 0).toLocaleString('tr-TR')}`}
           icon={DollarSign}
           trend={stats.growth_revenue}
@@ -315,7 +320,7 @@ export default function Dashboard() {
       <div className="bg-white rounded-xl border p-6 mb-8">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
           <BarChart3 size={18} /> Sipariş Karşılaştırma Grafiği
-          <span className="text-xs font-normal text-gray-400">· son {dateRange} gün</span>
+          <span className="text-xs font-normal text-gray-400">· {rangeLabel}</span>
         </h3>
         {(stats.daily_series || []).length === 0 ? (
           <div className="text-center text-gray-400 py-12 text-sm">Seçili aralıkta veri yok</div>
