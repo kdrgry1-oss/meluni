@@ -201,6 +201,9 @@ export default function AdminProducts() {
   const [pageSize, setPageSize] = useState(() => _loadProductsView().pageSize || 20);
   const [total, setTotal] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  // Ürün düzenleme modalı açılıp kapanınca liste scroll'u BAŞA dönmesin: açarken konumu sakla,
+  // kapanınca (liste yeniden render olduktan sonra) aynı yere geri dön (kullanıcı isteği).
+  const scrollYRef = useRef(0);
   const [barcodePushOpen, setBarcodePushOpen] = useState(false);
   const [barcodePushText, setBarcodePushText] = useState("");
   const [barcodePushLoading, setBarcodePushLoading] = useState(false);
@@ -527,6 +530,21 @@ export default function AdminProducts() {
     if (!modalOpen && urlProductId) {
       navigate("/admin/urunler", { replace: true });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modalOpen]);
+
+  // Modal kapanınca liste scroll'unu eski konuma GERİ YÜKLE (başa dönme sorununu çözer).
+  // Liste kaydet sonrası fetchProducts ile yeniden render olduğu için birkaç kez denenir.
+  useEffect(() => {
+    if (modalOpen) return;
+    const y = scrollYRef.current;
+    if (!y) return;
+    const restore = () => { try { window.scrollTo(0, y); } catch (_) {} };
+    const r = requestAnimationFrame(() => requestAnimationFrame(restore));
+    const t1 = setTimeout(restore, 80);
+    const t2 = setTimeout(restore, 250);
+    const t3 = setTimeout(() => { restore(); scrollYRef.current = 0; }, 500);
+    return () => { cancelAnimationFrame(r); clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalOpen]);
 
@@ -1684,6 +1702,8 @@ export default function AdminProducts() {
    */
   const openEditModal = async (productArg, options = {}) => {
     const { skipNavigate = false } = options;
+    // Liste scroll konumunu YAKALA (navigate/re-render öncesi) → kapanışta geri yüklenir.
+    try { scrollYRef.current = window.scrollY || window.pageYOffset || 0; } catch (_) {}
     // DB'den taze çek (enrich/sync sonrası UI cache stale olabilir)
     let product = productArg;
     try {
