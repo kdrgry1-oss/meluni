@@ -1453,6 +1453,27 @@ async def create_order(
     _oversell_moves = None
     _plat_lc = str(order.get("platform") or "").lower()
     _is_marketplace = _plat_lc in ("trendyol", "hepsiburada", "temu")
+
+    # PASİF / SİLİNMİŞ ürün siparişini ENGELLE (site). Vitrin pasif ürünü gizlese de bayat
+    # sepet / direkt istek ile pasif ürün sipariş edilebiliyordu → "ürünü pasif yaptım ama yine
+    # sipariş geldi". Ayrıca iptal→restock yarışına karşı ek kalkan: stok 0'a ek olarak ürünü
+    # pasif alınca artık KESİN sipariş gelmez.
+    if not _is_marketplace:
+        for _it in (order.get("items") or []):
+            _ipid = _it.get("product_id")
+            _ibc = _it.get("barcode") or _it.get("sku") or ""
+            _pp = None
+            if _ipid:
+                _pp = await db.products.find_one({"id": _ipid}, {"_id": 0, "is_active": 1, "is_deleted": 1, "name": 1})
+            elif _ibc:
+                _pp = await db.products.find_one(
+                    {"$or": [{"variants.barcode": _ibc}, {"barcode": _ibc}]},
+                    {"_id": 0, "is_active": 1, "is_deleted": 1, "name": 1})
+            if _pp and (_pp.get("is_deleted") or _pp.get("is_active") is False):
+                _nm = _it.get("name") or _pp.get("name") or "ürün"
+                logger.warning(f"[OVERSELL] pasif/silinmiş ürün siparişi reddedildi: {_nm}")
+                raise HTTPException(status_code=409,
+                                    detail=f"Üzgünüz, '{_nm}' şu an satışta değil. Lütfen sepetten çıkarıp tekrar deneyin.")
     # OVERSELL: SİTE siparişinde 0/yetersiz stok HER ZAMAN engellenir — 'order.block_oversell'
     # ayarına BAKILMAZ. (Ayar yanlışlıkla kapatılınca stoğu biten üründen sipariş geçiyordu →
     # para/stok kaybı. Firma kararı: site oversell KESİNLİKLE yasak.) Yalnız pazaryeri
