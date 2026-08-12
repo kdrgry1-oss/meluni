@@ -1159,6 +1159,59 @@ async def trendyol_reviews_list(
     return {"items": rows, "count": len(rows)}
 
 
+# Şikayet kategorileri (anahtar-kelime) — hem AI yedeğinde hem gruplama ucunda kullanılır.
+_REVIEW_CATS = [
+    ("Kalıp dar/küçük", ["kalıp", "kalip", "dar ", " dar", "küçük", "kucuk", "small", "xs gibi", "beden değil", "beden degil"], 4),
+    ("Kumaş kalitesiz", ["kumaş", "kumas", "kalitesiz", "polyester", "ince", "tok durmu", "kalitesi kötü", "kalitesi kotu"], 4),
+    ("Dikiş/işçilik", ["dikiş", "dikis", "söküldü", "sokuldu", "açıldı", "acildi", "işçilik", "iscilik", "dikişi attı", "dikisi atti"], 4),
+    ("Beden/ölçü uyumsuz", ["beden", "ölçü", "olcu", "numara", "büyük geldi", "buyuk geldi", "geniş", "genis"], 3),
+    ("Fiyat/değer", ["fiyat", "para etmez", "pahalı", "pahali", "değmez", "degmez", "hak etmiyor", "israf", "para yazık", "para yazik"], 3),
+    ("Kargo/paketleme", ["kargo", "paket", "geç geldi", "gec geldi", "eksik geldi"], 2),
+    ("Görselden farklı", ["farklı", "farkli", "resimde", "görselde", "gorselde", "göründüğü", "gorundugu", "beklenti"], 3),
+    ("Renk farklı/soluk", ["renk farklı", "renk farkli", "soluk", "soldu", "rengi farklı", "rengi farkli"], 3),
+    ("Koku/leke", ["koku", "kokuyor", "leke", "kirli geldi"], 4),
+]
+
+
+@router.get("/trendyol/reviews/grouped")
+async def trendyol_reviews_grouped(
+    product_id: str,
+    ratings: Optional[str] = None,
+    current_user: dict = Depends(require_admin),
+):
+    """Bir ürünün düşük yıldızlı yorumlarını şikayet kategorilerine GRUPLAR ve her grubun
+    ALTINDAKİ yorumları döndürür (popup detay için). Bir yorum birden çok gruba girebilir;
+    hiçbirine uymayan 'Diğer'e düşer. Küçükten büyüğe sıralı."""
+    q = {"source": "trendyol_public", "product_id": product_id}
+    _stars = [int(x) for x in str(ratings or "").split(",") if x.strip().isdigit() and 1 <= int(x) <= 5]
+    if _stars:
+        q["rating"] = {"$in": sorted(set(_stars))}
+    else:
+        q["rating"] = {"$lte": 2}
+    rows = await db.product_reviews.find(
+        q, {"_id": 0, "id": 1, "rating": 1, "comment": 1, "title": 1, "created_at": 1,
+            "comment_date": 1, "user_name": 1, "approved": 1},
+    ).sort("created_at", -1).limit(1500).to_list(None)
+    groups = {name: {"reason": name, "severity": sev, "reviews": []} for name, _, sev in _REVIEW_CATS}
+    other = {"reason": "Diğer", "severity": 2, "reviews": []}
+    for r in rows:
+        body = (f"{r.get('title') or ''} {r.get('comment') or ''}").strip().lower()
+        matched = False
+        for name, kws, _sev in _REVIEW_CATS:
+            if any(k in body for k in kws):
+                groups[name]["reviews"].append(r)
+                matched = True
+        if not matched:
+            other["reviews"].append(r)
+    out = [g for g in groups.values() if g["reviews"]]
+    if other["reviews"]:
+        out.append(other)
+    for g in out:
+        g["count"] = len(g["reviews"])
+    out.sort(key=lambda x: x["count"])  # küçükten büyüğe (kullanıcı isteği)
+    return {"ok": True, "product_id": product_id, "total_reviews": len(rows), "groups": out}
+
+
 @router.get("/trendyol/reviews/analyze")
 async def trendyol_reviews_analyze(
     ratings: Optional[str] = None,

@@ -285,150 +285,158 @@ function TrendyolReviewSync() {
 }
 
 function LowRatingReviews() {
-  const [rows, setRows] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [stars, setStars] = useState([1, 2]); // seçili yıldızlar (çoklu, tek tek tıklanır)
-  const [open, setOpen] = useState(true);
-  const [analysis, setAnalysis] = useState(null);
-  const [analyzing, setAnalyzing] = useState(false);
-  const [products, setProducts] = useState([]);       // ürün seçici (by-product)
-  const [productFilter, setProductFilter] = useState(""); // "" = tüm ürünler
+  const [products, setProducts] = useState([]);
+  const [selected, setSelected] = useState("");        // seçili ürün (product_id)
+  const [stars, setStars] = useState([1, 2]);          // yıldız filtresi (çoklu)
+  const [grouped, setGrouped] = useState(null);        // {groups, total_reviews}
+  const [loadingG, setLoadingG] = useState(false);
+  const [popup, setPopup] = useState(null);            // tıklanan grup {reason, reviews}
+  const [q, setQ] = useState("");                      // ürün arama
 
   useEffect(() => {
     axios.get(`${API}/integrations/trendyol/reviews/by-product?limit=2000`, { headers: authHeaders() })
-      .then((r) => setProducts(r.data?.products || []))
-      .catch(() => {});
+      .then((r) => {
+        const ps = r.data?.products || [];
+        setProducts(ps);
+        setSelected((cur) => cur || (ps[0]?.product_id || ""));
+      }).catch(() => {});
   }, []);
-
-  const analyze = async () => {
-    setAnalyzing(true);
-    try {
-      const { data } = await axios.get(`${API}/integrations/trendyol/reviews/analyze`, {
-        headers: authHeaders(),
-        params: { ratings: (stars.length ? stars : [1, 2]).join(","), limit: 300,
-          ...(productFilter ? { product_id: productFilter } : {}) },
-      });
-      setAnalysis(data);
-      if (!data?.total_reviews) toast.info("Bu yıldız(lar)da kayıtlı yorum yok — önce Trendyol yorumlarını çekin ya da başka yıldız seçin.");
-      else if (!data?.reasons?.length) toast.info(`${data.total_reviews} yorum bulundu ama neden çıkarılamadı.`);
-    } catch (e) {
-      toast.error("AI analizi başarısız: " + (e?.response?.data?.detail || e.message));
-    } finally { setAnalyzing(false); }
-  };
 
   const toggleStar = (n) =>
     setStars((prev) => (prev.includes(n) ? prev.filter((x) => x !== n) : [...prev, n].sort()));
 
-  const load = async () => {
-    setLoading(true);
+  const loadGroups = async () => {
+    if (!selected) { setGrouped(null); return; }
+    setLoadingG(true);
     try {
-      const { data } = await axios.get(`${API}/integrations/trendyol/reviews/list`, {
+      const { data } = await axios.get(`${API}/integrations/trendyol/reviews/grouped`, {
         headers: authHeaders(),
-        params: { ratings: (stars.length ? stars : [1, 2, 3, 4, 5]).join(","), limit: 1000,
-          ...(productFilter ? { product_id: productFilter } : {}) },
+        params: { product_id: selected, ratings: (stars.length ? stars : [1, 2]).join(",") },
       });
-      setRows(data.items || []);
+      setGrouped(data);
     } catch (_) {
-      toast.error("Yorumlar yüklenemedi");
-    } finally { setLoading(false); }
+      toast.error("Şikayet grupları yüklenemedi");
+    } finally { setLoadingG(false); }
   };
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [stars, productFilter]);
+  useEffect(() => { loadGroups(); /* eslint-disable-next-line */ }, [selected, stars]);
 
   const fmt = (iso) => { try { return new Date(iso).toLocaleDateString("tr-TR"); } catch { return iso; } };
+  const filtered = products.filter((p) => !q || (p.name || "").toLowerCase().includes(q.toLowerCase()));
+  const selName = products.find((p) => p.product_id === selected)?.name || "";
 
   return (
     <div className="bg-white border rounded-xl p-4" data-testid="low-rating-reviews">
-      <div className="flex items-center justify-between flex-wrap gap-2">
+      <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
         <div>
           <h2 className="text-sm font-bold uppercase tracking-wider flex items-center gap-2">
-            🔒 Düşük Yıldızlı Yorumlar <span className="text-[10px] font-normal bg-red-50 text-red-700 border border-red-200 rounded px-1.5 py-0.5">Müşteriye GÖSTERİLMEZ</span>
+            🔒 Düşük Yıldızlı Yorumlar — Şikayet Grupları <span className="text-[10px] font-normal bg-red-50 text-red-700 border border-red-200 rounded px-1.5 py-0.5">Müşteriye GÖSTERİLMEZ</span>
           </h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Yıldızlara tıklayarak Trendyol yorumlarını filtreleyin (çoklu seçim). Düşük yıldızlılar <b>Gizli</b> (mağazada görünmez, puana katılmaz); 4-5★ <b>Yayında</b>.
-          </p>
+          <p className="text-xs text-gray-500 mt-1">Soldan ürün seçin; sağda şikayetler gruplanır. Bir gruba <b>tıklayınca</b> o yorumlar açılır.</p>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <select value={productFilter} onChange={(e) => setProductFilter(e.target.value)}
-            className="border px-2 py-1 rounded text-xs max-w-[240px]" data-testid="review-product-filter"
-            title="Ürün bazlı analiz için ürün seçin">
-            <option value="">Tüm ürünler</option>
-            {products.map((p) => (
-              <option key={p.product_id} value={p.product_id}>{p.name} ({p.count})</option>
-            ))}
-          </select>
-          <div className="flex items-center gap-1">
-            {[1, 2, 3, 4, 5].map((n) => {
-              const on = stars.includes(n);
-              return (
-                <button key={n} onClick={() => toggleStar(n)} data-testid={`star-filter-${n}`}
-                  className={`inline-flex items-center gap-0.5 px-2 py-1 rounded text-xs border transition-colors ${
-                    on ? "bg-yellow-400 border-yellow-500 text-black font-bold" : "bg-white border-gray-300 text-gray-500 hover:border-gray-400"}`}>
-                  {n}<Star size={11} className={on ? "fill-black text-black" : "text-gray-400"} />
-                </button>
-              );
-            })}
-          </div>
-          <button onClick={analyze} disabled={analyzing}
-            className="text-xs px-2.5 py-1 rounded bg-violet-600 text-white hover:bg-violet-700 disabled:opacity-60 font-semibold"
-            data-testid="ai-analyze">
-            {analyzing ? "Analiz ediliyor…" : "🤖 AI Neden Analizi"}
-          </button>
-          <button onClick={load} disabled={loading} className="text-xs border px-2 py-1 rounded hover:bg-gray-50">
-            {loading ? "…" : "Yenile"}
-          </button>
-          <button onClick={() => setOpen((v) => !v)} className="text-xs border px-2 py-1 rounded hover:bg-gray-50">
-            {open ? "Gizle" : `Göster (${rows.length})`}
-          </button>
+        <div className="flex items-center gap-1">
+          {[1, 2, 3, 4, 5].map((n) => {
+            const on = stars.includes(n);
+            return (
+              <button key={n} onClick={() => toggleStar(n)} data-testid={`star-filter-${n}`}
+                className={`inline-flex items-center gap-0.5 px-2 py-1 rounded text-xs border transition-colors ${
+                  on ? "bg-yellow-400 border-yellow-500 text-black font-bold" : "bg-white border-gray-300 text-gray-500 hover:border-gray-400"}`}>
+                {n}<Star size={11} className={on ? "fill-black text-black" : "text-gray-400"} />
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {analysis?.reasons?.length > 0 && (
-        <div className="mt-3 border-t pt-3" data-testid="ai-analysis">
-          <div className="text-[11px] text-gray-500 mb-2">
-            🤖 Şikayet-nedeni analizi · <b>{productFilter ? (products.find((p) => p.product_id === productFilter)?.name || "Seçili ürün") : "Tüm ürünler"}</b> — <b>{analysis.total_reviews}</b> yorumdan · {analysis.method && analysis.method.startsWith("keyword") ? "anahtar-kelime" : (analysis.model || "AI")} · <b>küçükten büyüğe</b> (kaç yorumda geçiyor)
+      <div className="flex gap-4">
+        {/* SOL — ürün listesi */}
+        <div className="w-60 shrink-0 border rounded-lg flex flex-col overflow-hidden">
+          <div className="p-2 border-b">
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Ürün ara…"
+              className="w-full border px-2 py-1 rounded text-xs" data-testid="review-product-search" />
           </div>
-          <div className="flex flex-wrap gap-2">
-            {analysis.reasons.map((r, i) => (
-              <div key={i} className="border rounded-lg px-3 py-2 bg-gray-50 min-w-[150px]" title={r.example || ""}>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-semibold text-gray-800">{r.reason}</span>
-                  <span className="text-xs font-bold bg-red-100 text-red-700 rounded-full px-2 py-0.5">{r.count}</span>
-                </div>
-                <div className="mt-1 flex items-center gap-0.5">
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <span key={n} className={`inline-block w-1.5 h-1.5 rounded-full ${n <= r.severity ? "bg-red-500" : "bg-gray-200"}`} />
-                  ))}
-                  <span className="text-[10px] text-gray-400 ml-1">ciddiyet</span>
-                </div>
-                {r.example && <div className="text-[10px] text-gray-400 mt-1 line-clamp-2">"{r.example}"</div>}
-              </div>
+          <div className="overflow-y-auto" style={{ maxHeight: 500 }}>
+            {filtered.length === 0 ? (
+              <p className="text-xs text-gray-400 p-3 text-center">Yorumlu ürün yok. Önce Trendyol yorumlarını çekin.</p>
+            ) : filtered.map((p) => (
+              <button key={p.product_id} onClick={() => setSelected(p.product_id)}
+                data-testid={`review-product-${p.product_id}`}
+                className={`w-full text-left px-3 py-2 text-xs border-b hover:bg-gray-50 ${
+                  selected === p.product_id ? "bg-violet-50 border-l-2 border-l-violet-500" : ""}`}>
+                <div className="font-medium text-gray-800 truncate">{p.name}</div>
+                <div className="text-[10px] text-gray-400">{p.count} yorum · ort {p.avg}★</div>
+              </button>
             ))}
           </div>
         </div>
-      )}
-      {open && (
-        <div className="mt-3 max-h-[520px] overflow-y-auto divide-y">
-          {rows.length === 0 ? (
-            <p className="text-sm text-gray-400 py-6 text-center">{loading ? "Yükleniyor…" : "Bu aralıkta gizli düşük yıldızlı yorum yok."}</p>
-          ) : rows.map((r) => (
-            <div key={r.id} className="py-2.5">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="flex">
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <Star key={n} size={13} className={n <= r.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"} />
-                  ))}
-                </span>
-                <span className="text-xs font-medium text-gray-800">{r.product_name}</span>
-                {r.approved
-                  ? <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 rounded px-1">Yayında</span>
-                  : <span className="text-[10px] bg-red-50 text-red-700 border border-red-200 rounded px-1">Gizli</span>}
-                {r.is_verified && <span className="text-[10px] text-emerald-700">✓ doğrulanmış</span>}
-                <span className="text-[11px] text-gray-400 ml-auto">{fmt(r.created_at)} · {r.user_name}</span>
+
+        {/* SAĞ — şikayet grupları */}
+        <div className="flex-1 min-w-0">
+          {!selected ? (
+            <p className="text-sm text-gray-400 py-10 text-center">Soldan bir ürün seçin.</p>
+          ) : loadingG ? (
+            <p className="text-sm text-gray-400 py-10 text-center">Yükleniyor…</p>
+          ) : !grouped?.groups?.length ? (
+            <p className="text-sm text-gray-400 py-10 text-center">Bu ürün + yıldız seçiminde şikayet yorumu yok.</p>
+          ) : (
+            <>
+              <div className="text-[11px] text-gray-500 mb-2">
+                <b>{selName}</b> · {grouped.total_reviews} yorum · şikayet grupları (küçükten büyüğe) — kutuya <b>tıkla</b>, yorumlar açılsın
               </div>
-              {r.title && <div className="text-xs font-semibold text-gray-700 mt-1">{r.title}</div>}
-              <div className="text-sm text-gray-700 mt-0.5">{r.comment || <span className="text-gray-400">(yorum metni yok)</span>}</div>
+              <div className="flex flex-wrap gap-2">
+                {grouped.groups.map((g, i) => (
+                  <button key={i} onClick={() => setPopup(g)} title="Tıkla: yorumları gör"
+                    data-testid={`review-group-${i}`}
+                    className="text-left border rounded-lg px-3 py-2 bg-gray-50 hover:bg-white hover:border-violet-400 min-w-[150px] transition-colors">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs font-semibold text-gray-800">{g.reason}</span>
+                      <span className="text-xs font-bold bg-red-100 text-red-700 rounded-full px-2 py-0.5">{g.count}</span>
+                    </div>
+                    <div className="mt-1 flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((n) => (
+                        <span key={n} className={`inline-block w-1.5 h-1.5 rounded-full ${n <= g.severity ? "bg-red-500" : "bg-gray-200"}`} />
+                      ))}
+                      <span className="text-[10px] text-gray-400 ml-1">ciddiyet</span>
+                    </div>
+                    <div className="text-[10px] text-violet-600 mt-1">detay →</div>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* POPUP — grup yorumları */}
+      {popup && (
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={() => setPopup(null)}>
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between p-4 border-b">
+              <div>
+                <div className="font-bold text-gray-900">{popup.reason} <span className="text-xs font-normal text-gray-400">({popup.count} yorum)</span></div>
+                <div className="text-[11px] text-gray-400">{selName}</div>
+              </div>
+              <button onClick={() => setPopup(null)} className="text-gray-400 hover:text-gray-700 text-2xl leading-none">×</button>
             </div>
-          ))}
+            <div className="overflow-y-auto p-4 divide-y">
+              {(popup.reviews || []).map((r, i) => (
+                <div key={i} className="py-2.5">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="flex">
+                      {[1, 2, 3, 4, 5].map((n) => (
+                        <Star key={n} size={13} className={n <= r.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"} />
+                      ))}
+                    </span>
+                    {r.approved
+                      ? <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 rounded px-1">Yayında</span>
+                      : <span className="text-[10px] bg-red-50 text-red-700 border border-red-200 rounded px-1">Gizli</span>}
+                    <span className="text-[11px] text-gray-400 ml-auto">{fmt(r.created_at)} · {r.user_name}</span>
+                  </div>
+                  {r.title && <div className="text-xs font-semibold text-gray-700 mt-1">{r.title}</div>}
+                  <div className="text-sm text-gray-700 mt-0.5">{r.comment || <span className="text-gray-400">(yorum metni yok)</span>}</div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
