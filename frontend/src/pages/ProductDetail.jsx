@@ -883,9 +883,9 @@ export default function ProductDetail() {
                       || (_attrFit.includes("oversize") || _attrFit.includes("bol") ? "bol"
                         : _attrFit.includes("slim") || _attrFit.includes("dar") ? "dar"
                         : _attrFit.includes("regular") || _attrFit.includes("normal") ? "normal" : "");
-                    if (_fit === "normal") return "Müşteriler kendi bedeninizi almanızı tavsiye ediyor.";
-                    if (_fit === "bol") return "Müşteriler bir beden küçük almanızı tavsiye ediyor.";
-                    if (_fit === "dar") return "Müşteriler bir beden büyük almanızı tavsiye ediyor.";
+                    if (_fit === "normal") return <b className="font-bold">Müşteriler kendi bedeninizi almanızı tavsiye ediyor.</b>;
+                    if (_fit === "bol") return <b className="font-bold">Müşteriler bir beden küçük almanızı tavsiye ediyor.</b>;
+                    if (_fit === "dar") return <b className="font-bold">Müşteriler bir beden büyük almanızı tavsiye ediyor.</b>;
                     return "Beden Seçiniz";
                   })()}
                   {selectedVariant && Number(selectedVariant.stock) <= 0 && (
