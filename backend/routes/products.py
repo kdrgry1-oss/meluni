@@ -2368,6 +2368,38 @@ async def update_product(
             (current_user or {}).get("email") or (current_user or {}).get("username") or "",
         )
 
+    # İMALAT SENKRONU (kullanıcı isteği): bu üründen oluşturulmuş imalat kaydı varsa,
+    # üründeki KİMLİK değişiklikleri (ürün adı, stok kodu, renkler) imalata da yansır.
+    # Üretim/maliyet alanları (unit_price, size_distribution, ödeme, tarihler vb.) DEĞİŞMEZ.
+    try:
+        _mfg_set = {}
+        _new_name = product_data.get("name")
+        if _new_name and _new_name != existing.get("name"):
+            _mfg_set["product_name"] = _new_name
+        if "stock_code" in product_data:
+            _new_sc = str(product_data.get("stock_code") or "").strip()
+            if _new_sc and _new_sc != str(existing.get("stock_code") or "").strip():
+                _mfg_set["stock_code"] = _new_sc
+        # Renk listesi ürün varyantlarından türetilir (varyant güncellendiyse).
+        if variants:
+            _colors = []
+            for _v in variants:
+                _c = (_v.get("color") or _v.get("renk") or "").strip()
+                if _c and _c not in _colors:
+                    _colors.append(_c)
+            if _colors and _colors != (existing.get("colors") if isinstance(existing.get("colors"), list) else None):
+                _mfg_set["colors"] = _colors
+        if _mfg_set:
+            _mfg_set["updated_at"] = datetime.now(timezone.utc).isoformat()
+            _mres = await db.manufacturing.update_many(
+                {"$or": [{"product_id": product_id}, {"created_product_ids": product_id}]},
+                {"$set": _mfg_set},
+            )
+            if _mres.modified_count:
+                logger.info(f"[imalat-senkron] ürün {product_id} değişikliği {_mres.modified_count} imalat kaydına yansıtıldı: {list(_mfg_set)}")
+    except Exception as _mfg_e:
+        logger.warning(f"[imalat-senkron] ürün→imalat güncelleme başarısız {product_id}: {_mfg_e}")
+
     # RENK KARDEŞİ OTOMATİK SENKRONU (kullanıcı isteği): stok kodu AYNI olan kartlarda
     # model-düzeyi alanlar bu kayıtla birlikte eşitlenir — Sezon, Beden Önerisi (Kalıp)
     # ve Özellikler (Renk/Web Color HARİÇ; kardeşin kendi rengi korunur). Varyantlar,
