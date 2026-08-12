@@ -63,6 +63,22 @@ log "backend bağımlılıkları kuruluyor"
 # .env'i backend'in yanına bağla — server.py onu kendi dizininden okuyor.
 ln -sfn "${SHARED_DIR}/.env" "${RELEASE_DIR}/backend/.env"
 
+# JWT imza anahtarı: .env'de JWT_SECRET yoksa deps.py onu backend/data/.jwt_secret
+# dosyasında üretip saklıyor. O dosya RELEASE dizininde kalırsa her deployda yeni
+# release ile birlikte kaybolur, yeni anahtar üretilir ve TÜM oturumlar (müşteri +
+# yönetim) düşer. Anahtarı shared'e alıp release'e bağlıyoruz — release'ler arası
+# stabil kalsın. (Kalıcı çözüm .env'e JWT_SECRET yazmaktır; bu yalnız güvenlik ağı.)
+mkdir -p "${RELEASE_DIR}/backend/data"
+if [ -f "${RELEASE_DIR}/backend/data/.jwt_secret" ] && [ ! -f "${SHARED_DIR}/.jwt_secret" ]; then
+  # İlk geçiş: release'de üretilmiş anahtar varsa onu shared'e taşı, kaybetme.
+  cp -a "${RELEASE_DIR}/backend/data/.jwt_secret" "${SHARED_DIR}/.jwt_secret"
+fi
+if [ -f "${SHARED_DIR}/.jwt_secret" ]; then
+  ln -sfn "${SHARED_DIR}/.jwt_secret" "${RELEASE_DIR}/backend/data/.jwt_secret"
+  chmod 600 "${SHARED_DIR}/.jwt_secret" 2>/dev/null || true
+  log "JWT anahtarı shared'den bağlandı (deploy'lar arası stabil)"
+fi
+
 # ── Frontend ────────────────────────────────────────────────────────────
 # CI derlemesi `frontend/build` olarak gelir.
 #
