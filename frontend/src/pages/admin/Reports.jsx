@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
@@ -17,15 +17,59 @@ function useDateRange() {
   return { from, setFrom, to, setTo };
 }
 
+// Hazır tarih ön-ayarları — tüm rapor sayfalarında ortak (bu DateBar her rapor tarafından kullanılır).
+const DATE_PRESETS = [
+  { key: "today", label: "Bugün", days: 1 },
+  { key: "7", label: "Son 7 Gün", days: 7 },
+  { key: "30", label: "Son 30 Gün", days: 30 },
+  { key: "90", label: "Son 90 Gün", days: 90 },
+  { key: "365", label: "Son 1 Yıl", days: 365 },
+];
+
 function DateBar({ from, setFrom, to, setTo, onRefresh }) {
+  // Ön-ayar tıklanınca tarihleri güncelle ve tarih STATE'i işlendikten SONRA (ref ile en güncel
+  // load'ı) otomatik uygula — böylece bayat kapanış (stale closure) sorunu olmadan tek tıkla çalışır.
+  const onRefreshRef = useRef(onRefresh);
+  onRefreshRef.current = onRefresh;
+  const tickRef = useRef(0);
+  const [tick, setTick] = useState(0);
+  const [activePreset, setActivePreset] = useState("");
+  useEffect(() => {
+    if (tick !== tickRef.current) {
+      tickRef.current = tick;
+      onRefreshRef.current && onRefreshRef.current();
+    }
+  }, [from, to, tick]);
+
+  const applyPreset = (p) => {
+    const t = new Date();
+    const toStr = t.toISOString().slice(0, 10);
+    const fromStr = p.days <= 1 ? toStr
+      : new Date(t.getTime() - (p.days - 1) * 864e5).toISOString().slice(0, 10);
+    setFrom(fromStr); setTo(toStr); setActivePreset(p.key); setTick((x) => x + 1);
+  };
+
   return (
-    <div className="flex items-center gap-2 bg-white p-2 border rounded-lg">
-      <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="text-sm px-2 py-1 border-0" />
-      <span className="text-gray-400">→</span>
-      <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="text-sm px-2 py-1 border-0" />
-      <button onClick={onRefresh} className="px-3 py-1 bg-black text-white text-xs rounded hover:bg-gray-800 inline-flex items-center gap-1">
-        <RefreshCw size={12} /> Uygula
-      </button>
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-1">
+        {DATE_PRESETS.map((p) => (
+          <button key={p.key} onClick={() => applyPreset(p)} data-testid={`date-preset-${p.key}`}
+            className={`px-2.5 py-1.5 text-xs rounded border transition-colors ${
+              activePreset === p.key
+                ? "bg-black text-white border-black font-semibold"
+                : "bg-white text-gray-600 border-gray-300 hover:border-black"}`}>
+            {p.label}
+          </button>
+        ))}
+      </div>
+      <div className="flex items-center gap-2 bg-white p-2 border rounded-lg">
+        <input type="date" value={from} onChange={(e) => { setFrom(e.target.value); setActivePreset(""); }} className="text-sm px-2 py-1 border-0" />
+        <span className="text-gray-400">→</span>
+        <input type="date" value={to} onChange={(e) => { setTo(e.target.value); setActivePreset(""); }} className="text-sm px-2 py-1 border-0" />
+        <button onClick={onRefresh} className="px-3 py-1 bg-black text-white text-xs rounded hover:bg-gray-800 inline-flex items-center gap-1">
+          <RefreshCw size={12} /> Uygula
+        </button>
+      </div>
     </div>
   );
 }
