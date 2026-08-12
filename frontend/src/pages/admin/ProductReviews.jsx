@@ -300,7 +300,8 @@ function LowRatingReviews() {
         params: { ratings: (stars.length ? stars : [1, 2]).join(","), limit: 300 },
       });
       setAnalysis(data);
-      if (!data?.reasons?.length) toast.info("Analiz için yeterli yorum yok");
+      if (!data?.total_reviews) toast.info("Bu yıldız(lar)da kayıtlı yorum yok — önce Trendyol yorumlarını çekin ya da başka yıldız seçin.");
+      else if (!data?.reasons?.length) toast.info(`${data.total_reviews} yorum bulundu ama neden çıkarılamadı.`);
     } catch (e) {
       toast.error("AI analizi başarısız: " + (e?.response?.data?.detail || e.message));
     } finally { setAnalyzing(false); }
@@ -366,7 +367,7 @@ function LowRatingReviews() {
       {analysis?.reasons?.length > 0 && (
         <div className="mt-3 border-t pt-3" data-testid="ai-analysis">
           <div className="text-[11px] text-gray-500 mb-2">
-            🤖 AI şikayet-nedeni analizi — {analysis.total_reviews} yorumdan · {analysis.model} · <b>küçükten büyüğe</b> (kaç yorumda geçiyor)
+            🤖 Şikayet-nedeni analizi — <b>{analysis.total_reviews}</b> yorumdan · {analysis.method && analysis.method.startsWith("keyword") ? "anahtar-kelime" : (analysis.model || "AI")} · <b>küçükten büyüğe</b> (kaç yorumda geçiyor)
           </div>
           <div className="flex flex-wrap gap-2">
             {analysis.reasons.map((r, i) => (

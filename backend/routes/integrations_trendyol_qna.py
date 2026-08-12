@@ -1190,62 +1190,83 @@ async def trendyol_reviews_analyze(
     if not comments:
         return {"ok": True, "total_reviews": 0, "reasons": [], "message": "Analiz edilecek yorum yok"}
 
+    # KURAL (kullanıcı isteği): kaç yorum varsa O KADARIYLA analiz yap — minimum yok.
+    # Sıra: 1) AI (varsa) → 2) AI boş/başarısız veya anahtar yoksa anahtar-kelime yedeği.
+    out = []
+    method = "ai"
+    _provider = ""
+    _model = ""
     from .ai_chatbot import get_ai_settings, _api_key_for, llm_chat
     settings = await get_ai_settings()
     api_key = _api_key_for(settings)
-    if not api_key:
-        raise HTTPException(status_code=400, detail="AI anahtarı tanımlı değil (Ayarlar → Yapay Zeka).")
-    provider = settings.get("provider") or "openai"
-    model = settings.get("model") or "gpt-5.4-mini"
+    if api_key:
+        _provider = settings.get("provider") or "openai"
+        _model = settings.get("model") or "gpt-5.4-mini"
+        sys_msg = (
+            "Sen bir e-ticaret ürün-yorum analistisin. Sana bir mağazanın DÜŞÜK PUANLI müşteri "
+            "yorumları verilir. Görevin: şikayet NEDENLERİNİ birbirinden ayrık kategorilere topla "
+            "(ör. 'Kalıp dar/küçük', 'Kumaş kalitesiz', 'Dikiş/işçilik kusuru', 'Beden-ölçü uyumsuz', "
+            "'Görselden/beklentiden farklı', 'Fiyat/değer', 'Kargo/paketleme', 'Koku/leke', 'Renk farklı'). "
+            "Her kategori için KAÇ farklı yorumda geçtiğini SAY. Az yorum olsa bile (1 tane bile) analiz et. "
+            "Kısa, Türkçe kategori adları kullan. SADECE ve YALNIZCA şu JSON'u döndür (açıklama yazma): "
+            '{"reasons":[{"reason":"...","count":N,"severity":1-5,"example":"o kategoriden kısa bir alıntı"}]}. '
+            "severity: şikayetin ciddiyeti (5=iade/ürün kusuru, 1=küçük memnuniyetsizlik)."
+        )
+        user_text = "YORUMLAR:\n" + "\n".join(comments[:300])
+        try:
+            txt = await llm_chat(api_key, _provider, _model, sys_msg, user_text, max_tokens=1500)
+            import json as _json
+            import re as _re2
+            _m = _re2.search(r"\{.*\}", (txt or "").strip(), _re2.DOTALL)
+            data = _json.loads(_m.group(0)) if _m else {}
+            for r in (data.get("reasons") if isinstance(data, dict) else []) or []:
+                if not isinstance(r, dict):
+                    continue
+                try:
+                    c = int(r.get("count") or 0)
+                except Exception:
+                    c = 0
+                try:
+                    sev = int(r.get("severity") or 0)
+                except Exception:
+                    sev = 0
+                nm = str(r.get("reason") or "").strip()[:80]
+                if nm:
+                    out.append({"reason": nm, "count": max(0, c), "severity": max(0, min(5, sev)),
+                                "example": str(r.get("example") or "").strip()[:220]})
+        except Exception as e:
+            logger.warning(f"[yorum-analiz] LLM hata: {e}")
 
-    sys_msg = (
-        "Sen bir e-ticaret ürün-yorum analistisin. Sana bir mağazanın DÜŞÜK PUANLI müşteri "
-        "yorumları verilir. Görevin: şikayet NEDENLERİNİ birbirinden ayrık kategorilere topla "
-        "(ör. 'Kalıp dar/küçük', 'Kumaş kalitesiz', 'Dikiş/işçilik kusuru', 'Beden-ölçü uyumsuz', "
-        "'Görselden/beklentiden farklı', 'Fiyat/değer', 'Kargo/paketleme', 'Koku/leke', 'Renk farklı'). "
-        "Her kategori için KAÇ farklı yorumda geçtiğini SAY. Kısa, Türkçe kategori adları kullan. "
-        "SADECE ve YALNIZCA şu JSON'u döndür (açıklama yazma): "
-        '{"reasons":[{"reason":"...","count":N,"severity":1-5,"example":"o kategoriden kısa bir alıntı"}]}. '
-        "severity: şikayetin ciddiyeti (5=iade/ürün kusuru, 1=küçük memnuniyetsizlik)."
-    )
-    user_text = "YORUMLAR:\n" + "\n".join(comments[:300])
-    try:
-        txt = await llm_chat(api_key, provider, model, sys_msg, user_text, max_tokens=1500)
-    except Exception as e:
-        logger.warning(f"[yorum-analiz] LLM hata: {e}")
-        raise HTTPException(status_code=502, detail=f"AI analizi başarısız: {str(e)[:200]}")
+    # AI sonuç üretemediyse (anahtar yok / hata / boş) → anahtar-kelime tabanlı YEDEK (her zaman sonuç).
+    if not out:
+        method = "keyword" if api_key else "keyword_no_ai"
+        _CATS = [
+            ("Kalıp dar/küçük", ["kalıp", "kalip", "dar ", " dar", "küçük", "kucuk", "small", "xs gibi", "beden değil", "beden degil"], 4),
+            ("Kumaş kalitesiz", ["kumaş", "kumas", "kalitesiz", "polyester", "ince", "tok durmu", "kalitesi kötü", "kalitesi kotu"], 4),
+            ("Dikiş/işçilik", ["dikiş", "dikis", "söküldü", "sokuldu", "açıldı", "acildi", "işçilik", "iscilik", "dikişi attı", "dikisi atti"], 4),
+            ("Beden/ölçü uyumsuz", ["beden", "ölçü", "olcu", "numara", "büyük geldi", "buyuk geldi", "geniş", "genis"], 3),
+            ("Fiyat/değer", ["fiyat", "para etmez", "pahalı", "pahali", "değmez", "degmez", "hak etmiyor", "israf", "para yazık", "para yazik"], 3),
+            ("Kargo/paketleme", ["kargo", "paket", "geç geldi", "gec geldi", "eksik geldi"], 2),
+            ("Görselden farklı", ["farklı", "farkli", "resimde", "görselde", "gorselde", "göründüğü", "gorundugu", "beklenti"], 3),
+            ("Renk farklı/soluk", ["renk farklı", "renk farkli", "soluk", "soldu", "rengi farklı", "rengi farkli"], 3),
+            ("Koku/leke", ["koku", "kokuyor", "leke", "kirli geldi"], 4),
+        ]
+        _low = [(_c.lower()) for _c in comments]
+        for name, kws, sev in _CATS:
+            cnt = 0
+            example = ""
+            for i, txtc in enumerate(_low):
+                if any(k in txtc for k in kws):
+                    cnt += 1
+                    if not example:
+                        example = comments[i][:220]
+            if cnt > 0:
+                out.append({"reason": name, "count": cnt, "severity": sev, "example": example})
 
-    # JSON'u ayıkla (kod bloğu/etrafındaki metne dayanıklı).
-    import json as _json
-    import re as _re2
-    _raw = txt.strip()
-    _m = _re2.search(r"\{.*\}", _raw, _re2.DOTALL)
-    data = {}
-    if _m:
-        try:
-            data = _json.loads(_m.group(0))
-        except Exception:
-            data = {}
-    reasons = data.get("reasons") if isinstance(data, dict) else None
-    out = []
-    for r in (reasons or []):
-        if not isinstance(r, dict):
-            continue
-        try:
-            c = int(r.get("count") or 0)
-        except Exception:
-            c = 0
-        try:
-            sev = int(r.get("severity") or 0)
-        except Exception:
-            sev = 0
-        nm = str(r.get("reason") or "").strip()[:80]
-        if nm:
-            out.append({"reason": nm, "count": max(0, c), "severity": max(0, min(5, sev)),
-                        "example": str(r.get("example") or "").strip()[:220]})
     out.sort(key=lambda x: x["count"])  # küçükten büyüğe (kullanıcı isteği)
     return {"ok": True, "total_reviews": len(comments), "reasons": out,
-            "provider": provider, "model": model}
+            "method": method, "provider": _provider, "model": _model,
+            "message": "" if out else "Yorumlar bulundu ama neden çıkarılamadı."}
 
 
 @router.get("/trendyol/reviews/by-product")
