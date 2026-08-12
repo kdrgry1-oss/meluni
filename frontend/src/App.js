@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation, useNavigationType } from "react-router-dom";
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, useRef, lazy, Suspense } from "react";
 import { Toaster } from "sonner";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -50,7 +50,18 @@ import "./App.css";
 function ScrollToTop() {
   const { pathname } = useLocation();
   const navType = useNavigationType();  // "POP" = geri/ileri → scroll'a dokunma, tarayıcı pozisyonu restore etsin
+  const prevPath = useRef(pathname);
   useEffect(() => {
+    const prev = prevPath.current;
+    prevPath.current = pathname;
+    // Ürün düzenleme MODAL'ı aç/kapa aslında rota değiştiriyor
+    // (/admin/urunler ↔ /admin/urunler/{id}). Bu, aynı liste bağlamı olduğu için
+    // başa KAYDIRILMAMALI — kullanıcı listede kaldığı yerde kalsın (kullanıcı isteği).
+    const _sameList = (a, b) => {
+      const _u = (p) => p === "/admin/urunler" || p.startsWith("/admin/urunler/");
+      return _u(a) && _u(b);
+    };
+    if (_sameList(prev, pathname)) return;
     // Yeni sayfa (PUSH/REPLACE) → en üste al. Geri/ileri (POP) → kullanıcının
     // kaldığı yeri koru (liste → ürün → geri: liste eski scroll'unda açılır).
     if (navType !== "POP") window.scrollTo({ top: 0, behavior: "auto" });
