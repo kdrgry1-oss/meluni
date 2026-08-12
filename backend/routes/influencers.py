@@ -506,9 +506,26 @@ async def create_campaign_cargo(campaign_id: str, current_user: dict = Depends(r
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"MNG kargo hatası: {e}")
 
-    barkod = res.get("barkod") or ""
+    barkod = (res.get("barkod") or "").strip()
     if not res.get("ok"):
-        raise HTTPException(status_code=502, detail=f"Kargo oluşturulamadı: {res.get('hata') or res}")
+        _hata = str(res.get("hata") or "")
+        # E005/"ZATEN VAR": kayıt MNG'de zaten oluşmuş (önceki denemede) — hata değil,
+        # barkod aşağıda tamamlanır. Diğer hatalarda 502.
+        if not (("ZATEN VAR" in _hata.upper()) or ("E005" in _hata.upper())):
+            raise HTTPException(status_code=502, detail=f"Kargo oluşturulamadı: {_hata or res}")
+    # Barkod boşsa (SiparisGirisi barkodu doğrudan vermez) gerçek MNG barkodunu ayrı çağrıyla
+    # dene; yine olmazsa sipariş no'ya düş (etiket sipariş no'yu kodlar → barkod ASLA boş kalmaz).
+    if not barkod:
+        try:
+            from mng_kargo_client import get_mng_barcode_immediately
+            _b = await run_in_threadpool(
+                lambda: get_mng_barcode_immediately(username=username, password=password, siparis_no=siparis_no))
+            if _b.get("ok") and (_b.get("barkod") or "").strip():
+                barkod = _b["barkod"].strip()
+        except Exception as _be:
+            logger.warning(f"[influencer] MNG barkod çekme başarısız {siparis_no}: {_be}")
+    if not barkod:
+        barkod = siparis_no
 
     await db.influencer_campaigns.update_one(
         {"id": campaign_id},
