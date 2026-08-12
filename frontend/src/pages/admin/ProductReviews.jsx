@@ -283,6 +283,79 @@ function TrendyolReviewSync() {
   );
 }
 
+function LowRatingReviews() {
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [maxStar, setMaxStar] = useState(2);
+  const [open, setOpen] = useState(true);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(`${API}/integrations/trendyol/reviews/list`, {
+        headers: authHeaders(),
+        params: { approved: false, max_rating: maxStar, limit: 1000 },
+      });
+      setRows(data.items || []);
+    } catch (_) {
+      toast.error("Düşük yıldızlı yorumlar yüklenemedi");
+    } finally { setLoading(false); }
+  };
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, [maxStar]);
+
+  const fmt = (iso) => { try { return new Date(iso).toLocaleDateString("tr-TR"); } catch { return iso; } };
+
+  return (
+    <div className="bg-white border rounded-xl p-4" data-testid="low-rating-reviews">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div>
+          <h2 className="text-sm font-bold uppercase tracking-wider flex items-center gap-2">
+            🔒 Düşük Yıldızlı Yorumlar <span className="text-[10px] font-normal bg-red-50 text-red-700 border border-red-200 rounded px-1.5 py-0.5">Müşteriye GÖSTERİLMEZ</span>
+          </h2>
+          <p className="text-xs text-gray-500 mt-1">
+            Trendyol'dan çekilen ancak mağazada gizli (ürün puanına katılmayan) düşük puanlı yorumlar — yalnız sizin görmeniz için.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <select value={maxStar} onChange={(e) => setMaxStar(Number(e.target.value))} className="border px-2 py-1 rounded text-xs">
+            <option value={1}>Sadece 1★</option>
+            <option value={2}>1–2★</option>
+            <option value={3}>1–3★</option>
+          </select>
+          <button onClick={load} disabled={loading} className="text-xs border px-2 py-1 rounded hover:bg-gray-50">
+            {loading ? "…" : "Yenile"}
+          </button>
+          <button onClick={() => setOpen((v) => !v)} className="text-xs border px-2 py-1 rounded hover:bg-gray-50">
+            {open ? "Gizle" : `Göster (${rows.length})`}
+          </button>
+        </div>
+      </div>
+      {open && (
+        <div className="mt-3 max-h-[520px] overflow-y-auto divide-y">
+          {rows.length === 0 ? (
+            <p className="text-sm text-gray-400 py-6 text-center">{loading ? "Yükleniyor…" : "Bu aralıkta gizli düşük yıldızlı yorum yok."}</p>
+          ) : rows.map((r) => (
+            <div key={r.id} className="py-2.5">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="flex">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <Star key={n} size={13} className={n <= r.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"} />
+                  ))}
+                </span>
+                <span className="text-xs font-medium text-gray-800">{r.product_name}</span>
+                {r.is_verified && <span className="text-[10px] text-emerald-700">✓ doğrulanmış</span>}
+                <span className="text-[11px] text-gray-400 ml-auto">{fmt(r.created_at)} · {r.user_name}</span>
+              </div>
+              {r.title && <div className="text-xs font-semibold text-gray-700 mt-1">{r.title}</div>}
+              <div className="text-sm text-gray-700 mt-0.5">{r.comment || <span className="text-gray-400">(yorum metni yok)</span>}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ProductReviews() {
   const [items, setItems] = useState([]);
   const [status, setStatus] = useState("pending");
@@ -319,6 +392,8 @@ export default function ProductReviews() {
       </div>
 
       <TrendyolReviewSync />
+
+      <LowRatingReviews />
 
       <div className="flex gap-2">
         {[

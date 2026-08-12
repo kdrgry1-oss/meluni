@@ -727,12 +727,17 @@ def _review_raw_date(r: dict):
 async def _store_reviews(fetched: List[dict], local_pid: Optional[str], content_id: str, min_rating: int) -> dict:
     """Çekilen yorumları product_reviews'a yazar. YENİ yorumlar gerçek tarihiyle eklenir;
     MEVCUT yorumların tarihi/puanı güncellenir (external_id ile eşleşir)."""
-    inserted = updated = skipped_low = skipped_existing = 0
+    inserted = updated = low_admin_only = skipped_existing = 0
     for r in fetched:
         rating = int(r.get("rate") or 0)
-        if rating < min_rating:
-            skipped_low += 1
+        if rating <= 0:
             continue
+        # min_rating artık YAYIN eşiğidir: eşik altı yorumlar da ÇEKİLİR ama approved=False
+        # (mağazada GÖRÜNMEZ, ürün puanına KATILMAZ) → admin panelden görebilir. Kullanıcı isteği:
+        # 1-2 yıldızlı yorumları da çek, müşteriye gösterme.
+        _approved = rating >= min_rating
+        if not _approved:
+            low_admin_only += 1
         review_id = str(r.get("id") or "")
         if not review_id:
             continue
@@ -745,7 +750,8 @@ async def _store_reviews(fetched: List[dict], local_pid: Optional[str], content_
         )
         if existing:
             # Mevcut yorumun tarihini gerçek tarihe güncelle (8 Temmuz sorununu düzeltir).
-            upd = {"rating": rating}
+            # Görünürlük yıldıza göre eşiğe göre senkron tutulur (düşükse gizle).
+            upd = {"rating": rating, "approved": _approved, "admin_only": (not _approved)}
             if iso_date:
                 upd["comment_date"] = raw_date
                 upd["created_at"] = iso_date
@@ -764,14 +770,17 @@ async def _store_reviews(fetched: List[dict], local_pid: Optional[str], content_
             "user_name": r.get("userFullName") or "Trendyol Müşterisi",
             "is_verified": bool(r.get("verifiedPurchase")),
             "is_seller_verified": bool(r.get("sellerVerified")),
-            "approved": True,
+            "approved": _approved,               # eşik altı → False (mağazada gizli, admin görür)
+            "admin_only": (not _approved),
             "created_at": display_date,          # GERÇEK yorum tarihi (varsa)
             "comment_date": raw_date or "",
             "synced_at": datetime.now(timezone.utc).isoformat(),
         }
         await db.product_reviews.insert_one(doc)
         inserted += 1
-    return {"inserted": inserted, "updated": updated, "skipped_low_rating": skipped_low, "skipped_existing": skipped_existing}
+    # skipped_low_rating geriye-uyum için 0; low_admin_only = gizli saklanan düşük yıldız sayısı.
+    return {"inserted": inserted, "updated": updated, "skipped_low_rating": 0,
+            "low_admin_only": low_admin_only, "skipped_existing": skipped_existing}
 
 
 async def backfill_review_dates():
@@ -942,6 +951,7 @@ async def sync_all_trendyol_reviews_core(min_rating: int = 4, limit: int = 0, dr
         "total_inserted": 0,
         "total_updated": 0,
         "skipped_low_rating": 0,
+        "low_admin_only": 0,
         "skipped_existing": 0,
         "errors": [],
         "dry_run": dry_run,
@@ -996,6 +1006,7 @@ async def sync_all_trendyol_reviews_core(min_rating: int = 4, limit: int = 0, dr
             summary["total_inserted"] += res["inserted"]
             summary["total_updated"] += res.get("updated", 0)
             summary["skipped_low_rating"] += res["skipped_low_rating"]
+            summary["low_admin_only"] = summary.get("low_admin_only", 0) + res.get("low_admin_only", 0)
             summary["skipped_existing"] += res["skipped_existing"]
             _p_inserted += res["inserted"]
         if not dry_run:
@@ -1100,6 +1111,40 @@ async def trendyol_review_sync_status(current_user: dict = Depends(require_admin
         k = r.get("status") or "?"
         counts[k] = counts.get(k, 0) + 1
     return {"state": st, "counts": counts, "products": rows}
+
+
+@router.get("/trendyol/reviews/list")
+async def trendyol_reviews_list(
+    approved: Optional[bool] = None,
+    max_rating: Optional[int] = None,
+    min_rating: Optional[int] = None,
+    limit: int = 300,
+    current_user: dict = Depends(require_admin),
+):
+    """Tek tek Trendyol yorumlarını (admin görünümü) döndürür. approved=false + max_rating=2
+    → 'müşteriye gösterilmeyen 1-2 yıldızlı yorumlar' listesi. PII yok (Trendyol kullanıcı adı)."""
+    q = {"source": "trendyol_public"}
+    if approved is not None:
+        q["approved"] = approved
+    rq = {}
+    if max_rating is not None:
+        rq["$lte"] = int(max_rating)
+    if min_rating is not None:
+        rq["$gte"] = int(min_rating)
+    if rq:
+        q["rating"] = rq
+    rows = await db.product_reviews.find(
+        q, {"_id": 0, "id": 1, "product_id": 1, "rating": 1, "title": 1, "comment": 1,
+            "user_name": 1, "created_at": 1, "comment_date": 1, "approved": 1, "is_verified": 1},
+    ).sort("created_at", -1).limit(min(max(1, limit), 2000)).to_list(None)
+    pids = list({r.get("product_id") for r in rows if r.get("product_id")})
+    names = {}
+    if pids:
+        async for p in db.products.find({"id": {"$in": pids}}, {"_id": 0, "id": 1, "name": 1}):
+            names[p["id"]] = p.get("name")
+    for r in rows:
+        r["product_name"] = names.get(r.get("product_id")) or "—"
+    return {"items": rows, "count": len(rows)}
 
 
 @router.get("/trendyol/reviews/by-product")
