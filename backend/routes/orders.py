@@ -1453,16 +1453,15 @@ async def create_order(
     _oversell_moves = None
     _plat_lc = str(order.get("platform") or "").lower()
     _is_marketplace = _plat_lc in ("trendyol", "hepsiburada", "temu")
-    try:
-        from business_rules import get_rule as _get_rule
-        _block_oversell = await _get_rule(db, "order.block_oversell", True) is not False
-    except Exception:
-        _block_oversell = True
-    if _block_oversell and not _is_marketplace:
+    # OVERSELL: SİTE siparişinde 0/yetersiz stok HER ZAMAN engellenir — 'order.block_oversell'
+    # ayarına BAKILMAZ. (Ayar yanlışlıkla kapatılınca stoğu biten üründen sipariş geçiyordu →
+    # para/stok kaybı. Firma kararı: site oversell KESİNLİKLE yasak.) Yalnız pazaryeri
+    # (trendyol/hb/temu) siparişi dışarıda satıldığı için bu kapıya girse de engellenmez.
+    if not _is_marketplace:
         _dec = await _decrement_stock_atomic(order)
         if not _dec.get("success"):
             _nm = _dec.get("name") or _dec.get("barcode") or "ürün"
-            logger.warning(f"[OVERSELL] sipariş reddedildi — stok yetersiz: {_dec.get('barcode')} ({_nm})")
+            logger.warning(f"[OVERSELL] sipariş reddedildi — stok yetersiz/doğrulanamadı: {_dec.get('barcode')} ({_nm}) reason={_dec.get('reason')}")
             raise HTTPException(status_code=409,
                                 detail=f"Üzgünüz, '{_nm}' için yeterli stok kalmadı. Lütfen sepeti güncelleyip tekrar deneyin.")
         _oversell_moves = _dec.get("movements") or []
@@ -2535,7 +2534,14 @@ async def _decrement_stock_atomic(order: dict) -> dict:
         pid = it.get("product_id")
         prod = await db.products.find_one({"id": pid}, {"_id": 0}) if pid else None
         if not prod:
-            # Ürün gerçekten yok/çözülemez → kontrol edilemez, stok düşülmez (mevcut davranış).
+            # FAIL-CLOSED: Kalem GERÇEK bir ürünse (product_id VEYA barkod taşıyorsa) ama ürün
+            # çözülemiyorsa, stok doğrulanamadığı için siparişi REDDET (oversell sızıntısını kapatır —
+            # "stoğu biten üründen sipariş" bug'ının kaynaklarından biri buydu). Yalnız hiçbir kimliği
+            # olmayan sanal satır (kargo/hediye paketi vb. — product_id ve barkod YOK) geçilir.
+            if pid or barcode:
+                await _reverse_stock_moves(applied)
+                return {"success": False, "barcode": barcode or "",
+                        "name": it.get("name", ""), "reason": "product_unresolved"}
             continue
         variants = prod.get("variants") or []
         vid = it.get("variant_id")
