@@ -779,7 +779,7 @@ async def products_export_xlsx(
     ws = wb.active
     ws.title = "Ürün Raporu"
     ws.append(["Ürün", "Sezon", "Satış Adedi", "Ciro (TL)", "Sipariş", "Güncel Stok",
-               "Kapsama (Hafta)", "En Çok Satan Beden", "En Çok Satan Platform", "Haftalık Hız",
+               "Kapsama (Hafta)", "RPT Durumu", "En Çok Satan Beden", "En Çok Satan Platform", "Haftalık Hız",
                "İptal Adet", "İade Adet", "İade %", "Platform İptal/İade Detay"])
     # Satış hızı: renkli hücre (yeşil/sarı/kırmızı) + etiket — panelle birebir aynı kodlama
     from openpyxl.styles import PatternFill
@@ -795,18 +795,29 @@ async def products_export_xlsx(
         _wr = float(_vel.get("weekly_rate") or 0)
         _stok = r.get("current_stock")
         _cover = round(_stok / _wr, 1) if (_stok is not None and _wr > 0) else ""
+        # RPT (yeniden üretim) durumu — panelle AYNI eşikler: ≤4 hf kritik (RPT AÇ),
+        # ≥26 hf aşırı stok, arası normal; satış hızı yoksa/stok bilinmiyorsa izlenmiyor.
+        if _stok is not None and _wr > 0:
+            _rpt = "RPT AÇ" if _cover <= 4 else ("Aşırı Stok" if _cover >= 26 else "Normal")
+        else:
+            _rpt = "Satışsız / izlenmiyor"
         _rq = int(r.get("return_qty") or 0)
         _tq = int(r.get("qty") or 0) + _rq
         _rpct = round(100 * _rq / _tq, 1) if _tq > 0 else ""
         ws.append([r.get("name"), r.get("season") or "", r.get("qty"), r.get("revenue"),
-                   r.get("orders"), _stok, _cover, r.get("best_size"),
+                   r.get("orders"), _stok, _cover, _rpt, r.get("best_size"),
                    r.get("top_platform"),
                    f"{_VEL_LABEL.get(_vcode, '')} ({_vel.get('weekly_rate', 0)}/hafta)",
                    r.get("cancel_qty", 0), _rq, _rpct, _crd])
+        # Satış hızı rengi Haftalık Hız sütunundadır — RPT sütunu eklenince 10 → 11'e kaydı.
         _fill = _VEL_FILL.get(_vcode)
         if _fill:
-            ws.cell(row=ws.max_row, column=10).fill = _fill
-    for col, w in zip("ABCDEFGHIJKLMN", [42, 10, 12, 14, 10, 12, 14, 16, 18, 14, 10, 10, 8, 40]):
+            ws.cell(row=ws.max_row, column=11).fill = _fill
+        # RPT AÇ (kritik) hücresini kırmızı, Aşırı Stok'u sarı vurgula (Excel'de göze çarpsın).
+        _rpt_fill = _VEL_FILL.get("red") if _rpt == "RPT AÇ" else (_VEL_FILL.get("yellow") if _rpt == "Aşırı Stok" else None)
+        if _rpt_fill:
+            ws.cell(row=ws.max_row, column=8).fill = _rpt_fill
+    for col, w in zip("ABCDEFGHIJKLMNO", [42, 10, 12, 14, 10, 12, 14, 16, 16, 18, 14, 10, 10, 8, 40]):
         ws.column_dimensions[col].width = w
     buf = _BytesIO()
     wb.save(buf)
