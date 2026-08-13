@@ -135,7 +135,6 @@ export function SalesReport() {
       <div className="flex justify-between items-center flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><TrendingUp /> Satış Raporları <ReportScopeBadge kind="exclude" /></h1>
-          <p className="text-sm text-gray-500 mt-1">Tarih aralığına göre satış performansı. <span className="text-gray-400">(İptal ve iade siparişleri tutarlara dahil edilmez.)</span></p>
         </div>
         <div className="flex gap-2 items-center">
           <select value={source} onChange={(e) => setSource(e.target.value)} className="px-3 py-1.5 border rounded text-sm" data-testid="sales-source-select">
@@ -180,16 +179,6 @@ export function SalesReport() {
         ))}
       </div>
 
-      {brk?.partial_split_orders > 0 && (
-        <p className="text-[11px] text-gray-500 -mt-2 leading-relaxed">
-          <b>Kısmi ayrıştırma:</b> {brk.partial_return_orders || 0} siparişte kısmi iade,
-          {" "}{brk.partial_cancel_orders || 0} siparişte kısmi iptal var. Bu siparişlerde yalnız
-          iade/iptal edilen <b>ürünlerin</b> tutarı ve adedi ilgili kutuya, müşteride kalan
-          ürünler Net ciroya yazıldı — Trendyol da adet bazlı böyle sayar.
-          {" "}Bu yüzden bir sipariş hem İadeler'de hem Net'te pay sahibi olabilir; <b>sipariş
-          sayıları toplanmaz, adetler toplanır.</b>
-        </p>
-      )}
       {/* Ortalama Sepet — belirgin kart (kullanıcı isteği) */}
       <div className="inline-flex items-center gap-3 bg-white border-2 border-indigo-200 rounded-xl px-5 py-3 -mt-1 shadow-sm" data-testid="aov-card">
         <span className="text-2xl">🛒</span>
