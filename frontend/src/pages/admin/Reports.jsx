@@ -47,6 +47,7 @@ function DateBar({ from, setFrom, to, setTo, onRefresh }) {
     const fromStr = p.days <= 1 ? toStr
       : new Date(t.getTime() - (p.days - 1) * 864e5).toISOString().slice(0, 10);
     setFrom(fromStr); setTo(toStr); setActivePreset(p.key); setTick((x) => x + 1);
+    toast.success(`Filtre uygulandı: ${p.label}`);
   };
 
   return (
@@ -66,7 +67,8 @@ function DateBar({ from, setFrom, to, setTo, onRefresh }) {
         <input type="date" value={from} onChange={(e) => { setFrom(e.target.value); setActivePreset(""); }} className="text-sm px-2 py-1 border-0" />
         <span className="text-gray-400">→</span>
         <input type="date" value={to} onChange={(e) => { setTo(e.target.value); setActivePreset(""); }} className="text-sm px-2 py-1 border-0" />
-        <button onClick={onRefresh} className="px-3 py-1 bg-black text-white text-xs rounded hover:bg-gray-800 inline-flex items-center gap-1">
+        <button onClick={() => { onRefresh && onRefresh(); toast.success(`Filtre uygulandı: ${from} → ${to}`); }}
+          className="px-3 py-1 bg-black text-white text-xs rounded hover:bg-gray-800 inline-flex items-center gap-1">
           <RefreshCw size={12} /> Uygula
         </button>
       </div>
@@ -502,7 +504,6 @@ export function ProductsReport() {
       <div className="flex justify-between items-center flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Package /> Ürün Raporları <ReportScopeBadge kind="exclude" /></h1>
-          <p className="text-sm text-gray-500 mt-1">Tüm ürünlerin satış performansı — adet, ciro, güncel stok, en çok satan beden ve platform dağılımı.</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={exportXlsx} className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-semibold hover:bg-emerald-700 shadow-sm" data-testid="products-export-xlsx">
@@ -510,11 +511,6 @@ export function ProductsReport() {
           </button>
           <DateBar from={from} setFrom={setFrom} to={to} setTo={setTo} onRefresh={load} />
         </div>
-      </div>
-
-      {/* Rapordan neye erişilir — kılavuz */}
-      <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-900">
-        <span className="font-semibold">Bu raporda:</span> Seçili tarih aralığında (iptal & iade hariç) her ürünün toplam <b>satış adedi</b> ve <b>cirosu</b>, <b>güncel stok</b> durumu, <b>en çok satan bedeni</b> ve <b>hangi platformdan</b> ne kadar sattığı yer alır. Kolon başlıklarına tıklayarak (ör. cirodan yükseğe/düşüğe) sıralayabilir, arama ile ürün filtreleyebilirsiniz.
       </div>
 
 

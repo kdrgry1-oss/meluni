@@ -68,6 +68,18 @@ def _source_cond(source: Optional[str]) -> dict:
     return {}  # bilinmeyen kaynak → toplu
 
 
+def _norm_size(s) -> str:
+    """Beden anahtarını TEK-BİÇİM yapar → aynı beden farklı ayraçla (XS-S / XS/S / 'XS S')
+    RAPORDA AYRI SATIR ÇIKMASIN. Büyük harf; '/ \\ _ - boşluk' ayraçları tek '/' olur.
+    Örn: 'xs-s'→'XS/S', 'M L'→'M/L', '38'→'38'. Boş → '—'."""
+    import re as _re_sz
+    v = str(s or "").strip().upper()
+    if not v:
+        return "—"
+    v = _re_sz.sub(r"[\\/_\-\s]+", "/", v).strip("/")
+    return v or "—"
+
+
 def _collection_from_code(*codes) -> str:
     """Stok kodu ön ekinden koleksiyon türetir: 'fcfw…' → FcFw (Sonbahar/Kış),
     'fcss…' → FCss (İlkbahar/Yaz). Büyük/küçük harf duyarsız; ilk eşleşen kod kazanır."""
@@ -868,7 +880,7 @@ async def top_products(
             # Beden bazında KALAN stok (açılır satırdaki mini tabloya)
             _sbs = {}
             for v in variants:
-                _vs = str(v.get("size") or "").strip() or "—"
+                _vs = _norm_size(v.get("size"))
                 _sbs[_vs] = _sbs.get(_vs, 0) + int(v.get("stock") or 0)
             info = {"id": str(p.get("id")), "name": p.get("name") or "", "stock": stock,
                     "stock_by_size": _sbs,
@@ -912,7 +924,7 @@ async def top_products(
         m["qty"] += _q
         m["revenue"] += float(r["revenue"])
         m["orders"] += int(r["orders"])
-        _sz = (r["_id"].get("sz") or "").strip() or "—"
+        _sz = _norm_size(r["_id"].get("sz"))
         m["_sizes"][_sz] = m["_sizes"].get(_sz, 0) + _q
         _pl = (r["_id"].get("plat") or "site").strip().lower() or "site"
         m["_plats"][_pl] = m["_plats"].get(_pl, 0) + _q
@@ -1053,7 +1065,7 @@ async def top_products(
             k = keep_map.setdefault(gk, {"qty": 0, "revenue": 0.0, "sizes": {}, "plats": {}})
             k["qty"] += keep_q
             k["revenue"] += keep_r
-            _ksz = (i.get("sz") or "").strip() or "—"
+            _ksz = _norm_size(i.get("sz"))
             k["sizes"][_ksz] = k["sizes"].get(_ksz, 0) + keep_q
             _kpl = i.get("plat") or "site"
             k["plats"][_kpl] = k["plats"].get(_kpl, 0) + keep_q
@@ -1063,7 +1075,7 @@ async def top_products(
         d[i["kind"]] += qty
         bp = d["by_plat"].setdefault((i.get("plat") or "site"), {"cancel": 0, "return": 0})
         bp[i["kind"]] += qty
-        bs = d["by_size"].setdefault(((i.get("sz") or "").strip() or "—"), {"cancel": 0, "return": 0})
+        bs = d["by_size"].setdefault(_norm_size(i.get("sz")), {"cancel": 0, "return": 0})
         bs[i["kind"]] += qty
 
     out = []
