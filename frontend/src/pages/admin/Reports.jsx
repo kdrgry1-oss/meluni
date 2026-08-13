@@ -32,12 +32,19 @@ function DateBar({ from, setFrom, to, setTo, onRefresh }) {
   const onRefreshRef = useRef(onRefresh);
   onRefreshRef.current = onRefresh;
   const tickRef = useRef(0);
+  const pendingLabelRef = useRef("");
   const [tick, setTick] = useState(0);
   const [activePreset, setActivePreset] = useState("");
   useEffect(() => {
     if (tick !== tickRef.current) {
       tickRef.current = tick;
-      onRefreshRef.current && onRefreshRef.current();
+      const label = pendingLabelRef.current;
+      pendingLabelRef.current = "";
+      // Bildirimi tıklama anında DEĞİL, veri gerçekten yenilendiğinde göster —
+      // onRefresh (load) bir promise döndürür; çözülünce "Filtre uygulandı" çıkar.
+      Promise.resolve(onRefreshRef.current && onRefreshRef.current())
+        .then(() => { if (label) toast.success(`Filtre uygulandı: ${label}`); })
+        .catch(() => {});
     }
   }, [from, to, tick]);
 
@@ -46,8 +53,8 @@ function DateBar({ from, setFrom, to, setTo, onRefresh }) {
     const toStr = t.toISOString().slice(0, 10);
     const fromStr = p.days <= 1 ? toStr
       : new Date(t.getTime() - (p.days - 1) * 864e5).toISOString().slice(0, 10);
+    pendingLabelRef.current = p.label;
     setFrom(fromStr); setTo(toStr); setActivePreset(p.key); setTick((x) => x + 1);
-    toast.success(`Filtre uygulandı: ${p.label}`);
   };
 
   return (
@@ -67,7 +74,12 @@ function DateBar({ from, setFrom, to, setTo, onRefresh }) {
         <input type="date" value={from} onChange={(e) => { setFrom(e.target.value); setActivePreset(""); }} className="text-sm px-2 py-1 border-0" />
         <span className="text-gray-400">→</span>
         <input type="date" value={to} onChange={(e) => { setTo(e.target.value); setActivePreset(""); }} className="text-sm px-2 py-1 border-0" />
-        <button onClick={() => { onRefresh && onRefresh(); toast.success(`Filtre uygulandı: ${from} → ${to}`); }}
+        <button onClick={() => {
+            // Bildirim veri yenilendiğinde çıksın (tıklama anında değil).
+            Promise.resolve(onRefresh && onRefresh())
+              .then(() => toast.success(`Filtre uygulandı: ${from} → ${to}`))
+              .catch(() => {});
+          }}
           className="px-3 py-1 bg-black text-white text-xs rounded hover:bg-gray-800 inline-flex items-center gap-1">
           <RefreshCw size={12} /> Uygula
         </button>

@@ -1658,9 +1658,16 @@ async def import_xml_products(
 
             existing = await db.products.find_one({"xml_id": xml_id})
             if existing:
+                _upd = dict(doc)
+                # ELLE PASİF/SİLİNMİŞ ÜRÜNÜ FEED GERİ AÇMASIN. Admin bir ürünü panelden
+                # pasife aldıysa (manual_deactivated) veya sildiyse (is_deleted), XML feed
+                # senkronu onu "kendi kendine" aktife almamalı. Diğer alanlar (fiyat, stok,
+                # görsel…) yine güncellensin; yalnız is_active'e dokunma.
+                if existing.get("manual_deactivated") or existing.get("is_deleted"):
+                    _upd.pop("is_active", None)
                 await db.products.update_one(
                     {"xml_id": xml_id},
-                    {"$set": doc, "$unset": {"deactivated_reason": ""}},
+                    {"$set": _upd, "$unset": {"deactivated_reason": ""}},
                 )
                 updated += 1
             else:
