@@ -1486,7 +1486,7 @@ async def _auto_campaigns_for_badges() -> list:
     # ödüyor). Artık tarih/limit kontrolleri Mongo'da DEĞİL, motorun mantığıyla BİREBİR aynı
     # şekilde Python'da yapılır → rozet ⊆ motorun uygulayacağı indirim.
     q = {"is_active": True, "auto_apply": True, "type": "percent"}
-    rows = await db.coupons.find(q, {"_id": 0, "id": 1, "name": 1, "code": 1, "value": 1,
+    rows = await db.coupons.find(q, {"_id": 0, "id": 1, "name": 1, "title": 1, "code": 1, "value": 1,
                                      "categories": 1, "products": 1,
                                      "min_cart_total": 1, "first_order_only": 1,
                                      "start_at": 1, "end_at": 1,
@@ -1552,7 +1552,13 @@ def _campaign_pct_for_product(p: dict, camps: list):
         in_scope = (not ac and not ap) or (pid in ap) or bool(cats & ac)
         if in_scope and float(c.get("value") or 0) > best:
             best = float(c["value"])
-            label = c.get("name") or c.get("code") or ""
+            # KAMPANYA ADI: kampanya belgesinde ad `title` alanında tutulur (campaign UI'daki
+            # "ad" → coupon.title). Kupon KODUNU (özellikle otomatik "AUTO-xxxx") gösterme —
+            # kullanıcı kampanyanın ADINI görmek istiyor. Title yoksa: anlamlı bir kod varsa
+            # onu göster, otomatik AUTO- kodu ise boş bırak (frontend "Kampanya" der).
+            _title = (c.get("title") or c.get("name") or "").strip()
+            _code = (c.get("code") or "").strip()
+            label = _title or ("" if _code.upper().startswith("AUTO-") else _code)
     return best, label
 
 

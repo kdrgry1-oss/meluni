@@ -518,6 +518,53 @@ async def _notify_paid_order_confirmed(order_id: str) -> None:
             )
         except Exception as _pe:
             logger.warning(f"admin push (kart ödeme sonrası) atlandı: {_pe}")
+        # ADMIN E-POSTA BİLDİRİMİ: web sitesinden gelen (ödemesi ONAYLANMIŞ) sipariş için
+        # firmanın iletişim adresine (beyaz-etiket: company.contact_email → varsayılan
+        # info@facette.com.tr) özet mail. order_confirmed_notified bayrağıyla tek sefer.
+        # Yarıda kalan 3DS'te BURAYA gelinmez → sahte "yeni sipariş" maili gitmez.
+        try:
+            import company as _company
+            from notification_service import _email_send
+            _ci = await _company.get_company(db)
+            _admin_to = str(_ci.get("contact_email") or _ci.get("email") or "info@facette.com.tr").strip()
+            if _admin_to:
+                _tl2 = float(order.get("total") or 0)
+                _tl_fmt = f"{_tl2:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")  # 3,920.00 → 3.920,00
+                _who2 = (f"{ship.get('first_name','')} {ship.get('last_name','')}".strip()
+                         or ship.get("full_name") or "Müşteri")
+                _phone2 = ship.get("phone") or order.get("phone") or "-"
+                _pm = order.get("payment_method") or order.get("payment_type") or "Kart"
+                _rows_html = ""
+                for _it in (order.get("items") or []):
+                    _nm = _it.get("name") or _it.get("product_name") or "Ürün"
+                    _qty = _it.get("quantity") or _it.get("qty") or 1
+                    _sz = _it.get("size") or ""
+                    _clr = _it.get("color") or ""
+                    _var = " · ".join([x for x in (_clr, _sz) if x])
+                    _var_html = (" <span style='color:#888'>(" + _var + ")</span>") if _var else ""
+                    _rows_html += ("<tr><td style='padding:4px 8px;border-bottom:1px solid #eee'>"
+                                   + str(_nm) + _var_html + "</td>"
+                                   "<td style='padding:4px 8px;border-bottom:1px solid #eee;text-align:center'>"
+                                   + str(_qty) + "</td></tr>")
+                _adr = ship.get("address") or ""
+                _loc = " / ".join([x for x in (ship.get("district") or ship.get("ilce") or "",
+                                               ship.get("city") or ship.get("il") or "") if x])
+                _html = (
+                    f"<h2 style='margin:0 0 8px'>🛍️ Yeni Sipariş (ödendi)</h2>"
+                    f"<p style='margin:0 0 4px'><b>Sipariş No:</b> {order.get('order_number','')}</p>"
+                    f"<p style='margin:0 0 4px'><b>Müşteri:</b> {_who2} · {_phone2}</p>"
+                    f"<p style='margin:0 0 4px'><b>Tutar:</b> {_tl_fmt} TL</p>"
+                    f"<p style='margin:0 0 4px'><b>Ödeme:</b> {_pm}</p>"
+                    f"<p style='margin:0 0 8px'><b>Teslimat:</b> {_adr} {_loc}</p>"
+                    f"<table style='border-collapse:collapse;width:100%;max-width:520px'>"
+                    f"<tr><th style='text-align:left;padding:4px 8px;border-bottom:2px solid #333'>Ürün</th>"
+                    f"<th style='text-align:center;padding:4px 8px;border-bottom:2px solid #333'>Adet</th></tr>"
+                    f"{_rows_html}</table>"
+                )
+                await _email_send(db, _admin_to, f"Yeni Sipariş · {order.get('order_number','')}", _html)
+                logger.info(f"admin sipariş maili gönderildi → {_admin_to} order={order.get('order_number')}")
+        except Exception as _ae:
+            logger.warning(f"admin sipariş maili atlandı: {_ae}")
     except Exception as e:
         logger.warning(
             f"order_confirmed (ödeme sonrası) gönderilemedi order_id={order_id}: {e}"
