@@ -2552,16 +2552,14 @@ export default function AdminProducts() {
                   </td>
                   <td>
                     <div className="flex gap-1 items-center">
-                        <a
-                          href={`/admin/urunler/${product.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1.5 hover:bg-gray-100 rounded inline-flex"
-                          title="Düzenle (yeni sekmede açılır)"
+                        <button
+                          onClick={() => openEditModal(product)}
+                          className="p-1.5 hover:bg-gray-100 rounded"
+                          title="Düzenle"
                           data-testid={`product-edit-modal-${product.id}`}
                         >
                           <Edit size={16} />
-                        </a>
+                        </button>
                         <button onClick={() => handleDuplicate(product)} className="p-1.5 hover:bg-gray-100 rounded" title="Kopyala">
                           <Copy size={16} />
                         </button>

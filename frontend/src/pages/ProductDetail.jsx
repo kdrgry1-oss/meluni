@@ -689,7 +689,9 @@ export default function ProductDetail() {
               {user?.is_admin && (
                 <Link
                   to={`/admin/urunler/${product.id}`}
-                  title="Ürünü düzenle (admin)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Ürünü düzenle (admin) — yeni sekmede açılır"
                   data-testid="pdp-admin-edit-mobile"
                   className="absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-black text-white rounded-full p-2.5 shadow-lg"
                 >
@@ -793,8 +795,10 @@ export default function ProductDetail() {
                   {user?.is_admin && (
                     <Link
                       to={`/admin/urunler/${product.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      title="Ürünü düzenle (admin)"
+                      title="Ürünü düzenle (admin) — yeni sekmede açılır"
                       data-testid="pdp-admin-edit"
                       className="absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-black text-white rounded-full p-2.5 shadow-lg hover:bg-gray-800 transition-colors"
                     >
