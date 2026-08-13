@@ -460,6 +460,58 @@ async def seed_templates(
     return {"success": True, "created": created, "updated": updated}
 
 
+@router.post("/templates/fix-names")
+async def fix_template_names(current_user: dict = Depends(require_admin)):
+    """Kayıtlı TÜM şablonlarda (subject + body) sadece ADI basan yer tutucuları
+    AD SOYAD basan {customer_name} ile değiştirir. Kullanıcı isteği: bazı özel SMS
+    şablonları {first_name} kullandığı için müşteriye yalnız ad gidiyordu; soyad da
+    görünsün. İdempotent — tekrar çalıştırmak zarar vermez.
+
+    Değişimler (sıra önemli — önce birleşik kalıp):
+      "{first_name} {last_name}" → "{customer_name}"   (çift yazımı engelle)
+      "{ad} {soyad}"             → "{customer_name}"
+      "{first_name}" / "{ad}" / "{isim}" → "{customer_name}"
+    """
+    import re as _re
+    _COMBINED = [
+        (_re.compile(r"\{first_name\}\s+\{last_name\}"), "{customer_name}"),
+        (_re.compile(r"\{ad\}\s+\{soyad\}"), "{customer_name}"),
+        (_re.compile(r"\{isim\}\s+\{soyisim\}"), "{customer_name}"),
+    ]
+    _SINGLE = [
+        (_re.compile(r"\{first_name\}"), "{customer_name}"),
+        (_re.compile(r"\{ad\}"), "{customer_name}"),
+        (_re.compile(r"\{isim\}"), "{customer_name}"),
+    ]
+
+    def _fix(text):
+        if not text or not isinstance(text, str):
+            return text, False
+        _new = text
+        for rx, rep in _COMBINED:
+            _new = rx.sub(rep, _new)
+        for rx, rep in _SINGLE:
+            _new = rx.sub(rep, _new)
+        return _new, (_new != text)
+
+    changed = 0
+    samples = []
+    async for t in db.notification_templates.find({}, {"_id": 0}):
+        _set = {}
+        for _field in ("subject", "body"):
+            _fixed, _did = _fix(t.get(_field))
+            if _did:
+                _set[_field] = _fixed
+        if _set:
+            _set["updated_at"] = datetime.now(timezone.utc).isoformat()
+            await db.notification_templates.update_one(
+                {"event": t.get("event"), "channel": t.get("channel")}, {"$set": _set})
+            changed += 1
+            if len(samples) < 8:
+                samples.append(f"{t.get('event')}·{t.get('channel')}")
+    return {"success": True, "changed": changed, "samples": samples}
+
+
 @router.post("/test")
 async def send_test(req: TestReq, current_user: dict = Depends(require_admin)):
     res = await test_provider(db, req.channel, req.provider_key, req.to, req.message)

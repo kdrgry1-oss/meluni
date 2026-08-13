@@ -133,6 +133,15 @@ export default function NotificationTemplates() {
     } catch (e) { toast.error("Güncelleme hatası: " + (e?.response?.data?.detail || e.message)); }
   };
 
+  const fixNames = async () => {
+    if (!window.confirm("Tüm şablonlarda sadece adı yazan yer tutucular ({first_name}, {ad}) AD SOYAD yazan {customer_name} ile değiştirilecek — böylece müşteriye soyadıyla birlikte gider. Devam edilsin mi?")) return;
+    try {
+      const r = await axios.post(`${API}/notifications/templates/fix-names`, {}, auth);
+      toast.success(`${r.data.changed || 0} şablon düzeltildi (ad → ad soyad)`);
+      await load();
+    } catch (e) { toast.error("Düzeltme hatası: " + (e?.response?.data?.detail || e.message)); }
+  };
+
   const sendTest = async (channel) => {
     if (!testTo.trim()) { toast.error("Önce telefon numarası veya e-posta girin"); return; }
     setTestSending(channel);
@@ -177,6 +186,9 @@ export default function NotificationTemplates() {
           <p className="text-sm text-gray-500 mt-1">Her event × kanal için metni özelleştirin.</p>
         </div>
         <div className="flex items-center gap-2">
+          <button onClick={fixNames} className="inline-flex items-center gap-2 bg-emerald-600 text-white hover:bg-emerald-700 px-3 py-2 rounded text-sm" data-testid="notif-fix-names">
+            <RefreshCw size={14} /> Ad → Ad Soyad Düzelt
+          </button>
           <button onClick={seedForce} className="inline-flex items-center gap-2 bg-gray-900 text-white hover:bg-black px-3 py-2 rounded text-sm" data-testid="notif-seed-force">
             <RefreshCw size={14} /> E-postaları Yeni Tasarıma Güncelle
           </button>
