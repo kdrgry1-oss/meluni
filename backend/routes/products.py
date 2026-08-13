@@ -471,6 +471,7 @@ async def _build_products_query(
     *,
     category: Optional[str] = None,
     category_id: Optional[str] = None,
+    season: Optional[str] = None,
     search: Optional[str] = None,
     is_featured: Optional[bool] = None,
     is_new: Optional[bool] = None,
@@ -560,6 +561,11 @@ async def _build_products_query(
 
     if brand:
         query["brand"] = {"$regex": re.escape(brand.strip()), "$options": "i"}  # ReDoS/regex-injection koruması
+
+    if season and season.strip():
+        # Sezon filtresi (ürün listesi + Excel). Sabit dropdown değerleri (İlkbahar/Sonbahar,
+        # Tüm Sezonlar, Yaz, Kış) — tam eşleşme yeterli.
+        query["season"] = season.strip()
 
     if min_stock is not None:
         query["stock"] = {"$gte": min_stock}
@@ -915,6 +921,7 @@ async def get_products(
     limit: int = Query(20, ge=1, le=500),
     category: Optional[str] = None,
     category_id: Optional[str] = None,
+    season: Optional[str] = None,
     search: Optional[str] = None,
     sort: str = Query("created_at"),
     order: str = Query("desc"),
@@ -969,7 +976,7 @@ async def get_products(
     skip = (page - 1) * limit
     query, _admin_view = await _build_products_query(
         request,
-        category=category, category_id=category_id, search=search, is_featured=is_featured,
+        category=category, category_id=category_id, season=season, search=search, is_featured=is_featured,
         is_new=is_new, min_price=min_price, max_price=max_price, status=status,
         admin_view=admin_view, brand=brand, min_stock=min_stock, max_stock=max_stock,
         is_showcase=is_showcase, is_opportunity=is_opportunity,

@@ -58,6 +58,7 @@ import {
 } from "../../components/ui/dropdown-menu";
 import SizeTablePanel from "./SizeTablePanel";
 import Pagination from "../../components/admin/Pagination";
+import { priceView } from "../../lib/price";
 import SearchableAttribute from "../../components/admin/product-form/SearchableAttribute";
 import SearchableMapSelect from "../../components/admin/SearchableMapSelect";
 import SeoTab from "../../components/admin/product-form/SeoTab";
@@ -248,6 +249,21 @@ export default function AdminProducts() {
       toast.error("Fiyat güncellenemedi");
     }
   };
+  // Sezon satır-içi düzenleme (ürün kartına girmeden). Ürün kartındaki Sezon
+  // alanıyla AYNI değer kümesini kullanır; PUT /products ile kaydeder.
+  const SEASON_OPTIONS = ["İlkbahar/Sonbahar", "Tüm Sezonlar", "Yaz", "Kış"];
+  const [seasonEdit, setSeasonEdit] = useState(null);
+  const saveSeasonEdit = async (id, season) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(`${API}/products/${id}`, { season }, { headers: { Authorization: `Bearer ${token}` } });
+      setProducts((prev) => prev.map((p) => (p.id === id ? { ...p, season } : p)));
+      setSeasonEdit(null);
+      toast.success("Sezon güncellendi");
+    } catch {
+      toast.error("Sezon güncellenemedi");
+    }
+  };
   // technicalDetails: XML/Ticimax description'dan parse edilen teknik özellikler.
   // Shape: { kumas: {label, value}, kalip: {label, value}, ... } VEYA boş obj
   const [technicalDetails, setTechnicalDetails] = useState({});
@@ -284,6 +300,7 @@ export default function AdminProducts() {
     // Durum & kategori
     status: "all",
     category_id: "",
+    season: "",
     // Kimlik & metin
     urun_karti_id: "",
     varyasyon_id: "",
@@ -330,7 +347,7 @@ export default function AdminProducts() {
     attr_value: "",
   });
   const FILTERS_INITIAL = {
-    status: "all", category_id: "", urun_karti_id: "", varyasyon_id: "", name: "",
+    status: "all", category_id: "", season: "", urun_karti_id: "", varyasyon_id: "", name: "",
     stock_code: "", gtip: "", barcode: "", breadcrumb: "", brand: "", supplier: "",
     tag: "", ozel1: "", ozel2: "", ozel3: "", ozel4: "", ozel5: "",
     seo_title: "", seo_keywords: "", seo_desc: "",
@@ -714,7 +731,7 @@ export default function AdminProducts() {
 
     // Doğrudan geçen parametreler (backend ile aynı ad)
     [
-      'status', 'category_id', 'urun_karti_id', 'varyasyon_id', 'name', 'stock_code',
+      'status', 'category_id', 'season', 'urun_karti_id', 'varyasyon_id', 'name', 'stock_code',
       'gtip', 'barcode', 'breadcrumb', 'brand', 'supplier', 'tag',
       'min_stock', 'max_stock', 'min_price', 'max_price',
       'date_from', 'date_to', 'pub_date_from', 'pub_date_to',
@@ -2175,7 +2192,26 @@ export default function AdminProducts() {
             className="w-full pl-10 pr-4 py-2 border rounded focus:ring-1 focus:ring-black outline-none"
           />
         </div>
-        <button 
+        {/* Hızlı Sezon filtresi (en üstten) — anında uygular; gelişmiş panele de yansır. */}
+        <select
+          value={appliedFilters.season || ""}
+          onChange={(e) => {
+            const v = e.target.value;
+            setFilters((f) => ({ ...f, season: v }));
+            setAppliedFilters((a) => ({ ...a, season: v }));
+            setPage(1);
+          }}
+          data-testid="products-quick-season-filter"
+          title="Sezona göre filtrele"
+          className={`px-3 py-2 border rounded outline-none focus:ring-1 focus:ring-black bg-white text-sm ${appliedFilters.season ? "border-black font-semibold" : "text-gray-600"}`}
+        >
+          <option value="">Tüm Sezonlar (filtre yok)</option>
+          <option value="İlkbahar/Sonbahar">İlkbahar/Sonbahar</option>
+          <option value="Tüm Sezonlar">Tüm Sezonlar</option>
+          <option value="Yaz">Yaz</option>
+          <option value="Kış">Kış</option>
+        </select>
+        <button
           onClick={() => setShowFilters(!showFilters)}
           className={`flex items-center gap-2 px-4 py-2 border rounded transition-colors ${showFilters ? 'bg-black text-white' : 'bg-white hover:bg-gray-50'}`}
         >
@@ -2323,6 +2359,7 @@ export default function AdminProducts() {
               <SortTH field="name" label="Ürün Adı" />
               <SortTH field="stock_code" label="Stok Kodu" />
               <th>Bedenler</th>
+              <SortTH field="season" label="Sezon" />
               <SortTH field="price" label="Fiyat" />
               <SortTH field="stock" label="Stok" className="text-center" />
               <SortTH field="is_active" label="Durum" firstDir="desc" />
@@ -2332,9 +2369,9 @@ export default function AdminProducts() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={11} className="text-center py-8">Yükleniyor...</td></tr>
+              <tr><td colSpan={12} className="text-center py-8">Yükleniyor...</td></tr>
             ) : products.length === 0 ? (
-              <tr><td colSpan={11} className="text-center py-8 text-gray-500">Ürün bulunamadı</td></tr>
+              <tr><td colSpan={12} className="text-center py-8 text-gray-500">Ürün bulunamadı</td></tr>
             ) : (
               products.map((product) => (
                 <tr key={product.id} data-testid={`product-row-${product.id}`}>
@@ -2402,6 +2439,33 @@ export default function AdminProducts() {
                     ))}
                   </td>
                   <td>
+                    {seasonEdit === product.id ? (
+                      <select
+                        autoFocus
+                        value={product.season || ""}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => saveSeasonEdit(product.id, e.target.value)}
+                        onBlur={() => setSeasonEdit(null)}
+                        className="border border-gray-300 rounded px-2 py-1 text-xs focus:border-black outline-none bg-white"
+                        data-testid={`product-season-edit-${product.id}`}
+                      >
+                        <option value="">— Seçin —</option>
+                        {SEASON_OPTIONS.map((s) => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                    ) : (
+                      <button
+                        onClick={() => setSeasonEdit(product.id)}
+                        title="Sezonu düzenle (ürün kartına girmeden)"
+                        className="text-left text-xs hover:bg-orange-50 rounded px-1 -mx-1 cursor-pointer whitespace-nowrap"
+                        data-testid={`product-season-cell-${product.id}`}
+                      >
+                        {product.season
+                          ? <span className="text-gray-700">{product.season}</span>
+                          : <span className="text-red-400 italic">Sezon yok</span>}
+                      </button>
+                    )}
+                  </td>
+                  <td>
                     {priceEdit?.id === product.id ? (
                       <div className="flex flex-col gap-1" onClick={(e) => e.stopPropagation()}>
                         <input
@@ -2434,14 +2498,30 @@ export default function AdminProducts() {
                         className="text-left hover:bg-orange-50 rounded px-1 -mx-1 cursor-pointer"
                         data-testid={`product-price-edit-${product.id}`}
                       >
-                        {product.sale_price ? (
-                          <div>
-                            <span className="text-red-600">{product.sale_price?.toFixed(2)} TL</span>
-                            <span className="text-xs text-gray-400 line-through block">{product.price?.toFixed(2)} TL</span>
-                          </div>
-                        ) : (
-                          <span>{product.price?.toFixed(2)} TL</span>
-                        )}
+                        {(() => {
+                          // TEK KAYNAK: priceView — hem ürün kartındaki indirimli fiyatı (sale_price)
+                          // hem de aktif otomatik KAMPANYA indirimini (campaign_discount_percent)
+                          // hesaplar → listede kampanyalı ürünlerin de kırmızı indirimli fiyatı görünür.
+                          const pv = priceView(product);
+                          if (pv.hasDiscount) {
+                            return (
+                              <div>
+                                <span className="text-red-600">{pv.display?.toFixed(2)} TL</span>
+                                {pv.campaignPct > 0 && (
+                                  <span className="ml-1 text-[10px] font-bold text-red-500">-%{pv.campaignPct}</span>
+                                )}
+                                <span className="text-xs text-gray-400 line-through block">{pv.list?.toFixed(2)} TL</span>
+                                {pv.campaignPct > 0 && (
+                                  <span className="block text-[10px] text-purple-600 font-medium truncate max-w-[140px]"
+                                        title={pv.campaignLabel || "Otomatik kampanya"}>
+                                    🎯 {pv.campaignLabel || "Kampanya"}
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          }
+                          return <span>{(product.price ?? 0).toFixed(2)} TL</span>;
+                        })()}
                       </button>
                     )}
                   </td>
@@ -2472,14 +2552,16 @@ export default function AdminProducts() {
                   </td>
                   <td>
                     <div className="flex gap-1 items-center">
-                        <button
-                          onClick={() => openEditModal(product)}
-                          className="p-1.5 hover:bg-gray-100 rounded"
-                          title="Düzenle"
+                        <a
+                          href={`/admin/urunler/${product.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 hover:bg-gray-100 rounded inline-flex"
+                          title="Düzenle (yeni sekmede açılır)"
                           data-testid={`product-edit-modal-${product.id}`}
                         >
                           <Edit size={16} />
-                        </button>
+                        </a>
                         <button onClick={() => handleDuplicate(product)} className="p-1.5 hover:bg-gray-100 rounded" title="Kopyala">
                           <Copy size={16} />
                         </button>
