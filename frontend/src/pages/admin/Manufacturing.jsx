@@ -586,7 +586,7 @@ export default function Manufacturing() {
                   || ["kesim", "dikim", "kalite_kontrol"].includes(item.current_stage);
                 return (
                 <Fragment key={item.id}>
-                <tr className="border-b hover:bg-gray-50" data-testid={`mfg-row-${item.code}`}>
+                <tr className="border-b hover:bg-gray-50 [&>td]:align-top" data-testid={`mfg-row-${item.code}`}>
                   <td className="px-3 py-3 text-sm font-bold text-gray-400 tabular-nums">{idx + 1}</td>
                   <td className="px-3 py-3 text-sm font-semibold">{item.partner_name || "—"}</td>
                   <td className="px-3 py-3">
@@ -606,12 +606,12 @@ export default function Manufacturing() {
                     </p>
                   </td>
                   <td className="px-3 py-3 text-xs">
-                    <p className="text-gray-700">{item.agreement_date ? new Date(item.agreement_date).toLocaleDateString('tr-TR') : '—'}</p>
+                    <p className="text-[11px] text-gray-900">{item.agreement_date ? new Date(item.agreement_date).toLocaleDateString('tr-TR') : '—'}</p>
                     {(() => {
                       // Girilen aşama tarihleri (eski kayıtlarda yalnız kesim tarihi olabilir)
                       const sd = { ...(item.cutting_start_date && !(item.stage_dates || {}).kesim ? { kesim: item.cutting_start_date } : {}), ...(item.stage_dates || {}) };
                       return Object.entries(sd).map(([k, v]) => (
-                        <p key={k} className="text-[9px] text-orange-600 whitespace-nowrap">
+                        <p key={k} className="text-[11px] text-gray-900 whitespace-nowrap">
                           {stageLabel(k)}: {new Date(v).toLocaleDateString('tr-TR')}
                         </p>
                       ));
@@ -625,10 +625,8 @@ export default function Manufacturing() {
                     )}
                   </td>
                   <td className="px-3 py-3">
-                    {/* Ödeme bekliyorsa uyarı; ödendiyse tekrar yazılmaz (ürün sütununda zaten var) */}
-                    {!item.payment_done && (
-                      <p className="text-[10px] font-bold mb-1 text-amber-600">ÖDEME BEKLİYOR</p>
-                    )}
+                    {/* ÖDEME BEKLİYOR kaldırıldı (kullanıcı isteği) — ödeme durumu ürün sütunundaki
+                        ÖDENDİ/ÖDENMEDİ rozetinde zaten görünüyor, burada tekrarı gereksizdi. */}
                     {/* Renk bazlı kumaş okeyi — etiket sabit kolonda, çipler kendi kolonunda sarar (simetrik) */}
                     <div className="flex items-start gap-1">
                       <span className="text-[9px] text-black font-bold uppercase w-11 shrink-0 mt-1">Kumaş:</span>
