@@ -99,6 +99,11 @@ NAME_MAX_LEN = 70
 # riskli beden düşer. Gerçek beslemede 4.461 varyant bu kurala takılıyor.
 MIN_STOCK_DEFAULT = 5
 
+# KÂR KATSAYISI — satış = alış × katsayı (+ KDV).
+# Ayar boşsa eskiden 1.0'a düşüyordu: ürünler maliyetine, KDV düşünce
+# ZARARINA satışa açılıyordu. Varsayılan iş kuralına çekildi.
+MARKUP_DEFAULT = 3.0
+
 
 def _tr_title_word(w: str) -> str:
     if not w:
@@ -998,7 +1003,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
     """
     cfg = await get_config()
     supplier = cfg.get("supplier_name") or "modayakamoz"
-    markup = float(cfg.get("price_markup") or 1.0)
+    markup = float(cfg.get("price_markup") or MARKUP_DEFAULT)
     min_stock = int(cfg.get("min_stock", MIN_STOCK_DEFAULT))
     low_stock = deactivated = deleted = 0
     _CAT_CACHE["map"] = None  # taze oku: panelden kategori eklenmiş olabilir
@@ -1150,7 +1155,7 @@ async def read_config(_admin=Depends(require_admin)):
         "configured": bool(cfg.get("url_enc")),
         "supplier_name": cfg.get("supplier_name") or "modayakamoz",
         "enabled": bool(cfg.get("enabled")),
-        "price_markup": float(cfg.get("price_markup") or 1.0),
+        "price_markup": float(cfg.get("price_markup") or MARKUP_DEFAULT),
         "min_stock": int(cfg.get("min_stock", MIN_STOCK_DEFAULT)),
         "mapping": cfg.get("mapping") or {},
         "last_import": cfg.get("last_import"),

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Sparkles, RotateCcw, Save, Wand2, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Sparkles, RotateCcw, Save, AlertTriangle, CheckCircle2 } from "lucide-react";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const field =
@@ -23,10 +23,6 @@ export default function AiImages() {
   const [apiKey, setApiKey] = useState("");
   const [msg, setMsg] = useState(null);
   const [busy, setBusy] = useState("");
-  const [productId, setProductId] = useState("");
-  const [referenceUrl, setReferenceUrl] = useState("");
-  const [attach, setAttach] = useState(false);
-  const [sonuc, setSonuc] = useState(null);
 
   const load = async () => {
     try {
@@ -80,36 +76,6 @@ export default function AiImages() {
       if (!r.ok) throw new Error(d.detail || "Sıfırlanamadı");
       setMsg({ type: "ok", text: "Prompt'lar fabrika ayarına döndü." });
       load();
-    } catch (e) {
-      setMsg({ type: "error", text: e.message });
-    } finally {
-      setBusy("");
-    }
-  };
-
-  const uret = async () => {
-    if (!productId.trim()) {
-      setMsg({ type: "error", text: "Ürün kimliği girin." });
-      return;
-    }
-    setBusy("gen");
-    setMsg(null);
-    setSonuc(null);
-    try {
-      const r = await fetch(
-        `${API}/ai-images/products/${productId.trim()}/regenerate`,
-        {
-          method: "POST",
-          headers: headers(),
-          body: JSON.stringify({
-            reference_url: referenceUrl.trim() || undefined,
-            attach,
-          }),
-        }
-      );
-      const d = await r.json();
-      if (!r.ok) throw new Error(d.detail || "Üretim başarısız");
-      setSonuc(d);
     } catch (e) {
       setMsg({ type: "error", text: e.message });
     } finally {
@@ -247,91 +213,15 @@ export default function AiImages() {
         </div>
       </div>
 
-      {/* ── Tek ürün üzerinde deneme ── */}
-      <div className="mt-6 rounded-xl border border-gray-200 p-5 space-y-4">
-        <h2 className="font-semibold">Bir üründe dene</h2>
-        <p className="text-xs text-gray-500">
-          Beş görsel tek istekte, eşzamanlı üretilir; birkaç dakika sürebilir.
-          Maliyeti olduğu için önce tek üründe deneyin.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Ürün kimliği</label>
-            <input
-              className={field}
-              value={productId}
-              onChange={(e) => setProductId(e.target.value)}
-              placeholder="ürün sayfasının adresindeki kimlik"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Ürün sayfası adresinin son parçası (meluni.com.tr/<b>&lt;kimlik&gt;</b>).
-            </p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Referans görsel adresi (isteğe bağlı)
-            </label>
-            <input
-              className={field}
-              value={referenceUrl}
-              onChange={(e) => setReferenceUrl(e.target.value)}
-              placeholder="stüdyo ortamı/ışık örneği"
-            />
-          </div>
-        </div>
-
-        <label className="flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            checked={attach}
-            onChange={(e) => setAttach(e.target.checked)}
-          />
-          Üretilen görselleri ürüne <b>ekle</b> (işaretlemezseniz yalnız üretilir,
-          ürün değişmez)
-        </label>
-
-        <button
-          onClick={uret}
-          disabled={busy === "gen"}
-          className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm inline-flex items-center gap-1.5 disabled:opacity-50"
-        >
-          <Wand2 className="w-4 h-4" />
-          {busy === "gen" ? "Üretiliyor… (birkaç dakika)" : "5 Görseli Üret"}
-        </button>
-
-        {sonuc && (
-          <div className="pt-2">
-            <div className="text-sm mb-2">
-              {Object.keys(sonuc.generated || {}).length} görsel üretildi
-              {sonuc.attached ? " ve ürüne eklendi" : " (ürüne eklenmedi)"}.
-            </div>
-            {!!(sonuc.errors && Object.keys(sonuc.errors).length) && (
-              <div className="mb-3 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-800">
-                {Object.entries(sonuc.errors).map(([pose, err]) => (
-                  <div key={pose}>
-                    <b>{(sonuc.labels || {})[pose] || pose}:</b> {String(err)}
-                  </div>
-                ))}
-              </div>
-            )}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-              {Object.entries(sonuc.generated || {}).map(([pose, url]) => (
-                <div key={pose}>
-                  <img
-                    src={url}
-                    alt={(sonuc.labels || {})[pose] || pose}
-                    className="w-full rounded-lg border object-cover"
-                  />
-                  <div className="text-xs text-center text-gray-600 mt-1">
-                    {(sonuc.labels || {})[pose] || pose}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+      {/* Üretim ürünün KENDİ görselleriyle çalışıyor; bu yüzden ürün kartının
+          içinden tetikleniyor. Burada yalnız anahtar ve poz metinleri durur. */}
+      <div className="mt-6 rounded-lg bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-700">
+        Görseller <b>ürün kartının içinden</b> üretilir: Ürünler → ürünü aç →
+        <b> Görseller</b> sekmesi → en altta “Görsel Üretimi”. Ürünün kendi
+        görselleri referans olarak kendiliğinden gönderilir; orada yalnız yeni
+        <b> ortam referansını</b> yüklersiniz.
       </div>
+
     </div>
   );
 }

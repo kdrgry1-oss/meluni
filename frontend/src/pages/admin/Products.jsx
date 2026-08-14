@@ -36,6 +36,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams, useParams, useNavigate } from "react-router-dom";
 import { Plus, Search, Edit, Trash2, Eye, EyeOff, Copy, Upload, Image, X, MoreHorizontal, Layers, Filter, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Store, RefreshCw, Check, Globe, Download, FileSpreadsheet, CheckSquare, Square, Printer, Tag, AlertTriangle } from "lucide-react";
 import axios from "axios";
+import ProductAiImages from "../../components/admin/ProductAiImages";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -4083,6 +4084,18 @@ export default function AdminProducts() {
                       </div>
                     )}
                   </div>
+
+                  {/* Görsel üretimi — görsellerin ALTINDA. Ürünün kendi
+                      görselleri referans olarak otomatik gider; buradan yalnız
+                      ortam referansı yüklenir. Anahtar ve poz metinleri
+                      Entegrasyonlar > Görsel Üretimi ekranında. */}
+                  <ProductAiImages
+                    productId={editingProduct?.id}
+                    images={formData.images || []}
+                    onAddImage={(url) =>
+                      setFormData((prev) => ({ ...prev, images: [...(prev.images || []), url] }))
+                    }
+                  />
                 </div>
               </TabsContent>
 

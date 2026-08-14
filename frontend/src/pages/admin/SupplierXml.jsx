@@ -16,7 +16,7 @@ export default function SupplierXml() {
   const [cfg, setCfg] = useState({
     url: "",
     supplier_name: "modayakamoz",
-    price_markup: 2.0,
+    price_markup: 3.0,
     min_stock: 5,
     enabled: false,
     url_masked: "",
@@ -211,9 +211,9 @@ export default function SupplierXml() {
             ) : (
               <>
                 {" "}
-                Örnek: 434,93 TL maliyet, %10 KDV, katsayı {Number(cfg.price_markup) || 2} →{" "}
+                Örnek: 434,93 TL maliyet, %10 KDV, katsayı {Number(cfg.price_markup) || 3} →{" "}
                 <b>
-                  {(434.93 * (Number(cfg.price_markup) || 2) * 1.1).toFixed(2)} TL
+                  {(434.93 * (Number(cfg.price_markup) || 3) * 1.1).toFixed(2)} TL
                 </b>
               </>
             )}
