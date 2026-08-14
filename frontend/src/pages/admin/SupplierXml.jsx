@@ -18,6 +18,7 @@ export default function SupplierXml() {
     supplier_name: "modayakamoz",
     price_markup: 3.0,
     min_stock: 5,
+    single_size_max_stock: 9,
     enabled: false,
     url_masked: "",
     last_import: null,
@@ -57,6 +58,7 @@ export default function SupplierXml() {
         supplier_name: cfg.supplier_name,
         price_markup: Number(cfg.price_markup),
         min_stock: Number(cfg.min_stock),
+        single_size_max_stock: Number(cfg.single_size_max_stock),
         enabled: !!cfg.enabled,
       };
       // Adres yalnız yeni girildiyse gönderilir; boşsa mevcut (şifreli) adres korunur.
@@ -174,6 +176,25 @@ export default function SupplierXml() {
             <p className="text-xs text-gray-500 mt-1">
               Tedarikçi stoğu bu sayıya <b>eşit veya altındaysa</b> o beden hiç
               açılmaz. Sipariş gelip malı bulamamayı önler.
+            </p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Tek beden kapatma eşiği
+            </label>
+            <input
+              className={field}
+              type="number"
+              min="0"
+              value={cfg.single_size_max_stock}
+              onChange={(e) =>
+                setCfg({ ...cfg, single_size_max_stock: e.target.value })}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Ürünün <b>diğer bedenleri tükenmiş</b> ve elde kalan tek bedenin
+              stoğu bu sayıya eşit/altındaysa ürün silinir ve besleme onu
+              <b> bir daha getirmez</b>. Kalıcıdır: geri almak için ürünü kara
+              listeden çıkarmanız gerekir. 0 yazarsanız kural kapanır.
             </p>
           </div>
           <div>

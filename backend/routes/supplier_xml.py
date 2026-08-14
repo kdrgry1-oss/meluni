@@ -104,6 +104,16 @@ NAME_MAX_LEN = 70
 # riskli beden düşer. Gerçek beslemede 4.461 varyant bu kurala takılıyor.
 MIN_STOCK_DEFAULT = 5
 
+# TEK BEDEN KALMIŞ ÜRÜN — kalıcı kapatma eşiği.
+# Ürünün diğer bedenleri tükenmiş, elde tek beden kalmışsa ve o bedenin stoğu
+# da bu değerin altındaysa ürün ölmüş demektir: vitrinde kategori doluymuş gibi
+# görünür, müşterilerin çoğu kendi bedenini bulamadan sayfayı terk eder, gelen
+# tek tük sipariş de tedarikçide bulunamama riski taşır. Bu ürünler silinir ve
+# BİR DAHA AKTARILMAMAK ÜZERE kara listeye alınır (yönetim isteği).
+# Kalıcı bir karar: tedarikçi sonradan stok bassa bile ürün geri gelmez —
+# geri almak için panelden kara listeden çıkarmak gerekir.
+SINGLE_SIZE_MAX_STOCK_DEFAULT = 9
+
 # KÂR KATSAYISI — satış = alış × katsayı (+ KDV).
 # Ayar boşsa eskiden 1.0'a düşüyordu: ürünler maliyetine, KDV düşünce
 # ZARARINA satışa açılıyordu. Varsayılan iş kuralına çekildi.
@@ -914,9 +924,78 @@ def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+# ──────────────── tek beden kalmış ürünü kapatma ────────────────
+class _RetireProduct(Exception):
+    """Ürün tek bedene düşmüş ve o beden de bitiyor → kalıcı kapatılır."""
+
+
+def tek_beden_bitiyor(variants: List[Dict[str, Any]], esik: int) -> tuple:
+    """(kapatilsin_mi, kalan_stok, beden) döndürür.
+
+    Kural: stoğu OLAN beden sayısı 1 ve o bedenin stoğu `esik` ya da altında.
+    Beden etiketi olmayan (tek ebat / standart) ürünler de tek bedenli sayılır —
+    onlar için de "elde son N adet kaldı" durumu aynıdır.
+
+    Not: renk kardeşleri bu sistemde AYRI ürün kartıdır (aynı stok kodunu
+    paylaşırlar), dolayısıyla buradaki varyantlar bedendir; bir rengin bitmesi
+    diğer rengi kapatmaz.
+    """
+    stoklu = [v for v in (variants or []) if int(v.get("stock") or 0) > 0]
+    if not stoklu:
+        return False, 0, ""          # zaten tamamen tükenmiş — bu kuralın işi değil
+    bedenler = {str(v.get("size") or "").strip().lower() for v in stoklu}
+    if len(bedenler) != 1:
+        return False, 0, ""
+    kalan = sum(int(v.get("stock") or 0) for v in stoklu)
+    if kalan > esik:
+        return False, kalan, ""
+    return True, kalan, str(stoklu[0].get("size") or "").strip()
+
+
+async def kapat_ve_engelle(product: Dict[str, Any], sebep: str,
+                           kalan: int = 0, beden: str = "") -> str:
+    """Ürünü vitrinden kaldırır ve beslemeye kalıcı olarak kapatır.
+
+    products.py::block_product ile AYNI sözleşme: ürün KALICI SİLİNMEZ
+    (`is_deleted`), çünkü geçmiş siparişler ürüne referans veriyor olabilir;
+    kaydı yok etmek sipariş detayını bozar. Kara listeye `supplier_key`
+    yazılır — aktarım o anahtarı görünce ürünü hiç oluşturmaz.
+
+    Döner: "engellendi" | "silindi" (anahtarsız ürün) | "" (bir şey yapılmadı)
+    """
+    pid = product.get("id")
+    if not pid:
+        return ""
+    _now = _now_iso()
+    await db.products.update_one({"id": pid}, {"$set": {
+        "is_active": False,
+        "is_deleted": True,
+        "manual_deactivated": True,        # besleme geri açmasın
+        "manual_deactivated_at": _now,
+        "blocked_from_feed": True,
+        "deactivated_reason": sebep,
+        "retired_single_size": {"kalan": int(kalan), "beden": beden, "at": _now},
+        "updated_at": _now,
+    }})
+    key = product.get("supplier_key")
+    if not key:
+        return "silindi"
+    await db.supplier_blocklist.update_one(
+        {"supplier_key": key},
+        {"$set": {"supplier_key": key, "product_id": pid,
+                  "name": product.get("name") or "",
+                  "supplier": product.get("supplier") or "",
+                  "blocked_by": "sistem: tek beden eşiği",
+                  "reason": "tek_beden_esik",
+                  "created_at": _now}},
+        upsert=True)
+    return "engellendi"
+
+
 # ─────────────────────────── aktarım ───────────────────────────
 async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float = 1.0,
-                             min_stock: int = MIN_STOCK_DEFAULT) -> Dict[str, Any]:
+                             min_stock: int = MIN_STOCK_DEFAULT,
+                             tek_beden_esik: int = SINGLE_SIZE_MAX_STOCK_DEFAULT) -> Dict[str, Any]:
     """Ara temsili ürün dökümanına çevirir; kodları BİZ üretiriz."""
     model_code = await supplier_codes.get_or_create_model_code(
         db, supplier, rec["model_ref"], rec.get("group_ref") or "")
@@ -955,6 +1034,14 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
     # Tüm bedenleri eşiğin altındaysa ürünü hiç açmıyoruz.
     if not variants:
         raise _SkipProduct(f"tüm bedenler stok <= {min_stock}")
+
+    # Tek bedene düşmüş ve o beden de bitiyorsa ürün KALICI kapatılır. Bu,
+    # _SkipProduct'tan farklı: o geçici (stok gelirse ürün geri açılır),
+    # bu kalıcı (kara listeye yazılır, besleme bir daha getirmez).
+    _kapat, _kalan, _beden = tek_beden_bitiyor(variants, tek_beden_esik)
+    if _kapat:
+        raise _RetireProduct(
+            f"tek beden ({_beden or 'tek ebat'}) kaldı, stok {_kalan} <= {tek_beden_esik}")
 
     primary = variants[0] if variants else {}
 
@@ -1029,7 +1116,8 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
     supplier = cfg.get("supplier_name") or "modayakamoz"
     markup = float(cfg.get("price_markup") or MARKUP_DEFAULT)
     min_stock = int(cfg.get("min_stock", MIN_STOCK_DEFAULT))
-    low_stock = deactivated = deleted = 0
+    tek_beden_esik = int(cfg.get("single_size_max_stock", SINGLE_SIZE_MAX_STOCK_DEFAULT))
+    low_stock = deactivated = deleted = retired = 0
     _CAT_CACHE["map"] = None  # taze oku: panelden kategori eklenmiş olabilir
     records, _ = await load_items()
     await _set_status(phase=f"{len(records)} ürün işleniyor", total=len(records))
@@ -1060,9 +1148,11 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
                 continue
             existing = await db.products.find_one(
                 {"supplier_key": key},
-                {"_id": 0, "id": 1, "manual_deactivated": 1, "images_custom": 1})
+                {"_id": 0, "id": 1, "name": 1, "supplier": 1, "supplier_key": 1,
+                 "manual_deactivated": 1, "images_custom": 1})
 
-            doc = await _build_product_doc(rec, supplier, markup, min_stock)
+            doc = await _build_product_doc(rec, supplier, markup, min_stock,
+                                           tek_beden_esik)
             doc["supplier_key"] = key
 
             if existing:
@@ -1088,6 +1178,22 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
             else:
                 await db.products.insert_one(doc)
                 created += 1
+        except _RetireProduct as e:
+            # Tek bedene düşmüş, o beden de bitiyor → kalıcı kapatma.
+            # Ürün bizde yoksa hiç açmıyoruz ama anahtarı yine kara listeye
+            # yazıyoruz: aksi hâlde her aktarımda yeniden değerlendirilir ve
+            # tedarikçi bir gün 10 adet basarsa ölü ürün vitrine geri döner.
+            retired += 1
+            if existing:
+                await kapat_ve_engelle(existing, str(e))
+            else:
+                await db.supplier_blocklist.update_one(
+                    {"supplier_key": key},
+                    {"$set": {"supplier_key": key, "product_id": "",
+                              "name": rec.get("name") or "", "supplier": supplier,
+                              "blocked_by": "sistem: tek beden eşiği",
+                              "reason": "tek_beden_esik", "created_at": _now_iso()}},
+                    upsert=True)
         except _SkipProduct:
             # İş kuralı gereği atlandı — HATA DEĞİL, ayrı sayılır.
             low_stock += 1
@@ -1117,6 +1223,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
               "price_markup": markup, "min_stock": min_stock, "blocked": blocked,
               "low_stock_skipped": low_stock, "deactivated": deactivated,
               "deleted": deleted,
+              "single_size_max_stock": tek_beden_esik, "retired_single_size": retired,
               "at": _now_iso()}
     if markup <= 1.0:
         # Besleme BAYİ fiyatı verir; katsayısız yayınlamak maliyetine satmaktır.
@@ -1134,14 +1241,17 @@ async def sync_stock() -> Dict[str, Any]:
     cfg = await get_config()
     supplier = cfg.get("supplier_name") or "modayakamoz"
     min_stock = int(cfg.get("min_stock", MIN_STOCK_DEFAULT))
+    tek_beden_esik = int(cfg.get("single_size_max_stock", SINGLE_SIZE_MAX_STOCK_DEFAULT))
     records, _ = await load_items()
 
-    touched = missing = failed = 0
+    touched = missing = failed = retired = 0
     for rec in records:
         try:
             key = supplier_codes.supplier_key(supplier, rec["model_ref"])
             product = await db.products.find_one(
-                {"supplier_key": key}, {"_id": 0, "id": 1, "variants": 1})
+                {"supplier_key": key},
+                {"_id": 0, "id": 1, "name": 1, "supplier": 1, "supplier_key": 1,
+                 "variants": 1, "is_deleted": 1})
             if not product:
                 missing += 1
                 continue
@@ -1178,12 +1288,25 @@ async def sync_stock() -> Dict[str, Any]:
                           "price": float(rec.get("price") or 0) or None,
                           "stock_synced_at": _now_iso()}})
             touched += 1
+
+            # TEK BEDEN KALDIYSA KALICI KAPAT. Kural asıl BURADA tetiklenir:
+            # ürün katalogda dururken bedenleri tek tek tükenir. Stok yazıldıktan
+            # SONRA bakıyoruz ki karar en güncel veriyle verilsin.
+            if not product.get("is_deleted"):
+                _kapat, _kalan, _beden = tek_beden_bitiyor(new_variants, tek_beden_esik)
+                if _kapat:
+                    await kapat_ve_engelle(
+                        product,
+                        f"tek beden ({_beden or 'tek ebat'}) kaldı, "
+                        f"stok {_kalan} <= {tek_beden_esik}", _kalan, _beden)
+                    retired += 1
         except Exception as e:
             failed += 1
             logger.error(f"[supplier_xml] stok eşitlenemedi ({rec.get('name')!r}): {e}")
 
     result = {"updated": touched, "not_in_catalog": missing, "failed": failed,
-              "total": len(records), "at": _now_iso()}
+              "total": len(records), "retired_single_size": retired,
+              "single_size_max_stock": tek_beden_esik, "at": _now_iso()}
     await db.settings.update_one({"id": SETTINGS_ID},
                                  {"$set": {"last_stock_sync": result}}, upsert=True)
     logger.info(f"[supplier_xml] stok senkronu: {result}")
@@ -1209,6 +1332,8 @@ async def read_config(_admin=Depends(require_admin)):
         "enabled": bool(cfg.get("enabled")),
         "price_markup": float(cfg.get("price_markup") or MARKUP_DEFAULT),
         "min_stock": int(cfg.get("min_stock", MIN_STOCK_DEFAULT)),
+        "single_size_max_stock": int(cfg.get("single_size_max_stock",
+                                             SINGLE_SIZE_MAX_STOCK_DEFAULT)),
         "mapping": cfg.get("mapping") or {},
         "last_import": cfg.get("last_import"),
         "last_stock_sync": cfg.get("last_stock_sync"),
@@ -1240,6 +1365,16 @@ async def write_config(payload: dict, _admin=Depends(require_admin)):
         if _ms < 0:
             raise HTTPException(status_code=400, detail="min_stock negatif olamaz.")
         update["min_stock"] = _ms
+    if payload.get("single_size_max_stock") is not None:
+        try:
+            _ts = int(payload["single_size_max_stock"])
+        except (TypeError, ValueError):
+            raise HTTPException(status_code=400,
+                                detail="single_size_max_stock tam sayı olmalı.")
+        if _ts < 0:
+            raise HTTPException(status_code=400,
+                                detail="single_size_max_stock negatif olamaz.")
+        update["single_size_max_stock"] = _ts
     if payload.get("supplier_name"):
         update["supplier_name"] = str(payload["supplier_name"]).strip()
     if isinstance(payload.get("mapping"), dict):
