@@ -67,7 +67,34 @@ async def main() -> int:
         fiyat[key] = _sayi(rec.get("price"))
     print(f"{len(fiyat)} ürünün bayi fiyatı okundu\n")
 
-    toplam = eksik = duzelen = eslesmeyen = 0
+    # ÖNCE TANI: "hâlâ işlenmemiş" şikayetinin sebebi çoğu zaman betiğin hiç
+    # çalışmaması değil, alanın başka isimde dolu olması ya da ürünün beslemede
+    # bulunamaması. Neyin ne durumda olduğunu açıkça sayıyoruz.
+    tani = {"cost_dolu": 0, "purchase_dolu": 0, "ikisi_de_bos": 0,
+            "varyant_dolu": 0, "supplier_key_yok": 0}
+    async for _p in db.products.find({"is_deleted": {"$ne": True}},
+                                     {"_id": 0, "cost_price": 1, "purchase_price": 1,
+                                      "supplier_key": 1, "variants": 1}):
+        if _sayi(_p.get("cost_price")) > 0:
+            tani["cost_dolu"] += 1
+        if _sayi(_p.get("purchase_price")) > 0:
+            tani["purchase_dolu"] += 1
+        if _sayi(_p.get("cost_price")) <= 0 and _sayi(_p.get("purchase_price")) <= 0:
+            tani["ikisi_de_bos"] += 1
+            if any(_sayi(v.get("cost_price")) > 0 or _sayi(v.get("purchase_price")) > 0
+                   for v in (_p.get("variants") or [])):
+                tani["varyant_dolu"] += 1
+        if not _p.get("supplier_key"):
+            tani["supplier_key_yok"] += 1
+    print("mevcut durum:")
+    print(f"  cost_price dolu        : {tani['cost_dolu']}")
+    print(f"  purchase_price dolu    : {tani['purchase_dolu']}")
+    print(f"  ikisi de boş           : {tani['ikisi_de_bos']}")
+    print(f"    …ama varyantta dolu  : {tani['varyant_dolu']}  (varyanttan kurtarılabilir)")
+    print(f"  supplier_key yok       : {tani['supplier_key_yok']}  (beslemeden gelmemiş)")
+    print()
+
+    toplam = eksik = duzelen = eslesmeyen = varyanttan = 0
     ornek = []
     async for p in db.products.find(
             {"is_deleted": {"$ne": True}, "supplier_key": {"$exists": True}},
@@ -79,6 +106,15 @@ async def main() -> int:
             continue
         eksik += 1
         yeni = fiyat.get(p.get("supplier_key") or "")
+        if not yeni:
+            # Beslemede yok — ama varyantlarından biri maliyet taşıyor olabilir
+            # (ürün seviyesi silinmiş, varyant kalmış). Onu kullan.
+            for v in (p.get("variants") or []):
+                aday = _sayi(v.get("cost_price")) or _sayi(v.get("purchase_price"))
+                if aday > 0:
+                    yeni = aday
+                    varyanttan += 1
+                    break
         if not yeni:
             eslesmeyen += 1
             continue
@@ -105,7 +141,8 @@ async def main() -> int:
     print(f"tedarikçiden gelen ürün : {toplam}")
     print(f"maliyeti eksik olan     : {eksik}")
     print(f"{'geri yüklendi' if yaz else 'geri yüklenecek'}         : {duzelen}")
-    print(f"beslemede bulunamayan   : {eslesmeyen}")
+    print(f"varyanttan kurtarılan   : {varyanttan}")
+    print(f"hiçbir kaynakta yok     : {eslesmeyen}")
     if not yaz:
         print("\nHiçbir şey yazılmadı. Uygulamak için: --uygula")
     return 0

@@ -63,6 +63,20 @@ log "backend bağımlılıkları kuruluyor"
 # .env'i backend'in yanına bağla — server.py onu kendi dizininden okuyor.
 ln -sfn "${SHARED_DIR}/.env" "${RELEASE_DIR}/backend/.env"
 
+# YÜKLENEN GÖRSELLER. routes/upload.py dosyaları backend/uploads altına yazıyor,
+# oysa deploy.sh yalnız KÖK seviyedeki "uploads" dizinini shared'e bağlıyor.
+# Bu yüzden yapay zekâ ile üretilen ve panelden yüklenen her görsel bir sonraki
+# deployda kayboluyordu (ürünler kırık görsele düşer). Doğru dizini bağlıyoruz.
+mkdir -p "${SHARED_DIR}/uploads"
+if [ -d "${RELEASE_DIR}/backend/uploads" ] && [ ! -L "${RELEASE_DIR}/backend/uploads" ]; then
+  # İlk geçiş: release içinde birikmiş dosyaları kaybetme, shared'e taşı.
+  cp -an "${RELEASE_DIR}/backend/uploads/." "${SHARED_DIR}/uploads/" 2>/dev/null || true
+  rm -rf "${RELEASE_DIR}/backend/uploads"
+fi
+ln -sfn "${SHARED_DIR}/uploads" "${RELEASE_DIR}/backend/uploads"
+chmod o+rX "${SHARED_DIR}/uploads" 2>/dev/null || true
+log "yüklenen görseller shared'den bağlandı ($(ls -1 "${SHARED_DIR}/uploads" 2>/dev/null | wc -l) dosya)"
+
 # JWT imza anahtarı: .env'de JWT_SECRET yoksa deps.py onu backend/data/.jwt_secret
 # dosyasında üretip saklıyor. O dosya RELEASE dizininde kalırsa her deployda yeni
 # release ile birlikte kaybolur, yeni anahtar üretilir ve TÜM oturumlar (müşteri +
