@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Sparkles, Upload, X, Plus, AlertTriangle, Wand2, Check } from "lucide-react";
+import { Sparkles, Upload, X, Plus, AlertTriangle, Wand2, Check, Ruler, Search } from "lucide-react";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const BACKEND_ORIGIN = (process.env.REACT_APP_BACKEND_URL || "").replace(/\/api\/?$/, "");
@@ -27,6 +27,12 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
   // 1200x1800 üretir. Üretimden farklı olarak yeni poz oluşturmaz.
   const [hdBekle, setHdBekle] = useState(false);
   const [hdSonuc, setHdSonuc] = useState(null);
+  // Ölçü tablosu ayrı ele alınır: ürün fotoğrafı değil, METİN taşıyan bir
+  // belge. Tarama hangi görselin tablo olduğunu söyler, dönüşüm yalnız ona
+  // uygulanır.
+  const [tarama, setTarama] = useState(null);
+  const [taraBekle, setTaraBekle] = useState(false);
+  const [ceviriBekle, setCeviriBekle] = useState(-1);
 
   const token = () => localStorage.getItem("token") || "";
 
@@ -105,6 +111,55 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       setHata(e.message);
     } finally {
       setHdBekle(false);
+    }
+  };
+
+  const tara = async () => {
+    setTaraBekle(true);
+    setHata("");
+    setTarama(null);
+    try {
+      const r = await fetch(`${API}/ai-images/products/${productId}/scan`, {
+        headers: { Authorization: `Bearer ${token()}` },
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || "Tarama başarısız");
+      setTarama(d);
+    } catch (e) {
+      setHata(e.message);
+    } finally {
+      setTaraBekle(false);
+    }
+  };
+
+  const olcuCevir = async (index) => {
+    if (!window.confirm(
+      "Bu ölçü tablosu Türkçeleştirilip ürünün görseliyle DEĞİŞTİRİLECEK.\n\n" +
+      "Sonrasında tablodaki ölçüleri aslıyla karşılaştırın — sayı hatası " +
+      "müşteriye yanlış beden aldırır.\n\nDevam edilsin mi?"
+    )) return;
+    setCeviriBekle(index);
+    setHata("");
+    try {
+      const r = await fetch(`${API}/ai-images/products/${productId}/size-chart`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+        body: JSON.stringify({ index, replace: true }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || "Çeviri başarısız");
+      const yeni = [...images];
+      if (index < yeni.length) yeni[index] = d.url;
+      onReplaceImages?.(yeni);
+      setTarama((t) => t && {
+        ...t,
+        images: t.images.map((it) =>
+          it.index === index ? { ...it, url: d.url, cevrildi: true } : it),
+      });
+    } catch (e) {
+      setHata(e.message);
+    } finally {
+      setCeviriBekle(-1);
     }
   };
 
@@ -252,6 +307,69 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
         </div>
       )}
 
+      {/* ── Ölçü tablosu ── */}
+      <div className="mt-4 pt-4 border-t">
+        <div className="flex items-center gap-2 mb-1">
+          <Ruler className="w-4 h-4" />
+          <h5 className="font-semibold text-sm">Ölçü Tablosu</h5>
+        </div>
+        <p className="text-xs text-gray-500 mb-3">
+          Tedarikçi görsellerinin arasında beden tablosu da geliyor ve çoğu
+          İngilizce. Tarama hangi görselin tablo olduğunu bulur; çeviri
+          <b> yalnız o görsele</b> uygulanır, ürün fotoğraflarına dokunmaz.
+        </p>
+
+        <button
+          type="button"
+          onClick={tara}
+          disabled={taraBekle || images.length === 0}
+          className="px-3 py-1.5 rounded-lg border text-sm inline-flex items-center gap-1.5 hover:bg-gray-50 disabled:opacity-50"
+        >
+          <Search className="w-4 h-4" />
+          {taraBekle ? "Taranıyor…" : "Ölçü tablosu ara"}
+        </button>
+
+        {tarama && (
+          <div className="mt-3">
+            <div className="text-xs text-gray-600 mb-2">
+              {tarama.size_chart_count > 0
+                ? `${tarama.size_chart_count} ölçü tablosu bulundu.`
+                : "Ölçü tablosu bulunamadı — tüm görseller ürün fotoğrafı."}
+            </div>
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+              {(tarama.images || []).map((it) => (
+                <div key={it.index}>
+                  <img src={it.url} alt={`görsel ${it.index + 1}`}
+                       className={`w-full aspect-[2/3] object-cover rounded-lg border ${
+                         it.tur === "olcu" ? "border-blue-400 ring-1 ring-blue-300" : ""
+                       }`} />
+                  {it.tur === "olcu" ? (
+                    it.cevrildi ? (
+                      <div className="mt-1 text-[10px] text-center text-green-700">
+                        Türkçeleştirildi
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => olcuCevir(it.index)}
+                        disabled={ceviriBekle === it.index}
+                        className="mt-1 w-full text-[10px] rounded-lg py-1 bg-blue-600 text-white disabled:opacity-50"
+                      >
+                        {ceviriBekle === it.index ? "Çevriliyor…" : "Türkçeye çevir"}
+                      </button>
+                    )
+                  ) : (
+                    <div className="mt-1 text-[10px] text-center text-gray-400">
+                      ürün fotoğrafı
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* ── Kalite iyileştirme ── */}
       <div className="mt-4 pt-4 border-t">
         <div className="flex items-center gap-2 mb-1">
@@ -314,7 +432,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
                         }`}
                         title={r.note || ""}
                       >
-                        {r.ai ? "netleştirildi" : "yalnız ölçek"}
+                        {r.tur === "olcu" ? "ölçü tablosu · TR" : (r.ai ? "netleştirildi" : "yalnız ölçek")}
                       </div>
                     </>
                   ) : (

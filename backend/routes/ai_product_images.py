@@ -58,6 +58,30 @@ _DEFAULT_ENHANCE_PROMPT = (
     "deseni veya rengi değiştirme. Ten rengini ve model yüzünü değiştirme. "
     "Yazı, logo, filigran veya çerçeve ekleme. Çıktı dikey 2:3 oranında olsun."
 )
+
+# ── Ölçü tablosu ─────────────────────────────────────────────────────────
+# Tedarikçi görsellerinin arasında beden/ölçü tablosu da geliyor ve çoğu
+# İngilizce. Ürün fotoğrafı gibi "netleştir" demek yanlış: bu bir belge, metin
+# taşıyor. Ayrı bir metinle işlenir — çevrilir, yeniden dizilir.
+_DEFAULT_CLASSIFY_MODEL = "gemini-2.5-flash"
+_DEFAULT_SIZE_CHART_PROMPT = (
+    "Bu bir BEDEN/ÖLÇÜ TABLOSU görseli. Aynı tabloyu TÜRKÇE olarak, temiz ve "
+    "yüksek çözünürlüklü biçimde yeniden çiz.\n"
+    "SAYILAR KUTSALDIR: tablodaki her ölçü, beden adı ve rakam BİREBİR aynı "
+    "kalmalı. Hiçbir sayıyı yuvarlama, düzeltme, tahmin etme veya ekleme; "
+    "okuyamadığın bir hücreyi olduğu gibi bırak.\n"
+    "Yalnız BAŞLIKLARI Türkçeye çevir: Size→Beden, Bust/Chest→Göğüs, "
+    "Waist→Bel, Hip/Hips→Kalça, Length→Boy, Shoulder→Omuz, Sleeve→Kol Boyu, "
+    "Inseam→İç Bacak, Thigh→Uykuk, Height→Boy, Weight→Kilo, cm→cm.\n"
+    "Düzen: beyaz zemin, koyu gri metin, ince ızgara çizgileri, satırlar rahat "
+    "okunacak aralıkta. Marka adı, logo, filigran veya süsleme EKLEME. "
+    "Çıktı dikey 2:3 oranında, tablo ortalanmış olsun."
+)
+_CLASSIFY_PROMPT = (
+    "Bu görsel bir giyim ürününün fotoğrafı mı, yoksa beden/ölçü tablosu "
+    "(ölçü çizelgesi, size chart) mı? Yalnız tek kelime yanıtla: "
+    "'urun' veya 'olcu'."
+)
 _MAX_REF_IMAGES = 6                   # API'ye gönderilecek referans üst sınırı
 _TIMEOUT = 300.0                      # görsel üretimi yavaştır
 
@@ -340,12 +364,18 @@ async def _gemini_key() -> str:
 
 
 def _fit_target(raw: bytes, target=ENHANCE_TARGET) -> bytes:
-    """Görseli tam hedef ölçüye oturtur.
+    """Görseli tam hedef ölçüye getirir — boş bant bırakmadan.
 
-    Kaynak oran hedeften farklıysa (tedarikçi görselleri 3:4, hedef 2:3) KIRPMAK
-    ürünün eteğini/paçasını kesebilir. Bu yüzden oran korunarak sığdırılıp
-    boşluk, görselin kenar renginden alınan düz zeminle doldurulur — böylece
-    ekleme yapılmadan kadraj tamamlanır.
+    Kaynak 3:4 (630x840), hedef 2:3 (1200x1800): hedef DAHA UZUN. Oranı koruyup
+    sığdırmak (contain) görseli 1200x1600 yapıyor ve üstte/altta 100'er piksel
+    boşluk bırakıyordu — vitrinde gri bant olarak görünüyor, ürün "kesik" duruyordu.
+
+    Bunun yerine hedefi TAM DOLDURUP taşanı kırpıyoruz. Kaynak hedeften geniş
+    olduğu için kırpma YANLARDAN oluyor; baş ve ayak kesilmiyor.
+
+    Emniyet: kırpma bir eksende %12'yi aşarsa (ör. çok dar/uzun bir kaynak)
+    ürünün bir kısmını kaybetme riski var — o durumda dolguya dönüyoruz.
+    Boşluğu görselin kendi kenar renginden alıyoruz ki dikiş belli olmasın.
     """
     from PIL import Image
     import io
@@ -357,73 +387,127 @@ def _fit_target(raw: bytes, target=ENHANCE_TARGET) -> bytes:
         im.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
         return out.getvalue()
 
-    scale = min(tw / im.width, th / im.height)
-    nw, nh = max(1, round(im.width * scale)), max(1, round(im.height * scale))
-    im = im.resize((nw, nh), Image.LANCZOS)
+    kapla = max(tw / im.width, th / im.height)
+    kw, kh = round(im.width * kapla), round(im.height * kapla)
+    kayip = max((kw - tw) / kw if kw else 0, (kh - th) / kh if kh else 0)
 
-    # Zemin rengi: üst kenarın ortalaması — stüdyo fotoğraflarında arka plan.
-    kenar = im.crop((0, 0, im.width, max(1, im.height // 40))).resize((1, 1), Image.LANCZOS)
-    zemin = kenar.getpixel((0, 0))
+    if kayip <= 0.12:
+        im = im.resize((max(1, kw), max(1, kh)), Image.LANCZOS)
+        sol, ust = (kw - tw) // 2, (kh - th) // 2
+        tuval = im.crop((sol, ust, sol + tw, ust + th))
+    else:
+        sigdir = min(tw / im.width, th / im.height)
+        nw, nh = max(1, round(im.width * sigdir)), max(1, round(im.height * sigdir))
+        im = im.resize((nw, nh), Image.LANCZOS)
+        kenar = im.crop((0, 0, im.width, max(1, im.height // 40))).resize((1, 1), Image.LANCZOS)
+        tuval = Image.new("RGB", (tw, th), kenar.getpixel((0, 0)))
+        tuval.paste(im, ((tw - nw) // 2, (th - nh) // 2))
 
-    tuval = Image.new("RGB", (tw, th), zemin)
-    tuval.paste(im, ((tw - nw) // 2, (th - nh) // 2))
     out = io.BytesIO()
     tuval.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
     return out.getvalue()
 
 
-def _gemini_hata(resp) -> str:
-    """Sağlayıcı hatasını okunur hâle getirir.
+async def _gemini_classify(client: httpx.AsyncClient, api_key: str, model: str,
+                           raw: bytes) -> str:
+    """Görsel ürün fotoğrafı mı ölçü tablosu mu? 'olcu' | 'urun'.
 
-    Ham JSON'u ekrana basmak beş kutuyu aynı İngilizce yığınla dolduruyor ve
-    asıl mesele (kota mı, anahtar mı, içerik reddi mi) kaybolyordu.
-    """
-    try:
-        msg = ((resp.json() or {}).get("error") or {}).get("message") or ""
-    except Exception:
-        msg = (resp.text or "")[:200]
-    kod = resp.status_code
-    if kod == 429:
-        return ("Gemini kotası/kredisi tükenmiş. AI Studio'da projenin "
-                "faturalandırmasını açın veya kredi yükleyin. (Google: " + msg[:120] + ")")
-    if kod in (401, 403):
-        return "Gemini API anahtarı geçersiz veya bu modele yetkisi yok."
-    if kod == 400 and "safety" in msg.lower():
-        return "Gemini görseli güvenlik gerekçesiyle işlemedi."
-    return f"Gemini hatası ({kod}): {msg[:200] or 'ayrıntı yok'}"
-
-
-async def _gemini_enhance(client: httpx.AsyncClient, api_key: str, model: str,
-                          prompt: str, raw: bytes) -> Optional[bytes]:
-    """Görseli Gemini'ye gönderip iyileştirilmiş sürümü döndürür.
-
-    Model görsel döndürmezse None döner — çağıran taraf o zaman yalnız yeniden
-    ölçekleme yapar. Sessizce başarısız olmuyoruz; sonuçta hangi görselin
-    modelden geçtiği bildiriliyor.
+    Ayrı ve UCUZ bir metin modeliyle soruluyor: görsel modeline "bu neyse ona
+    göre davran" demek güvenilir değil, çünkü o metin döndürmüyor. Sınıflandırma
+    başarısız olursa 'urun' kabul ediyoruz — yanlışlıkla bir ürün fotoğrafını
+    tabloya çevirmektense hiç dokunmamak yeğdir.
     """
     payload = {
         "contents": [{
             "parts": [
-                {"text": prompt},
+                {"text": _CLASSIFY_PROMPT},
                 {"inline_data": {"mime_type": "image/jpeg",
                                  "data": base64.b64encode(raw).decode()}},
             ]
         }],
+        "generationConfig": {"maxOutputTokens": 10, "temperature": 0},
     }
-    resp = await client.post(
-        _GEMINI_URL.format(model=model),
-        headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
-        json=payload, timeout=_TIMEOUT,
-    )
-    if resp.status_code >= 400:
-        raise HTTPException(status_code=502, detail=_gemini_hata(resp))
-    data = resp.json()
-    for cand in (data.get("candidates") or []):
-        for part in ((cand.get("content") or {}).get("parts") or []):
-            inline = part.get("inline_data") or part.get("inlineData")
-            if inline and inline.get("data"):
-                return base64.b64decode(inline["data"])
-    return None
+    try:
+        resp = await client.post(
+            _GEMINI_URL.format(model=model),
+            headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
+            json=payload, timeout=60.0,
+        )
+        if resp.status_code >= 400:
+            return "urun"
+        data = resp.json()
+        metin = ""
+        for cand in (data.get("candidates") or []):
+            for part in ((cand.get("content") or {}).get("parts") or []):
+                metin += part.get("text") or ""
+        return "olcu" if "olcu" in metin.strip().lower().replace("ö", "o") else "urun"
+    except Exception:
+        return "urun"
+
+
+async def scan_size_charts(product_id: str) -> Dict[str, Any]:
+    """Ürün görsellerini tarar, hangileri ölçü tablosu söyler."""
+    product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
+    if not product:
+        raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
+    images = [u for u in (product.get("images") or []) if u]
+    if not images:
+        return {"images": []}
+
+    cfg = await get_settings()
+    api_key = await _gemini_key()
+    model = cfg.get("classify_model") or _DEFAULT_CLASSIFY_MODEL
+
+    async with httpx.AsyncClient() as client:
+        async def tek(i: int):
+            raw = await _fetch_image(client, images[i])
+            if not raw:
+                return {"index": i, "url": images[i], "tur": "urun", "hata": "indirilemedi"}
+            tur = await _gemini_classify(client, api_key, model, raw)
+            return {"index": i, "url": images[i], "tur": tur}
+        sonuc = list(await asyncio.gather(*[tek(i) for i in range(len(images))]))
+    return {"product_id": product_id, "images": sonuc,
+            "size_chart_count": sum(1 for r in sonuc if r["tur"] == "olcu")}
+
+
+async def convert_size_chart(product_id: str, index: int, *, replace: bool = False) -> Dict[str, Any]:
+    """Bir ölçü tablosunu Türkçeleştirip ürün görselleriyle aynı ölçüde üretir."""
+    product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
+    if not product:
+        raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
+    images = [u for u in (product.get("images") or []) if u]
+    if not (0 <= index < len(images)):
+        raise HTTPException(status_code=400, detail="Geçersiz görsel sırası.")
+
+    cfg = await get_settings()
+    api_key = await _gemini_key()
+    model = cfg.get("enhance_model") or _DEFAULT_ENHANCE_MODEL
+    prompt = cfg.get("size_chart_prompt") or _DEFAULT_SIZE_CHART_PROMPT
+
+    async with httpx.AsyncClient() as client:
+        raw = await _fetch_image(client, images[index])
+        if not raw:
+            raise HTTPException(status_code=502, detail="Görsel indirilemedi.")
+        cevrilmis = await _gemini_enhance(client, api_key, model, prompt, raw)
+    if not cevrilmis:
+        raise HTTPException(status_code=502,
+                            detail="Model tablo görselini üretmedi; tekrar deneyin.")
+
+    son = _fit_target(cevrilmis)
+    url = await _store(son, product_id, f"olcu{index}", "image/jpeg")
+
+    if replace:
+        yeni_liste = list(images)
+        yeni_liste[index] = url
+        await db.products.update_one({"id": product_id}, {"$set": {
+            "images": yeni_liste,
+            "images_custom": True,
+            "size_chart_localized_at": _now_iso(),
+        }})
+    return {"product_id": product_id, "index": index, "url": url,
+            "source": images[index], "replaced": bool(replace),
+            "warning": "Tablodaki ölçüleri kaynakla karşılaştırın — "
+                       "sayı hatası müşteriye yanlış beden aldırır."}
 
 
 async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]] = None,
@@ -445,6 +529,8 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
     api_key = await _gemini_key()
     model = cfg.get("enhance_model") or _DEFAULT_ENHANCE_MODEL
     prompt = cfg.get("enhance_prompt") or _DEFAULT_ENHANCE_PROMPT
+    chart_prompt = cfg.get("size_chart_prompt") or _DEFAULT_SIZE_CHART_PROMPT
+    classify_model = cfg.get("classify_model") or _DEFAULT_CLASSIFY_MODEL
 
     sonuc: List[Dict[str, Any]] = []
     async with httpx.AsyncClient() as client:
@@ -456,9 +542,14 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
                     return {"index": i, "error": "kaynak görsel indirilemedi"}
                 iyilestirilmis = None
                 uyari = ""
+                # Ölçü tablosu bir BELGE: "netleştir" demek yetmiyor, metni
+                # Türkçeleştirip yeniden dizmek gerekiyor. Önce ne olduğunu
+                # soruyoruz, sonra ona göre metin seçiyoruz.
+                tur = await _gemini_classify(client, api_key, classify_model, raw)
                 try:
                     iyilestirilmis = await _gemini_enhance(
-                        client, api_key, model, prompt, raw)
+                        client, api_key, model,
+                        chart_prompt if tur == "olcu" else prompt, raw)
                 except HTTPException as e:
                     # Model erişilemiyor (kota/kredi/yetki). Bu, işi TAMAMEN
                     # düşürmek için sebep değil: görseli yine de hedef ölçüye
@@ -468,7 +559,7 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
                 son = _fit_target(iyilestirilmis or raw)
                 url = await _store(son, product_id, f"hd{i}", "image/jpeg")
                 return {"index": i, "url": url, "ai": bool(iyilestirilmis),
-                        "note": uyari, "source": images[i]}
+                        "tur": tur, "note": uyari, "source": images[i]}
             except Exception as e:
                 return {"index": i, "error": str(e)}
 
@@ -513,6 +604,8 @@ async def read_settings(_admin=Depends(require_admin)):
         "gemini_configured": bool(cfg.get("gemini_key_enc")),
         "enhance_model": cfg.get("enhance_model") or _DEFAULT_ENHANCE_MODEL,
         "enhance_prompt": cfg.get("enhance_prompt") or _DEFAULT_ENHANCE_PROMPT,
+        "size_chart_prompt": cfg.get("size_chart_prompt") or _DEFAULT_SIZE_CHART_PROMPT,
+        "classify_model": cfg.get("classify_model") or _DEFAULT_CLASSIFY_MODEL,
         "enhance_target": f"{ENHANCE_TARGET[0]}x{ENHANCE_TARGET[1]}",
         "model": cfg.get("model") or _DEFAULT_MODEL,
         "size": cfg.get("size") or _DEFAULT_SIZE,
@@ -550,6 +643,10 @@ async def write_settings(payload: dict, _admin=Depends(require_admin)):
         update["enhance_model"] = str(payload["enhance_model"]).strip()
     if payload.get("enhance_prompt") is not None:
         update["enhance_prompt"] = str(payload["enhance_prompt"])
+    if payload.get("size_chart_prompt") is not None:
+        update["size_chart_prompt"] = str(payload["size_chart_prompt"])
+    if payload.get("classify_model"):
+        update["classify_model"] = str(payload["classify_model"]).strip()
     if isinstance(payload.get("prompts"), dict):
         prompts = {}
         for pose, text in payload["prompts"].items():
@@ -603,3 +700,21 @@ async def enhance(product_id: str, payload: dict | None = None,
         indexes=[int(i) for i in idx] if isinstance(idx, list) else None,
         replace=bool(p.get("replace")),
     )
+
+
+@router.get("/products/{product_id}/scan")
+async def scan(product_id: str, _admin=Depends(require_admin)):
+    """Ürün görsellerini tarar: hangisi ürün fotoğrafı, hangisi ölçü tablosu."""
+    return await scan_size_charts(product_id)
+
+
+@router.post("/products/{product_id}/size-chart")
+async def size_chart(product_id: str, payload: dict, _admin=Depends(require_admin)):
+    """Bir ölçü tablosunu Türkçeleştirip aynı ölçüde yeniden üretir.
+
+    body: {index: 4, replace?: bool}
+    """
+    if "index" not in (payload or {}):
+        raise HTTPException(status_code=400, detail="Görsel sırası (index) gerekli.")
+    return await convert_size_chart(
+        product_id, int(payload["index"]), replace=bool(payload.get("replace")))
