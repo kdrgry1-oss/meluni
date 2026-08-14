@@ -2439,6 +2439,66 @@ async def toggle_product_active(
 
     return {"is_active": new_status}
 
+@router.post("/{product_id}/block")
+async def block_product(product_id: str, current_user: dict = Depends(require_admin)):
+    """Ürünü vitrinden kaldırır ve BİR DAHA AKTARILMAMAK ÜZERE kara listeye alır.
+
+    Neden ayrı bir uç: normal silme (soft delete) ürünü çöp kutusuna atar, ama
+    tedarikçi beslemesi aynı ürünü `supplier_key` ile bulup yeniden açar —
+    silinen ürün ertesi gün vitrine geri gelir. Burada anahtar kalıcı bir kara
+    listeye yazılır; aktarım o anahtarı gördüğünde ürünü hiç oluşturmaz.
+
+    Ürün KALICI SİLİNMEZ: is_deleted işaretlenir. Geçmiş siparişler ürüne
+    referans veriyor olabilir; kaydı yok etmek sipariş detayını bozar.
+    """
+    product = await db.products.find_one(
+        {"id": product_id},
+        {"_id": 0, "id": 1, "name": 1, "supplier_key": 1, "supplier": 1})
+    if not product:
+        raise HTTPException(status_code=404, detail="Ürün bulunamadı")
+
+    _now = datetime.now(timezone.utc).isoformat()
+    await db.products.update_one({"id": product_id}, {"$set": {
+        "is_active": False,
+        "is_deleted": True,
+        "manual_deactivated": True,
+        "manual_deactivated_at": _now,
+        "blocked_from_feed": True,
+        "deactivated_reason": "yönetim tarafından vitrinden silindi",
+        "updated_at": _now,
+    }})
+
+    key = product.get("supplier_key")
+    if key:
+        # Aynı ürün iki kez engellenirse tek kayıt kalsın.
+        await db.supplier_blocklist.update_one(
+            {"supplier_key": key},
+            {"$set": {"supplier_key": key, "product_id": product_id,
+                      "name": product.get("name") or "",
+                      "supplier": product.get("supplier") or "",
+                      "blocked_by": (current_user or {}).get("email") or "",
+                      "created_at": _now}},
+            upsert=True)
+    return {"success": True, "blocked_from_feed": bool(key),
+            "warning": "" if key else
+            "Ürünün tedarikçi anahtarı yok; beslemeden gelmiyor, kara liste gerekmedi."}
+
+
+@router.delete("/{product_id}/block")
+async def unblock_product(product_id: str, current_user: dict = Depends(require_admin)):
+    """Kara listeden çıkarır ve ürünü çöp kutusundan geri alır (pasif kalır)."""
+    product = await db.products.find_one({"id": product_id}, {"_id": 0, "supplier_key": 1})
+    if not product:
+        raise HTTPException(status_code=404, detail="Ürün bulunamadı")
+    if product.get("supplier_key"):
+        await db.supplier_blocklist.delete_one({"supplier_key": product["supplier_key"]})
+    await db.products.update_one({"id": product_id}, {"$set": {
+        "is_deleted": False, "blocked_from_feed": False,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }})
+    return {"success": True}
+
+
 @router.get("/search/popular")
 async def get_popular_searches():
     """Get popular search terms"""

@@ -1021,7 +1021,18 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
     if limit:
         records = records[:limit]
 
-    created = updated = skipped = failed = 0
+    created = updated = skipped = failed = blocked = 0
+
+    # KARA LİSTE — yönetimin vitrinden sildiği ürünler. Bu anahtarlar bir daha
+    # ASLA aktarılmaz; aksi hâlde silinen ürün bir sonraki beslemede geri gelir
+    # ve müşteriye tekrar görünür. Bir kez okunup bellekte tutulur.
+    blocklist = set()
+    async for b in db.supplier_blocklist.find({}, {"_id": 0, "supplier_key": 1}):
+        if b.get("supplier_key"):
+            blocklist.add(b["supplier_key"])
+    if blocklist:
+        logger.info(f"[supplier_xml] kara listede {len(blocklist)} urun — atlanacak")
+
     for rec in records:
         if not rec.get("name"):
             skipped += 1
@@ -1029,8 +1040,12 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
         existing = None
         try:
             key = supplier_codes.supplier_key(supplier, rec["model_ref"])
+            if key in blocklist:
+                blocked += 1
+                continue
             existing = await db.products.find_one(
-                {"supplier_key": key}, {"_id": 0, "id": 1})
+                {"supplier_key": key},
+                {"_id": 0, "id": 1, "manual_deactivated": 1})
 
             doc = await _build_product_doc(rec, supplier, markup, min_stock)
             doc["supplier_key"] = key
@@ -1041,6 +1056,12 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
                     continue
                 doc.pop("id", None)
                 doc.pop("created_at", None)
+                # ELLE PASİFE ALINMIŞ ürünü besleme GERİ AÇMAZ. _build_product_doc
+                # her ürüne is_active=True yazıyor; bu satır olmadan yönetimin
+                # vitrinden pasife aldığı ürün bir sonraki aktarımda tekrar
+                # satışa çıkıyordu.
+                if existing.get("manual_deactivated"):
+                    doc.pop("is_active", None)
                 await db.products.update_one({"id": existing["id"]}, {"$set": doc})
                 updated += 1
             else:
@@ -1072,7 +1093,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
 
     result = {"created": created, "updated": updated, "skipped": skipped,
               "failed": failed, "total": len(records),
-              "price_markup": markup, "min_stock": min_stock,
+              "price_markup": markup, "min_stock": min_stock, "blocked": blocked,
               "low_stock_skipped": low_stock, "deactivated": deactivated,
               "deleted": deleted,
               "at": _now_iso()}

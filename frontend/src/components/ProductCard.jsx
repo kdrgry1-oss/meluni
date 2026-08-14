@@ -9,11 +9,16 @@ import { sortLikeSize } from "../utils/sizeSort";
 import { priceView } from "../lib/price";
 import { trackSelectItem } from "../lib/dataLayer";
 import { toast } from "sonner";
+import { useAuth } from "../context/AuthContext";
+import AdminProductOverlay from "./AdminProductOverlay";
 
 export default function ProductCard({ product, listId = "", listName = "", index }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeSib, setActiveSib] = useState(null); // hover edilen renk kardeşi
   const { addItem } = useCart();
+  // Yönetim vitrinde gezerken ürünü oradan pasife alabilsin; müşteri bu
+  // düğmeleri GÖRMEZ (isAdmin false ise hiç render edilmez).
+  const { isAdmin } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
   const navigate = useNavigate();
   const isFav = isFavorite(product.id);
@@ -211,6 +216,8 @@ export default function ProductCard({ product, listId = "", listName = "", index
               %{Math.round(((product.price - displayPrice) / product.price) * 100)}
             </div>
           )}
+
+          {isAdmin && <AdminProductOverlay product={product} />}
 
           {/* Favorite Button */}
           <button
