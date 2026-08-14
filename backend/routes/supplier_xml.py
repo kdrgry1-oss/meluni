@@ -327,10 +327,21 @@ def normalize_name(raw: str, max_len: int = NAME_MAX_LEN) -> str:
             merged.append((text, cls))
 
     # Her sınıftan tek öbek: baş ada EN YAKIN olan kazanır.
+    #
+    # BEL/KALIP İSTİSNASI: bu sınıf ("Yüksek Bel", "Oversize", "Regular Fit")
+    # Türkçede adın BAŞINDA durur ve ürünün kalıbını orada tanımlar. Besleme
+    # "bel" kelimesini ilerideki bir süslemede tekrar kullanınca ("Yüksek Bel
+    # Beli Lastikli … ve Beli Şeritli") son-kazanır kuralı asıl bilgiyi siliyor
+    # ve arama için en değerli terim ("Yüksek Bel") kayboluyordu. Bu sınıfta
+    # İLK öbek kazanır.
+    _ILK_KAZANIR = {"bel"}
     keep_idx = {}
     for i, (_t, cls) in enumerate(merged):
-        if cls != "other":
-            keep_idx[cls] = i
+        if cls == "other":
+            continue
+        if cls in _ILK_KAZANIR and cls in keep_idx:
+            continue
+        keep_idx[cls] = i
     kept = [(i, t, c) for i, (t, c) in enumerate(merged)
             if c == "other" or keep_idx.get(c) == i]
 
