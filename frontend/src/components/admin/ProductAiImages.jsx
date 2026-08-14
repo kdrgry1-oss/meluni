@@ -37,6 +37,17 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
   const [ceviriBekle, setCeviriBekle] = useState(-1);
   const [okuBekle, setOkuBekle] = useState(-1);
   const [okunan, setOkunan] = useState(null);
+  // Elle giriş: okuma adımı modele bağlı, çizim tamamen bizde. Model
+  // okuyamadığında tablo hiç üretilemiyordu; ölçüler elle girilince
+  // krediye ihtiyaç duymadan oluşuyor.
+  const [elleAcik, setElleAcik] = useState(false);
+  const [elleMetin, setElleMetin] = useState(
+    "Beden;Göğüs;Bel;Kalça\nS;88;70;96\nM;92;74;100\nL;96;78;104");
+  const [elleBekle, setElleBekle] = useState(false);
+  // KREDİSİZ YOL: ölçüler çoğu üründe zaten sistemde (kayıtlı tablo, renk
+  // kardeşi, tedarikçi açıklaması). Varsa modele hiç gidilmez — çizim bizde.
+  const [kredisiz, setKredisiz] = useState(null);
+  const [kredisizBekle, setKredisizBekle] = useState(false);
 
   const token = () => localStorage.getItem("token") || "";
 
@@ -161,10 +172,26 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
     }
   };
 
+  /** Ölçüler krediye gerek kalmadan bulunabiliyor mu? Model çağırmaz. */
+  const kredisizKaynakBak = async () => {
+    try {
+      const r = await fetch(
+        `${API}/ai-images/products/${productId}/size-table-source`,
+        { headers: { Authorization: `Bearer ${token()}` } });
+      const d = await r.json();
+      setKredisiz(r.ok && d.satirlar?.length ? d : null);
+    } catch {
+      setKredisiz(null);
+    }
+  };
+
   const tara = async () => {
     setTaraBekle(true);
     setHata("");
     setTarama(null);
+    // Tarama Gemini'ye gidiyor; kredisiz kaynağı ONDAN ÖNCE soruyoruz ki kota
+    // bitmiş olsa bile ekranda çalışan bir yol kalsın.
+    kredisizKaynakBak();
     try {
       const r = await fetch(`${API}/ai-images/products/${productId}/scan`, {
         headers: { Authorization: `Bearer ${token()}` },
@@ -176,6 +203,34 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       setHata(e.message);
     } finally {
       setTaraBekle(false);
+    }
+  };
+
+  /** Kredisiz üretim: ölçüler sistemden alınır, tablo sunucuda çizilir. */
+  const kredisizUret = async (index) => {
+    setKredisizBekle(true);
+    setHata("");
+    try {
+      const d = await istek("size-table-auto", {
+        index: typeof index === "number" ? index : undefined,
+        replace: typeof index === "number", kaydet: true,
+      });
+      setOkunan({ olcu_adlari: d.olcu_adlari, satirlar: d.satirlar,
+                  warning: d.warning });
+      if (d.replaced && typeof index === "number") {
+        const yeni = [...images];
+        if (index < yeni.length) yeni[index] = d.url;
+        onReplaceImages?.(yeni);
+        setTarama((t) => t && {
+          ...t,
+          images: t.images.map((it) =>
+            it.index === index ? { ...it, url: d.url, cevrildi: true } : it),
+        });
+      }
+    } catch (e) {
+      setHata(e.message);
+    } finally {
+      setKredisizBekle(false);
     }
   };
 
@@ -233,6 +288,45 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       setHata(e.message);
     } finally {
       setOkuBekle(-1);
+    }
+  };
+
+  const elleUret = async (index) => {
+    const satirlar_ = elleMetin.trim().split("\n").map((r) => r.split(";").map((x) => x.trim()));
+    if (satirlar_.length < 2) {
+      setHata("En az bir başlık satırı ve bir beden satırı girin.");
+      return;
+    }
+    const [baslik, ...geri] = satirlar_;
+    const olcu_adlari = baslik.slice(1);
+    const satirlar = geri
+      .filter((r) => r[0])
+      .map((r) => ({ beden: r[0], olculer: r.slice(1) }));
+    setElleBekle(true);
+    setHata("");
+    try {
+      const d = await istek("size-table-build", {
+        olcu_adlari, satirlar,
+        index: typeof index === "number" ? index : undefined,
+        replace: typeof index === "number", kaydet: true,
+      });
+      setOkunan({ olcu_adlari: d.olcu_adlari, satirlar: d.satirlar,
+                  warning: "Tablo girdiğiniz ölçülerden üretildi." });
+      if (d.replaced && typeof index === "number") {
+        const yeni = [...images];
+        if (index < yeni.length) yeni[index] = d.url;
+        onReplaceImages?.(yeni);
+        setTarama((t) => t && {
+          ...t,
+          images: t.images.map((it) =>
+            it.index === index ? { ...it, url: d.url, cevrildi: true } : it),
+        });
+      }
+      setElleAcik(false);
+    } catch (e) {
+      setHata(e.message);
+    } finally {
+      setElleBekle(false);
     }
   };
 
@@ -392,15 +486,59 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
           <b> yalnız o görsele</b> uygulanır, ürün fotoğraflarına dokunmaz.
         </p>
 
-        <button
-          type="button"
-          onClick={tara}
-          disabled={taraBekle || images.length === 0}
-          className="px-3 py-1.5 rounded-lg border text-sm inline-flex items-center gap-1.5 hover:bg-gray-50 disabled:opacity-50"
-        >
-          <Search className="w-4 h-4" />
-          {taraBekle ? "Taranıyor…" : "Ölçü tablosu ara"}
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={tara}
+            disabled={taraBekle || images.length === 0}
+            className="px-3 py-1.5 rounded-lg border text-sm inline-flex items-center gap-1.5 hover:bg-gray-50 disabled:opacity-50"
+          >
+            <Search className="w-4 h-4" />
+            {taraBekle ? "Taranıyor…" : "Ölçü tablosu ara"}
+          </button>
+          <button
+            type="button"
+            onClick={kredisizKaynakBak}
+            className="px-3 py-1.5 rounded-lg border text-sm inline-flex items-center gap-1.5 hover:bg-gray-50"
+          >
+            <Table className="w-4 h-4" />
+            Kredisiz kaynağı kontrol et
+          </button>
+        </div>
+
+        {/* Ölçüler sistemde varsa tablo krediye gerek kalmadan çizilir.
+            Tarama/OCR Gemini'ye gider, bu yol gitmez. */}
+        {kredisiz && (
+          <div className="mt-3 rounded-lg border border-green-300 bg-green-50 px-3 py-2">
+            <div className="text-xs text-green-900">
+              Ölçüler <b>{kredisiz.kaynak_adi}</b> içinde bulundu
+              ({kredisiz.satirlar.length} beden ·{" "}
+              {(kredisiz.olcu_adlari || []).join(", ")}). Tablo <b>kredi
+              harcamadan</b> üretilebilir.
+            </div>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {(tarama?.images || []).filter((it) => it.tur === "olcu").map((it) => (
+                <button
+                  key={it.index}
+                  type="button"
+                  onClick={() => kredisizUret(it.index)}
+                  disabled={kredisizBekle}
+                  className="px-3 py-1.5 rounded-lg bg-green-700 text-white text-xs disabled:opacity-50"
+                >
+                  {kredisizBekle ? "Üretiliyor…" : `${it.index + 1}. görselin yerine yaz`}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => kredisizUret(undefined)}
+                disabled={kredisizBekle}
+                className="px-3 py-1.5 rounded-lg border border-green-700 text-green-800 text-xs disabled:opacity-50"
+              >
+                yalnız üret (ürüne dokunma)
+              </button>
+            </div>
+          </div>
+        )}
 
         {tarama && (
           <div className="mt-3">
@@ -465,6 +603,55 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
           </div>
         )}
       </div>
+
+      {/* Elle ölçü girişi — modele hiç gitmeden tablo üretir. */}
+      {tarama && (
+        <div className="mt-3">
+          <button
+            type="button"
+            onClick={() => setElleAcik((v) => !v)}
+            className="text-xs underline text-gray-600 hover:text-black"
+          >
+            {elleAcik ? "elle girişi kapat" : "ölçüleri elle girip tablo üret"}
+          </button>
+          {elleAcik && (
+            <div className="mt-2 rounded-lg border border-gray-200 p-3">
+              <p className="text-[11px] text-gray-500 mb-2">
+                Her satır bir beden; sütunlar <b>noktalı virgülle</b> ayrılır.
+                İlk satır başlıktır. Model okuyamadığında ya da yanlış okuduğunda
+                bunu kullanın — tablo doğrudan bu değerlerden çizilir.
+              </p>
+              <textarea
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 font-mono text-xs"
+                rows={6}
+                value={elleMetin}
+                onChange={(e) => setElleMetin(e.target.value)}
+              />
+              <div className="flex flex-wrap gap-2 mt-2">
+                {(tarama.images || []).filter((it) => it.tur === "olcu").map((it) => (
+                  <button
+                    key={it.index}
+                    type="button"
+                    onClick={() => elleUret(it.index)}
+                    disabled={elleBekle}
+                    className="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs disabled:opacity-50"
+                  >
+                    {elleBekle ? "Üretiliyor…" : `${it.index + 1}. görselin yerine yaz`}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => elleUret(undefined)}
+                  disabled={elleBekle}
+                  className="px-3 py-1.5 rounded-lg border text-xs disabled:opacity-50"
+                >
+                  yalnız üret (ürüne dokunma)
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {okunan && (
         <div className="mt-3 rounded-lg border border-gray-200 p-3">

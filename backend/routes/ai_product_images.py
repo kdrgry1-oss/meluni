@@ -460,6 +460,286 @@ def _render_size_table(adlar: List[str], satirlar: List[Dict[str, Any]],
     return out.getvalue()
 
 
+# ---------------------------------------------------------------------------
+# ÖLÇÜ VERİSİ — ÖNCE KREDİSİZ KAYNAKLAR
+#
+# Tabloyu ÇİZMEK zaten tamamen bizde (Pillow). Kredi yalnız görseldeki sayıları
+# OKUMAK için harcanıyor. Oysa o sayılar çoğu üründe sistemde HAZIR duruyor:
+#
+#   1) ürünün kendi ölçü tablosu            (size_tables)
+#   2) aynı stok kodlu renk kardeşinin tablosu  (aynı ürün, başka renk)
+#   3) tedarikçinin ürün açıklamasındaki tablo  (HTML tablo ya da düz metin)
+#
+# Üçü de model çağırmaz. Sıra güven sırasıdır: elle girilmiş/onaylanmış veri
+# önce, tedarikçi metni en sonda. Hiçbiri bulunamazsa OCR'a (Gemini) düşülür;
+# o da yoksa elle giriş. Emin olunamayan hiçbir sayı uydurulmaz — yanlış ölçü
+# müşteriye yanlış beden aldırır.
+# ---------------------------------------------------------------------------
+
+_HTML_ETIKET = re.compile(r"<[^>]+>")
+_TR_SATIR_RE = re.compile(r"<tr[^>]*>(.*?)</tr>", re.I | re.S)
+_TD_HUCRE_RE = re.compile(r"<t[dh][^>]*>(.*?)</t[dh]>", re.I | re.S)
+_TABLO_RE = re.compile(r"<table[^>]*>(.*?)</table>", re.I | re.S)
+_BEDEN_RE = re.compile(
+    r"^(xxs|xs|s|m|l|xl|xxl|xxxl|[2-6]\s*x\s*l|\d{1,3}(?:[-/]\d{1,3})?|"
+    r"std|standart|tek\s*ebat|one\s*size|onesize|universal)$", re.I)
+_SAYI_RE = re.compile(r"^\d{1,3}(?:[.,]\d{1,2})?(?:\s*[-–/]\s*\d{1,3}(?:[.,]\d{1,2})?)?$")
+
+
+def _hucre_temiz(s: Any) -> str:
+    import html as _html
+    t = _HTML_ETIKET.sub(" ", str(s or ""))
+    t = _html.unescape(t).replace("\xa0", " ")
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def _olcu_basligi_mi(s: str) -> bool:
+    """Sözlükte karşılığı olan bir ölçü adı mı? (Göğüs, Bel, Kalça, Boy…)"""
+    t = re.sub(r"\s*\(.*?\)\s*", " ", str(s or "")).strip().lower().replace("ı", "i")
+    return bool(t) and t in _OLCU_BASLIK_TR
+
+
+def _beden_mi(s: str) -> bool:
+    return bool(_BEDEN_RE.fullmatch(str(s or "").strip()))
+
+
+def _sayisal_mi(s: str) -> bool:
+    return bool(_SAYI_RE.fullmatch(str(s or "").strip()))
+
+
+def _matristen_olcu(matris: List[List[str]]) -> tuple:
+    """Hücre matrisinden (adlar, satirlar) çıkarır. İki yerleşim de desteklenir:
+
+      A) satır = beden   →  ilk sütun S/M/L, başlık satırı ölçü adları
+      B) satır = ölçü    →  ilk sütun Göğüs/Bel, başlık satırı S/M/L
+
+    Emin olunamayan matris için BOŞ döner: yanlış eşleşmiş bir tablo,
+    tablo olmamasından beterdir.
+    """
+    matris = [r for r in matris if any(str(c).strip() for c in r)]
+    if len(matris) < 2:
+        return [], []
+    genislik = max(len(r) for r in matris)
+    matris = [(list(r) + [""] * genislik)[:genislik] for r in matris]
+    basliklar = [str(c).strip() for c in matris[0]]
+    govde = matris[1:]
+
+    # A) başlık satırında ölçü adları, ilk sütunda bedenler
+    if sum(_olcu_basligi_mi(c) for c in basliklar[1:]) >= 1 and \
+            sum(_beden_mi(r[0]) for r in govde) >= 1:
+        adlar = basliklar[1:]
+        satirlar = [{"beden": str(r[0]).strip(),
+                     "olculer": [str(c).strip() for c in r[1:]]}
+                    for r in govde if _beden_mi(r[0])]
+    # B) başlık satırında bedenler, ilk sütunda ölçü adları → devriğini al
+    elif sum(_beden_mi(c) for c in basliklar[1:]) >= 2 and \
+            sum(_olcu_basligi_mi(r[0]) for r in govde) >= 1:
+        adlar = [str(r[0]).strip() for r in govde if _olcu_basligi_mi(r[0])]
+        kaynak = [r for r in govde if _olcu_basligi_mi(r[0])]
+        satirlar = []
+        for i, beden in enumerate(basliklar[1:], start=1):
+            if not _beden_mi(beden):
+                continue
+            satirlar.append({"beden": str(beden).strip(),
+                             "olculer": [str(r[i]).strip() for r in kaynak]})
+    else:
+        return [], []
+
+    # Değer hücrelerinin çoğu sayı olmalı; değilse bu bir ölçü tablosu değildir.
+    hucreler = [c for r in satirlar for c in r["olculer"] if str(c).strip()]
+    if not hucreler or not adlar:
+        return [], []
+    if sum(_sayisal_mi(c) for c in hucreler) < len(hucreler) * 0.6:
+        return [], []
+    satirlar = [r for r in satirlar if any(str(c).strip() for c in r["olculer"])]
+    return ([a for a in adlar if str(a).strip()], satirlar) if satirlar else ([], [])
+
+
+def _metinden_olcu(metin: str) -> tuple:
+    """Düz metin açıklamadan ölçü çıkarır. İki yaygın yazım:
+
+        Beden: S M L        /  Göğüs: 88 92 96        (etiket + değer dizisi)
+        S: Göğüs 88 Bel 70  /  M: Göğüs 92 Bel 74     (beden başına satır)
+    """
+    satir_metin = [_hucre_temiz(x) for x in re.split(r"<br\s*/?>|\n|\r", str(metin or ""))]
+    satir_metin = [s for s in satir_metin if s]
+
+    # Yerleşim 1: "Etiket: değer değer değer"
+    bedenler: List[str] = []
+    olcu_satir: List[tuple] = []
+    for s in satir_metin:
+        m = re.match(r"^([^:]{2,20})\s*[:：]\s*(.+)$", s)
+        if not m:
+            continue
+        etiket, kalan = m.group(1).strip(), m.group(2).strip()
+        parcalar = [p for p in re.split(r"[\s/|,]+", kalan) if p]
+        if re.fullmatch(r"(beden|bedenler|size|sizes)", etiket, re.I):
+            if len(parcalar) >= 2 and all(_beden_mi(p) for p in parcalar):
+                bedenler = parcalar
+        elif _olcu_basligi_mi(etiket) and len(parcalar) >= 2 and \
+                all(_sayisal_mi(p) for p in parcalar):
+            olcu_satir.append((etiket, parcalar))
+    if bedenler and olcu_satir:
+        adlar = [e for e, _ in olcu_satir]
+        satirlar = []
+        for i, beden in enumerate(bedenler):
+            olculer = [(v[i] if i < len(v) else "") for _, v in olcu_satir]
+            if any(olculer):
+                satirlar.append({"beden": beden, "olculer": olculer})
+        if satirlar:
+            return adlar, satirlar
+
+    # Yerleşim 2: "S: Göğüs 88 Bel 70 Boy 120"
+    adlar, satirlar = [], []
+    for s in satir_metin:
+        m = re.match(r"^([A-Za-zÇĞİÖŞÜçğıöşü0-9]{1,10})\s*[:：\-]\s*(.+)$", s)
+        if not m or not _beden_mi(m.group(1)):
+            continue
+        ciftler = re.findall(r"([A-Za-zÇĞİÖŞÜçğıöşü ]{2,14}?)\s*[:：]?\s*"
+                             r"(\d{1,3}(?:[.,]\d{1,2})?)", m.group(2))
+        olcu = {}
+        for etiket, deger in ciftler:
+            etiket = etiket.strip()
+            if _olcu_basligi_mi(etiket):
+                olcu[etiket] = deger
+                if etiket not in adlar:
+                    adlar.append(etiket)
+        if olcu:
+            satirlar.append({"beden": m.group(1).strip(), "_map": olcu})
+    if adlar and satirlar:
+        return adlar, [{"beden": r["beden"],
+                        "olculer": [r["_map"].get(a, "") for a in adlar]}
+                       for r in satirlar]
+    return [], []
+
+
+def _aciklamadan_olcu(aciklama: str) -> tuple:
+    """Tedarikçi açıklamasındaki ölçü tablosunu ayrıştırır (model çağırmaz)."""
+    ham = str(aciklama or "")
+    if not ham.strip():
+        return [], []
+    for govde in _TABLO_RE.findall(ham):
+        matris = [[_hucre_temiz(c) for c in _TD_HUCRE_RE.findall(satir)]
+                  for satir in _TR_SATIR_RE.findall(govde)]
+        adlar, satirlar = _matristen_olcu([r for r in matris if r])
+        if satirlar:
+            return adlar, satirlar
+    return _metinden_olcu(ham)
+
+
+def _st_satirlara(st: Optional[Dict[str, Any]]) -> tuple:
+    """`size_tables` kaydını (adlar, satirlar) biçimine çevirir.
+
+    Kanonik biçim panelin/vitrinin kullandığı biçimdir:
+    sizes=["S","M"], columns=["Göğüs"], values={"S":{"Göğüs":"88"}}.
+    Eski/bozuk biçim (sizes = satır nesneleri) de okunur ki daha önce yazılmış
+    kayıtlar kaybolmasın.
+    """
+    if not st:
+        return [], []
+    ham = st.get("sizes") or []
+    if ham and isinstance(ham[0], dict):
+        adlar = [str(a) for a in (st.get("olcu_adlari") or st.get("columns") or [])]
+        satirlar = [{"beden": str(r.get("beden") or "").strip(),
+                     "olculer": [str(x or "").strip() for x in (r.get("olculer") or [])]}
+                    for r in ham if str(r.get("beden") or "").strip()]
+        return adlar, [r for r in satirlar if any(r["olculer"])]
+    adlar = [str(c).strip() for c in (st.get("columns") or []) if str(c).strip()]
+    degerler = st.get("values") or {}
+    satirlar = []
+    for beden in ham:
+        b = str(beden).strip()
+        if not b:
+            continue
+        hucre = degerler.get(b) or degerler.get(str(beden)) or {}
+        olculer = [str(hucre.get(a, "") or "").strip() for a in adlar]
+        if any(olculer):
+            satirlar.append({"beden": b, "olculer": olculer})
+    return adlar, satirlar
+
+
+async def _kredisiz_olcu_verisi(product_id: str) -> Dict[str, Any]:
+    """Model çağırmadan ölçü verisi bulur. Bulamazsa satirlar boş döner."""
+    st = await db.size_tables.find_one({"product_id": product_id}, {"_id": 0})
+    adlar, satirlar = _st_satirlara(st)
+    if satirlar:
+        return {"olcu_adlari": adlar, "satirlar": satirlar,
+                "kaynak": "kayitli", "kaynak_adi": "ürünün kayıtlı ölçü tablosu"}
+
+    product = await db.products.find_one(
+        {"id": product_id}, {"_id": 0, "stock_code": 1, "description": 1})
+    if not product:
+        raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
+
+    kod = str(product.get("stock_code") or "").strip()
+    if kod:
+        kardes_ids = [p["id"] async for p in db.products.find(
+            {"stock_code": kod, "id": {"$ne": product_id}, "is_deleted": {"$ne": True}},
+            {"_id": 0, "id": 1}) if p.get("id")]
+        if kardes_ids:
+            kst = await db.size_tables.find_one(
+                {"product_id": {"$in": kardes_ids}}, {"_id": 0},
+                sort=[("updated_at", -1)])
+            adlar, satirlar = _st_satirlara(kst)
+            if satirlar:
+                return {"olcu_adlari": adlar, "satirlar": satirlar,
+                        "kaynak": "kardes",
+                        "kaynak_adi": "aynı stok kodlu renk kardeşinin tablosu"}
+
+    adlar, satirlar = _aciklamadan_olcu(product.get("description") or "")
+    if satirlar:
+        return {"olcu_adlari": adlar, "satirlar": satirlar,
+                "kaynak": "aciklama", "kaynak_adi": "tedarikçi ürün açıklaması"}
+
+    return {"olcu_adlari": [], "satirlar": [], "kaynak": "", "kaynak_adi": ""}
+
+
+async def _olcu_tablosu_yaz(product_id: str, adlar: List[str],
+                            satirlar: List[Dict[str, Any]], kaynak: str) -> int:
+    """Ölçüleri PANELİN ve VİTRİNİN okuduğu kanonik biçimde yazar.
+
+    `size_tables` koleksiyonunu vitrin (`/size-tables-public`) ve beden önerisi
+    de okuyor; oraya kendi biçimimizi yazmak tabloyu müşteri tarafında görünmez
+    yapardı. Tek koleksiyon, tek şema.
+
+    Ölçü tablosu ÜRÜN düzeyindedir (renk değiştirince beden ölçüsü değişmez),
+    bu yüzden aynı stok kodlu renk kardeşlerine de yansıtılır — manken bilgisi
+    (`model_info`) renk özeldir, ona DOKUNULMAZ.
+    """
+    columns = [_baslik_tr(a) for a in adlar]
+    sizes = [r["beden"] for r in satirlar]
+    values = {
+        r["beden"]: {columns[i]: (r["olculer"][i] if i < len(r["olculer"]) else "")
+                     for i in range(len(columns))}
+        for r in satirlar
+    }
+    ortak = {"sizes": sizes, "columns": columns, "values": values,
+             "source": kaynak, "updated_at": _now_iso()}
+    await db.size_tables.update_one(
+        {"product_id": product_id},
+        {"$set": {"product_id": product_id, **ortak},
+         "$unset": {"olcu_adlari": ""}},
+        upsert=True)
+
+    senkron = 0
+    try:
+        p = await db.products.find_one({"id": product_id}, {"_id": 0, "stock_code": 1})
+        kod = str((p or {}).get("stock_code") or "").strip()
+        if kod:
+            async for s in db.products.find(
+                    {"stock_code": kod, "id": {"$ne": product_id},
+                     "is_deleted": {"$ne": True}}, {"_id": 0, "id": 1}):
+                await db.size_tables.update_one(
+                    {"product_id": s["id"]},
+                    {"$set": {"product_id": s["id"], **ortak,
+                              "synced_from": product_id}},
+                    upsert=True)
+                senkron += 1
+    except Exception as e:
+        logger.error(f"[ai-images] olcu tablosu kardes senkron ({product_id}): {e}")
+    return senkron
+
+
 async def _gemini_key() -> str:
     cfg = await get_settings()
     enc = cfg.get("gemini_key_enc")
@@ -570,13 +850,15 @@ async def _gemini_enhance(client: httpx.AsyncClient, api_key: str, model: str,
 
 
 async def _gemini_classify(client: httpx.AsyncClient, api_key: str, model: str,
-                           raw: bytes) -> str:
+                           raw: bytes) -> tuple:
     """Görsel ürün fotoğrafı mı ölçü tablosu mu? 'olcu' | 'urun'.
 
     Ayrı ve UCUZ bir metin modeliyle soruluyor: görsel modeline "bu neyse ona
-    göre davran" demek güvenilir değil, çünkü o metin döndürmüyor. Sınıflandırma
-    başarısız olursa 'urun' kabul ediyoruz — yanlışlıkla bir ürün fotoğrafını
-    tabloya çevirmektense hiç dokunmamak yeğdir.
+    göre davran" demek güvenilir değil, çünkü o metin döndürmüyor.
+
+    (tür, sebep) döner. Sebep ESKİDEN YUTULUYORDU: kota mı bitmiş, model adı mı
+    yanlış, anahtarın o modele yetkisi mi yok — hiçbiri görünmüyor, ekranda
+    yalnız "belirsiz" yazıyordu. Sorunu çözmek için sebep şart.
     """
     payload = {
         "contents": [{
@@ -598,8 +880,9 @@ async def _gemini_classify(client: httpx.AsyncClient, api_key: str, model: str,
             # Sessizce "ürün" demek apaçık bir tabloyu kaçırıyordu (kota
             # bitince her görsel ürün sayılıyordu). Kararsız kaldığımızı
             # söylüyoruz; panel elle işaretlemeye yönlendiriyor.
-            logger.warning(f"[ai-images] siniflandirma dustu ({resp.status_code})")
-            return "belirsiz"
+            sebep = _gemini_hata(resp)
+            logger.warning(f"[ai-images] siniflandirma dustu: {sebep}")
+            return "belirsiz", sebep
         data = resp.json()
         metin = ""
         for cand in (data.get("candidates") or []):
@@ -607,13 +890,13 @@ async def _gemini_classify(client: httpx.AsyncClient, api_key: str, model: str,
                 metin += part.get("text") or ""
         temiz = metin.strip().lower().replace("ö", "o").replace("ç", "c")
         if "olcu" in temiz:
-            return "olcu"
+            return "olcu", ""
         if "urun" in temiz:
-            return "urun"
-        return "belirsiz"
+            return "urun", ""
+        return "belirsiz", f"Model anlaşılır yanıt vermedi: {metin[:80] or '(boş)'}"
     except Exception as e:
         logger.warning(f"[ai-images] siniflandirma hatasi ({e})")
-        return "belirsiz"
+        return "belirsiz", f"Bağlantı hatası: {e}"
 
 
 async def scan_size_charts(product_id: str) -> Dict[str, Any]:
@@ -634,15 +917,17 @@ async def scan_size_charts(product_id: str) -> Dict[str, Any]:
             raw = await _fetch_image(client, images[i])
             if not raw:
                 return {"index": i, "url": images[i], "tur": "urun", "hata": "indirilemedi"}
-            tur = await _gemini_classify(client, api_key, model, raw)
-            return {"index": i, "url": images[i], "tur": tur}
+            tur, sebep = await _gemini_classify(client, api_key, model, raw)
+            return {"index": i, "url": images[i], "tur": tur, "sebep": sebep}
         sonuc = list(await asyncio.gather(*[tek(i) for i in range(len(images))]))
     belirsiz = sum(1 for r in sonuc if r["tur"] == "belirsiz")
     return {"product_id": product_id, "images": sonuc,
             "size_chart_count": sum(1 for r in sonuc if r["tur"] == "olcu"),
             "belirsiz": belirsiz,
-            "warning": ("Sınıflandırma yapılamadı (çoğunlukla Gemini kotası). "
-                        "Tabloyu aşağıdan elle işaretleyin." if belirsiz else "")}
+            "warning": ((next((r.get("sebep") for r in sonuc if r.get("sebep")), "")
+                         or "Sınıflandırma yapılamadı.")
+                        + " Tabloyu aşağıdan elle işaretleyebilirsiniz."
+                        if belirsiz else "")}
 
 
 async def convert_size_chart(product_id: str, index: int, *, replace: bool = False) -> Dict[str, Any]:
@@ -654,8 +939,15 @@ async def convert_size_chart(product_id: str, index: int, *, replace: bool = Fal
     değerler JSON olarak alınıyor, tablo Pillow ile burada çiziliyor. Başlık
     çevirisi sabit sözlükten geliyor, sayılar okunduğu gibi basılıyor,
     tedarikçinin manken silueti ve kalabalık düzeni tabloya hiç girmiyor.
+
+    ÖNCE KREDİSİZ: ölçüler zaten sistemdeyse (kayıtlı tablo, renk kardeşi ya da
+    tedarikçi açıklaması) modele hiç gidilmez — çizim zaten bizde. Yalnız
+    hiçbir kaynakta yoksa görsel OCR ile okunur.
     """
-    okunan = await read_size_table(product_id, index, kaydet=False)
+    okunan = await _kredisiz_olcu_verisi(product_id)
+    if not okunan.get("satirlar"):
+        okunan = await read_size_table(product_id, index, kaydet=False)
+        okunan["kaynak"], okunan["kaynak_adi"] = "ocr", "görselden okundu (Gemini)"
     raw = _render_size_table(okunan.get("olcu_adlari") or [],
                              okunan.get("satirlar") or [])
     url = await _store(raw, product_id, f"olcu{index}", "image/jpeg")
@@ -674,6 +966,9 @@ async def convert_size_chart(product_id: str, index: int, *, replace: bool = Fal
     return {"product_id": product_id, "index": index, "url": url,
             "source": images[index] if 0 <= index < len(images) else "",
             "replaced": bool(replace),
+            "kaynak": okunan.get("kaynak") or "",
+            "kaynak_adi": okunan.get("kaynak_adi") or "",
+            "kredi_harcandi": okunan.get("kaynak") == "ocr",
             "olcu_adlari": okunan.get("olcu_adlari") or [],
             "satirlar": okunan.get("satirlar") or [],
             "warning": "Tablo okunan değerlerden yeniden çizildi — "
@@ -754,12 +1049,10 @@ async def read_size_table(product_id: str, index: int, *, kaydet: bool = False) 
         raise HTTPException(status_code=502, detail="Tabloda okunabilir satır bulunamadı.")
 
     if kaydet:
+        await _olcu_tablosu_yaz(product_id, adlar, satirlar, "ai_ocr")
         await db.size_tables.update_one(
             {"product_id": product_id},
-            {"$set": {"product_id": product_id, "olcu_adlari": adlar,
-                      "sizes": satirlar, "source": "ai_ocr",
-                      "source_image": images[index], "updated_at": _now_iso()}},
-            upsert=True)
+            {"$set": {"source_image": images[index]}})
 
     return {"product_id": product_id, "index": index,
             "olcu_adlari": adlar, "satirlar": satirlar, "kaydedildi": bool(kaydet),
@@ -802,7 +1095,7 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
                 # Ölçü tablosu bir BELGE: "netleştir" demek yetmiyor, metni
                 # Türkçeleştirip yeniden dizmek gerekiyor. Önce ne olduğunu
                 # soruyoruz, sonra ona göre metin seçiyoruz.
-                tur = await _gemini_classify(client, api_key, classify_model, raw)
+                tur, _sebep = await _gemini_classify(client, api_key, classify_model, raw)
                 try:
                     iyilestirilmis = await _gemini_enhance(
                         client, api_key, model,
@@ -987,3 +1280,110 @@ async def size_table_read(product_id: str, payload: dict, _admin=Depends(require
         raise HTTPException(status_code=400, detail="Görsel sırası (index) gerekli.")
     return await read_size_table(product_id, int(payload["index"]),
                                  kaydet=bool(payload.get("kaydet")))
+
+
+@router.post("/products/{product_id}/size-table-build")
+async def size_table_build(product_id: str, payload: dict, _admin=Depends(require_admin)):
+    """Verilen ölçülerden tablo görselini üretir — MODEL GEREKTİRMEZ.
+
+    Okuma adımı Gemini'ye bağlı; kota bitince ölçü tablosu hiç üretilemiyordu.
+    Oysa çizim tamamen bizde. Ölçüler elle girildiğinde (ya da daha önce
+    okunmuş veriden geldiğinde) tablo krediye ihtiyaç duymadan oluşuyor.
+
+    body: {olcu_adlari: ["Göğüs","Bel"],
+           satirlar: [{"beden":"S","olculer":["88","70"]}],
+           index?: 3, replace?: bool, kaydet?: bool}
+    """
+    adlar = [str(a).strip() for a in ((payload or {}).get("olcu_adlari") or []) if str(a).strip()]
+    ham = (payload or {}).get("satirlar") or []
+    satirlar = []
+    for r in ham:
+        beden = str((r or {}).get("beden") or "").strip()
+        olculer = [str(x).strip() for x in ((r or {}).get("olculer") or [])]
+        if beden and any(olculer):
+            satirlar.append({"beden": beden, "olculer": olculer})
+    if not adlar or not satirlar:
+        raise HTTPException(status_code=400,
+                            detail="En az bir ölçü adı ve bir beden satırı gerekli.")
+
+    raw = _render_size_table(adlar, satirlar)
+    url = await _store(raw, product_id, "olcu-elle", "image/jpeg")
+
+    index = (payload or {}).get("index")
+    if (payload or {}).get("replace") and index is not None:
+        product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
+        images = [u for u in ((product or {}).get("images") or []) if u]
+        i = int(index)
+        if 0 <= i < len(images):
+            images[i] = url
+            await db.products.update_one({"id": product_id}, {"$set": {
+                "images": images, "images_custom": True,
+                "size_chart_localized_at": _now_iso()}})
+
+    senkron = 0
+    if (payload or {}).get("kaydet"):
+        senkron = await _olcu_tablosu_yaz(product_id, adlar, satirlar, "manuel")
+
+    return {"product_id": product_id, "url": url,
+            "olcu_adlari": adlar, "satirlar": satirlar, "senkron_kardes": senkron,
+            "replaced": bool((payload or {}).get("replace") and index is not None)}
+
+
+@router.get("/products/{product_id}/size-table-source")
+async def size_table_source(product_id: str, _admin=Depends(require_admin)):
+    """Ölçüler KREDİ HARCAMADAN bulunabiliyor mu? Bulunduysa değerleri döndürür.
+
+    Panel bunu tablo bölümünü açarken sorar: veri hazırsa "Kredisiz oluştur"
+    düğmesi çıkar, Gemini'ye hiç gidilmez.
+    """
+    return await _kredisiz_olcu_verisi(product_id)
+
+
+@router.post("/products/{product_id}/size-table-auto")
+async def size_table_auto(product_id: str, payload: dict | None = None,
+                          _admin=Depends(require_admin)):
+    """Ölçü tablosunu KREDİ HARCAMADAN üretir.
+
+    Ölçüler kayıtlı tablodan, renk kardeşinden ya da tedarikçi açıklamasından
+    okunur; tablo Pillow ile burada çizilir. Hiçbir model çağrısı yapılmaz.
+
+    body: {index?: 3, replace?: bool, kaydet?: bool}
+    """
+    p = payload or {}
+    veri = await _kredisiz_olcu_verisi(product_id)
+    satirlar = veri.get("satirlar") or []
+    if not satirlar:
+        raise HTTPException(
+            status_code=404,
+            detail="Kredisiz kaynaklarda ölçü bulunamadı (kayıtlı tablo, renk "
+                   "kardeşi, tedarikçi açıklaması). Ölçüleri elle girin ya da "
+                   "görselden okutun.")
+
+    adlar = veri.get("olcu_adlari") or []
+    raw = _render_size_table(adlar, satirlar)
+    url = await _store(raw, product_id, "olcu-kredisiz", "image/jpeg")
+
+    index = p.get("index")
+    degisti = False
+    if p.get("replace") and index is not None:
+        product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
+        images = [u for u in ((product or {}).get("images") or []) if u]
+        i = int(index)
+        if 0 <= i < len(images):
+            images[i] = url
+            await db.products.update_one({"id": product_id}, {"$set": {
+                "images": images, "images_custom": True,
+                "size_chart_localized_at": _now_iso()}})
+            degisti = True
+
+    senkron = 0
+    if p.get("kaydet"):
+        senkron = await _olcu_tablosu_yaz(product_id, adlar, satirlar,
+                                          veri.get("kaynak") or "kredisiz")
+
+    return {"product_id": product_id, "url": url, "replaced": degisti,
+            "kaynak": veri.get("kaynak"), "kaynak_adi": veri.get("kaynak_adi"),
+            "olcu_adlari": adlar, "satirlar": satirlar, "senkron_kardes": senkron,
+            "kredi_harcandi": False,
+            "warning": "Ölçüler " + (veri.get("kaynak_adi") or "sistemden") +
+                       " alındı — sayıları bir kez gözden geçirin."}
