@@ -140,25 +140,44 @@ export default function AiImages() {
           </p>
         </div>
 
+        {/* Model ve boyut SERBEST METİN DEĞİL: sağlayıcı yalnız belirli
+            değerleri kabul ediyor, elle yazılan bir ölçü ("1200x1800") üretimi
+            beş pozda birden 400 ile düşürüyordu. Seçenekler sunucudan gelir. */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium mb-1">Model</label>
-            <input
+            <select
               className={field}
               value={cfg.model || ""}
               onChange={(e) => setCfg({ ...cfg, model: e.target.value })}
-            />
+            >
+              {(cfg.allowed_models || [cfg.model]).filter(Boolean).map((m) => (
+                <option key={m} value={m}>{m}</option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Boyut</label>
-            <input
+            <select
               className={field}
               value={cfg.size || ""}
               onChange={(e) => setCfg({ ...cfg, size: e.target.value })}
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Modada dikey kadraj: 1024x1536
-            </p>
+            >
+              {(cfg.allowed_sizes || [cfg.size]).filter(Boolean).map((sz) => (
+                <option key={sz} value={sz}>
+                  {sz}{sz === "1024x1536" ? " — dikey (moda için önerilen)" : ""}
+                  {sz === "1536x1024" ? " — yatay" : ""}
+                  {sz === "1024x1024" ? " — kare" : ""}
+                </option>
+              ))}
+            </select>
+            {cfg.size && (cfg.allowed_sizes || []).length > 0 &&
+              !(cfg.allowed_sizes || []).includes(cfg.size) && (
+              <p className="text-xs text-red-700 mt-1">
+                Kayıtlı boyut <b>{cfg.size}</b> sağlayıcı tarafından kabul edilmiyor.
+                Listeden bir değer seçip kaydedin.
+              </p>
+            )}
           </div>
         </div>
       </div>

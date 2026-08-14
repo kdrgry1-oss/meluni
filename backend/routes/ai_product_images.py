@@ -34,6 +34,11 @@ SETTINGS_ID = "ai_images"
 _OPENAI_EDIT_URL = "https://api.openai.com/v1/images/edits"
 _DEFAULT_MODEL = "gpt-image-1"
 _DEFAULT_SIZE = "1024x1536"          # moda ürünlerinde dikey kadraj
+# Sağlayıcının kabul ettiği boyutlar. Serbest metin bırakmak, panele yazılan
+# her değeri üretim anında 400 ile geri çeviriyordu ("Invalid size '1200x1800'")
+# — hata beş pozda birden çıkıyor ve sebebi ekranda anlaşılmıyordu.
+ALLOWED_SIZES = ("1024x1024", "1024x1536", "1536x1024", "auto")
+ALLOWED_MODELS = ("gpt-image-1", "gpt-image-1-mini")
 _MAX_REF_IMAGES = 6                   # API'ye gönderilecek referans üst sınırı
 _TIMEOUT = 300.0                      # görsel üretimi yavaştır
 
@@ -202,6 +207,14 @@ async def regenerate_for_product(
     api_key = await _api_key()
     model = cfg.get("model") or _DEFAULT_MODEL
     size = cfg.get("size") or _DEFAULT_SIZE
+    # Doğrulama eklenmeden önce kaydedilmiş geçersiz bir boyut, üretimi beş
+    # pozda birden düşürüyor. Sessizce varsayılana düşüp uyarıyı sonuca koyuyoruz.
+    size_warning = ""
+    if size not in ALLOWED_SIZES:
+        size_warning = (f"Kayıtlı boyut '{size}' sağlayıcı tarafından kabul edilmiyor; "
+                        f"'{_DEFAULT_SIZE}' kullanıldı. Ayarlardan düzeltin.")
+        logger.warning(f"[ai-images] gecersiz boyut ayarı: {size}")
+        size = _DEFAULT_SIZE
     prompts = await get_prompts()
 
     # Referans görselleri topla: önce kullanıcının verdiği, sonra ürünün kendi
@@ -256,6 +269,7 @@ async def regenerate_for_product(
 
     return {"product_id": product_id, "generated": generated,
             "errors": errors, "attached": bool(attach and generated),
+            "warning": size_warning,
             "labels": {p: POSE_LABELS[p] for p in poses}}
 
 
@@ -270,6 +284,8 @@ async def read_settings(_admin=Depends(require_admin)):
         "prompts": await get_prompts(),
         "pose_order": POSE_ORDER,
         "pose_labels": POSE_LABELS,
+        "allowed_sizes": list(ALLOWED_SIZES),
+        "allowed_models": list(ALLOWED_MODELS),
     }
 
 
@@ -280,9 +296,19 @@ async def write_settings(payload: dict, _admin=Depends(require_admin)):
     if payload.get("api_key"):
         update["api_key_enc"] = encrypt(str(payload["api_key"]).strip())
     if payload.get("model"):
-        update["model"] = str(payload["model"]).strip()
+        _m = str(payload["model"]).strip()
+        if _m not in ALLOWED_MODELS:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Geçersiz model: {_m}. Kabul edilenler: {', '.join(ALLOWED_MODELS)}")
+        update["model"] = _m
     if payload.get("size"):
-        update["size"] = str(payload["size"]).strip()
+        _sz = str(payload["size"]).strip()
+        if _sz not in ALLOWED_SIZES:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Geçersiz boyut: {_sz}. Kabul edilenler: {', '.join(ALLOWED_SIZES)}")
+        update["size"] = _sz
     if isinstance(payload.get("prompts"), dict):
         prompts = {}
         for pose, text in payload["prompts"].items():
