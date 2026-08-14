@@ -18,6 +18,7 @@ from __future__ import annotations
 import asyncio
 import base64
 import os
+import re
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
@@ -353,6 +354,112 @@ async def regenerate_for_product(
 
 
 # ─────────────────────── kalite iyileştirme ───────────────────────
+# ── Ölçü tablosunu KENDİMİZ çizeriz ──────────────────────────────────────
+# Modele "bu tabloyu Türkçe yeniden çiz" demek iki riski birden taşıyor:
+# başlıkları serbestçe çeviriyor (hatalı karşılıklar) ve SAYILARI yeniden
+# yazıyor — bir rakam kayarsa müşteri yanlış beden alır. Bu yüzden modelin
+# işi yalnız OKUMAK; çizimi Pillow ile biz yapıyoruz. Böylece başlık çevirisi
+# sabit bir sözlükten gelir, sayılar okunduğu gibi basılır, tedarikçinin
+# manken silueti ve kalabalık düzeni de tabloya girmez.
+_OLCU_BASLIK_TR = {
+    "size": "Beden", "beden": "Beden", "bust": "Göğüs", "chest": "Göğüs",
+    "gogus": "Göğüs", "göğüs": "Göğüs", "waist": "Bel", "bel": "Bel",
+    "hip": "Kalça", "hips": "Kalça", "kalca": "Kalça", "kalça": "Kalça",
+    "length": "Boy", "boy": "Boy", "shoulder": "Omuz", "omuz": "Omuz",
+    "sleeve": "Kol Boyu", "sleeve length": "Kol Boyu", "kol": "Kol Boyu",
+    "kol boyu": "Kol Boyu", "inseam": "İç Bacak", "thigh": "Uyluk",
+    "height": "Boy", "weight": "Kilo", "arm": "Kol", "neck": "Boyun",
+    "bottom length": "Alt Boy", "top length": "Üst Boy",
+}
+
+
+def _baslik_tr(ad: str) -> str:
+    """Ölçü başlığını Türkçeleştirir; tanımadığını olduğu gibi bırakır."""
+    t = re.sub(r"\s*\(.*?\)\s*", " ", str(ad or "")).strip().lower()
+    t = t.replace("ı", "i")
+    return _OLCU_BASLIK_TR.get(t, str(ad or "").strip().title())
+
+
+def _render_size_table(adlar: List[str], satirlar: List[Dict[str, Any]],
+                       baslik: str = "BEDEN ÖLÇÜLERİ",
+                       hedef=ENHANCE_TARGET) -> bytes:
+    """Okunan ölçülerden temiz bir tablo görseli üretir (1200x1800)."""
+    from PIL import Image, ImageDraw, ImageFont
+    import io
+
+    W, H = hedef
+    BEYAZ, KOYU, GRI, CIZGI = (255, 255, 255), (26, 26, 26), (110, 110, 110), (222, 222, 222)
+    im = Image.new("RGB", (W, H), BEYAZ)
+    d = ImageDraw.Draw(im)
+
+    yol = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+    kalin_yol = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+
+    def font(p, kalin=False):
+        try:
+            return ImageFont.truetype(kalin_yol if kalin else yol, p)
+        except Exception:
+            return ImageFont.load_default()
+
+    kolonlar = ["Beden"] + [_baslik_tr(a) for a in adlar]
+    n_kol = len(kolonlar)
+    n_sat = len(satirlar)
+    if n_kol < 2 or n_sat < 1:
+        raise HTTPException(status_code=400, detail="Tabloda gösterilecek veri yok.")
+
+    kenar = 90
+    tablo_g = W - 2 * kenar
+    kol_g = tablo_g / n_kol
+    # Satır yüksekliği okunur sınırlar içinde; sonra tüm blok DİKEY ORTALANIR.
+    # Sabit bir üst boşluk bırakmak tabloyu sayfanın tepesine yığıyor, altta
+    # yarım sayfa boşluk kalıyordu.
+    sat_y = max(52, min(104, int((H - 620) / (n_sat + 1))))
+    blok_y = 150 + (n_sat + 1) * sat_y + 90        # başlık + tablo + dipnot
+    tepe = max(90, int((H - blok_y) / 2))
+
+    d.text((kenar, tepe), baslik, font=font(52, True), fill=KOYU)
+    d.text((kenar, tepe + 72), "Ölçüler santimetre (cm) cinsindendir.",
+           font=font(28), fill=GRI)
+    ust = tepe + 150
+
+    # Başlık satırı
+    d.rectangle([kenar, ust, W - kenar, ust + sat_y], fill=(244, 244, 244))
+    bf = font(min(30, int(sat_y * 0.42)), True)
+    for i, ad in enumerate(kolonlar):
+        x = kenar + i * kol_g + kol_g / 2
+        kutu = d.textbbox((0, 0), ad, font=bf)
+        d.text((x - (kutu[2] - kutu[0]) / 2, ust + sat_y / 2 - (kutu[3] - kutu[1]) / 2 - kutu[1]),
+               ad, font=bf, fill=KOYU)
+
+    sf = font(min(30, int(sat_y * 0.40)))
+    y = ust + sat_y
+    for r in satirlar:
+        hucreler = [str(r.get("beden") or "")] + [
+            str(x or "—") for x in (r.get("olculer") or [])]
+        hucreler = (hucreler + ["—"] * n_kol)[:n_kol]
+        for i, hucre in enumerate(hucreler):
+            x = kenar + i * kol_g + kol_g / 2
+            kutu = d.textbbox((0, 0), hucre, font=sf)
+            d.text((x - (kutu[2] - kutu[0]) / 2, y + sat_y / 2 - (kutu[3] - kutu[1]) / 2 - kutu[1]),
+                   hucre, font=sf, fill=KOYU if i == 0 else (60, 60, 60))
+        y += sat_y
+        d.line([kenar, y, W - kenar, y], fill=CIZGI, width=1)
+
+    # Dış çerçeve ve dikey ayraçlar
+    d.rectangle([kenar, ust, W - kenar, y], outline=CIZGI, width=2)
+    for i in range(1, n_kol):
+        x = kenar + i * kol_g
+        d.line([x, ust, x, y], fill=CIZGI, width=1)
+
+    d.text((kenar, y + 40),
+           "Ölçüler üründen alınmıştır; 1-2 cm fark olabilir.",
+           font=font(24), fill=GRI)
+
+    out = io.BytesIO()
+    im.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
+    return out.getvalue()
+
+
 async def _gemini_key() -> str:
     cfg = await get_settings()
     enc = cfg.get("gemini_key_enc")
@@ -539,32 +646,23 @@ async def scan_size_charts(product_id: str) -> Dict[str, Any]:
 
 
 async def convert_size_chart(product_id: str, index: int, *, replace: bool = False) -> Dict[str, Any]:
-    """Bir ölçü tablosunu Türkçeleştirip ürün görselleriyle aynı ölçüde üretir."""
+    """Ölçü tablosunu SIFIRDAN, temiz ve Türkçe olarak yeniden üretir.
+
+    Önce modele "bu tabloyu Türkçe yeniden çiz" deniyordu; başlıkları serbestçe
+    çeviriyor (hatalı karşılıklar) ve sayıları yeniden yazıyordu — bir rakam
+    kayarsa müşteri yanlış beden alır. Artık modelin işi yalnız OKUMAK:
+    değerler JSON olarak alınıyor, tablo Pillow ile burada çiziliyor. Başlık
+    çevirisi sabit sözlükten geliyor, sayılar okunduğu gibi basılıyor,
+    tedarikçinin manken silueti ve kalabalık düzeni tabloya hiç girmiyor.
+    """
+    okunan = await read_size_table(product_id, index, kaydet=False)
+    raw = _render_size_table(okunan.get("olcu_adlari") or [],
+                             okunan.get("satirlar") or [])
+    url = await _store(raw, product_id, f"olcu{index}", "image/jpeg")
+
     product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
-    if not product:
-        raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
-    images = [u for u in (product.get("images") or []) if u]
-    if not (0 <= index < len(images)):
-        raise HTTPException(status_code=400, detail="Geçersiz görsel sırası.")
-
-    cfg = await get_settings()
-    api_key = await _gemini_key()
-    model = cfg.get("enhance_model") or _DEFAULT_ENHANCE_MODEL
-    prompt = cfg.get("size_chart_prompt") or _DEFAULT_SIZE_CHART_PROMPT
-
-    async with httpx.AsyncClient() as client:
-        raw = await _fetch_image(client, images[index])
-        if not raw:
-            raise HTTPException(status_code=502, detail="Görsel indirilemedi.")
-        cevrilmis = await _gemini_enhance(client, api_key, model, prompt, raw)
-    if not cevrilmis:
-        raise HTTPException(status_code=502,
-                            detail="Model tablo görselini üretmedi; tekrar deneyin.")
-
-    son = _fit_target(cevrilmis)
-    url = await _store(son, product_id, f"olcu{index}", "image/jpeg")
-
-    if replace:
+    images = [u for u in ((product or {}).get("images") or []) if u]
+    if replace and 0 <= index < len(images):
         yeni_liste = list(images)
         yeni_liste[index] = url
         await db.products.update_one({"id": product_id}, {"$set": {
@@ -572,10 +670,14 @@ async def convert_size_chart(product_id: str, index: int, *, replace: bool = Fal
             "images_custom": True,
             "size_chart_localized_at": _now_iso(),
         }})
+
     return {"product_id": product_id, "index": index, "url": url,
-            "source": images[index], "replaced": bool(replace),
-            "warning": "Tablodaki ölçüleri kaynakla karşılaştırın — "
-                       "sayı hatası müşteriye yanlış beden aldırır."}
+            "source": images[index] if 0 <= index < len(images) else "",
+            "replaced": bool(replace),
+            "olcu_adlari": okunan.get("olcu_adlari") or [],
+            "satirlar": okunan.get("satirlar") or [],
+            "warning": "Tablo okunan değerlerden yeniden çizildi — "
+                       "sayıları kaynak görselle karşılaştırın."}
 
 
 _SIZE_TABLE_READ_PROMPT = (

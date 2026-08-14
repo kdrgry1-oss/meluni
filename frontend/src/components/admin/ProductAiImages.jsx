@@ -189,6 +189,12 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
     setHata("");
     try {
       const d = await istek("size-chart", { index, replace: true });
+      // Tablo okunan değerlerden yeniden çizildi; hangi sayıların basıldığını
+      // hemen gösteriyoruz ki kaynakla karşılaştırma tek ekranda yapılsın.
+      if (d.satirlar?.length) {
+        setOkunan({ olcu_adlari: d.olcu_adlari, satirlar: d.satirlar,
+                    warning: d.warning });
+      }
       const yeni = [...images];
       if (index < yeni.length) yeni[index] = d.url;
       onReplaceImages?.(yeni);
@@ -463,7 +469,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       {okunan && (
         <div className="mt-3 rounded-lg border border-gray-200 p-3">
           <div className="text-xs font-semibold mb-1">
-            Ölçüler tabloya yazıldı — {okunan.satirlar?.length || 0} beden
+            Okunan ölçüler — {okunan.satirlar?.length || 0} beden
           </div>
           <div className="rounded-lg bg-amber-50 border border-amber-200 px-2 py-1.5 text-[11px] text-amber-900 mb-2">
             {okunan.warning}
