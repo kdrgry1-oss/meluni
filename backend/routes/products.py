@@ -2300,6 +2300,38 @@ async def update_product(
     if "urun_karti_id" in product_data and not str(product_data.get("urun_karti_id") or "").strip():
         product_data.pop("urun_karti_id", None)
 
+    # ALIŞ FİYATI KORUMASI. Bu uç gelen gövdeyi olduğu gibi $set ediyor; admin
+    # formu alanı boş/0 gönderdiğinde (alan doldurulmamış, sekme hiç açılmamış
+    # ya da yanıt alanı taşımamışsa) DOLU olan maliyet sıfırlanıyordu. Maliyet
+    # kârlılık raporlarının ve dropshipping alım listesinin dayanağı; sessizce
+    # silinmesi kabul edilemez. Boş/sıfır geldiğinde mevcut değer korunur —
+    # gerçekten sıfırlamak isteyen özel alanı (purchase_price_clear) gönderir.
+    for _alan in ("purchase_price", "cost_price"):
+        if _alan in product_data:
+            try:
+                _yeni = float(product_data.get(_alan) or 0)
+            except (TypeError, ValueError):
+                _yeni = 0.0
+            _mevcut = float(existing.get(_alan) or 0)
+            if _yeni <= 0 and _mevcut > 0 and not product_data.get("purchase_price_clear"):
+                product_data.pop(_alan, None)
+    product_data.pop("purchase_price_clear", None)
+    # Varyantlarda da aynı koruma: form varyant satırında maliyet taşımıyorsa
+    # o varyantın mevcut maliyeti korunur.
+    if variants:
+        _eski_v = {str(v.get("id") or v.get("barcode") or v.get("stock_code") or ""): v
+                   for v in (existing.get("variants") or [])}
+        for v in variants:
+            _anahtar = str(v.get("id") or v.get("barcode") or v.get("stock_code") or "")
+            _onceki = _eski_v.get(_anahtar) or {}
+            for _alan in ("purchase_price", "cost_price"):
+                try:
+                    _y = float(v.get(_alan) or 0)
+                except (TypeError, ValueError):
+                    _y = 0.0
+                if _y <= 0 and float(_onceki.get(_alan) or 0) > 0:
+                    v[_alan] = _onceki[_alan]
+
     product_data["updated_at"] = datetime.now(timezone.utc).isoformat()
 
     # MANUEL STOK DÜZELTMESİ DENETİMİ (delta için TAZE okuma): üstteki 'existing'
