@@ -79,6 +79,7 @@ import StockAlerts2 from "./pages/admin/StockAlerts";
 import CustomerSegments from "./pages/admin/CustomerSegments";
 import AutomationStatus from "./pages/admin/AutomationStatus";
 import SupplierXml from "./pages/admin/SupplierXml";
+import AiImages from "./pages/admin/AiImages";
 import SecurityDashboard from "./pages/admin/SecurityDashboard";
 import SystemHealth from "./pages/admin/SystemHealth";
 import SecretsVault from "./pages/admin/SecretsVault";
@@ -156,6 +157,7 @@ export default function AdminApp() {
         <Route path="stok-uyarilari" element={<StockAlerts2 />} />
         <Route path="musteri-segmentleri" element={<CustomerSegments />} />
         <Route path="tedarikci-xml" element={<SupplierXml />} />
+        <Route path="gorsel-uretimi" element={<AiImages />} />
         <Route path="otomasyon" element={<AutomationStatus />} />
         <Route path="guvenlik-paneli" element={<SecurityDashboard />} />
         <Route path="sistem-sagligi" element={<SystemHealth />} />

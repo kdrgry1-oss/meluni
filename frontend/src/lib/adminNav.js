@@ -9,7 +9,7 @@ import {
   Megaphone, FileText, Settings, Palette, Plug, RotateCcw, Store, GitMerge, XCircle, Trash2,
   Cable, Building2, Shield, Factory, Users, Ruler, MessageSquare, PenTool,
   Truck, CreditCard, AlertTriangle, TrendingUp, Link2, BellRing, CheckSquare, Code, Lock, Brain, Mail, Rss,
-  Instagram, GraduationCap,
+  Instagram, GraduationCap, Sparkles,
 } from "lucide-react";
 
 // Default sıralama (kullanıcı tercihi yoksa kullanılır):
@@ -142,9 +142,10 @@ export const navigationGroups = [
     icon: Cable,
     children: [
       // Dropshipping'in giriş kapısı: besleme ayarı, ürün aktarımı, stok
-      // senkronu. Sayfa vardı ama menüde bağlantısı yoktu — adresi bilmeyen
-      // ulaşamıyordu.
+      // senkronu. Grubun başında duruyor; adı yalnız "Tedarikçi XML" iken
+      // uzun listede gözden kaçıyordu.
       { label: "Tedarikçi XML (Dropshipping)", path: "/admin/tedarikci-xml", icon: Cable },
+      { label: "Görsel Üretimi (Yapay Zekâ)", path: "/admin/gorsel-uretimi", icon: Sparkles },
       { label: "Ödeme Tipleri", path: "/admin/odeme-tipleri", icon: CreditCard },
       { label: "Pazaryerleri Hub", path: "/admin/pazaryerleri", icon: Store },
       { label: "Amazon SP-API", path: "/admin/amazon", icon: Store },
@@ -154,7 +155,6 @@ export const navigationGroups = [
       { label: "Aktarılamayanlar", path: "/admin/aktarilamayanlar", icon: FileText },
       { label: "Marka Eşleştirme", path: "/admin/marka-eslestir", icon: Store },
       { label: "Kategori Eşleştirme", path: "/admin/kategori-eslestir", icon: Store },
-      { label: "Tedarikçi XML", path: "/admin/tedarikci-xml", icon: Cable },
       { label: "Otomasyon Durumu", path: "/admin/otomasyon", icon: Cable },
       { label: "Güvenlik Paneli", path: "/admin/guvenlik-paneli", icon: Shield },
       { label: "Sistem Sağlığı", path: "/admin/sistem-sagligi", icon: Cable },
