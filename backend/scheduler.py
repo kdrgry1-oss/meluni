@@ -1210,6 +1210,50 @@ async def _pii_retention_purge():
         logger.exception(f"[scheduler] pii_retention_purge failed: {e}")
 
 
+# ── §7 GÜVENLİK / AUDIT / SP-API LOG RETENTION (Amazon DPP) ─────────────────────────
+# TANIMLI POLİTİKA: PII'siz denetim logları MİNİMUM 12 AY (365 gün) saklanır; bu süreyi AŞAN
+# kayıtlar temizlenir (bounded retention). TABAN KİLİDİ: env ile UZATILABİLİR ama 365'in ALTINA
+# İNEMEZ → hiçbir log 12 aydan erken silinemez. Silme YALNIZ bu sistem işinde yapılır; admin-facing
+# log-silme ucu YOKTUR (silme yetkisi sistemle sınırlı). PII redaction ayrıca _pii_retention_purge'de.
+# (koleksiyon, zaman_alanı) — hepsi ISO string zaman tutar → string "<" karşılaştırması güvenli.
+_RETENTION_LOG_COLLECTIONS = [
+    ("spapi_call_logs", "at"),        # Amazon SP-API çağrı denetim logu (PII'siz)
+    ("capi_event_logs", "created_at"),  # CAPI server-event logları
+    ("audit_logs", "created_at"),       # genel compliance/audit
+    ("auth_audit_logs", "created_at"),  # giriş/kimlik denetim
+    ("integration_logs", "created_at"),  # pazaryeri entegrasyon logları
+]
+
+
+async def _security_log_retention_purge():
+    """§7 — Güvenlik/audit/SP-API loglarını ≥12 AY (365 gün) saklar, aşan kayıtları temizler.
+    TABAN KİLİDİ 365 gün → hiçbir log 12 aydan erken silinmez (yanlış config'e karşı korumalı)."""
+    import os as _os
+    from routes.deps import db
+    try:
+        days = max(365, int(_os.environ.get("SECURITY_LOG_RETENTION_DAYS") or 365))
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+        total = 0
+        for coll, tfield in _RETENTION_LOG_COLLECTIONS:
+            try:
+                res = await db[coll].delete_many({tfield: {"$lt": cutoff}})
+                total += int(getattr(res, "deleted_count", 0) or 0)
+            except Exception as _ce:
+                logger.warning(f"[scheduler][retention] {coll} temizlenemedi: {_ce}")
+        if total:
+            logger.info(f"[scheduler][retention] {total} eski log temizlendi (>{days} gün saklama)")
+            await db.audit_logs.insert_one({
+                "id": str(uuid.uuid4()),
+                "action": "security_log_retention_purge",
+                "category": "compliance",
+                "details": {"deleted": total, "retention_days": days},
+                "actor": "system_scheduler",
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            })
+    except Exception as e:
+        logger.exception(f"[scheduler] security_log_retention_purge failed: {e}")
+
+
 def _parse_tr_dt(s: str):
     """MNG teslim tarihini ISO'ya cevirir; basarisizsa None."""
     s = (s or "").strip()
@@ -2300,6 +2344,14 @@ def start_scheduler():
         _supplier_xml_import_tick,
         CronTrigger(hour=4, minute=30),
         id="supplier_xml_import_new",
+        max_instances=1, coalesce=True,
+    )
+    # §7 — Güvenlik/audit/SP-API log retention: ≥12 ay sakla, aşanı temizle. Haftalık (Pzt 04:00 UTC).
+    _add(
+        _security_log_retention_purge,
+        CronTrigger(day_of_week="mon", hour=4, minute=0),
+        id="security_log_retention_purge",
+        next_run_time=datetime.now(timezone.utc) + timedelta(minutes=5),
         max_instances=1, coalesce=True,
     )
     # DHL/MNG kargo durum taramasi — her 30 dk (site siparisleri; takip linki -> Kargoya Verildi, teslim -> Teslim Edildi)

@@ -1,0 +1,99 @@
+name: Infra Vulnerability Scan
+
+# Amaç (§9 — Amazon SP-API Restricted hazırlık): AYLIK altyapı/bağımlılık/konfig zafiyet taraması.
+#   Trivy ile: (a) bağımlılık CVE'leri (fs), (b) IaC/Dockerfile/konfig yanlış-ayarları (config).
+#   Sonuç SARIF olarak Security sekmesine yazılır; Critical/High bulguda SLA takibi için otomatik
+#   güvenlik issue'su açılır (Critical: 7 gün, High: 30 gün — issue body'de belirtilir).
+#
+# NOT: Bu tarama KOD + BAĞIMLILIK + KONFİG denetler (CANLI DAST değil; production host DAST'ı
+# Restricted faz öncesi ayrı ele alınacak). Deploy'u bloklamaz (continue-on-error → yeşil geçer).
+
+on:
+  schedule:
+    - cron: "0 4 1 * *"     # AYLIK — her ayın 1'i 04:00 UTC
+  workflow_dispatch: {}      # panelden elle ilk scan / tekrar tarama
+
+permissions:
+  contents: read
+  security-events: write     # SARIF → Security sekmesi
+  issues: write              # Critical/High bulguda SLA issue'su
+
+jobs:
+  trivy:
+    name: Trivy (dependency + config)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1) Bağımlılık + dosya sistemi CVE taraması (Python/Node lock dosyaları dahil)
+      - name: Trivy filesystem (CVE) scan
+        uses: aquasecurity/trivy-action@0.24.0
+        continue-on-error: true
+        with:
+          scan-type: fs
+          scanners: vuln,secret
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          format: sarif
+          output: trivy-fs.sarif
+
+      # 2) IaC / Dockerfile / konfig yanlış-ayar taraması
+      - name: Trivy config (IaC/misconfig) scan
+        uses: aquasecurity/trivy-action@0.24.0
+        continue-on-error: true
+        with:
+          scan-type: config
+          severity: CRITICAL,HIGH
+          format: sarif
+          output: trivy-config.sarif
+
+      - name: Upload SARIF — fs (Security sekmesi)
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-fs.sarif
+          category: trivy-fs
+
+      - name: Upload SARIF — config (Security sekmesi)
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-config.sarif
+          category: trivy-config
+
+      # 3) Critical/High bulgu varsa SLA takibi için güvenlik issue'su (redakte — ayrıntı Security sekmesinde)
+      - name: Bulgu varsa güvenlik issue'su (SLA)
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            function count(f) {
+              try { return (JSON.parse(fs.readFileSync(f,'utf8')).runs[0].results || []).length; }
+              catch (e) { return 0; }
+            }
+            const n = count('trivy-fs.sarif') + count('trivy-config.sarif');
+            if (!n) { core.info('Trivy: Critical/High bulgu yok, issue açılmadı.'); return; }
+            const title = '🛡️ Infra Scan: Trivy Critical/High bulgu (SLA takibi)';
+            const body = [
+              '**Kaynak:** Aylık Infra Vulnerability Scan (Trivy fs + config)',
+              `**Bulgu (Critical/High):** ${n} (redakte — ayrıntı: Security → Code scanning → trivy-*)`,
+              '',
+              '**SLA:** Critical → 7 gün · High → 30 gün. Düzeltme sonrası rescan (workflow_dispatch).',
+            ].join('\n');
+            const { data: existing } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'security,infra-scan',
+            });
+            if (existing.length) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing[0].number,
+                body: `Yeni tarama — güncel bulgu: ${n}\n(${new Date().toISOString()})`,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title, body, labels: ['security', 'infra-scan'],
+              });
+            }
