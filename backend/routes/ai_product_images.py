@@ -881,13 +881,23 @@ async def _gemini_post(client: httpx.AsyncClient, api_key: str, model: str,
     Döner: (resp, kullanilan_model). Yeni bir model seçildiyse ayarlara yazılır
     ki bir dahaki çağrı doğrudan çalışsın ve her seferinde liste çekilmesin.
     """
+    govde = payload
+
     async def _cagir(m):
         return await client.post(
             _GEMINI_URL.format(model=m),
             headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
-            json=payload, timeout=_TIMEOUT)
+            json=govde, timeout=_TIMEOUT)
 
     resp = await _cagir(model)
+    # thinkingConfig'i her model tanımıyor; tanımayan 400 "Unknown name" der.
+    # Alanı düşürüp bir kez daha deniyoruz — yoksa desteği olmayan modelde
+    # işlem tamamen ölür.
+    if resp.status_code == 400 and "thinking" in (resp.text or "").lower():
+        govde = {**payload, "generationConfig": {
+            k: v for k, v in (payload.get("generationConfig") or {}).items()
+            if k != "thinkingConfig"}}
+        resp = await _cagir(model)
     if not _model_yok_hatasi(resp):
         return resp, model
 
@@ -903,6 +913,35 @@ async def _gemini_post(client: httpx.AsyncClient, api_key: str, model: str,
             {"$set": {ayar_alani: yeni, f"{ayar_alani}_auto_at": _now_iso()}},
             upsert=True)
     return resp2, yeni
+
+
+def _yanit_metni(resp) -> tuple:
+    """(metin, bitis_sebebi) — yanıttaki tüm metin parçalarını birleştirir."""
+    try:
+        data = resp.json() or {}
+    except Exception:
+        return "", ""
+    metin, bitis = "", ""
+    for cand in (data.get("candidates") or []):
+        bitis = bitis or str(cand.get("finishReason") or "")
+        for part in ((cand.get("content") or {}).get("parts") or []):
+            metin += part.get("text") or ""
+    return metin, bitis
+
+
+def _bos_yanit_sebebi(metin: str, bitis: str) -> str:
+    """Boş yanıtın SEBEBİNİ söyler. '(boş)' yazmak hiçbir şey anlatmıyordu."""
+    if metin.strip():
+        return f"Model anlaşılır yanıt vermedi: {metin[:80]}"
+    b = (bitis or "").upper()
+    if b == "MAX_TOKENS":
+        return ("Model çıktı bütçesini düşünmeye harcayıp cevap yazamadı "
+                "(finishReason=MAX_TOKENS).")
+    if b in ("SAFETY", "PROHIBITED_CONTENT", "BLOCKLIST"):
+        return f"Model yanıtı güvenlik gerekçesiyle engelledi ({b})."
+    if b == "RECITATION":
+        return "Model yanıtı alıntı kontrolüne takıldı (RECITATION)."
+    return f"Model boş yanıt döndürdü{f' ({b})' if b else ''}."
 
 
 def _gemini_hata(resp) -> str:
@@ -979,7 +1018,12 @@ async def _gemini_classify(client: httpx.AsyncClient, api_key: str, model: str,
                                  "data": base64.b64encode(raw).decode()}},
             ]
         }],
-        "generationConfig": {"maxOutputTokens": 10, "temperature": 0},
+        # maxOutputTokens BURADA 10'DU ve model BOŞ dönüyordu: yeni modeller
+        # yanıtı yazmadan önce "düşünüyor" ve o düşünme de çıktı bütçesinden
+        # harcanıyor — 10 jeton düşünmeye gidip cevaba sıra gelmiyordu.
+        # Düşünmeyi kapatıyoruz (tek kelimelik iş) ve bütçeyi rahat bırakıyoruz.
+        "generationConfig": {"maxOutputTokens": 2048, "temperature": 0,
+                             "thinkingConfig": {"thinkingBudget": 0}},
     }
     try:
         resp, _ = await _gemini_post(client, api_key, model, payload,
@@ -991,17 +1035,13 @@ async def _gemini_classify(client: httpx.AsyncClient, api_key: str, model: str,
             sebep = _gemini_hata(resp)
             logger.warning(f"[ai-images] siniflandirma dustu: {sebep}")
             return "belirsiz", sebep
-        data = resp.json()
-        metin = ""
-        for cand in (data.get("candidates") or []):
-            for part in ((cand.get("content") or {}).get("parts") or []):
-                metin += part.get("text") or ""
+        metin, bitis = _yanit_metni(resp)
         temiz = metin.strip().lower().replace("ö", "o").replace("ç", "c")
         if "olcu" in temiz:
             return "olcu", ""
         if "urun" in temiz:
             return "urun", ""
-        return "belirsiz", f"Model anlaşılır yanıt vermedi: {metin[:80] or '(boş)'}"
+        return "belirsiz", _bos_yanit_sebebi(metin, bitis)
     except Exception as e:
         logger.warning(f"[ai-images] siniflandirma hatasi ({e})")
         return "belirsiz", f"Bağlantı hatası: {e}"
@@ -1432,6 +1472,92 @@ async def size_table_build(product_id: str, payload: dict, _admin=Depends(requir
     return {"product_id": product_id, "url": url,
             "olcu_adlari": adlar, "satirlar": satirlar, "senkron_kardes": senkron,
             "replaced": bool((payload or {}).get("replace") and index is not None)}
+
+
+@router.post("/products/{product_id}/size-table-fix")
+async def size_table_fix(product_id: str, payload: dict | None = None,
+                         _admin=Depends(require_admin)):
+    """TEK DÜĞME: ölçü tablosunu bul, Türkçeleştir, görseli değiştir, tabloya yaz.
+
+    Panelde beş ayrı düğme vardı (ara → çevir → oku → elle işaretle → elle gir)
+    ve her biri ayrı ayrı başarısız olabiliyordu; kullanıcı hangi sırayla ne
+    yapacağını takip etmek zorunda kalıyordu. İş tek: "şu tabloyu Türkçe yap".
+    Sıra artık burada:
+
+      1. Görsel seçilmediyse hangisinin tablo olduğunu bul (model).
+      2. Ölçüleri KREDİSİZ kaynaklardan al; yoksa görselden okut (OCR).
+      3. Tabloyu burada çiz, ürünün o görselinin yerine yaz.
+      4. Ölçüleri ürünün beden tablosuna (ve renk kardeşlerine) kaydet.
+
+    Bir adım tıkanırsa NE OLDUĞUNU söyler; sessizce yarım bırakmaz.
+    body: {index?: 3}
+    """
+    p = payload or {}
+    product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
+    if not product:
+        raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
+    images = [u for u in (product.get("images") or []) if u]
+    if not images:
+        raise HTTPException(status_code=400, detail="Üründe görsel yok.")
+
+    adimlar: List[str] = []
+    index = p.get("index")
+
+    # 1) Hangi görsel tablo?
+    if index is None:
+        try:
+            tarama = await scan_size_charts(product_id)
+        except HTTPException as e:
+            raise HTTPException(status_code=e.status_code, detail=(
+                f"Tablo görselini bulamadım: {e.detail} "
+                "Tablo görselini kendiniz seçip tekrar deneyin."))
+        olcular = [r["index"] for r in (tarama.get("images") or []) if r["tur"] == "olcu"]
+        if not olcular:
+            raise HTTPException(status_code=422, detail=(
+                (tarama.get("warning") or "Görsellerin hiçbiri ölçü tablosu değil.")
+                + " Tablo görselini kendiniz seçip tekrar deneyin."))
+        index = olcular[0]
+        adimlar.append(f"{index + 1}. görsel ölçü tablosu olarak bulundu")
+    else:
+        index = int(index)
+        adimlar.append(f"{index + 1}. görsel sizin seçiminiz")
+    if not (0 <= index < len(images)):
+        raise HTTPException(status_code=400, detail="Geçersiz görsel sırası.")
+
+    # 2) Ölçüler — önce kredisiz, sonra OCR.
+    veri = await _kredisiz_olcu_verisi(product_id)
+    if veri.get("satirlar"):
+        adimlar.append(f"ölçüler {veri['kaynak_adi']} içinden alındı (kredi harcanmadı)")
+    else:
+        veri = await read_size_table(product_id, index, kaydet=False)
+        veri["kaynak"], veri["kaynak_adi"] = "ocr", "görselden okundu"
+        adimlar.append("ölçüler görselden okundu (Gemini)")
+
+    adlar = veri.get("olcu_adlari") or []
+    satirlar = veri.get("satirlar") or []
+
+    # 3) Çiz ve görselin yerine yaz.
+    raw = _render_size_table(adlar, satirlar)
+    url = await _store(raw, product_id, f"olcu{index}", "image/jpeg")
+    yeni = list(images)
+    yeni[index] = url
+    await db.products.update_one({"id": product_id}, {"$set": {
+        "images": yeni, "images_custom": True,
+        "size_chart_localized_at": _now_iso()}})
+    adimlar.append("Türkçe tablo çizildi ve görselin yerine yazıldı")
+
+    # 4) Beden tablosuna kaydet (vitrin ve pazaryeri VERİ olarak kullanıyor).
+    senkron = await _olcu_tablosu_yaz(product_id, adlar, satirlar,
+                                      veri.get("kaynak") or "otomatik")
+    adimlar.append("ölçüler beden tablosuna yazıldı"
+                   + (f", {senkron} renk kardeşine yansıtıldı" if senkron else ""))
+
+    return {"product_id": product_id, "index": index, "url": url,
+            "olcu_adlari": adlar, "satirlar": satirlar,
+            "kaynak": veri.get("kaynak"), "adimlar": adimlar,
+            "kredi_harcandi": veri.get("kaynak") == "ocr",
+            "warning": "Sayıları kaynak görselle bir kez karşılaştırın — "
+                       "yanlış ölçü müşteriye yanlış beden aldırır."}
 
 
 @router.get("/gemini-models")
