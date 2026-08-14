@@ -2300,6 +2300,18 @@ async def update_product(
     if "urun_karti_id" in product_data and not str(product_data.get("urun_karti_id") or "").strip():
         product_data.pop("urun_karti_id", None)
 
+    # GÖRSEL KİLİDİ. Yönetim panelden görsel listesini değiştirdiyse (yapay
+    # zekâ ile ürettiyse, sıraladıysa, sildiyse) o ürünün görselleri artık
+    # bize aittir: tedarikçi aktarımı bir daha üzerine yazmaz. Bayrak
+    # konmadığında yeni görseller ertesi günkü aktarımda siliniyor ve ürün
+    # tedarikçinin düşük çözünürlüklü fotoğraflarına geri dönüyordu.
+    if isinstance(product_data.get("images"), list):
+        _yeni_g = [str(u) for u in product_data["images"] if u]
+        _eski_g = [str(u) for u in (existing.get("images") or []) if u]
+        if _yeni_g and _yeni_g != _eski_g:
+            product_data["images_custom"] = True
+            product_data["images_custom_at"] = datetime.now(timezone.utc).isoformat()
+
     # ALIŞ FİYATI KORUMASI. Bu uç gelen gövdeyi olduğu gibi $set ediyor; admin
     # formu alanı boş/0 gönderdiğinde (alan doldurulmamış, sekme hiç açılmamış
     # ya da yanıt alanı taşımamışsa) DOLU olan maliyet sıfırlanıyordu. Maliyet

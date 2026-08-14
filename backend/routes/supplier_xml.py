@@ -1060,7 +1060,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
                 continue
             existing = await db.products.find_one(
                 {"supplier_key": key},
-                {"_id": 0, "id": 1, "manual_deactivated": 1})
+                {"_id": 0, "id": 1, "manual_deactivated": 1, "images_custom": 1})
 
             doc = await _build_product_doc(rec, supplier, markup, min_stock)
             doc["supplier_key"] = key
@@ -1077,6 +1077,12 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
                 # satışa çıkıyordu.
                 if existing.get("manual_deactivated"):
                     doc.pop("is_active", None)
+                # KENDİ GÖRSELLERİMİZ KORUNUR. Aktarım her ürüne beslemenin
+                # görsellerini yazıyordu; yönetim yapay zekâ ile üretip
+                # kaydettiği görseller bir sonraki aktarımda siliniyor, ürün
+                # yine tedarikçinin düşük çözünürlüklü fotoğraflarına dönüyordu.
+                if existing.get("images_custom"):
+                    doc.pop("images", None)
                 await db.products.update_one({"id": existing["id"]}, {"$set": doc})
                 updated += 1
             else:

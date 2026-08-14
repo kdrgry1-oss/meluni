@@ -16,7 +16,7 @@ const BACKEND_ORIGIN = (process.env.REACT_APP_BACKEND_URL || "").replace(/\/api\
  * gösterilir, beğenilen tek tek "Ürüne ekle" ile forma alınır. Üretim ücretli
  * ve beğenilmeyen bir sonucun ürün görselini değiştirmesi geri alması zor.
  */
-export default function ProductAiImages({ productId, images = [], onAddImage }) {
+export default function ProductAiImages({ productId, images = [], onAddImage, onReplaceImages }) {
   const [ortamUrl, setOrtamUrl] = useState("");
   const [yukleniyor, setYukleniyor] = useState(false);
   const [uretiliyor, setUretiliyor] = useState(false);
@@ -91,6 +91,16 @@ export default function ProductAiImages({ productId, images = [], onAddImage }) 
       const d = await r.json();
       if (!r.ok) throw new Error(d.detail || "İyileştirme başarısız");
       setHdSonuc(d);
+      // KRİTİK: sunucu ürünü güncelledi ama AÇIK FORM hâlâ eski adresleri
+      // tutuyor. "Değişiklikleri Kaydet"e basıldığında o eski liste geri
+      // yazılıyor ve iyileştirme boşa gidiyordu. Formu da tazeliyoruz.
+      if (replace && d.results?.length) {
+        const yeni = [...images];
+        for (const r2 of d.results) {
+          if (r2.url && r2.index >= 0 && r2.index < yeni.length) yeni[r2.index] = r2.url;
+        }
+        onReplaceImages?.(yeni);
+      }
     } catch (e) {
       setHata(e.message);
     } finally {
@@ -282,7 +292,9 @@ export default function ProductAiImages({ productId, images = [], onAddImage }) 
               {(hdSonuc.results || []).filter((r) => r.url).length} görsel
               {" "}{hdSonuc.target} üretildi
               {hdSonuc.ai_count ? ` (${hdSonuc.ai_count} tanesi modelden geçti)` : ""}
-              {hdSonuc.replaced ? " ve ürüne yazıldı." : " — ürün değişmedi."}
+              {hdSonuc.replaced
+                ? " ve ürüne yazıldı. Bu ürünün görselleri artık tedarikçi aktarımında değiştirilmeyecek."
+                : " — ürün değişmedi."}
             </div>
             {hdSonuc.warning && (
               <div className="mb-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900">

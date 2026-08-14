@@ -314,7 +314,7 @@ async def regenerate_for_product(
         await db.products.update_one(
             {"id": product_id},
             {"$push": {"images": {"$each": [generated[p] for p in POSE_ORDER if p in generated]}},
-             "$set": {"ai_images_generated_at": _now_iso()}})
+             "$set": {"ai_images_generated_at": _now_iso(), "images_custom": True}})
 
     await db.ai_image_jobs.insert_one({
         "id": str(uuid.uuid4()), "product_id": product_id,
@@ -481,7 +481,14 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
             yeni[r["index"]] = r["url"]
         await db.products.update_one({"id": product_id}, {"$set": {
             "images": yeni,
+            # KİLİT: bundan sonra tedarikçi aktarımı bu ürünün görsellerine
+            # dokunmaz. Olmadığında yeni görseller ertesi günkü aktarımda
+            # siliniyor, ürün tedarikçinin düşük çözünürlüklü fotoğraflarına
+            # geri dönüyordu.
+            "images_custom": True,
             "images_enhanced_at": _now_iso(),
+            # Değiştirilen tedarikçi adresleri: geri almak isteyen için kayıt.
+            "images_supplier_backup": [images[r["index"]] for r in basarili],
         }})
 
     return {
@@ -489,6 +496,7 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
         "target": f"{ENHANCE_TARGET[0]}x{ENHANCE_TARGET[1]}",
         "results": sonuc,
         "replaced": bool(replace and basarili),
+        "images_locked": bool(replace and basarili),
         "ai_count": sum(1 for r in basarili if r.get("ai")),
         "warning": ("" if all(r.get("ai") for r in basarili) else
                     (next((r["note"] for r in basarili if r.get("note")), "")

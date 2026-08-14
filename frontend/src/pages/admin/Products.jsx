@@ -4095,6 +4095,9 @@ export default function AdminProducts() {
                     onAddImage={(url) =>
                       setFormData((prev) => ({ ...prev, images: [...(prev.images || []), url] }))
                     }
+                    onReplaceImages={(liste) =>
+                      setFormData((prev) => ({ ...prev, images: liste }))
+                    }
                   />
                 </div>
               </TabsContent>
