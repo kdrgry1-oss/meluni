@@ -1249,7 +1249,13 @@ async def profitability(
         {"$match": _base_match(s, e, source)},
         {"$addFields": {"_ch": {"$toLower": {"$ifNull": ["$platform", {"$ifNull": ["$marketplace", "site"]}]}}}},
         {"$group": {"_id": "$_ch", "shipping": {"$sum": {"$ifNull": ["$shipping_cost", 0]}},
-                    "discount": {"$sum": {"$ifNull": ["$discount", {"$ifNull": ["$discount_amount", 0]}]}},
+                    # İndirim = kupon/kampanya (discount) + havale/EFT ödeme indirimi (payment_discount).
+                    # Eskiden yalnız discount toplanıyordu → havale siparişlerinde faaliyet kârı ve
+                    # ödenecek-KDV matrahı, havale indirimi kadar ŞİŞİYORDU (net = subtotal−discount−payment_discount).
+                    "discount": {"$sum": {"$add": [
+                        {"$ifNull": ["$discount", {"$ifNull": ["$discount_amount", 0]}]},
+                        {"$ifNull": ["$payment_discount", 0]},
+                    ]}},
                     "orders": {"$sum": 1}}},
     ]):
         cargo_by_ch[_CH_ALIAS.get((r["_id"] or "site"), r["_id"] or "site")] = {

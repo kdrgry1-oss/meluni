@@ -193,7 +193,11 @@ async def list_rooftr_return_orders(
             if _r_subtotal > 0.5:
                 _cands.append(_r_subtotal / _calc_net)
             # total-tabanlı yedek: indirimi GERİ ekle → indirim-öncesi KDV-dahil taban.
-            _tot_h = _r_total - float(o.get("shipping_cost") or 0) - (round(_vf, 2) if _vf > 0 else 0.0) + _r_discount
+            # HER İKİ indirim (kupon _r_discount + havale/EFT payment_discount) geri eklenir ki
+            # taban gerçek subtotal'a eşitlensin (orders.py 8104/7756 ile tutarlı).
+            _tot_h = (_r_total - float(o.get("shipping_cost") or 0)
+                      - (round(_vf, 2) if _vf > 0 else 0.0)
+                      + _r_discount + float(o.get("payment_discount") or 0))
             if _tot_h > 0.5:
                 _cands.append(_tot_h / _calc_net)
             for _pf in _cands:

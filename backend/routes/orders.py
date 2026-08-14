@@ -3980,7 +3980,8 @@ async def create_invoice_for_order(
         _paid_total = float(order.get("total") or _inv_gross)
         _inv_discount = round(_inv_gross - _paid_total, 2)
         if _inv_discount < 0.01:
-            _inv_discount = round(float(order.get("discount") or 0), 2)
+            # Yedek: indirim = kupon + havale/EFT (payment_discount). (Birincil yol total'dan türetir.)
+            _inv_discount = round(float(order.get("discount") or 0) + float(order.get("payment_discount") or 0), 2)
         if _inv_discount < 0:
             _inv_discount = 0.0
 
@@ -4269,7 +4270,8 @@ async def create_invoice_for_order(
         _paid_ef = float(order.get("total") or _inv_gross_ef)
         _inv_disc_ef = round(_inv_gross_ef - _paid_ef, 2)
         if _inv_disc_ef < 0.01:
-            _inv_disc_ef = round(float(order.get("discount") or 0), 2)
+            # Yedek: indirim = kupon + havale/EFT (payment_discount). (Birincil yol total'dan türetir.)
+            _inv_disc_ef = round(float(order.get("discount") or 0) + float(order.get("payment_discount") or 0), 2)
         if _inv_disc_ef < 0:
             _inv_disc_ef = 0.0
         if _inv_disc_ef > 0 and line_items:
@@ -8216,8 +8218,12 @@ async def site_return_gider_pusulasi(return_id: str, payload: Optional[dict] = B
             # NET toplamı (subtotal − indirim). Eskiden order.total kullanılıyordu; kargo ücreti
             # order.total'ın içinde olduğundan, kargolu siparişte pay küçük çıkıyor ve sipariş
             # kalem kalem tamamen iade edilse bile vade farkının tamamı geri verilmiyordu.
+            # Net taban = subtotal − (kupon + havale/EFT indirimi). _compute_refund_breakdown
+            # (7398-7400) ile birebir; payment_discount de düşülür (havale+taksit birlikte nadir
+            # ama tutarlılık için).
             _vf_base = _round2(max(0.0, _round2(order.get("subtotal") or 0)
-                                   - _round2(order.get("discount") or 0)))
+                                   - _round2(order.get("discount") or 0)
+                                   - _round2(order.get("payment_discount") or 0)))
             if _vf_base <= 0.009:
                 _vf_base = order_total          # eski/pazaryeri kaydı → eski davranışa düş
             if _vf_base > 0.009:
