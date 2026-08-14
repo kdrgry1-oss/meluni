@@ -675,6 +675,15 @@ async def capi_audit(
     prov_dist = {}
     async for _row in db.capi_event_logs.aggregate([{"$group": {"_id": "$provider", "n": {"$sum": 1}}}]):
         prov_dist[_row["_id"] or "?"] = _row["n"]
+    # HAM event_name dağılımı (bu sağlayıcı) — TikTok kayıtları BAŞKA bir event_name altında
+    # (ör. mapped 'CompletePayment') tutuluyorsa audit 'purchase' filtresi 0 gösterirdi; bu dağılım
+    # onu ham veriden ORTAYA ÇIKARIR. (Kod: log internal 'purchase' yazar → burada 'purchase' beklenir.)
+    evname_dist = {}
+    async for _row in db.capi_event_logs.aggregate([
+        {"$match": {"provider": provider}},
+        {"$group": {"_id": "$event_name", "n": {"$sum": 1}}},
+    ]):
+        evname_dist[_row["_id"] or "?"] = _row["n"]
 
     _diag = None
     if total_p == 0:
@@ -708,6 +717,7 @@ async def capi_audit(
             "this_provider_all_time": raw_provider_total,
             "all_providers_all_time": raw_all_total,
             "provider_distribution": prov_dist,
+            "event_name_distribution": evname_dist,  # bu sağlayıcının ham event_name kırılımı (§6 teşhisi)
         },
         "diagnosis": _diag,
         "purchase_coverage": coverage,

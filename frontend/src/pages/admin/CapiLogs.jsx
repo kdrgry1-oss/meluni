@@ -308,7 +308,12 @@ export default function CapiLogs() {
                     </span>
                     {audit.raw_counts?.provider_distribution && (
                       <span className="text-gray-400">
-                        [{Object.entries(audit.raw_counts.provider_distribution).map(([k, v]) => `${k}:${v}`).join(" · ")}]
+                        provider[{Object.entries(audit.raw_counts.provider_distribution).map(([k, v]) => `${k}:${v}`).join(" · ")}]
+                      </span>
+                    )}
+                    {audit.raw_counts?.event_name_distribution && Object.keys(audit.raw_counts.event_name_distribution).length > 0 && (
+                      <span className="text-gray-400" title="Bu sağlayıcının ham event_name kırılımı — 'purchase' beklenir; başka bir ad varsa (ör. CompletePayment) audit filtresiyle uyuşmazlık demektir.">
+                        event_name[{Object.entries(audit.raw_counts.event_name_distribution).map(([k, v]) => `${k}:${v}`).join(" · ")}]
                       </span>
                     )}
                   </div>
