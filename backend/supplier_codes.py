@@ -67,9 +67,20 @@ def supplier_key(supplier: str, model_ref: str) -> str:
     return f"{(supplier or 'xml').strip().lower()}::{(model_ref or '').strip().lower()}"
 
 
-async def get_or_create_model_code(db, supplier: str, model_ref: str) -> str:
-    """Tedarikçi modeline karşılık gelen BİZİM model kodumuz. Idempotent."""
-    key = supplier_key(supplier, model_ref)
+async def get_or_create_model_code(db, supplier: str, model_ref: str,
+                                   group_ref: str = "") -> str:
+    """Tedarikçi modeline karşılık gelen BİZİM model kodumuz. Idempotent.
+
+    group_ref verilirse model kodu ONUN üzerinden üretilir. Tedarikçi aynı
+    modelin her rengini AYRI ürün olarak veriyor (her birinin kendi
+    UrunKartiID'si var) ama hepsi ortak bir grup kodu taşıyor. Model kodunu
+    gruba bağlamak iki şeyi sağlar:
+      • Vitrinde "diğer renkler" birbirine bağlanır.
+      • Pazaryerinde renkler TEK KARTTA toplanır (Trendyol'da ortak kart,
+        productMainId olarak bu kod gider) — her renk ayrı ürün olarak
+        listelenmez.
+    """
+    key = supplier_key(supplier, group_ref or model_ref)
     existing = await db.supplier_code_map.find_one({"key": key}, {"_id": 0, "model_code": 1})
     if existing and existing.get("model_code"):
         return existing["model_code"]
@@ -81,7 +92,7 @@ async def get_or_create_model_code(db, supplier: str, model_ref: str) -> str:
         {"key": key},
         {"$setOnInsert": {
             "key": key, "supplier": supplier, "model_ref": model_ref,
-            "model_code": code, "variants": {},
+            "group_ref": group_ref or "", "model_code": code, "variants": {},
         }},
         upsert=True,
     )
@@ -90,16 +101,23 @@ async def get_or_create_model_code(db, supplier: str, model_ref: str) -> str:
 
 
 async def get_or_create_variant_codes(
-    db, supplier: str, model_ref: str, variant_ref: str
+    db, supplier: str, model_ref: str, variant_ref: str, group_ref: str = ""
 ) -> dict:
     """Varyant için bizim stok kodumuz + barkodumuz. Idempotent.
 
     variant_ref tedarikçinin varyant anahtarıdır (beden/renk kodu veya barkodu).
     Varyantsız üründe "0" verilebilir.
+
+    DİKKAT — group_ref verildiğinde model kodu renkler arasında PAYLAŞILIR, bu
+    yüzden varyant anahtarına ürünün kendi referansı da katılır. Aksi hâlde iki
+    farklı rengin aynı bedeni ("S") aynı stok kodunu alır ve envanter birbirine
+    karışır. Ortak olan MODEL kodudur; stok kodu ve barkod her zaman benzersiz.
     """
-    key = supplier_key(supplier, model_ref)
-    model_code = await get_or_create_model_code(db, supplier, model_ref)
+    key = supplier_key(supplier, group_ref or model_ref)
+    model_code = await get_or_create_model_code(db, supplier, model_ref, group_ref)
     vref = (variant_ref or "0").strip().lower()
+    if group_ref:
+        vref = f"{(model_ref or '').strip().lower()}|{vref}"
     # Mongo alan adlarında nokta ve $ kullanılamaz.
     vkey = re.sub(r"[.$\x00]", "_", vref) or "0"
 

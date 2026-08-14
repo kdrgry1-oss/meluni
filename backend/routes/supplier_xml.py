@@ -72,6 +72,11 @@ CANDIDATES: Dict[str, List[str]] = {
     "fabric":      ["kumas", "fabric"],
     "desi":        ["desi", "kargodesi"],
     "product_url": ["urunurl", "producturl", "link", "url"],
+    # RENK GRUBU: tedarikçi aynı modelin her rengini ayrı ürün olarak veriyor;
+    # bu alan hepsinde ORTAK. Vitrindeki "diğer renkler" ve pazaryerindeki
+    # ortak kart buna dayanır.
+    "group_ref":   ["ozelalan2", "grupkodu", "anaurunkodu", "urungrupkodu",
+                    "modelgrupkodu"],
 }
 IMAGE_TAGS = ["resim", "image", "img", "picture", "foto", "gorsel", "resimler", "images"]
 VARIANT_CONTAINER = ["urunsecenek", "varyantlar", "variants", "varyasyonlar",
@@ -767,6 +772,7 @@ def parse_item(item: ET.Element, mapping: Dict[str, str]) -> Dict[str, Any]:
         "variants": [],
     }
     # Model referansı: model alanı yoksa stok kodu, o da yoksa barkod.
+    rec["group_ref"] = g("group_ref") or ""
     rec["model_ref"] = (
         g("model_ref") or rec["supplier_stock_code"] or rec["supplier_barcode"] or rec["name"]
     )
@@ -912,7 +918,8 @@ def _now_iso() -> str:
 async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float = 1.0,
                              min_stock: int = MIN_STOCK_DEFAULT) -> Dict[str, Any]:
     """Ara temsili ürün dökümanına çevirir; kodları BİZ üretiriz."""
-    model_code = await supplier_codes.get_or_create_model_code(db, supplier, rec["model_ref"])
+    model_code = await supplier_codes.get_or_create_model_code(
+        db, supplier, rec["model_ref"], rec.get("group_ref") or "")
 
     variants, total_stock = [], 0
     for v in rec["variants"]:
@@ -921,7 +928,8 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
         if int(v.get("stock") or 0) <= min_stock:
             continue
         codes = await supplier_codes.get_or_create_variant_codes(
-            db, supplier, rec["model_ref"], v.get("ref") or "0")
+            db, supplier, rec["model_ref"], v.get("ref") or "0",
+            rec.get("group_ref") or "")
         total_stock += int(v.get("stock") or 0)
         _cost = float(v.get("cost") or rec["price"] or 0)
         variants.append({
@@ -978,6 +986,13 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
         "barcode": primary.get("barcode", ""),
         "stock_code": primary.get("stock_code", ""),
         "model_code": model_code,
+        # Renk kardeşleri: products.py get_color_siblings bu alanda eşleşenleri
+        # "diğer renkler" sayıyor. Grup kodu yazılmadığı için vitrinde hiçbir
+        # ürünün alternatif rengi görünmüyordu.
+        "urun_karti_id": rec.get("group_ref") or "",
+        "supplier_group_ref": rec.get("group_ref") or "",
+        # Ürün seviyesinde renk — swatch etiketi ve pazaryeri renk alanı.
+        "color": (primary.get("color") or "") if primary else "",
         # Panel "purchase_price" alanını okuyor, kendi hesabımız "cost_price"
         # kullanıyor. İkisini de yazıyoruz; ikisi de müşteriye kapalı alanlar
         # listesinde (_PRODUCT_INTERNAL_FIELDS).
@@ -1129,7 +1144,8 @@ async def sync_stock() -> Dict[str, Any]:
             by_code: Dict[str, Dict[str, Any]] = {}
             for v in rec["variants"]:
                 codes = await supplier_codes.get_or_create_variant_codes(
-                    db, supplier, rec["model_ref"], v.get("ref") or "0")
+                    db, supplier, rec["model_ref"], v.get("ref") or "0",
+                    rec.get("group_ref") or "")
                 by_code[codes["stock_code"]] = v
 
             new_variants, total = [], 0
