@@ -99,6 +99,22 @@ export default function AdminProductOverlay({ product, onChanged }) {
         </div>
       )}
 
+      {/* Stok — listede gezerken hangi ürünün tükendiği görünsün. Yalnız
+          yönetim; müşteriye bu düğüm hiç gönderilmiyor. */}
+      <div className="absolute top-3 left-3 z-30 flex flex-wrap gap-1 max-w-[70%]">
+        {(product.variants || []).slice(0, 6).map((v, i) => (
+          <span
+            key={i}
+            title={`${v.size || "?"} bedeni: ${Number(v.stock) || 0} adet`}
+            className={`text-[10px] font-semibold px-1.5 py-0.5 rounded shadow-sm ${
+              Number(v.stock) > 0 ? "bg-white/90 text-gray-800" : "bg-red-600 text-white"
+            }`}
+          >
+            {v.size || "?"}·{Number(v.stock) || 0}
+          </span>
+        ))}
+      </div>
+
       {/* Sağ üst: kaydet (favori) düğmesi top-3'te duruyor; yönetim
           düğmeleri onun hemen altına, aynı hizaya diziliyor. */}
       <div className="absolute top-11 right-3 z-30 flex flex-col gap-1.5">

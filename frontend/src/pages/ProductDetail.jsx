@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
+import AdminProductActions from "../components/AdminProductActions";
 import { optimizeImg } from "../lib/img";
 import { slugify } from "../lib/slug";
 import { priceView } from "../lib/price";
@@ -892,6 +893,9 @@ export default function ProductDetail() {
                   )}
                 </span>
               </div>
+              {user?.is_admin && (
+                <AdminProductActions product={product} className="mb-3" />
+              )}
               <div className="flex items-end justify-between gap-3">
                 <div className="flex flex-wrap gap-2">
                 {sizes.map((variant, index) => {
@@ -917,7 +921,19 @@ export default function ProductDetail() {
                       }`}
                     >
                       {variant.size}
-                      {isRec && !isSelected && (
+                      {/* Stok adedi — YALNIZ yönetim. Müşteri bunu görmez;
+                          isAdmin false ise düğüm hiç render edilmez. */}
+                      {user?.is_admin && (
+                        <span
+                          className={`absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-bold flex items-center justify-center border border-white shadow ${
+                            Number(variant.stock) > 0 ? "bg-gray-900 text-white" : "bg-red-600 text-white"
+                          }`}
+                          title="Stok adedi (yalnız yönetim)"
+                        >
+                          {Number(variant.stock) || 0}
+                        </span>
+                      )}
+                      {isRec && !isSelected && !user?.is_admin && (
                         <span className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-white" />
                       )}
                     </button>
