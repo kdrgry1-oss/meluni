@@ -20,6 +20,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
   const [ortamUrl, setOrtamUrl] = useState("");
   const [yukleniyor, setYukleniyor] = useState(false);
   const [uretiliyor, setUretiliyor] = useState(false);
+  const [uretimIlerleme, setUretimIlerleme] = useState("");
   const [sonuc, setSonuc] = useState(null);
   const [hata, setHata] = useState("");
   const [eklenen, setEklenen] = useState([]);
@@ -27,6 +28,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
   // 1200x1800 üretir. Üretimden farklı olarak yeni poz oluşturmaz.
   const [hdBekle, setHdBekle] = useState(false);
   const [hdSonuc, setHdSonuc] = useState(null);
+  const [hdIlerleme, setHdIlerleme] = useState("");
   // Ölçü tablosu ayrı ele alınır: ürün fotoğrafı değil, METİN taşıyan bir
   // belge. Tarama hangi görselin tablo olduğunu söyler, dönüşüm yalnız ona
   // uygulanır.
@@ -37,6 +39,29 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
   const [okunan, setOkunan] = useState(null);
 
   const token = () => localStorage.getItem("token") || "";
+
+  /** Tek istek. "Failed to fetch" ham hâliyle hiçbir şey anlatmıyor; ağ
+   *  seviyesinde düşen istek neredeyse her zaman Cloudflare'in 100 saniyelik
+   *  vekil sınırı (524) — sebebi açıkça yazıyoruz. */
+  const istek = async (yol, govde) => {
+    try {
+      const r = await fetch(`${API}/ai-images/products/${productId}/${yol}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+        body: JSON.stringify(govde || {}),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || "İşlem başarısız");
+      return d;
+    } catch (e) {
+      if (String(e.message || "").toLowerCase().includes("failed to fetch")) {
+        throw new Error(
+          "Bağlantı koptu — istek büyük ihtimalle 100 saniyelik vekil sınırını " +
+          "aştı. Görseller tek tek işleniyor; yine olursa tekrar deneyin.");
+      }
+      throw e;
+    }
+  };
 
   const ortamYukle = async (e) => {
     const file = e.target.files?.[0];
@@ -66,19 +91,28 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
     setSonuc(null);
     setEklenen([]);
     try {
-      const r = await fetch(`${API}/ai-images/products/${productId}/regenerate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+      // POZLAR TEK TEK: beş pozu tek istekte üretmek vekil sınırını aşıyordu.
+      const pozlar = ["front", "left", "right", "back", "detail"];
+      const uretilenler = {};
+      const hatalar = {};
+      let etiketler = {};
+      for (let i = 0; i < pozlar.length; i++) {
+        setUretimIlerleme(`${i + 1}/${pozlar.length}`);
         // attach GÖNDERİLMİYOR: ürüne ekleme kararı burada, tek tek verilir.
-        body: JSON.stringify({ reference_url: ortamUrl || undefined }),
-      });
-      const d = await r.json();
-      if (!r.ok) throw new Error(d.detail || "Üretim başarısız");
-      setSonuc(d);
+        const d = await istek("regenerate", {
+          reference_url: ortamUrl || undefined, poses: [pozlar[i]],
+        });
+        Object.assign(uretilenler, d.generated || {});
+        Object.assign(hatalar, d.errors || {});
+        etiketler = { ...etiketler, ...(d.labels || {}) };
+        setSonuc({ generated: { ...uretilenler }, errors: { ...hatalar },
+                   labels: etiketler, warning: d.warning || "" });
+      }
     } catch (e) {
       setHata(e.message);
     } finally {
       setUretiliyor(false);
+      setUretimIlerleme("");
     }
   };
 
@@ -91,13 +125,23 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
     setHata("");
     setHdSonuc(null);
     try {
-      const r = await fetch(`${API}/ai-images/products/${productId}/enhance`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
-        body: JSON.stringify({ replace: !!replace }),
-      });
-      const d = await r.json();
-      if (!r.ok) throw new Error(d.detail || "İyileştirme başarısız");
+      // GÖRSELLER TEK TEK. Hepsini tek istekte işlemek 100 saniyelik vekil
+      // sınırını aşıyor ve bağlantı "Failed to fetch" ile kopuyordu; üstelik
+      // o ana kadar üretilenler de kayboluyordu. Sırayla gidince her istek
+      // kısa kalıyor ve ilerleme ekranda birikiyor.
+      const hepsi = [];
+      let uyari = "";
+      for (let i = 0; i < images.length; i++) {
+        setHdIlerleme(`${i + 1}/${images.length}`);
+        const d = await istek("enhance", { replace: !!replace, indexes: [i] });
+        hepsi.push(...(d.results || []));
+        uyari = uyari || d.warning || "";
+        setHdSonuc({ target: d.target, results: [...hepsi], warning: uyari,
+                     replaced: !!replace,
+                     ai_count: hepsi.filter((x) => x.ai).length });
+      }
+      const d = { target: "1200x1800", results: hepsi, warning: uyari,
+                  replaced: !!replace, ai_count: hepsi.filter((x) => x.ai).length };
       setHdSonuc(d);
       // KRİTİK: sunucu ürünü güncelledi ama AÇIK FORM hâlâ eski adresleri
       // tutuyor. "Değişiklikleri Kaydet"e basıldığında o eski liste geri
@@ -113,6 +157,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       setHata(e.message);
     } finally {
       setHdBekle(false);
+      setHdIlerleme("");
     }
   };
 
@@ -143,13 +188,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
     setCeviriBekle(index);
     setHata("");
     try {
-      const r = await fetch(`${API}/ai-images/products/${productId}/size-chart`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
-        body: JSON.stringify({ index, replace: true }),
-      });
-      const d = await r.json();
-      if (!r.ok) throw new Error(d.detail || "Çeviri başarısız");
+      const d = await istek("size-chart", { index, replace: true });
       const yeni = [...images];
       if (index < yeni.length) yeni[index] = d.url;
       onReplaceImages?.(yeni);
@@ -182,13 +221,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
     setHata("");
     setOkunan(null);
     try {
-      const r = await fetch(`${API}/ai-images/products/${productId}/size-table-read`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
-        body: JSON.stringify({ index, kaydet: true }),
-      });
-      const d = await r.json();
-      if (!r.ok) throw new Error(d.detail || "Tablo okunamadı");
+      const d = await istek("size-table-read", { index, kaydet: true });
       setOkunan(d);
     } catch (e) {
       setHata(e.message);
@@ -269,7 +302,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
             className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm inline-flex items-center gap-1.5 disabled:opacity-50"
           >
             <Sparkles className="w-4 h-4" />
-            {uretiliyor ? "Üretiliyor… (birkaç dakika)" : "5 Görseli Üret"}
+            {uretiliyor ? `Üretiliyor… ${uretimIlerleme}` : "5 Görseli Üret"}
           </button>
           <p className="text-[11px] text-gray-400 mt-1">
             Ön · Sol · Sağ · Arka · Detay
@@ -481,7 +514,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
             className="px-3 py-1.5 rounded-lg border text-sm inline-flex items-center gap-1.5 hover:bg-gray-50 disabled:opacity-50"
           >
             <Wand2 className="w-4 h-4" />
-            {hdBekle ? "İşleniyor…" : "Önizle (ürüne dokunma)"}
+            {hdBekle ? `İşleniyor… ${hdIlerleme}` : "Önizle (ürüne dokunma)"}
           </button>
           <button
             type="button"
