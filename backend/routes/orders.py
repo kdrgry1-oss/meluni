@@ -7407,7 +7407,8 @@ async def _compute_refund_breakdown(rec: dict, order: dict, fault: str,
             # Ayrıca payda = TÜM kalemlerin net toplamı olduğundan, sipariş kalem kalem tamamen
             # iade edilirse dağıtılan vade farkı toplamı _vf'ye BİREBİR eşitlenir (kayıp/fazla yok).
             _net_base = _round2(max(0.0, _round2(order.get("subtotal") or 0)
-                                    - _round2(order.get("discount") or 0)))
+                                    - _round2(order.get("discount") or 0)
+                                    - _round2(order.get("payment_discount") or 0)))
             if _net_base <= 0.005:      # eski/pazaryeri siparişi: indirim alanı yoksa brüte düş
                 _net_base = orig_cart
             if _net_base > 0.005:

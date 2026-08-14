@@ -7,6 +7,13 @@ import MultiSelect from "../../components/admin/MultiSelect";
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const BACKEND = process.env.REACT_APP_BACKEND_URL;
 
+// ETKİN SİPARİŞ İNDİRİMİ = kupon/kampanya (discount) + havale/EFT ödeme indirimi (payment_discount).
+// İade net hesabı, indirim oranını bu ETKİN indirim üzerinden almalı (gider pusulası da böyle:
+// discount+payment_discount). Yalnız `discount` alınırsa havale %5 kaçar → iade fazla çıkar
+// (ör. 4001.38 yerine 3801.31 olmalı). Ödeme indirimi olmayan siparişte payment_discount=0 →
+// davranış birebir aynı kalır.
+const _effDisc = (r) => (Number(r?.discount) || 0) + (Number(r?.payment_discount) || 0);
+
 // TÜM sipariş durumları — order_statuses.py kataloğuyla birebir (iade sayfasında da hepsi seçilebilir)
 const STATUS_OPTS = [
   { value: "pending", label: "Onay Bekliyor" },
@@ -345,7 +352,7 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
       // iade edilir; müşteri indirimli ödediği hâlde fazla iade alırdı (ör. 2100 yerine 1890).
       // Panel "İade net tutarı" ile BİREBİR aynı formül: product net × (1 − indirim oranı).
       const _base = Number(row.subtotal) || 0;
-      const _dr = (_base > 0 && Number(row.discount) > 0) ? Math.min(1, Number(row.discount) / _base) : 0;
+      const _dr = (_base > 0 && _effDisc(row) > 0) ? Math.min(1, _effDisc(row) / _base) : 0;
       const selAmount = isPartialSelection ? Math.round(selIdx.reduce(
         (a, i) => a + (Number(row.items[i].qty) || 1) * (Number(row.items[i].price) || 0) * (1 - _dr), 0
       ) * 100) / 100 : 0;
@@ -446,7 +453,7 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
       // KDV-dahil kalem fiyatı (r.items[i].price zaten KDV-dahile ölçekli) kullanılır →
       // hesap SADECE tiklenen kalemlere göre olur (Kadir talebi).
       const _base = Number(r.subtotal) || 0;
-      const _dr = (_base > 0 && Number(r.discount) > 0) ? Math.min(1, Number(r.discount) / _base) : 0;
+      const _dr = (_base > 0 && _effDisc(r) > 0) ? Math.min(1, _effDisc(r) / _base) : 0;
       // VADE FARKI burada EKLENMEZ — backend (_compute_refund_breakdown) iade edilen ürün
       // oranında orantılı vade farkını TEK KAYNAKTAN ekler (çift sayım önlenir). Buradan yalnız
       // ürün neti gönderilir; initial-approve akışıyla (satır ~349) birebir aynı formül.
@@ -747,8 +754,9 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                     <td className="px-3 py-2.5 text-right font-mono whitespace-nowrap">
                       {/* Net = müşterinin GERÇEKTE ödediği: taksitliyse vade farkı DAHİL (charged_total),
                           değilse Genel toplam. İrem Kılıç 4.977,33 (taksitli); Kübra 1.884; Senem 985,15. */}
-                      {Number(r.discount) > 0 && <div className="text-gray-500 line-through text-xs leading-tight">{fmtTL(r.subtotal || r.total)}</div>}
-                      {Number(r.discount) > 0 && <div className="text-orange-600 text-xs font-bold leading-tight">-{fmtTL(r.discount)}</div>}
+                      {_effDisc(r) > 0 && <div className="text-gray-500 line-through text-xs leading-tight">{fmtTL(r.subtotal || r.total)}</div>}
+                      {/* İskonto = kupon + havale (etkin) → Brüt − İskonto = Net tutarlı görünür. */}
+                      {_effDisc(r) > 0 && <div className="text-orange-600 text-xs font-bold leading-tight">-{fmtTL(_effDisc(r))}</div>}
                       <div className="font-bold text-gray-900 leading-tight">{fmtTL(Number(r.charged_total) || Number(r.total))}</div>
                       {Number(r.vade_farki) > 0 && <div className="text-[9px] text-amber-600 leading-tight whitespace-nowrap">taksit · vade +{fmtTL(r.vade_farki)}</div>}
                     </td>
@@ -847,8 +855,8 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                                     // VADE FARKI da kaleme ORANSAL (net/total) yansıtılır (Kadir: 'kalemlere
                                     // vade farkını oran orantı göster') → gider pusulasıyla birebir.
                                     const g = (Number(it.qty) || 1) * (Number(it.price) || 0);
-                                    const dr = (Number(r.subtotal) > 0 && Number(r.discount) > 0)
-                                      ? Math.min(1, Number(r.discount) / Number(r.subtotal)) : 0;
+                                    const dr = (Number(r.subtotal) > 0 && _effDisc(r) > 0)
+                                      ? Math.min(1, _effDisc(r) / Number(r.subtotal)) : 0;
                                     const dShare = g * dr;
                                     const netAfterDisc = g - dShare;
                                     // TABAN, backend ile BİREBİR AYNI olmalı (orders._compute_refund_breakdown
@@ -856,7 +864,7 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                                     // Eskiden r.total kullanılıyordu; kargo order.total'ın içinde olduğundan
                                     // kargolu siparişte pay küçük çıkıp panel ile onay modalı ayrışıyordu.
                                     const vadeBase = (Number(r.subtotal) > 0)
-                                      ? Math.max(0, Number(r.subtotal) - (Number(r.discount) || 0))
+                                      ? Math.max(0, Number(r.subtotal) - _effDisc(r))
                                       : Number(r.total) || 0;
                                     const vadeRatio = (Number(r.vade_farki) > 0 && vadeBase > 0)
                                       ? Number(r.vade_farki) / vadeBase : 0;
@@ -896,15 +904,15 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                           // İndirim YALNIZ ürünlere (payda = ara toplam, kargo HARİÇ) — kargoya indirim
                           // uygulanmaz (kargo %20 KDV, ürün %10; matrah karışmasın). Backend ile aynı.
                           const _base = Number(r.subtotal);
-                          const dr = (_base > 0 && Number(r.discount) > 0)
-                            ? Math.min(1, Number(r.discount) / _base) : 0;
+                          const dr = (_base > 0 && _effDisc(r) > 0)
+                            ? Math.min(1, _effDisc(r) / _base) : 0;
                           // TAKSİT vade farkı payı seçili kaleme ORANSAL eklenir.
                           // TABAN backend (_compute_refund_breakdown _net_base) VE ürün satırıyla BİREBİR:
                           // net = subtotal − indirim (kargo HARİÇ). Eskiden r.total (kargo DAHİL) idi →
                           // kargolu taksitli siparişte İade net tutarı ürün satırından/gerçek iadeden DÜŞÜK
                           // çıkıyordu (panel önizlemesi ile gerçekte iade edilen tutar ayrışması).
                           const _vadeBase = (Number(r.subtotal) > 0)
-                            ? Math.max(0, Number(r.subtotal) - (Number(r.discount) || 0))
+                            ? Math.max(0, Number(r.subtotal) - _effDisc(r))
                             : Number(r.total) || 0;
                           const vadeRatio = (Number(r.vade_farki) > 0 && _vadeBase > 0)
                             ? Number(r.vade_farki) / _vadeBase : 0;
@@ -972,9 +980,9 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                           // Kalan (iade sonrası tutulan) net tutar — seçili kalem netleri (indirim + taksit
                           // vade farkı payı DAHİL) → 'İade edilecek' kargo düşülünce doğru çıksın.
                           const _base = Number(r.subtotal);
-                          const dr = (_base > 0 && Number(r.discount) > 0) ? Math.min(1, Number(r.discount) / _base) : 0;
-                          // Vade farkı payı tabanı backend/ürün satırıyla BİREBİR: subtotal − indirim (kargo HARİÇ).
-                          const _vadeBase = (_base > 0) ? Math.max(0, _base - (Number(r.discount) || 0)) : Number(r.total) || 0;
+                          const dr = (_base > 0 && _effDisc(r) > 0) ? Math.min(1, _effDisc(r) / _base) : 0;
+                          // Vade farkı payı tabanı backend/ürün satırıyla BİREBİR: subtotal − (indirim + havale).
+                          const _vadeBase = (_base > 0) ? Math.max(0, _base - _effDisc(r)) : Number(r.total) || 0;
                           const vadeRatio = (Number(r.vade_farki) > 0 && _vadeBase > 0)
                             ? Number(r.vade_farki) / _vadeBase : 0;
                           let retNet = 0, anySel = false;
@@ -1074,11 +1082,14 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                         )}
 
                         {/* Tutar dökümü */}
-                        {(r.subtotal > 0 || r.shipping_cost > 0 || r.discount > 0) && (
+                        {(r.subtotal > 0 || r.shipping_cost > 0 || _effDisc(r) > 0) && (
                           <div className="mt-2 text-xs text-gray-900 flex flex-wrap gap-x-6 gap-y-1 justify-start">
                             {r.subtotal > 0 && <span>Ara toplam: <b className="text-gray-900">{fmtTL(r.subtotal)}</b></span>}
                             {r.shipping_cost > 0 && <span>Kargo: <b className="text-gray-900">{fmtTL(r.shipping_cost)}</b></span>}
                             {r.discount > 0 && <span>İndirim: <b className="text-gray-900">−{fmtTL(r.discount)}</b></span>}
+                            {/* Havale/EFT ödeme indirimi AYRI satır — sipariş detayıyla birebir; böylece
+                                Ara toplam − İndirim − Havale = Genel toplam tutarlı görünür. */}
+                            {Number(r.payment_discount) > 0 && <span>Havale/EFT indirimi: <b className="text-gray-900">−{fmtTL(r.payment_discount)}</b></span>}
                             <span>Genel toplam: <b className="text-gray-900">{fmtTL(r.total)}</b></span>
                           </div>
                         )}

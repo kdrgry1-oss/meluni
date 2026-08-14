@@ -238,6 +238,10 @@ async def list_rooftr_return_orders(
             "subtotal": _r_subtotal,
             "shipping_cost": o.get("shipping_cost") or 0,
             "discount": _r_discount,
+            # Havale/EFT (veya başka ödeme-yöntemi) indirimi — sipariş-seviyesi, `discount` tan
+            # AYRI tutulur. İade net hesabı bunu da düşmeli (gider pusulası da discount+payment_discount
+            # kullanıyor). Yoksa yalnız kupon düşülüp havale %5 kaçıyordu (4001 yerine 3801 olmalı).
+            "payment_discount": float(o.get("payment_discount") or 0),
             "reason": (o.get("return_request") or {}).get("reason") or "",
             "coupon_code": o.get("coupon_code") or "",
             "notes": o.get("notes") or "",
