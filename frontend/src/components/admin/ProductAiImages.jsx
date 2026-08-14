@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Sparkles, Upload, X, Plus, AlertTriangle, Wand2, Check, Ruler, Search } from "lucide-react";
+import { Sparkles, Upload, X, Plus, AlertTriangle, Wand2, Check, Ruler, Search, Table } from "lucide-react";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const BACKEND_ORIGIN = (process.env.REACT_APP_BACKEND_URL || "").replace(/\/api\/?$/, "");
@@ -33,6 +33,8 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
   const [tarama, setTarama] = useState(null);
   const [taraBekle, setTaraBekle] = useState(false);
   const [ceviriBekle, setCeviriBekle] = useState(-1);
+  const [okuBekle, setOkuBekle] = useState(-1);
+  const [okunan, setOkunan] = useState(null);
 
   const token = () => localStorage.getItem("token") || "";
 
@@ -160,6 +162,38 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       setHata(e.message);
     } finally {
       setCeviriBekle(-1);
+    }
+  };
+
+  // Sınıflandırma yanılabiliyor (Gemini kotası bitince "belirsiz" dönüyor).
+  // Kullanıcı görsele bakıp zaten biliyor — elle işaretleyebilsin.
+  const elleIsaretle = (index) => {
+    setTarama((t) => t && {
+      ...t,
+      images: t.images.map((it) =>
+        it.index === index ? { ...it, tur: it.tur === "olcu" ? "urun" : "olcu" } : it),
+      size_chart_count: (t.images || []).filter(
+        (it) => (it.index === index ? it.tur !== "olcu" : it.tur === "olcu")).length,
+    });
+  };
+
+  const olculeriOku = async (index) => {
+    setOkuBekle(index);
+    setHata("");
+    setOkunan(null);
+    try {
+      const r = await fetch(`${API}/ai-images/products/${productId}/size-table-read`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+        body: JSON.stringify({ index, kaydet: true }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || "Tablo okunamadı");
+      setOkunan(d);
+    } catch (e) {
+      setHata(e.message);
+    } finally {
+      setOkuBekle(-1);
     }
   };
 
@@ -334,8 +368,13 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
             <div className="text-xs text-gray-600 mb-2">
               {tarama.size_chart_count > 0
                 ? `${tarama.size_chart_count} ölçü tablosu bulundu.`
-                : "Ölçü tablosu bulunamadı — tüm görseller ürün fotoğrafı."}
+                : "Ölçü tablosu bulunamadı."}
             </div>
+            {tarama.warning && (
+              <div className="mb-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900">
+                {tarama.warning}
+              </div>
+            )}
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
               {(tarama.images || []).map((it) => (
                 <div key={it.index}>
@@ -344,24 +383,42 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
                          it.tur === "olcu" ? "border-blue-400 ring-1 ring-blue-300" : ""
                        }`} />
                   {it.tur === "olcu" ? (
-                    it.cevrildi ? (
-                      <div className="mt-1 text-[10px] text-center text-green-700">
-                        Türkçeleştirildi
-                      </div>
-                    ) : (
+                    <>
+                      {it.cevrildi ? (
+                        <div className="mt-1 text-[10px] text-center text-green-700">
+                          Türkçeleştirildi
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => olcuCevir(it.index)}
+                          disabled={ceviriBekle === it.index}
+                          className="mt-1 w-full text-[10px] rounded-lg py-1 bg-blue-600 text-white disabled:opacity-50"
+                        >
+                          {ceviriBekle === it.index ? "Çevriliyor…" : "Türkçeye çevir"}
+                        </button>
+                      )}
+                      {/* Görseli çevirmek yetmez: site beden rehberini VERİ
+                          olarak kullanıyor. Ölçüleri okuyup tabloya yazar. */}
                       <button
                         type="button"
-                        onClick={() => olcuCevir(it.index)}
-                        disabled={ceviriBekle === it.index}
-                        className="mt-1 w-full text-[10px] rounded-lg py-1 bg-blue-600 text-white disabled:opacity-50"
+                        onClick={() => olculeriOku(it.index)}
+                        disabled={okuBekle === it.index}
+                        className="mt-1 w-full text-[10px] rounded-lg py-1 border inline-flex items-center justify-center gap-1 hover:bg-gray-50 disabled:opacity-50"
                       >
-                        {ceviriBekle === it.index ? "Çevriliyor…" : "Türkçeye çevir"}
+                        <Table className="w-3 h-3" />
+                        {okuBekle === it.index ? "Okunuyor…" : "Ölçüleri tabloya yaz"}
                       </button>
-                    )
+                    </>
                   ) : (
-                    <div className="mt-1 text-[10px] text-center text-gray-400">
-                      ürün fotoğrafı
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => elleIsaretle(it.index)}
+                      title="Sınıflandırma yanıldıysa elle işaretleyin"
+                      className="mt-1 w-full text-[10px] rounded-lg py-1 border text-gray-500 hover:bg-gray-50"
+                    >
+                      {it.tur === "belirsiz" ? "belirsiz — tablo mu?" : "ürün fotoğrafı"}
+                    </button>
                   )}
                 </div>
               ))}
@@ -369,6 +426,39 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
           </div>
         )}
       </div>
+
+      {okunan && (
+        <div className="mt-3 rounded-lg border border-gray-200 p-3">
+          <div className="text-xs font-semibold mb-1">
+            Ölçüler tabloya yazıldı — {okunan.satirlar?.length || 0} beden
+          </div>
+          <div className="rounded-lg bg-amber-50 border border-amber-200 px-2 py-1.5 text-[11px] text-amber-900 mb-2">
+            {okunan.warning}
+          </div>
+          <div className="overflow-x-auto">
+            <table className="text-xs">
+              <thead>
+                <tr className="text-left text-gray-500">
+                  <th className="pr-3 py-1">Beden</th>
+                  {(okunan.olcu_adlari || []).map((a, i) => (
+                    <th key={i} className="pr-3 py-1">{a}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {(okunan.satirlar || []).map((r, i) => (
+                  <tr key={i} className="border-t">
+                    <td className="pr-3 py-1 font-medium">{r.beden}</td>
+                    {(r.olculer || []).map((o, k) => (
+                      <td key={k} className="pr-3 py-1">{o || "—"}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* ── Kalite iyileştirme ── */}
       <div className="mt-4 pt-4 border-t">
