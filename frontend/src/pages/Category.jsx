@@ -426,21 +426,55 @@ export default function Category() {
           )}
 
           {/* Pagination */}
-          {pages > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-12">
-              {[...Array(pages)].map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setPage(i + 1)}
-                  className={`w-10 h-10 text-sm transition-colors ${
-                    page === i + 1 ? "bg-black text-white" : "border border-gray-300 hover:border-black"
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-          )}
+          {/* SAYFALAMA — kısaltılmış. Eskiden her sayfa tek tek basılıyordu:
+              69 sayfalık kategoride 69 düğme yan yana diziliyor, satır ekranı
+              taşırıyor ve hiçbiri okunmuyordu. Şimdi baş, son ve geçerli
+              sayfanın çevresi gösteriliyor; arası "…" ile atlanıyor. */}
+          {pages > 1 && (() => {
+            const pencere = 1;                       // geçerli sayfanın iki yanı
+            const goster = new Set([1, pages, page]);
+            for (let d = 1; d <= pencere; d++) {
+              if (page - d >= 1) goster.add(page - d);
+              if (page + d <= pages) goster.add(page + d);
+            }
+            const sirali = [...goster].sort((a, b) => a - b);
+            const ogeler = [];
+            let onceki = 0;
+            for (const n of sirali) {
+              if (onceki && n - onceki > 1) ogeler.push({ bosluk: true, key: `b${n}` });
+              ogeler.push({ n, key: `s${n}` });
+              onceki = n;
+            }
+            const okBtn = "w-10 h-10 text-sm border border-gray-300 hover:border-black disabled:opacity-30 disabled:hover:border-gray-300";
+            return (
+              <nav className="flex justify-center items-center gap-1.5 mt-12 flex-wrap"
+                   aria-label="Sayfalar">
+                <button onClick={() => setPage(page - 1)} disabled={page <= 1}
+                        className={okBtn} aria-label="Önceki sayfa">‹</button>
+                {ogeler.map((o) =>
+                  o.bosluk ? (
+                    <span key={o.key} className="w-6 text-center text-gray-400 select-none">…</span>
+                  ) : (
+                    <button
+                      key={o.key}
+                      onClick={() => setPage(o.n)}
+                      aria-current={page === o.n ? "page" : undefined}
+                      className={`w-10 h-10 text-sm transition-colors ${
+                        page === o.n ? "bg-black text-white" : "border border-gray-300 hover:border-black"
+                      }`}
+                    >
+                      {o.n}
+                    </button>
+                  )
+                )}
+                <button onClick={() => setPage(page + 1)} disabled={page >= pages}
+                        className={okBtn} aria-label="Sonraki sayfa">›</button>
+                <span className="ml-2 text-xs text-gray-500 whitespace-nowrap">
+                  {pages} sayfa · {total} ürün
+                </span>
+              </nav>
+            );
+          })()}
         </div>
       </div>
 
