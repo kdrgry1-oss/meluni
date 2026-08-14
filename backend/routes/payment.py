@@ -519,14 +519,17 @@ async def _notify_paid_order_confirmed(order_id: str) -> None:
         except Exception as _pe:
             logger.warning(f"admin push (kart ödeme sonrası) atlandı: {_pe}")
         # ADMIN E-POSTA BİLDİRİMİ: web sitesinden gelen (ödemesi ONAYLANMIŞ) sipariş için
-        # firmanın iletişim adresine (beyaz-etiket: company.contact_email → varsayılan
-        # info@facette.com.tr) özet mail. order_confirmed_notified bayrağıyla tek sefer.
+        # firmanın iletişim adresine (beyaz-etiket: company.contact_email) özet mail.
+        # order_confirmed_notified bayrağıyla tek sefer.
         # Yarıda kalan 3DS'te BURAYA gelinmez → sahte "yeni sipariş" maili gitmez.
+        # BEYAZ ETİKET: koda gömülü adres YOK. İşletme ayarlarında iletişim adresi
+        # boşsa mail hiç gönderilmez — başka bir firmanın adresine sipariş bilgisi
+        # düşmesindense bildirim atlanır.
         try:
             import company as _company
             from notification_service import _email_send
             _ci = await _company.get_company(db)
-            _admin_to = str(_ci.get("contact_email") or _ci.get("email") or "info@facette.com.tr").strip()
+            _admin_to = str(_ci.get("contact_email") or _ci.get("email") or "").strip()
             if _admin_to:
                 _tl2 = float(order.get("total") or 0)
                 _tl_fmt = f"{_tl2:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")  # 3,920.00 → 3.920,00
