@@ -661,10 +661,23 @@ async def _build_products_query(
             distinct_names = await db.products.distinct("category_name", {"is_deleted": {"$ne": True}})
             matched_names = [n for n in distinct_names if n and generate_slug(n) == cat_slug]
             cat_or = []
-            if matched_names:
-                cat_or.append({"category_name": {"$in": matched_names}})
-            # Kategori adı tam eşleşme (diakritik duyarsız)
-            cat_or.append({"category_name": {"$regex": f"^{dia}$", "$options": "i"}})
+            # ADA GÖRE eşleşme YALNIZ o ad tek bir kategoride geçiyorsa güvenli.
+            # Cinsiyet ayrımından sonra "Pantolon" hem Kadın hem Erkek altında
+            # var; ada bakan kol ikisini birden döndürüp kadın listesine erkek
+            # pantolonu karıştırıyordu. Ad birden fazla kategoride geçiyorsa
+            # yalnız slug ve kategori kimliği yetkilidir.
+            _ad_sayisi = {}
+            async for _c in db.categories.find({}, {"_id": 0, "name": 1}):
+                _n = (_c.get("name") or "").strip().lower()
+                if _n:
+                    _ad_sayisi[_n] = _ad_sayisi.get(_n, 0) + 1
+            _tekil = [n for n in (matched_names or []) if _ad_sayisi.get(n.strip().lower(), 0) <= 1]
+            if _tekil:
+                cat_or.append({"category_name": {"$in": _tekil}})
+            if len(_tekil) == len(matched_names or []) and not any(
+                    v > 1 for k, v in _ad_sayisi.items() if generate_slug(k) == cat_slug):
+                # Kategori adı tam eşleşme (diakritik duyarsız)
+                cat_or.append({"category_name": {"$regex": f"^{dia}$", "$options": "i"}})
             # NOT: 'breadcrumb' segment eşleşmesi KALDIRILDI. Ürün başka kategoriye taşınınca
             # category_name/category_ids güncelleniyor ama breadcrumb BAYAT kalabiliyordu →
             # kategoriden çıkarılan ürün eski kategoride görünmeye devam ediyordu (kullanıcı bug).

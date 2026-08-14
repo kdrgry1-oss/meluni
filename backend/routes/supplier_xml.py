@@ -500,9 +500,12 @@ async def _ensure_category(name: str, parent_id: Optional[str]) -> str:
 
     Eşleşme sırası:
       1) Aynı ad + aynı üst kategori (tam eşleşme).
-      2) MEVCUT kategorilerde aynı ada sahip olan — nerede olursa olsun.
-         Elde hazır kategori varsa (ör. kök seviyede "Elbise") onu KULLANIRIZ;
-         yanına ikinci bir "Kadın > Elbise" açmak katalogu ikiye böler.
+      2) Yazım farkına dayanıklı ad eşleşmesi — AMA YALNIZ AYNI ÜST KATEGORİ
+         İÇİNDE. Bu sınır olmadan "Kadın > Pantolon" ile "Erkek > Pantolon"
+         tek kategoriye düşüyordu: hangi cinsiyet önce aktarıldıysa kategori
+         orada açılıyor, diğer cinsiyetin ürünleri de oraya giriyordu. Sonuç:
+         kadın pantolon listesinde 44 erkek pantolonu. Aynı ad iki cinsiyette
+         de geçtiği için (T-Shirt, Gömlek, Ceket, Mont, Bluz…) sorun genel.
       3) Yoksa yeni oluşturulur.
     """
     q = {"name": name, "parent_id": parent_id}
@@ -510,14 +513,14 @@ async def _ensure_category(name: str, parent_id: Optional[str]) -> str:
     if doc:
         return doc["id"]
 
-    # 2) Ad bazlı eşleşme — yazım farkına dayanıklı.
-    # Tüm kategorileri her üründe taramak 6.475 üründe ağır olur; bir kez
-    # okuyup bellekte tutuyoruz ve yeni oluşturdukça güncelliyoruz.
-    key = _cat_key(name)
+    # 2) Ad bazlı eşleşme — aynı üst kategori içinde. Tüm kategorileri her
+    # üründe taramak 6.475 üründe ağır olur; bir kez okuyup bellekte tutuyoruz.
+    key = (parent_id or "", _cat_key(name))
     if _CAT_CACHE["map"] is None:
         _CAT_CACHE["map"] = {}
-        async for c in db.categories.find({}, {"_id": 0, "id": 1, "name": 1}):
-            _CAT_CACHE["map"].setdefault(_cat_key(c.get("name")), c["id"])
+        async for c in db.categories.find({}, {"_id": 0, "id": 1, "name": 1, "parent_id": 1}):
+            _CAT_CACHE["map"].setdefault(
+                (c.get("parent_id") or "", _cat_key(c.get("name"))), c["id"])
     hit = _CAT_CACHE["map"].get(key)
     if hit:
         logger.info(f"[supplier_xml] mevcut kategoriyle eslesti: {name}")
@@ -526,9 +529,15 @@ async def _ensure_category(name: str, parent_id: Optional[str]) -> str:
     from .deps import generate_short_id
     cid = await generate_short_id("categories")
     slug_base = generate_slug(f"{name}")
-    # Aynı slug başka bir ebeveynde olabilir (Kadın>Ceket, Erkek>Ceket).
+    # Aynı ad iki cinsiyette de var (Kadın>Ceket, Erkek>Ceket). Çakışmada
+    # kimlik eklemek "ceket-a1b2" gibi okunmaz slug üretiyordu; üst kategori
+    # adıyla önekliyoruz → "erkek-ceket".
     if await db.categories.find_one({"slug": slug_base}, {"_id": 0, "id": 1}):
-        slug_base = f"{slug_base}-{cid}"
+        ust = await db.categories.find_one({"id": parent_id}, {"_id": 0, "name": 1}) if parent_id else None
+        onek = generate_slug(ust.get("name")) if (ust or {}).get("name") else ""
+        slug_base = f"{onek}-{slug_base}" if onek else f"{slug_base}-{cid}"
+        if await db.categories.find_one({"slug": slug_base}, {"_id": 0, "id": 1}):
+            slug_base = f"{slug_base}-{cid}"
     await db.categories.insert_one({
         "id": cid, "name": name, "slug": slug_base, "description": "",
         "image": "", "image_url": "", "parent_id": parent_id,
@@ -537,7 +546,7 @@ async def _ensure_category(name: str, parent_id: Optional[str]) -> str:
     })
     logger.info(f"[supplier_xml] kategori olusturuldu: {name} (parent={parent_id})")
     if _CAT_CACHE["map"] is not None:
-        _CAT_CACHE["map"].setdefault(_cat_key(name), cid)
+        _CAT_CACHE["map"].setdefault((parent_id or "", _cat_key(name)), cid)
     return cid
 
 
