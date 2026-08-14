@@ -21,16 +21,20 @@ export function priceView(product) {
   //    indirimli fiyat × (1-kampanya). (Satış fiyatı/MSRP gösterilmez — "1900 yerine indirimli")
   //  • Kampanya VAR + indirimli fiyat YOK → referans = satış fiyatı, kırmızı = satış × (1-kampanya).
   //  • Kampanya YOK → mevcut: satış fiyatı üstü çizili, indirimli (varsa) kırmızı.
-  let ref, display;
-  if (campPct > 0 && sale != null) {
-    ref = sale;
-    display = Math.round(sale * (1 - campPct / 100) * 100) / 100;
+  // KURAL (kullanıcı): ürün kartında İNDİRİMLİ FİYAT (sale_price) girili ise KAMPANYA UYGULANMAZ —
+  // indirimli fiyat geçerlidir. Kampanya yalnız indirimli fiyatı OLMAYAN üründe uygulanır.
+  // (Sepet motoru coupons._compute_discount ve rozet _apply_campaign_badge de aynı kuralı uygular.)
+  let ref, display, campApplied = 0;
+  if (sale != null) {
+    ref = list;
+    display = sale;                        // indirimli fiyat geçerli, kampanya iptal
   } else if (campPct > 0) {
     ref = list;
     display = Math.round(list * (1 - campPct / 100) * 100) / 100;
+    campApplied = campPct;
   } else {
     ref = list;
-    display = sale != null ? sale : list;
+    display = list;
   }
   const hasDiscount = display < ref - 0.001;
   const discountPct = ref > 0 && display < ref
@@ -42,8 +46,8 @@ export function priceView(product) {
     hasDiscount,                // indirim var mı
     discountPct,                // rozet yüzdesi (referansa göre)
     salePrice: sale,            // ürünün kendi indirimi (yoksa null)
-    campaignPct: campPct,       // otomatik kampanya yüzdesi
-    campaignLabel: p.campaign_label || "",
+    campaignPct: campApplied,   // UYGULANAN kampanya yüzdesi (indirimli fiyat varsa 0 — kampanya iptal)
+    campaignLabel: campApplied > 0 ? (p.campaign_label || "") : "",
   };
 }
 

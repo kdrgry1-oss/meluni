@@ -1572,6 +1572,16 @@ def _apply_campaign_badge(p: dict, camps: list) -> dict:
     "%10 indirim" gösteriyor ama sepet/sipariş motoru kapsam dışı olduğu için indirimi
     UYGULAMIYOR (müşteri %10 görüp indirimli fiyatı DEĞİL 'ilk satış fiyatını' ödüyordu).
     Artık kampanya eşleşmezse alan 0'a çekilir → gösterim ile tahsil BİREBİR tutarlı olur."""
+    # KURAL (kullanıcı): ürün kartında İNDİRİMLİ FİYAT (sale_price) girili ise KAMPANYA UYGULANMAZ
+    # (indirimli fiyat geçerli). Sepet motoru (coupons._compute_discount) bu ürünü kampanya
+    # tabanından dışladığı için rozet de 0 olmalı (rozet ⊆ motor). Aksi halde vitrin "%X kampanya"
+    # gösterip sepet uygulamazdı.
+    _lp = float(p.get("price") or 0)
+    _sp = float(p.get("sale_price") or 0)
+    if _sp > 0 and _sp < _lp:
+        p["campaign_discount_percent"] = 0
+        p["campaign_label"] = ""
+        return p
     try:
         pct, label = _campaign_pct_for_product(p, camps or [])
     except Exception:

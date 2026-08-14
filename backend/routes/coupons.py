@@ -271,16 +271,25 @@ async def _enrich_items_category_ids(items: list) -> list:
     if not pids:
         return items
     cat_map = {}
-    async for p in db.products.find({"id": {"$in": pids}}, {"_id": 0, "id": 1, "category_ids": 1, "category_id": 1}):
+    async for p in db.products.find({"id": {"$in": pids}},
+                                    {"_id": 0, "id": 1, "category_ids": 1, "category_id": 1,
+                                     "price": 1, "sale_price": 1}):
         cids = set(p.get("category_ids") or [])
         if p.get("category_id"):
             cids.add(p["category_id"])
-        cat_map[p["id"]] = list(cids)
+        # KURAL (kullanıcı): ürün kartında İNDİRİMLİ FİYAT (sale_price) girili ise, o ürüne
+        # KAMPANYA UYGULANMAZ (indirimli fiyat geçerli). Ürünü kampanya tabanından dışlamak
+        # için işaretle; rozet (products._apply_campaign_badge) ve vitrin (priceView) de aynı
+        # kuralı uygular → rozet ⊆ motor korunur.
+        _lp = float(p.get("price") or 0)
+        _sp = float(p.get("sale_price") or 0)
+        cat_map[p["id"]] = {"cids": list(cids), "manual_sale": bool(_sp > 0 and _sp < _lp)}
     out = []
     for it in items:
         pid = it.get("product_id")
         if pid and pid in cat_map:
-            out.append({**it, "category_ids": cat_map[pid]})
+            out.append({**it, "category_ids": cat_map[pid]["cids"],
+                        "_has_manual_sale": cat_map[pid]["manual_sale"]})
         else:
             out.append(it)
     return out
@@ -293,13 +302,21 @@ def _compute_discount(c: dict, cart_total: float, items: list) -> float:
     # boşa düşürüp indirimi 0 yapıyordu.
     allowed_cats = {str(x) for x in (c.get("categories") or []) if x is not None}
     allowed_pids = {str(x) for x in (c.get("products") or []) if x is not None}
+    # KURAL: ürün kartında indirimli fiyat (sale_price) girili kalemler kampanya tabanına
+    # GİRMEZ → o kalemlere kampanya uygulanmaz (indirimli fiyat geçerli). _has_manual_sale
+    # bayrağı _enrich_items_category_ids'ten gelir.
     if allowed_cats or allowed_pids:
         base = 0.0
         for it in items:
-            if _item_in_scope(it, allowed_cats, allowed_pids):
+            if _item_in_scope(it, allowed_cats, allowed_pids) and not it.get("_has_manual_sale"):
                 base += float(it.get("price", 0)) * int(it.get("qty", 0) or 0)
     else:
         base = cart_total
+        # Kapsamsız (tüm sepet) kampanyada da indirimli-fiyatlı kalemleri tabandan düş.
+        for it in items:
+            if it.get("_has_manual_sale"):
+                base -= float(it.get("price", 0)) * int(it.get("qty", 0) or 0)
+        base = max(0.0, base)
     ctype = c.get("type")
     discount = 0.0
     if ctype == "nth_discount":
@@ -309,7 +326,7 @@ def _compute_discount(c: dict, cart_total: float, items: list) -> float:
         units = []
         for it in items:
             inscope = (not allowed_cats and not allowed_pids) or _item_in_scope(it, allowed_cats, allowed_pids)
-            if inscope:
+            if inscope and not it.get("_has_manual_sale"):  # indirimli-fiyatlı kalem kampanyaya girmez
                 for _ in range(int(it.get("qty", 0) or 0)):
                     units.append(float(it.get("price", 0) or 0))
         units.sort()  # en ucuz basta
