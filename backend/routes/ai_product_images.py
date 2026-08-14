@@ -1566,9 +1566,8 @@ async def _size_table_fix(product_id: str, index=None) -> Dict[str, Any]:
       4. Ölçüleri ürünün beden tablosuna (ve renk kardeşlerine) kaydet.
 
     Bir adım tıkanırsa NE OLDUĞUNU söyler; sessizce yarım bırakmaz.
-    body: {index?: 3}
+    `index` verilmezse tablo görseli aranır.
     """
-    p = payload or {}
     product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
     if not product:
         raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
@@ -1577,7 +1576,6 @@ async def _size_table_fix(product_id: str, index=None) -> Dict[str, Any]:
         raise HTTPException(status_code=400, detail="Üründe görsel yok.")
 
     adimlar: List[str] = []
-    index = p.get("index")
 
     # 1) Hangi görsel tablo?
     if index is None:
