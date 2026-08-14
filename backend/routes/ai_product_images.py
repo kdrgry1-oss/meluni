@@ -795,6 +795,116 @@ def _fit_target(raw: bytes, target=ENHANCE_TARGET) -> bytes:
     return out.getvalue()
 
 
+# ── Model seçimi: sabit ad yazma, Google'a sor ──────────────────────────
+# Koda gömülü model adı ergeç 404 verir. Bugün olan tam olarak bu:
+# "models/gemini-2.5-flash is no longer available to new users" — kota değil,
+# modelin kendisi kalkmış. Bu yüzden model adı artık bir VARSAYIM: çalışmazsa
+# anahtarın erişebildiği modeller Google'dan sorulup uygunu seçiliyor ve
+# ayarlara yazılıyor, bir sonraki çağrı doğrudan onunla gidiyor.
+_MODELS_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+_MODEL_CACHE: Dict[str, Any] = {"liste": [], "anahtar": ""}
+
+
+async def _model_listesi(client: httpx.AsyncClient, api_key: str,
+                         tazele: bool = False) -> List[Dict[str, Any]]:
+    """Anahtarın erişebildiği modeller. Süreç boyunca bir kez çekilir."""
+    if not tazele and _MODEL_CACHE["liste"] and _MODEL_CACHE["anahtar"] == api_key[:8]:
+        return _MODEL_CACHE["liste"]
+    resp = await client.get(_MODELS_URL, params={"pageSize": 200},
+                            headers={"x-goog-api-key": api_key}, timeout=60.0)
+    if resp.status_code >= 400:
+        raise HTTPException(status_code=502, detail=_gemini_hata(resp))
+    liste = (resp.json() or {}).get("models") or []
+    _MODEL_CACHE.update({"liste": liste, "anahtar": api_key[:8]})
+    return liste
+
+
+def _model_puani(ad: str) -> tuple:
+    """Sürüm numarasına göre sıralama anahtarı — yenisi öne gelsin."""
+    s = re.sub(r"^models/", "", ad or "")
+    surum = re.search(r"(\d+)(?:\.(\d+))?", s)
+    ana = int(surum.group(1)) if surum else 0
+    alt = int(surum.group(2) or 0) if surum else 0
+    # Deneysel/önizleme sürümleri kararsız olabiliyor; eşitlikte kararlıyı seç.
+    kararli = 0 if re.search(r"preview|exp|experimental", s) else 1
+    return (ana, alt, kararli)
+
+
+def _model_sec(modeller: List[Dict[str, Any]], amac: str) -> str:
+    """amac='metin' → sınıflandırma/okuma, amac='gorsel' → görsel üretimi."""
+    adaylar = []
+    for m in modeller:
+        ad = str(m.get("name") or "")
+        kisa = re.sub(r"^models/", "", ad)
+        yontemler = m.get("supportedGenerationMethods") or []
+        if "generateContent" not in yontemler:
+            continue
+        if not kisa.startswith("gemini"):
+            continue
+        # Bunlar bu iş için uygun değil: gömme, konuşma, canlı oturum.
+        if re.search(r"embedding|embed|tts|audio|live|native-audio", kisa):
+            continue
+        gorsel_uretir = "image" in kisa
+        if amac == "gorsel" and not gorsel_uretir:
+            continue
+        if amac == "metin" and gorsel_uretir:
+            continue
+        adaylar.append(kisa)
+    if not adaylar:
+        return ""
+    # Sınıflandırma/okuma binlerce görselde dönüyor: orada "flash" ucuz ve
+    # yeterli. Görsel ÜRETİMİNDE ise kalite önemli — orada ucuzu seçmiyoruz,
+    # eldeki en yeni sürümü alıyoruz.
+    if amac == "metin":
+        adaylar = [a for a in adaylar if "flash" in a] or adaylar
+    return sorted(adaylar, key=_model_puani, reverse=True)[0]
+
+
+def _model_yok_hatasi(resp) -> bool:
+    """Yanıt 'bu model yok/erişilemiyor' mu diyor? (404 ya da 400 varyantı)"""
+    if resp.status_code not in (400, 403, 404):
+        return False
+    try:
+        msg = ((resp.json() or {}).get("error") or {}).get("message") or ""
+    except Exception:
+        msg = resp.text or ""
+    m = msg.lower()
+    return ("not found" in m or "no longer available" in m
+            or "is not supported" in m or "not supported for" in m
+            or "does not exist" in m)
+
+
+async def _gemini_post(client: httpx.AsyncClient, api_key: str, model: str,
+                       payload: dict, amac: str, ayar_alani: str):
+    """generateContent çağrısı; model kalkmışsa uygununu bulup TEKRAR dener.
+
+    Döner: (resp, kullanilan_model). Yeni bir model seçildiyse ayarlara yazılır
+    ki bir dahaki çağrı doğrudan çalışsın ve her seferinde liste çekilmesin.
+    """
+    async def _cagir(m):
+        return await client.post(
+            _GEMINI_URL.format(model=m),
+            headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
+            json=payload, timeout=_TIMEOUT)
+
+    resp = await _cagir(model)
+    if not _model_yok_hatasi(resp):
+        return resp, model
+
+    logger.warning(f"[ai-images] model '{model}' kullanilamiyor, liste sorulacak")
+    yeni = _model_sec(await _model_listesi(client, api_key, tazele=True), amac)
+    if not yeni or yeni == model:
+        return resp, model            # elde uygun başka model yok — asıl hata dönsün
+    logger.info(f"[ai-images] model degistirildi: {model} → {yeni}")
+    resp2 = await _cagir(yeni)
+    if not _model_yok_hatasi(resp2):
+        await db.settings.update_one(
+            {"id": SETTINGS_ID},
+            {"$set": {ayar_alani: yeni, f"{ayar_alani}_auto_at": _now_iso()}},
+            upsert=True)
+    return resp2, yeni
+
+
 def _gemini_hata(resp) -> str:
     """Sağlayıcı hatasını okunur hâle getirir.
 
@@ -813,6 +923,10 @@ def _gemini_hata(resp) -> str:
         return "Gemini API anahtarı geçersiz veya bu modele yetkisi yok."
     if kod == 400 and "safety" in msg.lower():
         return "Gemini görseli güvenlik gerekçesiyle işlemedi."
+    if _model_yok_hatasi(resp):
+        return ("Seçili Gemini modeli artık kullanılamıyor ve anahtarınızın "
+                "erişebildiği uygun bir yedek de bulunamadı. Ayarlar > Görsel "
+                "Üretimi'nden model seçin. (Google: " + msg[:140] + ")")
     return f"Gemini hatası ({kod}): {msg[:200] or 'ayrıntı yok'}"
 
 
@@ -833,11 +947,8 @@ async def _gemini_enhance(client: httpx.AsyncClient, api_key: str, model: str,
             ]
         }],
     }
-    resp = await client.post(
-        _GEMINI_URL.format(model=model),
-        headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
-        json=payload, timeout=_TIMEOUT,
-    )
+    resp, _ = await _gemini_post(client, api_key, model, payload,
+                                 "gorsel", "enhance_model")
     if resp.status_code >= 400:
         raise HTTPException(status_code=502, detail=_gemini_hata(resp))
     data = resp.json()
@@ -871,11 +982,8 @@ async def _gemini_classify(client: httpx.AsyncClient, api_key: str, model: str,
         "generationConfig": {"maxOutputTokens": 10, "temperature": 0},
     }
     try:
-        resp = await client.post(
-            _GEMINI_URL.format(model=model),
-            headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
-            json=payload, timeout=60.0,
-        )
+        resp, _ = await _gemini_post(client, api_key, model, payload,
+                                     "metin", "classify_model")
         if resp.status_code >= 400:
             # Sessizce "ürün" demek apaçık bir tabloyu kaçırıyordu (kota
             # bitince her görsel ürün sayılıyordu). Kararsız kaldığımızı
@@ -1019,11 +1127,8 @@ async def read_size_table(product_id: str, index: int, *, kaydet: bool = False) 
             ]}],
             "generationConfig": {"temperature": 0, "responseMimeType": "application/json"},
         }
-        resp = await client.post(
-            _GEMINI_URL.format(model=model),
-            headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
-            json=payload, timeout=_TIMEOUT,
-        )
+        resp, _ = await _gemini_post(client, api_key, model, payload,
+                                     "metin", "classify_model")
         if resp.status_code >= 400:
             raise HTTPException(status_code=502, detail=_gemini_hata(resp))
         metin = ""
@@ -1327,6 +1432,33 @@ async def size_table_build(product_id: str, payload: dict, _admin=Depends(requir
     return {"product_id": product_id, "url": url,
             "olcu_adlari": adlar, "satirlar": satirlar, "senkron_kardes": senkron,
             "replaced": bool((payload or {}).get("replace") and index is not None)}
+
+
+@router.get("/gemini-models")
+async def gemini_models(_admin=Depends(require_admin)):
+    """Anahtarın ERİŞEBİLDİĞİ Gemini modellerini listeler.
+
+    Model adı koda gömülmüyor; hangi modelin var olduğunu tahmin etmek yerine
+    Google'a soruyoruz. Panel bunu açılır listede gösterir, önerilen alanı da
+    otomatik seçimin ne bulduğunu söyler.
+    """
+    api_key = await _gemini_key()
+    cfg = await get_settings()
+    async with httpx.AsyncClient() as client:
+        modeller = await _model_listesi(client, api_key, tazele=True)
+    def _sade(m):
+        return {"ad": re.sub(r"^models/", "", str(m.get("name") or "")),
+                "baslik": m.get("displayName") or "",
+                "yontemler": m.get("supportedGenerationMethods") or []}
+    hepsi = [_sade(m) for m in modeller]
+    return {
+        "toplam": len(hepsi),
+        "metin_onerilen": _model_sec(modeller, "metin"),
+        "gorsel_onerilen": _model_sec(modeller, "gorsel"),
+        "secili_metin": cfg.get("classify_model") or _DEFAULT_CLASSIFY_MODEL,
+        "secili_gorsel": cfg.get("enhance_model") or _DEFAULT_ENHANCE_MODEL,
+        "modeller": sorted(hepsi, key=lambda x: x["ad"]),
+    }
 
 
 @router.get("/products/{product_id}/size-table-source")
