@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import asyncio
 import base64
+import os
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
@@ -179,30 +180,62 @@ async def _generate_one(
     raise HTTPException(status_code=502, detail="Yanıtta görsel verisi yok.")
 
 
-async def _store(raw: bytes, product_id: str, pose: str) -> str:
-    """Üretilen görseli kalıcı depoya koyar ve public adresini döndürür."""
-    filename = f"{product_id}-{pose}-{uuid.uuid4().hex[:8]}.png"
-    key = f"ai-products/{filename}"
-    if r2.is_enabled():
-        url = r2.put_object(key, raw, "image/png")
-    else:
-        raise HTTPException(
-            status_code=503,
-            detail="Görsel depolama (R2) kapalı; üretilen görsel kaydedilemedi.")
-    await db.files.insert_one({
+async def _store(raw: bytes, product_id: str, pose: str,
+                 content_type: str = "image/png") -> str:
+    """Üretilen görseli kalıcı depoya koyar ve public adresini döndürür.
+
+    R2 kapalıysa ÜRETİM DÜŞMEZ: sistemin geri kalanı (routes/upload.py) zaten
+    disk + veritabanı yedeğine düşüyor, burada da aynı yol izleniyor. Önceden
+    503 atılıyordu ve R2 kurulmadan tek bir görsel bile üretilemiyordu — üstelik
+    hata beş pozda birden çıkıyor, üretim ücreti boşa gidiyordu.
+    """
+    uzanti = "jpg" if content_type == "image/jpeg" else "png"
+    filename = f"{product_id}-{pose}-{uuid.uuid4().hex[:8]}.{uzanti}"
+    kayit = {
         "id": str(uuid.uuid4()),
         "storage_path": filename,
-        "r2_key": key,
-        "r2_url": url,
-        "content_type": "image/png",
+        "content_type": content_type,
         "size": len(raw),
         "source": "ai_generated",
         "product_id": product_id,
         "pose": pose,
         "is_deleted": False,
         "created_at": _now_iso(),
-    })
+    }
+
+    if r2.is_enabled():
+        key = f"ai-products/{filename}"
+        url = r2.put_object(key, raw, content_type)
+        kayit.update({"r2_key": key, "r2_url": url})
+    else:
+        # upload.py ile AYNI yol ve aynı servis ucu: /api/upload/files/<ad>.
+        # Diske yazamasak bile base64 kopya veritabanında durur, görsel yine servis edilir.
+        try:
+            from .upload import UPLOAD_DIR
+            with open(os.path.join(UPLOAD_DIR, filename), "wb") as fh:
+                fh.write(raw)
+        except Exception as e:
+            logger.warning(f"[ai-images] diske yazilamadi ({e}); base64 kopyayla devam")
+        kayit["data_b64"] = base64.b64encode(raw).decode("ascii")
+        url = f"{await _public_base()}/api/upload/files/{filename}"
+
+    await db.files.insert_one(kayit)
     return url
+
+
+async def _public_base() -> str:
+    """Görsel adreslerinin taban adresi. BEYAZ ETİKET: koda gömülmez."""
+    base = (os.environ.get("PUBLIC_API_URL") or os.environ.get("API_BASE_URL") or "").strip()
+    if base:
+        return base.rstrip("/")
+    try:
+        from company import get_site_url
+        site = await get_site_url(db)
+        # storefront meluni.com.tr ise API api.meluni.com.tr
+        return site.replace("://www.", "://api.").replace("://", "://api.", 1) \
+            if "://api." not in site else site
+    except Exception:
+        return ""
 
 
 # ─────────────────────────── üretim ───────────────────────────
@@ -230,9 +263,13 @@ async def regenerate_for_product(
     size_warning = ""
     if size not in ALLOWED_SIZES:
         size_warning = (f"Kayıtlı boyut '{size}' sağlayıcı tarafından kabul edilmiyor; "
-                        f"'{_DEFAULT_SIZE}' kullanıldı. Ayarlardan düzeltin.")
-        logger.warning(f"[ai-images] gecersiz boyut ayarı: {size}")
+                        f"'{_DEFAULT_SIZE}' kullanıldı ve ayar düzeltildi.")
+        logger.warning(f"[ai-images] gecersiz boyut ayarı duzeltildi: {size}")
         size = _DEFAULT_SIZE
+        # Ayarı da düzeltiyoruz: aksi hâlde uyarı her üretimde tekrar çıkar ve
+        # kullanıcı panele girip elle düzeltene kadar gürültü olarak kalır.
+        await db.settings.update_one({"id": SETTINGS_ID},
+                                     {"$set": {"size": _DEFAULT_SIZE}}, upsert=True)
     prompts = await get_prompts()
 
     # Referans görselleri topla: önce kullanıcının verdiği, sonra ürünün kendi
@@ -400,7 +437,7 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
                 # Model görsel döndürmediyse ürünü kaybetmemek için kaynağı
                 # ölçekliyoruz; kullanıcı hangisinin modelden geçtiğini görsün.
                 son = _fit_target(iyilestirilmis or raw)
-                url = await _store(son, product_id, f"hd{i}")
+                url = await _store(son, product_id, f"hd{i}", "image/jpeg")
                 return {"index": i, "url": url, "ai": bool(iyilestirilmis),
                         "source": images[i]}
             except HTTPException as e:
