@@ -296,7 +296,12 @@ export default function ProductAiImages({ productId, images = [], onAddImage }) 
                     <>
                       <img src={r.url} alt={`iyileştirilmiş ${r.index + 1}`}
                            className="w-full aspect-[2/3] object-cover rounded-lg border" />
-                      <div className="text-[10px] text-center text-gray-500 mt-0.5">
+                      <div
+                        className={`text-[10px] text-center mt-0.5 ${
+                          r.ai ? "text-green-700" : "text-amber-700"
+                        }`}
+                        title={r.note || ""}
+                      >
                         {r.ai ? "netleştirildi" : "yalnız ölçek"}
                       </div>
                     </>

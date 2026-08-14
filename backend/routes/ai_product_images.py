@@ -372,6 +372,27 @@ def _fit_target(raw: bytes, target=ENHANCE_TARGET) -> bytes:
     return out.getvalue()
 
 
+def _gemini_hata(resp) -> str:
+    """Sağlayıcı hatasını okunur hâle getirir.
+
+    Ham JSON'u ekrana basmak beş kutuyu aynı İngilizce yığınla dolduruyor ve
+    asıl mesele (kota mı, anahtar mı, içerik reddi mi) kaybolyordu.
+    """
+    try:
+        msg = ((resp.json() or {}).get("error") or {}).get("message") or ""
+    except Exception:
+        msg = (resp.text or "")[:200]
+    kod = resp.status_code
+    if kod == 429:
+        return ("Gemini kotası/kredisi tükenmiş. AI Studio'da projenin "
+                "faturalandırmasını açın veya kredi yükleyin. (Google: " + msg[:120] + ")")
+    if kod in (401, 403):
+        return "Gemini API anahtarı geçersiz veya bu modele yetkisi yok."
+    if kod == 400 and "safety" in msg.lower():
+        return "Gemini görseli güvenlik gerekçesiyle işlemedi."
+    return f"Gemini hatası ({kod}): {msg[:200] or 'ayrıntı yok'}"
+
+
 async def _gemini_enhance(client: httpx.AsyncClient, api_key: str, model: str,
                           prompt: str, raw: bytes) -> Optional[bytes]:
     """Görseli Gemini'ye gönderip iyileştirilmiş sürümü döndürür.
@@ -395,8 +416,7 @@ async def _gemini_enhance(client: httpx.AsyncClient, api_key: str, model: str,
         json=payload, timeout=_TIMEOUT,
     )
     if resp.status_code >= 400:
-        raise HTTPException(status_code=502,
-                            detail=f"Gemini hatası ({resp.status_code}): {resp.text[:300]}")
+        raise HTTPException(status_code=502, detail=_gemini_hata(resp))
     data = resp.json()
     for cand in (data.get("candidates") or []):
         for part in ((cand.get("content") or {}).get("parts") or []):
@@ -429,19 +449,26 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
     sonuc: List[Dict[str, Any]] = []
     async with httpx.AsyncClient() as client:
         async def tek(i: int):
+            raw = None
             try:
                 raw = await _fetch_image(client, images[i])
                 if not raw:
                     return {"index": i, "error": "kaynak görsel indirilemedi"}
-                iyilestirilmis = await _gemini_enhance(client, api_key, model, prompt, raw)
-                # Model görsel döndürmediyse ürünü kaybetmemek için kaynağı
-                # ölçekliyoruz; kullanıcı hangisinin modelden geçtiğini görsün.
+                iyilestirilmis = None
+                uyari = ""
+                try:
+                    iyilestirilmis = await _gemini_enhance(
+                        client, api_key, model, prompt, raw)
+                except HTTPException as e:
+                    # Model erişilemiyor (kota/kredi/yetki). Bu, işi TAMAMEN
+                    # düşürmek için sebep değil: görseli yine de hedef ölçüye
+                    # büyütüyoruz. Kullanıcı en azından 1200x1800 alır ve
+                    # kutuda "yalnız ölçek" etiketiyle sebebi görür.
+                    uyari = str(e.detail)
                 son = _fit_target(iyilestirilmis or raw)
                 url = await _store(son, product_id, f"hd{i}", "image/jpeg")
                 return {"index": i, "url": url, "ai": bool(iyilestirilmis),
-                        "source": images[i]}
-            except HTTPException as e:
-                return {"index": i, "error": str(e.detail)}
+                        "note": uyari, "source": images[i]}
             except Exception as e:
                 return {"index": i, "error": str(e)}
 
@@ -464,7 +491,8 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
         "replaced": bool(replace and basarili),
         "ai_count": sum(1 for r in basarili if r.get("ai")),
         "warning": ("" if all(r.get("ai") for r in basarili) else
-                    "Bazı görseller modelden geçmedi; yalnız yeniden ölçeklendi."),
+                    (next((r["note"] for r in basarili if r.get("note")), "")
+                     or "Bazı görseller modelden geçmedi; yalnız yeniden ölçeklendi.")),
     }
 
 
