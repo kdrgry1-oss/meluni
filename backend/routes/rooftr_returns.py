@@ -133,6 +133,7 @@ async def list_rooftr_return_orders(
         "_id": 0, "id": 1, "order_number": 1, "order_code": 1, "ticimax_order_id": 1,
         "status": 1, "payment_method": 1, "payment_method_raw": 1, "payment_status": 1,
         "total": 1, "paid_amount": 1, "subtotal": 1, "shipping_cost": 1, "discount": 1,
+        "payment_discount": 1,  # havale/EFT ödeme indirimi — iade net hesabı için ŞART (yoksa 0 gelip 4001 kalır)
         "coupon_code": 1, "notes": 1, "shipping_address": 1, "billing_address": 1,
         "customer_name": 1, "full_name": 1, "items": 1,
         "created_at": 1, "updated_at": 1, "channel_source": 1, "invoice_number": 1,
