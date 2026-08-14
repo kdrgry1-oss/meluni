@@ -456,7 +456,7 @@ def _cat_key(name: str) -> str:
 
 
 async def _ensure_category(name: str, parent_id: Optional[str]) -> str:
-    """Kategoriyi bulur, yoksa oluşturur; id döndürür.
+    """Kategoriyi bulur, yoksa oluşturur; id döndürür. (slug için `_category_slug`)
 
     Eşleşme sırası:
       1) Aynı ad + aynı üst kategori (tam eşleşme).
@@ -499,6 +499,14 @@ async def _ensure_category(name: str, parent_id: Optional[str]) -> str:
     if _CAT_CACHE["map"] is not None:
         _CAT_CACHE["map"].setdefault(_cat_key(name), cid)
     return cid
+
+
+async def _category_slug(cat_id: str) -> str:
+    """Kategori slug'ı — vitrinde /kategori/<slug> yolu ve slug bazlı süzme için."""
+    if not cat_id:
+        return ""
+    doc = await db.categories.find_one({"id": cat_id}, {"_id": 0, "slug": 1})
+    return (doc or {}).get("slug") or ""
 
 
 def _tag(el: ET.Element) -> str:
@@ -897,6 +905,12 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
                                              rec.get("name") or "")
     _root_id = await _ensure_category(_cat_root, None)
     _cat_id = await _ensure_category(_cat_sub, _root_id)
+    # ÜST KATEGORİ LİSTELEME: products.py üst kategoriyi `category_ids` içinde
+    # arıyor (ata zinciri orada tutulur). Bu alan yazılmadığı için "Kadın" ya da
+    # "Erkek" ana kategorisine girildiğinde vitrin BOŞ dönüyordu; yalnız alt
+    # kategoriler çalışıyordu (onlar ada göre de eşleşiyor).
+    _cat_ids = [i for i in (_root_id, _cat_id) if i]
+    _cat_slug = await _category_slug(_cat_id)
 
     return {
         "id": generate_id(),
@@ -906,6 +920,8 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
         "brand": rec.get("brand") or "",
         # Kategori ağacı: cinsiyet ANA, beslemedeki kategori ALT.
         "category_id": _cat_id,
+        "category_ids": _cat_ids,      # atalar dahil — üst kategori listelemesi buna bakar
+        "category_slug": _cat_slug,
         "category_name": _cat_sub,
         "category_root": _cat_root,
         "category_path": f"{_cat_root} > {_cat_sub}",
