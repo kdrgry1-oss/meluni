@@ -21,6 +21,7 @@ const headers = () => ({
 export default function AiImages() {
   const [cfg, setCfg] = useState(null);
   const [apiKey, setApiKey] = useState("");
+  const [geminiKey, setGeminiKey] = useState("");
   const [msg, setMsg] = useState(null);
   const [busy, setBusy] = useState("");
 
@@ -44,9 +45,13 @@ export default function AiImages() {
     setBusy("save");
     setMsg(null);
     try {
-      const body = { prompts: cfg.prompts, model: cfg.model, size: cfg.size };
-      // Anahtar yalnız yeni girildiyse gönderilir; boşsa kayıtlı olan korunur.
+      const body = {
+        prompts: cfg.prompts, model: cfg.model, size: cfg.size,
+        enhance_model: cfg.enhance_model, enhance_prompt: cfg.enhance_prompt,
+      };
+      // Anahtarlar yalnız yeni girildiyse gönderilir; boşsa kayıtlı olan korunur.
       if (apiKey.trim()) body.api_key = apiKey.trim();
+      if (geminiKey.trim()) body.gemini_key = geminiKey.trim();
       const r = await fetch(`${API}/ai-images/settings`, {
         method: "PUT",
         headers: headers(),
@@ -55,6 +60,7 @@ export default function AiImages() {
       const d = await r.json();
       if (!r.ok) throw new Error(d.detail || "Kaydedilemedi");
       setApiKey("");
+      setGeminiKey("");
       setMsg({ type: "ok", text: "Ayarlar kaydedildi." });
       load();
     } catch (e) {
@@ -179,6 +185,63 @@ export default function AiImages() {
               </p>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* ── Kalite iyileştirme (Gemini) ── */}
+      <div className="mt-6 rounded-xl border border-gray-200 p-5 space-y-4">
+        <div className="flex items-center gap-2">
+          {cfg.gemini_configured ? (
+            <CheckCircle2 className="w-4 h-4 text-green-600" />
+          ) : (
+            <AlertTriangle className="w-4 h-4 text-amber-600" />
+          )}
+          <h2 className="font-semibold">Kalite İyileştirme (Gemini)</h2>
+          <span className="text-xs text-gray-500">
+            hedef {cfg.enhance_target || "1200x1800"}
+          </span>
+        </div>
+        <p className="text-xs text-gray-500">
+          Yeni poz üretmez; mevcut ürün görsellerini netleştirip büyütür.
+          Ürün kartındaki <b>Görseller</b> sekmesinden çalıştırılır.
+        </p>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Gemini API anahtarı</label>
+          <input
+            className={field}
+            type="password"
+            value={geminiKey}
+            onChange={(e) => setGeminiKey(e.target.value)}
+            placeholder={cfg.gemini_configured ? "kayıtlı — değiştirmek için yazın" : "AIza…"}
+            autoComplete="off"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Şifreli saklanır. Google AI Studio'dan alınır; OpenAI anahtarından ayrıdır.
+          </p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Model</label>
+          <input
+            className={field}
+            value={cfg.enhance_model || ""}
+            onChange={(e) => setCfg({ ...cfg, enhance_model: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">İyileştirme metni</label>
+          <textarea
+            className={`${field} font-mono text-xs leading-relaxed`}
+            rows={5}
+            value={cfg.enhance_prompt || ""}
+            onChange={(e) => setCfg({ ...cfg, enhance_prompt: e.target.value })}
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            "Yeniden yorumlama" kuralını silmeyin — modelin kadrajı veya rengi
+            değiştirmesini engelleyen kısım orası.
+          </p>
         </div>
       </div>
 

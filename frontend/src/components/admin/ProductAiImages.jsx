@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Sparkles, Upload, X, Plus, AlertTriangle } from "lucide-react";
+import { Sparkles, Upload, X, Plus, AlertTriangle, Wand2, Check } from "lucide-react";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const BACKEND_ORIGIN = (process.env.REACT_APP_BACKEND_URL || "").replace(/\/api\/?$/, "");
@@ -23,6 +23,10 @@ export default function ProductAiImages({ productId, images = [], onAddImage }) 
   const [sonuc, setSonuc] = useState(null);
   const [hata, setHata] = useState("");
   const [eklenen, setEklenen] = useState([]);
+  // Kalite iyileştirme ayrı bir iş: mevcut görselleri Gemini ile netleştirip
+  // 1200x1800 üretir. Üretimden farklı olarak yeni poz oluşturmaz.
+  const [hdBekle, setHdBekle] = useState(false);
+  const [hdSonuc, setHdSonuc] = useState(null);
 
   const token = () => localStorage.getItem("token") || "";
 
@@ -67,6 +71,30 @@ export default function ProductAiImages({ productId, images = [], onAddImage }) 
       setHata(e.message);
     } finally {
       setUretiliyor(false);
+    }
+  };
+
+  const iyilestir = async (replace) => {
+    if (replace && !window.confirm(
+      "Ürünün mevcut görselleri iyileştirilmiş 1200x1800 sürümleriyle " +
+      "DEĞİŞTİRİLECEK.\n\nDevam edilsin mi?"
+    )) return;
+    setHdBekle(true);
+    setHata("");
+    setHdSonuc(null);
+    try {
+      const r = await fetch(`${API}/ai-images/products/${productId}/enhance`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+        body: JSON.stringify({ replace: !!replace }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || "İyileştirme başarısız");
+      setHdSonuc(d);
+    } catch (e) {
+      setHata(e.message);
+    } finally {
+      setHdBekle(false);
     }
   };
 
@@ -213,6 +241,76 @@ export default function ProductAiImages({ productId, images = [], onAddImage }) 
           </p>
         </div>
       )}
+
+      {/* ── Kalite iyileştirme ── */}
+      <div className="mt-4 pt-4 border-t">
+        <div className="flex items-center gap-2 mb-1">
+          <Wand2 className="w-4 h-4" />
+          <h5 className="font-semibold text-sm">Kalite İyileştirme (Gemini)</h5>
+        </div>
+        <p className="text-xs text-gray-500 mb-3">
+          Tedarikçi görselleri 630x840 ve sıkıştırma izli; vitrinde büyüyünce
+          dağılıyor. Bu araç <b>yeni poz üretmez</b> — mevcut görselleri
+          netleştirip <b>1200x1800</b> olarak yeniden yazar. Kadraj, duruş,
+          arka plan ve renkler korunur.
+        </p>
+
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => iyilestir(false)}
+            disabled={hdBekle || images.length === 0}
+            className="px-3 py-1.5 rounded-lg border text-sm inline-flex items-center gap-1.5 hover:bg-gray-50 disabled:opacity-50"
+          >
+            <Wand2 className="w-4 h-4" />
+            {hdBekle ? "İşleniyor…" : "Önizle (ürüne dokunma)"}
+          </button>
+          <button
+            type="button"
+            onClick={() => iyilestir(true)}
+            disabled={hdBekle || images.length === 0}
+            className="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-sm inline-flex items-center gap-1.5 disabled:opacity-50"
+          >
+            <Check className="w-4 h-4" />
+            İyileştir ve Değiştir
+          </button>
+        </div>
+
+        {hdSonuc && (
+          <div className="mt-3">
+            <div className="text-xs text-gray-600 mb-2">
+              {(hdSonuc.results || []).filter((r) => r.url).length} görsel
+              {" "}{hdSonuc.target} üretildi
+              {hdSonuc.ai_count ? ` (${hdSonuc.ai_count} tanesi modelden geçti)` : ""}
+              {hdSonuc.replaced ? " ve ürüne yazıldı." : " — ürün değişmedi."}
+            </div>
+            {hdSonuc.warning && (
+              <div className="mb-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900">
+                {hdSonuc.warning}
+              </div>
+            )}
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+              {(hdSonuc.results || []).map((r, i) => (
+                <div key={i}>
+                  {r.url ? (
+                    <>
+                      <img src={r.url} alt={`iyileştirilmiş ${r.index + 1}`}
+                           className="w-full aspect-[2/3] object-cover rounded-lg border" />
+                      <div className="text-[10px] text-center text-gray-500 mt-0.5">
+                        {r.ai ? "netleştirildi" : "yalnız ölçek"}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="aspect-[2/3] rounded-lg border border-red-200 bg-red-50 p-1 text-[10px] text-red-700 flex items-center text-center">
+                      {r.error}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

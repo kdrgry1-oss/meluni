@@ -39,6 +39,24 @@ _DEFAULT_SIZE = "1024x1536"          # moda ürünlerinde dikey kadraj
 # — hata beş pozda birden çıkıyor ve sebebi ekranda anlaşılmıyordu.
 ALLOWED_SIZES = ("1024x1024", "1024x1536", "1536x1024", "auto")
 ALLOWED_MODELS = ("gpt-image-1", "gpt-image-1-mini")
+
+# ── Kalite iyileştirme (Gemini) ─────────────────────────────────────────
+# Tedarikçi görselleri 630x840 ve sıkıştırma izleri taşıyor; vitrinde
+# büyütülünce dağılıyor. Gemini görseli yeniden çizerek netleştiriyor, sonra
+# tam hedef ölçüye Lanczos ile oturtuluyor.
+_GEMINI_URL = ("https://generativelanguage.googleapis.com/v1beta/models/"
+               "{model}:generateContent")
+_DEFAULT_ENHANCE_MODEL = "gemini-2.5-flash-image"
+ENHANCE_TARGET = (1200, 1800)         # 2:3 dikey — moda kadrajı
+_DEFAULT_ENHANCE_PROMPT = (
+    "Bu ürün fotoğrafının ÇÖZÜNÜRLÜĞÜNÜ ve netliğini artır. Görüntüyü YENİDEN "
+    "YORUMLAMA: kadraj, kompozisyon, duruş, arka plan, ışık ve renkler birebir "
+    "aynı kalsın. Yalnız sıkıştırma bozulmalarını, gürültüyü ve bulanıklığı "
+    "temizle; kumaş dokusunu, dikiş ve düğme detaylarını, desen çizgilerini ve "
+    "yazıları netleştir. Ürüne hiçbir öğe ekleme, mevcut hiçbir öğeyi çıkarma, "
+    "deseni veya rengi değiştirme. Ten rengini ve model yüzünü değiştirme. "
+    "Yazı, logo, filigran veya çerçeve ekleme. Çıktı dikey 2:3 oranında olsun."
+)
 _MAX_REF_IMAGES = 6                   # API'ye gönderilecek referans üst sınırı
 _TIMEOUT = 300.0                      # görsel üretimi yavaştır
 
@@ -273,12 +291,156 @@ async def regenerate_for_product(
             "labels": {p: POSE_LABELS[p] for p in poses}}
 
 
+# ─────────────────────── kalite iyileştirme ───────────────────────
+async def _gemini_key() -> str:
+    cfg = await get_settings()
+    enc = cfg.get("gemini_key_enc")
+    if not enc:
+        raise HTTPException(
+            status_code=400,
+            detail="Gemini API anahtarı tanımlı değil. Ayarlar > Görsel Üretimi'nden girin.")
+    return decrypt(enc)
+
+
+def _fit_target(raw: bytes, target=ENHANCE_TARGET) -> bytes:
+    """Görseli tam hedef ölçüye oturtur.
+
+    Kaynak oran hedeften farklıysa (tedarikçi görselleri 3:4, hedef 2:3) KIRPMAK
+    ürünün eteğini/paçasını kesebilir. Bu yüzden oran korunarak sığdırılıp
+    boşluk, görselin kenar renginden alınan düz zeminle doldurulur — böylece
+    ekleme yapılmadan kadraj tamamlanır.
+    """
+    from PIL import Image
+    import io
+
+    im = Image.open(io.BytesIO(raw)).convert("RGB")
+    tw, th = target
+    if (im.width, im.height) == (tw, th):
+        out = io.BytesIO()
+        im.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
+        return out.getvalue()
+
+    scale = min(tw / im.width, th / im.height)
+    nw, nh = max(1, round(im.width * scale)), max(1, round(im.height * scale))
+    im = im.resize((nw, nh), Image.LANCZOS)
+
+    # Zemin rengi: üst kenarın ortalaması — stüdyo fotoğraflarında arka plan.
+    kenar = im.crop((0, 0, im.width, max(1, im.height // 40))).resize((1, 1), Image.LANCZOS)
+    zemin = kenar.getpixel((0, 0))
+
+    tuval = Image.new("RGB", (tw, th), zemin)
+    tuval.paste(im, ((tw - nw) // 2, (th - nh) // 2))
+    out = io.BytesIO()
+    tuval.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
+    return out.getvalue()
+
+
+async def _gemini_enhance(client: httpx.AsyncClient, api_key: str, model: str,
+                          prompt: str, raw: bytes) -> Optional[bytes]:
+    """Görseli Gemini'ye gönderip iyileştirilmiş sürümü döndürür.
+
+    Model görsel döndürmezse None döner — çağıran taraf o zaman yalnız yeniden
+    ölçekleme yapar. Sessizce başarısız olmuyoruz; sonuçta hangi görselin
+    modelden geçtiği bildiriliyor.
+    """
+    payload = {
+        "contents": [{
+            "parts": [
+                {"text": prompt},
+                {"inline_data": {"mime_type": "image/jpeg",
+                                 "data": base64.b64encode(raw).decode()}},
+            ]
+        }],
+    }
+    resp = await client.post(
+        _GEMINI_URL.format(model=model),
+        headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
+        json=payload, timeout=_TIMEOUT,
+    )
+    if resp.status_code >= 400:
+        raise HTTPException(status_code=502,
+                            detail=f"Gemini hatası ({resp.status_code}): {resp.text[:300]}")
+    data = resp.json()
+    for cand in (data.get("candidates") or []):
+        for part in ((cand.get("content") or {}).get("parts") or []):
+            inline = part.get("inline_data") or part.get("inlineData")
+            if inline and inline.get("data"):
+                return base64.b64decode(inline["data"])
+    return None
+
+
+async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]] = None,
+                                 replace: bool = False) -> Dict[str, Any]:
+    """Ürün görsellerini iyileştirip 1200x1800 olarak yeniden üretir."""
+    product = await db.products.find_one({"id": product_id},
+                                         {"_id": 0, "id": 1, "images": 1})
+    if not product:
+        raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
+    images = [u for u in (product.get("images") or []) if u]
+    if not images:
+        raise HTTPException(status_code=400, detail="Üründe görsel yok.")
+
+    secili = [i for i in (indexes or range(len(images))) if 0 <= i < len(images)]
+    if not secili:
+        raise HTTPException(status_code=400, detail="Geçerli görsel seçilmedi.")
+
+    cfg = await get_settings()
+    api_key = await _gemini_key()
+    model = cfg.get("enhance_model") or _DEFAULT_ENHANCE_MODEL
+    prompt = cfg.get("enhance_prompt") or _DEFAULT_ENHANCE_PROMPT
+
+    sonuc: List[Dict[str, Any]] = []
+    async with httpx.AsyncClient() as client:
+        async def tek(i: int):
+            try:
+                raw = await _fetch_image(client, images[i])
+                if not raw:
+                    return {"index": i, "error": "kaynak görsel indirilemedi"}
+                iyilestirilmis = await _gemini_enhance(client, api_key, model, prompt, raw)
+                # Model görsel döndürmediyse ürünü kaybetmemek için kaynağı
+                # ölçekliyoruz; kullanıcı hangisinin modelden geçtiğini görsün.
+                son = _fit_target(iyilestirilmis or raw)
+                url = await _store(son, product_id, f"hd{i}")
+                return {"index": i, "url": url, "ai": bool(iyilestirilmis),
+                        "source": images[i]}
+            except HTTPException as e:
+                return {"index": i, "error": str(e.detail)}
+            except Exception as e:
+                return {"index": i, "error": str(e)}
+
+        sonuc = list(await asyncio.gather(*[tek(i) for i in secili]))
+
+    basarili = [r for r in sonuc if r.get("url")]
+    if replace and basarili:
+        yeni = list(images)
+        for r in basarili:
+            yeni[r["index"]] = r["url"]
+        await db.products.update_one({"id": product_id}, {"$set": {
+            "images": yeni,
+            "images_enhanced_at": _now_iso(),
+        }})
+
+    return {
+        "product_id": product_id,
+        "target": f"{ENHANCE_TARGET[0]}x{ENHANCE_TARGET[1]}",
+        "results": sonuc,
+        "replaced": bool(replace and basarili),
+        "ai_count": sum(1 for r in basarili if r.get("ai")),
+        "warning": ("" if all(r.get("ai") for r in basarili) else
+                    "Bazı görseller modelden geçmedi; yalnız yeniden ölçeklendi."),
+    }
+
+
 # ─────────────────────────── uçlar ───────────────────────────
 @router.get("/settings")
 async def read_settings(_admin=Depends(require_admin)):
     cfg = await get_settings()
     return {
         "configured": bool(cfg.get("api_key_enc")),
+        "gemini_configured": bool(cfg.get("gemini_key_enc")),
+        "enhance_model": cfg.get("enhance_model") or _DEFAULT_ENHANCE_MODEL,
+        "enhance_prompt": cfg.get("enhance_prompt") or _DEFAULT_ENHANCE_PROMPT,
+        "enhance_target": f"{ENHANCE_TARGET[0]}x{ENHANCE_TARGET[1]}",
         "model": cfg.get("model") or _DEFAULT_MODEL,
         "size": cfg.get("size") or _DEFAULT_SIZE,
         "prompts": await get_prompts(),
@@ -309,6 +471,12 @@ async def write_settings(payload: dict, _admin=Depends(require_admin)):
                 status_code=400,
                 detail=f"Geçersiz boyut: {_sz}. Kabul edilenler: {', '.join(ALLOWED_SIZES)}")
         update["size"] = _sz
+    if payload.get("gemini_key"):
+        update["gemini_key_enc"] = encrypt(str(payload["gemini_key"]).strip())
+    if payload.get("enhance_model"):
+        update["enhance_model"] = str(payload["enhance_model"]).strip()
+    if payload.get("enhance_prompt") is not None:
+        update["enhance_prompt"] = str(payload["enhance_prompt"])
     if isinstance(payload.get("prompts"), dict):
         prompts = {}
         for pose, text in payload["prompts"].items():
@@ -344,4 +512,21 @@ async def regenerate(product_id: str, payload: dict | None = None, _admin=Depend
         reference_url=str(p.get("reference_url") or "").strip(),
         poses=p.get("poses"),
         attach=bool(p.get("attach")),
+    )
+
+
+@router.post("/products/{product_id}/enhance")
+async def enhance(product_id: str, payload: dict | None = None,
+                  _admin=Depends(require_admin)):
+    """Ürün görsellerini Gemini ile netleştirip 1200x1800 üretir.
+
+    body: {indexes?: [0,2], replace?: bool}
+    `replace` verilmezse üretilenler yalnız döndürülür, ürün değişmez.
+    """
+    p = payload or {}
+    idx = p.get("indexes")
+    return await enhance_product_images(
+        product_id,
+        indexes=[int(i) for i in idx] if isinstance(idx, list) else None,
+        replace=bool(p.get("replace")),
     )
