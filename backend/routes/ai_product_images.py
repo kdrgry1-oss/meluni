@@ -408,6 +408,60 @@ def _fit_target(raw: bytes, target=ENHANCE_TARGET) -> bytes:
     return out.getvalue()
 
 
+def _gemini_hata(resp) -> str:
+    """Sağlayıcı hatasını okunur hâle getirir.
+
+    Ham JSON'u ekrana basmak beş kutuyu aynı İngilizce yığınla dolduruyor ve
+    asıl mesele (kota mı, anahtar mı, içerik reddi mi) kayboluyordu.
+    """
+    try:
+        msg = ((resp.json() or {}).get("error") or {}).get("message") or ""
+    except Exception:
+        msg = (resp.text or "")[:200]
+    kod = resp.status_code
+    if kod == 429:
+        return ("Gemini kotası/kredisi tükenmiş. AI Studio'da projenin "
+                "faturalandırmasını açın veya kredi yükleyin. (Google: " + msg[:120] + ")")
+    if kod in (401, 403):
+        return "Gemini API anahtarı geçersiz veya bu modele yetkisi yok."
+    if kod == 400 and "safety" in msg.lower():
+        return "Gemini görseli güvenlik gerekçesiyle işlemedi."
+    return f"Gemini hatası ({kod}): {msg[:200] or 'ayrıntı yok'}"
+
+
+async def _gemini_enhance(client: httpx.AsyncClient, api_key: str, model: str,
+                          prompt: str, raw: bytes) -> Optional[bytes]:
+    """Görseli Gemini'ye gönderip iyileştirilmiş sürümü döndürür.
+
+    Model görsel döndürmezse None döner — çağıran taraf o zaman yalnız yeniden
+    ölçekleme yapar. Sessizce başarısız olmuyoruz; sonuçta hangi görselin
+    modelden geçtiği bildiriliyor.
+    """
+    payload = {
+        "contents": [{
+            "parts": [
+                {"text": prompt},
+                {"inline_data": {"mime_type": "image/jpeg",
+                                 "data": base64.b64encode(raw).decode()}},
+            ]
+        }],
+    }
+    resp = await client.post(
+        _GEMINI_URL.format(model=model),
+        headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
+        json=payload, timeout=_TIMEOUT,
+    )
+    if resp.status_code >= 400:
+        raise HTTPException(status_code=502, detail=_gemini_hata(resp))
+    data = resp.json()
+    for cand in (data.get("candidates") or []):
+        for part in ((cand.get("content") or {}).get("parts") or []):
+            inline = part.get("inline_data") or part.get("inlineData")
+            if inline and inline.get("data"):
+                return base64.b64decode(inline["data"])
+    return None
+
+
 async def _gemini_classify(client: httpx.AsyncClient, api_key: str, model: str,
                            raw: bytes) -> str:
     """Görsel ürün fotoğrafı mı ölçü tablosu mu? 'olcu' | 'urun'.
@@ -434,15 +488,25 @@ async def _gemini_classify(client: httpx.AsyncClient, api_key: str, model: str,
             json=payload, timeout=60.0,
         )
         if resp.status_code >= 400:
-            return "urun"
+            # Sessizce "ürün" demek apaçık bir tabloyu kaçırıyordu (kota
+            # bitince her görsel ürün sayılıyordu). Kararsız kaldığımızı
+            # söylüyoruz; panel elle işaretlemeye yönlendiriyor.
+            logger.warning(f"[ai-images] siniflandirma dustu ({resp.status_code})")
+            return "belirsiz"
         data = resp.json()
         metin = ""
         for cand in (data.get("candidates") or []):
             for part in ((cand.get("content") or {}).get("parts") or []):
                 metin += part.get("text") or ""
-        return "olcu" if "olcu" in metin.strip().lower().replace("ö", "o") else "urun"
-    except Exception:
-        return "urun"
+        temiz = metin.strip().lower().replace("ö", "o").replace("ç", "c")
+        if "olcu" in temiz:
+            return "olcu"
+        if "urun" in temiz:
+            return "urun"
+        return "belirsiz"
+    except Exception as e:
+        logger.warning(f"[ai-images] siniflandirma hatasi ({e})")
+        return "belirsiz"
 
 
 async def scan_size_charts(product_id: str) -> Dict[str, Any]:
@@ -466,8 +530,12 @@ async def scan_size_charts(product_id: str) -> Dict[str, Any]:
             tur = await _gemini_classify(client, api_key, model, raw)
             return {"index": i, "url": images[i], "tur": tur}
         sonuc = list(await asyncio.gather(*[tek(i) for i in range(len(images))]))
+    belirsiz = sum(1 for r in sonuc if r["tur"] == "belirsiz")
     return {"product_id": product_id, "images": sonuc,
-            "size_chart_count": sum(1 for r in sonuc if r["tur"] == "olcu")}
+            "size_chart_count": sum(1 for r in sonuc if r["tur"] == "olcu"),
+            "belirsiz": belirsiz,
+            "warning": ("Sınıflandırma yapılamadı (çoğunlukla Gemini kotası). "
+                        "Tabloyu aşağıdan elle işaretleyin." if belirsiz else "")}
 
 
 async def convert_size_chart(product_id: str, index: int, *, replace: bool = False) -> Dict[str, Any]:
@@ -508,6 +576,93 @@ async def convert_size_chart(product_id: str, index: int, *, replace: bool = Fal
             "source": images[index], "replaced": bool(replace),
             "warning": "Tablodaki ölçüleri kaynakla karşılaştırın — "
                        "sayı hatası müşteriye yanlış beden aldırır."}
+
+
+_SIZE_TABLE_READ_PROMPT = (
+    "Bu bir beden/ölçü tablosu görseli. İçindeki veriyi JSON olarak çıkar.\n"
+    'Biçim: {"olcu_adlari": ["Göğüs","Bel","Kalça"], '
+    '"satirlar": [{"beden": "S", "olculer": ["88","70","96"]}]}\n'
+    "Kurallar: sayıları BİREBİR oku, yuvarlama veya tahmin etme; okuyamadığın "
+    "hücreye boş dize koy. Ölçü adlarını Türkçeye çevir (Bust/Chest→Göğüs, "
+    "Waist→Bel, Hip→Kalça, Length→Boy, Shoulder→Omuz, Sleeve→Kol Boyu). "
+    "Yalnız JSON döndür, açıklama yazma."
+)
+
+
+async def read_size_table(product_id: str, index: int, *, kaydet: bool = False) -> Dict[str, Any]:
+    """Ölçü tablosu görselindeki değerleri okuyup ürünün ölçü tablosuna yazar.
+
+    Tablo görsel olarak duruyor ama site onu VERİ olarak kullanamıyor: beden
+    rehberi, filtreler ve pazaryeri aktarımı sayısal ölçü ister. Burada görsel
+    bir kez okunup `size_tables` koleksiyonuna yazılıyor.
+
+    Sayılar birebir okunur; model bir hücreyi seçemezse boş bırakır. Yine de
+    SONUÇ ELLE DOĞRULANMALI — yanlış ölçü müşteriye yanlış beden aldırır.
+    """
+    product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
+    if not product:
+        raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
+    images = [u for u in (product.get("images") or []) if u]
+    if not (0 <= index < len(images)):
+        raise HTTPException(status_code=400, detail="Geçersiz görsel sırası.")
+
+    cfg = await get_settings()
+    api_key = await _gemini_key()
+    model = cfg.get("classify_model") or _DEFAULT_CLASSIFY_MODEL
+
+    async with httpx.AsyncClient() as client:
+        raw = await _fetch_image(client, images[index])
+        if not raw:
+            raise HTTPException(status_code=502, detail="Görsel indirilemedi.")
+        payload = {
+            "contents": [{"parts": [
+                {"text": _SIZE_TABLE_READ_PROMPT},
+                {"inline_data": {"mime_type": "image/jpeg",
+                                 "data": base64.b64encode(raw).decode()}},
+            ]}],
+            "generationConfig": {"temperature": 0, "responseMimeType": "application/json"},
+        }
+        resp = await client.post(
+            _GEMINI_URL.format(model=model),
+            headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
+            json=payload, timeout=_TIMEOUT,
+        )
+        if resp.status_code >= 400:
+            raise HTTPException(status_code=502, detail=_gemini_hata(resp))
+        metin = ""
+        for cand in (resp.json().get("candidates") or []):
+            for part in ((cand.get("content") or {}).get("parts") or []):
+                metin += part.get("text") or ""
+
+    import json as _json
+    try:
+        veri = _json.loads(metin.strip().strip("`").replace("json\n", "", 1))
+    except Exception:
+        raise HTTPException(status_code=502,
+                            detail="Tablo okunamadı; model geçerli veri döndürmedi.")
+
+    adlar = [str(a) for a in (veri.get("olcu_adlari") or []) if str(a).strip()]
+    satirlar = []
+    for r in (veri.get("satirlar") or []):
+        beden = str(r.get("beden") or "").strip()
+        olculer = [str(x).strip() for x in (r.get("olculer") or [])]
+        if beden and any(olculer):
+            satirlar.append({"beden": beden, "olculer": olculer})
+    if not satirlar:
+        raise HTTPException(status_code=502, detail="Tabloda okunabilir satır bulunamadı.")
+
+    if kaydet:
+        await db.size_tables.update_one(
+            {"product_id": product_id},
+            {"$set": {"product_id": product_id, "olcu_adlari": adlar,
+                      "sizes": satirlar, "source": "ai_ocr",
+                      "source_image": images[index], "updated_at": _now_iso()}},
+            upsert=True)
+
+    return {"product_id": product_id, "index": index,
+            "olcu_adlari": adlar, "satirlar": satirlar, "kaydedildi": bool(kaydet),
+            "warning": "Okunan ölçüleri görselle karşılaştırın — "
+                       "yanlış sayı müşteriye yanlış beden aldırır."}
 
 
 async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]] = None,
@@ -718,3 +873,15 @@ async def size_chart(product_id: str, payload: dict, _admin=Depends(require_admi
         raise HTTPException(status_code=400, detail="Görsel sırası (index) gerekli.")
     return await convert_size_chart(
         product_id, int(payload["index"]), replace=bool(payload.get("replace")))
+
+
+@router.post("/products/{product_id}/size-table-read")
+async def size_table_read(product_id: str, payload: dict, _admin=Depends(require_admin)):
+    """Ölçü tablosundaki değerleri okur; kaydet=true ise ürünün tablosuna yazar.
+
+    body: {index: 3, kaydet?: bool}
+    """
+    if "index" not in (payload or {}):
+        raise HTTPException(status_code=400, detail="Görsel sırası (index) gerekli.")
+    return await read_size_table(product_id, int(payload["index"]),
+                                 kaydet=bool(payload.get("kaydet")))

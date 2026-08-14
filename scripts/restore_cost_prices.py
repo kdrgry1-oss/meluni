@@ -94,17 +94,33 @@ async def main() -> int:
     print(f"  supplier_key yok       : {tani['supplier_key_yok']}  (beslemeden gelmemiş)")
     print()
 
-    toplam = eksik = duzelen = eslesmeyen = varyanttan = 0
+    toplam = eksik = duzelen = eslesmeyen = varyanttan = senkron = 0
     ornek = []
     async for p in db.products.find(
             {"is_deleted": {"$ne": True}, "supplier_key": {"$exists": True}},
             {"_id": 0, "id": 1, "name": 1, "supplier_key": 1, "price": 1,
              "cost_price": 1, "purchase_price": 1, "variants": 1}):
         toplam += 1
-        mevcut = _sayi(p.get("cost_price")) or _sayi(p.get("purchase_price"))
-        if mevcut > 0 and not args.hepsi:
+        # İKİ ALAN AYRI KONTROL EDİLİR. Panel purchase_price okuyor, bizim
+        # hesabımız cost_price kullanıyor. "Biri doluysa geç" demek, cost_price
+        # dolu ama purchase_price boş olan ürünü sağlam sayıyordu — panelde
+        # alış fiyatı boş görünüyor, rapor "eksik yok" diyordu.
+        c, pp = _sayi(p.get("cost_price")), _sayi(p.get("purchase_price"))
+        if c > 0 and pp > 0 and not args.hepsi:
+            continue
+        if c > 0 or pp > 0:
+            # Bir alan dolu: diğerini ondan tamamla, beslemeye gerek yok.
+            deger = c or pp
+            if yaz:
+                await db.products.update_one({"id": p["id"]}, {"$set": {
+                    "cost_price": deger, "purchase_price": deger}})
+            if len(ornek) < 10:
+                ornek.append((p.get("name", "")[:46], min(c, pp), deger))
+            duzelen += 1
+            senkron += 1
             continue
         eksik += 1
+        mevcut = 0.0
         yeni = fiyat.get(p.get("supplier_key") or "")
         if not yeni:
             # Beslemede yok — ama varyantlarından biri maliyet taşıyor olabilir
@@ -141,6 +157,7 @@ async def main() -> int:
     print(f"tedarikçiden gelen ürün : {toplam}")
     print(f"maliyeti eksik olan     : {eksik}")
     print(f"{'geri yüklendi' if yaz else 'geri yüklenecek'}         : {duzelen}")
+    print(f"iki alan eşitlendi      : {senkron}  (biri doluydu, diğeri boştu)")
     print(f"varyanttan kurtarılan   : {varyanttan}")
     print(f"hiçbir kaynakta yok     : {eslesmeyen}")
     if not yaz:
