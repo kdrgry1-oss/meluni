@@ -191,10 +191,17 @@ def _clean_word(w: str) -> str:
     return w.lower().strip(".,;:()\"'’“”")
 
 
+def _stem(w: str) -> str:
+    """Kaba Türkçe kök: çekim eki farkını yok sayar ("bel" ≡ "beli")."""
+    x = _clean_word(w)
+    return x[:-1] if len(x) > 3 and x[-1] in "ıiuüaeo" else x
+
+
 def _phrases(words: List[str], drop_marketing: bool = True) -> List[tuple]:
     """Kelime dizisini (metin, sınıf) öbeklerine ayırır."""
     out: List[tuple] = []
     buf: List[str] = []
+    bekleyen: Optional[str] = None   # kaderi bir sonraki kelimeye bağlı dolgu
     for w in words:
         lw = _clean_word(w)
         if not lw:
@@ -202,10 +209,21 @@ def _phrases(words: List[str], drop_marketing: bool = True) -> List[tuple]:
         if lw in _KILLER_WORDS:
             if drop_marketing:
                 buf = []        # biriken niteleyici de pazarlamaydı
+            bekleyen = None
             continue
         if lw in _FILLER_WORDS:
+            # Dolgu kelimesi HEMEN atılmaz, beklemeye alınır. Çünkü yalnız
+            # kendinden sonra sınıflı bir niteleyici gelirse gereksizdir
+            # ("önden Düğmeli" → "Düğmeli"). Sonrası sınıfsızsa o kelimeyi
+            # ayakta tutan tek şey odur: "Sırtı Açık" → "sırtı" atılınca
+            # geriye anlamsız "Açık" kalıyordu.
+            bekleyen = w
             continue
         cls = _CLASS_MARKERS.get(lw)
+        if bekleyen is not None:
+            if not cls:
+                buf.append(bekleyen)    # sonrası sınıfsız → dolgu aslında taşıyıcı
+            bekleyen = None
         if lw in _ABSORB_MARKERS and not buf and out:
             # "Dantel Detaylı", "Kısa Kollu": bu işaretçiler kendinden ÖNCEKİ
             # kelimeye bağlıdır. Ayrı öbek sayılırsa "Dantel" kumaş, "Detaylı"
@@ -298,7 +316,13 @@ def normalize_name(raw: str, max_len: int = NAME_MAX_LEN) -> str:
     merged: List[tuple] = []
     for text, cls in parts:
         if merged and merged[-1][1] == cls and cls != "other":
-            merged[-1] = (f"{merged[-1][0]} {text}", cls)
+            # Aynı kelimenin çekimli hâli iki kez girmesin: besleme
+            # "Yüksek Bel Beli Lastikli" yazıyor, birleştirince "Bel Beli"
+            # oluyordu. Kök karşılaştırması Türkçe ekleri tolere eder.
+            var = {_stem(x) for x in merged[-1][0].split()}
+            ek = [x for x in text.split() if _stem(x) not in var]
+            if ek:
+                merged[-1] = (f"{merged[-1][0]} {' '.join(ek)}", cls)
         else:
             merged.append((text, cls))
 
