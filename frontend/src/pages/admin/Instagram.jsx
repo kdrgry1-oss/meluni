@@ -429,28 +429,42 @@ export default function AdminInstagram() {
                         <Tag size={11} /> {isOpen ? "Kapat" : "Ürün ekle"}
                       </button>
                       {isOpen && (
-                        <div className="absolute z-20 left-0 right-0 mt-1 bg-white border rounded-lg shadow-lg p-2">
-                          <div className="flex items-center gap-1 border rounded px-2 py-1 mb-1">
-                            <Search size={12} className="text-gray-400" />
-                            <input autoFocus value={pQuery} onChange={(e) => searchProducts(e.target.value)}
-                              placeholder="Ürün ara (min 2 harf)…" className="flex-1 text-[11px] outline-none" />
-                          </div>
-                          <div className="max-h-52 overflow-auto">
-                            {pBusy && <p className="text-[11px] text-gray-400 py-2 text-center">Aranıyor…</p>}
-                            {!pBusy && pQuery.length >= 2 && pResults.length === 0 && (
-                              <p className="text-[11px] text-gray-400 py-2 text-center">Sonuç yok</p>
-                            )}
-                            {pResults.map((pr) => (
-                              <button key={pr.id} onClick={() => addProductToPost(p, pr)}
-                                className="w-full flex items-center gap-2 p-1 hover:bg-gray-50 rounded text-left">
-                                <img src={(Array.isArray(pr.images) && pr.images[0]) || pr.image || ""} alt="" className="w-8 h-8 rounded object-cover bg-gray-100 shrink-0" />
-                                <span className="flex-1 min-w-0">
-                                  <span className="block text-[11px] truncate">{pr.name}</span>
-                                  <span className="block text-[10px] text-gray-500">{pr.price != null ? `${Number(pr.price).toLocaleString("tr-TR")} TL` : ""}</span>
-                                </span>
-                                <Plus size={12} className="text-emerald-600 shrink-0" />
-                              </button>
-                            ))}
+                        // SABİT (fixed) MODAL — kart içinde absolute açılır kutu, uzun görsel/videoda
+                        // kartın overflow-hidden'ı ile kırpılıp ürünler görünmüyordu. Ekran ortasında
+                        // sabit modal → medya boyu ne olursa olsun ürün listesi her zaman görünür.
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40"
+                          onClick={() => setPickerFor(null)}>
+                          <div className="bg-white border rounded-xl shadow-2xl p-3 w-full max-w-sm max-h-[85vh] flex flex-col"
+                            onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="text-sm font-semibold">Ürün ekle</span>
+                              <button onClick={() => setPickerFor(null)} className="text-gray-400 hover:text-black"><X size={16} /></button>
+                            </div>
+                            <div className="flex items-center gap-1 border rounded px-2 py-1.5 mb-2">
+                              <Search size={14} className="text-gray-400" />
+                              <input autoFocus value={pQuery} onChange={(e) => searchProducts(e.target.value)}
+                                placeholder="Ürün ara (min 2 harf)…" className="flex-1 text-sm outline-none" />
+                            </div>
+                            <div className="flex-1 overflow-auto">
+                              {pBusy && <p className="text-xs text-gray-400 py-2 text-center">Aranıyor…</p>}
+                              {!pBusy && pQuery.length < 2 && (
+                                <p className="text-xs text-gray-400 py-2 text-center">Aramak için en az 2 harf yazın.</p>
+                              )}
+                              {!pBusy && pQuery.length >= 2 && pResults.length === 0 && (
+                                <p className="text-xs text-gray-400 py-2 text-center">Sonuç yok</p>
+                              )}
+                              {pResults.map((pr) => (
+                                <button key={pr.id} onClick={() => addProductToPost(p, pr)}
+                                  className="w-full flex items-center gap-2 p-1.5 hover:bg-gray-50 rounded text-left">
+                                  <img src={(Array.isArray(pr.images) && pr.images[0]) || pr.image || ""} alt="" className="w-9 h-9 rounded object-cover bg-gray-100 shrink-0" />
+                                  <span className="flex-1 min-w-0">
+                                    <span className="block text-xs truncate">{pr.name}</span>
+                                    <span className="block text-[11px] text-gray-500">{pr.price != null ? `${Number(pr.price).toLocaleString("tr-TR")} TL` : ""}</span>
+                                  </span>
+                                  <Plus size={14} className="text-emerald-600 shrink-0" />
+                                </button>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       )}
