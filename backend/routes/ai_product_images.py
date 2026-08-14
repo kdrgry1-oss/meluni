@@ -1369,15 +1369,24 @@ async def reset_prompts(_admin=Depends(require_admin)):
 async def regenerate(product_id: str, payload: dict | None = None, _admin=Depends(require_admin)):
     """Tek istekle beş görseli üretir.
 
-    body: {reference_url?, poses?: ["front","left",...], attach?: bool}
+    ARKA PLANDA çalışır (vekilin 100 saniyelik sınırı); iş kimliği döner.
+    `bekle: true` verilirse sonucu bekler.
+
+    body: {reference_url?, poses?: ["front","left",...], attach?: bool, bekle?}
     """
     p = payload or {}
-    return await regenerate_for_product(
-        product_id,
-        reference_url=str(p.get("reference_url") or "").strip(),
-        poses=p.get("poses"),
-        attach=bool(p.get("attach")),
-    )
+    ref = str(p.get("reference_url") or "").strip()
+    poses = p.get("poses")
+    attach = bool(p.get("attach"))
+
+    def _isi():
+        return regenerate_for_product(product_id, reference_url=ref,
+                                      poses=poses, attach=attach)
+
+    if p.get("bekle"):
+        return await _isi()
+    return {"job_id": await _is_baslat(product_id, "gorsel-uretimi", _isi),
+            "durum": "calisiyor"}
 
 
 @router.post("/products/{product_id}/enhance")
@@ -1385,16 +1394,24 @@ async def enhance(product_id: str, payload: dict | None = None,
                   _admin=Depends(require_admin)):
     """Ürün görsellerini Gemini ile netleştirip 1200x1800 üretir.
 
-    body: {indexes?: [0,2], replace?: bool}
+    ARKA PLANDA çalışır (vekilin 100 saniyelik sınırı); iş kimliği döner.
+    `bekle: true` verilirse sonucu bekler.
+
+    body: {indexes?: [0,2], replace?: bool, bekle?: bool}
     `replace` verilmezse üretilenler yalnız döndürülür, ürün değişmez.
     """
     p = payload or {}
     idx = p.get("indexes")
-    return await enhance_product_images(
-        product_id,
-        indexes=[int(i) for i in idx] if isinstance(idx, list) else None,
-        replace=bool(p.get("replace")),
-    )
+    indexes = [int(i) for i in idx] if isinstance(idx, list) else None
+    replace = bool(p.get("replace"))
+
+    def _isi():
+        return enhance_product_images(product_id, indexes=indexes, replace=replace)
+
+    if p.get("bekle"):
+        return await _isi()
+    return {"job_id": await _is_baslat(product_id, "kalite-iyilestirme", _isi),
+            "durum": "calisiyor"}
 
 
 @router.get("/products/{product_id}/scan")
@@ -1474,9 +1491,68 @@ async def size_table_build(product_id: str, payload: dict, _admin=Depends(requir
             "replaced": bool((payload or {}).get("replace") and index is not None)}
 
 
+# ── Uzun işler: arka plana al, panel sorsun ─────────────────────────────
+# Cloudflare vekili 100 SANİYEDE bağlantıyı kesiyor (524). Görsel üretimi ve
+# tablo okuma bundan uzun sürebiliyor; bağlantı koptuğu için iş sunucuda bitse
+# bile sonuç panele ulaşmıyor, kullanıcı "olmuyor" görüyordu. İşi hızlandırmak
+# çözüm değil — sınır isteğin SÜRESİNDE, işin süresinde değil. Bu yüzden iş
+# arka planda çalışıyor, panel iş kimliğiyle durumu soruyor.
+#
+# Durum MongoDB'de tutuluyor: uvicorn birden çok işçiyle çalışırsa sorgu başka
+# işçiye düşebilir, bellekte tutulan durum orada görünmezdi.
+
+async def _is_baslat(product_id: str, tur: str, isi) -> str:
+    """İşi arka planda başlatır, iş kimliğini döndürür."""
+    job_id = str(uuid.uuid4())
+    await db.ai_jobs.insert_one({
+        "id": job_id, "product_id": product_id, "tur": tur,
+        "durum": "calisiyor", "created_at": _now_iso(),
+    })
+
+    async def _sar():
+        try:
+            sonuc = await isi()
+            await db.ai_jobs.update_one({"id": job_id}, {"$set": {
+                "durum": "bitti", "sonuc": sonuc, "finished_at": _now_iso()}})
+        except HTTPException as e:
+            await db.ai_jobs.update_one({"id": job_id}, {"$set": {
+                "durum": "hata", "hata": str(e.detail), "finished_at": _now_iso()}})
+        except Exception as e:
+            logger.exception(f"[ai-images] arka plan isi dustu ({tur}): {e}")
+            await db.ai_jobs.update_one({"id": job_id}, {"$set": {
+                "durum": "hata", "hata": f"Beklenmeyen hata: {e}",
+                "finished_at": _now_iso()}})
+
+    asyncio.create_task(_sar())
+    return job_id
+
+
+@router.get("/jobs/{job_id}")
+async def is_durumu(job_id: str, _admin=Depends(require_admin)):
+    """Arka plan işinin durumu: calisiyor | bitti | hata."""
+    job = await db.ai_jobs.find_one({"id": job_id}, {"_id": 0})
+    if not job:
+        raise HTTPException(status_code=404, detail="İş bulunamadı.")
+    return job
+
+
 @router.post("/products/{product_id}/size-table-fix")
 async def size_table_fix(product_id: str, payload: dict | None = None,
                          _admin=Depends(require_admin)):
+    """Ölçü tablosu düzeltmesini ARKA PLANDA başlatır, iş kimliği döndürür.
+
+    `bekle: true` gönderilirse eskisi gibi sonucu bekler (betikler için).
+    """
+    p = payload or {}
+    if p.get("bekle"):
+        return await _size_table_fix(product_id, p.get("index"))
+    index = p.get("index")
+    job_id = await _is_baslat(product_id, "olcu-tablosu",
+                              lambda: _size_table_fix(product_id, index))
+    return {"job_id": job_id, "durum": "calisiyor"}
+
+
+async def _size_table_fix(product_id: str, index=None) -> Dict[str, Any]:
     """TEK DÜĞME: ölçü tablosunu bul, Türkçeleştir, görseli değiştir, tabloya yaz.
 
     Panelde beş ayrı düğme vardı (ara → çevir → oku → elle işaretle → elle gir)

@@ -34,6 +34,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
   // yerine yaz, ölçüleri beden tablosuna kaydet. Sıra sunucuda; panelde
   // kullanıcının takip etmesi gereken bir adım listesi yok.
   const [duzeltBekle, setDuzeltBekle] = useState(false);
+  const [duzeltIlerleme, setDuzeltIlerleme] = useState("");
   const [secimGerekli, setSecimGerekli] = useState(false);
   const [okunan, setOkunan] = useState(null);
   // Elle giriş: okuma adımı modele bağlı, çizim tamamen bizde. Model
@@ -67,6 +68,40 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       }
       throw e;
     }
+  };
+
+  /** UZUN İŞ: sunucu işi arka planda başlatır, biz durumunu sorarız.
+   *
+   *  Cloudflare vekili isteği 100 saniyede kesiyor. İş sunucuda bitse bile
+   *  bağlantı koptuğu için sonuç panele ulaşmıyordu — ekranda hep "bağlantı
+   *  koptu" görünüyordu. Artık istek anında dönüyor, sonucu yoklamayla
+   *  alıyoruz; iş ne kadar sürerse sürsün sonuç kaybolmuyor.
+   *
+   *  ilerlet: bekleme sırasında ekrana yazılacak metni günceller.
+   */
+  const uzunIstek = async (yol, govde, ilerlet) => {
+    const bas = await istek(yol, govde);
+    if (!bas?.job_id) return bas;              // sunucu doğrudan sonuç döndüyse
+    const basladi = Date.now();
+    // Üst sınır 15 dk: sunucu ölse bile panel sonsuza kadar dönmesin.
+    while (Date.now() - basladi < 15 * 60 * 1000) {
+      await new Promise((r) => setTimeout(r, 3000));
+      const gecen = Math.round((Date.now() - basladi) / 1000);
+      ilerlet?.(`${gecen} sn`);
+      let d;
+      try {
+        const r = await fetch(`${API}/ai-images/jobs/${bas.job_id}`, {
+          headers: { Authorization: `Bearer ${token()}` },
+        });
+        d = await r.json();
+        if (!r.ok) throw new Error(d.detail || "Durum okunamadı");
+      } catch {
+        continue;                              // geçici ağ hatası — yoklamayı sürdür
+      }
+      if (d.durum === "bitti") return d.sonuc;
+      if (d.durum === "hata") throw new Error(d.hata || "İşlem başarısız");
+    }
+    throw new Error("İş 15 dakikada bitmedi; sunucu kayıtlarına bakın.");
   };
 
   const ortamYukle = async (e) => {
@@ -105,9 +140,9 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       for (let i = 0; i < pozlar.length; i++) {
         setUretimIlerleme(`${i + 1}/${pozlar.length}`);
         // attach GÖNDERİLMİYOR: ürüne ekleme kararı burada, tek tek verilir.
-        const d = await istek("regenerate", {
+        const d = await uzunIstek("regenerate", {
           reference_url: ortamUrl || undefined, poses: [pozlar[i]],
-        });
+        }, (g) => setUretimIlerleme(`${i + 1}/${pozlar.length} · ${g}`));
         Object.assign(uretilenler, d.generated || {});
         Object.assign(hatalar, d.errors || {});
         etiketler = { ...etiketler, ...(d.labels || {}) };
@@ -139,7 +174,8 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       let uyari = "";
       for (let i = 0; i < images.length; i++) {
         setHdIlerleme(`${i + 1}/${images.length}`);
-        const d = await istek("enhance", { replace: !!replace, indexes: [i] });
+        const d = await uzunIstek("enhance", { replace: !!replace, indexes: [i] },
+                                  (g) => setHdIlerleme(`${i + 1}/${images.length} · ${g}`));
         hepsi.push(...(d.results || []));
         uyari = uyari || d.warning || "";
         setHdSonuc({ target: d.target, results: [...hepsi], warning: uyari,
@@ -175,8 +211,8 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
     setHata("");
     setOkunan(null);
     try {
-      const d = await istek("size-table-fix",
-        typeof index === "number" ? { index } : {});
+      const d = await uzunIstek("size-table-fix",
+        typeof index === "number" ? { index } : {}, setDuzeltIlerleme);
       setOkunan(d);
       setSecimGerekli(false);
       const yeni = [...images];
@@ -188,6 +224,7 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       if (/seçip|seçin/i.test(e.message || "")) setSecimGerekli(true);
     } finally {
       setDuzeltBekle(false);
+      setDuzeltIlerleme("");
     }
   };
 
@@ -392,7 +429,9 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
           className="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm inline-flex items-center gap-1.5 disabled:opacity-50"
         >
           <Ruler className="w-4 h-4" />
-          {duzeltBekle ? "Hazırlanıyor…" : "Ölçü tablosunu Türkçeleştir"}
+          {duzeltBekle
+            ? `Çalışıyor… ${duzeltIlerleme}`
+            : "Ölçü tablosunu Türkçeleştir"}
         </button>
 
         {/* Yalnız tablo görseli bulunamadığında çıkar — gereksiz yere
