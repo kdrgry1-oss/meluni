@@ -116,23 +116,32 @@ async def upload_image(file: UploadFile = File(...), user=Depends(require_auth))
         except Exception as e:
             logger.error(f"R2 upload failed, falling back to db/disk: {e}")
 
-    # 2) Fallback: MongoDB (kalıcı) + disk (önbellek)
+    # 2) Fallback: disk (asıl) + MongoDB (yalnız diske yazılamadıysa)
+    #
+    # BASE64 KOPYA HER ZAMAN yazılıyordu — diske yazma başarılı olsa bile.
+    # Her görsel veritabanında ~%33 şişmiş hâliyle yer kapladı ve Atlas'ın
+    # 512 MB kotası doldu: "Writes are blocked", yani SİPARİŞ dahil her yazma
+    # durdu. Görsel dosyadır; veritabanı yalnız gerçek çare kalmadığında.
+    diske_yazildi = False
     try:
         with open(os.path.join(UPLOAD_DIR, filename), "wb") as f:
             f.write(data)
+        diske_yazildi = True
     except Exception as e:
         logger.warning(f"upload disk write failed: {e}")
 
-    await db.files.insert_one({
+    _kayit = {
         "id": str(uuid.uuid4()),
         "storage_path": filename,
         "original_filename": file.filename,
         "content_type": content_type,
         "size": len(data),
-        "data_b64": base64.b64encode(data).decode("ascii"),
         "is_deleted": False,
         "created_at": datetime.now(timezone.utc).isoformat(),
-    })
+    }
+    if not diske_yazildi:
+        _kayit["data_b64"] = base64.b64encode(data).decode("ascii")
+    await db.files.insert_one(_kayit)
 
     return {
         "success": True,
@@ -177,18 +186,24 @@ async def upload_video(file: UploadFile = File(...), user=Depends(require_auth))
         except Exception as e:
             logger.error(f"R2 video upload failed, falling back to db/disk: {e}")
 
-    # 2) Fallback: disk + MongoDB
+    # 2) Fallback: disk (asıl) + MongoDB (yalnız diske yazılamadıysa).
+    # Videoda bu daha da kritik: tek dosya onlarca MB, kotayı tek başına yer.
+    diske_yazildi = False
     try:
         with open(os.path.join(UPLOAD_DIR, filename), "wb") as f:
             f.write(data)
+        diske_yazildi = True
     except Exception as e:
         logger.warning(f"video disk write failed: {e}")
-    await db.files.insert_one({
+    _kayit = {
         "id": str(uuid.uuid4()), "storage_path": filename,
         "original_filename": file.filename, "content_type": ct, "size": len(data),
-        "data_b64": base64.b64encode(data).decode("ascii"), "is_video": True,
+        "is_video": True,
         "is_deleted": False, "created_at": datetime.now(timezone.utc).isoformat(),
-    })
+    }
+    if not diske_yazildi:
+        _kayit["data_b64"] = base64.b64encode(data).decode("ascii")
+    await db.files.insert_one(_kayit)
     return {"success": True, "path": filename, "url": f"/api/upload/files/{filename}", "is_video": True}
 
 
@@ -203,7 +218,15 @@ async def _serve(path: str, w: int = 0, q: int = 90):
         return RedirectResponse(url=_r2, status_code=302)
 
     content = None
-    ctype = (record or {}).get("content_type", "image/jpeg")
+    # İÇERİK TÜRÜ kayıttan gelir; kayıt yoksa DOSYA UZANTISINDAN bulunur.
+    # Sabit "image/jpeg" varsaymak, kaydı olmayan bir PNG/WEBP'i yanlış türle
+    # servis ediyordu ve `nosniff` başlığı yüzünden tarayıcı görseli hiç
+    # göstermiyordu. (Kayıtsız dosya artık normal: kota temizliğinde üst veri
+    # kaydı silinip görsel diskte bırakılabiliyor.)
+    ctype = (record or {}).get("content_type") or ""
+    if not ctype:
+        import mimetypes as _mt
+        ctype = _mt.guess_type(path)[0] or "application/octet-stream"
     # 1) MongoDB içeriği (eski yüklemeler için güvenilir kaynak)
     if record and record.get("data_b64"):
         try:

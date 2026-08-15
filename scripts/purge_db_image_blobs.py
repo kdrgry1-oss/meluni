@@ -25,6 +25,11 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(_HERE, "..", "backend"))
 
 
+# Atlas kota aşımında güncelleme reddedilirse silmeye geçilir; bir kez
+# anlaşılınca kalan kayıtlar için tekrar denenmez.
+_silme_kipi = False
+
+
 def _mb(bayt: float) -> str:
     return f"{bayt / (1024 * 1024):.1f} MB"
 
@@ -59,7 +64,28 @@ async def main() -> int:
             silinebilir += 1
             kazanc += b64_boyut
             if yaz:
-                await db.files.update_one({"id": f["id"]}, {"$unset": {"data_b64": ""}})
+                # ÖNCE $unset (kaydın üst verisi kalsın). Atlas kota aşımında
+                # GÜNCELLEMEYE de izin vermiyor — "Writes are blocked" — ama
+                # SİLMEYE izin veriyor (yer açmanın tek yolu bu). O yüzden
+                # güncelleme reddedilirse kaydı komple siliyoruz.
+                #
+                # Kaydı silmek görseli kaybettirmez: /api/upload/files/<ad> ucu
+                # kayıt bulamazsa diskten servis ediyor (upload.py, disk yedeği),
+                # nginx zaten dosyayı doğrudan veriyor.
+                global _silme_kipi
+                if not _silme_kipi:
+                    try:
+                        await db.files.update_one({"id": f["id"]},
+                                                  {"$unset": {"data_b64": ""}})
+                    except Exception as e:
+                        if "space quota" not in str(e):
+                            raise
+                        _silme_kipi = True
+                        print("kota dolu — güncelleme reddedildi, kayıtlar "
+                              "siliniyor (görseller diskten servis edilir)\n",
+                              flush=True)
+                if _silme_kipi:
+                    await db.files.delete_one({"id": f["id"]})
         else:
             tek_nusha += 1
 
