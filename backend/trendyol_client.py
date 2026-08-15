@@ -55,9 +55,19 @@ class TrendyolClient:
         url = f"{self.base_url}{endpoint}"
         async with httpx.AsyncClient(timeout=30.0) as client:
             try:
-                # Trendyol Category endpoints do not strictly require Auth, but we send it anyway
-                # Some endpoints (like brands) might fail if Auth is not sent.
-                headers = self._get_headers() if self.api_key else {}
+                # ANAHTAR YOKSA İSTEK ATMA.
+                # Eskiden anahtar boşsa istek HİÇBİR BAŞLIK OLMADAN gidiyordu.
+                # O zaman User-Agent de gitmiyor, httpx'in varsayılanı kalıyor
+                # ve Trendyol'un güvenlik katmanı isteği bot sayıp 403 HTML
+                # döndürüyor ("Sorry, you have been blocked"). Hata "IP engeli"
+                # gibi görünüyor; oysa sebep ayarların boş olması. Eksik ayarı
+                # eksik ayar olarak söylüyoruz.
+                if not self.api_key or not self.api_secret or not self.supplier_id:
+                    raise ValueError(
+                        "Trendyol API bilgileri eksik (satıcı no / anahtar / gizli "
+                        "anahtar). Ayarlar > Trendyol'dan girip KAYDEDİN; kayıt "
+                        "sırasında veritabanı doluysa kayıt sessizce düşmüş olabilir.")
+                headers = self._get_headers()
                 response = await client.get(url, headers=headers, params=params)
                 response.raise_for_status()
                 return response.json()
