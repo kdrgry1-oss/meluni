@@ -11,6 +11,27 @@ const headers = () => ({
   Authorization: `Bearer ${token()}`,
 });
 
+/** Aktarım/senkron sonucunu tek satırlık okunur özete çevirir.
+ *  Sonuç bir NESNE; doğrudan basmak React'i çökertiyor. Sayı olan alanları
+ *  ad-değer olarak diziyoruz, tarih varsa başa alıyoruz. */
+function ozet(s) {
+  if (!s) return "";
+  if (typeof s === "string") return s;
+  if (typeof s !== "object") return String(s);
+  const etiket = {
+    created: "yeni", updated: "güncellenen", skipped: "atlanan",
+    failed: "hatalı", blocked: "kara listede", deleted: "silinen",
+    deactivated: "pasife alınan", low_stock_skipped: "stok eşiği",
+    retired_single_size: "tek beden kapatılan", not_in_catalog: "katalogda yok",
+    match_failed_products: "eşleşmeyen", total: "toplam",
+  };
+  const parcalar = Object.entries(etiket)
+    .filter(([k]) => typeof s[k] === "number" && s[k] > 0)
+    .map(([k, ad]) => `${ad} ${s[k]}`);
+  const ne = String(s.at || "").replace("T", " ").slice(0, 16);
+  return [ne, parcalar.join(" · ")].filter(Boolean).join(" — ") || "kayıt var";
+}
+
 /** Tedarikçi XML — besleme ayarı, önizleme, içe aktarma ve stok senkronu. */
 export default function SupplierXml() {
   const [cfg, setCfg] = useState({
@@ -302,10 +323,20 @@ export default function SupplierXml() {
           </button>
         </div>
 
-        {(cfg.last_import || cfg.last_sync) && (
-          <div className="text-xs text-gray-500 pt-1">
-            {cfg.last_import && <div>Son içe aktarma: {cfg.last_import}</div>}
-            {cfg.last_sync && <div>Son stok senkronu: {cfg.last_sync}</div>}
+        {/* SAYFAYI ÇÖKERTEN YER BURASIYDI: `last_import` bir METİN değil,
+            aktarım SONUCU (nesne). React bir nesneyi çocuk olarak basamaz —
+            "Objects are not valid as a React child" ile tüm sayfa beyaz
+            kalıyordu. İlk aktarım çalışana kadar alan boş olduğu için hata
+            gecikmeli çıktı. Artık özet olarak yazılıyor. */}
+        {(cfg.last_import || cfg.last_stock_sync) && (
+          <div className="text-xs text-gray-500 pt-1 space-y-0.5">
+            {cfg.last_import && <div>Son içe aktarma: {ozet(cfg.last_import)}</div>}
+            {cfg.last_stock_sync && (
+              <div>Son stok senkronu: {ozet(cfg.last_stock_sync)}</div>
+            )}
+            {cfg.last_stock_sync?.warning && (
+              <div className="text-amber-700">{cfg.last_stock_sync.warning}</div>
+            )}
           </div>
         )}
       </div>
