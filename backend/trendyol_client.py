@@ -10,14 +10,16 @@ import httpx
 
 logger = logging.getLogger(__name__)
 
-# ENTEGRASYON KİMLİĞİ — Trendyol bunu ZORUNLU tutuyor ve biçimi denetliyor:
-#     "{satıcı_no} - {entegratör_adı}"
-# Kendi entegrasyonunu yapan satıcı için beklenen değer "SelfIntegration".
-# Burada uydurma bir ad ("MeluniIntegration") gönderiliyordu; Trendyol o adı
-# tanımadığı için istekleri güvenlik katmanında (Cloudflare 403 "you have been
-# blocked") reddediyordu — kategori listesi hiç gelmiyor, eşleştirme
-# yapılamıyordu. Marka adı DEĞİL, protokol değeri: koda gömülmez ama
-# varsayılanı Trendyol'un belgelediği değerdir.
+# ENTEGRASYON KİMLİĞİ — Trendyol User-Agent başlığını "{satıcı_no} - {ad}"
+# biçiminde bekler. Varsayılan, kendi entegrasyonunu yapan satıcı için
+# Trendyol'un belgelediği değerdir; entegratör firma üzerinden çalışılırsa
+# TRENDYOL_INTEGRATION_AGENT ile değiştirilir. Marka adı DEĞİL, protokol
+# değeri — koda gömülmez.
+#
+# NOT (yanlış teşhis kaydı): 403 "you have been blocked" hatasının sebebi bu
+# ad SANILDI. Değilmiş — aynı kod tabanı Facette'te uydurma bir adla
+# ("FacetteIntegration") sorunsuz çalışıyordu. Ad denetlenmiyor. Engelin
+# kaynağı istek başlığı değil, isteğin geldiği SUNUCU IP'si.
 INTEGRATION_AGENT = (os.environ.get("TRENDYOL_INTEGRATION_AGENT")
                      or "SelfIntegration").strip()
 
