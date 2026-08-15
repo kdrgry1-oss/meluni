@@ -96,6 +96,17 @@ function FieldRenderer({ field, value, onChange }) {
   );
 }
 
+/** Kayıtlı ortam değerini açılır listedeki seçeneğe eşler.
+ *  Sunucu tarafı "live/prod/production/canli" eş anlamlılarını kabul ediyor;
+ *  eskiden yazılmış kayıtlarda "sandbox" da var. Eşleşmeyen değeri sessizce
+ *  "Canlı" göstermek yanlış güven veriyordu. */
+function tyModu(m) {
+  const v = String(m ?? "prod").trim().toLowerCase();
+  if (["prod", "live", "production", "canli", "canlı"].includes(v)) return "prod";
+  if (["test", "sandbox", "stage", "staging"].includes(v)) return "test";
+  return "?";
+}
+
 export default function MarketplaceHub() {
   const [marketplaces, setMarketplaces] = useState([]);
   const [active, setActive] = useState(null);
@@ -442,11 +453,27 @@ export default function MarketplaceHub() {
                         </div>
                         <div>
                           <label className="block text-xs font-semibold text-gray-600 mb-1">Ortam</label>
-                          <select value={tyOp.mode ?? "prod"} onChange={(e) => tyUpd("mode", e.target.value)}
+                          {/* KAYITLI DEĞERİ DOĞRU GÖSTER.
+                              Listede yalnız "prod" ve "test" vardı; kayıtlı değer
+                              "sandbox" olduğunda hiçbiriyle eşleşmiyor ve tarayıcı
+                              İLK seçeneği ("Canlı") gösteriyordu. Ekran Canlı derken
+                              istekler TEST ağ geçidine gidiyordu — teşhisi saatlerce
+                              yanlış yere çektirdi. Eş anlamlılar eşleniyor, tanınmayan
+                              değer olduğu gibi gösteriliyor. */}
+                          <select value={tyModu(tyOp.mode)} onChange={(e) => tyUpd("mode", e.target.value)}
                                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white" data-testid="ty-op-mode">
                             <option value="prod">Canlı</option>
                             <option value="test">Test</option>
+                            {tyModu(tyOp.mode) === "?" && (
+                              <option value="?">bilinmeyen: {String(tyOp.mode)}</option>
+                            )}
                           </select>
+                          {tyModu(tyOp.mode) === "test" && (
+                            <p className="text-[11px] text-amber-700 mt-1">
+                              İstekler Trendyol <b>test</b> ağ geçidine gider. Canlı
+                              mağaza anahtarıyla çalışıyorsanız "Canlı" seçin.
+                            </p>
+                          )}
                         </div>
                         <div>
                           <label className="block text-xs font-semibold text-gray-600 mb-1">
