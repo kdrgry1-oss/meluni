@@ -34,6 +34,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from .deps import db, logger, generate_id, require_admin
 from security.crypto import encrypt, decrypt
 import supplier_codes
+import product_attributes
 
 router = APIRouter(prefix="/supplier-xml", tags=["supplier-xml"])
 
@@ -1064,9 +1065,30 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
     _cat_ids = [i for i in (_root_id, _cat_id) if i]
     _cat_slug = await _category_slug(_cat_id)
 
+    # PAZARYERİ ÖZNİTELİKLERİ + ürün kartının zorunlu temel alanları.
+    # Besleme bunları vermiyor (yalnız kumaş/cinsiyet geliyor); ürün adı,
+    # kategori ve açıklamadan çıkarıyoruz. Özniteliksiz ürün Trendyol'da ya
+    # reddediliyor ya da filtrelerde hiç çıkmıyor; sezon/kalıp boşken panel
+    # kaydı reddediyor. Çıkarılamayan alan BOŞ kalır (uydurma yok).
+    _ad = normalize_name(rec["name"])
+    _oz_kaynak = {
+        "name": _ad,
+        "description": rec.get("description") or "",
+        "fabric": rec.get("fabric") or "",
+        "gender": rec.get("gender") or "",
+        "brand": rec.get("brand") or "",
+        "category_name": _cat_sub,
+        "category_path": f"{_cat_root} > {_cat_sub}",
+    }
+    _ozellikler = product_attributes.urun_ozellikleri(_oz_kaynak)
+    _temel = product_attributes.temel_alanlar(_oz_kaynak)
+
     return {
         "id": generate_id(),
-        "name": normalize_name(rec["name"]),
+        "name": _ad,
+        "attributes": _ozellikler,
+        "season": _temel.get("season", ""),
+        "size_advice": _temel.get("size_advice", ""),
         "supplier_original_name": rec["name"],
         "description": rec.get("description") or "",
         "brand": rec.get("brand") or "",
@@ -1182,6 +1204,14 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
                 # yine tedarikçinin düşük çözünürlüklü fotoğraflarına dönüyordu.
                 if existing.get("images_custom"):
                     doc.pop("images", None)
+                # ELLE GİRİLEN ÖZNİTELİK/SEZON/KALIP KORUNUR. Bunları besleme
+                # değil biz türetiyoruz; yönetim panelden düzeltince tazeleme
+                # turu üstüne yazmamalı. Yalnız BOŞ olanı dolduruyoruz.
+                if existing.get("attributes"):
+                    doc.pop("attributes", None)
+                for _alan in ("season", "size_advice"):
+                    if str(existing.get(_alan) or "").strip() or not doc.get(_alan):
+                        doc.pop(_alan, None)
                 await db.products.update_one({"id": existing["id"]}, {"$set": doc})
                 updated += 1
             else:
