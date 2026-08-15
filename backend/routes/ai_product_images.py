@@ -951,11 +951,31 @@ async def _gemini_post(client: httpx.AsyncClient, api_key: str, model: str,
     """
     govde = payload
 
-    async def _cagir(m):
+    async def _tek_cagri(m):
         return await client.post(
             _GEMINI_URL.format(model=m),
             headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
             json=govde, timeout=_TIMEOUT)
+
+    async def _cagir(m):
+        """GEÇİCİ hatalarda yeniden dener.
+
+        503 "Deadline expired", 500 ve hız sınırı (429) Google tarafında geçici
+        durumlardır; kalıcı bir arıza değil. Tek üründe önemsiz ama TOPLU işte
+        yüzlerce görselin sessizce atlanması demek — bir kez denemek yetmez.
+        Kalıcı hatalarda (yetki, model yok, güvenlik) beklemeden dönüyoruz.
+        """
+        gecikmeler = (2, 5, 12)
+        for i in range(len(gecikmeler) + 1):
+            resp = await _tek_cagri(m)
+            if resp.status_code not in (429, 500, 502, 503, 504):
+                return resp
+            if i >= len(gecikmeler):
+                return resp
+            logger.warning(f"[ai-images] gecici hata {resp.status_code}, "
+                           f"{gecikmeler[i]} sn sonra yeniden ({i + 1}/{len(gecikmeler)})")
+            await asyncio.sleep(gecikmeler[i])
+        return resp
 
     resp = await _cagir(model)
     # thinkingConfig'i her model tanımıyor; tanımayan 400 "Unknown name" der.
