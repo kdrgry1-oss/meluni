@@ -1290,6 +1290,10 @@ async def sync_stock() -> Dict[str, Any]:
     supplier = cfg.get("supplier_name") or "modayakamoz"
     min_stock = int(cfg.get("min_stock", MIN_STOCK_DEFAULT))
     tek_beden_esik = int(cfg.get("single_size_max_stock", SINGLE_SIZE_MAX_STOCK_DEFAULT))
+    # KÂR KATSAYISI stok senkronunda da gerekli: besleme BAYİ fiyatı veriyor,
+    # vitrin fiyatı ondan hesaplanıyor. Ayar boşsa varsayılana düşülür —
+    # 1.0'a düşmek ürünleri maliyetine sattırırdı.
+    markup = float(cfg.get("price_markup") or MARKUP_DEFAULT)
     records, _ = await load_items()
 
     touched = missing = failed = retired = 0
@@ -1336,8 +1340,18 @@ async def sync_stock() -> Dict[str, Any]:
                     # olduğu gibi yazsak "son 3 ürün" diye satılır ve sipariş
                     # gelince tedarikçide bulunamaz — iptal ve puan kaybı.
                     v["stock"] = _st if _st > min_stock else 0
-                    if src.get("price"):
-                        v["price"] = float(src["price"])
+                    # FİYAT: beslemedeki değer BAYİ (maliyet) fiyatıdır.
+                    # Olduğu gibi yazmak ürünü maliyetine — KDV düşünce
+                    # ZARARINA — satmaktır. Katsayı + KDV uygulanır.
+                    _c = float(src.get("cost") or src.get("price") or 0)
+                    if _c > 0:
+                        v["cost_price"] = _c
+                        v["purchase_price"] = _c
+                        v["price"] = sale_price(
+                            _c,
+                            vat_rate=float(src.get("vat") or rec.get("vat") or 0),
+                            vat_included=bool(src.get("vat_included")),
+                            markup=markup)
                 else:
                     # Beslemeden düşen varyant → stoğu sıfırla, silme
                     # (sipariş geçmişi ve pazaryeri eşlemesi bozulmasın).
@@ -1357,11 +1371,24 @@ async def sync_stock() -> Dict[str, Any]:
                     eslesme_ornek.append(product.get("name", "")[:44])
                 continue
 
-            await db.products.update_one(
-                {"id": product["id"]},
-                {"$set": {"variants": new_variants, "stock": total,
-                          "price": float(rec.get("price") or 0) or None,
-                          "stock_synced_at": _now_iso()}})
+            # ÜRÜN FİYATI — BURASI KATALOGU MALİYETİNE SATTIRIYORDU.
+            # `rec["price"]` beslemedeki BAYİ fiyatıdır; doğrudan `price`
+            # alanına yazılıyordu. Yani her stok turunda vitrin fiyatı
+            # maliyete iniyor, ürünler KDV düşünce zararına satılıyordu
+            # (canlıda görüldü: varyant 1460 TL, ürün 442 TL).
+            # Artık aynı hesap: maliyet × katsayı + KDV.
+            _urun_maliyet = float(rec.get("price") or 0)
+            _yeni_fiyat = sale_price(
+                _urun_maliyet, vat_rate=float(rec.get("vat") or 0),
+                vat_included=bool(rec.get("vat_included")),
+                markup=markup) if _urun_maliyet > 0 else None
+            _set = {"variants": new_variants, "stock": total,
+                    "stock_synced_at": _now_iso()}
+            if _yeni_fiyat:
+                _set["price"] = _yeni_fiyat
+                _set["cost_price"] = _urun_maliyet
+                _set["purchase_price"] = _urun_maliyet
+            await db.products.update_one({"id": product["id"]}, {"$set": _set})
             touched += 1
 
             # TEK BEDEN KALDIYSA KALICI KAPAT. Kural asıl BURADA tetiklenir:
