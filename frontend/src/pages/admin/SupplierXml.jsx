@@ -19,6 +19,7 @@ export default function SupplierXml() {
     price_markup: 3.0,
     min_stock: 5,
     single_size_max_stock: 9,
+    supplier_vat_included: true,
     enabled: false,
     url_masked: "",
     last_import: null,
@@ -59,6 +60,7 @@ export default function SupplierXml() {
         price_markup: Number(cfg.price_markup),
         min_stock: Number(cfg.min_stock),
         single_size_max_stock: Number(cfg.single_size_max_stock),
+        supplier_vat_included: !!cfg.supplier_vat_included,
         enabled: !!cfg.enabled,
       };
       // Adres yalnız yeni girildiyse gönderilir; boşsa mevcut (şifreli) adres korunur.
@@ -195,6 +197,22 @@ export default function SupplierXml() {
               stoğu bu sayıya eşit/altındaysa ürün silinir ve besleme onu
               <b> bir daha getirmez</b>. Kalıcıdır: geri almak için ürünü kara
               listeden çıkarmanız gerekir. 0 yazarsanız kural kapanır.
+            </p>
+          </div>
+          <div>
+            <label className="flex items-center gap-2 text-sm font-medium mb-1">
+              <input
+                type="checkbox"
+                checked={!!cfg.supplier_vat_included}
+                onChange={(e) =>
+                  setCfg({ ...cfg, supplier_vat_included: e.target.checked })}
+              />
+              Bayi fiyatları KDV dahil
+            </label>
+            <p className="text-xs text-gray-500 mt-1">
+              İşaretliyse satış fiyatı <b>maliyet × katsayı</b> olur. İşaretsizse
+              üstüne KDV eklenir. Beslemedeki KDV alanı boş gelebiliyor; boşken
+              kod "hariç" sayıp fiyatı <b>KDV kadar şişiriyordu</b>.
             </p>
           </div>
           <div>

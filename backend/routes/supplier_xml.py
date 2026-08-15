@@ -119,6 +119,13 @@ SINGLE_SIZE_MAX_STOCK_DEFAULT = 9
 # ZARARINA satışa açılıyordu. Varsayılan iş kuralına çekildi.
 MARKUP_DEFAULT = 3.0
 
+# BAYİ FİYATI KDV DAHİL Mİ?
+# Beslemedeki KDVDahil alanı boş/yanlış gelebiliyor; boş gelince kod "hariç"
+# varsayıp fiyata bir kez daha KDV bindiriyordu — vitrin fiyatı %KDV kadar
+# şişiyordu. Tedarikçiye göre değişen bir gerçek, koda gömülmez: ayardan gelir.
+# modayakamoz bayi fiyatlarını KDV DAHİL veriyor (yönetim beyanı).
+SUPPLIER_VAT_INCLUDED_DEFAULT = True
+
 
 def _tr_title_word(w: str) -> str:
     if not w:
@@ -995,7 +1002,8 @@ async def kapat_ve_engelle(product: Dict[str, Any], sebep: str,
 # ─────────────────────────── aktarım ───────────────────────────
 async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float = 1.0,
                              min_stock: int = MIN_STOCK_DEFAULT,
-                             tek_beden_esik: int = SINGLE_SIZE_MAX_STOCK_DEFAULT) -> Dict[str, Any]:
+                             tek_beden_esik: int = SINGLE_SIZE_MAX_STOCK_DEFAULT,
+                             kdv_dahil: bool = SUPPLIER_VAT_INCLUDED_DEFAULT) -> Dict[str, Any]:
     """Ara temsili ürün dökümanına çevirir; kodları BİZ üretiriz."""
     model_code = await supplier_codes.get_or_create_model_code(
         db, supplier, rec["model_ref"], rec.get("group_ref") or "")
@@ -1024,7 +1032,7 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
             "purchase_price": _cost,
             "price": sale_price(_cost,
                                 vat_rate=float(v.get("vat") or rec["vat"] or 0),
-                                vat_included=bool(v.get("vat_included")),
+                                vat_included=kdv_dahil or bool(v.get("vat_included")),
                                 markup=markup),
             # Tedarikçi kodları yalnız eşleme için saklanır, müşteriye gösterilmez.
             "supplier_barcode": v.get("supplier_barcode") or "",
@@ -1087,7 +1095,7 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
         "purchase_price": float(rec.get("price") or 0),
         "price": (primary.get("price") if primary else 0) or sale_price(
             float(rec.get("price") or 0), vat_rate=float(rec.get("vat") or 0),
-            vat_included=bool(rec.get("vat_included")), markup=markup),
+            vat_included=kdv_dahil or bool(rec.get("vat_included")), markup=markup),
         "list_price": float(rec.get("list_price") or 0) or None,
         "currency": rec.get("currency") or "TRY",
         "vat_rate": float(rec.get("vat") or 10),
@@ -1117,6 +1125,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
     markup = float(cfg.get("price_markup") or MARKUP_DEFAULT)
     min_stock = int(cfg.get("min_stock", MIN_STOCK_DEFAULT))
     tek_beden_esik = int(cfg.get("single_size_max_stock", SINGLE_SIZE_MAX_STOCK_DEFAULT))
+    kdv_dahil = bool(cfg.get("supplier_vat_included", SUPPLIER_VAT_INCLUDED_DEFAULT))
     low_stock = deactivated = deleted = retired = 0
     _CAT_CACHE["map"] = None  # taze oku: panelden kategori eklenmiş olabilir
     records, _ = await load_items()
@@ -1152,7 +1161,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
                  "manual_deactivated": 1, "images_custom": 1})
 
             doc = await _build_product_doc(rec, supplier, markup, min_stock,
-                                           tek_beden_esik)
+                                           tek_beden_esik, kdv_dahil)
             doc["supplier_key"] = key
 
             if existing:
@@ -1294,6 +1303,7 @@ async def sync_stock() -> Dict[str, Any]:
     # vitrin fiyatı ondan hesaplanıyor. Ayar boşsa varsayılana düşülür —
     # 1.0'a düşmek ürünleri maliyetine sattırırdı.
     markup = float(cfg.get("price_markup") or MARKUP_DEFAULT)
+    kdv_dahil = bool(cfg.get("supplier_vat_included", SUPPLIER_VAT_INCLUDED_DEFAULT))
     records, _ = await load_items()
 
     touched = missing = failed = retired = 0
@@ -1350,7 +1360,7 @@ async def sync_stock() -> Dict[str, Any]:
                         v["price"] = sale_price(
                             _c,
                             vat_rate=float(src.get("vat") or rec.get("vat") or 0),
-                            vat_included=bool(src.get("vat_included")),
+                            vat_included=kdv_dahil or bool(src.get("vat_included")),
                             markup=markup)
                 else:
                     # Beslemeden düşen varyant → stoğu sıfırla, silme
@@ -1380,7 +1390,7 @@ async def sync_stock() -> Dict[str, Any]:
             _urun_maliyet = float(rec.get("price") or 0)
             _yeni_fiyat = sale_price(
                 _urun_maliyet, vat_rate=float(rec.get("vat") or 0),
-                vat_included=bool(rec.get("vat_included")),
+                vat_included=kdv_dahil or bool(rec.get("vat_included")),
                 markup=markup) if _urun_maliyet > 0 else None
             _set = {"variants": new_variants, "stock": total,
                     "stock_synced_at": _now_iso()}
@@ -1449,6 +1459,8 @@ async def read_config(_admin=Depends(require_admin)):
         "min_stock": int(cfg.get("min_stock", MIN_STOCK_DEFAULT)),
         "single_size_max_stock": int(cfg.get("single_size_max_stock",
                                              SINGLE_SIZE_MAX_STOCK_DEFAULT)),
+        "supplier_vat_included": bool(cfg.get("supplier_vat_included",
+                                              SUPPLIER_VAT_INCLUDED_DEFAULT)),
         "mapping": cfg.get("mapping") or {},
         "last_import": cfg.get("last_import"),
         "last_stock_sync": cfg.get("last_stock_sync"),
@@ -1490,6 +1502,8 @@ async def write_config(payload: dict, _admin=Depends(require_admin)):
             raise HTTPException(status_code=400,
                                 detail="single_size_max_stock negatif olamaz.")
         update["single_size_max_stock"] = _ts
+    if "supplier_vat_included" in payload:
+        update["supplier_vat_included"] = bool(payload["supplier_vat_included"])
     if payload.get("supplier_name"):
         update["supplier_name"] = str(payload["supplier_name"]).strip()
     if isinstance(payload.get("mapping"), dict):
