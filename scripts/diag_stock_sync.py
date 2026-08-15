@@ -20,6 +20,7 @@ Kullanım (sunucuda):
 import argparse
 import asyncio
 import os
+import re
 import sys
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -29,8 +30,9 @@ sys.path.insert(0, os.path.join(_HERE, "..", "backend"))
 async def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--ornek", type=int, default=10, help="Kaç örnek yazılsın.")
-    ap.add_argument("--limit", type=int, default=0,
-                    help="Yalnız ilk N besleme kaydını incele (hızlı bakış).")
+    ap.add_argument("--limit", type=int, default=400,
+                    help="İncelenecek besleme kaydı sayısı (0 = hepsi). "
+                         "Teşhis için örnek yeter; tamamı binlerce tur atar.")
     args = ap.parse_args()
 
     try:
@@ -49,7 +51,10 @@ async def main() -> int:
     print("besleme indiriliyor…")
     records, _ = await sx.load_items()
     if args.limit:
-        records = records[:args.limit]
+        # Baştan almak yerine ARALIKLI örnek: besleme sıralı geldiği için ilk N
+        # kayıt tek bir kategoriden olabiliyor, tablo yanıltıyordu.
+        adim = max(1, len(records) // args.limit)
+        records = records[::adim][:args.limit]
     print(f"{len(records)} besleme kaydı, asgari stok eşiği: {min_stock}\n")
 
     urun_yok = 0
@@ -70,12 +75,22 @@ async def main() -> int:
             continue
         urun_var += 1
 
+        # KODLARI YAZMADAN OKU. get_or_create_variant_codes eksik kaydı
+        # OLUŞTURUR — teşhis betiği veriyi değiştirmemeli. Eşleme tablosunu
+        # tek turda okuyup mevcut kodları kullanıyoruz; kayıt yoksa o anahtar
+        # atlanıyor (zaten tedarikçi kimlikleri asıl eşleme yolu).
+        gkey = supplier_codes.supplier_key(
+            supplier, rec.get("group_ref") or rec["model_ref"])
+        harita_doc = await db.supplier_code_map.find_one(
+            {"key": gkey}, {"_id": 0, "variants": 1})
+        kayitli = (harita_doc or {}).get("variants") or {}
         kodlar = []
         for v in rec["variants"]:
-            codes = await supplier_codes.get_or_create_variant_codes(
-                db, supplier, rec["model_ref"], v.get("ref") or "0",
-                rec.get("group_ref") or "")
-            kodlar.append(codes["stock_code"])
+            vref = str(v.get("ref") or "0").strip().lower()
+            if rec.get("group_ref"):
+                vref = f"{str(rec['model_ref']).strip().lower()}|{vref}"
+            vkey = re.sub(r"[.$\x00]", "_", vref) or "0"
+            kodlar.append((kayitli.get(vkey) or {}).get("stock_code") or "")
         harita = sx.besleme_haritasi(rec["variants"], kodlar)
 
         eslesen = 0
