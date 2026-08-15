@@ -152,7 +152,7 @@ const DEFAULT_COLUMNS = [
     { to: "/sayfa/gizlilik", label: "Gizlilik Politikası" },
   ]},
   { title: "İletişim", static: [
-    "info@meluni.com.tr", "+90 543 330 03 10", "Pazartesi-Cumartesi 09:00 - 18:00",
+    "info@meluni.com.tr", "+90 539 673 85 40", "Pazartesi-Cumartesi 09:00 - 18:00",
   ]},
 ];
 

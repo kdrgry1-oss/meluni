@@ -442,13 +442,13 @@ export default function AdminSettings() {
               <label className="block text-sm font-medium mb-1">Vergi Kimlik No (VKN)</label>
               <input type="text" value={settings.company_info?.tax_number || ""}
                 onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), tax_number: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm font-mono" placeholder="7810816779" />
+                className="w-full border px-3 py-2 rounded text-sm font-mono" placeholder="10 haneli VKN ya da 11 haneli TCKN" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Vergi Dairesi</label>
               <input type="text" value={settings.company_info?.tax_office || ""}
                 onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), tax_office: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="HALKALI VERGİ DAİRESİ BAŞKANLIĞI" />
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="BEYLİKDÜZÜ" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Web Sitesi</label>

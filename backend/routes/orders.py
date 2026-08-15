@@ -4088,12 +4088,12 @@ async def create_invoice_for_order(
             invoice_number=invoice_number,
             issue_date=issue_date,
             issue_time=issue_time,
-            supplier_vkn=dogan_settings.get("vkn") or _co.get("tax_number") or "7810816779",
+            supplier_vkn=dogan_settings.get("vkn") or _co.get("tax_number") or "",
             supplier_name=dogan_settings.get("supplier_name") or _co.get("company_name") or "",
             supplier_district=dogan_settings.get("supplier_district") or "BEYLIKDÜZÜ",
             supplier_city=dogan_settings.get("supplier_city") or "İstanbul",
             supplier_street=dogan_settings.get("supplier_street") or _co.get("address") or "Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19",
-            supplier_tax_office=dogan_settings.get("supplier_tax_office") or _co.get("tax_office") or "HALKALI VERGİ DAİRESİ BAŞKANLIĞI",
+            supplier_tax_office=dogan_settings.get("supplier_tax_office") or _co.get("tax_office") or "BEYLİKDÜZÜ",
             supplier_phone=dogan_settings.get("supplier_phone") or _co.get("phone") or "",
             supplier_email=dogan_settings.get("supplier_email") or _co.get("email") or "",
             supplier_website=dogan_settings.get("supplier_website") or _co.get("website") or "",
@@ -4324,12 +4324,12 @@ async def create_invoice_for_order(
             invoice_number=invoice_number,
             issue_date=issue_date,
             issue_time=issue_time,
-            supplier_vkn=dogan_settings.get("vkn") or _co.get("tax_number") or "7810816779",
+            supplier_vkn=dogan_settings.get("vkn") or _co.get("tax_number") or "",
             supplier_name=dogan_settings.get("supplier_name") or _co.get("company_name") or "",
             supplier_district=dogan_settings.get("supplier_district") or "BEYLIKDÜZÜ",
             supplier_city=dogan_settings.get("supplier_city") or "İstanbul",
             supplier_street=dogan_settings.get("supplier_street") or _co.get("address") or "Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19",
-            supplier_tax_office=dogan_settings.get("supplier_tax_office") or _co.get("tax_office") or "HALKALI VERGİ DAİRESİ BAŞKANLIĞI",
+            supplier_tax_office=dogan_settings.get("supplier_tax_office") or _co.get("tax_office") or "BEYLİKDÜZÜ",
             supplier_website=dogan_settings.get("supplier_website") or _co.get("website") or "",
             customer_vkn=customer_vkn,
             customer_id_scheme=_ef_scheme,
@@ -5213,8 +5213,8 @@ async def _get_sender_info() -> dict:
     olur ve MNG/DHL barkodu gerçekten üretilebilir (boş adres yüzünden barkod üretilememe sorunu çözülür)."""
     store = await db.settings.find_one({"id": "store_info"}, {"_id": 0}) or {}
     return {
-        "name": store.get("sender_name") or "MELUNİ DIŞ TİCARET A.Ş.",
-        "phone": _normalize_phone(store.get("sender_phone") or "5433300310"),
+        "name": store.get("sender_name") or "MELEK GİRAY",
+        "phone": _normalize_phone(store.get("sender_phone") or "5396738540"),
         "address": store.get("sender_address") or "Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19",
         "city": store.get("sender_city") or "İstanbul",
         "district": store.get("sender_district") or "Beylikdüzü",
@@ -6650,7 +6650,7 @@ RETURN_CONTRACT_NO = "490059279"
 def _company_return_address(warehouse: dict) -> str:
     """İade paketinin gideceği ŞİRKET (alıcı) adresini tek satır metne çevirir (müşteriye gösterilir)."""
     w = warehouse or {}
-    parts = [w.get("name") or "MELUNİ DIŞ TİCARET A.Ş.",
+    parts = [w.get("name") or "MELEK GİRAY",
              (w.get("address") or "").strip(),
              "/".join([x for x in [w.get("district"), w.get("city")] if x])]
     return " · ".join([p for p in parts if p])

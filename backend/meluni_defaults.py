@@ -15,7 +15,7 @@ import re as _re
 
 # Üretici / İthalatçı (GPSR / "Ürün Denetim Bilgileri") tek kaynak.
 MELUNI_COMPANY = {
-    "company_name": "MELUNİ DIŞ TİCARET A.Ş.",
+    "company_name": "MELEK GİRAY",
     "email": "info@meluni.com.tr",
     "address": "Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19 Beylikdüzü/İstanbul",
 }

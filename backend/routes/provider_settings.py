@@ -76,7 +76,7 @@ EINVOICE_PROVIDERS = {
         "website": "https://www.edonusum.com",
         "description": "Ticimax başta olmak üzere yaygın kullanılan e-Fatura / e-Arşiv servis sağlayıcı.",
         "fields": [
-            _f("vkn_tckn", "VKN / TCKN", required=True, placeholder="7810816779"),
+            _f("vkn_tckn", "VKN / TCKN", required=True, placeholder="10 haneli VKN ya da 11 haneli TCKN"),
             _f("branch", "Şube Adı", required=True, placeholder="DFLT"),
             _f("earchive_username", "E-Arşiv Kullanıcı Adı", required=True),
             _f("earchive_password", "E-Arşiv Şifre", type="password", required=True),

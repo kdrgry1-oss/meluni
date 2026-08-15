@@ -3290,7 +3290,7 @@ export default function AdminProducts() {
                   // dolu göstermek içindir — formData'ya YAZMAZ, push'a karışmaz. Üretici/İthalatçı
                   // Adı→firma, ...Mail→e-posta, ...Adres→adres.
                   const MELUNI_COMPANY = {
-                    company_name: "MELUNİ DIŞ TİCARET A.Ş.",
+                    company_name: "MELEK GİRAY",
                     email: "info@meluni.com.tr",
                     address: "Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19 Beylikdüzü/İstanbul",
                   };

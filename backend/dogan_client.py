@@ -620,7 +620,7 @@ class DoganClient:
         _sup_street_line = f"<cbc:StreetName>{escape(supplier_street)}</cbc:StreetName>" if supplier_street else ""
         supplier_district = _s(supplier_district)
         supplier_city = _s(supplier_city) or "İstanbul"
-        supplier_tax_office = _s(supplier_tax_office) or "HALKALI VERGİ DAİRESİ BAŞKANLIĞI"
+        supplier_tax_office = _s(supplier_tax_office) or "BEYLİKDÜZÜ"
         customer_phone = _s(customer_phone)
         customer_email = _s(customer_email)
         customer_street = _s(customer_street)
@@ -1067,7 +1067,7 @@ class DoganClient:
         _sup_street_line = f"<cbc:StreetName>{escape(supplier_street)}</cbc:StreetName>" if supplier_street else ""
         supplier_district = _s(supplier_district)
         supplier_city = _s(supplier_city) or "İstanbul"
-        supplier_tax_office = _s(supplier_tax_office) or "HALKALI VERGİ DAİRESİ BAŞKANLIĞI"
+        supplier_tax_office = _s(supplier_tax_office) or "BEYLİKDÜZÜ"
         customer_phone = _s(customer_phone)
         customer_email = _s(customer_email)
         customer_street = _s(customer_street)
@@ -1461,7 +1461,7 @@ class DoganClient:
                                 supplier_city: str = "İstanbul",
                                 supplier_street: str = "",
                                 supplier_country: str = "Türkiye",
-                                supplier_tax_office: str = "HALKALI VERGİ DAİRESİ BAŞKANLIĞI",
+                                supplier_tax_office: str = "BEYLİKDÜZÜ",
                                 supplier_website: str = "meluni.com.tr",
                                 customer_vkn: str,
                                 customer_name: str,

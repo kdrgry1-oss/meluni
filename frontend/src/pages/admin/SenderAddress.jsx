@@ -8,7 +8,7 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const FIELDS = [
   { key: "sender_name", label: "Gönderici / Mağaza Adı", ph: "MELUNİ DIŞ TİC. A.Ş", full: true },
   { key: "sender_phone", label: "Telefon", ph: "5XX XXX XX XX" },
-  { key: "sender_tax_no", label: "Vergi No (opsiyonel)", ph: "7810816779" },
+  { key: "sender_tax_no", label: "Vergi No (opsiyonel)", ph: "10 haneli VKN ya da 11 haneli TCKN" },
   { key: "sender_city", label: "İl", ph: "İstanbul" },
   { key: "sender_district", label: "İlçe", ph: "Esenyurt" },
   { key: "sender_address", label: "Açık Adres", ph: "Cadde, No, Mahalle…", full: true, area: true },
