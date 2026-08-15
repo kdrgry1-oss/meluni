@@ -267,14 +267,23 @@ async def _store(raw: bytes, product_id: str, pose: str,
         kayit.update({"r2_key": key, "r2_url": url})
     else:
         # upload.py ile AYNI yol ve aynı servis ucu: /api/upload/files/<ad>.
-        # Diske yazamasak bile base64 kopya veritabanında durur, görsel yine servis edilir.
+        #
+        # BASE64 KOPYA YALNIZ DİSKE YAZILAMAZSA. Eskiden HER görselin base64
+        # kopyası da veritabanına yazılıyordu — diske yazma başarılı olsa bile.
+        # Toplu iyileştirmede 654 görsel Atlas'ın 512 MB kotasını doldurdu ve
+        # veritabanı YAZMAYI REDDETTİ (sipariş dahil her yazma durur). Görsel
+        # dosyadır, veritabanına konmaz; yedek kopya yalnız gerçek çare
+        # kalmadığında anlamlı.
+        diske_yazildi = False
         try:
             from .upload import UPLOAD_DIR
             with open(os.path.join(UPLOAD_DIR, filename), "wb") as fh:
                 fh.write(raw)
+            diske_yazildi = True
         except Exception as e:
             logger.warning(f"[ai-images] diske yazilamadi ({e}); base64 kopyayla devam")
-        kayit["data_b64"] = base64.b64encode(raw).decode("ascii")
+        if not diske_yazildi:
+            kayit["data_b64"] = base64.b64encode(raw).decode("ascii")
         url = f"{await _public_base()}/api/upload/files/{filename}"
 
     await db.files.insert_one(kayit)
