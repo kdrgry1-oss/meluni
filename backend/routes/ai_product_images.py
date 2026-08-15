@@ -1277,8 +1277,16 @@ async def read_size_table(product_id: str, index: int, *, kaydet: bool = False) 
 
 
 async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]] = None,
-                                 replace: bool = False) -> Dict[str, Any]:
-    """Ürün görsellerini iyileştirip 1200x1800 olarak yeniden üretir."""
+                                 replace: bool = False,
+                                 sadece_ai: bool = False) -> Dict[str, Any]:
+    """Ürün görsellerini iyileştirip hedef ölçüde yeniden üretir.
+
+    sadece_ai=True: model görseli işleyemezse (kota/kredi/yetki) o görsel
+    ATLANIR. Tek üründe düz büyütmeye düşmek kabul edilebilir — kullanıcı
+    sonucu görüyor. TOPLU işte değil: kredi ortada biterse yüzlerce görsel
+    sessizce "yalnız ölçeklenmiş" hâliyle ürünün üstüne yazılır, üstelik
+    images_custom işaretlendiği için tedarikçi güncellemesi de kilitlenir.
+    """
     product = await db.products.find_one({"id": product_id},
                                          {"_id": 0, "id": 1, "images": 1})
     if not product:
@@ -1318,11 +1326,12 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
                         client, api_key, model,
                         chart_prompt if tur == "olcu" else prompt, raw)
                 except HTTPException as e:
-                    # Model erişilemiyor (kota/kredi/yetki). Bu, işi TAMAMEN
-                    # düşürmek için sebep değil: görseli yine de hedef ölçüye
-                    # büyütüyoruz. Kullanıcı en azından 1200x1800 alır ve
-                    # kutuda "yalnız ölçek" etiketiyle sebebi görür.
+                    # Model erişilemiyor (kota/kredi/yetki). Tek üründe işi
+                    # TAMAMEN düşürmüyoruz: görsel yine hedef ölçüye büyütülür,
+                    # kutuda "yalnız ölçek" etiketiyle sebebi görünür.
                     uyari = str(e.detail)
+                    if sadece_ai:
+                        return {"index": i, "error": uyari, "atlandi": True}
                 son = _fit_target(iyilestirilmis or raw)
                 url = await _store(son, product_id, f"hd{i}", "image/jpeg")
                 return {"index": i, "url": url, "ai": bool(iyilestirilmis),
@@ -1476,9 +1485,11 @@ async def enhance(product_id: str, payload: dict | None = None,
     idx = p.get("indexes")
     indexes = [int(i) for i in idx] if isinstance(idx, list) else None
     replace = bool(p.get("replace"))
+    sadece_ai = bool(p.get("sadece_ai"))
 
     def _isi():
-        return enhance_product_images(product_id, indexes=indexes, replace=replace)
+        return enhance_product_images(product_id, indexes=indexes, replace=replace,
+                                      sadece_ai=sadece_ai)
 
     if p.get("bekle"):
         return await _isi()
