@@ -34,6 +34,11 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
   // yerine yaz, ölçüleri beden tablosuna kaydet. Sıra sunucuda; panelde
   // kullanıcının takip etmesi gereken bir adım listesi yok.
   const [duzeltBekle, setDuzeltBekle] = useState(false);
+  // Ölçü tablosu ÜRÜN düzeyindedir: renk değişince beden ölçüsü değişmez.
+  // Ama tablo yalnız üzerinde çalışılan renge yazılıyordu; diğer renkler
+  // İngilizce tabloyla ya da tablosuz kalıyordu.
+  const [kardesBekle, setKardesBekle] = useState(false);
+  const [kardesSonuc, setKardesSonuc] = useState("");
   const [duzeltIlerleme, setDuzeltIlerleme] = useState("");
   const [secimGerekli, setSecimGerekli] = useState(false);
   const [okunan, setOkunan] = useState(null);
@@ -206,6 +211,21 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
   /** TEK DÜĞME: tabloyu bul → Türkçeleştir → görselin yerine yaz → kaydet.
    *  Sıra sunucuda (size-table-fix). Hangi görselin tablo olduğu bulunamazsa
    *  sunucu 422 döner ve kullanıcıdan görseli seçmesini isteriz. */
+  /** Aynı stok kodlu renk kardeşlerine de aynı tablo görselini yaz. */
+  const kardeslereYaz = async () => {
+    setKardesBekle(true);
+    setHata("");
+    setKardesSonuc("");
+    try {
+      const d = await istek("size-chart-to-siblings", {});
+      setKardesSonuc(d.mesaj || "tamam");
+    } catch (e) {
+      setHata(e.message);
+    } finally {
+      setKardesBekle(false);
+    }
+  };
+
   const olcuDuzelt = async (index) => {
     setDuzeltBekle(true);
     setHata("");
@@ -433,6 +453,23 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
             ? `Çalışıyor… ${duzeltIlerleme}`
             : "Ölçü tablosunu Türkçeleştir"}
         </button>
+
+        {/* Ölçü tablosu ÜRÜN düzeyindedir; renk değişince beden ölçüsü
+            değişmez. Tablo yalnız üzerinde çalışılan renge yazılıyordu. */}
+        <button
+          type="button"
+          onClick={kardeslereYaz}
+          disabled={kardesBekle}
+          className="ml-2 px-3 py-1.5 rounded-lg border text-sm inline-flex items-center gap-1.5 hover:bg-gray-50 disabled:opacity-50"
+        >
+          <Ruler className="w-4 h-4" />
+          {kardesBekle ? "Yazılıyor…" : "Bu tabloyu renk kardeşlerine de yükle"}
+        </button>
+        {kardesSonuc && (
+          <div className="mt-2 text-xs text-green-800 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+            {kardesSonuc}
+          </div>
+        )}
 
         {/* Yalnız tablo görseli bulunamadığında çıkar — gereksiz yere
             her seferinde altı küçük resim göstermiyoruz. */}

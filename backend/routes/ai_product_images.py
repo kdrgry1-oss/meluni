@@ -215,6 +215,32 @@ async def _generate_one(
     raise HTTPException(status_code=502, detail="Yanıtta görsel verisi yok.")
 
 
+def _olcu_gorseli_mi(x) -> bool:
+    """Bu görsel bir ölçü tablosu mu?
+
+    İki işaret: sözlük biçimindeyse `is_size_table`, düz adresse bizim ürettiğimiz
+    dosya adı (`-olcu...`). Tedarikçiden gelen ham tablo görselini bilemeyiz —
+    o yalnız yönetim çevirdikten sonra bizim adımızı alır.
+    """
+    if isinstance(x, dict):
+        if x.get("is_size_table"):
+            return True
+        x = x.get("url") or ""
+    return bool(re.search(r"-olcu(\d+|-elle|-kredisiz)?-[0-9a-f]{6,}\.", str(x or "")))
+
+
+def _olcu_sona(images: List[Any]) -> List[Any]:
+    """Ölçü tablosu görsellerini listenin SONUNA taşır.
+
+    Yönetim isteği: tablo her üründe en sonda görünsün. Vitrin galeriyi sıraya
+    göre gösteriyor; tablo aralarda kalınca müşteri ürün fotoğrafı beklerken
+    tabloyla karşılaşıyordu.
+    """
+    normal = [x for x in images if not _olcu_gorseli_mi(x)]
+    olcu = [x for x in images if _olcu_gorseli_mi(x)]
+    return normal + olcu
+
+
 def _gorsel_url(x) -> str:
     """Görsel listesindeki bir kaydın adresi.
 
@@ -456,25 +482,79 @@ def _render_size_table(adlar: List[str], satirlar: List[Dict[str, Any]],
     # Sabit bir üst boşluk bırakmak tabloyu sayfanın tepesine yığıyor, altta
     # yarım sayfa boşluk kalıyordu.
     sat_y = max(52, min(104, int((H - 620) / (n_sat + 1))))
-    blok_y = 150 + (n_sat + 1) * sat_y             # başlık + tablo
-    tepe = max(90, int((H - blok_y) / 2))
+
+    # BAŞLIKLARI KOLONA SIĞDIR.
+    # Başlıklar tek satıra yazılıyordu; kolon sayısı artınca ("Üst Giyim Boyu",
+    # "Paça Genişliği" gibi uzun adlarla) yan yana taşıp ÜST ÜSTE BİNİYORDU,
+    # tablo okunmaz hâle geliyordu. Ad kolona sığmıyorsa kelimelerden bölünüp
+    # alt alta yazılıyor; tek kelime bile sığmıyorsa punto küçültülüyor.
+    bf_punto = min(30, int(sat_y * 0.42))
+    ic_bosluk = 14
+
+    def _sar(ad: str, f) -> List[str]:
+        """Adı kolon genişliğine göre satırlara böler."""
+        sinir = kol_g - 2 * ic_bosluk
+        kelimeler = str(ad).split()
+        satir_listesi, mevcut = [], ""
+        for k in kelimeler:
+            deneme = (mevcut + " " + k).strip()
+            if d.textlength(deneme, font=f) <= sinir or not mevcut:
+                mevcut = deneme
+            else:
+                satir_listesi.append(mevcut)
+                mevcut = k
+        if mevcut:
+            satir_listesi.append(mevcut)
+        return satir_listesi or [str(ad)]
+
+    # Punto, en uzun TEK KELİME sığana kadar küçültülür (en fazla 3 kademe).
+    for _ in range(8):
+        bf = font(bf_punto, True)
+        tasan = any(d.textlength(k, font=bf) > kol_g - 2 * ic_bosluk
+                    for ad in kolonlar for k in str(ad).split())
+        if not tasan or bf_punto <= 17:
+            break
+        bf_punto -= 2
+    bf = font(bf_punto, True)
+
+    baslik_satirlari = [_sar(ad, bf) for ad in kolonlar]
+    en_cok = max(len(x) for x in baslik_satirlari)
+    satir_y = int(bf_punto * 1.30)
+    baslik_y = max(sat_y, en_cok * satir_y + 22)     # çok satırlıysa başlık büyür
+
+    blok_y = 150 + baslik_y + n_sat * sat_y          # başlık metni + tablo
+    tepe = max(60, int((H - blok_y) / 2))
 
     d.text((kenar, tepe), baslik, font=font(52, True), fill=KOYU)
     d.text((kenar, tepe + 72), "Ölçüler santimetre (cm) cinsindendir.",
            font=font(28), fill=GRI)
     ust = tepe + 150
 
-    # Başlık satırı
-    d.rectangle([kenar, ust, W - kenar, ust + sat_y], fill=(244, 244, 244))
-    bf = font(min(30, int(sat_y * 0.42)), True)
-    for i, ad in enumerate(kolonlar):
+    # Başlık satırı (çok satırlı olabilir, dikey ortalanır)
+    d.rectangle([kenar, ust, W - kenar, ust + baslik_y], fill=(244, 244, 244))
+    for i, pargalar in enumerate(baslik_satirlari):
         x = kenar + i * kol_g + kol_g / 2
-        kutu = d.textbbox((0, 0), ad, font=bf)
-        d.text((x - (kutu[2] - kutu[0]) / 2, ust + sat_y / 2 - (kutu[3] - kutu[1]) / 2 - kutu[1]),
-               ad, font=bf, fill=KOYU)
+        toplam = len(pargalar) * satir_y
+        y0 = ust + (baslik_y - toplam) / 2
+        for j, parca in enumerate(pargalar):
+            g = d.textlength(parca, font=bf)
+            d.text((x - g / 2, y0 + j * satir_y), parca, font=bf, fill=KOYU)
 
-    sf = font(min(30, int(sat_y * 0.40)))
-    y = ust + sat_y
+    # VERİ HÜCRELERİ DE SIĞMALI. "2XL-3XL" gibi uzun beden etiketleri kolon
+    # genişliğini aşıp kenardan kesiliyordu; punto hepsi sığana kadar küçülür.
+    _hucre_metinleri = [str(r.get("beden") or "") for r in satirlar]
+    for r in satirlar:
+        _hucre_metinleri += [str(x or "") for x in (r.get("olculer") or [])]
+    sf_punto = min(30, int(sat_y * 0.40))
+    for _ in range(10):
+        sf = font(sf_punto)
+        if sf_punto <= 15 or all(
+                d.textlength(t, font=sf) <= kol_g - 2 * ic_bosluk
+                for t in _hucre_metinleri):
+            break
+        sf_punto -= 2
+    sf = font(sf_punto)
+    y = ust + baslik_y
     for r in satirlar:
         hucreler = [str(r.get("beden") or "")] + [
             str(x or "—") for x in (r.get("olculer") or [])]
@@ -1202,8 +1282,9 @@ async def convert_size_chart(product_id: str, index: int, *, replace: bool = Fal
     ham_liste = [u for u in ((product or {}).get("images") or []) if _gorsel_url(u)]
     images = [_gorsel_url(u) for u in ham_liste]
     if replace and 0 <= index < len(images):
-        yeni_liste = list(ham_liste)
-        yeni_liste[index] = _gorsel_degistir(ham_liste[index], url)
+        yeni_liste = _olcu_sona([
+            _gorsel_degistir(x, url) if i == index else x
+            for i, x in enumerate(ham_liste)])
         await db.products.update_one({"id": product_id}, {"$set": {
             "images": yeni_liste,
             "images_custom": True,
@@ -1591,6 +1672,7 @@ async def size_table_build(product_id: str, payload: dict, _admin=Depends(requir
         i = int(index)
         if 0 <= i < len(images):
             images[i] = _gorsel_degistir(ham_liste[i], url)
+            images = _olcu_sona(images)
             await db.products.update_one({"id": product_id}, {"$set": {
                 "images": images, "images_custom": True,
                 "size_chart_localized_at": _now_iso()}})
@@ -1729,10 +1811,11 @@ async def _size_table_fix(product_id: str, index=None) -> Dict[str, Any]:
     url = await _store(raw, product_id, f"olcu{index}", "image/jpeg")
     yeni = list(ham_gorseller)
     yeni[index] = _gorsel_degistir(ham_gorseller[index], url)
+    yeni = _olcu_sona(yeni)                      # tablo her zaman en sonda
     await db.products.update_one({"id": product_id}, {"$set": {
         "images": yeni, "images_custom": True,
         "size_chart_localized_at": _now_iso()}})
-    adimlar.append("Türkçe tablo çizildi ve görselin yerine yazıldı")
+    adimlar.append("Türkçe tablo çizildi, görselin yerine yazıldı ve sona alındı")
 
     # 4) Beden tablosuna kaydet (vitrin ve pazaryeri VERİ olarak kullanıyor).
     senkron = await _olcu_tablosu_yaz(product_id, adlar, satirlar,
@@ -1818,6 +1901,7 @@ async def size_table_auto(product_id: str, payload: dict | None = None,
         i = int(index)
         if 0 <= i < len(images):
             images[i] = _gorsel_degistir(ham_liste[i], url)
+            images = _olcu_sona(images)
             await db.products.update_one({"id": product_id}, {"$set": {
                 "images": images, "images_custom": True,
                 "size_chart_localized_at": _now_iso()}})
@@ -1834,3 +1918,65 @@ async def size_table_auto(product_id: str, payload: dict | None = None,
             "kredi_harcandi": False,
             "warning": "Ölçüler " + (veri.get("kaynak_adi") or "sistemden") +
                        " alındı — sayıları bir kez gözden geçirin."}
+
+
+@router.post("/products/{product_id}/size-chart-to-siblings")
+async def size_chart_to_siblings(product_id: str, payload: dict | None = None,
+                                 _admin=Depends(require_admin)):
+    """Ölçü tablosu görselini AYNI STOK KODLU renk kardeşlerine de yazar.
+
+    Ölçü tablosu ürün düzeyindedir: rengin değişmesi bedenin ölçüsünü
+    değiştirmez. Ama tablo yalnız üzerinde çalışılan renge yazılıyordu, diğer
+    renkler İngilizce tabloyla ya da tablosuz kalıyordu. Aynı görsel hepsine
+    kopyalanır; her kardeşte varsa eski tablo görseli çıkarılır ve yenisi
+    SONA eklenir.
+
+    Ölçü VERİSİ (beden×ölçü) zaten `_olcu_tablosu_yaz` ile kardeşlere
+    yansıtılıyor; burada yansıyan GÖRSEL.
+
+    body: {url?: "..."}  — verilmezse üründeki tablo görseli kullanılır.
+    """
+    p = payload or {}
+    urun = await db.products.find_one({"id": product_id},
+                                      {"_id": 0, "images": 1, "stock_code": 1})
+    if not urun:
+        raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
+
+    url = str(p.get("url") or "").strip()
+    if not url:
+        adaylar = [x for x in (urun.get("images") or []) if _olcu_gorseli_mi(x)]
+        if not adaylar:
+            raise HTTPException(
+                status_code=400,
+                detail="Bu üründe ölçü tablosu görseli yok. Önce "
+                       "\"Ölçü tablosunu Türkçeleştir\" ile üretin.")
+        url = _gorsel_url(adaylar[-1])
+
+    kod = str(urun.get("stock_code") or "").strip()
+    if not kod:
+        raise HTTPException(status_code=400,
+                            detail="Ürünün stok kodu yok; renk kardeşi bulunamaz.")
+
+    yazilan, atlanan = 0, 0
+    async for s2 in db.products.find(
+            {"stock_code": kod, "id": {"$ne": product_id}, "is_deleted": {"$ne": True}},
+            {"_id": 0, "id": 1, "images": 1}):
+        mevcut = [x for x in (s2.get("images") or []) if _gorsel_url(x)]
+        # Kardeşte zaten AYNI tablo varsa dokunma (tekrar tekrar eklenmesin).
+        if any(_gorsel_url(x) == url for x in mevcut):
+            atlanan += 1
+            continue
+        temiz = [x for x in mevcut if not _olcu_gorseli_mi(x)]
+        temiz.append({"id": str(uuid.uuid4()), "url": url,
+                      "is_size_table": True, "alt": "Ölçü Tablosu",
+                      "created_at": _now_iso()})
+        await db.products.update_one({"id": s2["id"]}, {"$set": {
+            "images": temiz, "images_custom": True,
+            "size_chart_localized_at": _now_iso()}})
+        yazilan += 1
+
+    return {"product_id": product_id, "url": url, "stock_code": kod,
+            "yazilan_kardes": yazilan, "zaten_vardi": atlanan,
+            "mesaj": (f"{yazilan} renk kardeşine yazıldı"
+                      + (f", {atlanan} tanesinde zaten vardı" if atlanan else ""))
+                     if (yazilan or atlanan) else "Renk kardeşi bulunamadı."}
