@@ -799,6 +799,34 @@ def _st_satirlara(st: Optional[Dict[str, Any]]) -> tuple:
     return adlar, satirlar
 
 
+async def _kardes_sorgusu(product_id: str) -> Optional[Dict[str, Any]]:
+    """Ürünün RENK KARDEŞLERİNİ bulan sorgu (kendisi hariç), yoksa None.
+
+    KÖK-NEDEN: kardeş araması `stock_code` üzerinden yapılıyordu; oysa stok
+    kodunu her renk AYRI üretiyor (kod model referansından türüyor), yani
+    hiçbir kardeş bulunamıyordu — ölçü tablosu "kardeşlere yayıldı" desek de
+    kimseye yayılmıyordu. Kardeşlik anahtarı vitrinle (get_color_siblings)
+    aynı olmalı: `urun_karti_id` / `csv_card_id`. Kimlik taşımayan grup kodu
+    ("MLN-" gibi yalnız önek) KULLANILMAZ; o değer alakasız ürünleri tek gruba
+    düşürüyor. Grup kodu yoksa son çare aynı stok kodudur.
+    """
+    from group_ref import gecerli_grup
+    p = await db.products.find_one(
+        {"id": product_id},
+        {"_id": 0, "urun_karti_id": 1, "csv_card_id": 1, "stock_code": 1})
+    if not p:
+        return None
+    anahtar = str(p.get("urun_karti_id") or p.get("csv_card_id") or "").strip()
+    if anahtar and gecerli_grup(anahtar):
+        return {"$or": [{"urun_karti_id": anahtar}, {"csv_card_id": anahtar}],
+                "id": {"$ne": product_id}, "is_deleted": {"$ne": True}}
+    kod = str(p.get("stock_code") or "").strip()
+    if kod:
+        return {"stock_code": kod, "id": {"$ne": product_id},
+                "is_deleted": {"$ne": True}}
+    return None
+
+
 async def _kredisiz_olcu_verisi(product_id: str) -> Dict[str, Any]:
     """Model çağırmadan ölçü verisi bulur. Bulamazsa satirlar boş döner."""
     st = await db.size_tables.find_one({"product_id": product_id}, {"_id": 0})
@@ -812,11 +840,10 @@ async def _kredisiz_olcu_verisi(product_id: str) -> Dict[str, Any]:
     if not product:
         raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
 
-    kod = str(product.get("stock_code") or "").strip()
-    if kod:
+    kardes_q = await _kardes_sorgusu(product_id)
+    if kardes_q:
         kardes_ids = [p["id"] async for p in db.products.find(
-            {"stock_code": kod, "id": {"$ne": product_id}, "is_deleted": {"$ne": True}},
-            {"_id": 0, "id": 1}) if p.get("id")]
+            kardes_q, {"_id": 0, "id": 1}) if p.get("id")]
         if kardes_ids:
             kst = await db.size_tables.find_one(
                 {"product_id": {"$in": kardes_ids}}, {"_id": 0},
@@ -864,12 +891,9 @@ async def _olcu_tablosu_yaz(product_id: str, adlar: List[str],
 
     senkron = 0
     try:
-        p = await db.products.find_one({"id": product_id}, {"_id": 0, "stock_code": 1})
-        kod = str((p or {}).get("stock_code") or "").strip()
-        if kod:
-            async for s in db.products.find(
-                    {"stock_code": kod, "id": {"$ne": product_id},
-                     "is_deleted": {"$ne": True}}, {"_id": 0, "id": 1}):
+        kardes_q = await _kardes_sorgusu(product_id)
+        if kardes_q:
+            async for s in db.products.find(kardes_q, {"_id": 0, "id": 1}):
                 await db.size_tables.update_one(
                     {"product_id": s["id"]},
                     {"$set": {"product_id": s["id"], **ortak,
@@ -1922,7 +1946,11 @@ async def size_table_auto(product_id: str, payload: dict | None = None,
 
 async def _tabloyu_kardeslere(product_id: str, url: str, stock_code: str,
                               *, sadece_eksik: bool = False) -> tuple:
-    """Ölçü tablosu GÖRSELİNİ aynı stok kodlu renk kardeşlerine yazar.
+    """Ölçü tablosu GÖRSELİNİ ürünün RENK KARDEŞLERİNE yazar.
+
+    Kardeşler `_kardes_sorgusu` ile bulunur (vitrinle aynı anahtar); `stock_code`
+    parametresi yalnız geriye dönük uyumluluk için duruyor — her rengin stok
+    kodu FARKLI olduğundan o anahtarla arama hiçbir kardeş bulmuyordu.
 
     `sadece_eksik=True` iken tablosu OLMAYAN kardeşe yazar, kendi tablosu olanı
     olduğu gibi bırakır (toplu tarama böyle çalışır: kimsenin elle düzelttiği
@@ -1932,10 +1960,10 @@ async def _tabloyu_kardeslere(product_id: str, url: str, stock_code: str,
     Döner: (yazılan, dokunulmayan)
     """
     yazilan = atlanan = 0
-    async for s2 in db.products.find(
-            {"stock_code": stock_code, "id": {"$ne": product_id},
-             "is_deleted": {"$ne": True}},
-            {"_id": 0, "id": 1, "images": 1}):
+    kardes_q = await _kardes_sorgusu(product_id)
+    if not kardes_q:
+        return 0, 0
+    async for s2 in db.products.find(kardes_q, {"_id": 0, "id": 1, "images": 1}):
         mevcut = [x for x in (s2.get("images") or []) if _gorsel_url(x)]
         # Kardeşte zaten AYNI tablo varsa dokunma (tekrar tekrar eklenmesin).
         if any(_gorsel_url(x) == url for x in mevcut):
@@ -2172,7 +2200,7 @@ async def size_tables_auto_run(payload: dict | None = None,
 @router.post("/products/{product_id}/size-chart-to-siblings")
 async def size_chart_to_siblings(product_id: str, payload: dict | None = None,
                                  _admin=Depends(require_admin)):
-    """Ölçü tablosu görselini AYNI STOK KODLU renk kardeşlerine de yazar.
+    """Ölçü tablosu görselini ürünün RENK KARDEŞLERİNE de yazar.
 
     Ölçü tablosu ürün düzeyindedir: rengin değişmesi bedenin ölçüsünü
     değiştirmez. Ama tablo yalnız üzerinde çalışılan renge yazılıyordu, diğer
@@ -2202,9 +2230,11 @@ async def size_chart_to_siblings(product_id: str, payload: dict | None = None,
         url = _gorsel_url(adaylar[-1])
 
     kod = str(urun.get("stock_code") or "").strip()
-    if not kod:
-        raise HTTPException(status_code=400,
-                            detail="Ürünün stok kodu yok; renk kardeşi bulunamaz.")
+    if not await _kardes_sorgusu(product_id):
+        raise HTTPException(
+            status_code=400,
+            detail="Bu ürünün renk kardeşi bulunamadı: grup kodu (ürün kartı "
+                   "kimliği) ve stok kodu boş.")
 
     yazilan, atlanan = await _tabloyu_kardeslere(product_id, url, kod)
 

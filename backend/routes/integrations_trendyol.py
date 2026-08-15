@@ -1723,7 +1723,12 @@ async def sync_products_to_trendyol(
                 # Renk varyantları AYNI stock_code'u paylaşır ama urun_karti_id RENK BAZLI
                 # olabilir → her iki anahtarı da $or ile dene (stock_code en güvenilir bağ).
                 _or = []
-                if _anchor:
+                # Kimlik taşımayan grup kodu ("MLN-" gibi yalnız önek) kardeş
+                # ARAMASINDA KULLANILMAZ: o değeri taşıyan alakasız ürünlerin
+                # kategorisi miras alınır ve ürün Trendyol'a yanlış kategoriyle
+                # gider.
+                from group_ref import gecerli_grup as _gecerli_grup
+                if _anchor and _gecerli_grup(_anchor):
                     _or += [{"urun_karti_id": _anchor}, {"csv_card_id": _anchor}]
                 if _sc:
                     _or += [{"stock_code": _sc}, {"variants.stock_code": _sc}]

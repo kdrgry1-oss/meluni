@@ -1747,7 +1747,14 @@ async def get_color_siblings(product_id: str):
 
     # 1) AÇIK ANAHTAR: urun_karti_id (birincil) veya csv_card_id (yedek) — sistemin geri
     #    kalanıyla (integrations_*/orders) tutarlı. int/string tipi iki tarafta da eşleşir.
+    #    KİMLİK TAŞIMAYAN ANAHTAR KULLANILMAZ: besleme grup kodunu bazı üründe
+    #    yalnız önek olarak yolluyor ("MLN-"). O değeri taşıyan bütün ürünler
+    #    tek gruba düşüp birbirinin rengi görünüyordu (tulumun altında bluz,
+    #    elbise…). Anahtar geçersizse ada dayalı yedek yol devreye girer.
+    from group_ref import gecerli_grup as _gecerli_grup
     anchor = p.get("urun_karti_id") or p.get("csv_card_id")
+    if anchor and not _gecerli_grup(anchor):
+        anchor = None
     if anchor:
         cands = {anchor, str(anchor)}
         try:

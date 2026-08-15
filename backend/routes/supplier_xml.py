@@ -35,6 +35,7 @@ from .deps import db, logger, generate_id, require_admin
 from security.crypto import encrypt, decrypt
 import supplier_codes
 import product_attributes
+import group_ref
 
 router = APIRouter(prefix="/supplier-xml", tags=["supplier-xml"])
 
@@ -790,7 +791,12 @@ def parse_item(item: ET.Element, mapping: Dict[str, str]) -> Dict[str, Any]:
         "variants": [],
     }
     # Model referansı: model alanı yoksa stok kodu, o da yoksa barkod.
-    rec["group_ref"] = g("group_ref") or ""
+    # GRUP KODU DOĞRULANIR: besleme bu alanı bazı üründe eksik yolluyor, değer
+    # yalnız önekten ibaret kalıyor ("MLN-"). Kimlik sanılıp yazılınca o değeri
+    # taşıyan BÜTÜN ürünler tek renk-kardeşi grubuna düşüyor ve alakasız
+    # ürünler birbirinin rengi görünüyor (canlıda yaşandı). Kimlik taşımayan
+    # kod BOŞ sayılır; ürün kendi başına kalır.
+    rec["group_ref"] = group_ref.temiz_grup(g("group_ref"))
     rec["model_ref"] = (
         g("model_ref") or rec["supplier_stock_code"] or rec["supplier_barcode"] or rec["name"]
     )
