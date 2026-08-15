@@ -437,7 +437,7 @@ def _render_size_table(adlar: List[str], satirlar: List[Dict[str, Any]],
     # Sabit bir üst boşluk bırakmak tabloyu sayfanın tepesine yığıyor, altta
     # yarım sayfa boşluk kalıyordu.
     sat_y = max(52, min(104, int((H - 620) / (n_sat + 1))))
-    blok_y = 150 + (n_sat + 1) * sat_y + 90        # başlık + tablo + dipnot
+    blok_y = 150 + (n_sat + 1) * sat_y             # başlık + tablo
     tepe = max(90, int((H - blok_y) / 2))
 
     d.text((kenar, tepe), baslik, font=font(52, True), fill=KOYU)
@@ -473,10 +473,6 @@ def _render_size_table(adlar: List[str], satirlar: List[Dict[str, Any]],
     for i in range(1, n_kol):
         x = kenar + i * kol_g
         d.line([x, ust, x, y], fill=CIZGI, width=1)
-
-    d.text((kenar, y + 40),
-           "Ölçüler üründen alınmıştır; 1-2 cm fark olabilir.",
-           font=font(24), fill=GRI)
 
     out = io.BytesIO()
     im.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
