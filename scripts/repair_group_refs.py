@@ -66,6 +66,42 @@ async def main() -> int:
         if args.uygula:
             await db.products.update_one({"id": p["id"]}, {"$set": alanlar})
 
+    # ── Kardeşi olan ürüne SAĞLAM grup kodunu geri ver ─────────────────
+    # Bozuk kodu boşaltmak yanlış kardeşi keser ama doğru kardeşi de koparır:
+    # aynı modelin bir rengi geçerli kod taşırken (Kırmızı) diğerine besleme
+    # "MLN-" göndermiş olabiliyor (Siyah). Taban adı (sondaki renk sözcüğü
+    # soyulmuş) aynı olan ürünlerden geçerli kodu taşıyanı bulup kodsuz kalana
+    # yazıyoruz — böylece renkler yine tek kartta buluşuyor.
+    from routes.products import _strip_trailing_color              # noqa: E402
+    taban = {}
+    kodsuz = []
+    async for p in db.products.find(
+            {"is_deleted": {"$ne": True}},
+            {"_id": 0, "id": 1, "name": 1, "urun_karti_id": 1}):
+        ad = _strip_trailing_color(str(p.get("name") or "")).strip().lower()
+        if not ad or len(ad) < 6:
+            continue
+        kod = str(p.get("urun_karti_id") or "").strip()
+        if kod and gecerli_grup(kod):
+            taban.setdefault(ad, kod)
+        else:
+            kodsuz.append((p["id"], ad, p.get("name", "")))
+
+    baglanan = 0
+    for pid, ad, tam_ad in kodsuz:
+        kod = taban.get(ad)
+        if not kod:
+            continue
+        baglanan += 1
+        if baglanan <= 8:
+            print(f"  kardeşe bağlanıyor: {tam_ad[:52]:<54} → {kod}")
+        if args.uygula:
+            await db.products.update_one(
+                {"id": pid}, {"$set": {"urun_karti_id": kod,
+                                       "supplier_group_ref": kod}})
+    if baglanan:
+        print(f"  ({baglanan} ürün aynı modelin geçerli kodunu devraldı)\n")
+
     for ad, kat, alan in ornekler:
         print(f"  {ad:<48} [{kat}]  → {alan} boşaltılacak")
     if bozuk > len(ornekler):
@@ -73,6 +109,7 @@ async def main() -> int:
     print()
     print(f"taranan ürün           : {taranan}")
     print(f"{'temizlenen ürün' if args.uygula else 'temizlenecek ürün'}      : {bozuk}")
+    print(f"{'kardeşe bağlanan' if args.uygula else 'kardeşe bağlanacak'}     : {baglanan}")
     print()
     print("hangi bozuk değer kaç kez:")
     for d, adet in degerler.most_common(15):

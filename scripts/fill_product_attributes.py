@@ -82,6 +82,7 @@ async def main() -> int:
             sorgu,
             {"_id": 0, "id": 1, "name": 1, "description": 1, "fabric": 1,
              "gender": 1, "brand": 1, "attributes": 1, "category_name": 1,
+             "color": 1, "variants": 1,
              "category_path": 1, "season": 1, "size_advice": 1}):
         taranan += 1
         if args.limit and taranan > args.limit:

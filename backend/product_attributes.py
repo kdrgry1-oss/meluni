@@ -365,6 +365,18 @@ def urun_ozellikleri(product: Dict[str, Any],
         dogrudan["Cinsiyet"] = str(product["gender"]).strip()
     if str(product.get("brand") or "").strip():
         dogrudan["Marka"] = str(product["brand"]).strip()
+    # RENK — Trendyol'da zorunlu ("Renk" ve bazı kategorilerde "Web Color").
+    # Ürün düzeyinde renk boşsa varyantlardan ilk dolu renk alınır; her renk
+    # zaten AYRI ürün kartı olduğu için bu tek değerdir.
+    renk = str(product.get("color") or "").strip()
+    if not renk:
+        for v in (product.get("variants") or []):
+            if isinstance(v, dict) and str(v.get("color") or "").strip():
+                renk = str(v["color"]).strip()
+                break
+    if renk:
+        dogrudan["Renk"] = renk
+        dogrudan["Web Color"] = renk
     _ekle(dogrudan)
 
     _ekle(addan_ozellikler(product.get("name") or ""))
