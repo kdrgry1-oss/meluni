@@ -50,6 +50,8 @@ async def main() -> int:
     ap.add_argument("--ez", action="store_true",
                     help="Mevcut özelliklerin üzerine yazar (varsayılan: yalnız eksikleri tamamlar).")
     ap.add_argument("--limit", type=int, default=0, help="En fazla N ürün işle.")
+    ap.add_argument("--kategori", default="",
+                    help="Yalnız adı/yolu eşleşen kategori (ör. takım).")
     ap.add_argument("--liste", type=int, default=10, help="Kaç örnek yazılsın.")
     ap.add_argument("--varsayilan", action="store_true",
                     help="Sezon/kalıp çıkmayan ürünlere güvenli varsayılanı yazar "
@@ -70,8 +72,14 @@ async def main() -> int:
     dagilim = Counter()
     ornekler = []
 
+    sorgu = {"is_deleted": {"$ne": True}}
+    if args.kategori:
+        sorgu["$or"] = [
+            {"category_name": {"$regex": args.kategori, "$options": "i"}},
+            {"category_path": {"$regex": args.kategori, "$options": "i"}}]
+
     async for p in db.products.find(
-            {"is_deleted": {"$ne": True}},
+            sorgu,
             {"_id": 0, "id": 1, "name": 1, "description": 1, "fabric": 1,
              "gender": 1, "brand": 1, "attributes": 1, "category_name": 1,
              "category_path": 1, "season": 1, "size_advice": 1}):
