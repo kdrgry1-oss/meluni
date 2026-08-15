@@ -2119,7 +2119,8 @@ async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
                                   ez: bool = False, kategori: str = "",
                                   tara: bool = True, ocr: bool = True,
                                   kredi_limit: int = 40,
-                                  hata_tolerans: int = 3) -> Dict[str, Any]:
+                                  hata_tolerans: int = 3,
+                                  ilerleme=None) -> Dict[str, Any]:
     """TÜM KATALOG için otomatik ölçü tablosu turu.
 
     Önce KREDİSİZ yol denenir (kayıtlı tablo / renk kardeşi / tedarikçi
@@ -2185,6 +2186,15 @@ async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
         veri_yazilan += 1 if r.get("veri_yazildi") else 0
         kardes_gorsel += int(r.get("kardes_gorsel") or 0)
         kardes_veri += int(r.get("kardes_veri") or 0)
+        # Saatler sürebilen turda sessizlik körlük demek: her 10 üründe bir
+        # durum bildirilir (betik ekrana basar, cron günlüğe yazar).
+        if ilerleme and taranan % 10 == 0:
+            ilerleme({"taranan": taranan, "islenen": tamam,
+                      "olcu_bulunamayan": veri_yok,
+                      "gorsel_yazilan": gorsel_yazilan,
+                      "model_kullanilan_urun": kredili,
+                      "kota_bekleme_sn": beklenen,
+                      "son_hata": son_kredi_hatasi[:120]})
     return {"taranan": taranan, "islenen": tamam, "olcu_bulunamayan": veri_yok,
             "hata": hata, "gorsel_yazilan": gorsel_yazilan,
             "veri_yazilan": veri_yazilan, "kardese_gorsel": kardes_gorsel,

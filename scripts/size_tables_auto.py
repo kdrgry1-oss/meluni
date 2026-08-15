@@ -72,7 +72,10 @@ async def main() -> int:
             ez=args.ez, kategori=args.kategori,
             tara=not args.kredisiz, ocr=not args.kredisiz,
             kredi_limit=0 if args.sinirsiz else args.kredi_limit,
-            hata_tolerans=0 if args.sinirsiz else 3)
+            hata_tolerans=0 if args.sinirsiz else 3,
+            ilerleme=lambda d: print(
+                "  … " + " · ".join(f"{k}={v}" for k, v in d.items() if v),
+                flush=True))
         for k, v in sonuc.items():
             print(f"{k:<20}: {v}")
         return 0
