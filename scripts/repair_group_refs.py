@@ -78,8 +78,13 @@ async def main() -> int:
     async for p in db.products.find(
             {"is_deleted": {"$ne": True}},
             {"_id": 0, "id": 1, "name": 1, "urun_karti_id": 1}):
-        ad = _strip_trailing_color(str(p.get("name") or "")).strip().lower()
-        if not ad or len(ad) < 6:
+        # _strip_trailing_color renk BULAMAZSA boş döner (vitrin orada yanlış
+        # gruplamaktansa hiç gruplamamayı seçiyor). Burada tam ad da geçerli
+        # bir tabandır: adlarımız tedarikçiden gelen 8-12 kelimelik özgün
+        # tanımlar, aynısını taşıyan iki ürün gerçekten aynı modeldir.
+        tam = str(p.get("name") or "").strip()
+        ad = (_strip_trailing_color(tam) or tam).strip().lower()
+        if not ad or len(ad.split()) < 3:
             continue
         kod = str(p.get("urun_karti_id") or "").strip()
         if kod and gecerli_grup(kod):

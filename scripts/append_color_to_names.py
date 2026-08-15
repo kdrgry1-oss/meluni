@@ -32,7 +32,10 @@ _TR_UP = {"i": "İ", "ı": "I", "ö": "Ö", "ü": "Ü", "ş": "Ş", "ç": "Ç", 
 
 
 def _kucult(s) -> str:
-    return str(s or "").replace("I", "ı").replace("İ", "i").lower().strip()
+    # U+0307 (birleşik üstteki nokta): besleme "HAKİ"yi bazen i+nokta olarak
+    # yolluyor, ad sonuna "Haki̇" diye yazılıyordu. Nokta ayıklanır.
+    return (str(s or "").replace("I", "ı").replace("İ", "i")
+            .replace("\u0307", "").lower().strip())
 
 
 def _basliklastir(s: str) -> str:
