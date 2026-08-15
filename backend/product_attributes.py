@@ -86,7 +86,29 @@ _NITELEYICI_CIFT = {
 }
 
 def _kucult(s: str) -> str:
-    return str(s or "").replace("I", "ı").replace("İ", "i").lower().strip()
+    # U+0307 (birleşik üstteki nokta): besleme "HAKİ"yi bazen i+nokta olarak
+    # yolluyor; ayıklanmazsa karşılaştırma da görüntü de bozuluyor ("Haki̇").
+    return (str(s or "").replace("I", "ı").replace("İ", "i")
+            .replace("\u0307", "").lower().strip())
+
+
+_TR_BUYUK = {"i": "İ", "ı": "I", "ö": "Ö", "ü": "Ü", "ş": "Ş", "ç": "Ç", "ğ": "Ğ"}
+
+
+def renk_duzelt(renk: str) -> str:
+    """Renk adını tek biçime getirir: "SİYAH"/"haki̇" → "Siyah"/"Haki".
+
+    Besleme rengi kâh büyük harf kâh birleşik noktalı yolluyor. Ham hâliyle
+    yazınca hem vitrinde çirkin görünüyor hem de pazaryeri değeri ADA GÖRE
+    eşleştirdiği için "SİYAH" Trendyol'un "Siyah" değerini tutturamıyor.
+    """
+    parcalar = []
+    for k in str(renk or "").split():
+        kucuk = _kucult(k)
+        if not kucuk:
+            continue
+        parcalar.append(_TR_BUYUK.get(kucuk[0], kucuk[0].upper()) + kucuk[1:])
+    return " ".join(parcalar)
 
 
 def addan_ozellikler(ad: str) -> Dict[str, str]:
@@ -375,6 +397,7 @@ def urun_ozellikleri(product: Dict[str, Any],
                 renk = str(v["color"]).strip()
                 break
     if renk:
+        renk = renk_duzelt(renk)
         dogrudan["Renk"] = renk
         dogrudan["Web Color"] = renk
     _ekle(dogrudan)

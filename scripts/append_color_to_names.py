@@ -99,8 +99,14 @@ async def main() -> int:
         degisen += 1
         if len(ornekler) < args.liste:
             ornekler.append(yeni)
+        # RENK ALANI DA DÜZELTİLİR: besleme "SİYAH" ya da noktalı "Haki̇"
+        # yolluyor; swatch etiketinde ham hâliyle görünüyor ve pazaryeri
+        # değeri ada göre eşleştirdiği için "SİYAH" tutmuyordu.
+        guncelle = {"name": yeni}
+        if str(p.get("color") or "").strip() and p["color"] != renk:
+            guncelle["color"] = renk
         if args.uygula:
-            await db.products.update_one({"id": p["id"]}, {"$set": {"name": yeni}})
+            await db.products.update_one({"id": p["id"]}, {"$set": guncelle})
 
     for a in ornekler:
         print("  " + a[:80])
