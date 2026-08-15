@@ -1955,9 +1955,26 @@ async def _tabloyu_kardeslere(product_id: str, url: str, stock_code: str,
     return yazilan, atlanan
 
 
+async def _ham_tablo_indeksi(product_id: str, urun: Dict[str, Any]) -> tuple:
+    """Tedarikçinin HAM tablo görseli hangisi? (indeks, kredi_kullanildi, hata)
+
+    Ham (çoğu İngilizce) tabloyu dosya adından tanıyamayız — o yalnız biz
+    çevirdikten sonra bizim adımızı alır. Tek yol modele sormak. Sonuç ürüne
+    işaretlenir (`size_chart_scan`), böylece her gece aynı ürün için tekrar
+    kredi harcanmaz.
+    """
+    tarama = await scan_size_charts(product_id)
+    olcular = [r["index"] for r in (tarama.get("images") or []) if r["tur"] == "olcu"]
+    await db.products.update_one({"id": product_id}, {"$set": {
+        "size_chart_scan": {"bulundu": bool(olcular), "at": _now_iso(),
+                            "gorsel_sayisi": len(urun.get("images") or [])}}})
+    return (olcular[0] if olcular else None), True, ""
+
+
 async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
-                              ez: bool = False) -> Dict[str, Any]:
-    """TEK ÜRÜN için kredisiz otomatik ölçü işi. Model çağrısı YAPMAZ.
+                              ez: bool = False, tara: bool = False,
+                              ocr: bool = False) -> Dict[str, Any]:
+    """TEK ÜRÜN için otomatik ölçü işi.
 
     Üç iş bir arada (yönetim isteği):
       1. Ölçüler ürün kartının ölçü tablosu VERİSİNE yazılır (görselden ayrı;
@@ -1966,28 +1983,65 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
          (yoksa sona eklenir) — `gorsel=False` ile yalnız veri yazılır.
       3. Tablosu olmayan renk kardeşlerine aynı görsel kopyalanır.
 
-    Ölçü bulunamazsa hiçbir şey yazılmaz ({"durum": "veri_yok"}). Ham tedarikçi
-    tablosunu MODELSİZ tanıyamayız; o ürünlerde tablo sona EKLENİR, ham görsel
-    silinmez — hangisinin ham tablo olduğunu bilmeden silmek ürün fotoğrafını
-    yok edebilir.
+    KREDİSİZ yol her zaman önce denenir (kayıtlı tablo / renk kardeşi /
+    tedarikçi açıklaması). Model yalnız iki durumda çağrılır:
+      · `tara=True` ve üründe bizim tablomuz yoksa — hangi görselin HAM tablo
+        olduğunu bulmak için (aksi hâlde Türkçe tablo sona eklenir ve
+        İngilizcesi üründe kalır, iki tablo yan yana görünür).
+      · `ocr=True` ve ölçü hiçbir kredisiz kaynakta yoksa — sayıları ham
+        tablodan okumak için.
+    Model çağrısı düşerse (anahtar yok, kota doldu) iş KREDİSİZ yoldan devam
+    eder; tur durmaz.
     """
-    urun = await db.products.find_one({"id": product_id},
-                                      {"_id": 0, "images": 1, "stock_code": 1})
+    urun = await db.products.find_one(
+        {"id": product_id},
+        {"_id": 0, "images": 1, "stock_code": 1, "size_chart_scan": 1})
     if not urun:
         return {"durum": "urun_yok"}
 
+    sonuc: Dict[str, Any] = {"durum": "tamam", "veri_yazildi": False,
+                             "gorsel_yazildi": False, "kardes_gorsel": 0,
+                             "kardes_veri": 0, "kredi_kullanildi": False,
+                             "kredi_hatasi": ""}
+
+    ham = [x for x in (urun.get("images") or []) if _gorsel_url(x)]
+    var_olan = [i for i, x in enumerate(ham) if _olcu_gorseli_mi(x)]
+
+    # Ham tabloyu ara: yalnız bizim tablomuz yokken, görsel varken ve daha önce
+    # taranmamışken. Bir kez "tablo yok" denen ürün tekrar taranmaz.
+    ham_index = None
+    onceki = urun.get("size_chart_scan") or {}
+    tarandi_mi = bool(onceki) and len(ham) == int(onceki.get("gorsel_sayisi") or -1)
+    if tara and ham and not var_olan and (ez or not tarandi_mi):
+        try:
+            ham_index, _kk, _ = await _ham_tablo_indeksi(product_id, urun)
+            sonuc["kredi_kullanildi"] = True
+        except HTTPException as e:
+            sonuc["kredi_hatasi"] = str(e.detail)
+        except Exception as e:                       # ağ/kota — tur durmasın
+            sonuc["kredi_hatasi"] = str(e)
+
     veri = await _kredisiz_olcu_verisi(product_id)
     satirlar = veri.get("satirlar") or []
+    if not satirlar and ocr and ham_index is not None:
+        # Ölçü hiçbir kredisiz kaynakta yok; sayıları ham tablodan okut.
+        try:
+            veri = await read_size_table(product_id, ham_index, kaydet=False)
+            veri["kaynak"], veri["kaynak_adi"] = "ocr", "görselden okundu (Gemini)"
+            satirlar = veri.get("satirlar") or []
+            sonuc["kredi_kullanildi"] = True
+        except HTTPException as e:
+            sonuc["kredi_hatasi"] = sonuc["kredi_hatasi"] or str(e.detail)
+        except Exception as e:
+            sonuc["kredi_hatasi"] = sonuc["kredi_hatasi"] or str(e)
     if not satirlar:
-        return {"durum": "veri_yok"}
+        sonuc["durum"] = "veri_yok"
+        return sonuc
     adlar = veri.get("olcu_adlari") or []
-
-    sonuc: Dict[str, Any] = {"durum": "tamam", "kaynak": veri.get("kaynak"),
-                             "veri_yazildi": False, "gorsel_yazildi": False,
-                             "kardes_gorsel": 0, "kardes_veri": 0}
+    sonuc["kaynak"] = veri.get("kaynak")
 
     # 1) VERİ — kaynağı zaten ürünün kendi kayıtlı tablosuysa tekrar yazmaya
-    #    gerek yok; kardeşten/açıklamadan geldiyse yaz.
+    #    gerek yok; kardeşten/açıklamadan/OCR'dan geldiyse yaz.
     if veri.get("kaynak") != "kayitli" or ez:
         sonuc["kardes_veri"] = await _olcu_tablosu_yaz(
             product_id, adlar, satirlar, veri.get("kaynak") or "otomatik")
@@ -1997,8 +2051,6 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
         return sonuc
 
     # 2) GÖRSEL — zaten Türkçe tablomuz varsa yeniden çizmeyiz (`ez` hariç).
-    ham = [x for x in (urun.get("images") or []) if _gorsel_url(x)]
-    var_olan = [i for i, x in enumerate(ham) if _olcu_gorseli_mi(x)]
     if var_olan and not ez:
         url = _gorsel_url(ham[var_olan[-1]])
         sirali = _olcu_sona(ham)
@@ -2009,8 +2061,13 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
         raw = _render_size_table(adlar, satirlar)
         url = await _store(raw, product_id, "olcu-oto", "image/jpeg")
         yeni = list(ham)
-        if var_olan:
-            yeni[var_olan[-1]] = _gorsel_degistir(ham[var_olan[-1]], url)
+        # Ham tablo bulunduysa ONUN yerine yaz (İngilizcesi üründe kalmasın);
+        # bulunamadıysa sona ekle — hangisi olduğunu bilmeden görsel silmeyiz.
+        hedef = var_olan[-1] if var_olan else ham_index
+        if hedef is not None and 0 <= hedef < len(yeni):
+            yeni[hedef] = {"id": str(uuid.uuid4()), "url": url,
+                           "is_size_table": True, "alt": "Ölçü Tablosu",
+                           "created_at": _now_iso()}
         else:
             yeni.append({"id": str(uuid.uuid4()), "url": url,
                          "is_size_table": True, "alt": "Ölçü Tablosu",
@@ -2031,13 +2088,19 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
 
 
 async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
-                                  ez: bool = False,
-                                  kategori: str = "") -> Dict[str, Any]:
-    """TÜM KATALOG için kredisiz otomatik ölçü tablosu turu.
+                                  ez: bool = False, kategori: str = "",
+                                  tara: bool = True, ocr: bool = True,
+                                  kredi_limit: int = 40) -> Dict[str, Any]:
+    """TÜM KATALOG için otomatik ölçü tablosu turu.
 
-    Kredi harcamaz: ölçüler kayıtlı tablodan, renk kardeşinden ya da tedarikçi
-    açıklamasından okunur, tablo burada çizilir. Bu yüzden zamanlanmış iş
-    olarak da güvenle koşabilir (`scheduler._olcu_tablosu_oto_tick`).
+    Önce KREDİSİZ yol denenir (kayıtlı tablo / renk kardeşi / tedarikçi
+    açıklaması). Model yalnız gerektiğinde çağrılır: ham (İngilizce) tabloyu
+    bulmak ve — ölçü hiçbir yerde yoksa — sayıları okumak için.
+
+    `kredi_limit` bir turda model kullanabilecek ÜRÜN sayısını sınırlar
+    (0 = sınırsız). Gece turu 40 ile koşar: kota bir gecede tükenmez, katalog
+    birkaç günde tamamlanır. Model üst üste 3 kez düşerse (kota/anahtar) o tur
+    modelden vazgeçer, kredisiz devam eder — tur yarıda kalmaz.
     """
     q: Dict[str, Any] = {"is_deleted": {"$ne": True}}
     if kategori:
@@ -2045,16 +2108,30 @@ async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
                     {"category_path": {"$regex": kategori, "$options": "i"}}]
     taranan = tamam = veri_yok = hata = 0
     gorsel_yazilan = veri_yazilan = kardes_gorsel = kardes_veri = 0
+    kredili = 0
+    ardisik_hata = 0
+    son_kredi_hatasi = ""
     async for p in db.products.find(q, {"_id": 0, "id": 1}):
         if limit and taranan >= limit:
             break
         taranan += 1
+        kredi_acik = (ardisik_hata < 3
+                      and (kredi_limit <= 0 or kredili < kredi_limit))
         try:
-            r = await _olcu_otomatik_urun(p["id"], gorsel=gorsel, ez=ez)
+            r = await _olcu_otomatik_urun(p["id"], gorsel=gorsel, ez=ez,
+                                          tara=tara and kredi_acik,
+                                          ocr=ocr and kredi_acik)
         except Exception as e:                       # tek ürün turu durdurmasın
             hata += 1
             logger.error(f"[ai-images] otomatik ölçü ({p['id']}): {e}")
             continue
+        if r.get("kredi_kullanildi"):
+            kredili += 1
+        if r.get("kredi_hatasi"):
+            ardisik_hata += 1
+            son_kredi_hatasi = r["kredi_hatasi"]
+        elif r.get("kredi_kullanildi"):
+            ardisik_hata = 0
         if r.get("durum") == "veri_yok":
             veri_yok += 1
             continue
@@ -2068,7 +2145,8 @@ async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
     return {"taranan": taranan, "islenen": tamam, "olcu_bulunamayan": veri_yok,
             "hata": hata, "gorsel_yazilan": gorsel_yazilan,
             "veri_yazilan": veri_yazilan, "kardese_gorsel": kardes_gorsel,
-            "kardese_veri": kardes_veri, "kredi_harcandi": False}
+            "kardese_veri": kardes_veri, "model_kullanilan_urun": kredili,
+            "model_hatasi": son_kredi_hatasi}
 
 
 @router.post("/size-tables/auto-run")
@@ -2076,12 +2154,16 @@ async def size_tables_auto_run(payload: dict | None = None,
                                _admin=Depends(require_admin)):
     """Katalog geneli otomatik ölçü tablosu turu (arka planda, kredisiz).
 
-    body: {limit?: 0, gorsel?: true, ez?: false, kategori?: ""}
+    body: {limit?: 0, gorsel?: true, ez?: false, kategori?: "",
+           tara?: true, ocr?: true, kredi_limit?: 40}
     Dönen `job_id` ile `GET /ai-images/jobs/{job_id}` sorgulanır.
     """
     p = payload or {}
     kw = {"limit": int(p.get("limit") or 0), "gorsel": p.get("gorsel", True) is not False,
-          "ez": bool(p.get("ez")), "kategori": str(p.get("kategori") or "").strip()}
+          "ez": bool(p.get("ez")), "kategori": str(p.get("kategori") or "").strip(),
+          "tara": p.get("tara", True) is not False,
+          "ocr": p.get("ocr", True) is not False,
+          "kredi_limit": int(p.get("kredi_limit", 40) or 0)}
     job_id = await _is_baslat("toplu", "olcu-oto",
                               lambda: olcu_tablolari_otomatik(**kw))
     return {"job_id": job_id, "mesaj": "Otomatik ölçü tablosu turu başladı."}

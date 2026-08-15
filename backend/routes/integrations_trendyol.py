@@ -19,6 +19,27 @@ from meluni_defaults import meluni_fixed_value_for  # tüm-pazaryeri sabit varsa
 
 router = APIRouter(tags=["Integrations-Trendyol"])
 
+
+def _kategori_filtresi(cid) -> dict:
+    """Yerel kategoriyi bulan sorgu — kimlik BİÇİMİNDEN bağımsız.
+
+    KÖK-NEDEN: kategori kimliklerimiz kısa sayısal dizeler ("6238"). Eski kod
+    24 karakterden kısa her kimliği `ObjectId(...)`'e çeviriyordu; ObjectId
+    12 bayt ya da 24 haneli onaltılık ister, "6238" bunların ikisi de değil →
+    her çağrıda istisna → kategori eşleştirmesi ASLA kaydedilemiyordu
+    (panel "kaydedilemedi" diyor, kullanıcı eşleştirdim sanıyordu). Artık
+    ObjectId yalnız GERÇEKTEN ObjectId olan kimlikler için denenir.
+    """
+    cid = str(cid or "")
+    kosullar: list = [{"id": cid}]
+    if re.fullmatch(r"[0-9a-fA-F]{24}", cid):
+        try:
+            from bson.objectid import ObjectId
+            kosullar.append({"_id": ObjectId(cid)})
+        except Exception:
+            pass
+    return kosullar[0] if len(kosullar) == 1 else {"$or": kosullar}
+
 from .integrations_common import (
     _BAD_COMPOSITION_VALUES,
     _ORDER_STATUS_TR,
@@ -426,6 +447,66 @@ async def get_trendyol_category_attributes(category_id: int, refresh: bool = Que
     except Exception as e:
         logger.error(f"Error fetching trendyol attributes for category {category_id}: {str(e)}")
         raise HTTPException(status_code=500, detail="Özellikler (attributes) alınamadı")
+async def _trendyol_kategori_coz(category_id: str = "", category_name: str = ""):
+    """Yerel kategoriyi Trendyol kategori id'sine çözer — TEK KAYNAK.
+
+    KÖK-NEDEN: eşleştirme İKİ ayrı yerde tutuluyor. Kategori Eşleştirme sayfası
+    `category_mappings` koleksiyonuna yazıyor (gönderim de oradan okuyor), ürün
+    kartı ise `categories.trendyol_category_id` alanına bakıyordu. Kullanıcı
+    "Takım"ı eşleştirip sayfada "Eşleşti" görüyor ama ürün kartı hiçbir şey
+    bulamıyor, "özellik kütüphanesi boş" diyordu. Artık ikisine de bakılıyor.
+    """
+    cm = None
+    if category_id:
+        cm = await db.category_mappings.find_one(
+            {"marketplace": "trendyol", "category_id": str(category_id)}, {"_id": 0})
+    if not cm and category_name:
+        cm = await db.category_mappings.find_one(
+            {"marketplace": "trendyol", "category_name": category_name}, {"_id": 0})
+    ty = (cm or {}).get("marketplace_category_id") or (cm or {}).get("trendyol_category_id")
+    if not ty:
+        kat = None
+        if category_id:
+            kat = await db.categories.find_one(_kategori_filtresi(category_id), {"_id": 0})
+        if not kat and category_name:
+            kat = await db.categories.find_one({"name": category_name}, {"_id": 0})
+        ty = (kat or {}).get("trendyol_category_id")
+    try:
+        return int(ty) if ty else None
+    except (TypeError, ValueError):
+        return None
+
+
+@router.get("/trendyol/category-attributes/by-local")
+async def trendyol_category_attributes_by_local(
+        category_id: str = "", category_name: str = "",
+        current_user: dict = Depends(require_admin)):
+    """Ürün kartının Trendyol özellik şemasını YEREL kategoriden çözüp verir.
+
+    Kart, kategori belgesindeki `trendyol_category_id` boşsa şemayı hiç
+    çekemiyordu; eşleştirme `category_mappings`'te durduğu için de o alan çoğu
+    kurulumda boş. Burada iki kaynağa da bakılır, şema önce yerel önbellekten,
+    yoksa canlı API'den alınır.
+    """
+    ty_id = await _trendyol_kategori_coz(category_id, category_name)
+    if not ty_id:
+        return {"attributes": [], "trendyol_category_id": None, "has_mapping": False}
+
+    for koleksiyon in (db.trendyol_category_attributes, db.trendyol_attributes):
+        onbellek = await koleksiyon.find_one({"category_id": ty_id}, {"_id": 0})
+        if onbellek and onbellek.get("attributes"):
+            return {"attributes": onbellek["attributes"], "trendyol_category_id": ty_id,
+                    "has_mapping": True, "cached": True}
+    try:
+        veri = await get_trendyol_category_attributes(ty_id, refresh=True,
+                                                     current_user=current_user)
+        return {"attributes": veri.get("attributes") or [],
+                "trendyol_category_id": ty_id, "has_mapping": True, "cached": False}
+    except HTTPException as e:
+        return {"attributes": [], "trendyol_category_id": ty_id,
+                "has_mapping": True, "error": str(e.detail)}
+
+
 @router.post("/trendyol/brands/sync")
 async def sync_trendyol_brands(current_user: dict = Depends(require_admin)):
     """Sync brands from Trendyol API to local DB"""
@@ -3268,7 +3349,7 @@ async def save_trendyol_category_mapping(req: CategoryMappingReq, current_user: 
     from bson.objectid import ObjectId
     try:
         # Support both string UUID and ObjectId
-        filter_q = {"id": req.local_category_id} if len(req.local_category_id) > 24 else {"$or": [{"id": req.local_category_id}, {"_id": ObjectId(req.local_category_id)}]}
+        filter_q = _kategori_filtresi(req.local_category_id)
         
         await db.categories.update_one(
             filter_q,
@@ -3294,7 +3375,7 @@ async def save_trendyol_category_value_mappings(local_category_id: str, req: Req
     payload = await req.json()
     value_mappings = payload.get("value_mappings", {})
     from bson.objectid import ObjectId
-    filter_q = {"id": local_category_id} if len(local_category_id) > 24 else {"$or": [{"id": local_category_id}, {"_id": ObjectId(local_category_id)}]}
+    filter_q = _kategori_filtresi(local_category_id)
     
     await db.categories.update_one(
         filter_q,
@@ -3382,7 +3463,7 @@ async def get_local_category_values(local_category_id: str, current_user: dict =
     from bson.objectid import ObjectId
     import re
     
-    filter_q = {"id": local_category_id} if len(local_category_id) > 24 else {"$or": [{"id": local_category_id}, {"_id": ObjectId(local_category_id)}]}
+    filter_q = _kategori_filtresi(local_category_id)
     category = await db.categories.find_one(filter_q)
     
     if not category:
@@ -3441,7 +3522,7 @@ async def delete_trendyol_category_mapping(local_category_id: str, current_user:
     """Hide a category from the Trendyol mappings list and clear its mapping"""
     from bson.objectid import ObjectId
     try:
-        filter_q = {"id": local_category_id} if len(local_category_id) > 24 else {"$or": [{"id": local_category_id}, {"_id": ObjectId(local_category_id)}]}
+        filter_q = _kategori_filtresi(local_category_id)
         
         await db.categories.update_one(
             filter_q,
@@ -3502,7 +3583,7 @@ async def bulk_delete_trendyol_category_mappings(req: Request, current_user: dic
 async def save_trendyol_attribute_mapping(local_category_id: str, req: AttributeMappingReq, current_user: dict = Depends(require_admin)):
     from bson.objectid import ObjectId
     try:
-        filter_q = {"id": local_category_id} if len(local_category_id) > 24 else {"$or": [{"id": local_category_id}, {"_id": ObjectId(local_category_id)}]}
+        filter_q = _kategori_filtresi(local_category_id)
         
         mappings = [{"local_attr": m.local_attr, "trendyol_attr_id": m.trendyol_attr_id} for m in req.attribute_mappings]
         

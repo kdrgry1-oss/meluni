@@ -43,6 +43,10 @@ async def main() -> int:
                     help="Görsel üretme; yalnız ölçü verisini yaz.")
     ap.add_argument("--ez", action="store_true",
                     help="Mevcut Türkçe tabloyu da yeniden çiz ve kardeşlere yay.")
+    ap.add_argument("--kredisiz", action="store_true",
+                    help="Modeli hiç çağırma: ham tabloyu arama, görselden okuma.")
+    ap.add_argument("--kredi-limit", type=int, default=40,
+                    help="Bir turda en fazla kaç üründe model çağrılsın (0=sınırsız).")
     args = ap.parse_args()
 
     try:
@@ -56,7 +60,9 @@ async def main() -> int:
     if args.uygula:
         sonuc = await ai.olcu_tablolari_otomatik(
             limit=args.limit, gorsel=not args.sadece_veri,
-            ez=args.ez, kategori=args.kategori)
+            ez=args.ez, kategori=args.kategori,
+            tara=not args.kredisiz, ocr=not args.kredisiz,
+            kredi_limit=args.kredi_limit)
         for k, v in sonuc.items():
             print(f"{k:<20}: {v}")
         return 0

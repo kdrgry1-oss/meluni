@@ -1862,8 +1862,19 @@ async def refresh_attributes(
             from .integrations import get_trendyol_config
             from trendyol_client import TrendyolClient
             cfg = await get_trendyol_config()
-            if not (cfg.get("is_active") and cfg.get("api_key")):
-                raise HTTPException(status_code=400, detail="Trendyol credential girilmemiş (Ayarlar → Trendyol)")
+            # NE EKSİK, ONU SÖYLE. Eski kontrol `is_active` kapalıyken de
+            # "credential girilmemiş" diyordu; anahtarlar girilmiş olduğu hâlde
+            # kullanıcı Ayarlar'da onları arıyordu. Ayrıca özellik şemasını
+            # OKUMAK entegrasyonun açık olmasını gerektirmez — okuma serbest.
+            _eksik = [ad for ad, anahtar in (("satıcı no", "supplier_id"),
+                                             ("API anahtarı", "api_key"),
+                                             ("API gizli anahtarı", "api_secret"))
+                      if not str(cfg.get(anahtar) or "").strip()]
+            if _eksik:
+                raise HTTPException(
+                    status_code=400,
+                    detail=("Trendyol bilgileri eksik: " + ", ".join(_eksik)
+                            + " (Ayarlar → Trendyol)"))
             client = TrendyolClient(
                 supplier_id=cfg["supplier_id"], api_key=cfg["api_key"],
                 api_secret=cfg["api_secret"], mode=cfg.get("mode", "sandbox"),

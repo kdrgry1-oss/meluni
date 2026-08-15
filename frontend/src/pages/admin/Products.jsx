@@ -429,23 +429,44 @@ export default function AdminProducts() {
 
   useEffect(() => {
     if (modalOpen) {
-      const selectedCat = formData.category_name ? categories.find(c => c.name === formData.category_name || c.id === formData.category_name) : null;
+      // Kategori ÜÇ yoldan çözülür: ada göre, ad alanına id yazılmışsa id'ye
+      // göre ve ürünün `category_id`'siyle. Üçüncüsü eksikti: tedarikçiden
+      // aktarılan üründe kategori adı yerelde farklı yazılabiliyor, o zaman
+      // eşleşme bulunamıyor ve Trendyol özellik şeması HİÇ çekilmiyordu
+      // ("özellik kütüphanesi boş" görünüp zorunlu alanlar boş kalıyordu).
+      const selectedCat = (categories || []).find(c =>
+        (formData.category_name && (c.name === formData.category_name || c.id === formData.category_name))
+        || (formData.category_id && String(c.id) === String(formData.category_id))) || null;
       const targetTrendyolCatId = formData.trendyol_category_id || (selectedCat ? selectedCat.trendyol_category_id : null);
       
-      if (targetTrendyolCatId) {
-        setFetchingAttributes(true);
-        const token = localStorage.getItem('token');
-        axios.get(`${API}/integrations/trendyol/categories/${targetTrendyolCatId}/attributes?refresh=true`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-          .then(res => setTrendyolAttributesList(res.data.attributes || []))
-          .catch(err => setTrendyolAttributesList([]))
-          .finally(() => setFetchingAttributes(false));
-      } else {
-        setTrendyolAttributesList([]);
-      }
+      const token = localStorage.getItem('token');
+      const auth = { headers: { Authorization: `Bearer ${token}` } };
+      // Kategori eşleştirmesi İKİ yerde tutuluyor: eşleştirme sayfası
+      // `category_mappings`e yazar, kategori belgesindeki trendyol_category_id
+      // çoğu kurulumda boş kalır. Doğrudan id yoksa (ya da şema boş dönerse)
+      // by-local köprüsünden çözüyoruz — Hepsiburada'da olan, Trendyol'da
+      // olmayan yol buydu; "özellik kütüphanesi boş" görünmesinin sebebi.
+      const byLocal = () => {
+        const locId = formData.category_id || selectedCat?.id || "";
+        const locName = formData.category_name || selectedCat?.name || "";
+        if (!locId && !locName) return Promise.resolve([]);
+        return axios.get(`${API}/integrations/trendyol/category-attributes/by-local`,
+          { ...auth, params: { category_id: locId, category_name: locName } })
+          .then(r => r.data.attributes || []).catch(() => []);
+      };
+      setFetchingAttributes(true);
+      const byId = () => targetTrendyolCatId
+        ? axios.get(`${API}/integrations/trendyol/categories/${targetTrendyolCatId}/attributes?refresh=true`, auth)
+            .then(r => r.data.attributes || []).catch(() => [])
+        : Promise.resolve([]);
+      byId()
+        .then(list => (list && list.length) ? list : byLocal())
+        .then(list => setTrendyolAttributesList(list || []))
+        .catch(() => setTrendyolAttributesList([]))
+        .finally(() => setFetchingAttributes(false));
     }
-  }, [formData.trendyol_category_id, formData.category_name, modalOpen, categories]);
+  }, [formData.trendyol_category_id, formData.category_name, formData.category_id,
+      modalOpen, categories]);
 
   // Hepsiburada: urun editorunun HB bolumu icin HB kategori ozelliklerini canli cek.
   // HB kategori id URUNDE durmaz (category_mappings'te durur) — Trendyol gibi kategoriden cozulur.
