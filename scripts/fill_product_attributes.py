@@ -53,6 +53,9 @@ async def main() -> int:
     ap.add_argument("--kategori", default="",
                     help="Yalnız adı/yolu eşleşen kategori (ör. takım).")
     ap.add_argument("--liste", type=int, default=10, help="Kaç örnek yazılsın.")
+    ap.add_argument("--kumas-varsayilan", default="",
+                    help="Kumaş Tipi boş kalan ürünlere yazılacak değer "
+                         "(ör. Dokuma ya da Belirtilmemiş). Verilmezse boş kalır.")
     ap.add_argument("--varsayilan", action="store_true",
                     help="Sezon/kalıp çıkmayan ürünlere güvenli varsayılanı yazar "
                          "(Tüm Sezonlar / normal). Varsayılan: boş bırakılır.")
@@ -89,7 +92,8 @@ async def main() -> int:
             break
 
         st = await db.size_tables.find_one({"product_id": p["id"]}, {"_id": 0})
-        uretilen = pa.urun_ozellikleri(p, st)
+        uretilen = pa.urun_ozellikleri(p, st,
+                                       kumas_varsayilan=args.kumas_varsayilan)
         guncelle = {}
 
         # ── Ürün kartının zorunlu temel alanları (Products.jsx bunlar boşken

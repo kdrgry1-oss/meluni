@@ -354,15 +354,23 @@ _ZORUNLU_VARSAYILAN = {
 }
 
 
-def _zorunlu_tamamla(toplam: Dict[str, str]) -> None:
+def _zorunlu_tamamla(toplam: Dict[str, str], kumas_varsayilan: str = "") -> None:
     for ad, deger in _ZORUNLU_VARSAYILAN.items():
         if not str(toplam.get(ad) or "").strip():
             toplam[ad] = deger
+    # KUMAŞ TİPİ yalnız ÇAĞIRAN İSTERSE doldurulur ve varsayılanı çağıran seçer
+    # ("Dokuma" / "Belirtilmemiş"). Kumaşı bilmediğimiz halde tahmin etmek
+    # riskli: müşteri "pamuklu" diye filtreleyip başka kumaş alırsa iade gelir.
+    # Bu yüzden genel varsayılan YOK; kapsam yönetimin verdiği kategoriyle
+    # sınırlı tutulur (ör. yalnız takım kategorisi).
+    if kumas_varsayilan and not str(toplam.get("Kumaş Tipi") or "").strip():
+        toplam["Kumaş Tipi"] = kumas_varsayilan
 
 
 def urun_ozellikleri(product: Dict[str, Any],
                      size_table: Optional[Dict[str, Any]] = None,
-                     zorunlu: bool = True) -> List[Dict[str, str]]:
+                     zorunlu: bool = True,
+                     kumas_varsayilan: str = "") -> List[Dict[str, str]]:
     """Ürünün tüm kaynaklarından özellik listesi üretir.
 
     Öncelik: beslemenin verdiği alanlar > ürün adı > açıklama > manken.
@@ -425,6 +433,6 @@ def urun_ozellikleri(product: Dict[str, Any],
                 toplam.setdefault(hedef, toplam[kaynak])
 
     if zorunlu:
-        _zorunlu_tamamla(toplam)
+        _zorunlu_tamamla(toplam, kumas_varsayilan)
 
     return [{"name": k, "value": v} for k, v in toplam.items()]
