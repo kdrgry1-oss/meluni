@@ -48,7 +48,10 @@ async def main() -> int:
     supplier = cfg.get("supplier_name") or "modayakamoz"
     min_stock = int(cfg.get("min_stock", sx.MIN_STOCK_DEFAULT))
 
-    print("besleme indiriliyor…")
+    # Besleme indirmesi tek başına uzun sürüyor (tedarikçinin tüm kataloğu).
+    # Ekranda hiçbir şey akmayınca betik donmuş sanılıyor; ne beklendiğini yaz.
+    print("besleme indiriliyor (tedarikçinin tüm kataloğu — birkaç dakika sürebilir)…",
+          flush=True)
     records, _ = await sx.load_items()
     if args.limit:
         # Baştan almak yerine ARALIKLI örnek: besleme sıralı geldiği için ilk N
@@ -65,7 +68,9 @@ async def main() -> int:
     besleme_stok_dolu = besleme_stok_esik_alti = 0
     ornekler = []
 
-    for rec in records:
+    for _i, rec in enumerate(records, 1):
+        if _i % 50 == 0:
+            print(f"  … {_i}/{len(records)} kayıt incelendi", flush=True)
         key = supplier_codes.supplier_key(supplier, rec["model_ref"])
         product = await db.products.find_one(
             {"supplier_key": key},
