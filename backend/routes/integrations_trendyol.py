@@ -365,8 +365,19 @@ async def sync_trendyol_categories(current_user: dict = Depends(require_admin)):
         if "space quota" in _m:
             _m = ("Veritabanı dolu (Atlas kotası) — yazma engellendi. Yer açın: "
                   "scripts/purge_db_image_blobs.py --uygula")
-        raise HTTPException(status_code=502,
-                            detail=f"Trendyol kategorileri alınamadı: {_m[:300]}")
+        # HANGİ ORTAMA GİDİLDİĞİNİ SÖYLE. Ayar "sandbox" iken istekler test
+        # ağ geçidine gidiyor; canlı mağaza anahtarıyla oraya vurmak güvenlik
+        # katmanından 403 HTML döndürüyor ve hata "IP engeli" gibi görünüyor.
+        # Ortamı yazmak bu karışıklığı baştan kesiyor.
+        _mod = str(config.get("mode") or "?")
+        _ek = ""
+        if _mod != "live":
+            _ek = (" — DİKKAT: mod 'sandbox'. İstekler Trendyol TEST ağ geçidine "
+                   "gidiyor. Canlı mağaza anahtarıyla çalışıyorsanız Ayarlar > "
+                   "Trendyol'dan modu 'Canlı' yapın.")
+        raise HTTPException(
+            status_code=502,
+            detail=f"Trendyol kategorileri alınamadı (mod={_mod}): {_m[:260]}{_ek}")
 @router.get("/trendyol/categories/{category_id}/attributes")
 async def get_trendyol_category_attributes(category_id: int, refresh: bool = Query(False, description="True ise cache atlanır, Trendyol'dan taze ve eksiksiz çekilir"), current_user: dict = Depends(require_admin)):
     """Get attributes for a specific category (From DB or Trendyol API directly)"""
