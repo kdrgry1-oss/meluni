@@ -2030,6 +2030,23 @@ async def _supplier_xml_import_tick():
         logger.error(f"[cron] tedarikçi ürün aktarım hatası: {e}")
 
 
+async def _olcu_tablosu_oto_tick():
+    """Ölçü tablolarını otomatik Türkçeleştir/yay (günde 1, KREDİSİZ).
+
+    Yeni aktarılan ürünlerin tablosu elle düğmeye basılmayı bekliyordu; renk
+    kardeşlerine de yalnız elle yayılıyordu. Bu tur kredi harcamadan
+    (kayıtlı tablo / renk kardeşi / tedarikçi açıklaması) ölçüyü bulur,
+    tabloyu çizer, ölçüleri ürün kartının VERİSİNE yazar ve tablosuz renk
+    kardeşlerine kopyalar. Elle düzeltilmiş tablonun üstüne YAZMAZ.
+    """
+    try:
+        from routes.ai_product_images import olcu_tablolari_otomatik
+        res = await olcu_tablolari_otomatik()
+        logger.info(f"[cron] otomatik ölçü tablosu turu: {res}")
+    except Exception as e:
+        logger.error(f"[cron] otomatik ölçü tablosu hatası: {e}")
+
+
 def start_scheduler():
     global _scheduler
     if _scheduler is not None:
@@ -2344,6 +2361,13 @@ def start_scheduler():
         _supplier_xml_import_tick,
         CronTrigger(hour=4, minute=30),
         id="supplier_xml_import_new",
+        max_instances=1, coalesce=True,
+    )
+    # Ölçü tabloları: yeni ürünler aktarıldıktan sonra (05:15 UTC) kredisiz tur.
+    _add(
+        _olcu_tablosu_oto_tick,
+        CronTrigger(hour=5, minute=15),
+        id="size_table_auto_localize",
         max_instances=1, coalesce=True,
     )
     # §7 — Güvenlik/audit/SP-API log retention: ≥12 ay sakla, aşanı temizle. Haftalık (Pzt 04:00 UTC).

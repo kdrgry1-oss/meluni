@@ -39,6 +39,8 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
   // İngilizce tabloyla ya da tablosuz kalıyordu.
   const [kardesBekle, setKardesBekle] = useState(false);
   const [kardesSonuc, setKardesSonuc] = useState("");
+  const [topluBekle, setTopluBekle] = useState(false);
+  const [topluSonuc, setTopluSonuc] = useState("");
   const [duzeltIlerleme, setDuzeltIlerleme] = useState("");
   const [secimGerekli, setSecimGerekli] = useState(false);
   const [okunan, setOkunan] = useState(null);
@@ -223,6 +225,70 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
       setHata(e.message);
     } finally {
       setKardesBekle(false);
+    }
+  };
+
+  /** TÜM KATALOG: kredisiz otomatik ölçü tablosu turu.
+   *
+   *  Tek tek düğmeye basmak yerine tüm ürünlerde çalışır: ölçüyü kayıtlı
+   *  tablodan / renk kardeşinden / tedarikçi açıklamasından bulur, Türkçe
+   *  tabloyu çizer, ölçüleri ürün kartının VERİSİNE yazar ve tablosuz renk
+   *  kardeşlerine kopyalar. Model çağrısı yok — kredi harcamaz. Aynı tur her
+   *  gece otomatik de koşuyor; bu düğme "şimdi çalıştır" içindir. */
+  const topluOtomatik = async () => {
+    if (!window.confirm(
+      "TÜM ürünlerde otomatik ölçü tablosu turu çalışacak.\n\n" +
+      "· Ölçüler ürün kartının ölçü tablosu verisine yazılır\n" +
+      "· Tablosu olmayan ürünlere Türkçe tablo görseli eklenir\n" +
+      "· Tablosuz renk kardeşlerine tablo kopyalanır\n\n" +
+      "Elle düzeltilmiş tablolara dokunulmaz. Kredi harcanmaz.\n\nBaşlatılsın mı?"
+    )) return;
+    setTopluBekle(true);
+    setHata("");
+    setTopluSonuc("");
+    try {
+      const bas = await fetch(`${API}/ai-images/size-tables/auto-run`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+        body: JSON.stringify({}),
+      }).then(async (r) => {
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.detail || "İşlem başarısız");
+        return d;
+      });
+      // Katalog turu uzun sürer; iş arka planda, biz durumunu yokluyoruz.
+      const basladi = Date.now();
+      while (Date.now() - basladi < 30 * 60 * 1000) {
+        await new Promise((r) => setTimeout(r, 5000));
+        setTopluSonuc(`Çalışıyor… ${Math.round((Date.now() - basladi) / 1000)} sn`);
+        let d;
+        try {
+          const r = await fetch(`${API}/ai-images/jobs/${bas.job_id}`, {
+            headers: { Authorization: `Bearer ${token()}` },
+          });
+          d = await r.json();
+          if (!r.ok) throw new Error(d.detail || "Durum okunamadı");
+        } catch {
+          continue;                            // geçici ağ hatası — yoklamayı sürdür
+        }
+        if (d.durum === "hata") throw new Error(d.hata || "İşlem başarısız");
+        if (d.durum === "bitti") {
+          const s = d.sonuc || {};
+          setTopluSonuc(
+            `${s.taranan} ürün tarandı · ${s.islenen} üründe ölçü bulundu · ` +
+            `${s.gorsel_yazilan} tablo görseli üretildi · ` +
+            `${s.veri_yazilan} üründe ölçü verisi yazıldı · ` +
+            `${s.kardese_gorsel} renk kardeşine tablo kopyalandı · ` +
+            `${s.olcu_bulunamayan} üründe ölçü bulunamadı`);
+          return;
+        }
+      }
+      throw new Error("Tur 30 dakikada bitmedi; sunucu kayıtlarına bakın.");
+    } catch (e) {
+      setHata(e.message);
+      setTopluSonuc("");
+    } finally {
+      setTopluBekle(false);
     }
   };
 
@@ -470,6 +536,32 @@ export default function ProductAiImages({ productId, images = [], onAddImage, on
             {kardesSonuc}
           </div>
         )}
+
+        {/* KATALOG GENELİ — tek tek düğmeye basmak yerine hepsi bir turda.
+            Aynı tur her gece 05:15'te kendiliğinden de koşuyor. */}
+        <div className="mt-3 pt-3 border-t">
+          <button
+            type="button"
+            onClick={topluOtomatik}
+            disabled={topluBekle}
+            className="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-sm inline-flex items-center gap-1.5 disabled:opacity-50"
+          >
+            <Ruler className="w-4 h-4" />
+            {topluBekle ? "Katalog taranıyor…" : "Tüm ürünlerde otomatik çalıştır (kredisiz)"}
+          </button>
+          <p className="text-[11px] text-gray-500 mt-1.5">
+            Ölçüyü kayıtlı tablodan, renk kardeşinden ya da tedarikçi
+            açıklamasından bulur; Türkçe tabloyu çizer, ölçüleri <b>ürün
+            kartının ölçü tablosu verisine</b> (görselden ayrı) yazar ve
+            tablosuz renk kardeşlerine kopyalar. Elle düzeltilmiş tablolara
+            dokunmaz. Bu tur her gece otomatik de çalışır.
+          </p>
+          {topluSonuc && (
+            <div className="mt-2 text-xs text-green-800 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+              {topluSonuc}
+            </div>
+          )}
+        </div>
 
         {/* Yalnız tablo görseli bulunamadığında çıkar — gereksiz yere
             her seferinde altı küçük resim göstermiyoruz. */}

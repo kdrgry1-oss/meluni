@@ -1920,6 +1920,173 @@ async def size_table_auto(product_id: str, payload: dict | None = None,
                        " alındı — sayıları bir kez gözden geçirin."}
 
 
+async def _tabloyu_kardeslere(product_id: str, url: str, stock_code: str,
+                              *, sadece_eksik: bool = False) -> tuple:
+    """Ölçü tablosu GÖRSELİNİ aynı stok kodlu renk kardeşlerine yazar.
+
+    `sadece_eksik=True` iken tablosu OLMAYAN kardeşe yazar, kendi tablosu olanı
+    olduğu gibi bırakır (toplu tarama böyle çalışır: kimsenin elle düzelttiği
+    tablonun üstüne yazmayalım). `False` iken kardeşteki eski tablo çıkarılıp
+    yenisi sona konur — panelden "kardeşlere de yükle" düğmesinin davranışı.
+
+    Döner: (yazılan, dokunulmayan)
+    """
+    yazilan = atlanan = 0
+    async for s2 in db.products.find(
+            {"stock_code": stock_code, "id": {"$ne": product_id},
+             "is_deleted": {"$ne": True}},
+            {"_id": 0, "id": 1, "images": 1}):
+        mevcut = [x for x in (s2.get("images") or []) if _gorsel_url(x)]
+        # Kardeşte zaten AYNI tablo varsa dokunma (tekrar tekrar eklenmesin).
+        if any(_gorsel_url(x) == url for x in mevcut):
+            atlanan += 1
+            continue
+        if sadece_eksik and any(_olcu_gorseli_mi(x) for x in mevcut):
+            atlanan += 1
+            continue
+        temiz = [x for x in mevcut if not _olcu_gorseli_mi(x)]
+        temiz.append({"id": str(uuid.uuid4()), "url": url,
+                      "is_size_table": True, "alt": "Ölçü Tablosu",
+                      "created_at": _now_iso()})
+        await db.products.update_one({"id": s2["id"]}, {"$set": {
+            "images": temiz, "images_custom": True,
+            "size_chart_localized_at": _now_iso()}})
+        yazilan += 1
+    return yazilan, atlanan
+
+
+async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
+                              ez: bool = False) -> Dict[str, Any]:
+    """TEK ÜRÜN için kredisiz otomatik ölçü işi. Model çağrısı YAPMAZ.
+
+    Üç iş bir arada (yönetim isteği):
+      1. Ölçüler ürün kartının ölçü tablosu VERİSİNE yazılır (görselden ayrı;
+         vitrin beden önerisi ve pazaryeri bu veriyi okur).
+      2. Türkçe tablo görseli çizilir, üründeki tablo görselinin yerine konur
+         (yoksa sona eklenir) — `gorsel=False` ile yalnız veri yazılır.
+      3. Tablosu olmayan renk kardeşlerine aynı görsel kopyalanır.
+
+    Ölçü bulunamazsa hiçbir şey yazılmaz ({"durum": "veri_yok"}). Ham tedarikçi
+    tablosunu MODELSİZ tanıyamayız; o ürünlerde tablo sona EKLENİR, ham görsel
+    silinmez — hangisinin ham tablo olduğunu bilmeden silmek ürün fotoğrafını
+    yok edebilir.
+    """
+    urun = await db.products.find_one({"id": product_id},
+                                      {"_id": 0, "images": 1, "stock_code": 1})
+    if not urun:
+        return {"durum": "urun_yok"}
+
+    veri = await _kredisiz_olcu_verisi(product_id)
+    satirlar = veri.get("satirlar") or []
+    if not satirlar:
+        return {"durum": "veri_yok"}
+    adlar = veri.get("olcu_adlari") or []
+
+    sonuc: Dict[str, Any] = {"durum": "tamam", "kaynak": veri.get("kaynak"),
+                             "veri_yazildi": False, "gorsel_yazildi": False,
+                             "kardes_gorsel": 0, "kardes_veri": 0}
+
+    # 1) VERİ — kaynağı zaten ürünün kendi kayıtlı tablosuysa tekrar yazmaya
+    #    gerek yok; kardeşten/açıklamadan geldiyse yaz.
+    if veri.get("kaynak") != "kayitli" or ez:
+        sonuc["kardes_veri"] = await _olcu_tablosu_yaz(
+            product_id, adlar, satirlar, veri.get("kaynak") or "otomatik")
+        sonuc["veri_yazildi"] = True
+
+    if not gorsel:
+        return sonuc
+
+    # 2) GÖRSEL — zaten Türkçe tablomuz varsa yeniden çizmeyiz (`ez` hariç).
+    ham = [x for x in (urun.get("images") or []) if _gorsel_url(x)]
+    var_olan = [i for i, x in enumerate(ham) if _olcu_gorseli_mi(x)]
+    if var_olan and not ez:
+        url = _gorsel_url(ham[var_olan[-1]])
+        sirali = _olcu_sona(ham)
+        if [_gorsel_url(x) for x in sirali] != [_gorsel_url(x) for x in ham]:
+            await db.products.update_one({"id": product_id},
+                                         {"$set": {"images": sirali}})
+    else:
+        raw = _render_size_table(adlar, satirlar)
+        url = await _store(raw, product_id, "olcu-oto", "image/jpeg")
+        yeni = list(ham)
+        if var_olan:
+            yeni[var_olan[-1]] = _gorsel_degistir(ham[var_olan[-1]], url)
+        else:
+            yeni.append({"id": str(uuid.uuid4()), "url": url,
+                         "is_size_table": True, "alt": "Ölçü Tablosu",
+                         "created_at": _now_iso()})
+        await db.products.update_one({"id": product_id}, {"$set": {
+            "images": _olcu_sona(yeni), "images_custom": True,
+            "size_chart_localized_at": _now_iso()}})
+        sonuc["gorsel_yazildi"] = True
+    sonuc["url"] = url
+
+    # 3) Tablosuz renk kardeşlerine görseli kopyala.
+    kod = str(urun.get("stock_code") or "").strip()
+    if kod and url:
+        yazilan, _ = await _tabloyu_kardeslere(product_id, url, kod,
+                                               sadece_eksik=not ez)
+        sonuc["kardes_gorsel"] = yazilan
+    return sonuc
+
+
+async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
+                                  ez: bool = False,
+                                  kategori: str = "") -> Dict[str, Any]:
+    """TÜM KATALOG için kredisiz otomatik ölçü tablosu turu.
+
+    Kredi harcamaz: ölçüler kayıtlı tablodan, renk kardeşinden ya da tedarikçi
+    açıklamasından okunur, tablo burada çizilir. Bu yüzden zamanlanmış iş
+    olarak da güvenle koşabilir (`scheduler._olcu_tablosu_oto_tick`).
+    """
+    q: Dict[str, Any] = {"is_deleted": {"$ne": True}}
+    if kategori:
+        q["$or"] = [{"category_name": {"$regex": kategori, "$options": "i"}},
+                    {"category_path": {"$regex": kategori, "$options": "i"}}]
+    taranan = tamam = veri_yok = hata = 0
+    gorsel_yazilan = veri_yazilan = kardes_gorsel = kardes_veri = 0
+    async for p in db.products.find(q, {"_id": 0, "id": 1}):
+        if limit and taranan >= limit:
+            break
+        taranan += 1
+        try:
+            r = await _olcu_otomatik_urun(p["id"], gorsel=gorsel, ez=ez)
+        except Exception as e:                       # tek ürün turu durdurmasın
+            hata += 1
+            logger.error(f"[ai-images] otomatik ölçü ({p['id']}): {e}")
+            continue
+        if r.get("durum") == "veri_yok":
+            veri_yok += 1
+            continue
+        if r.get("durum") != "tamam":
+            continue
+        tamam += 1
+        gorsel_yazilan += 1 if r.get("gorsel_yazildi") else 0
+        veri_yazilan += 1 if r.get("veri_yazildi") else 0
+        kardes_gorsel += int(r.get("kardes_gorsel") or 0)
+        kardes_veri += int(r.get("kardes_veri") or 0)
+    return {"taranan": taranan, "islenen": tamam, "olcu_bulunamayan": veri_yok,
+            "hata": hata, "gorsel_yazilan": gorsel_yazilan,
+            "veri_yazilan": veri_yazilan, "kardese_gorsel": kardes_gorsel,
+            "kardese_veri": kardes_veri, "kredi_harcandi": False}
+
+
+@router.post("/size-tables/auto-run")
+async def size_tables_auto_run(payload: dict | None = None,
+                               _admin=Depends(require_admin)):
+    """Katalog geneli otomatik ölçü tablosu turu (arka planda, kredisiz).
+
+    body: {limit?: 0, gorsel?: true, ez?: false, kategori?: ""}
+    Dönen `job_id` ile `GET /ai-images/jobs/{job_id}` sorgulanır.
+    """
+    p = payload or {}
+    kw = {"limit": int(p.get("limit") or 0), "gorsel": p.get("gorsel", True) is not False,
+          "ez": bool(p.get("ez")), "kategori": str(p.get("kategori") or "").strip()}
+    job_id = await _is_baslat("toplu", "olcu-oto",
+                              lambda: olcu_tablolari_otomatik(**kw))
+    return {"job_id": job_id, "mesaj": "Otomatik ölçü tablosu turu başladı."}
+
+
 @router.post("/products/{product_id}/size-chart-to-siblings")
 async def size_chart_to_siblings(product_id: str, payload: dict | None = None,
                                  _admin=Depends(require_admin)):
@@ -1957,23 +2124,7 @@ async def size_chart_to_siblings(product_id: str, payload: dict | None = None,
         raise HTTPException(status_code=400,
                             detail="Ürünün stok kodu yok; renk kardeşi bulunamaz.")
 
-    yazilan, atlanan = 0, 0
-    async for s2 in db.products.find(
-            {"stock_code": kod, "id": {"$ne": product_id}, "is_deleted": {"$ne": True}},
-            {"_id": 0, "id": 1, "images": 1}):
-        mevcut = [x for x in (s2.get("images") or []) if _gorsel_url(x)]
-        # Kardeşte zaten AYNI tablo varsa dokunma (tekrar tekrar eklenmesin).
-        if any(_gorsel_url(x) == url for x in mevcut):
-            atlanan += 1
-            continue
-        temiz = [x for x in mevcut if not _olcu_gorseli_mi(x)]
-        temiz.append({"id": str(uuid.uuid4()), "url": url,
-                      "is_size_table": True, "alt": "Ölçü Tablosu",
-                      "created_at": _now_iso()})
-        await db.products.update_one({"id": s2["id"]}, {"$set": {
-            "images": temiz, "images_custom": True,
-            "size_chart_localized_at": _now_iso()}})
-        yazilan += 1
+    yazilan, atlanan = await _tabloyu_kardeslere(product_id, url, kod)
 
     return {"product_id": product_id, "url": url, "stock_code": kod,
             "yazilan_kardes": yazilan, "zaten_vardi": atlanan,
