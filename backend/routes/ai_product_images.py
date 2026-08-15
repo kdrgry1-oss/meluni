@@ -49,7 +49,17 @@ ALLOWED_MODELS = ("gpt-image-1", "gpt-image-1-mini")
 _GEMINI_URL = ("https://generativelanguage.googleapis.com/v1beta/models/"
                "{model}:generateContent")
 _DEFAULT_ENHANCE_MODEL = "gemini-2.5-flash-image"
-ENHANCE_TARGET = (1200, 1800)         # 2:3 dikey — moda kadrajı
+# ÇIKTI ÖLÇÜSÜ — VİTRİNLE AYNI ORAN OLMAK ZORUNDA.
+# Önce 1200x1800 (2:3) üretiliyordu. Oysa vitrindeki görsel kutularının hepsi
+# 3:4 (`aspect-[3/4]`, on ayrı yerde) ve `object-contain` kullanıyor: 2:3 bir
+# görsel 3:4 kutuya sığdırılınca yanlarda boşluk kalıyor, ürün sayfası çerçeveli
+# duruyordu.
+#
+# Oranı VİTRİNE eşitliyoruz, tersini değil: tedarikçi görselleri de zaten 3:4
+# (630x840). Böylece iyileştirme sırasında dolgu/gerdirme HİÇ gerekmiyor —
+# görsel yalnız büyütülüyor, en temiz sonuç bu. Vitrini 2:3'e çevirmek ise
+# iyileştirilmemiş binlerce ürünü boşluklu gösterirdi.
+ENHANCE_TARGET = (1200, 1600)         # 3:4 dikey — vitrindeki kutularla aynı
 _DEFAULT_ENHANCE_PROMPT = (
     "Bu ürün fotoğrafının ÇÖZÜNÜRLÜĞÜNÜ ve netliğini artır. Görüntüyü YENİDEN "
     "YORUMLAMA: kadraj, kompozisyon, duruş, arka plan, ışık ve renkler birebir "
