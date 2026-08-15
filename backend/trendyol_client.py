@@ -4,10 +4,22 @@ Includes Product Category, Attribute, and Brand fetching.
 """
 import base64
 import logging
+import os
 from typing import List, Dict, Optional, Any
 import httpx
 
 logger = logging.getLogger(__name__)
+
+# ENTEGRASYON KİMLİĞİ — Trendyol bunu ZORUNLU tutuyor ve biçimi denetliyor:
+#     "{satıcı_no} - {entegratör_adı}"
+# Kendi entegrasyonunu yapan satıcı için beklenen değer "SelfIntegration".
+# Burada uydurma bir ad ("MeluniIntegration") gönderiliyordu; Trendyol o adı
+# tanımadığı için istekleri güvenlik katmanında (Cloudflare 403 "you have been
+# blocked") reddediyordu — kategori listesi hiç gelmiyor, eşleştirme
+# yapılamıyordu. Marka adı DEĞİL, protokol değeri: koda gömülmez ama
+# varsayılanı Trendyol'un belgelediği değerdir.
+INTEGRATION_AGENT = (os.environ.get("TRENDYOL_INTEGRATION_AGENT")
+                     or "SelfIntegration").strip()
 
 class TrendyolClient:
     def __init__(self, supplier_id: str, api_key: str, api_secret: str, mode: str = "live"):
@@ -32,7 +44,7 @@ class TrendyolClient:
         encoded_credentials = base64.b64encode(credentials.encode()).decode()
         return {
             "Authorization": f"Basic {encoded_credentials}",
-            "User-Agent": f"{self.supplier_id} - MeluniIntegration",
+            "User-Agent": f"{self.supplier_id} - {INTEGRATION_AGENT}",
             "Content-Type": "application/json",
             "Accept": "application/json"
         }

@@ -69,6 +69,20 @@ class AttributeMappingReq(BaseModel):
     default_mappings: Optional[dict] = {}
 
 
+def _agent() -> str:
+    """Trendyol entegrasyon kimliği — istemciyle AYNI değer."""
+    try:
+        import sys as _sys, os as _os
+        _sys.path.insert(0, _os.path.dirname(_os.path.dirname(__file__)))
+        from trendyol_client import INTEGRATION_AGENT
+        return INTEGRATION_AGENT
+    except Exception:
+        return "SelfIntegration"
+
+
+_INTEGRATION_AGENT = _agent()
+
+
 async def get_trendyol_config():
     """Get Trendyol configuration from DB or env.
     NOTE: default_markup için Ana Ayarlar > trendyol_markup ÖNCELİKLİ — kullanıcı UI'da
@@ -130,7 +144,9 @@ async def get_trendyol_headers():
     encoded = base64.b64encode(credentials.encode()).decode()
     return {
         "Authorization": f"Basic {encoded}",
-        "User-Agent": f'{config["supplier_id"]} - MeluniIntegration',
+        # Entegrasyon kimliği tek yerden: trendyol_client.INTEGRATION_AGENT.
+        # İki yerde ayrı ayrı yazılınca biri düzeltilip diğeri unutuluyordu.
+        "User-Agent": f'{config["supplier_id"]} - {_INTEGRATION_AGENT}',
         "Content-Type": "application/json"
     }
 def calculate_trendyol_price(base_price: float, product_data: dict, trendyol_config: dict) -> float:
