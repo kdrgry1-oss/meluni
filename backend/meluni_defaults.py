@@ -17,7 +17,7 @@ import re as _re
 MELUNI_COMPANY = {
     "company_name": "MELUNİ DIŞ TİCARET A.Ş.",
     "email": "info@meluni.com.tr",
-    "address": "İkitelli O.S.B. İmsan San. Sit. D BLOK NO:3",
+    "address": "Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19 Beylikdüzü/İstanbul",
 }
 
 # Düz sabitler (ada göre). Üretici/İthalatçı GPSR alanları aşağıdaki resolver ile ayrı ele alınır.

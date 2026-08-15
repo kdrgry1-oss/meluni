@@ -460,7 +460,7 @@ export default function AdminSettings() {
               <label className="block text-sm font-medium mb-1">Adres</label>
               <input type="text" value={settings.company_info?.address || ""}
                 onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), address: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="İkitelli O.S.B. İmsan San. Sit. D BLOK NO:3" />
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19 Beylikdüzü/İstanbul" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">İl / İlçe</label>

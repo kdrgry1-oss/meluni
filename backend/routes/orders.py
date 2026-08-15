@@ -4090,9 +4090,9 @@ async def create_invoice_for_order(
             issue_time=issue_time,
             supplier_vkn=dogan_settings.get("vkn") or _co.get("tax_number") or "7810816779",
             supplier_name=dogan_settings.get("supplier_name") or _co.get("company_name") or "",
-            supplier_district=dogan_settings.get("supplier_district") or "KÜÇÜKÇEKMECE",
+            supplier_district=dogan_settings.get("supplier_district") or "BEYLIKDÜZÜ",
             supplier_city=dogan_settings.get("supplier_city") or "İstanbul",
-            supplier_street=dogan_settings.get("supplier_street") or _co.get("address") or "İkitelli O.S.B. İmsan San. Sit. D BLOK NO:3",
+            supplier_street=dogan_settings.get("supplier_street") or _co.get("address") or "Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19",
             supplier_tax_office=dogan_settings.get("supplier_tax_office") or _co.get("tax_office") or "HALKALI VERGİ DAİRESİ BAŞKANLIĞI",
             supplier_phone=dogan_settings.get("supplier_phone") or _co.get("phone") or "",
             supplier_email=dogan_settings.get("supplier_email") or _co.get("email") or "",
@@ -4326,9 +4326,9 @@ async def create_invoice_for_order(
             issue_time=issue_time,
             supplier_vkn=dogan_settings.get("vkn") or _co.get("tax_number") or "7810816779",
             supplier_name=dogan_settings.get("supplier_name") or _co.get("company_name") or "",
-            supplier_district=dogan_settings.get("supplier_district") or "KÜÇÜKÇEKMECE",
+            supplier_district=dogan_settings.get("supplier_district") or "BEYLIKDÜZÜ",
             supplier_city=dogan_settings.get("supplier_city") or "İstanbul",
-            supplier_street=dogan_settings.get("supplier_street") or _co.get("address") or "İkitelli O.S.B. İmsan San. Sit. D BLOK NO:3",
+            supplier_street=dogan_settings.get("supplier_street") or _co.get("address") or "Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19",
             supplier_tax_office=dogan_settings.get("supplier_tax_office") or _co.get("tax_office") or "HALKALI VERGİ DAİRESİ BAŞKANLIĞI",
             supplier_website=dogan_settings.get("supplier_website") or _co.get("website") or "",
             customer_vkn=customer_vkn,
@@ -5215,9 +5215,9 @@ async def _get_sender_info() -> dict:
     return {
         "name": store.get("sender_name") or "MELUNİ DIŞ TİCARET A.Ş.",
         "phone": _normalize_phone(store.get("sender_phone") or "5433300310"),
-        "address": store.get("sender_address") or "İkitelli OSB Mah. İMSAN D Blok No: 3",
+        "address": store.get("sender_address") or "Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19",
         "city": store.get("sender_city") or "İstanbul",
-        "district": store.get("sender_district") or "Küçükçekmece",
+        "district": store.get("sender_district") or "Beylikdüzü",
     }
 
 

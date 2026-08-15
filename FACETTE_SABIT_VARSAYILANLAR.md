@@ -43,7 +43,7 @@ Bu, Trendyol mantığının aynısıdır; HB de aynı isim-çözümlemeyle çal�
 Eşleme:
 - "Üretici/İthalatçı … Adı" → **FACETTE DIŞ TİCARET A.Ş.**
 - "… Mail …" → **info@facette.com.tr**
-- "… Adres …" → **İkitelli O.S.B. İmsan San. Sit. D BLOK NO:3**
+- "… Adres …" → **Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19 Beylikdüzü/İstanbul**
 - Birincil/İkincil/Üçüncül İthalatçı → aynı değerler.
 
 ## 4) Enjeksiyon noktaları (kod)
