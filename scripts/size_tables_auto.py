@@ -52,6 +52,10 @@ async def main() -> int:
                     help="Modeli hiç çağırma: ham tabloyu arama, görselden okuma.")
     ap.add_argument("--kredi-limit", type=int, default=40,
                     help="Bir turda en fazla kaç üründe model çağrılsın (0=sınırsız).")
+    ap.add_argument("--sinirsiz", action="store_true",
+                    help="Sınır ve erken vazgeçme YOK: tüm ürünler işlenir, kota "
+                         "hatasında vazgeçmek yerine bekleyip devam edilir. "
+                         "Kredi harcar ve uzun sürer.")
     args = ap.parse_args()
 
     try:
@@ -67,7 +71,8 @@ async def main() -> int:
             limit=args.limit, gorsel=not args.sadece_veri,
             ez=args.ez, kategori=args.kategori,
             tara=not args.kredisiz, ocr=not args.kredisiz,
-            kredi_limit=args.kredi_limit)
+            kredi_limit=0 if args.sinirsiz else args.kredi_limit,
+            hata_tolerans=0 if args.sinirsiz else 3)
         for k, v in sonuc.items():
             print(f"{k:<20}: {v}")
         return 0

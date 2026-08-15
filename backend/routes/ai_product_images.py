@@ -2118,7 +2118,8 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
 async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
                                   ez: bool = False, kategori: str = "",
                                   tara: bool = True, ocr: bool = True,
-                                  kredi_limit: int = 40) -> Dict[str, Any]:
+                                  kredi_limit: int = 40,
+                                  hata_tolerans: int = 3) -> Dict[str, Any]:
     """TÜM KATALOG için otomatik ölçü tablosu turu.
 
     Önce KREDİSİZ yol denenir (kayıtlı tablo / renk kardeşi / tedarikçi
@@ -2139,12 +2140,20 @@ async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
     kredili = 0
     ardisik_hata = 0
     son_kredi_hatasi = ""
+    bekleme = 0        # kota hatasında ürünler arası soluklanma (saniye)
+    beklenen = 0
     async for p in db.products.find(q, {"_id": 0, "id": 1}):
         if limit and taranan >= limit:
             break
         taranan += 1
-        kredi_acik = (ardisik_hata < 3
+        # hata_tolerans=0 → asla vazgeçme (yönetim "sınır istemiyorum" dedi);
+        # kota hatasında vazgeçmek yerine bekleyip devam ediyoruz, çünkü
+        # ücretsiz katmanın dakikalık sınırı beklemekle açılıyor.
+        kredi_acik = ((hata_tolerans <= 0 or ardisik_hata < hata_tolerans)
                       and (kredi_limit <= 0 or kredili < kredi_limit))
+        if bekleme and kredi_acik:
+            await asyncio.sleep(bekleme)
+            beklenen += bekleme
         try:
             r = await _olcu_otomatik_urun(p["id"], gorsel=gorsel, ez=ez,
                                           tara=tara and kredi_acik,
@@ -2158,8 +2167,14 @@ async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
         if r.get("kredi_hatasi"):
             ardisik_hata += 1
             son_kredi_hatasi = r["kredi_hatasi"]
+            # Kota/hız sınırı geçicidir: soluklanma süresini artır (20→90 sn).
+            # Anahtar/yetki hatası kalıcıdır, beklemek işe yaramaz.
+            if re.search(r"429|kota|quota|rate|limit|yoğun|exhaust",
+                         son_kredi_hatasi, re.I):
+                bekleme = min(90, (bekleme or 10) * 2)
         elif r.get("kredi_kullanildi"):
             ardisik_hata = 0
+            bekleme = 0
         if r.get("durum") == "veri_yok":
             veri_yok += 1
             continue
@@ -2174,7 +2189,7 @@ async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
             "hata": hata, "gorsel_yazilan": gorsel_yazilan,
             "veri_yazilan": veri_yazilan, "kardese_gorsel": kardes_gorsel,
             "kardese_veri": kardes_veri, "model_kullanilan_urun": kredili,
-            "model_hatasi": son_kredi_hatasi}
+            "kota_bekleme_sn": beklenen, "model_hatasi": son_kredi_hatasi}
 
 
 @router.post("/size-tables/auto-run")
@@ -2191,7 +2206,8 @@ async def size_tables_auto_run(payload: dict | None = None,
           "ez": bool(p.get("ez")), "kategori": str(p.get("kategori") or "").strip(),
           "tara": p.get("tara", True) is not False,
           "ocr": p.get("ocr", True) is not False,
-          "kredi_limit": int(p.get("kredi_limit", 40) or 0)}
+          "kredi_limit": int(p.get("kredi_limit", 40) or 0),
+          "hata_tolerans": int(p.get("hata_tolerans", 3) or 0)}
     job_id = await _is_baslat("toplu", "olcu-oto",
                               lambda: olcu_tablolari_otomatik(**kw))
     return {"job_id": job_id, "mesaj": "Otomatik ölçü tablosu turu başladı."}
