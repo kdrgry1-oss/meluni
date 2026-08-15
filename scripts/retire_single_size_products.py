@@ -40,6 +40,9 @@ async def main() -> int:
     ap.add_argument("--esik", type=int, default=None,
                     help="Tek beden stok eşiği (varsayılan: ayarlardaki değer, 9).")
     ap.add_argument("--liste", type=int, default=25, help="Kaç örnek yazılsın.")
+    ap.add_argument("--geri-al", action="store_true", dest="geri_al",
+                    help="Bu kuralla kapatılan ürünleri GERİ AÇAR "
+                         "(kara listeden çıkarır, ürünü çöp kutusundan alır).")
     args = ap.parse_args()
     yaz = bool(args.uygula)
 
@@ -50,6 +53,42 @@ async def main() -> int:
         pass
     from routes.deps import db                 # noqa: E402
     from routes import supplier_xml as sx      # noqa: E402
+
+    # GERİ ALMA — eşleme arızası yüzünden yanlış kapatılanlar için.
+    # Stok senkronu varyantları eşleştiremediğinde ürün "tek bedeni kaldı" gibi
+    # görünüp kalıcı kapatılabiliyordu. Bu yol o kararı geri alır; yalnız BU
+    # kuralın (reason=tek_beden_esik) kapattıklarına dokunur, yönetimin elle
+    # sildiklerine ASLA dokunmaz.
+    if args.geri_al:
+        acilan = 0
+        ornek = []
+        async for b in db.supplier_blocklist.find({"reason": "tek_beden_esik"},
+                                                  {"_id": 0}):
+            pid = b.get("product_id")
+            if pid:
+                pr = await db.products.find_one({"id": pid}, {"_id": 0, "name": 1})
+                if len(ornek) < 20:
+                    ornek.append((pr or {}).get("name", b.get("name", ""))[:52])
+                if yaz:
+                    await db.products.update_one({"id": pid}, {"$set": {
+                        "is_deleted": False, "blocked_from_feed": False,
+                        "manual_deactivated": False,
+                        "deactivated_reason": "",
+                    }, "$unset": {"retired_single_size": ""}})
+            if yaz:
+                await db.supplier_blocklist.delete_one(
+                    {"supplier_key": b.get("supplier_key")})
+            acilan += 1
+        for ad in ornek:
+            print(f"  {ad}")
+        print()
+        print(f"{'geri açıldı' if yaz else 'geri açılacak'}: {acilan}")
+        if not yaz:
+            print("\nHiçbir şey yazılmadı. Uygulamak için: --geri-al --uygula")
+        else:
+            print("Ürünler PASİF DEĞİL, satışa açık. Stokları bir sonraki stok "
+                  "senkronunda tazelenir.")
+        return 0
 
     cfg = await sx.get_config()
     esik = args.esik if args.esik is not None else int(

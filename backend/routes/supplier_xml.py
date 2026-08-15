@@ -1236,6 +1236,54 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
     return result
 
 
+# ──────────────── varyant eşleme (stok senkronu) ────────────────
+# Burada yalnız BİZİM ürettiğimiz stok koduna bakılıyordu. Renk kardeşleri için
+# kod üretimi grup koduna geçirilince (658179a) aynı varyant için ARTIK BAŞKA
+# bir stok kodu üretilir oldu; daha önce aktarılmış ürünlerin kayıtlı kodu
+# tutmadı ve besleme her varyantı "beslemede yok" sayıp stoğu SIFIRLADI.
+# Katalog tek turda 0 stoğa düştü.
+#
+# Tedarikçinin barkodu/stok kodu bizim kod üretimimizden BAĞIMSIZ ve beslemede
+# değişmiyor — eşleme artık onlarla başlıyor. Bizim kodumuz yedek; beden+renk
+# en son çare (aynı üründe iki varyantın bedeni+rengi aynı olamaz).
+
+def _t(x) -> str:
+    return str(x or "").strip().lower()
+
+
+def besleme_haritasi(rec_variants: List[Dict[str, Any]],
+                     kodlar: List[str]) -> Dict[str, Dict[str, Any]]:
+    """Besleme varyantlarını tüm eşleme anahtarlarıyla indeksler."""
+    harita: Dict[str, Dict[str, Any]] = {}
+    for i, v in enumerate(rec_variants or []):
+        kod = kodlar[i] if i < len(kodlar) else ""
+        for anahtar in (f"sb:{_t(v.get('supplier_barcode'))}",
+                        f"ss:{_t(v.get('supplier_stock_code'))}",
+                        f"ref:{_t(v.get('ref'))}",
+                        f"kod:{_t(kod)}",
+                        f"bs:{_t(v.get('size'))}|{_t(v.get('color'))}"):
+            if not anahtar.split(":", 1)[1].strip("|"):
+                continue                      # boş alanla eşleşme yapma
+            harita.setdefault(anahtar, v)
+    return harita
+
+
+def varyant_bul(v: Dict[str, Any],
+                harita: Dict[str, Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Ürün varyantının beslemedeki karşılığı. Güven sırasına göre arar."""
+    for anahtar in (f"sb:{_t(v.get('supplier_barcode'))}",
+                    f"ss:{_t(v.get('supplier_stock_code'))}",
+                    f"kod:{_t(v.get('stock_code'))}",
+                    f"ref:{_t(v.get('supplier_stock_code'))}",
+                    f"bs:{_t(v.get('size'))}|{_t(v.get('color'))}"):
+        if not anahtar.split(":", 1)[1].strip("|"):
+            continue
+        src = harita.get(anahtar)
+        if src is not None:
+            return src
+    return None
+
+
 async def sync_stock() -> Dict[str, Any]:
     """Stok ve fiyatı besleme ile eşitler. Ürün açmaz."""
     cfg = await get_config()
@@ -1245,6 +1293,8 @@ async def sync_stock() -> Dict[str, Any]:
     records, _ = await load_items()
 
     touched = missing = failed = retired = 0
+    eslesmeyen_urun = 0
+    eslesme_ornek: List[str] = []
     for rec in records:
         try:
             key = supplier_codes.supplier_key(supplier, rec["model_ref"])
@@ -1256,18 +1306,31 @@ async def sync_stock() -> Dict[str, Any]:
                 missing += 1
                 continue
 
-            # Tedarikçi varyantını BİZİM stok kodumuza eşleyip stok yaz.
-            by_code: Dict[str, Dict[str, Any]] = {}
+            # EŞLEME — ÖNCE TEDARİKÇİNİN KENDİ KİMLİKLERİ.
+            #
+            # Burada yalnız BİZİM ürettiğimiz stok koduna bakılıyordu. Renk
+            # kardeşleri için kod üretimi grup koduna geçirilince (658179a)
+            # aynı varyant için ARTIK BAŞKA bir stok kodu üretilir oldu; daha
+            # önce aktarılmış ürünlerin kayıtlı kodu tutmadı ve besleme her
+            # varyantı "beslemede yok" sayıp stoğu SIFIRLADI. Katalog tek turda
+            # 0 stoğa düştü.
+            #
+            # Tedarikçinin barkodu/stok kodu bizim kod üretimimizden bağımsız
+            # ve beslemede değişmiyor — eşleme artık onlarla başlıyor. Bizim
+            # kodumuz yalnız yedek; beden+renk en son çare.
+            kodlar = []
             for v in rec["variants"]:
                 codes = await supplier_codes.get_or_create_variant_codes(
                     db, supplier, rec["model_ref"], v.get("ref") or "0",
                     rec.get("group_ref") or "")
-                by_code[codes["stock_code"]] = v
+                kodlar.append(codes["stock_code"])
+            besleme = besleme_haritasi(rec["variants"], kodlar)
 
-            new_variants, total = [], 0
+            new_variants, total, eslesen = [], 0, 0
             for v in (product.get("variants") or []):
-                src = by_code.get(v.get("stock_code"))
+                src = varyant_bul(v, besleme)
                 if src is not None:
+                    eslesen += 1
                     _st = int(src.get("stock") or 0)
                     # Eşiğin altına düşen beden SATILAMAZ hale gelir. Stoğu
                     # olduğu gibi yazsak "son 3 ürün" diye satılır ve sipariş
@@ -1282,6 +1345,18 @@ async def sync_stock() -> Dict[str, Any]:
                 total += int(v.get("stock") or 0)
                 new_variants.append(v)
 
+            # GÜVENLİK KİLİDİ — toptan sıfırlamaya izin verme.
+            # Ürün beslemede DURUYOR ama hiçbir varyantı eşleşmediyse bu bir
+            # stok gerçeği değil, bir EŞLEME ARIZASIDIR (kod üretimi değişti,
+            # tedarikçi referansları değişti…). Böyle bir turda stoğu sıfırlamak
+            # katalogu satılamaz hâle getirir. Dokunmuyoruz, sayıp bildiriyoruz.
+            if (product.get("variants") and rec.get("variants")
+                    and eslesen == 0):
+                eslesmeyen_urun += 1
+                if len(eslesme_ornek) < 8:
+                    eslesme_ornek.append(product.get("name", "")[:44])
+                continue
+
             await db.products.update_one(
                 {"id": product["id"]},
                 {"$set": {"variants": new_variants, "stock": total,
@@ -1292,7 +1367,12 @@ async def sync_stock() -> Dict[str, Any]:
             # TEK BEDEN KALDIYSA KALICI KAPAT. Kural asıl BURADA tetiklenir:
             # ürün katalogda dururken bedenleri tek tek tükenir. Stok yazıldıktan
             # SONRA bakıyoruz ki karar en güncel veriyle verilsin.
-            if not product.get("is_deleted"):
+            #
+            # YALNIZ TAM EŞLEŞMEDE: bir kısmı eşleşmemişse kalan bedenler
+            # "tükendi" diye görünür ve sağlam ürün kalıcı olarak kapatılırdı.
+            # Kapatma geri alınması zor bir karar; şüphede kapatmıyoruz.
+            if (not product.get("is_deleted")
+                    and eslesen == len(product.get("variants") or [])):
                 _kapat, _kalan, _beden = tek_beden_bitiyor(new_variants, tek_beden_esik)
                 if _kapat:
                     await kapat_ve_engelle(
@@ -1306,7 +1386,15 @@ async def sync_stock() -> Dict[str, Any]:
 
     result = {"updated": touched, "not_in_catalog": missing, "failed": failed,
               "total": len(records), "retired_single_size": retired,
-              "single_size_max_stock": tek_beden_esik, "at": _now_iso()}
+              "single_size_max_stock": tek_beden_esik,
+              "match_failed_products": eslesmeyen_urun,
+              "match_failed_samples": eslesme_ornek, "at": _now_iso()}
+    if eslesmeyen_urun:
+        result["warning"] = (
+            f"{eslesmeyen_urun} üründe HİÇBİR varyant beslemeyle eşleşmedi; "
+            "stokları SIFIRLANMADI (eşleme arızası olabilir). "
+            "scripts/diag_stock_sync.py ile inceleyin.")
+        logger.warning(f"[supplier_xml] eslesmeyen urun: {eslesmeyen_urun}")
     await db.settings.update_one({"id": SETTINGS_ID},
                                  {"$set": {"last_stock_sync": result}}, upsert=True)
     logger.info(f"[supplier_xml] stok senkronu: {result}")
