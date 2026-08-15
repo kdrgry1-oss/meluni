@@ -319,16 +319,38 @@ async def sync_trendyol_categories(current_user: dict = Depends(require_admin)):
             mode=config["mode"]
         )
         categories = await client.get_categories()
-        
-        # Save to DB (Drop and re-insert for clean sync)
-        if categories:
-            await db.trendyol_categories.delete_many({})
-            await db.trendyol_categories.insert_many(categories)
-            
+        if not categories:
+            raise HTTPException(
+                status_code=502,
+                detail="Trendyol boş kategori listesi döndürdü. API bilgilerini "
+                       "(satıcı no, anahtar, gizli anahtar) ve mağazanın entegrasyona "
+                       "açık olduğunu kontrol edin.")
+
+        # ÖNCE YAZ, SONRA ESKİYİ SİL.
+        # Eskiden tersiydi: delete_many → insert_many. Yazma başarısız olursa
+        # (veritabanı kotası dolu, ağ koptu) kategori listesi BOŞ kalıyor ve
+        # panelde hiçbir eşleştirme yapılamıyordu — hem de sebebi görünmeden.
+        # Yeni kayıtları bir "tur" damgasıyla yazıp eskileri sonra siliyoruz;
+        # yazma düşerse eski liste yerinde kalır.
+        tur = uuid.uuid4().hex
+        for c in categories:
+            c["_sync"] = tur
+        await db.trendyol_categories.insert_many(categories)
+        await db.trendyol_categories.delete_many({"_sync": {"$ne": tur}})
+
         return {"success": True, "message": f"{len(categories)} kategori senkronize edildi."}
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error fetching trendyol categories: {str(e)}")
-        raise HTTPException(status_code=500, detail="Trendyol kategorileri alınamadı")
+        # GERÇEK SEBEBİ SÖYLE. "alınamadı" demek kotayı, yanlış anahtarı ve ağ
+        # hatasını aynı torbaya koyuyordu; hiçbiri çözülemiyordu.
+        _m = str(e)
+        if "space quota" in _m:
+            _m = ("Veritabanı dolu (Atlas kotası) — yazma engellendi. Yer açın: "
+                  "scripts/purge_db_image_blobs.py --uygula")
+        raise HTTPException(status_code=502,
+                            detail=f"Trendyol kategorileri alınamadı: {_m[:300]}")
 @router.get("/trendyol/categories/{category_id}/attributes")
 async def get_trendyol_category_attributes(category_id: int, refresh: bool = Query(False, description="True ise cache atlanır, Trendyol'dan taze ve eksiksiz çekilir"), current_user: dict = Depends(require_admin)):
     """Get attributes for a specific category (From DB or Trendyol API directly)"""
@@ -3231,7 +3253,15 @@ async def save_trendyol_category_mapping(req: CategoryMappingReq, current_user: 
         return {"success": True, "message": "Eşleştirme kaydedildi"}
     except Exception as e:
         logger.error(f"Error saving category mapping: {e}")
-        raise HTTPException(status_code=500, detail="Eşleştirme kaydedilemedi.")
+        # SEBEBİ SÖYLE. "kaydedilemedi" demek veritabanı kotasını, yanlış
+        # kategori kimliğini ve bağlantı hatasını tek torbaya koyuyordu;
+        # kullanıcı neyi düzelteceğini bilmiyordu.
+        _m = str(e)
+        if "space quota" in _m:
+            _m = ("veritabanı dolu (Atlas kotası), yazma engellendi — yer açın: "
+                  "scripts/purge_db_image_blobs.py --uygula")
+        raise HTTPException(status_code=502,
+                            detail=f"Eşleştirme kaydedilemedi: {_m[:300]}")
 @router.post("/trendyol/category-mappings/{local_category_id}/value-mappings")
 async def save_trendyol_category_value_mappings(local_category_id: str, req: Request, current_user: dict = Depends(require_admin)):
     payload = await req.json()
