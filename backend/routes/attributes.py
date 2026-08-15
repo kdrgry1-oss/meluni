@@ -166,30 +166,69 @@ async def sync_attributes_from_trendyol(current_user: dict = Depends(require_adm
         logger.error(f"Error syncing from trendyol: {e}")
         raise HTTPException(status_code=500, detail="Trendyol özellikleri senkronize edilemedi.")
 
+async def urunlerden_ozellik_haritasi() -> dict:
+    """Katalogdaki TÜM özellik değerlerini toplar: {"Renk": {"Siyah", …}, …}
+
+    ÜÇ KAYNAK — eskiden yalnız birincisi vardı ve o da yanlış alandan okuyordu:
+      1. Ürünün `attributes` listesi. Eski kod yalnız `type` anahtarına
+         bakıyordu; bizim ürettiğimiz kayıtlar `name` taşıyor, bu yüzden
+         kütüphane hep boş kalıyordu ("Sistemde tanımlı 0 özellik var").
+      2. VARYANT renk/bedenleri — hiç okunmuyordu. Oysa renk ve beden yalnız
+         varyantta duruyor; pazaryeri eşleştirmesi de değeri buradan bekliyor.
+      3. Ürün düzeyindeki `color`.
+
+    Renkler tek biçime getirilir (SİYAH/Haki̇ → Siyah/Haki), aksi hâlde
+    kütüphanede aynı rengin üç yazımı birden birikiyor.
+    """
+    try:
+        import sys as _sys, os as _os
+        _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+        from product_attributes import renk_duzelt
+    except Exception:
+        def renk_duzelt(x):
+            return str(x or "").strip()
+
+    harita: dict = {}
+
+    def _ekle(ad, deger):
+        ad = str(ad or "").strip()
+        deger = str(deger or "").strip()
+        if not ad or not deger:
+            return
+        harita.setdefault(ad, set()).add(deger)
+
+    async for product in db.products.find(
+            {"is_deleted": {"$ne": True}},
+            {"_id": 0, "attributes": 1, "variants": 1, "color": 1}):
+        attrs = product.get("attributes")
+        if isinstance(attrs, list):
+            for attr in attrs:
+                if isinstance(attr, dict):
+                    _ekle(attr.get("name") or attr.get("type") or attr.get("label"),
+                          attr.get("value"))
+        elif isinstance(attrs, dict):
+            for anahtar, deger in attrs.items():
+                if isinstance(deger, dict):
+                    _ekle(deger.get("label") or anahtar, deger.get("value"))
+                else:
+                    _ekle(anahtar, deger)
+
+        for v in (product.get("variants") or []):
+            if not isinstance(v, dict):
+                continue
+            _ekle("Renk", renk_duzelt(v.get("color")))
+            _ekle("Beden", v.get("size"))
+        _ekle("Renk", renk_duzelt(product.get("color")))
+
+    return harita
+
+
 @router.post("/sync-from-products")
 async def sync_attributes_from_products(current_user: dict = Depends(require_admin)):
-    """Scan all existing products' attributes arrays and populate the global attributes list"""
+    """Katalogdaki özellik/renk/beden değerlerini özellik kütüphanesine yazar."""
     try:
-        products = await db.products.find({"attributes": {"$exists": True, "$ne": []}}).to_list(None)
-        
-        attribute_map = {}
-        for product in products:
-            attrs = product.get("attributes", [])
-            for attr in attrs:
-                # attr format: {"type": "Beden", "value": "M"}
-                attr_type = attr.get("type")
-                attr_val = attr.get("value")
-                
-                if not attr_type:
-                    continue
-                    
-                attr_type = str(attr_type).strip()
-                if attr_type not in attribute_map:
-                    attribute_map[attr_type] = set()
-                    
-                if attr_val:
-                    attribute_map[attr_type].add(str(attr_val).strip())
-                    
+        attribute_map = await urunlerden_ozellik_haritasi()
+
         if not attribute_map:
             return {"success": False, "message": "Ürünlerinizin içinde herhangi bir özellik (Beden, Renk vb.) bulunamadı."}
             
