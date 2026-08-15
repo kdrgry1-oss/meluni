@@ -751,18 +751,19 @@ async def _gemini_key() -> str:
 
 
 def _fit_target(raw: bytes, target=ENHANCE_TARGET) -> bytes:
-    """Görseli tam hedef ölçüye getirir — boş bant bırakmadan.
+    """Görseli hedef ölçüye getirir — HİÇBİR ŞEYİ KIRPMADAN.
 
-    Kaynak 3:4 (630x840), hedef 2:3 (1200x1800): hedef DAHA UZUN. Oranı koruyup
-    sığdırmak (contain) görseli 1200x1600 yapıyor ve üstte/altta 100'er piksel
-    boşluk bırakıyordu — vitrinde gri bant olarak görünüyor, ürün "kesik" duruyordu.
+    Kaynak 3:4, hedef 2:3: oranlar tutmuyor, birini seçmek zorundayız.
+    Denenen iki yol da yanlıştı:
+      • contain + düz gri dolgu → vitrinde üstte/altta gri bant.
+      • cover + kırpma → görselin bir kısmı gidiyor. Ürün fotoğrafında bu
+        kabul edilemez: yönetim ürünün tamamını görmek istiyor, hem de
+        kırpılan yer bazen ürünün eteği ya da modelin başı oluyor.
 
-    Bunun yerine hedefi TAM DOLDURUP taşanı kırpıyoruz. Kaynak hedeften geniş
-    olduğu için kırpma YANLARDAN oluyor; baş ve ayak kesilmiyor.
-
-    Emniyet: kırpma bir eksende %12'yi aşarsa (ör. çok dar/uzun bir kaynak)
-    ürünün bir kısmını kaybetme riski var — o durumda dolguya dönüyoruz.
-    Boşluğu görselin kendi kenar renginden alıyoruz ki dikiş belli olmasın.
+    Doğrusu: oranı koruyup TAMAMINI sığdırmak, kalan boşluğu da görselin
+    KENDİ KENARINI gererek doldurmak. Stüdyo fotoğrafında zemin düz olduğu
+    için dikiş görünmüyor; kırpma olmadığı için de ürünün tek pikseli bile
+    kaybolmuyor.
     """
     from PIL import Image
     import io
@@ -774,21 +775,36 @@ def _fit_target(raw: bytes, target=ENHANCE_TARGET) -> bytes:
         im.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
         return out.getvalue()
 
-    kapla = max(tw / im.width, th / im.height)
-    kw, kh = round(im.width * kapla), round(im.height * kapla)
-    kayip = max((kw - tw) / kw if kw else 0, (kh - th) / kh if kh else 0)
+    # TAMAMI SIĞSIN: küçük olan ölçek seçilir, taşma olmaz.
+    sigdir = min(tw / im.width, th / im.height)
+    nw = max(1, round(im.width * sigdir))
+    nh = max(1, round(im.height * sigdir))
+    im = im.resize((nw, nh), Image.LANCZOS)
+    x, y = (tw - nw) // 2, (th - nh) // 2
 
-    if kayip <= 0.12:
-        im = im.resize((max(1, kw), max(1, kh)), Image.LANCZOS)
-        sol, ust = (kw - tw) // 2, (kh - th) // 2
-        tuval = im.crop((sol, ust, sol + tw, ust + th))
-    else:
-        sigdir = min(tw / im.width, th / im.height)
-        nw, nh = max(1, round(im.width * sigdir)), max(1, round(im.height * sigdir))
-        im = im.resize((nw, nh), Image.LANCZOS)
-        kenar = im.crop((0, 0, im.width, max(1, im.height // 40))).resize((1, 1), Image.LANCZOS)
-        tuval = Image.new("RGB", (tw, th), kenar.getpixel((0, 0)))
-        tuval.paste(im, ((tw - nw) // 2, (th - nh) // 2))
+    # Taban renk: dört kenarın ortalaması. Köşelerde şeritler buluşmadığı
+    # için altta düz bir renk kalmalı, siyah kalmasın.
+    kenar = im.resize((3, 3), Image.LANCZOS)
+    piksel = [kenar.getpixel((i, j)) for i in range(3) for j in range(3)
+              if (i, j) != (1, 1)]
+    taban = tuple(sum(p[k] for p in piksel) // len(piksel) for k in range(3))
+    tuval = Image.new("RGB", (tw, th), taban)
+
+    serit = max(1, min(nh, nw) // 50)          # kenardan alınacak şerit kalınlığı
+    if y > 0:                                   # üst ve alt boşluk
+        tuval.paste(im.crop((0, 0, nw, serit)).resize((nw, y), Image.LANCZOS), (x, 0))
+        alt = th - (y + nh)
+        if alt > 0:
+            tuval.paste(im.crop((0, nh - serit, nw, nh)).resize((nw, alt), Image.LANCZOS),
+                        (x, y + nh))
+    if x > 0:                                   # sol ve sağ boşluk
+        tuval.paste(im.crop((0, 0, serit, nh)).resize((x, nh), Image.LANCZOS), (0, y))
+        sag = tw - (x + nw)
+        if sag > 0:
+            tuval.paste(im.crop((nw - serit, 0, nw, nh)).resize((sag, nh), Image.LANCZOS),
+                        (x + nw, y))
+
+    tuval.paste(im, (x, y))                     # görselin TAMAMI, kırpılmadan
 
     out = io.BytesIO()
     tuval.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
