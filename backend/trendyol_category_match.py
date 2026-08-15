@@ -48,7 +48,10 @@ _ATLA = {"diğer", "diger", "kampanya", "yeni", "indirim"}
 _UZAK_BOLUM = ["kostüm", "hamile", "büyük beden", "tesettür", "aksesuar",
                "iç giyim", "ev giyim", "spor giyim", "meslek"]
 
-_CINSIYET = ["kadın", "erkek", "kız çocuk", "erkek çocuk", "çocuk", "bebek", "unisex"]
+# Çocuk biçimleri ÖNCE: "erkek çocuk" yolunda "erkek" aransa önce o eşleşir ve
+# yetişkin erkek kategorisiyle karıştırırdı.
+_CINSIYET = ["kız çocuk", "erkek çocuk", "çocuk", "bebek",
+             "kadın", "erkek", "unisex"]
 
 
 def _kucult(s: Any) -> str:
@@ -106,16 +109,25 @@ def _puan(yerel_ad: str, yerel_kok: str, aday: Dict[str, Any]) -> int:
     if not aday_ad:
         return 0
 
-    # Cinsiyet kapısı — yanlış cinsiyet felakettir, puanla telafi edilmez.
-    yc = _sade(yerel_kok)
-    if yc:
-        ac = _cinsiyet(aday_yol)
-        if not ac or (yc not in ac and ac not in yc):
+    # Cinsiyet: Trendyol ağacında cinsiyet AYRI BİR DAL DEĞİL — yol
+    # "Giyim > Takımlar > Alt - Üst Takım" gibi gider, cinsiyet ürün özniteliği
+    # olarak gönderilir. Bu yüzden cinsiyet ZORUNLU KAPI OLAMAZ (öyle yapınca
+    # bütün adaylar eleniyordu). Yalnız ÇELİŞKİ eler: yerelde "Kadın" iken
+    # adayın yolunda "Erkek"/"Çocuk" geçiyorsa yanlış raftır.
+    yc = _cinsiyet(yerel_kok)
+    ac = _cinsiyet(aday_yol)
+    cinsiyet_bonusu = 0
+    if yc and ac:
+        if yc != ac:
             return 0
+        cinsiyet_bonusu = 8
 
     adaylar_ad = [_sade(x) for x in ([yerel_ad] + _ESANLAM.get(_kucult(yerel_ad), []))]
     if aday_ad in adaylar_ad:
-        p = 100 if aday_ad == _sade(yerel_ad) else 92
+        # Eş anlamlı listesindeki SIRA tercihtir: "crop" için önce "Crop Bluz",
+        # sonra "Bluz". Sıra puana yansımazsa eşitlikte kısa yol kazanıp daha
+        # genel kategoriyi seçiyordu.
+        p = 100 if aday_ad == _sade(yerel_ad) else 92 - adaylar_ad.index(aday_ad)
     else:
         y = _parcalar(yerel_ad) | set().union(
             *[_parcalar(x) for x in _ESANLAM.get(_kucult(yerel_ad), [])] or [set()])
@@ -131,7 +143,7 @@ def _puan(yerel_ad: str, yerel_kok: str, aday: Dict[str, Any]) -> int:
         if bolum in aday_yol and bolum not in _sade(yerel_ad):
             p -= 25
     p -= min(8, max(0, aday_yol.count(">") - 2) * 2)   # çok derin yol: daha özel
-    return max(0, min(100, p))
+    return max(0, min(100, p + cinsiyet_bonusu))
 
 
 def eslestir(yerel_ad: str, yerel_kok: str,

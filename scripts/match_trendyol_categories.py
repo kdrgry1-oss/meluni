@@ -52,7 +52,13 @@ async def main() -> int:
         return 2
     adaylar = tcm.duz_kategoriler(agac)
     yapraklar = [a for a in adaylar if a["yaprak"]]
-    print(f"Trendyol kategorisi: {len(adaylar)} ({len(yapraklar)} yaprak)\n")
+    print(f"Trendyol kategorisi: {len(adaylar)} ({len(yapraklar)} yaprak)")
+    # Ağacın GERÇEK biçimini göster: Trendyol'da cinsiyet ayrı dal değil, yollar
+    # "Giyim > Takımlar > Alt - Üst Takım" gibi gider. Örnek görmeden eşleşme
+    # neden tutmuyor anlaşılmıyordu.
+    for a in yapraklar[:5]:
+        print(f"  örnek yol: {a['yol']}")
+    print()
 
     kategoriler = await db.categories.find({}, {"_id": 0}).to_list(2000)
     kokler = {str(c.get("id")): c for c in kategoriler}
