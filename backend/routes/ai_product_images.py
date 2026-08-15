@@ -2023,11 +2023,13 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
     """
     urun = await db.products.find_one(
         {"id": product_id},
-        {"_id": 0, "images": 1, "stock_code": 1, "size_chart_scan": 1})
+        {"_id": 0, "images": 1, "stock_code": 1, "size_chart_scan": 1,
+         "name": 1})
     if not urun:
         return {"durum": "urun_yok"}
 
-    sonuc: Dict[str, Any] = {"durum": "tamam", "veri_yazildi": False,
+    sonuc: Dict[str, Any] = {"ad": urun.get("name") or "",
+                             "durum": "tamam", "veri_yazildi": False,
                              "gorsel_yazildi": False, "kardes_gorsel": 0,
                              "kardes_veri": 0, "kredi_kullanildi": False,
                              "kredi_hatasi": ""}
@@ -2188,6 +2190,14 @@ async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
         kardes_veri += int(r.get("kardes_veri") or 0)
         # Saatler sürebilen turda sessizlik körlük demek: her 10 üründe bir
         # durum bildirilir (betik ekrana basar, cron günlüğe yazar).
+        # Yazım YAPILAN ürünü ANINDA bildir (isim isim izlenebilsin), ayrıca
+        # her 10 üründe bir toplu durum.
+        if ilerleme and (r.get("gorsel_yazildi") or r.get("veri_yazildi")
+                         or r.get("kardes_gorsel")):
+            ilerleme({"urun": (r.get("ad") or "")[:56] or p["id"],
+                      "gorsel": "yeni tablo" if r.get("gorsel_yazildi") else "",
+                      "veri": "ölçü yazıldı" if r.get("veri_yazildi") else "",
+                      "kardes": r.get("kardes_gorsel") or ""})
         if ilerleme and taranan % 10 == 0:
             ilerleme({"taranan": taranan, "islenen": tamam,
                       "olcu_bulunamayan": veri_yok,
