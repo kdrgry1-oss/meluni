@@ -852,7 +852,7 @@ async def _kredisiz_olcu_verisi(product_id: str) -> Dict[str, Any]:
             if satirlar:
                 return {"olcu_adlari": adlar, "satirlar": satirlar,
                         "kaynak": "kardes",
-                        "kaynak_adi": "aynı stok kodlu renk kardeşinin tablosu"}
+                        "kaynak_adi": "renk kardeşinin tablosu"}
 
     adlar, satirlar = _aciklamadan_olcu(product.get("description") or "")
     if satirlar:

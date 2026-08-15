@@ -10,9 +10,14 @@ size_tables_auto.py — Ölçü tablolarını KREDİSİZ, otomatik, katalog gene
   3. Tablosu OLMAYAN renk kardeşlerine aynı tablo kopyalanır. Kendi tablosu
      olan kardeşe DOKUNULMAZ (elle düzeltilmiş olabilir).
 
-Kredi harcamaz: ölçü kaynağı sırayla ürünün kayıtlı tablosu, aynı stok kodlu
-renk kardeşinin tablosu, tedarikçi açıklamasıdır. Hiçbirinde ölçü yoksa ürün
-ATLANIR — uydurma ölçü müşteriye yanlış beden aldırır.
+Ölçü kaynağı sırayla ürünün kayıtlı tablosu, renk kardeşinin tablosu ve
+tedarikçi açıklamasıdır — bunlar KREDİSİZDİR. Hiçbirinde yoksa (ve --kredisiz
+verilmediyse) ham tablo görseli modelle bulunur ve sayılar ondan okunur.
+Hiçbir yolla bulunamazsa ürün ATLANIR — uydurma ölçü yanlış beden aldırır.
+
+KURU ÇALIŞMA YALNIZ KREDİSİZ KAYNAKLARI SAYAR: "ölçüsü bulunamayan" satırı
+model devreye girince küçülür, çünkü tespit/okuma adımı kuru çalışmada
+çalıştırılmaz (boşuna kredi harcamamak için).
 
 Aynı tur her gece 05:15 UTC'de zamanlanmış iş olarak da koşuyor
 (scheduler._olcu_tablosu_oto_tick); bu betik "şimdi çalıştır" içindir.
@@ -98,11 +103,11 @@ async def main() -> int:
                 ornekler.append((p.get("name", "")[:46],
                                  veri.get("kaynak_adi") or "",
                                  len(veri.get("satirlar") or [])))
-        kod = str(p.get("stock_code") or "").strip()
-        if kod:
-            async for s in db.products.find(
-                    {"stock_code": kod, "id": {"$ne": p["id"]},
-                     "is_deleted": {"$ne": True}}, {"_id": 0, "images": 1}):
+        # Kardeşler stok koduyla DEĞİL, vitrinle aynı anahtarla bulunur
+        # (her rengin stok kodu farklı; eski sayaç bu yüzden hep 0 diyordu).
+        kardes_q = await ai._kardes_sorgusu(p["id"])
+        if kardes_q:
+            async for s in db.products.find(kardes_q, {"_id": 0, "images": 1}):
                 if not any(ai._olcu_gorseli_mi(x) for x in (s.get("images") or [])):
                     kardes_eksik += 1
 
