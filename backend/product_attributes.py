@@ -53,7 +53,10 @@ _SINIF_KELIME: Dict[str, List[str]] = {
               "ribanalı", "şardonlu", "volanlı"],
     "desen": ["baskılı", "desenli", "çizgili", "kareli", "puantiyeli", "payetli",
               "nakışlı", "işlemeli"],
-    "boy": ["mini", "midi", "maksi", "uzun", "kısa", "crop", "diz"],
+    # "boy" başlığın kendisidir ("Uzun Boy"): sınıf kelimesi sayılmazsa
+    # niteleyici olarak sonraki öbeğe sızıyor ve "Boy Keten" gibi kumaş
+    # değerleri üretiyordu.
+    "boy": ["mini", "midi", "maksi", "uzun", "kısa", "crop", "diz", "boy"],
     "bel": ["bel", "beli", "paça", "paçalı", "pacali"],
     "kalıp": ["oversize", "regular", "slim", "fit", "kalıplı", "bol", "dar"],
     "kumaş": ["viskon", "krep", "süprem", "triko", "keten", "kadife", "dalgıç",
@@ -310,12 +313,42 @@ def temel_alanlar(product: Dict[str, Any],
     return sonuc
 
 
+# Aynı bilgiyi başka adla isteyen pazaryeri alanları. Değeri kopyalarız;
+# uydurma değil, ad eşlemesidir.
+_ES_ADLAR = {
+    "Kumaş": ["Kumaş Tipi"],
+    "Kol Tipi": ["Kol Boyu"],
+}
+
+# Trendyol'un giyimde ZORUNLU tuttuğu ama beslemede karşılığı olmayan alanlar.
+# Ürün adı/açıklaması bu konuda bir şey SÖYLEMİYORSA en makul okuma budur:
+# desen sözcüğü hiç geçmiyorsa ürün düzdür, kalıp/boy sözcüğü geçmiyorsa
+# standarttır. Bir işaret varsa (desenli, oversize, mini…) zaten yukarıdaki
+# çıkarım doldurmuş olur ve buraya hiç gelinmez.
+_ZORUNLU_VARSAYILAN = {
+    "Desen": "Düz",
+    "Kalıp": "Standart",
+    "Boy": "Standart",
+}
+
+
+def _zorunlu_tamamla(toplam: Dict[str, str]) -> None:
+    for ad, deger in _ZORUNLU_VARSAYILAN.items():
+        if not str(toplam.get(ad) or "").strip():
+            toplam[ad] = deger
+
+
 def urun_ozellikleri(product: Dict[str, Any],
-                     size_table: Optional[Dict[str, Any]] = None) -> List[Dict[str, str]]:
+                     size_table: Optional[Dict[str, Any]] = None,
+                     zorunlu: bool = True) -> List[Dict[str, str]]:
     """Ürünün tüm kaynaklarından özellik listesi üretir.
 
     Öncelik: beslemenin verdiği alanlar > ürün adı > açıklama > manken.
     Aynı özellik birden çok kaynaktan gelirse İLKİ kalır.
+
+    `zorunlu=True` iken pazaryerinin zorunlu tuttuğu ama üründe işareti
+    olmayan alanlara makul varsayılan yazılır (Desen: Düz, Kalıp/Boy:
+    Standart) — bu alanlar boş kalınca ürün Trendyol'da reddediliyor.
     """
     toplam: Dict[str, str] = {}
 
@@ -347,5 +380,16 @@ def urun_ozellikleri(product: Dict[str, Any],
     kalip = kalip_cikar(product, toplam)
     if kalip:
         toplam.setdefault("Kalıp", _KALIP_ETIKET[kalip])
+
+    # Trendyol'un AYNI bilgiyi başka adla istediği alanlar. Değer aynı, ad
+    # farklı olduğu için zorunlu alan boş görünüyordu ("Kumaş" doluyken
+    # "Kumaş Tipi" kırmızı kalıyordu).
+    for kaynak, hedefler in _ES_ADLAR.items():
+        if toplam.get(kaynak):
+            for hedef in hedefler:
+                toplam.setdefault(hedef, toplam[kaynak])
+
+    if zorunlu:
+        _zorunlu_tamamla(toplam)
 
     return [{"name": k, "value": v} for k, v in toplam.items()]

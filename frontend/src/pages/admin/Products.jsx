@@ -3296,9 +3296,13 @@ export default function AdminProducts() {
                   };
                   const _companyValFor = (name) => {
                     const nm = _attrNorm(name);
-                    if (!/uretici|ithalatc|imalatc/.test(nm)) return "";
-                    if (/mail|posta|email/.test(nm)) return MELUNI_COMPANY.email;
+                    // Adı "adres" geçen HER alan şirket adresidir (backend
+                    // company_field_for_attr ile aynı kural): Trendyol
+                    // "Yetkili Temsilci Adres", "Sorumlu Kişi Adresi" gibi
+                    // adlar da kullanıyor, önek şartına takılıp boş kalıyordu.
                     if (/adres/.test(nm)) return MELUNI_COMPANY.address;
+                    if (!/uretici|ithalatc|imalatc|temsilci|sorumlu kisi|yetkili/.test(nm)) return "";
+                    if (/mail|posta|email/.test(nm)) return MELUNI_COMPANY.email;
                     if (/\bad[i]?\b|ism|unvan|firma/.test(nm) || nm === "uretici" || nm === "ithalatci")
                       return MELUNI_COMPANY.company_name;
                     return "";

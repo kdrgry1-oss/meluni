@@ -65,12 +65,17 @@ def company_field_for_attr(attr_name):
     if not attr_name:
         return None
     nm = _norm(attr_name)  # İthalatçı → "ithalatci" (combining-dot temizlenir)
-    if not _re.search(r"uretici|ithalatc|imalatc", nm):
+    # ADRES HER YERDE ŞİRKET ADRESİDİR. Trendyol adres soran alanı yalnız
+    # "Üretici Adres" diye adlandırmıyor; "Yetkili Temsilci Adres", "Sorumlu
+    # Kişi Adresi", düz "Adres" de geliyor ve bunlar önek şartına takılıp BOŞ
+    # kalıyordu. Adında "adres" geçen alan şirket adresiyle doldurulur.
+    if "adres" in nm:
+        return "address"
+    if not _re.search(r"uretici|ithalatc|imalatc|temsilci|sorumlu kisi|yetkili",
+                      nm):
         return None
     if "mail" in nm or "posta" in nm or "email" in nm:
         return "email"
-    if "adres" in nm:
-        return "address"
     if _re.search(r"\bad[i]\b|\bism", nm) or "unvan" in nm or "firma" in nm \
             or nm in ("uretici", "ithalatci"):
         return "company_name"
