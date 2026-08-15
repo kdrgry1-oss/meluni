@@ -205,6 +205,29 @@ async def _generate_one(
     raise HTTPException(status_code=502, detail="Yanıtta görsel verisi yok.")
 
 
+def _gorsel_url(x) -> str:
+    """Görsel listesindeki bir kaydın adresi.
+
+    Liste TEK BİÇİMDE DEĞİL: bazı görseller düz adres, ölçü tablosu görselleri
+    ise {url, is_size_table} sözlüğü olarak duruyor (size_tables.py böyle
+    yazıyor). Sözlüğü adres sanmak indirmeyi ve kıyaslamayı bozuyordu.
+    """
+    if isinstance(x, dict):
+        return str(x.get("url") or "")
+    return str(x or "")
+
+
+def _gorsel_degistir(eski, yeni_url: str):
+    """Adresi değiştirir, sözlükteki işaretleri (is_size_table, alt) KORUR.
+
+    Düz adresle üzerine yazmak ölçü tablosu işaretini siliyor, tablo müşteri
+    galerisine sızıyordu.
+    """
+    if isinstance(eski, dict):
+        return {**eski, "url": yeni_url}
+    return yeni_url
+
+
 async def _store(raw: bytes, product_id: str, pose: str,
                  content_type: str = "image/png") -> str:
     """Üretilen görseli kalıcı depoya koyar ve public adresini döndürür.
@@ -632,27 +655,50 @@ def _st_satirlara(st: Optional[Dict[str, Any]]) -> tuple:
 
     Kanonik biçim panelin/vitrinin kullandığı biçimdir:
     sizes=["S","M"], columns=["Göğüs"], values={"S":{"Göğüs":"88"}}.
-    Eski/bozuk biçim (sizes = satır nesneleri) de okunur ki daha önce yazılmış
-    kayıtlar kaybolmasın.
+
+    AMA CANLI VERİ TEK BİÇİMDE DEĞİL. Bu koleksiyon yıllar içinde birkaç
+    farklı yoldan yazılmış; `values` sözlük yerine liste, satır değerleri
+    sözlük yerine sıralı liste olabiliyor. Beklenmedik bir biçimde
+    `'list' object has no attribute 'get'` ile patlıyordu ve ölçü tablosu
+    düğmesi hiç çalışmıyordu. Ne gelirse gelsin okunur, okunamıyorsa BOŞ
+    döner — patlamaz.
     """
-    if not st:
+    if not isinstance(st, dict) or not st:
         return [], []
     ham = st.get("sizes") or []
+    if not isinstance(ham, list):
+        return [], []
     if ham and isinstance(ham[0], dict):
         adlar = [str(a) for a in (st.get("olcu_adlari") or st.get("columns") or [])]
         satirlar = [{"beden": str(r.get("beden") or "").strip(),
                      "olculer": [str(x or "").strip() for x in (r.get("olculer") or [])]}
-                    for r in ham if str(r.get("beden") or "").strip()]
+                    for r in ham
+                    if isinstance(r, dict) and str(r.get("beden") or "").strip()]
         return adlar, [r for r in satirlar if any(r["olculer"])]
     adlar = [str(c).strip() for c in (st.get("columns") or []) if str(c).strip()]
-    degerler = st.get("values") or {}
+    _ham_degerler = st.get("values")
+    # `values` sözlük beklenir; liste geldiyse beden sırasına göre eşle.
+    if isinstance(_ham_degerler, list):
+        degerler = {str(ham[i]).strip(): v for i, v in enumerate(_ham_degerler)
+                    if i < len(ham)}
+    elif isinstance(_ham_degerler, dict):
+        degerler = _ham_degerler
+    else:
+        degerler = {}
     satirlar = []
     for beden in ham:
         b = str(beden).strip()
         if not b:
             continue
         hucre = degerler.get(b) or degerler.get(str(beden)) or {}
-        olculer = [str(hucre.get(a, "") or "").strip() for a in adlar]
+        if isinstance(hucre, dict):
+            olculer = [str(hucre.get(a, "") or "").strip() for a in adlar]
+        elif isinstance(hucre, (list, tuple)):
+            # Sıralı liste: kolonlarla konum konum eşleşir.
+            olculer = [str(hucre[i] if i < len(hucre) else "").strip()
+                       for i in range(len(adlar))]
+        else:
+            continue
         if any(olculer):
             satirlar.append({"beden": b, "olculer": olculer})
     return adlar, satirlar
@@ -1068,7 +1114,8 @@ async def scan_size_charts(product_id: str) -> Dict[str, Any]:
     product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
     if not product:
         raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
-    images = [u for u in (product.get("images") or []) if u]
+    images = [_gorsel_url(u) for u in (product.get("images") or [])
+              if _gorsel_url(u)]
     if not images:
         return {"images": []}
 
@@ -1117,10 +1164,11 @@ async def convert_size_chart(product_id: str, index: int, *, replace: bool = Fal
     url = await _store(raw, product_id, f"olcu{index}", "image/jpeg")
 
     product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
-    images = [u for u in ((product or {}).get("images") or []) if u]
+    ham_liste = [u for u in ((product or {}).get("images") or []) if _gorsel_url(u)]
+    images = [_gorsel_url(u) for u in ham_liste]
     if replace and 0 <= index < len(images):
-        yeni_liste = list(images)
-        yeni_liste[index] = url
+        yeni_liste = list(ham_liste)
+        yeni_liste[index] = _gorsel_degistir(ham_liste[index], url)
         await db.products.update_one({"id": product_id}, {"$set": {
             "images": yeni_liste,
             "images_custom": True,
@@ -1163,7 +1211,8 @@ async def read_size_table(product_id: str, index: int, *, kaydet: bool = False) 
     product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
     if not product:
         raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
-    images = [u for u in (product.get("images") or []) if u]
+    images = [_gorsel_url(u) for u in (product.get("images") or [])
+              if _gorsel_url(u)]
     if not (0 <= index < len(images)):
         raise HTTPException(status_code=400, detail="Geçersiz görsel sırası.")
 
@@ -1228,7 +1277,8 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
                                          {"_id": 0, "id": 1, "images": 1})
     if not product:
         raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
-    images = [u for u in (product.get("images") or []) if u]
+    ham_liste = [u for u in (product.get("images") or []) if _gorsel_url(u)]
+    images = [_gorsel_url(u) for u in ham_liste]
     if not images:
         raise HTTPException(status_code=400, detail="Üründe görsel yok.")
 
@@ -1278,9 +1328,9 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
 
     basarili = [r for r in sonuc if r.get("url")]
     if replace and basarili:
-        yeni = list(images)
+        yeni = list(ham_liste)
         for r in basarili:
-            yeni[r["index"]] = r["url"]
+            yeni[r["index"]] = _gorsel_degistir(ham_liste[r["index"]], r["url"])
         await db.products.update_one({"id": product_id}, {"$set": {
             "images": yeni,
             # KİLİT: bundan sonra tedarikçi aktarımı bu ürünün görsellerine
@@ -1490,10 +1540,11 @@ async def size_table_build(product_id: str, payload: dict, _admin=Depends(requir
     index = (payload or {}).get("index")
     if (payload or {}).get("replace") and index is not None:
         product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
-        images = [u for u in ((product or {}).get("images") or []) if u]
+        ham_liste = [u for u in ((product or {}).get("images") or []) if _gorsel_url(u)]
+        images = list(ham_liste)
         i = int(index)
         if 0 <= i < len(images):
-            images[i] = url
+            images[i] = _gorsel_degistir(ham_liste[i], url)
             await db.products.update_one({"id": product_id}, {"$set": {
                 "images": images, "images_custom": True,
                 "size_chart_localized_at": _now_iso()}})
@@ -1587,7 +1638,8 @@ async def _size_table_fix(product_id: str, index=None) -> Dict[str, Any]:
     product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
     if not product:
         raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
-    images = [u for u in (product.get("images") or []) if u]
+    ham_gorseller = [u for u in (product.get("images") or []) if _gorsel_url(u)]
+    images = [_gorsel_url(u) for u in ham_gorseller]
     if not images:
         raise HTTPException(status_code=400, detail="Üründe görsel yok.")
 
@@ -1629,8 +1681,8 @@ async def _size_table_fix(product_id: str, index=None) -> Dict[str, Any]:
     # 3) Çiz ve görselin yerine yaz.
     raw = _render_size_table(adlar, satirlar)
     url = await _store(raw, product_id, f"olcu{index}", "image/jpeg")
-    yeni = list(images)
-    yeni[index] = url
+    yeni = list(ham_gorseller)
+    yeni[index] = _gorsel_degistir(ham_gorseller[index], url)
     await db.products.update_one({"id": product_id}, {"$set": {
         "images": yeni, "images_custom": True,
         "size_chart_localized_at": _now_iso()}})
@@ -1715,10 +1767,11 @@ async def size_table_auto(product_id: str, payload: dict | None = None,
     degisti = False
     if p.get("replace") and index is not None:
         product = await db.products.find_one({"id": product_id}, {"_id": 0, "images": 1})
-        images = [u for u in ((product or {}).get("images") or []) if u]
+        ham_liste = [u for u in ((product or {}).get("images") or []) if _gorsel_url(u)]
+        images = list(ham_liste)
         i = int(index)
         if 0 <= i < len(images):
-            images[i] = url
+            images[i] = _gorsel_degistir(ham_liste[i], url)
             await db.products.update_one({"id": product_id}, {"$set": {
                 "images": images, "images_custom": True,
                 "size_chart_localized_at": _now_iso()}})
