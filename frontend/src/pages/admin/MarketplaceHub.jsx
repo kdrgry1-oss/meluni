@@ -158,7 +158,13 @@ export default function MarketplaceHub() {
     const token = localStorage.getItem("token");
     axios.get(`${API}/integrations/trendyol/settings?t=${Date.now()}`,
       { headers: { Authorization: `Bearer ${token}` } })
-      .then((r) => setTyOp(r.data || {}))
+      // MOD DEĞERİNİ YÜKLERKEN NORMALLE.
+      // Kayıtta "sandbox"/"live" gibi değerler var; açılır listenin seçenekleri
+      // "prod"/"test". Eşleşmeyen değer ekranda İLK seçenek ("Canlı") gibi
+      // görünüyor ama durumda ham hâliyle duruyordu — Kaydet'e basınca aynı
+      // ham değer geri yazılıyor, yani panel "Canlı" derken modu sandbox'ta
+      // tutuyordu. Gösterilen ile kaydedilen artık aynı.
+      .then((r) => setTyOp({ ...(r.data || {}), mode: tyModu(r.data?.mode) }))
       .catch(() => setTyOp({}));
   }, [active]);
 
