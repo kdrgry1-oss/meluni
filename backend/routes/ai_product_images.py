@@ -823,9 +823,16 @@ _BEDEN_RX = re.compile(
     r"(?:modelin\s+[üu]zerindeki|manken(?:in)?)[^.\n]{0,40}?"
     r"\b(XXS|XS|S|M|L|XL|XXL|3XL|\d{2})\s*(?:/\s*(\d{2}))?\s*beden", re.I)
 # Standart kadın beden sırası ve harf↔numara karşılığı.
-_HARF_SIRA = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL"]
+_HARF_SIRA = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL",
+              "5XL", "6XL", "7XL"]
 _NUMARA_SIRA = [32, 34, 36, 38, 40, 42, 44, 46, 48]
 _ADIM_CM = 4      # bedenler arası standart artış (göğüs/bel/kalça)
+# Aynı bedenin farklı yazımları. "2XL" ile "XXL" aynı beden ama sıralamada
+# tanınmayınca tahmini tablo boş dönüyordu.
+_BEDEN_ES = {"2XL": "XXL", "XXXL": "3XL", "XXXXL": "4XL", "XXXXXL": "5XL",
+             "2XS": "XXS", "SMALL": "S", "MEDIUM": "M", "LARGE": "L"}
+# Birleşik beden ayırıcıları: "S-M", "L/XL", "2XL-3XL".
+_BIRLESIK_RX = re.compile(r"^([0-9A-Z]{1,4})\s*[-/]\s*([0-9A-Z]{1,4})$")
 
 
 def _manken_olculeri(metin: str) -> Dict[str, Any]:
@@ -847,13 +854,31 @@ def _manken_olculeri(metin: str) -> Dict[str, Any]:
     return bulunan
 
 
-def _beden_sirasi(beden: str) -> Optional[int]:
-    """Bedenin standart sıradaki yeri; tanınmazsa None."""
+def _beden_sirasi(beden: str) -> Optional[float]:
+    """Bedenin standart sıradaki yeri; tanınmazsa None.
+
+    Kesirli dönebilir: birleşik beden ("S-M", "2XL-3XL") iki bedenin ORTASINA
+    düşer. Tedarikçi kataloğunda pantolonların çoğu birleşik bedenli; bunlar
+    tanınmadığı için tahmini ölçü tablosu 54 üründe boş dönüyordu.
+    """
     b = str(beden or "").strip().upper().replace(" ", "")
+    if not b:
+        return None
+    b = _BEDEN_ES.get(b, b)
     if b in _HARF_SIRA:
-        return _HARF_SIRA.index(b)
-    if b.isdigit() and int(b) in _NUMARA_SIRA:
-        return _NUMARA_SIRA.index(int(b))
+        return float(_HARF_SIRA.index(b))
+    if b.isdigit():
+        n = int(b)
+        if n in _NUMARA_SIRA:
+            return float(_NUMARA_SIRA.index(n))
+        # Listede olmayan numara (jean 26-33 gibi): iki numara = bir beden.
+        return (n - _NUMARA_SIRA[0]) / 2.0
+    m = _BIRLESIK_RX.match(b)
+    if m:
+        sol, sag = _beden_sirasi(m.group(1)), _beden_sirasi(m.group(2))
+        if sol is not None and sag is not None:
+            return (sol + sag) / 2.0
+        return sol if sol is not None else sag
     return None
 
 
@@ -874,7 +899,7 @@ def _tahmini_olcu(manken: Dict[str, Any], bedenler: List[str]) -> tuple:
             continue
         fark = (sira - temel_sira) * _ADIM_CM
         satirlar.append({"beden": str(b).strip().upper(),
-                         "olculer": [str(int(manken[a]) + fark) for a in adlar]})
+                         "olculer": [str(round(int(manken[a]) + fark)) for a in adlar]})
     return adlar, satirlar
 
 
