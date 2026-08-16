@@ -899,14 +899,18 @@ def _resolve_company_value(attr_name: str, company: dict):
     """Trendyol/MP attribute adindan sirket bilgisini esler.
     ISIM-ESLEME tek kaynaktan gelir: meluni_defaults.company_field_for_attr.
     Deger settings.main.company_info'dan (company_name/email/address)."""
-    if not attr_name or not company:
+    if not attr_name:
         return None
-    from meluni_defaults import company_field_for_attr
+    from meluni_defaults import company_field_for_attr, MELUNI_COMPANY
     field = company_field_for_attr(attr_name)
     if not field:
         return None
-    v = (company.get(field) or "").strip()
-    return v or None
+    v = ((company or {}).get(field) or "").strip()
+    # PANEL BOŞSA KODDAKİ YEDEĞE DÜŞ. Değer yalnız settings.main.company_info'dan
+    # okunuyordu; yönetim orayı doldurmadığı sürece üretici/ithalatçı ad-adres-mail
+    # alanları pazaryerinde BOŞ gidiyordu (Trendyol bunları GPSR kapsamında
+    # istiyor). Panel değeri her zaman önceliklidir; yedek yalnız boşluğu kapatır.
+    return v or (MELUNI_COMPANY.get(field) or "").strip() or None
 
 
 @router.post("/{marketplace}/{local_category_id}/fill-company-defaults")
