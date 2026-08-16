@@ -367,6 +367,34 @@ def _zorunlu_tamamla(toplam: Dict[str, str], kumas_varsayilan: str = "") -> None
         toplam["Kumaş Tipi"] = kumas_varsayilan
 
 
+# ── Dokuma tipi (dokuma / örme) ────────────────────────────────────────
+# Trendyol giyimde ayrı bir alan olarak soruyor. Kumaşı biliyorsak bu ÇIKARIM
+# GÜVENLİ: süprem/kaşkorse/penye/triko örgü tezgâhında, keten/poplin/gabardin
+# dokuma tezgâhında üretilir. Kumaş bilinmiyorsa yazılmaz — tahmin edilmez.
+_ORME_KUMAS = ["süprem", "supreme", "kaşkorse", "kaskorse", "penye", "ribana",
+               "interlok", "şardonlu", "sardonlu", "iki iplik", "üç iplik",
+               "triko", "örme", "orme", "modal", "likra", "fitilli", "kaşmir",
+               "polar", "dalgıç", "scuba", "kadife", "nervürlü"]
+_DOKUMA_KUMAS = ["keten", "poplin", "gabardin", "kot", "denim", "jean", "saten",
+                 "şifon", "sifon", "aerobin", "atlas", "bürümcük", "burumcuk",
+                 "krep", "sandy", "janjan", "dokuma", "tül", "dantel", "gipe",
+                 "deri", "süet", "suet", "viskon"]
+
+
+def dokuma_tipi(kumas: str) -> str:
+    """Kumaş adından "Örme" / "Dokuma" çıkarır; bilinmiyorsa boş döner."""
+    k = _kucult(kumas)
+    if not k:
+        return ""
+    for kelime in _ORME_KUMAS:
+        if kelime in k:
+            return "Örme"
+    for kelime in _DOKUMA_KUMAS:
+        if kelime in k:
+            return "Dokuma"
+    return ""
+
+
 # ── Ürün içerik bilgisi (materyal bileşeni) ────────────────────────────
 # Trendyol bunu "Ürün İçerik Bilgisi" / "Materyal Bileşeni" adıyla ister ve
 # giyimde neredeyse her kategoride ZORUNLUdur. Beslemede ayrı alan olarak
@@ -474,6 +502,15 @@ def urun_ozellikleri(product: Dict[str, Any],
 
     # İçerik bilgisi HİÇ BOŞ KALMASIN (yönetim isteği): kaynak yoksa kumaş
     # varsayılanına düşer ("Dokuma"/"Belirtilmemiş" — çağıran seçer).
+    # Kumaş özniteliği tek kelime kalabiliyor ("Viskon"), oysa örgü bilgisi
+    # adın başka yerinde duruyor ("Viskon İki İplik" örmedir). Bu yüzden
+    # kumaş + ad + besleme kumaş alanı birlikte taranır; örme listesi önce.
+    dokuma = dokuma_tipi(" ".join([str(toplam.get("Kumaş") or ""),
+                                   str(product.get("name") or ""),
+                                   str(product.get("fabric") or "")]))
+    if dokuma:
+        toplam.setdefault("Dokuma Tipi", dokuma)
+
     icerik = icerik_cikar(product, toplam, kumas_varsayilan)
     if icerik:
         toplam.setdefault("Ürün İçerik Bilgisi", icerik)
