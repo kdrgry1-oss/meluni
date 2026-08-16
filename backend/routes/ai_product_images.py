@@ -1604,6 +1604,17 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
                     uyari = str(e.detail)
                     if sadece_ai:
                         return {"index": i, "error": uyari, "atlandi": True}
+                except Exception as e:
+                    # Model BAŞKA bir sebeple düştü (ağ, bozuk yanıt, içerik
+                    # reddi). Yalnız HTTPException yakalanıyordu; diğer hatalar
+                    # dışarıdaki genel `except`'e düşmüyor, akış aşağı devam
+                    # edip görseli SADECE ÖLÇEKLEYİP ürünün üstüne yazıyordu —
+                    # üstelik images_custom kilidiyle. sadece_ai bunu da
+                    # kapsamalı; toplu turda "iyileştirildi" sanılan görsel
+                    # aslında büyütülmüş tedarikçi fotoğrafı oluyordu.
+                    uyari = str(e)
+                    if sadece_ai:
+                        return {"index": i, "error": uyari, "atlandi": True}
                 son = _fit_target(iyilestirilmis or raw)
                 url = await _store(son, product_id, f"hd{i}", "image/jpeg")
                 return {"index": i, "url": url, "ai": bool(iyilestirilmis),
