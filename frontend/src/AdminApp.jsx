@@ -75,6 +75,7 @@ import IntegrationLogs from "./pages/admin/IntegrationLogs";
 import FailedTransfers from "./pages/admin/FailedTransfers";
 import BrandMapping from "./pages/admin/BrandMapping";
 import CategoryMapping from "./pages/admin/CategoryMapping";
+import CatalogReadiness from "./pages/admin/CatalogReadiness";
 import BulkPriceStock from "./pages/admin/BulkPriceStock";
 import StockAlerts2 from "./pages/admin/StockAlerts";
 import CustomerSegments from "./pages/admin/CustomerSegments";
@@ -155,6 +156,9 @@ export default function AdminApp() {
         <Route path="aktarilamayanlar" element={<FailedTransfers />} />
         <Route path="marka-eslestir" element={<BrandMapping />} />
         <Route path="kategori-eslestir" element={<CategoryMapping />} />
+        {/* Katalog hazırlık — kategori kategori ilerleme (ölçü tablosu,
+            görsel, öznitelik, sezon/kalıp, Trendyol eşleşmesi). */}
+        <Route path="katalog-hazirlik" element={<CatalogReadiness />} />
         <Route path="toplu-fiyat-stok" element={<BulkPriceStock />} />
         <Route path="stok-uyarilari" element={<StockAlerts2 />} />
         <Route path="musteri-segmentleri" element={<CustomerSegments />} />
