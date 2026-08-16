@@ -386,11 +386,15 @@ def dokuma_tipi(kumas: str) -> str:
     k = _kucult(kumas)
     if not k:
         return ""
+    # Besleme adları "Iki Iplik" diye yazıyor (ASCII I). Türkçe küçültmede
+    # I→ı olduğu için "ıkı ıplık" çıkıyor ve "iki iplik" ile eşleşmiyordu;
+    # noktasızları noktalıya çevirip İKİ biçimde de arıyoruz.
+    k2 = k.replace("ı", "i")
     for kelime in _ORME_KUMAS:
-        if kelime in k:
+        if kelime in k or kelime in k2:
             return "Örme"
     for kelime in _DOKUMA_KUMAS:
-        if kelime in k:
+        if kelime in k or kelime in k2:
             return "Dokuma"
     return ""
 
