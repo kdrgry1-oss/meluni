@@ -2021,7 +2021,10 @@ async def sync_products_to_trendyol(
                 # (ürün açıldı, görseller boş kaldı). Kendi sunucumuzdaki
                 # dosyayı ?mp=1 ile tamamlanmış hâlde veriyoruz; vitrindeki
                 # görsel ve oran DEĞİŞMİYOR.
-                if "meluni.com.tr" in _u and "-mp." not in _u:
+                # YALNIZ KENDİ API'MİZİN SERVİS ETTİĞİ adreslere: "-mp" sonekini
+                # çözen kod upload servisinde. CDN (R2) adreslerinde böyle bir
+                # yol yok, sonek eklemek 404 demek olurdu.
+                if ("/api/upload/files/" in _u or "/api/files/" in _u) and "-mp." not in _u:
                     _kok, _nokta, _uz = _u.rpartition(".")
                     _u = f"{_kok}-mp.{_uz}" if _nokta else f"{_u}-mp.jpg"
                 return _u
