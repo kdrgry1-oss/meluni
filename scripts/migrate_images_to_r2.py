@@ -12,6 +12,16 @@ Betik ürün görsellerini indirip R2'ye yükler ve ürünün `images` listesind
 adresi CDN adresiyle değiştirir. Dosya kaydına da r2_url yazılır, böylece eski
 adres istense bile CDN'e yönlendirilir — mevcut bağlantılar kırılmaz.
 
+`--tedarikci` ile TEDARİKÇİ sunucusundaki görseller de taşınır. Katalogda
+15.526 görsel hâlâ modayakamoz.com'dan veriliyor ve 4.383'ü webp; Trendyol
+webp kabul etmiyor, bu yüzden kopyalarken JPEG'e çevriliyor. Yapay zekâ
+GEREKTİRMEZ (kalite artmaz, yalnız barındırma ve biçim düzelir) — görsel
+iyileştirme kotası bittiğinde tek çıkış yolu budur.
+
+Tedarikçi görseli taşınan üründe `images_custom` işaretlenir; aksi hâlde
+ertesi günkü tedarikçi aktarımı adresleri eski dış adreslere geri yazar ve
+taşıma boşa gider.
+
 R2 kapalıysa (R2_* ortam değişkenleri yoksa) hiçbir şey yapmaz.
 
 Kullanım (sunucuda):
@@ -20,6 +30,7 @@ Kullanım (sunucuda):
     ~/apps/meluni/shared/venv/bin/python ../scripts/migrate_images_to_r2.py --uygula
     ... --uygula --kart MLN-69fb192da020b     # yalnız bir ürün kartı
     ... --uygula --kategori takım
+    ... --uygula --tedarikci --kategori pantolon   # tedarikçi görselleri de
 """
 import argparse
 import asyncio
@@ -30,6 +41,8 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(_HERE, "..", "backend"))
 
 _API_YOLLARI = ("/api/upload/files/", "/api/files/")
+# Zaten CDN'de olan görsel yeniden taşınmaz.
+_CDN_IZLERI = ("cdn.meluni.com.tr",)
 
 
 def _url(x):
@@ -40,12 +53,48 @@ def _api_gorseli_mi(u: str) -> bool:
     return any(y in str(u) for y in _API_YOLLARI)
 
 
+def _cdn_de_mi(u: str) -> bool:
+    return any(y in str(u) for y in _CDN_IZLERI)
+
+
+def _tedarikci_gorseli_mi(u: str) -> bool:
+    """Dış (tedarikçi) sunucuda duran görsel."""
+    u = str(u or "")
+    return u.startswith("http") and not _cdn_de_mi(u) and not _api_gorseli_mi(u)
+
+
+def _jpege_cevir(ham: bytes, tur: str):
+    """webp/png → JPEG. (ham, tur, uzanti) döndürür.
+
+    Trendyol webp KABUL ETMİYOR; kataloğun 4.383 görseli webp ve tedarikçi
+    sunucusundan geliyor. Kopyalarken çevirmezsek adres CDN'e taşınmış olur
+    ama görsel yine reddedilir.
+    """
+    if "webp" not in tur and "png" not in tur:
+        return ham, tur, "jpg" if "jpeg" in tur or "jpg" in tur else "jpg"
+    try:
+        from PIL import Image
+        import io
+        im = Image.open(io.BytesIO(ham))
+        if im.mode not in ("RGB",):
+            im = im.convert("RGB")
+        tampon = io.BytesIO()
+        im.save(tampon, format="JPEG", quality=90, optimize=True)
+        return tampon.getvalue(), "image/jpeg", "jpg"
+    except Exception:
+        # Çeviremediysek olduğu gibi taşı — adres yine de CDN'e geçsin.
+        return ham, tur, ("webp" if "webp" in tur else "png")
+
+
 async def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--uygula", action="store_true", help="Taşımayı YAPAR.")
     ap.add_argument("--kart", default="", help="Yalnız bu ürün kartı kimliği.")
     ap.add_argument("--kategori", default="", help="Yalnız bu kategori.")
     ap.add_argument("--limit", type=int, default=0, help="En fazla N ürün.")
+    ap.add_argument("--tedarikci", action="store_true",
+                    help="Tedarikçi sunucusundaki görselleri de taşır "
+                         "(webp/png → JPEG çevrilir).")
     args = ap.parse_args()
 
     try:
@@ -77,7 +126,10 @@ async def main() -> int:
                 break
             taranan += 1
             gorseller = list(p.get("images") or [])
-            hedefler = [i for i, x in enumerate(gorseller) if _api_gorseli_mi(_url(x))]
+            def _tasinsin(u: str) -> bool:
+                return _api_gorseli_mi(u) or (args.tedarikci and _tedarikci_gorseli_mi(u))
+
+            hedefler = [i for i, x in enumerate(gorseller) if _tasinsin(_url(x))]
             if not hedefler:
                 continue
             print(f"  {p.get('name','')[:44]:<46} {len(hedefler)} görsel")
@@ -87,6 +139,7 @@ async def main() -> int:
                 continue
 
             degisti = False
+            tedarikci_tasindi = False
             for i in hedefler:
                 eski = _url(gorseller[i])
                 try:
@@ -98,9 +151,9 @@ async def main() -> int:
                     hata += 1
                     print(f"      indirilemedi: {str(e)[:70]}")
                     continue
+                ham, tur, uzanti = _jpege_cevir(ham, tur)
                 ad = eski.rstrip("/").split("/")[-1].split("?")[0]
-                if "." not in ad:
-                    ad += ".jpg"
+                ad = (ad.rsplit(".", 1)[0] if "." in ad else ad) + "." + uzanti
                 anahtar = f"products/{p['id']}/{ad}"
                 try:
                     yeni = r2.put_object(anahtar, ham, tur)
@@ -112,18 +165,29 @@ async def main() -> int:
                                 if isinstance(gorseller[i], dict) else yeni)
                 tasinan += 1
                 degisti = True
+                if _tedarikci_gorseli_mi(eski):
+                    tedarikci_tasindi = True
                 # Eski adres istenirse CDN'e yönlensin (bağlantılar kırılmasın).
-                try:
-                    _dosya = ad.rsplit(".", 1)[0]
-                    await db.files.update_many(
-                        {"storage_path": {"$regex": _dosya}},
-                        {"$set": {"r2_url": yeni, "r2_key": anahtar}})
-                except Exception:
-                    pass
+                # Yalnız BİZİM dosya kaydımız için: tedarikçi dosya adının
+                # regex'i alakasız kayıtlara çarpabilir.
+                if _api_gorseli_mi(eski):
+                    try:
+                        _dosya = ad.rsplit(".", 1)[0]
+                        await db.files.update_many(
+                            {"storage_path": {"$regex": _dosya}},
+                            {"$set": {"r2_url": yeni, "r2_key": anahtar}})
+                    except Exception:
+                        pass
             if degisti:
                 urun_degisen += 1
-                await db.products.update_one({"id": p["id"]},
-                                             {"$set": {"images": gorseller}})
+                yazilacak = {"images": gorseller}
+                # KİLİT: tedarikçi görselini kendi kovamıza kopyaladıysak,
+                # ertesi günkü tedarikçi aktarımı `images`i eski dış adreslere
+                # geri yazar ve taşıma boşa gider. Kopya bizim olduğu an ürün
+                # görselleri "özel" sayılmalı.
+                if tedarikci_tasindi:
+                    yazilacak["images_custom"] = True
+                await db.products.update_one({"id": p["id"]}, {"$set": yazilacak})
 
     print()
     print(f"taranan ürün           : {taranan}")
