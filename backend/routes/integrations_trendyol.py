@@ -735,6 +735,15 @@ async def validate_products_for_trendyol(
                 if local_attr:
                     has_val = bool(local_vals.get(local_attr.lower()))
                 if not has_val:
+                    # AD EŞLEŞMESİ: gönderim artık adı tutan özelliği de
+                    # yolluyor; doğrulama bunu bilmezse dolu alanı "eksik"
+                    # diye işaretliyor ve yönetim boşuna arıyordu.
+                    _ra_key = _normalize_attr_key(ra_name)
+                    for _lk, _lv in local_vals.items():
+                        if _lv and _normalize_attr_key(_lk) == _ra_key:
+                            has_val = True
+                            break
+                if not has_val:
                     missing_required_attrs.append({
                         "id": ra_id,
                         "name": ra_name,
@@ -1639,6 +1648,28 @@ async def sync_products_to_trendyol(
         # Performans=Cool & Comfort · Üretici/İthalatçı (GPSR)=MELUNİ bilgileri.
         # Yalnız ürünün DOLDURMADIĞI (processed olmayan) Trendyol özelliğine yazılır; listeli
         # alanlar ADIYLA value_id'ye çözülür (Türkiye→TR), serbest alanlar custom gider.
+        # AD EŞLEŞMESİ (eşleştirme satırı olmasa da): ürün "Kumaş Tipi" taşıyor
+        # ve Trendyol'da da "Kumaş Tipi" varsa, kategori ekranında satır
+        # kurulmamış diye alan BOŞ gidiyordu. Panelde her kategori × her
+        # özellik için tıklamak gerekiyordu; ad birebir tutuyorsa artık
+        # kendiliğinden gönderiliyor. Elle kurulan eşleştirme önce işlendiği
+        # için (processed) bu yol yalnız BOŞLUĞU kapatır.
+        _ad_index = {}
+        for _lk, _lv in local_vals.items():
+            _ad_index.setdefault(_normalize_attr_key(_lk), _lv)
+        for m_ty_id, m_meta in meta.items():
+            if m_ty_id in processed:
+                continue
+            _lv = _ad_index.get(_normalize_attr_key(m_meta.get("name") or ""))
+            if not _lv:
+                continue
+            _nm_map = m_meta.get("value_name_to_id") or {}
+            _vid = _resolve_value_id(_nm_map, _lv) if _nm_map else None
+            if _vid:
+                _push(m_ty_id, value_id=_vid, custom=_lv)
+            else:
+                _push(m_ty_id, custom=_lv)
+
         for m_ty_id, m_meta in meta.items():
             if m_ty_id in processed:
                 continue
