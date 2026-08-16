@@ -24,13 +24,46 @@ class _MarkaYok(Exception):
     """Varsayılan Trendyol markası tanımlı değil."""
 
 
-def _marka_id(product: dict, config: dict) -> int:
-    """Ürünün Trendyol marka kimliği: üründeki değer → ayarlardaki varsayılan.
+async def _marka_haritasi() -> dict:
+    """Marka Eşleştirme ekranındaki kayıtlar: marka adı (küçük) → Trendyol id."""
+    harita = {}
+    try:
+        async for m in db.brand_mappings.find(
+                {"marketplace": "trendyol",
+                 "marketplace_brand_id": {"$nin": [None, ""]}},
+                {"_id": 0, "brand_name": 1, "marketplace_brand_id": 1,
+                 "marketplace_brand_name": 1}):
+            for ad in (m.get("brand_name"), m.get("marketplace_brand_name")):
+                ad = str(ad or "").strip().lower()
+                if ad:
+                    harita.setdefault(ad, m.get("marketplace_brand_id"))
+    except Exception as e:
+        logger.warning(f"[TY] marka eşleştirmesi okunamadı: {e}")
+    return harita
 
-    Hiçbiri yoksa hata verir; koda gömülü marka kullanılmaz.
+
+def _marka_id(product: dict, config: dict, marka_haritasi: dict = None) -> int:
+    """Ürünün Trendyol marka kimliği.
+
+    Sıra: üründeki değer → MARKA EŞLEŞTİRME ekranındaki kayıt (ürünün marka
+    adına göre) → ayarlardaki varsayılan. Hiçbiri yoksa hata verir; koda
+    gömülü marka KULLANILMAZ.
+
+    Marka Eşleştirme ekranı bu iş için var ama gönderim onu hiç okumuyordu;
+    yönetim markayı orada eşleştirmesine rağmen ürünler ayarlardaki (ya da
+    koda gömülü yanlış) markayla gidiyordu.
     """
-    for kaynak in ((product or {}).get("trendyol_brand_id"),
-                   (config or {}).get("default_brand_id")):
+    adaylar = [(product or {}).get("trendyol_brand_id")]
+    if marka_haritasi:
+        for ad in ((product or {}).get("brand"),
+                   (config or {}).get("default_brand_name")):
+            ad = str(ad or "").strip().lower()
+            if ad and marka_haritasi.get(ad):
+                adaylar.append(marka_haritasi[ad])
+        if len(marka_haritasi) == 1:
+            adaylar.append(next(iter(marka_haritasi.values())))
+    adaylar.append((config or {}).get("default_brand_id"))
+    for kaynak in adaylar:
         try:
             deger = int(str(kaynak).strip())
         except (TypeError, ValueError):
@@ -38,8 +71,9 @@ def _marka_id(product: dict, config: dict) -> int:
         if deger > 0:
             return deger
     raise _MarkaYok(
-        "Trendyol varsayılan markası tanımlı değil (Ayarlar > Trendyol > "
-        "Varsayılan Marka ID). Marka seçilmeden aktarım yapılmaz.")
+        "Trendyol markası bulunamadı: ürünün markası Marka Eşleştirme "
+        "ekranında eşleşmemiş ve Ayarlar > Trendyol > Varsayılan Marka ID "
+        "boş. Marka seçilmeden aktarım yapılmaz.")
 
 
 def _grup_kart_id(product: dict) -> str:
@@ -1726,6 +1760,10 @@ async def sync_products_to_trendyol(
 
         return item_attrs
     
+    # Marka Eşleştirme ekranındaki kayıtlar bir kez okunur (ürün başına
+    # sorgu atmayalım).
+    _marka_map = await _marka_haritasi()
+
     for product in products:
         try:
             # 1. Category Mapping check — önce category_id, sonra category_name üzerinden category_mappings
@@ -1898,7 +1936,7 @@ async def sync_products_to_trendyol(
 
             # 3. Base Product Details
             try:
-                _marka_kontrol = _marka_id(product, config)
+                _marka_kontrol = _marka_id(product, config, _marka_map)
             except _MarkaYok as _mk:
                 errors.append(f"{product.get('name')} - {_mk}")
                 continue
@@ -1917,7 +1955,7 @@ async def sync_products_to_trendyol(
                 # ayarlanmadığı için ürünler o markayla listelendi. Marka artık
                 # yalnız üründen ya da ayardan gelir; ikisi de yoksa aktarım
                 # DURUR (yanlış markayla listelemek marka ihlalidir).
-                "brandId": int(_marka_id(product, config)),
+                "brandId": int(_marka_id(product, config, _marka_map)),
                 "categoryId": int(trendyol_cat_id),
                 "description": clean_desc,
                 "currencyType": product.get("currency", "TRY"),
