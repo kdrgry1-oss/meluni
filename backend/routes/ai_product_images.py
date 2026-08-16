@@ -1388,11 +1388,45 @@ async def read_size_table(product_id: str, index: int, *, kaydet: bool = False) 
         raise HTTPException(status_code=502,
                             detail="Tablo okunamadı; model geçerli veri döndürmedi.")
 
+    # MODEL HER ZAMAN SÖZLÜK DÖNDÜRMÜYOR. Sorulan biçim {"olcu_adlari":…,
+    # "satirlar":…} ama gelen cevap bazen doğrudan satır LİSTESİ, bazen tek
+    # elemanlı liste, bazen düz matris oluyor. Eski kod hepsinde .get çağırıp
+    # "'list' object has no attribute 'get'" ile düşüyordu; katalog turunda 93
+    # üründe modele gidilmesine rağmen ölçüler bu yüzden okunamadı.
+    if isinstance(veri, list):
+        if veri and isinstance(veri[0], dict) and (
+                "olcu_adlari" in veri[0] or "satirlar" in veri[0]):
+            veri = veri[0]
+        elif veri and isinstance(veri[0], (list, tuple)):
+            _adlar, _satirlar = _matristen_olcu([[str(h) for h in satir]
+                                                 for satir in veri])
+            veri = {"olcu_adlari": _adlar,
+                    "satirlar": [{"beden": r["beden"], "olculer": r["olculer"]}
+                                 for r in _satirlar]}
+        else:
+            veri = {"satirlar": veri}
+    if not isinstance(veri, dict):
+        raise HTTPException(status_code=502,
+                            detail="Tablo okunamadı; model beklenmeyen biçim döndürdü.")
+
     adlar = [str(a) for a in (veri.get("olcu_adlari") or []) if str(a).strip()]
     satirlar = []
     for r in (veri.get("satirlar") or []):
-        beden = str(r.get("beden") or "").strip()
-        olculer = [str(x).strip() for x in (r.get("olculer") or [])]
+        # Satır da sözlük olmayabilir: ["S","88","70"] biçiminde gelirse ilk
+        # hücre beden, kalanı ölçüdür.
+        if isinstance(r, (list, tuple)):
+            hucreler = [str(x).strip() for x in r]
+            beden = hucreler[0] if hucreler else ""
+            olculer = hucreler[1:]
+        elif isinstance(r, dict):
+            beden = str(r.get("beden") or r.get("size") or "").strip()
+            olculer = [str(x).strip() for x in (r.get("olculer")
+                                                or r.get("values") or [])]
+            if not olculer:
+                olculer = [str(v).strip() for k, v in r.items()
+                           if k not in ("beden", "size") and v not in (None, "")]
+        else:
+            continue
         if beden and any(olculer):
             satirlar.append({"beden": beden, "olculer": olculer})
     if not satirlar:
