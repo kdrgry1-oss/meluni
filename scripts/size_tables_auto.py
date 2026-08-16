@@ -50,6 +50,9 @@ async def main() -> int:
                     help="Mevcut Türkçe tabloyu da yeniden çiz ve kardeşlere yay.")
     ap.add_argument("--kredisiz", action="store_true",
                     help="Modeli hiç çağırma: ham tabloyu arama, görselden okuma.")
+    ap.add_argument("--tahmin", action="store_true",
+                    help="Hiçbir kaynakta ölçü yoksa manken ölçüsünden TAHMİNİ "
+                         "tablo üretir (tabloda 'tahmini' notu yazar).")
     ap.add_argument("--kredi-limit", type=int, default=40,
                     help="Bir turda en fazla kaç üründe model çağrılsın (0=sınırsız).")
     ap.add_argument("--sinirsiz", action="store_true",
@@ -70,7 +73,7 @@ async def main() -> int:
         sonuc = await ai.olcu_tablolari_otomatik(
             limit=args.limit, gorsel=not args.sadece_veri,
             ez=args.ez, kategori=args.kategori,
-            tara=not args.kredisiz, ocr=not args.kredisiz,
+            tara=not args.kredisiz, ocr=not args.kredisiz, tahmin=args.tahmin,
             kredi_limit=0 if args.sinirsiz else args.kredi_limit,
             hata_tolerans=0 if args.sinirsiz else 3,
             ilerleme=lambda d: print(

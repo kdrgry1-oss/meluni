@@ -450,7 +450,7 @@ def _baslik_tr(ad: str) -> str:
 
 def _render_size_table(adlar: List[str], satirlar: List[Dict[str, Any]],
                        baslik: str = "BEDEN ÖLÇÜLERİ",
-                       hedef=ENHANCE_TARGET) -> bytes:
+                       hedef=ENHANCE_TARGET, not_metni: str = "") -> bytes:
     """Okunan ölçülerden temiz bir tablo görseli üretir (1200x1800)."""
     from PIL import Image, ImageDraw, ImageFont
     import io
@@ -572,6 +572,13 @@ def _render_size_table(adlar: List[str], satirlar: List[Dict[str, Any]],
     for i in range(1, n_kol):
         x = kenar + i * kol_g
         d.line([x, ust, x, y], fill=CIZGI, width=1)
+
+    # NOT SATIRI — yalnız TAHMİNİ tablolarda yazılır. Ölçüler mankenin
+    # bedeninden türetildiyse bunu müşteriden saklamak yanlış beden aldırır.
+    if not_metni:
+        _nf = font(26)
+        _g = d.textlength(not_metni, font=_nf)
+        d.text(((W - _g) / 2, H - 60), not_metni, font=_nf, fill=GRI)
 
     out = io.BytesIO()
     im.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
@@ -796,6 +803,78 @@ def _st_satirlara(st: Optional[Dict[str, Any]]) -> tuple:
             continue
         if any(olculer):
             satirlar.append({"beden": b, "olculer": olculer})
+    return adlar, satirlar
+
+
+# ── Manken ölçüsünden TAHMİNİ beden tablosu ────────────────────────────
+# Tedarikçi bazı ürüne ölçü tablosu koymuyor ama açıklamada manken bilgisi
+# veriyor: "Boy:165, Kg:55, Göğüs:90, Bel:72, Kalça:100 · Modelin üzerindeki
+# ürün M/38 bedendir". Mankenin giydiği beden bilindiğine göre diğer bedenler
+# standart beden aralığıyla türetilebilir. Değerler TAHMİNDİR ve tabloda
+# öyle yazar — müşteriye kesin ölçü diye sunulmaz.
+_MANKEN_RX = {
+    "boy":   re.compile(r"boy\s*[:\-]?\s*(\d{2,3})", re.I),
+    "kilo":  re.compile(r"(?:kg|kilo)\s*[:\-]?\s*(\d{2,3})", re.I),
+    "Göğüs": re.compile(r"g[öo]ğ[üu]s\s*[:\-]?\s*(\d{2,3})", re.I),
+    "Bel":   re.compile(r"bel\s*[:\-]?\s*(\d{2,3})", re.I),
+    "Kalça": re.compile(r"(?:kal[çc]a|basen)\s*[:\-]?\s*(\d{2,3})", re.I),
+}
+_BEDEN_RX = re.compile(
+    r"(?:modelin\s+[üu]zerindeki|manken(?:in)?)[^.\n]{0,40}?"
+    r"\b(XXS|XS|S|M|L|XL|XXL|3XL|\d{2})\s*(?:/\s*(\d{2}))?\s*beden", re.I)
+# Standart kadın beden sırası ve harf↔numara karşılığı.
+_HARF_SIRA = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL"]
+_NUMARA_SIRA = [32, 34, 36, 38, 40, 42, 44, 46, 48]
+_ADIM_CM = 4      # bedenler arası standart artış (göğüs/bel/kalça)
+
+
+def _manken_olculeri(metin: str) -> Dict[str, Any]:
+    """Açıklamadan manken ölçülerini ve giydiği bedeni çıkarır."""
+    ham = _HTML_ETIKET.sub(" ", str(metin or ""))
+    bulunan: Dict[str, Any] = {}
+    for ad, rx in _MANKEN_RX.items():
+        m = rx.search(ham)
+        if m:
+            try:
+                bulunan[ad] = int(m.group(1))
+            except ValueError:
+                pass
+    m = _BEDEN_RX.search(ham)
+    if m:
+        bulunan["beden"] = (m.group(1) or "").upper()
+        if m.group(2):
+            bulunan["beden_no"] = m.group(2)
+    return bulunan
+
+
+def _beden_sirasi(beden: str) -> Optional[int]:
+    """Bedenin standart sıradaki yeri; tanınmazsa None."""
+    b = str(beden or "").strip().upper().replace(" ", "")
+    if b in _HARF_SIRA:
+        return _HARF_SIRA.index(b)
+    if b.isdigit() and int(b) in _NUMARA_SIRA:
+        return _NUMARA_SIRA.index(int(b))
+    return None
+
+
+def _tahmini_olcu(manken: Dict[str, Any], bedenler: List[str]) -> tuple:
+    """Manken ölçüsünden bedenlere göre TAHMİNİ tablo üretir.
+
+    Mankenin giydiği beden temel alınır; her beden farkı için ölçüler
+    _ADIM_CM kadar artar/azalır. Ölçü ya da beden bilgisi yoksa boş döner.
+    """
+    adlar = [a for a in ("Göğüs", "Bel", "Kalça") if manken.get(a)]
+    temel_sira = _beden_sirasi(manken.get("beden") or manken.get("beden_no") or "")
+    if not adlar or temel_sira is None:
+        return [], []
+    satirlar = []
+    for b in bedenler:
+        sira = _beden_sirasi(b)
+        if sira is None:
+            continue
+        fark = (sira - temel_sira) * _ADIM_CM
+        satirlar.append({"beden": str(b).strip().upper(),
+                         "olculer": [str(int(manken[a]) + fark) for a in adlar]})
     return adlar, satirlar
 
 
@@ -2035,7 +2114,7 @@ async def _ham_tablo_indeksi(product_id: str, urun: Dict[str, Any]) -> tuple:
 
 async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
                               ez: bool = False, tara: bool = False,
-                              ocr: bool = False) -> Dict[str, Any]:
+                              ocr: bool = False, tahmin: bool = False) -> Dict[str, Any]:
     """TEK ÜRÜN için otomatik ölçü işi.
 
     Üç iş bir arada (yönetim isteği):
@@ -2058,7 +2137,7 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
     urun = await db.products.find_one(
         {"id": product_id},
         {"_id": 0, "images": 1, "stock_code": 1, "size_chart_scan": 1,
-         "name": 1})
+         "name": 1, "description": 1, "variants": 1})
     if not urun:
         return {"durum": "urun_yok"}
 
@@ -2098,10 +2177,28 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
             sonuc["kredi_hatasi"] = sonuc["kredi_hatasi"] or str(e.detail)
         except Exception as e:
             sonuc["kredi_hatasi"] = sonuc["kredi_hatasi"] or str(e)
+    if not satirlar and tahmin:
+        # SON ÇARE — MANKENDEN TAHMİN. Tedarikçi tablo koymamış ama açıklamada
+        # manken ölçüsü ve giydiği beden var: "Göğüs:90, Bel:72, Kalça:100 ·
+        # M/38 bedendir". Diğer bedenler standart beden aralığıyla türetilir.
+        # Değerler TAHMİNDİR; tabloda da öyle yazar, kesin ölçü diye sunulmaz.
+        _manken = _manken_olculeri(urun.get("description") or "")
+        _bedenler = []
+        for _v in (urun.get("variants") or []):
+            _b = str((_v or {}).get("size") or "").strip()
+            if _b and _b not in _bedenler:
+                _bedenler.append(_b)
+        _a, _s = _tahmini_olcu(_manken, _bedenler)
+        if _s:
+            adlar, satirlar = _a, _s
+            veri = {"kaynak": "tahmin", "kaynak_adi": "manken ölçüsünden tahmin"}
+            sonuc["kaynak"] = "tahmin"
+
     if not satirlar:
         sonuc["durum"] = "veri_yok"
         return sonuc
-    adlar = veri.get("olcu_adlari") or []
+    if veri.get("kaynak") != "tahmin":
+        adlar = veri.get("olcu_adlari") or []
     sonuc["kaynak"] = veri.get("kaynak")
 
     # 1) VERİ — kaynağı zaten ürünün kendi kayıtlı tablosuysa tekrar yazmaya
@@ -2122,7 +2219,9 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
             await db.products.update_one({"id": product_id},
                                          {"$set": {"images": sirali}})
     else:
-        raw = _render_size_table(adlar, satirlar)
+        _not = ("Ölçüler manken bedeninden türetilmiş TAHMİNİ değerlerdir."
+                if veri.get("kaynak") == "tahmin" else "")
+        raw = _render_size_table(adlar, satirlar, not_metni=_not)
         url = await _store(raw, product_id, "olcu-oto", "image/jpeg")
         yeni = list(ham)
         # Ham tablo bulunduysa ONUN yerine yaz (İngilizcesi üründe kalmasın);
@@ -2154,6 +2253,7 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
 async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
                                   ez: bool = False, kategori: str = "",
                                   tara: bool = True, ocr: bool = True,
+                                  tahmin: bool = False,
                                   kredi_limit: int = 40,
                                   hata_tolerans: int = 3,
                                   ilerleme=None) -> Dict[str, Any]:
@@ -2194,7 +2294,8 @@ async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
         try:
             r = await _olcu_otomatik_urun(p["id"], gorsel=gorsel, ez=ez,
                                           tara=tara and kredi_acik,
-                                          ocr=ocr and kredi_acik)
+                                          ocr=ocr and kredi_acik,
+                                          tahmin=tahmin)
         except Exception as e:                       # tek ürün turu durdurmasın
             hata += 1
             logger.error(f"[ai-images] otomatik ölçü ({p['id']}): {e}")
