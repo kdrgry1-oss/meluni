@@ -276,6 +276,12 @@ async def _serve(path: str, w: int = 0, q: int = 90, mp: int = 0):
         # sonundaki uzantıyı atıp bir daha deniyoruz; böylece aynı dosya iki
         # adresten de servis edilir ve eski bağlantılar kırılmaz.
         _kok, _uzanti = os.path.splitext(path)
+        # "-mp" SONEKİ: pazaryeri tuvalini SORGU PARAMETRESİYLE değil YOLDA
+        # taşıyoruz. Trendyol görsel adresinin uzantıyla bitmesini istiyor;
+        # "...jpg?mp=1" biçimini kabul etmiyor. "...-mp.jpg" hem uzantıyla
+        # bitiyor hem tuvali seçiyor.
+        if _kok.endswith("-mp"):
+            return await _serve(_kok[:-3] + _uzanti, w, q, 1)
         if _uzanti.lower() in (".jpg", ".jpeg", ".png", ".webp") and _kok != path:
             return await _serve(_kok, w, q, mp)
         raise HTTPException(status_code=404, detail="File not found")

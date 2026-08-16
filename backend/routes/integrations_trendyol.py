@@ -2021,8 +2021,9 @@ async def sync_products_to_trendyol(
                 # (ürün açıldı, görseller boş kaldı). Kendi sunucumuzdaki
                 # dosyayı ?mp=1 ile tamamlanmış hâlde veriyoruz; vitrindeki
                 # görsel ve oran DEĞİŞMİYOR.
-                if "meluni.com.tr" in _u and "mp=1" not in _u:
-                    _u += ("&" if "?" in _u else "?") + "mp=1"
+                if "meluni.com.tr" in _u and "-mp." not in _u:
+                    _kok, _nokta, _uz = _u.rpartition(".")
+                    _u = f"{_kok}-mp.{_uz}" if _nokta else f"{_u}-mp.jpg"
                 return _u
             _ty_imgs = [_uzantili(u) for u in _ty_imgs]
 
