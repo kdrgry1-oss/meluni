@@ -79,7 +79,20 @@ def _dedupe_products_by_stock_code(products: list) -> list:
         # name (ürün adı) ile ayrıştır → "Bordo" ve "Siyah" ayrı kalır.
         stock = (p.get("stock_code") or p.get("sku") or p.get("barcode") or "").strip()
         name = (p.get("name") or "").strip().lower()
-        key = f"{stock}|{name}" if stock else ""
+        # RENK KARDEŞLERİ ARTIK AYNI STOK KODUNU PAYLAŞIYOR (stok kodu kart
+        # düzeyine alındı). Anahtar yalnız stok kodu + ad olunca aynı adı ve
+        # rengi taşıyan AYRI ürünler tek dokümana iniyor ve aktarımda "6 renk
+        # var, 5 ürün bulundu" oluyordu. Barkod varyant düzeyinde benzersiz
+        # olduğu için anahtara giriyor: gerçek mükerrer (aynı barkod) yine
+        # eleniyor, ayrı ürünler korunuyor.
+        _bark = (p.get("barcode") or "").strip()
+        if not _bark:
+            for _v in (p.get("variants") or []):
+                if isinstance(_v, dict) and (_v.get("barcode") or "").strip():
+                    _bark = str(_v["barcode"]).strip()
+                    break
+        color = str(p.get("color") or "").strip().lower()
+        key = f"{stock}|{name}|{color}|{_bark}" if stock else ""
         if not key:
             out_no_key.append(p)
             continue

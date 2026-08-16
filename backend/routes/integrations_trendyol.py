@@ -24,21 +24,53 @@ class _MarkaYok(Exception):
     """Varsayılan Trendyol markası tanımlı değil."""
 
 
+def _marka_anahtar(ad) -> str:
+    """Marka adını karşılaştırma biçimine indirger.
+
+    Türkçe tuzağı: "MELUNİ".lower() → "meluni̇" (i + birleşik nokta) ve
+    "meluni" ile EŞLEŞMEZ. Marka eşleştirmesi bu yüzden tutmuyordu.
+    """
+    s = str(ad or "").replace("I", "ı").replace("İ", "i").replace("\u0307", "")
+    return " ".join(s.lower().split())
+
+
 async def _marka_haritasi() -> dict:
-    """Marka Eşleştirme ekranındaki kayıtlar: marka adı (küçük) → Trendyol id."""
+    """Marka adı → Trendyol marka kimliği.
+
+    İki kaynak: Marka Eşleştirme ekranı (`brand_mappings`) ve — eşleştirmede
+    kimlik yoksa — Trendyol'dan senkronlanan marka listesi (`trendyol_brands`)
+    üzerinden ADA GÖRE arama. Ekranda eşleştirme "ad ↔ ad" olarak yapılmış
+    olabiliyor; kimlik boşken gönderim marka bulamıyordu.
+    """
     harita = {}
+    adlar_kimliksiz = set()
     try:
         async for m in db.brand_mappings.find(
-                {"marketplace": "trendyol",
-                 "marketplace_brand_id": {"$nin": [None, ""]}},
+                {"marketplace": "trendyol"},
                 {"_id": 0, "brand_name": 1, "marketplace_brand_id": 1,
                  "marketplace_brand_name": 1}):
-            for ad in (m.get("brand_name"), m.get("marketplace_brand_name")):
-                ad = str(ad or "").strip().lower()
-                if ad:
-                    harita.setdefault(ad, m.get("marketplace_brand_id"))
+            mid = str(m.get("marketplace_brand_id") or "").strip()
+            adlar = [m.get("brand_name"), m.get("marketplace_brand_name")]
+            if mid.isdigit():
+                for ad in adlar:
+                    if _marka_anahtar(ad):
+                        harita.setdefault(_marka_anahtar(ad), mid)
+            else:
+                for ad in adlar:
+                    if _marka_anahtar(ad):
+                        adlar_kimliksiz.add(_marka_anahtar(ad))
     except Exception as e:
         logger.warning(f"[TY] marka eşleştirmesi okunamadı: {e}")
+
+    # Kimliksiz kalan adları Trendyol marka listesinden çöz.
+    if adlar_kimliksiz:
+        try:
+            async for b in db.trendyol_brands.find({}, {"_id": 0, "id": 1, "name": 1}):
+                anahtar = _marka_anahtar(b.get("name"))
+                if anahtar in adlar_kimliksiz and str(b.get("id") or "").strip():
+                    harita.setdefault(anahtar, b["id"])
+        except Exception as e:
+            logger.warning(f"[TY] Trendyol marka listesi okunamadı: {e}")
     return harita
 
 
@@ -57,9 +89,9 @@ def _marka_id(product: dict, config: dict, marka_haritasi: dict = None) -> int:
     if marka_haritasi:
         for ad in ((product or {}).get("brand"),
                    (config or {}).get("default_brand_name")):
-            ad = str(ad or "").strip().lower()
-            if ad and marka_haritasi.get(ad):
-                adaylar.append(marka_haritasi[ad])
+            anahtar = _marka_anahtar(ad)
+            if anahtar and marka_haritasi.get(anahtar):
+                adaylar.append(marka_haritasi[anahtar])
         if len(marka_haritasi) == 1:
             adaylar.append(next(iter(marka_haritasi.values())))
     adaylar.append((config or {}).get("default_brand_id"))
