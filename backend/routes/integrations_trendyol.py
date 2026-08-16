@@ -371,13 +371,18 @@ async def save_trendyol_settings(
                 detail=f"Trendyol aktifleştirmek için zorunlu alanlar eksik: {', '.join(missing)}"
             )
 
-    update_data = {
-        "supplier_id": settings.get("supplier_id", ""),
-        "api_key": settings.get("api_key", ""),
-        "mode": settings.get("mode", "sandbox"),
-        "default_markup": settings.get("default_markup", 0),
-        "updated_at": datetime.now(timezone.utc).isoformat()
-    }
+    # GÖNDERİLMEYEN ALAN MEVCUT DEĞERİ EZMESİN. Eski kod eksik alanları
+    # varsayılanla ("", "sandbox", 0) yazıyordu: panelin bir formu kâr marjını
+    # göndermeyince oran 0'a düşüyor ve ürünler ZAMLANMADAN gidiyordu; aynı
+    # tuzak is_active'i de kapatmıştı. Artık yalnız gelen alan güncellenir.
+    _mevcut = await db.settings.find_one({"id": "trendyol"}, {"_id": 0}) or {}
+    update_data = {"updated_at": datetime.now(timezone.utc).isoformat()}
+    for _alan, _varsayilan in (("supplier_id", ""), ("api_key", ""),
+                               ("mode", "sandbox"), ("default_markup", 0)):
+        if _alan in settings:
+            update_data[_alan] = settings.get(_alan, _varsayilan)
+        elif _alan not in _mevcut:
+            update_data[_alan] = _varsayilan
 
     # AKTİFLİK YALNIZ GÖNDERİLDİYSE YAZILIR. Eski kod anahtar yoksa False
     # yazıyordu; panelde aktiflik kutusu olmadığı için her kaydetme
