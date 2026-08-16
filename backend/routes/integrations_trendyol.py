@@ -2535,6 +2535,52 @@ async def sync_products_to_trendyol(
         # _id ekleniyor MongoDB tarafından — response'a koyma
         log_doc.pop("_id", None)
 
+        # ÜRÜNE DAMGA: hangi ürün Trendyol'a gitti, ne zaman, hangi batch ile?
+        # Bu bilgi hiçbir yerde tutulmuyordu; yönetim ürün listesine bakıp
+        # "bu aktarıldı mı" diyemiyordu. Reddedilenlere gerekçesi yazılır ki
+        # listede kırmızı rozetle ayrılabilsin. Damgalama aktarımı ASLA
+        # bozmamalı — komple try içinde.
+        try:
+            _red_kod = set()
+            for _it in (batch_failed_items or []):
+                for _k in ("stock_code", "barcode"):
+                    if _it.get(_k):
+                        _red_kod.add(str(_it[_k]).strip())
+            _now = datetime.now(timezone.utc).isoformat()
+            for _p in products:
+                _kodlar = {str(_p.get("stock_code") or "").strip(),
+                           str(_p.get("barcode") or "").strip()}
+                _kodlar |= {str(v.get("barcode") or "").strip()
+                            for v in (_p.get("variants") or [])}
+                _kodlar |= {str(v.get("stock_code") or "").strip()
+                            for v in (_p.get("variants") or [])}
+                _kodlar.discard("")
+                _basarisiz = bool(_kodlar & _red_kod)
+                _sebep = ""
+                if _basarisiz:
+                    for _it in (batch_failed_items or []):
+                        if str(_it.get("stock_code") or "").strip() in _kodlar or \
+                           str(_it.get("barcode") or "").strip() in _kodlar:
+                            _sebep = "; ".join(
+                                (r.get("message") if isinstance(r, dict) else str(r))
+                                for r in (_it.get("reasons") or []))[:400]
+                            break
+                _set = {"trendyol_pushed_at": _now,
+                        "trendyol_batch_id": batch_id or "",
+                        "trendyol_push_status": "failed" if _basarisiz else (
+                            "sent" if batch_id else "rejected")}
+                if _basarisiz or not batch_id:
+                    _set["trendyol_error"] = _sebep or (trendyol_error or "")[:400]
+                    _unset = {}
+                else:
+                    _unset = {"trendyol_error": ""}
+                _guncelle = {"$set": _set}
+                if _unset:
+                    _guncelle["$unset"] = _unset
+                await db.products.update_one({"id": _p.get("id")}, _guncelle)
+        except Exception as _damga_err:
+            logger.warning(f"[TY] ürün damgalama atlandı: {_damga_err}")
+
         # 🤖 OTOMATİK RETRY KUYRUĞU: "Aynı barkod var" / "ürün bulunamadı" / "Trendyol cache"
         # tipi sıkışmalarda barkodları otomatik kuyruğa ekle (saatte bir retry edilir).
         # Header'da X-Internal-Retry varsa atla (loop önlemi).

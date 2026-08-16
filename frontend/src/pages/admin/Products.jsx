@@ -2431,6 +2431,21 @@ export default function AdminProducts() {
                     <a href={`/${product.slug || product.id}`} target="_blank" rel="noopener noreferrer" className="font-medium line-clamp-1 text-orange-600 hover:text-orange-800 hover:underline">
                       {product.name}
                     </a>
+                    {/* TRENDYOL DURUMU — aktarım artık ürüne damga bırakıyor
+                        (trendyol_push_status). Liste bunu göstermeden "hangi
+                        ürün gitti" sorusunun cevabı hiçbir yerde yoktu. */}
+                    {product.trendyol_push_status === "sent" && (
+                      <span className="ml-2 align-middle text-[10px] font-bold px-1.5 py-0.5 rounded bg-orange-100 text-orange-700"
+                            title={`Trendyol'a aktarıldı${product.trendyol_pushed_at ? " · " + String(product.trendyol_pushed_at).slice(0, 16).replace("T", " ") : ""}`}>
+                        TRENDYOL
+                      </span>
+                    )}
+                    {(product.trendyol_push_status === "failed" || product.trendyol_push_status === "rejected") && (
+                      <span className="ml-2 align-middle text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-700"
+                            title={product.trendyol_error || "Trendyol aktarımı başarısız"}>
+                        TY HATA
+                      </span>
+                    )}
                     <p className="text-xs text-gray-500">
                       {(() => {
                         // Ürünün BAĞLI OLDUĞU TÜM kategoriler (yalnız birincil değil — kullanıcı isteği)
