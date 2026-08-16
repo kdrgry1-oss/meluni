@@ -49,6 +49,8 @@ async def get_ai_settings() -> dict:
             "persona": DEFAULT_PERSONA,
             "confidence_threshold": 0.7,
             "use_emergent_key": False,
+            # Trendyol sorusuna onaysız cevap gönderimi — bilinçli KAPALI.
+            "trendyol_auto_send": False,
             "custom_api_key": "",
             "channels": {
                 "trendyol": True, "hepsiburada": True, "temu": True,
@@ -157,6 +159,10 @@ async def save_ai_chatbot_settings(payload: dict, current_user: dict = Depends(r
         "enabled", "provider", "model", "fast_model", "persona",
         "confidence_threshold", "use_emergent_key", "channels",
         "wa_extra_rules",   # WhatsApp/sosyal AI'a panelden eklenebilen ek kurallar (düzenlenebilir)
+        # Trendyol sorularına ONAYSIZ cevap gönderimi. Varsayılan KAPALI:
+        # müşteriye giden metin geri alınamaz, yanlış beden/kumaş cevabı iade
+        # demektir. Açıkken bile yalnız güven eşiğini geçen cevaplar gider.
+        "trendyol_auto_send",
     ):
         if f in payload:
             update[f] = payload[f]
@@ -274,13 +280,46 @@ async def _gather_product_qa_rules(product_name: str) -> str:
             + "\n".join(f"• {p}" for p in parts))
 
 
+_ACIKLAMA_ETIKET = re.compile(r"<[^>]+>")
+
+
+async def _gather_size_table(product_id: str) -> str:
+    """Ürünün beden ölçü tablosunu metne çevirir.
+
+    Pazaryerinde gelen soruların büyük kısmı beden sorusu ("165/60 için hangi
+    beden?", "bel kaç cm?"). Ölçüler `size_tables` koleksiyonunda duruyordu ama
+    cevap üretilirken hiç okunmuyordu; model ya "kontrol edip yazayım" diyordu
+    ya da bedeni tahmin ediyordu. Tablo varsa cevap ölçüden beslenmeli.
+    """
+    if not product_id:
+        return ""
+    st = await db.size_tables.find_one({"product_id": product_id}, {"_id": 0})
+    if not st or not st.get("sizes"):
+        return ""
+    kolonlar = st.get("columns") or []
+    degerler = st.get("values") or {}
+    satirlar = []
+    for beden in st["sizes"][:16]:
+        olcu = degerler.get(beden) or {}
+        parcalar = [f"{k} {olcu.get(k)}" for k in kolonlar if olcu.get(k)]
+        if parcalar:
+            satirlar.append(f"{beden}: " + ", ".join(parcalar))
+    if not satirlar:
+        return ""
+    # Tahmini tablolar manken ölçüsünden türetilir; müşteriye kesin ölçü diye
+    # aktarılmamalı, model bunu bilmeli.
+    nitelik = " (manken ölçüsünden türetilmiş TAHMİNİ değerler)" \
+        if st.get("source") == "tahmin" else ""
+    return f"Beden ölçüleri (cm){nitelik}:\n  " + "\n  ".join(satirlar)
+
+
 async def _gather_product_context(product_name: str) -> str:
     rule_txt = await _gather_product_qa_rules(product_name)
     if not product_name:
         return rule_txt
     prods = await db.products.find(
         {"name": {"$regex": re.escape(product_name[:40]), "$options": "i"}},
-        {"_id": 0, "name": 1, "price": 1, "stock": 1, "variants": 1, "description": 1, "attributes": 1, "category_name": 1}
+        {"_id": 0, "id": 1, "name": 1, "price": 1, "stock": 1, "variants": 1, "description": 1, "attributes": 1, "category_name": 1}
     ).limit(3).to_list(3)
     lines = []
     for p in prods:
@@ -299,6 +338,13 @@ async def _gather_product_context(product_name: str) -> str:
         )
         if attrs:
             line += f"\n  Özellikler: {', '.join(attrs)}"
+        # AÇIKLAMA: kumaş/kalıp/manken bilgisi çoğu üründe yalnız burada yazıyor.
+        aciklama = " ".join(_ACIKLAMA_ETIKET.sub(" ", p.get("description") or "").split())
+        if aciklama:
+            line += f"\n  Açıklama: {aciklama[:600]}"
+        olcu = await _gather_size_table(p.get("id") or "")
+        if olcu:
+            line += "\n  " + olcu.replace("\n", "\n  ")
         lines.append(line)
     prod_txt = "\n".join(lines)
     if rule_txt and prod_txt:
@@ -313,6 +359,18 @@ async def generate_draft_answer(
     payload: Optional[dict] = None,
     current_user: dict = Depends(require_admin),
 ):
+    return await taslak_uret(marketplace, question_id,
+                             kaydeden=current_user.get("email", ""))
+
+
+async def taslak_uret(marketplace: str, question_id: str,
+                      kaydeden: str = "") -> dict:
+    """Bir pazaryeri sorusuna taslak cevap üretir ve `ai_suggestions`'a yazar.
+
+    Uç noktadan AYRI durur: otomatik cevaplama akışı (Trendyol) da aynı
+    üretimi kullanmalı — iki ayrı istem/eşik olursa panelde onaylanan cevapla
+    otomatik giden cevap birbirinden ayrışır.
+    """
     if marketplace not in MARKETPLACE_TO_COLL:
         raise HTTPException(status_code=404, detail="Bilinmeyen kanal")
     coll = db[MARKETPLACE_TO_COLL[marketplace]]
@@ -401,7 +459,7 @@ async def generate_draft_answer(
         "handoff": handoff,
         "model": settings.get("model", "gpt-5.2"),
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "created_by": current_user.get("email", ""),
+        "created_by": kaydeden,
     }
     await db.ai_suggestions.insert_one(suggestion_doc)
 

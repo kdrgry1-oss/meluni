@@ -2149,6 +2149,22 @@ def start_scheduler():
         )
     except Exception as _e:
         logging.getLogger("scheduler").warning("[scheduler] trendyol yorum job eklenemedi: %s", _e)
+    # Trendyol müşteri soruları — saatte bir çekilir ve cevabı hazırlanır.
+    # Gönderim ayrı bir ayara bağlı (ai_chatbot.trendyol_auto_send, varsayılan
+    # KAPALI); kapalıyken bu iş yalnız panelde onay bekleyen taslak üretir.
+    try:
+        from routes.integrations_trendyol_qna import hourly_trendyol_question_answer
+        _add(
+            hourly_trendyol_question_answer,
+            "interval",
+            hours=1,
+            id="trendyol_qna_auto_answer",
+            next_run_time=datetime.now(timezone.utc) + timedelta(minutes=15),
+            max_instances=1,
+            coalesce=True,
+        )
+    except Exception as _e:
+        logging.getLogger("scheduler").warning("[scheduler] trendyol soru job eklenemedi: %s", _e)
     # RPT kritik stok uyarısı — her sabah 05:00 UTC (08:00 TR): kapsaması eşiğin altına
     # düşen ürünler için admin push (21 gün üretim + güvenlik payı; İşletme Kuralları'ndan ayarlı).
     _add(

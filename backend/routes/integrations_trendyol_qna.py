@@ -213,6 +213,98 @@ async def answer_trendyol_question(question_id: str, payload: dict, current_user
         raise HTTPException(status_code=500, detail=str(e))
 
 
+async def _trendyol_cevap_gonder(question_id: str, metin: str) -> None:
+    """Cevabı Trendyol'a gönderir ve yereldeki soruyu günceller."""
+    from .integrations import get_trendyol_config, get_trendyol_headers
+
+    config = await get_trendyol_config()
+    if not config.get("is_active"):
+        raise HTTPException(status_code=400, detail="Trendyol entegrasyonu kapalı")
+    headers = await get_trendyol_headers()
+    base_url = ("https://apigw.trendyol.com" if config.get("mode") == "live"
+                else "https://stageapigw.trendyol.com")
+    url = (f"{base_url}/integration/qna/sellers/{config['supplier_id']}"
+           f"/questions/{question_id}/answers")
+    async with httpx.AsyncClient(timeout=30) as client:
+        resp = await client.post(url, headers=headers, json={"text": metin})
+        resp.raise_for_status()
+    await db.trendyol_questions.update_one(
+        {"question_id": question_id},
+        {"$set": {"answer": metin, "status": "ANSWERED",
+                  "answered_at": datetime.now(timezone.utc).isoformat(),
+                  "answered_by": "ai"}})
+
+
+@router.post("/trendyol/questions/auto-answer")
+async def auto_answer_trendyol_questions(
+    payload: Optional[dict] = None,
+    current_user: dict = Depends(require_admin),
+):
+    """Cevapsız Trendyol sorularına yapay zekâ ile cevap üretir.
+
+    Cevap ÜRÜNÜN KENDİ verisinden beslenir: öznitelikler, açıklama, beden/stok
+    ve varsa ölçü tablosu (`ai_chatbot._gather_product_context`).
+
+    GÖNDERİM VARSAYILAN OLARAK KAPALI. Müşteriye giden metin geri alınamaz;
+    yanlış bir beden ya da kumaş cevabı iade demektir. Gönderim yalnız
+    `settings.ai_chatbot.trendyol_auto_send` açıkken VE modelin güveni eşiğin
+    üstündeyken VE model "insana devret" demediğinde yapılır. Diğer her durumda
+    taslak `ai_suggestions`'a yazılır, panelden onaylanmayı bekler.
+
+    body: {limit?: 20, gonder?: bool (ayarı geçici olarak zorlar), soru_id?: ""}
+    """
+    from .ai_chatbot import get_ai_settings, taslak_uret
+
+    p = payload or {}
+    limit = max(1, min(int(p.get("limit") or 20), 200))
+    ayar = await get_ai_settings()
+    gonder = p["gonder"] if isinstance(p.get("gonder"), bool) \
+        else bool(ayar.get("trendyol_auto_send"))
+
+    q = {"status": {"$ne": "ANSWERED"}}
+    if p.get("soru_id"):
+        q = {"question_id": str(p["soru_id"])}
+    sorular = await db.trendyol_questions.find(
+        q, {"_id": 0, "question_id": 1, "question_text": 1, "product_name": 1}
+    ).sort("created_at", -1).limit(limit).to_list(limit)
+
+    gonderilen = taslak = hata = 0
+    satirlar = []
+    for s in sorular:
+        qid = s.get("question_id")
+        if not qid:
+            continue
+        try:
+            sonuc = await taslak_uret("trendyol", qid,
+                                      kaydeden=current_user.get("email", ""))
+        except Exception as e:
+            hata += 1
+            satirlar.append({"question_id": qid, "durum": "hata",
+                             "sebep": str(e)[:200]})
+            continue
+        gonderilebilir = (gonder and not sonuc.get("handoff")
+                          and sonuc.get("draft"))
+        if not gonderilebilir:
+            taslak += 1
+            satirlar.append({"question_id": qid, "durum": "taslak",
+                             "guven": sonuc.get("confidence"),
+                             "insana_devret": sonuc.get("handoff")})
+            continue
+        try:
+            await _trendyol_cevap_gonder(qid, sonuc["draft"])
+            gonderilen += 1
+            satirlar.append({"question_id": qid, "durum": "gonderildi",
+                             "guven": sonuc.get("confidence")})
+        except Exception as e:
+            hata += 1
+            satirlar.append({"question_id": qid, "durum": "gonderilemedi",
+                             "sebep": str(e)[:200]})
+
+    return {"success": True, "incelenen": len(sorular),
+            "gonderilen": gonderilen, "taslak": taslak, "hata": hata,
+            "gonderim_acik": gonder, "sonuclar": satirlar}
+
+
 # ==================== TRENDYOL REVIEWS (public storefront scrape) ====================
 
 @router.post("/trendyol/questions/sync-answers")
@@ -1374,6 +1466,58 @@ async def weekly_trendyol_review_sync():
                  summary.get("matched_products"), summary.get("total_inserted"), len(summary.get("errors") or []))
     except Exception as e:
         log.warning("[trendyol-reviews] haftalik sync hata: %s", e)
+
+
+async def hourly_trendyol_question_answer():
+    """Scheduler: yeni Trendyol sorularını çeker ve cevabını hazırlar.
+
+    Taslak her zaman üretilir (panelde onay bekler); Trendyol'a gönderim ancak
+    `settings.ai_chatbot.trendyol_auto_send` AÇIKKEN ve modelin güveni eşiği
+    geçtiğinde yapılır. Ayar kapalıyken bu iş yalnız taslak biriktirir —
+    müşteriye kendiliğinden hiçbir şey gitmez.
+    """
+    import logging as _logging
+    log = _logging.getLogger("trendyol-qna")
+    try:
+        from .ai_chatbot import get_ai_settings, taslak_uret
+        ayar = await get_ai_settings()
+        if not ayar.get("enabled", True):
+            return
+        try:
+            await sync_trendyol_questions(days_back=7, current_user={"email": "scheduler"})
+        except Exception as e:
+            log.warning("[trendyol-qna] soru senkronu basarisiz: %s", e)
+
+        gonder = bool(ayar.get("trendyol_auto_send"))
+        # Taslağı olan soruyu tekrar üretme: her turda yeniden model çağırmak
+        # hem ücret hem de aynı soruya farklı cevaplar demek.
+        islenmis = set(await db.ai_suggestions.distinct(
+            "question_id", {"marketplace": "trendyol"}))
+        sorular = await db.trendyol_questions.find(
+            {"status": {"$ne": "ANSWERED"}}, {"_id": 0, "question_id": 1}
+        ).sort("created_at", -1).limit(50).to_list(50)
+        uretilen = gonderilen = 0
+        for s in sorular:
+            qid = s.get("question_id")
+            if not qid or qid in islenmis:
+                continue
+            try:
+                sonuc = await taslak_uret("trendyol", qid, kaydeden="scheduler")
+            except Exception as e:
+                log.warning("[trendyol-qna] taslak uretilemedi %s: %s", qid, e)
+                continue
+            uretilen += 1
+            if gonder and not sonuc.get("handoff") and sonuc.get("draft"):
+                try:
+                    await _trendyol_cevap_gonder(qid, sonuc["draft"])
+                    gonderilen += 1
+                except Exception as e:
+                    log.warning("[trendyol-qna] cevap gonderilemedi %s: %s", qid, e)
+        if uretilen:
+            log.info("[trendyol-qna] taslak=%s gonderilen=%s (gonderim=%s)",
+                     uretilen, gonderilen, "acik" if gonder else "kapali")
+    except Exception as e:
+        log.warning("[trendyol-qna] saatlik is hata: %s", e)
 
 
 @router.get("/trendyol/reviews/fetch-config")
