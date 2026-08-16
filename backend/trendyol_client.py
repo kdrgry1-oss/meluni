@@ -100,17 +100,21 @@ class TrendyolClient:
     # ------------------ BRANDS ------------------
 
     async def get_brands(self, size: int = 500, page: int = 0) -> Dict:
+        """Markaları sayfalı çeker.
+
+        YOL DÜZELTMESİ: yeni ağ geçidinde (apigw.trendyol.com/integration)
+        marka uçları "/product" öneki altında. Eski "/brands" çağrısı 404
+        dönüyor ve panel "Trendyol markaları alınamadı" diyordu; marka
+        eşleştirmesi de bu yüzden kimliksiz kalıyordu (kategori uçları
+        "/product/product-categories" ile zaten doğru çalışıyor).
         """
-        Fetches brands from Trendyol, paginated.
-        Endpoint: GET /brands/by-name?size={size}&page={page}
-        Wait, standard endpoint is /brands. Let's use /brands
-        """
-        data = await self._async_get("/brands", params={"size": size, "page": page})
-        return data
-        
+        return await self._async_get("/product/brands",
+                                     params={"size": size, "page": page})
+
     async def get_brand_by_name(self, name: str) -> Dict:
-        """Markayı ADA GÖRE arar. Endpoint: GET /brands/by-name?name=..."""
-        return await self._async_get("/brands/by-name", params={"name": name})
+        """Markayı ADA GÖRE arar: GET /product/brands/by-name?name=..."""
+        return await self._async_get("/product/brands/by-name",
+                                     params={"name": name})
 
     # ------------------ ATTRIBUTES METADATA ------------------
     # Additional helpers to be added for endpoints like Providers, ShipmentProviders if needed.
