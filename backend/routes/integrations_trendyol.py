@@ -20,6 +20,11 @@ from meluni_defaults import meluni_fixed_value_for  # tüm-pazaryeri sabit varsa
 router = APIRouter(tags=["Integrations-Trendyol"])
 
 
+# Trendyol'daki mağaza markamızın YAZIMI. Marka Eşleştirme ekranındaki
+# pazaryeri marka adı doluysa o kullanılır; bu yalnız yedektir.
+TRENDYOL_MARKA_ADI = "meluni"
+
+
 class _MarkaYok(Exception):
     """Varsayılan Trendyol markası tanımlı değil."""
 
@@ -55,6 +60,9 @@ async def _marka_haritasi() -> dict:
                 for ad in adlar:
                     if _marka_anahtar(ad):
                         harita.setdefault(_marka_anahtar(ad), mid)
+                # Trendyol'un TANIDIĞI yazım: metin alanlarda bunu kullanırız.
+                if str(m.get("marketplace_brand_name") or "").strip():
+                    harita.setdefault("__ad__", str(m["marketplace_brand_name"]).strip())
             else:
                 for ad in adlar:
                     if _marka_anahtar(ad):
@@ -92,8 +100,9 @@ def _marka_id(product: dict, config: dict, marka_haritasi: dict = None) -> int:
             anahtar = _marka_anahtar(ad)
             if anahtar and marka_haritasi.get(anahtar):
                 adaylar.append(marka_haritasi[anahtar])
-        if len(marka_haritasi) == 1:
-            adaylar.append(next(iter(marka_haritasi.values())))
+        _kimlikler = [v for k, v in marka_haritasi.items() if k != "__ad__"]
+        if len(_kimlikler) == 1:
+            adaylar.append(_kimlikler[0])
     adaylar.append((config or {}).get("default_brand_id"))
     for kaynak in adaylar:
         try:
@@ -1605,6 +1614,17 @@ async def sync_products_to_trendyol(
         default_mappings = category.get("default_mappings", {}) or {}
 
         local_vals = _collect_local_values(product, variant)
+        # MARKA TEK KAYNAKTAN: Trendyol'daki mağaza markası "meluni". Kategori
+        # şemasında "Marka" özelliği varsa ürünün ham marka alanı ("Meluni",
+        # "MELUNİ", tedarikçiden gelen başka bir yazım) oraya gidip mağaza
+        # markasıyla çelişebiliyor. brandId zaten eşleştirmeden çözülüyor;
+        # metin alan da aynı adı taşısın.
+        _marka_adi = (_marka_map.get("__ad__") if isinstance(_marka_map, dict) else "") \
+            or TRENDYOL_MARKA_ADI
+        for _mk in ("marka", "brand", "marka adı"):
+            if _mk in local_vals:
+                local_vals[_mk] = _marka_adi
+        local_vals.setdefault("marka", _marka_adi)
 
         def _push(ty_id: int, value_id=None, custom=None):
             """Cache'e karşı doğrulayarak append."""
