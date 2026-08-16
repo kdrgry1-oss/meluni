@@ -20,6 +20,41 @@ from meluni_defaults import meluni_fixed_value_for  # tüm-pazaryeri sabit varsa
 router = APIRouter(tags=["Integrations-Trendyol"])
 
 
+class _MarkaYok(Exception):
+    """Varsayılan Trendyol markası tanımlı değil."""
+
+
+def _marka_id(product: dict, config: dict) -> int:
+    """Ürünün Trendyol marka kimliği: üründeki değer → ayarlardaki varsayılan.
+
+    Hiçbiri yoksa hata verir; koda gömülü marka kullanılmaz.
+    """
+    for kaynak in ((product or {}).get("trendyol_brand_id"),
+                   (config or {}).get("default_brand_id")):
+        try:
+            deger = int(str(kaynak).strip())
+        except (TypeError, ValueError):
+            continue
+        if deger > 0:
+            return deger
+    raise _MarkaYok(
+        "Trendyol varsayılan markası tanımlı değil (Ayarlar > Trendyol > "
+        "Varsayılan Marka ID). Marka seçilmeden aktarım yapılmaz.")
+
+
+def _grup_kart_id(product: dict) -> str:
+    """Renk kardeşlerinin PAYLAŞTIĞI kart kimliği; kimlik taşımıyorsa boş."""
+    try:
+        from group_ref import gecerli_grup
+    except Exception:
+        return ""
+    for alan in ("urun_karti_id", "csv_card_id", "supplier_group_ref"):
+        deger = str((product or {}).get(alan) or "").strip()
+        if deger and gecerli_grup(deger):
+            return deger
+    return ""
+
+
 def _kategori_filtresi(cid) -> dict:
     """Yerel kategoriyi bulan sorgu — kimlik BİÇİMİNDEN bağımsız.
 
@@ -1849,12 +1884,40 @@ async def sync_products_to_trendyol(
                 else:
                     _ty_norm.append(_u)
             _ty_imgs = (_ty_norm[:7] + _ty_size[:1]) if _ty_size else _ty_norm[:8]
+            # TRENDYOL UZANTI ŞARTI: görsel adresi .jpg/.jpeg/.png ile bitmeli.
+            # Bizim yapay zekâ görsellerimiz uzantısız adreslerle duruyor
+            # ("...-hd0-06b3") ve Trendyol onları indirmiyordu — ürün gidiyor,
+            # görseller boş kalıyordu. Sunucu uzantılı adresi de aynı dosyaya
+            # çözüyor (upload._serve), o yüzden ekleyip göndermek güvenli.
+            def _uzantili(_url: str) -> str:
+                _yol = str(_url).split("?")[0]
+                if _yol.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
+                    return _url
+                return f"{_url}.jpg"
+            _ty_imgs = [_uzantili(u) for u in _ty_imgs]
 
             # 3. Base Product Details
+            try:
+                _marka_kontrol = _marka_id(product, config)
+            except _MarkaYok as _mk:
+                errors.append(f"{product.get('name')} - {_mk}")
+                continue
             base_item = {
                 "title": product.get("name"),
-                "productMainId": _resolve_stock_code(product) or product.get("id"),
-                "brandId": int(product.get("trendyol_brand_id") or config.get("default_brand_id") or 975755),
+                # RENK KARDEŞLERİ TEK KARTTA: Trendyol aynı productMainId'yi
+                # taşıyan ürünleri tek ürün kartında renk seçenekleri olarak
+                # gösterir. Stok kodu her renkte FARKLI olduğu için altı renk
+                # altı ayrı kart oluyordu. Grup kodu (ürün kartı kimliği)
+                # geçerliyse onu kullanıyoruz; yoksa eski davranış.
+                "productMainId": (_grup_kart_id(product)
+                                  or _resolve_stock_code(product)
+                                  or product.get("id")),
+                # MARKA KODDAN GELMEZ. Yedek olarak BAŞKA BİR FİRMANIN Trendyol
+                # marka kimliği (975755 — Facette) gömülüydü; varsayılan marka
+                # ayarlanmadığı için ürünler o markayla listelendi. Marka artık
+                # yalnız üründen ya da ayardan gelir; ikisi de yoksa aktarım
+                # DURUR (yanlış markayla listelemek marka ihlalidir).
+                "brandId": int(_marka_id(product, config)),
                 "categoryId": int(trendyol_cat_id),
                 "description": clean_desc,
                 "currencyType": product.get("currency", "TRY"),

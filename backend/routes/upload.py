@@ -244,6 +244,14 @@ async def _serve(path: str, w: int = 0, q: int = 90):
             with open(candidate, "rb") as f:
                 content = f.read()
     if content is None:
+        # UZANTILI ADRESİ DE ÇÖZ. Dosyalar uzantısız adlarla saklanıyor
+        # ("...-hd0-06b3") ama Trendyol görsel adresinin .jpg/.png ile
+        # bitmesini şart koşuyor — uzantısız adresi hiç indirmiyor. Adresin
+        # sonundaki uzantıyı atıp bir daha deniyoruz; böylece aynı dosya iki
+        # adresten de servis edilir ve eski bağlantılar kırılmaz.
+        _kok, _uzanti = os.path.splitext(path)
+        if _uzanti.lower() in (".jpg", ".jpeg", ".png", ".webp") and _kok != path:
+            return await _serve(_kok, w, q)
         raise HTTPException(status_code=404, detail="File not found")
 
     # İçerik-adresli (uuid) dosyalar değişmez → 1 yıl immutable cache (PageSpeed + tekrar ziyaret)

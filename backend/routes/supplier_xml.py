@@ -1114,7 +1114,12 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
         "category_path": f"{_cat_root} > {_cat_sub}",
         "supplier_category_raw": rec.get("category") or "",
         "barcode": primary.get("barcode", ""),
-        "stock_code": primary.get("stock_code", ""),
+        # STOK KODU KART DÜZEYİNDEDİR: aynı modelin bütün renkleri AYNI stok
+        # kodunu taşır, barkod ise her varyantta benzersizdir. Eskiden ürüne
+        # ilk varyantın kodu ("MEL-M006783-01") yazılıyordu; her renk farklı
+        # kod alıyor, panelden stok koduyla gönderince altı rengin yalnız biri
+        # gidiyordu. Varyantların kendi kodları (…-01, …-02) DEĞİŞMEZ.
+        "stock_code": model_code or primary.get("stock_code", ""),
         "model_code": model_code,
         # Renk kardeşleri: products.py get_color_siblings bu alanda eşleşenleri
         # "diğer renkler" sayıyor. Grup kodu yazılmadığı için vitrinde hiçbir
