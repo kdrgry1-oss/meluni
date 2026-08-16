@@ -150,6 +150,33 @@ def _norm_val(s: str) -> str:
 _VALUE_SYNONYMS = {
     "yakasiz": ["sifiryaka", "yakayok"],
     "sifiryaka": ["yakasiz"],
+    # RENK KARŞILIKLARI — tedarikçi moda adları kullanıyor ("Parlament",
+    # "Zümrüt", "Saks"), Trendyol ise sabit bir renk listesi tutuyor. Karşılığı
+    # bulunamayan renk ZORUNLU "Web Color" alanını boş bırakıyor ve Trendyol
+    # ürünü reddediyor ("Eksik özellik Id: 348"). Canlıda 6 ürün bu yüzden
+    # düştü. Eşleştirmeler moda sektöründeki yerleşik karşılıklardır.
+    "parlament": ["lacivert", "koyumavi", "mavi"],
+    "zumrut": ["yesil", "koyuyesil"],
+    "desenli": ["cokrenkli", "desenli", "karisikrenkli"],
+    "saks": ["mavi", "koyumavi"], "saksmavi": ["mavi", "koyumavi"],
+    "sutlukahve": ["kahverengi", "bej", "vizon"],
+    "tas": ["bej", "acikbej", "krem"],
+    "bebemavisi": ["mavi", "acikmavi"], "bebemavi": ["mavi", "acikmavi"],
+    "gulkurusu": ["pembe", "acikpembe"],
+    "mint": ["yesil", "acikyesil", "mintyesili"],
+    "lila": ["mor", "lila", "leylak"], "leylak": ["mor", "lila"],
+    "somon": ["pembe", "turuncu"],
+    "hardal": ["sari", "koyusari"],
+    "petrol": ["mavi", "koyumavi", "petrolmavisi"],
+    "vizon": ["vizon", "bej", "kahverengi"],
+    "haki": ["haki", "yesil", "koyuyesil"],
+    "antrasit": ["antrasit", "gri", "koyugri"],
+    "fume": ["gri", "koyugri", "antrasit"],
+    "ekru": ["ekru", "krem", "beyaz"],
+    "camel": ["camel", "taba", "kahverengi", "bej"],
+    "bordo": ["bordo", "koyukirmizi"],
+    "fusya": ["fusya", "pembe"],
+    "karisikrenkli": ["cokrenkli"], "cokrenk": ["cokrenkli"],
 }
 def _resolve_value_id(name_map: dict, local_val: str):
     """local_val'i Trendyol value_id'ye çöz: önce birebir (norm), sonra eşanlamlı."""
