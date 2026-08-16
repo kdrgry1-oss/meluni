@@ -75,6 +75,21 @@ del _s, _ks, _k
 # katılırlar ("Bisiklet" + "Yaka", "Kısa" + "Kollu").
 _ATLA = {"ve", "ile", "için", "kadın", "erkek", "unisex", "çocuk"}
 
+# GİYSİ ADLARI NİTELEYİCİ OLAMAZ. "Bluz Short Aerobin İkili Takım" adında
+# kumaş işaretçisi "aerobin"in önüne "bluz" ve "short" yapışıyor, öznitelik
+# "Kumaş: Bluz Short Aerobin" çıkıyordu — aynı yanlış değer Kumaş Tipi ve
+# Ürün İçerik Bilgisi alanlarına da taşınıyordu. Bunlar ürünün TÜRÜdür,
+# özelliğin niteleyicisi değil.
+_GIYSI_ADI = {
+    "bluz", "short", "şort", "sort", "takım", "takim", "elbise", "pantolon",
+    "etek", "ceket", "gömlek", "gomlek", "tişört", "tshirt", "t-shirt",
+    "tulum", "yelek", "kazak", "hırka", "hirka", "mont", "kaban", "tunik",
+    "body", "bodysuit", "sweatshirt", "sweat", "atlet", "tayt", "kimono",
+    "pareo", "mayo", "bikini", "eşofman", "esofman", "kap", "abiye",
+    "ikili", "üçlü", "uclu", "takımı", "takimi",
+}
+_ATLA = _ATLA | _GIYSI_ADI
+
 # NİTELEYİCİ + BAŞ. Türkçede bazı işaretçiler tek başına özellik değil, bir
 # sonrakini niteler: "Kısa" + "Kollu" → kol tipi (boy değil), "Dantel" +
 # "Detaylı" → detay (kumaş değil). Bunlar kalıplı ve sayılıdır; hepsini
@@ -128,7 +143,13 @@ def addan_ozellikler(ad: str) -> Dict[str, str]:
     for i, kelime in enumerate(temiz):
         sinif = siniflar[i]
         if not sinif:
-            if _kucult(kelime) not in _ATLA and kelime:
+            if _kucult(kelime) in _ATLA:
+                # Giysi adı / bağlaç ZİNCİRİ KIRAR: niteleyici ancak
+                # işaretçiye BİTİŞİKSE ona aittir. Kırmazsak "Kuş Gözü Detay
+                # Bluz Short Aerobin" adında "Aerobin"in niteleyicisi olarak
+                # cümlenin başındaki kelimeler yapışıyordu.
+                onceki = []
+            elif kelime:
                 onceki = (onceki + [kelime])[-2:]
             continue
         sonraki = siniflar[i + 1] if i + 1 < len(siniflar) else None
