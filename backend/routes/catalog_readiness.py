@@ -52,13 +52,23 @@ async def katalog_hazirlik(current_user: dict = Depends(require_admin)):
         if st.get("sizes"):
             tablolu.add(st.get("product_id"))
 
-    # Trendyol kategori eşleştirmeleri
+    # Trendyol kategori eşleştirmeleri.
+    # İKİ KAYNAK: gönderim çözümlemesi (integrations_trendyol._resolve) önce
+    # `category_mappings`e, bulamazsa `categories.trendyol_category_id`ye bakar
+    # — panelin "Kategori Eşleştir" ekranı ikincisine yazar. Burada yalnız
+    # ilki sayılıyordu: 48 kategori eşleşmişken ekran "1/58" gösteriyordu,
+    # yani hazır kategoriler eksik görünüyordu.
     esli_kategoriler = set()
     async for cm in db.category_mappings.find(
             {"marketplace": {"$regex": "^trendyol$", "$options": "i"},
              "marketplace_category_id": {"$nin": [None, ""]}},
             {"_id": 0, "category_id": 1}):
         esli_kategoriler.add(str(cm.get("category_id")))
+    async for c in db.categories.find(
+            {"trendyol_category_id": {"$nin": [None, ""]}},
+            {"_id": 0, "id": 1}):
+        if c.get("id"):
+            esli_kategoriler.add(str(c["id"]))
 
     kategoriler: dict = {}
     genel = {"urun": 0, "olcu_verisi": 0, "tablo_gorseli": 0, "kendi_gorseli": 0,
