@@ -237,10 +237,16 @@ async def save_trendyol_settings(
         "supplier_id": settings.get("supplier_id", ""),
         "api_key": settings.get("api_key", ""),
         "mode": settings.get("mode", "sandbox"),
-        "is_active": settings.get("is_active", False),
         "default_markup": settings.get("default_markup", 0),
         "updated_at": datetime.now(timezone.utc).isoformat()
     }
+
+    # AKTİFLİK YALNIZ GÖNDERİLDİYSE YAZILIR. Eski kod anahtar yoksa False
+    # yazıyordu; panelde aktiflik kutusu olmadığı için her kaydetme
+    # entegrasyonu sessizce kapatıyordu (canlıda is_active=False bulundu,
+    # gönderim 400 dönüyor ve log bile düşmüyordu).
+    if "is_active" in settings:
+        update_data["is_active"] = bool(settings.get("is_active"))
 
     if settings.get("api_secret") and settings.get("api_secret") != "********":
         # GÜVENLİK: api_secret'ı at-rest ŞİFRELE (get_trendyol_config okurken çözer).

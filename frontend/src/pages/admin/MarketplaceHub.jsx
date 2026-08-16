@@ -474,6 +474,27 @@ export default function MarketplaceHub() {
                               <option value="?">bilinmeyen: {String(tyOp.mode)}</option>
                             )}
                           </select>
+                          {/* ENTEGRASYON AKTİF — bu kutu HİÇ YOKTU. Form durumu
+                              is_active'i taşımadığı için her kaydetmede sunucuya
+                              false gidiyor, entegrasyon sessizce kapanıyordu:
+                              ürün gönderimi 400 ("yapılandırılmamış") dönüyor,
+                              kategori özellikleri canlı çekilemiyor, kayıt bile
+                              düşmüyordu. Karttaki "Aktif" rozeti anahtarların
+                              doluluğuna bakıyor, bu bayrağa değil. */}
+                          <label className="flex items-center gap-2 mt-3 cursor-pointer">
+                            <input type="checkbox" checked={!!tyOp.is_active}
+                                   onChange={(e) => tyUpd("is_active", e.target.checked)}
+                                   data-testid="ty-op-active" />
+                            <span className={`text-sm font-semibold ${tyOp.is_active ? "text-[#3F7A52]" : "text-gray-400"}`}>
+                              Entegrasyon Aktif
+                            </span>
+                          </label>
+                          {!tyOp.is_active && (
+                            <p className="text-[11px] text-[#B0413A] mt-1">
+                              Kapalıyken ürün gönderimi ve kategori özelliklerinin
+                              canlı çekilmesi çalışmaz.
+                            </p>
+                          )}
                           {tyModu(tyOp.mode) === "test" && (
                             <p className="text-[11px] text-amber-700 mt-1">
                               İstekler Trendyol <b>test</b> ağ geçidine gider. Canlı
