@@ -84,6 +84,25 @@ async def main() -> int:
     else:
         print("Engel yok: entegrasyon açık, anahtarlar dolu, ortam canlı.")
 
+    # MARKA — gönderim sırasıyla: üründeki trendyol_brand_id → Marka
+    # Eşleştirme kaydı → ayarlardaki varsayılan. Hangisinin dolu olduğunu
+    # görmeden "marka hatası"nın nerede kırıldığı anlaşılmıyor.
+    print("marka")
+    print(f"  ayarlardaki varsayılan : {ham.get('default_brand_id') or 'YOK'}")
+    esleme = await db.brand_mappings.find({"marketplace": "trendyol"}, {"_id": 0}).to_list(50)
+    if not esleme:
+        print("  Marka Eşleştirme kaydı : YOK")
+    for m in esleme:
+        mid = m.get("marketplace_brand_id")
+        sayisal = str(mid or "").strip().isdigit()
+        print(f"  {str(m.get('brand_name') or '?')[:20]:<22} → "
+              f"pazaryeri id={mid!r} "
+              f"({'sayısal, kullanılabilir' if sayisal else 'SAYISAL DEĞİL — gönderimde kullanılamaz'})"
+              f" · ad={m.get('marketplace_brand_name') or '-'}")
+    urun_markalari = await db.products.distinct("brand", {"is_deleted": {"$ne": True}})
+    print(f"  ürünlerdeki marka adları: {[str(x)[:18] for x in urun_markalari[:6]]}")
+    print()
+
     guncelle = {}
     if args.aktif_et:
         guncelle["is_active"] = True
