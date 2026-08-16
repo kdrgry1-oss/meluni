@@ -177,6 +177,27 @@ _VALUE_SYNONYMS = {
     "bordo": ["bordo", "koyukirmizi"],
     "fusya": ["fusya", "pembe"],
     "karisikrenkli": ["cokrenkli"], "cokrenk": ["cokrenkli"],
+    # Pantolon turunda canlı doğrulamada düşen renkler (kategori 529).
+    "kahve": ["kahverengi"], "acikahve": ["kahverengi"], "acikkahve": ["kahverengi"],
+    "tarcin": ["kahverengi"], "bronz": ["kahverengi"], "taba": ["kahverengi", "camel"],
+    "leopar": ["cokrenkli"], "cicekli": ["cokrenkli"], "puantiyeli": ["cokrenkli"],
+    "cizgili": ["cokrenkli"], "etnik": ["cokrenkli"],
+    "indigo": ["lacivert", "koyumavi", "mavi"],
+    "acikmavi": ["mavi"], "buzmavisi": ["mavi"], "kotmavisi": ["mavi"],
+    "bebekmavisi": ["mavi", "acikmavi"],
+    "cagla": ["yesil"], "caglayesili": ["yesil"], "mintyesili": ["yesil"],
+    "fistikyesili": ["yesil"],
+    "murdum": ["mor"], "eflatun": ["mor"],
+    "pudra": ["pembe"], "yavruagzi": ["pembe"],
+    "kiremit": ["turuncu", "kirmizi"], "limon": ["sari"],
+    "kum": ["bej"], "acikbej": ["bej"],
+    "acikgri": ["gri"], "koyugri": ["gri", "antrasit"],
+    # Menşei listesi ISO ülke kodu tutuyor ("TR"), ürün kartında "Türkiye" yazıyor.
+    # Menşei ZORUNLU ve serbest metin kabul etmiyor: karşılık bulunmazsa alan
+    # boş gidiyor ve Trendyol tüm ürünü reddediyor.
+    "turkiye": ["tr"], "turkey": ["tr"],
+    # Kategoriye göre "Kadın" ya da "Kadın / Kız" olabiliyor (529'da ikincisi).
+    "kadin": ["kadinkiz", "kadin"], "kadinkiz": ["kadin", "kadinkiz"],
 }
 def _resolve_value_id(name_map: dict, local_val: str):
     """local_val'i Trendyol value_id'ye çöz: önce birebir (norm), sonra eşanlamlı."""

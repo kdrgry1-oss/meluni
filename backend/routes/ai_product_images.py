@@ -2279,7 +2279,15 @@ async def olcu_tablolari_otomatik(*, limit: int = 0, gorsel: bool = True,
     son_kredi_hatasi = ""
     bekleme = 0        # kota hatasında ürünler arası soluklanma (saniye)
     beklenen = 0
-    async for p in db.products.find(q, {"_id": 0, "id": 1}):
+    # KİMLİKLER ÖNCE TOPLANIR, sonra işlenir. Canlı imleç üzerinde dönerken
+    # ürün başına dakikalarca süren model çağrısı yapılıyordu; MongoDB imleci
+    # 10 dakika sonra düşüyor ve tur ortasında "CursorNotFound (43)" ile
+    # patlıyordu — pantolon turu 112 üründen 75'inde böyle koptu. Kimlik
+    # listesi birkaç bin ürün için de ucuz (yalnız id alanı).
+    kimlikler = [p["id"] async for p in
+                 db.products.find(q, {"_id": 0, "id": 1}) if p.get("id")]
+    for _pid in kimlikler:
+        p = {"id": _pid}
         if limit and taranan >= limit:
             break
         taranan += 1
@@ -2361,6 +2369,7 @@ async def size_tables_auto_run(payload: dict | None = None,
           "ez": bool(p.get("ez")), "kategori": str(p.get("kategori") or "").strip(),
           "tara": p.get("tara", True) is not False,
           "ocr": p.get("ocr", True) is not False,
+          "tahmin": bool(p.get("tahmin")),
           "kredi_limit": int(p.get("kredi_limit", 40) or 0),
           "hata_tolerans": int(p.get("hata_tolerans", 3) or 0)}
     job_id = await _is_baslat("toplu", "olcu-oto",
