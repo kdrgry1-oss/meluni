@@ -39,7 +39,7 @@ def _marka_anahtar(ad) -> str:
     return " ".join(s.lower().split())
 
 
-async def _marka_haritasi() -> dict:
+async def _marka_haritasi(config: dict = None) -> dict:
     """Marka adı → Trendyol marka kimliği.
 
     İki kaynak: Marka Eşleştirme ekranı (`brand_mappings`) ve — eşleştirmede
@@ -50,8 +50,10 @@ async def _marka_haritasi() -> dict:
     harita = {}
     adlar_kimliksiz = set()
     try:
+        # Pazaryeri adı kayıtta "Trendyol" gibi büyük harfle durabiliyor;
+        # birebir eşitlik arayınca eşleştirme hiç bulunamıyordu.
         async for m in db.brand_mappings.find(
-                {"marketplace": "trendyol"},
+                {"marketplace": {"$regex": "^trendyol$", "$options": "i"}},
                 {"_id": 0, "brand_name": 1, "marketplace_brand_id": 1,
                  "marketplace_brand_name": 1}):
             mid = str(m.get("marketplace_brand_id") or "").strip()
@@ -79,6 +81,30 @@ async def _marka_haritasi() -> dict:
                     harita.setdefault(anahtar, b["id"])
         except Exception as e:
             logger.warning(f"[TY] Trendyol marka listesi okunamadı: {e}")
+
+    # SON ÇARE — MAĞAZA MARKASINI CANLI ÇÖZ. Eşleştirme kaydı yoksa/kimliksizse
+    # ve yerel marka listesi de boşsa, markayı adıyla doğrudan Trendyol'a
+    # sorarız. Aksi hâlde "marka bulunamadı" deyip aktarımı durduruyorduk;
+    # oysa mağaza markası Trendyol'da zaten tanımlı.
+    if not [k for k in harita if k != "__ad__"] and config:
+        try:
+            from trendyol_client import TrendyolClient
+            _c = TrendyolClient(supplier_id=config.get("supplier_id"),
+                                api_key=config.get("api_key"),
+                                api_secret=config.get("api_secret"),
+                                mode=config.get("mode", "live"))
+            _veri = await _c.get_brand_by_name(TRENDYOL_MARKA_ADI)
+            _liste = (_veri or {}).get("brands") if isinstance(_veri, dict) else _veri
+            for _b in (_liste or []):
+                if _marka_anahtar(_b.get("name")) == _marka_anahtar(TRENDYOL_MARKA_ADI) \
+                        and str(_b.get("id") or "").strip():
+                    harita[_marka_anahtar(TRENDYOL_MARKA_ADI)] = _b["id"]
+                    harita.setdefault("__ad__", _b.get("name") or TRENDYOL_MARKA_ADI)
+                    logger.info(f"[TY] mağaza markası canlı çözüldü: "
+                                f"{_b.get('name')} → {_b.get('id')}")
+                    break
+        except Exception as e:
+            logger.warning(f"[TY] marka canlı sorgulanamadı: {e}")
     return harita
 
 
@@ -103,6 +129,8 @@ def _marka_id(product: dict, config: dict, marka_haritasi: dict = None) -> int:
         _kimlikler = [v for k, v in marka_haritasi.items() if k != "__ad__"]
         if len(_kimlikler) == 1:
             adaylar.append(_kimlikler[0])
+    if marka_haritasi:
+        adaylar.append(marka_haritasi.get(_marka_anahtar(TRENDYOL_MARKA_ADI)))
     adaylar.append((config or {}).get("default_brand_id"))
     for kaynak in adaylar:
         try:
@@ -1814,7 +1842,7 @@ async def sync_products_to_trendyol(
     
     # Marka Eşleştirme ekranındaki kayıtlar bir kez okunur (ürün başına
     # sorgu atmayalım).
-    _marka_map = await _marka_haritasi()
+    _marka_map = await _marka_haritasi(config)
 
     for product in products:
         try:

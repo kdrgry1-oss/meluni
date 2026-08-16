@@ -108,6 +108,10 @@ class TrendyolClient:
         data = await self._async_get("/brands", params={"size": size, "page": page})
         return data
         
+    async def get_brand_by_name(self, name: str) -> Dict:
+        """Markayı ADA GÖRE arar. Endpoint: GET /brands/by-name?name=..."""
+        return await self._async_get("/brands/by-name", params={"name": name})
+
     # ------------------ ATTRIBUTES METADATA ------------------
     # Additional helpers to be added for endpoints like Providers, ShipmentProviders if needed.
 
