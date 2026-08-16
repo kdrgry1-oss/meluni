@@ -207,7 +207,33 @@ async def upload_video(file: UploadFile = File(...), user=Depends(require_auth))
     return {"success": True, "path": filename, "url": f"/api/upload/files/{filename}", "is_video": True}
 
 
-async def _serve(path: str, w: int = 0, q: int = 90):
+# Pazaryeri görsel ölçüsü: Trendyol giyimde en az 1200x1800 (2:3) istiyor.
+# Bizim iyileştirilmiş görsellerimiz 1200x1600 (3:4) — vitrin oranı bu. Küçük
+# oranlı görseli Trendyol ürünü reddetmeden ALMIYOR: ürün açılıyor, görseller
+# boş kalıyor (canlıda yaşandı). Vitrini bozmamak için dosyayı DEĞİŞTİRMİYORUZ;
+# yalnız `?mp=1` ile istendiğinde tuval 2:3'e tamamlanıp servis ediliyor.
+MP_TARGET = (1200, 1800)
+
+
+def _pazaryeri_tuvali(icerik: bytes) -> bytes:
+    """Görseli KIRPMADAN 1200x1800 tuvale oturtur (beyaz zemin)."""
+    from PIL import Image
+    import io
+    im = Image.open(io.BytesIO(icerik))
+    if im.mode not in ("RGB", "L"):
+        im = im.convert("RGB")
+    hedef_g, hedef_y = MP_TARGET
+    oran = min(hedef_g / im.width, hedef_y / im.height)
+    yeni = im.resize((max(1, int(im.width * oran)), max(1, int(im.height * oran))),
+                     Image.LANCZOS)
+    tuval = Image.new("RGB", MP_TARGET, (255, 255, 255))
+    tuval.paste(yeni, ((hedef_g - yeni.width) // 2, (hedef_y - yeni.height) // 2))
+    cikti = io.BytesIO()
+    tuval.save(cikti, format="JPEG", quality=92, optimize=True)
+    return cikti.getvalue()
+
+
+async def _serve(path: str, w: int = 0, q: int = 90, mp: int = 0):
     record = await db.files.find_one({"storage_path": path, "is_deleted": False})
 
     # 0) R2'ye taşınmış/yüklenmişse → R2 public URL'ine yönlendir (CDN servis eder).
@@ -251,7 +277,7 @@ async def _serve(path: str, w: int = 0, q: int = 90):
         # adresten de servis edilir ve eski bağlantılar kırılmaz.
         _kok, _uzanti = os.path.splitext(path)
         if _uzanti.lower() in (".jpg", ".jpeg", ".png", ".webp") and _kok != path:
-            return await _serve(_kok, w, q)
+            return await _serve(_kok, w, q, mp)
         raise HTTPException(status_code=404, detail="File not found")
 
     # İçerik-adresli (uuid) dosyalar değişmez → 1 yıl immutable cache (PageSpeed + tekrar ziyaret)
@@ -262,6 +288,14 @@ async def _serve(path: str, w: int = 0, q: int = 90):
     if "svg" in (ctype or "").lower():
         headers["Content-Disposition"] = "attachment"
         headers["Content-Security-Policy"] = "default-src 'none'; sandbox"
+
+    # Pazaryeri tuvali — ?mp=1 verildiyse (Trendyol 1200x1800 şartı).
+    if mp and ctype.startswith("image/") and "svg" not in ctype:
+        try:
+            return Response(content=_pazaryeri_tuvali(content),
+                            media_type="image/jpeg", headers=headers)
+        except Exception as e:
+            logger.warning(f"pazaryeri tuvali başarısız {path}: {e}")
 
     # On-the-fly optimize/resize — yalnızca ?w= verildiyse ve raster görselse.
     if w and w > 0 and ctype.startswith("image/") and "svg" not in ctype:
@@ -283,11 +317,11 @@ async def _serve(path: str, w: int = 0, q: int = 90):
 
 
 @router.get("/files/{path:path}")
-async def get_file(path: str, w: int = 0, q: int = 90):
-    return await _serve(path, w, q)
+async def get_file(path: str, w: int = 0, q: int = 90, mp: int = 0):
+    return await _serve(path, w, q, mp)
 
 
 @files_router.get("/{path:path}")
-async def get_file_legacy(path: str, w: int = 0, q: int = 90):
+async def get_file_legacy(path: str, w: int = 0, q: int = 90, mp: int = 0):
     """Eski kayıtlardaki /api/files/... URL'lerini de servis et (resize destekli)."""
-    return await _serve(path, w, q)
+    return await _serve(path, w, q, mp)

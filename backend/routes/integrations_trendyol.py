@@ -2009,9 +2009,16 @@ async def sync_products_to_trendyol(
             # çözüyor (upload._serve), o yüzden ekleyip göndermek güvenli.
             def _uzantili(_url: str) -> str:
                 _yol = str(_url).split("?")[0]
-                if _yol.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
-                    return _url
-                return f"{_url}.jpg"
+                _u = _url if _yol.lower().endswith((".jpg", ".jpeg", ".png", ".webp")) \
+                    else f"{_url}.jpg"
+                # 1200x1800 TUVALİ: görsellerimiz 1200x1600; Trendyol giyimde
+                # en az 1200x1800 istiyor ve küçük görseli sessizce almıyordu
+                # (ürün açıldı, görseller boş kaldı). Kendi sunucumuzdaki
+                # dosyayı ?mp=1 ile tamamlanmış hâlde veriyoruz; vitrindeki
+                # görsel ve oran DEĞİŞMİYOR.
+                if "meluni.com.tr" in _u and "mp=1" not in _u:
+                    _u += ("&" if "?" in _u else "?") + "mp=1"
+                return _u
             _ty_imgs = [_uzantili(u) for u in _ty_imgs]
 
             # 3. Base Product Details
