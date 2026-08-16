@@ -367,6 +367,46 @@ def _zorunlu_tamamla(toplam: Dict[str, str], kumas_varsayilan: str = "") -> None
         toplam["Kumaş Tipi"] = kumas_varsayilan
 
 
+# ── Ürün içerik bilgisi (materyal bileşeni) ────────────────────────────
+# Trendyol bunu "Ürün İçerik Bilgisi" / "Materyal Bileşeni" adıyla ister ve
+# giyimde neredeyse her kategoride ZORUNLUdur. Beslemede ayrı alan olarak
+# gelebiliyor; gelmiyorsa açıklamadaki yüzdeli ifadeden ("%95 Viskon %5
+# Elastan") çıkarıyoruz; o da yoksa bilinen kumaş adını yazıyoruz.
+_YUZDE_RX = re.compile(
+    r"%\s*\d{1,3}\s*[A-Za-zÇĞİÖŞÜçğıöşü]+(?:\s*[,/+]?\s*%\s*\d{1,3}\s*"
+    r"[A-Za-zÇĞİÖŞÜçğıöşü]+)*")
+
+
+def icerik_cikar(product: Dict[str, Any],
+                 ozellikler: Optional[Dict[str, str]] = None,
+                 varsayilan: str = "") -> str:
+    """Ürün içerik bilgisini döner. Sırayla: besleme alanı → açıklamadaki
+    yüzdeli bileşim → etiketli açıklama satırı → bilinen kumaş adı → varsayılan.
+
+    UYDURMA YOK: bilmediğimiz oranı yazmıyoruz. Kumaşı biliyorsak yalnız adını
+    yazıyoruz ("Viskon"); yüzde ancak kaynakta geçiyorsa aktarılır.
+    """
+    besleme = str(product.get("material") or "").strip()
+    if besleme:
+        return besleme[:120]
+
+    aciklama = _HTML.sub(" ", str(product.get("description") or ""))
+    m = _YUZDE_RX.search(aciklama)
+    if m:
+        return re.sub(r"\s+", " ", m.group(0)).strip()[:120]
+
+    etiketli = aciklamadan_ozellikler(product.get("description") or "")
+    for ad in ("Kumaş",):
+        if etiketli.get(ad):
+            return str(etiketli[ad])[:120]
+
+    kumas = str((ozellikler or {}).get("Kumaş")
+                or product.get("fabric") or "").strip()
+    if kumas:
+        return kumas[:120]
+    return varsayilan
+
+
 def urun_ozellikleri(product: Dict[str, Any],
                      size_table: Optional[Dict[str, Any]] = None,
                      zorunlu: bool = True,
@@ -431,6 +471,13 @@ def urun_ozellikleri(product: Dict[str, Any],
         if toplam.get(kaynak):
             for hedef in hedefler:
                 toplam.setdefault(hedef, toplam[kaynak])
+
+    # İçerik bilgisi HİÇ BOŞ KALMASIN (yönetim isteği): kaynak yoksa kumaş
+    # varsayılanına düşer ("Dokuma"/"Belirtilmemiş" — çağıran seçer).
+    icerik = icerik_cikar(product, toplam, kumas_varsayilan)
+    if icerik:
+        toplam.setdefault("Ürün İçerik Bilgisi", icerik)
+        toplam.setdefault("Materyal Bileşeni", icerik)
 
     if zorunlu:
         _zorunlu_tamamla(toplam, kumas_varsayilan)

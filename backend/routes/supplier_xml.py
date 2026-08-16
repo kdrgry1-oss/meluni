@@ -72,6 +72,11 @@ CANDIDATES: Dict[str, List[str]] = {
     "kdv_included": ["kdvdahil", "vatincluded", "kdv_dahil"],
     "gender":      ["cinsiyet", "gender"],
     "fabric":      ["kumas", "fabric"],
+    # ÜRÜN İÇERİK BİLGİSİ (materyal bileşeni): "%95 Viskon %5 Elastan" gibi.
+    # Trendyol'da "Materyal Bileşeni"/"Ürün İçerik Bilgisi" adıyla isteniyor ve
+    # beslemede kumaş alanından AYRI bir alanda gelebiliyor.
+    "material":    ["materyal", "icerik", "urunicerik", "kumasbilgisi",
+                    "kumasicerigi", "material", "content", "composition"],
     "desi":        ["desi", "kargodesi"],
     "product_url": ["urunurl", "producturl", "link", "url"],
     # RENK GRUBU: tedarikçi aynı modelin her rengini ayrı ürün olarak veriyor;
@@ -796,6 +801,7 @@ def parse_item(item: ET.Element, mapping: Dict[str, str]) -> Dict[str, Any]:
     # taşıyan BÜTÜN ürünler tek renk-kardeşi grubuna düşüyor ve alakasız
     # ürünler birbirinin rengi görünüyor (canlıda yaşandı). Kimlik taşımayan
     # kod BOŞ sayılır; ürün kendi başına kalır.
+    rec["material"] = g("material") or ""
     rec["group_ref"] = group_ref.temiz_grup(g("group_ref"))
     rec["model_ref"] = (
         g("model_ref") or rec["supplier_stock_code"] or rec["supplier_barcode"] or rec["name"]
@@ -1081,6 +1087,7 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
         "name": _ad,
         "description": rec.get("description") or "",
         "fabric": rec.get("fabric") or "",
+        "material": rec.get("material") or "",
         "gender": rec.get("gender") or "",
         "brand": rec.get("brand") or "",
         "category_name": _cat_sub,
@@ -1129,6 +1136,7 @@ async def _build_product_doc(rec: Dict[str, Any], supplier: str, markup: float =
         "vat_rate": float(rec.get("vat") or 10),
         "stock": total_stock,
         "gender": rec.get("gender") or "",
+        "material": rec.get("material") or "",
         "desi": rec.get("desi") or 0,
         "supplier_url": rec.get("supplier_url") or "",
         "images": rec.get("images") or [],
