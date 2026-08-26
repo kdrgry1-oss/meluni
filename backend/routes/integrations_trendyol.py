@@ -2871,7 +2871,14 @@ async def sync_trendyol_inventory(payload: dict = Body(default={}), current_user
         # query boş kalırsa (örn. eşleşmeyen kategori) HER ŞEYİ değil, hiçbir şeyi güncelle -> güvenli.
         products = await db.products.find(query).to_list(length=None) if query else []
     else:
-        products = await db.products.find({"is_active": True}).to_list(length=None)
+        # KAPSAM: yalnız `is_active=True` taranıyordu. Vitrinden kalkan ürün
+        # (tek beden emekliliği, elle pasife alma) bu sorgunun DIŞINDA kalıyor,
+        # dolayısıyla Trendyol'daki stoğu hiç sıfırlanmıyordu — pazaryerinde
+        # satılmaya devam ediyordu. Bir kez gönderilmiş her ürün, pasif olsa da
+        # senkrona girmeli; pasif olanlara sıfır yazılır (bkz. _satilamaz).
+        products = await db.products.find(
+            {"$or": [{"is_active": True}, {"trendyol_push_status": "sent"}]}
+        ).to_list(length=None)
     return await _sync_inventory_to_trendyol(products)
 @router.post("/trendyol/products/{product_id}/sync-inventory")
 async def sync_single_product_inventory(
@@ -2911,12 +2918,18 @@ async def _sync_inventory_to_trendyol(products: list):
         factor = 1 + markup / 100.0
         base_price = _mp_base_price(product) * factor  # #4: üye fiyatı baz
         sale_price = _mp_base_price(product) * factor  # Trendyol: indirimsiz satis fiyati
+        # VİTRİNDEN KALKAN ÜRÜN PAZARYERİNDE DE SATILAMAZ. Tek bedeni kalıp
+        # emekliye ayrılan ya da elle pasife alınan ürün bizde `is_active=False`
+        # oluyor ama Trendyol'daki stoğu OLDUĞU GİBİ kalıyordu: müşteri sipariş
+        # veriyor, tedarikçide mal yok, sipariş iptal ve mağaza puanı düşüyor.
+        # Kayıttaki stok ne olursa olsun sıfır gönderiyoruz.
+        _satilamaz = bool(product.get("is_deleted")) or product.get("is_active") is False
         variants = product.get("variants", [])
         if not variants:
             if product.get("barcode"):
                 items_to_send.append({
                     "barcode": product["barcode"],
-                    "quantity": int(product.get("stock", 0)),
+                    "quantity": 0 if _satilamaz else int(product.get("stock", 0)),
                     "salePrice": round(sale_price, 2),
                     "listPrice": round(base_price, 2)
                 })
@@ -2926,7 +2939,7 @@ async def _sync_inventory_to_trendyol(products: list):
                     diff = float(v.get("price_diff") or 0)
                     items_to_send.append({
                         "barcode": v["barcode"],
-                        "quantity": int(v.get("stock", 0)),
+                        "quantity": 0 if _satilamaz else int(v.get("stock", 0)),
                         "salePrice": round(sale_price + diff, 2),
                         "listPrice": round(base_price + diff, 2)
                     })

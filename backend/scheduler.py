@@ -297,7 +297,13 @@ async def _run_trendyol_auto_products_sync():
         cfg = await get_trendyol_config()
         if not cfg.get("is_active"):
             return
-        products = await db.products.find({"is_active": True}, {"_id": 0}).to_list(length=None)
+        # Pasife alınan/emekliye ayrılan ürün de kapsama girer: Trendyol'daki
+        # stoğu sıfırlanmazsa pazaryerinde satılmaya devam ediyor, sipariş
+        # gelince tedarikçide mal bulunmuyor. Sıfırı _sync_inventory_to_trendyol
+        # yazıyor (is_active=False / is_deleted → quantity 0).
+        products = await db.products.find(
+            {"$or": [{"is_active": True}, {"trendyol_push_status": "sent"}]},
+            {"_id": 0}).to_list(length=None)
         res = await _sync_inventory_to_trendyol(products)
         await log_integration_event(
             marketplace="trendyol", action="stock_update",
