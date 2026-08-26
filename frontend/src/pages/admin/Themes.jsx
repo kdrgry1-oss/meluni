@@ -46,6 +46,34 @@ export default function Themes() {
     } catch { toast.error("Aktivasyon başarısız"); }
   };
 
+  /** Aktif temayı (yoksa ilkini) kopyalayarak yeni bir tema açar. */
+  const yeniTema = async () => {
+    const kaynak = list.find(t => t.is_active) || list[0];
+    const ad = window.prompt("Yeni temanın adı", kaynak ? `${kaynak.name} — kopya` : "Yeni Tema");
+    if (!ad) return;
+    const slug = ad.toLocaleLowerCase("tr")
+      .replace(/ı/g, "i").replace(/ş/g, "s").replace(/ğ/g, "g")
+      .replace(/ü/g, "u").replace(/ö/g, "o").replace(/ç/g, "c")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+    try {
+      const r = await axios.post(`${API}/admin/themes`, {
+        name: ad,
+        slug: slug || `tema-${Date.now()}`,
+        description: kaynak ? `${kaynak.name} temasından türetildi.` : "",
+        preview_image: kaynak?.preview_image || "",
+        // Bloklar YENİ kimlikle kopyalanır; kaynak temanın blokları etkilenmez.
+        blocks: (kaynak?.blocks || []).map(({ id, ...b }) => ({ ...b })),
+        menu: kaynak?.menu || [],
+        settings: JSON.parse(JSON.stringify(kaynak?.settings || {})),
+      });
+      toast.success("Tema oluşturuldu — düzenleyip aktive edebilirsiniz");
+      await fetchList();
+      setEditing(r.data);
+    } catch (e) {
+      toast.error(e.response?.data?.detail || "Tema oluşturulamadı");
+    }
+  };
+
   const remove = async (t) => {
     if (t.is_default) { toast.error("Varsayılan tema silinemez"); return; }
     if (!window.confirm(`"${t.name}" temasını silmek istediğinize emin misiniz?`)) return;
@@ -77,6 +105,14 @@ export default function Themes() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Palette size={24} /> Tema Yönetimi</h1>
           <p className="text-sm text-zinc-500 mt-1">Müşterilere açık ön yüz (storefront) tasarımları. Aktif tema, ziyaretçilerin gördüğü tasarımdır.</p>
         </div>
+        {/* Sezonluk tema üretmenin pratik yolu KOPYALAMAK: mevcut temanın
+            blokları ve renkleri gelir, üzerinde oynanır, hazır olunca aktive
+            edilir. Aktif tema bu sırada bozulmaz. */}
+        <button onClick={yeniTema} disabled={loading}
+          className="px-4 py-2 text-xs font-semibold bg-zinc-900 text-white rounded hover:bg-black disabled:opacity-50 flex items-center gap-1.5"
+          data-testid="btn-new-theme">
+          <Plus size={13} /> Yeni Tema
+        </button>
       </div>
 
       {loading ? <div className="text-zinc-500">Yükleniyor…</div> : (
@@ -121,6 +157,57 @@ function ThemeCard({ theme, onEdit, onActivate, onDelete }) {
           {!theme.is_default && (
             <button onClick={onDelete} data-testid={`btn-delete-${theme.slug}`} className="col-span-2 px-3 py-2 text-xs font-medium border border-rose-200 text-rose-600 hover:bg-rose-50 rounded flex items-center justify-center gap-1.5"><Trash2 size={13}/> Sil</button>
           )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Temanın renk ve yazı tipi belirteçleri — vitrinin görünümünü belirler. */
+const BELIRTEC_ALANLARI = [
+  ["ink", "Metin (mürekkep)", "renk"],
+  ["paper", "Zemin", "renk"],
+  ["line", "Ayraç / çerçeve", "renk"],
+  ["muted", "İkincil metin", "renk"],
+  ["accent", "Vurgu", "renk"],
+  ["display", "Başlık yazı tipi", "metin"],
+  ["sans", "Gövde yazı tipi", "metin"],
+  ["wordmark", "Logo yazı tipi", "metin"],
+  ["radius", "Köşe yarıçapı", "metin"],
+];
+
+function TemaBelirtecleri({ tokens, fontUrl, onChange }) {
+  const yaz = (ad, deger) => onChange({ ...tokens, [ad]: deger }, fontUrl);
+  return (
+    <div className="bg-white border border-zinc-200 rounded p-4">
+      <h2 className="text-sm font-semibold text-zinc-700 mb-1">Renk & Tipografi</h2>
+      <p className="text-xs text-zinc-500 mb-3">
+        Vitrinin görünümü buradan değişir. Boş bırakılan alan varsayılanı kullanır.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {BELIRTEC_ALANLARI.map(([ad, etiket, tip]) => (
+          <div key={ad}>
+            <label className="text-xs font-semibold text-zinc-700">{etiket}</label>
+            <div className="mt-1 flex items-center gap-2">
+              {tip === "renk" && (
+                <input type="color" value={tokens[ad] || "#000000"}
+                  onChange={(e) => yaz(ad, e.target.value)}
+                  className="h-9 w-10 border border-zinc-300 rounded cursor-pointer shrink-0" />
+              )}
+              <input value={tokens[ad] || ""} onChange={(e) => yaz(ad, e.target.value)}
+                placeholder={tip === "renk" ? "#100f0c" : "'Jost', system-ui, sans-serif"}
+                className="w-full px-3 py-2 border border-zinc-300 rounded text-sm font-mono" />
+            </div>
+          </div>
+        ))}
+        <div className="md:col-span-3">
+          <label className="text-xs font-semibold text-zinc-700">Web font adresi (Google Fonts)</label>
+          <input value={fontUrl} onChange={(e) => onChange(tokens, e.target.value)}
+            placeholder="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap"
+            className="mt-1 w-full px-3 py-2 border border-zinc-300 rounded text-sm font-mono" />
+          <p className="text-[11px] text-zinc-400 mt-1">
+            Yazı tipi alanlarında bir web fontu kullandıysanız adresini buraya girin, yoksa yüklenmez.
+          </p>
         </div>
       </div>
     </div>
@@ -238,6 +325,16 @@ function ThemeEditor({ theme: initial, onClose, onReset }) {
           <textarea value={theme.description || ""} onChange={e => setTheme({ ...theme, description: e.target.value })} rows={2} className="mt-1 w-full px-3 py-2 border border-zinc-300 rounded text-sm" />
         </div>
       </div>
+
+      {/* Renk & tipografi — TEMANIN ASIL KİMLİĞİ.
+          Bunlar mağaza kökünde CSS değişkenine çevrilir; blok içeriği değil,
+          vitrinin görünümü buradan değişir. Boş bırakılan alan varsayılana düşer. */}
+      <TemaBelirtecleri
+        tokens={theme.settings?.tokens || {}}
+        fontUrl={theme.settings?.font_url || ""}
+        onChange={(tokens, font_url) =>
+          setTheme({ ...theme, settings: { ...(theme.settings || {}), tokens, font_url } })}
+      />
 
       {/* Blocks list */}
       <div className="space-y-4">

@@ -51,5 +51,58 @@ export default function CustomThemeInjector() {
     return () => { alive = false; };
   }, [isAdmin]);
 
+  // ---- AKTİF TEMANIN RENK/TİPOGRAFİSİ ----
+  // Tema seçimi bugüne dek yalnız /tema önizlemesini etkiliyordu; gerçek mağaza
+  // (/, /kategori, /urun …) temadan habersizdi, yani "tema değiştirmek" vitrini
+  // değiştirmiyordu. Aktif temanın belirteçleri artık mağaza kökünde CSS
+  // değişkenine yazılıyor ve gövde/başlık/ayraç bunları kullanıyor.
+  // Admin'e ASLA uygulanmaz (aynı güvenlik sınırı).
+  useEffect(() => {
+    const ID = "meluni-tema-belirtec";
+    if (isAdmin) {
+      document.getElementById(ID)?.remove();
+      document.getElementById("meluni-tema-font")?.remove();
+      return undefined;
+    }
+    let alive = true;
+    axios.get(`${API}/storefront/themes/active`).then((r) => {
+      if (!alive) return;
+      const s = r.data?.settings || {};
+      const t = s.tokens || {};
+      if (!Object.keys(t).length) return;   // belirteci olmayan tema → dokunma
+
+      if (s.font_url && !document.getElementById("meluni-tema-font")) {
+        const link = document.createElement("link");
+        link.id = "meluni-tema-font";
+        link.rel = "stylesheet";
+        link.href = s.font_url;
+        document.head.appendChild(link);
+      }
+
+      const satir = (ad, deger) => (deger ? `  --t-${ad}: ${deger};\n` : "");
+      const kok =
+        ":root {\n" +
+        satir("ink", t.ink) + satir("paper", t.paper) + satir("line", t.line) +
+        satir("muted", t.muted) + satir("accent", t.accent) +
+        satir("sans", t.sans) + satir("display", t.display) +
+        satir("wordmark", t.wordmark) + satir("radius", t.radius) +
+        satir("wm-track", t.wordmarkTrack) +
+        "}\n";
+      // KAPSAM DAR TUTULDU: gövde zemini/metni, başlık yazı tipi ve ayraç rengi.
+      // Tailwind sınıflarını topluca ezmek (bg-white, text-black…) düzeni bozar;
+      // tema kimliği zaten büyük ölçüde tipografi ve zemin/mürekkep ile kurulur.
+      const kurallar = `
+body { background: var(--t-paper, #fff); color: var(--t-ink, #111); font-family: var(--t-sans, inherit); }
+h1, h2, h3, h4, h5, h6 { font-family: var(--t-display, var(--t-sans, inherit)); }
+hr { border-color: var(--t-line, #e5e7eb); }
+`;
+      const st = document.getElementById(ID) || document.createElement("style");
+      st.id = ID;
+      st.textContent = kok + kurallar;
+      if (!st.parentNode) document.head.appendChild(st);
+    }).catch(() => {});
+    return () => { alive = false; };
+  }, [isAdmin]);
+
   return null;
 }
