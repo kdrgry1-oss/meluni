@@ -87,6 +87,9 @@ export default function CustomThemeInjector() {
         satir("sans", t.sans) + satir("display", t.display) +
         satir("wordmark", t.wordmark) + satir("radius", t.radius) +
         satir("wm-track", t.wordmarkTrack) +
+        // Tailwind'in köşe yarıçapı zaten --radius'a bağlı (tailwind.config.js);
+        // temanın yarıçapı buraya yazılınca rounded-* sınıfları da temaya uyar.
+        (t.radius ? `  --radius: ${t.radius};\n` : "") +
         "}\n";
       // KAPSAM DAR TUTULDU: gövde zemini/metni, başlık yazı tipi ve ayraç rengi.
       // Tailwind sınıflarını topluca ezmek (bg-white, text-black…) düzeni bozar;

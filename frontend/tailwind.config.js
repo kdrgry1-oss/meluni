@@ -8,7 +8,16 @@ module.exports = {
   theme: {
   	extend: {
   		fontFamily: {
-  			sans: ['Mulish', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif']
+  			// AKTİF TEMANIN YAZI TİPİ — --t-sans, mağazada aktif temadan gelir
+  			// (CustomThemeInjector). Tanımlı değilse Mulish'e düşer, yani admin
+  			// paneli ve temasız kurulumlar aynen kalır.
+  			//
+  			// NEDEN token'a bağlandı: tema yalnız `body`ye yazı tipi veriyordu,
+  			// ama `font-sans` sınıfı (0,1,0) element seçicisini (0,0,1) yeniyor.
+  			// Sınıf sitede her yerde kullanıldığı için tema yazı tipi hiçbir
+  			// yerde görünmüyordu — "temayı aktif ettim ama uygulanmadı".
+  			sans: ['var(--t-sans, Mulish)', 'Mulish', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+  			display: ['var(--t-display, var(--t-sans, Mulish))', 'Mulish', 'ui-sans-serif', 'system-ui', 'sans-serif']
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
