@@ -158,13 +158,96 @@ def _build_default_theme():
     }
 
 
+def _meluni_blocks():
+    """Meluni Editorial — sade, geniş nefes alanlı editoryal düzen."""
+    return [
+        {"type": "announcement_bar", "title": "ÜCRETSİZ KARGO · 500₺ ÜZERİ",
+         "subtitle": "", "image": "", "mobile_image": "", "link_url": "",
+         "link_label": "", "order": 0,
+         "settings": {"bg": "#100f0c", "color": "#ffffff"}},
+        {"type": "hero_fullscreen", "title": "Yeni Sezon",
+         "subtitle": "Sade çizgiler, günlük zarafet",
+         "image": "", "mobile_image": "",
+         "link_url": "/tema/meluni/kategori/elbise", "link_label": "Keşfet",
+         "order": 1,
+         "settings": {"text_color": "#ffffff", "align": "left", "overlay": 0.28}},
+        {"type": "product_scroller", "title": "Öne Çıkanlar", "subtitle": "",
+         "image": "", "mobile_image": "", "link_url": "", "link_label": "",
+         "order": 2, "settings": {"limit": 12}},
+        {"type": "editorial_card", "title": "Takım",
+         "subtitle": "Tek parçada tamamlanmış görünüm",
+         "image": "", "mobile_image": "",
+         "link_url": "/tema/meluni/kategori/takim", "link_label": "İncele",
+         "order": 3,
+         "settings": {"text_color": "#ffffff", "align": "left", "overlay": 0.3}},
+        {"type": "newsletter", "title": "Yeniliklerden ilk siz haberdar olun",
+         "subtitle": "", "image": "", "mobile_image": "", "link_url": "",
+         "link_label": "", "order": 4,
+         "settings": {"bg": "#f4f3f1", "color": "#100f0c"}},
+    ]
+
+
+def _build_meluni_theme():
+    """Meluni Editorial — yüklenen tasarımın renk ve tipografi belirteçleri.
+
+    Belirteçler (`settings.tokens`) mağaza tarafında CSS değişkenine çevrilir
+    (MiuMiuTheme.jsx). Tema kaydında yoksa eski Miu Miu değerleri geçerli olur,
+    yani bu kayıt eklenmesi mevcut temayı ETKİLEMEZ.
+    """
+    jost = "'Jost', system-ui, -apple-system, sans-serif"
+    return {
+        "id": generate_id(),
+        "name": "Meluni Editorial",
+        "slug": "meluni",
+        "description": ("Sıcak beyaz zemin, neredeyse siyah mürekkep, keskin "
+                        "köşeler ve geniş harf aralığı. Başlıklar Jost."),
+        "preview_image": "",
+        "is_active": False,
+        "is_default": False,
+        "blocks": _meluni_blocks(),
+        "menu": [],          # boş → mağaza gerçek kategori ağacını kullanır
+        "settings": {
+            "brand_name": "MELUNI",
+            "scroll_to_explore": False,
+            "font_url": ("https://fonts.googleapis.com/css2?"
+                         "family=Jost:wght@300;400;500;600&"
+                         "family=Bodoni+Moda:ital,wght@0,400;0,500;1,400&display=swap"),
+            "tokens": {
+                "ink": "#100f0c",
+                "paper": "#ffffff",
+                "line": "#e2e0db",
+                "muted": "#8d887f",
+                "accent": "#6c675f",
+                "sans": jost,
+                "display": jost,      # BAŞLIKLAR — yönetim isteği
+                "wordmark": jost,
+                "radius": "0px",
+                "wordmarkTrack": "0.42em",
+            },
+        },
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+
+
 async def _ensure_seed():
-    """Seed default Miu Miu theme if no themes exist."""
+    """Hazır temaları eksikse ekler.
+
+    Slug'a bakılır, sayıya değil: yeni bir hazır tema eklendiğinde mevcut
+    kurulumlar da onu görsün ama AKTİF tema değişmesin (yeni tema
+    is_active=False gelir; seçim yönetime ait).
+    """
     cnt = await db.themes.count_documents({})
     if cnt == 0:
         theme = _build_default_theme()
         await db.themes.insert_one(theme)
         logger.info(f"Seeded default theme: {theme['slug']}")
+
+    for kur in (_build_meluni_theme,):
+        tema = kur()
+        if not await db.themes.count_documents({"slug": tema["slug"]}):
+            await db.themes.insert_one(tema)
+            logger.info(f"Seeded theme: {tema['slug']}")
 
 
 # ----- Admin Routes -----

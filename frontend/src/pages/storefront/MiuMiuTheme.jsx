@@ -16,6 +16,59 @@ import "./miumiu.css";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
+/**
+ * Temanın renk/tipografi belirteçleri → CSS değişkenleri.
+ *
+ * NEDEN: renkler ve yazı tipleri miumiu.css içine GÖMÜLÜYDÜ. İki tema
+ * eklenebiliyordu ama ikisi de birebir aynı görünüyordu — "tema seçmek"
+ * yalnız içerik bloklarını değiştiriyordu. Belirteçler artık tema kaydından
+ * geliyor; kayıtta yoksa eski Miu Miu değerleri kullanılıyor, yani mevcut
+ * tema zerre değişmiyor.
+ */
+const VARSAYILAN_BELIRTECLER = {
+  ink: "#000000",          // ana metin
+  paper: "#ffffff",        // zemin
+  line: "#f1f1f1",         // ayraç
+  muted: "#888888",        // ikincil metin
+  accent: "#6b7c5b",       // vurgu
+  sans: "'Mulish', system-ui, -apple-system, sans-serif",
+  display: "'Mulish', system-ui, sans-serif",   // başlıklar
+  wordmark: "'Mulish', serif",                  // logo
+  radius: "0px",
+  wordmarkTrack: "0.02em",
+};
+
+function belirtecStili(tokens) {
+  const t = { ...VARSAYILAN_BELIRTECLER, ...(tokens || {}) };
+  return {
+    "--t-ink": t.ink,
+    "--t-paper": t.paper,
+    "--t-line": t.line,
+    "--t-muted": t.muted,
+    "--t-accent": t.accent,
+    "--t-sans": t.sans,
+    "--t-display": t.display,
+    "--t-wordmark": t.wordmark,
+    "--t-radius": t.radius,
+    "--t-wm-track": t.wordmarkTrack,
+  };
+}
+
+/** Tema kendi web fontunu istiyorsa <head>'e ekler (Google Fonts). */
+function useTemaFontu(href) {
+  useEffect(() => {
+    if (!href) return undefined;
+    const id = "tema-font";
+    document.getElementById(id)?.remove();
+    const el = document.createElement("link");
+    el.id = id;
+    el.rel = "stylesheet";
+    el.href = href;
+    document.head.appendChild(el);
+    return () => { el.remove(); };
+  }, [href]);
+}
+
 export default function MiuMiuTheme() {
   const { slug } = useParams();
   const [theme, setTheme] = useState(null);
@@ -46,6 +99,8 @@ export default function MiuMiuTheme() {
     return () => { cancel = true; };
   }, [slug]);
 
+  useTemaFontu(theme?.settings?.font_url);
+
   if (loading) return <div className="mm-loading">Loading…</div>;
   if (!theme) return <div className="mm-loading">Tema bulunamadı.</div>;
 
@@ -57,7 +112,7 @@ export default function MiuMiuTheme() {
   const totalScreens = otherBlocks.filter(b => ["hero_fullscreen", "editorial_card"].includes(b.type)).length;
 
   return (
-    <div className="mm-root">
+    <div className="mm-root" style={belirtecStili(theme.settings?.tokens)}>
       {announcement && (
         <div className="mm-announcement" style={{ background: announcement.settings?.bg || "#000", color: announcement.settings?.color || "#fff" }}>
           {announcement.title}
