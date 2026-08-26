@@ -56,17 +56,39 @@ const COLOR_MAP = {
   mor: "#7c3aed", purple: "#7c3aed", violet: "#7c3aed",
   lila: "#c4b5fd", lilac: "#c4b5fd", "açık mor": "#c4b5fd",
   leylak: "#b39ddb", lavanta: "#b9a7d9", lavender: "#b9a7d9",
+
+  // KATALOG DENETİMİ — tedarikçi beslemesinde geçip sözlükte KARŞILIĞI
+  // OLMAYAN adlar. Karşılığı bulunamayan renk gri yedek kutuyla çiziliyor;
+  // canlıda 333 kayıt böyleydi (en çok "Saks Mavisi" ve "Bebe Mavisi").
+  saks: "#2f6fd0", "saks mavi": "#2f6fd0", "saks mavisi": "#2f6fd0",
+  parlament: "#24365e",
+  "bebe mavisi": "#bcd9f2",
+  "neon yeşili": "#7fff2a", "neon yesili": "#7fff2a",
+  "çimen yeşili": "#4c9a2a", "cimen yesili": "#4c9a2a",
+  "çağla": "#a8c256", cagla: "#a8c256",
+  "çağla yeşili": "#a8c256", "cagla yesili": "#a8c256",
+  limon: "#f2e35a", lemon: "#f2e35a",
+  "taş": "#cdc3b4", tas: "#cdc3b4", stone: "#cdc3b4",
+  "kum beji": "#ded3bd", kum: "#ded3bd",
+  "vişne çürüğü": "#7a1f38", "visne curugu": "#7a1f38",
+  "turucu": "#f97316",          // beslemede geçen yazım hatası
+  "mint yeşili": "#a7e8d2", "mintyeşili": "#a7e8d2",
+  "mint yesili": "#a7e8d2", "mintyesili": "#a7e8d2",
 };
 
 // Çok renkli / desenli ifadeler — tek renk verilemez, conic-gradient ile gösterilir.
-const MULTI = ["ekose", "çizgili", "cizgili", "desenli", "çiçekli", "cicekli", "leopar",
+const MULTI = ["ekose", "çizgili", "cizgili", "desen", "çiçekli", "cicekli", "leopar",
   "kareli", "puantiye", "etnik", "batik", "çok renkli", "cok renkli", "multi", "renkli",
-  "karışık", "karisik", "baskılı", "baskili", "print", "floral", "striped", "plaid"];
+  "karışık", "karisik", "baskılı", "baskili", "print", "floral", "striped", "plaid",
+  "kamuflaj", "camo", "zebra", "hayvan"];
 
 function normalize(raw) {
   return (raw || "")
     .toString()
     .toLocaleLowerCase("tr")
+    // TÜRKÇE TUZAĞI: "HAKİ".toLocaleLowerCase("tr") → "haki̇" (i + U+0307
+    // birleşik nokta). Görünüşte aynı, sözlükte eşleşmiyor. Nokta atılır.
+    .replace(/̇/g, "")
     .replace(/\s*(rengi|renk|color)\s*$/i, "")
     .replace(/[._/]+/g, " ")
     .trim();
@@ -82,6 +104,16 @@ export function resolveColor(raw) {
   if (COLOR_MAP[n]) return { type: "solid", value: COLOR_MAP[n].trim() };
   // Çok-renkli / desenli mi?
   for (const m of MULTI) if (n.includes(m)) return { type: "multi" };
+  // BİRDEN ÇOK RENK TEK ADDA: "Antrasit-Siyah-Bej", "Mint Yeşili-Siyah",
+  // "Siyah - Bordo". Tek renk kutusuyla gösterilemez; çok-renkli sayılır.
+  // En az iki parça TANINAN renk olmalı ki "gül-kurusu" gibi tireli tek renkler
+  // yanlışlıkla çok-renkli olmasın.
+  if (n.includes("-")) {
+    const taninan = n.split("-")
+      .map((p) => p.trim())
+      .filter((p) => p && COLOR_MAP[p]);
+    if (taninan.length >= 2) return { type: "multi" };
+  }
   // İçinde bilinen bir renk geçiyor mu? (ör. "koyu lacivert", "mat siyah")
   const words = n.split(" ");
   // Önce iki kelimelik tam eşleşmeleri dene (zaten yukarıda denendi), sonra tekil kelime

@@ -11,6 +11,7 @@ import AdminProductActions from "../components/AdminProductActions";
 import { optimizeImg } from "../lib/img";
 import { slugify } from "../lib/slug";
 import { priceView } from "../lib/price";
+import { resolveColor, MULTI_GRADIENT } from "../lib/colorMap";
 import { isRecommendedSize, recommendLetterSize } from "../lib/sizeRecommend";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
@@ -1538,35 +1539,26 @@ export default function ProductDetail() {
  * miniatür kare swatch'lerle gösterir. Hover ile ürün adı tooltip, click ile
  * o renk varyantının ürün sayfasına yönlendirir.
  */
-// Türkçe renk adı → HEX. Ürün kartında/PDP'de renk kutuları GERÇEK renk gösterir (görsel değil).
-const TR_COLOR_HEX = {
-  siyah: "#111111", beyaz: "#ffffff", "kırmızı": "#d11f1f", kirmizi: "#d11f1f",
-  mavi: "#2454c7", lacivert: "#1a2a5e", "yeşil": "#2e8b45", yesil: "#2e8b45",
-  "sarı": "#f2c500", sari: "#f2c500", turuncu: "#ee7c1b", mor: "#7d3cb5",
-  pembe: "#e86ea3", gri: "#9a9a9a", kahverengi: "#6b4226", bej: "#d8c3a5",
-  ekru: "#e8e2d0", krem: "#efe7d3", bordo: "#6e1423", haki: "#6b6b3a",
-  turkuaz: "#1ab6b6", "gümüş": "#c0c0c0", gumus: "#c0c0c0", "altın": "#c9a227", altin: "#c9a227",
-  "füme": "#5a5a5a", fume: "#5a5a5a", antrasit: "#383838", vizon: "#9b7e6b",
-  taba: "#a9662e", hardal: "#c9a227", indigo: "#33427a", somon: "#f2a68c",
-  "fuşya": "#c81f76", fusya: "#c81f76", lila: "#c8a2d6", mint: "#a8e0c0",
-  petrol: "#1f5f6e", camel: "#c19a6b", ten: "#e6c8a8", nude: "#e3c2a8",
-  "yavruağzı": "#f2b8a2", yavruagzi: "#f2b8a2", "gül kurusu": "#b76e79", gulkurusu: "#b76e79",
-  mürdüm: "#5a2a4d", murdum: "#5a2a4d", "açık mavi": "#8fb8e0", "koyu mavi": "#1a2a5e",
-};
-function colorHexTR(name) {
-  if (!name) return null;
-  const n = String(name).toLocaleLowerCase("tr").trim();
-  if (TR_COLOR_HEX[n]) return TR_COLOR_HEX[n];
-  for (const key of Object.keys(TR_COLOR_HEX)) if (n.includes(key)) return TR_COLOR_HEX[key];
-  return null;
-}
 // Tek bir renk kutusu (yuvarlak). Beyaz/açık tonlarda görünürlük için ince kenarlık.
+//
+// KÖK NEDEN: bu dosyada AYRI bir renk sözlüğü (TR_COLOR_HEX) vardı ve ürün
+// listesiyle aynı sözlük değildi. Listede doğru görünen renk, ürün sayfasında
+// gri çıkıyordu: sözlükte "kahverengi" var ama "kahve" yoktu, tedarikçi ise
+// "Kahve" yazıyor → eşleşme yok → gri yedek renk. Canlıda kahverengi takım gri
+// noktayla temsil ediliyordu. Artık sitenin TEK renk sözlüğü kullanılıyor
+// (lib/colorMap.js); desenli/çok renkli değerler de doğru gösteriliyor.
 function ColorDot({ color, selected }) {
-  const hex = colorHexTR(color) || "#e5e5e5";
+  const c = resolveColor(color);
+  const halka = selected
+    ? "ring-2 ring-black ring-offset-2"
+    : "ring-1 ring-gray-300 hover:ring-black";
+  const stil = c?.type === "multi"
+    ? { backgroundImage: MULTI_GRADIENT }
+    : { backgroundColor: c?.value || "#e5e5e5" };
   return (
     <span
-      className={`inline-block w-8 h-8 rounded-full transition-transform ${selected ? "ring-2 ring-black ring-offset-2" : "ring-1 ring-gray-300 hover:ring-black"}`}
-      style={{ backgroundColor: hex }}
+      className={`inline-block w-8 h-8 rounded-full transition-transform ${halka}`}
+      style={stil}
       title={color || ""}
     />
   );
