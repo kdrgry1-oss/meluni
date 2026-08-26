@@ -586,7 +586,23 @@ async def _build_products_query(
         query["is_free_shipping"] = is_free_shipping
 
     if stock_code:
-        query["stock_code"] = {"$regex": re.escape(stock_code.strip()), "$options": "i"}  # ReDoS/regex-injection koruması
+        # VARYANT VE TEDARİKÇİ KODLARINI DA ARA. Filtre yalnız ürün düzeyindeki
+        # `stock_code`e bakıyordu; oysa Trendyol/pazaryeri ekranlarından ve
+        # siparişlerden kopyalanan kod her zaman VARYANT kodudur
+        # ("MEL-M010196-01"). Ürün panelde dururken filtre boş dönüyor,
+        # "ürün kayıp" sanılıyordu. Tedarikçi kodu da aranıyor: dropshipping'de
+        # elde çoğu zaman tedarikçinin kodu oluyor.
+        _sce = re.escape(stock_code.strip())  # ReDoS/regex-injection koruması
+        query.setdefault("$and", []).append({"$or": [
+            {"stock_code": {"$regex": _sce, "$options": "i"}},
+            {"variants.stock_code": {"$regex": _sce, "$options": "i"}},
+            {"model_code": {"$regex": _sce, "$options": "i"}},
+            {"supplier_model_ref": {"$regex": _sce, "$options": "i"}},
+            {"supplier_group_ref": {"$regex": _sce, "$options": "i"}},
+            {"urun_karti_id": {"$regex": _sce, "$options": "i"}},
+            {"variants.supplier_stock_code": {"$regex": _sce, "$options": "i"}},
+            {"variants.supplier_barcode": {"$regex": _sce, "$options": "i"}},
+        ]})
 
     if barcode:
         import re as _re2

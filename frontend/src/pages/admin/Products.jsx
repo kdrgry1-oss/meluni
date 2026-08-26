@@ -190,6 +190,30 @@ function DescriptionEditor({ value, onChange, onGenerate, generating }) {
 const PRODUCTS_VIEW_KEY = "meluni_products_view";
 const _loadProductsView = () => { try { return JSON.parse(localStorage.getItem(PRODUCTS_VIEW_KEY) || "{}") || {}; } catch (e) { return {}; } };
 
+/** Tedarikçi kodu satırı — kod + hangi XML etiketinden geldiği + kopyala. */
+function TedarikciKod({ etiket, deger, aciklama }) {
+  const [kopyalandi, setKopyalandi] = useState(false);
+  if (!deger) return null;
+  const kopyala = () => {
+    try {
+      navigator.clipboard?.writeText(String(deger));
+      setKopyalandi(true);
+      setTimeout(() => setKopyalandi(false), 1500);
+    } catch (e) { /* pano yoksa sessiz geç */ }
+  };
+  return (
+    <div className="flex items-baseline gap-2 text-xs py-0.5">
+      <span className="text-gray-500 shrink-0 w-24">{etiket}</span>
+      <code className="font-mono text-gray-800 break-all">{deger}</code>
+      {aciklama && <span className="text-[10px] text-gray-400 shrink-0">{aciklama}</span>}
+      <button type="button" onClick={kopyala}
+        className="text-[11px] text-blue-600 hover:underline ml-auto shrink-0">
+        {kopyalandi ? "kopyalandı" : "kopyala"}
+      </button>
+    </div>
+  );
+}
+
 export default function AdminProducts() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
@@ -1844,6 +1868,19 @@ export default function AdminProducts() {
       // Tedarikçinin KISALTILMAMIŞ ham adı — yalnız yönetim görür, kaydedilmez.
       supplier_original_name: product.supplier_original_name || "",
       supplier_url: product.supplier_url || "",
+      // TEDARİKÇİ KODLARI — dropshipping'de siparişi beslemede bulmak için.
+      // Bizim kodlarımız (MEL-…, 2000000…) tedarikçi XML'inde GEÇMEZ; eşleşme
+      // yalnız bu alanlarla yapılır. Kaydedilmez, yalnız gösterilir.
+      supplier_model_ref: product.supplier_model_ref || "",
+      supplier_group_ref: product.supplier_group_ref || product.urun_karti_id || "",
+      supplier_variant_codes: (product.variants || [])
+        .map((v) => ({
+          size: v.size || "",
+          color: v.color || "",
+          stock_code: v.supplier_stock_code || "",
+          barcode: v.supplier_barcode || "",
+        }))
+        .filter((v) => v.stock_code || v.barcode),
       manufacturer: product.manufacturer || "MELUNİ",
       max_installment: product.max_installment || 9,
       purchase_price: product.purchase_price || 0,
@@ -2753,6 +2790,47 @@ export default function AdminProducts() {
                                   tedarikçi sayfası
                                 </a>
                               )}
+                            </div>
+                          )}
+
+                          {/* TEDARİKÇİ KODLARI — dropshipping'de sipariş gelince
+                              ürünü beslemede/tedarikçi sitesinde bulmak için.
+                              Bizim kodlarımız (MEL-…, 2000000…) tedarikçi XML'inde
+                              GEÇMEZ; aşağıdakiler geçer. Her seferinde kimseye
+                              sormadan kopyalanabilsin diye burada. */}
+                          {(formData.supplier_model_ref ||
+                            formData.supplier_group_ref ||
+                            (formData.supplier_variant_codes || []).length > 0) && (
+                            <div className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
+                              <div className="flex items-center gap-2 mb-1.5">
+                                <span className="text-[10px] uppercase tracking-wide bg-black text-white px-1.5 py-0.5 rounded">
+                                  yalnız yönetim
+                                </span>
+                                <span className="text-[11px] font-semibold text-gray-600">
+                                  Tedarikçi kodları (XML karşılıkları)
+                                </span>
+                              </div>
+                              <TedarikciKod
+                                etiket="Ürün kodu"
+                                deger={formData.supplier_model_ref}
+                                aciklama="<urunkartiid>"
+                              />
+                              <TedarikciKod
+                                etiket="Renk grubu"
+                                deger={formData.supplier_group_ref}
+                                aciklama="<ozelalan2> — modelin tüm renkleri"
+                              />
+                              {(formData.supplier_variant_codes || []).map((v, i) => (
+                                <TedarikciKod
+                                  key={i}
+                                  etiket={[v.color, v.size].filter(Boolean).join(" / ") || "Varyant"}
+                                  deger={v.barcode || v.stock_code}
+                                  aciklama={v.barcode ? "<barkod>" : "<stokkodu>"}
+                                />
+                              ))}
+                              <p className="text-[10px] text-gray-400 mt-1.5">
+                                Bizim kodlarımız (MEL-…, 2000000…) tedarikçi XML'inde bulunmaz.
+                              </p>
                             </div>
                           )}
                         </div>
