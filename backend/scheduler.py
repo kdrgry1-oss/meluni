@@ -2171,6 +2171,23 @@ def start_scheduler():
         )
     except Exception as _e:
         logging.getLogger("scheduler").warning("[scheduler] trendyol soru job eklenemedi: %s", _e)
+    # TRENDYOL STOK KORUMASI — saatte bir, ilan listesinden GERİYE doğru denetim.
+    # Normal stok senkronu bizim ürünlerimizin üzerinden döner; Trendyol'da olup
+    # bizde KARŞILIĞI OLMAYAN barkod hiçbir döngüye girmez ve satışta kalır.
+    # Bu iş tersinden bakar: Trendyol ne satıyorsa bizde arar, satılamazı sıfırlar.
+    try:
+        from routes.trendyol_stock_guard import saatlik_stok_denetimi
+        _add(
+            saatlik_stok_denetimi,
+            "interval",
+            hours=1,
+            id="trendyol_stock_guard",
+            next_run_time=datetime.now(timezone.utc) + timedelta(minutes=5),
+            max_instances=1,
+            coalesce=True,
+        )
+    except Exception as _e:
+        logging.getLogger("scheduler").warning("[scheduler] trendyol stok koruma job eklenemedi: %s", _e)
     # RPT kritik stok uyarısı — her sabah 05:00 UTC (08:00 TR): kapsaması eşiğin altına
     # düşen ürünler için admin push (21 gün üretim + güvenlik payı; İşletme Kuralları'ndan ayarlı).
     _add(

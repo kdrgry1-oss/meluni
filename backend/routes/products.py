@@ -2507,6 +2507,11 @@ async def delete_product(
             "manual_deleted": True,
         }}
     )
+    # PAZARYERİ DE KAPANSIN. Panelden silinen ürün Trendyol'da satışta kalırsa
+    # sipariş gelir ve gönderilecek mal olmaz. Saatlik denetim bunu zaten
+    # yakalar ama aradaki her sipariş kayıptır; hemen sıfırlıyoruz.
+    from .trendyol_stock_guard import urunu_pazaryerinde_kapat
+    await urunu_pazaryerinde_kapat(product_id)
     return {"message": "Ürün çöp kutusuna taşındı"}
 
 @router.post("/{product_id}/restore")
@@ -2532,9 +2537,19 @@ async def permanent_delete_product(
     current_user: dict = Depends(require_admin)
 ):
     """Ürünü veritabanından KALICI olarak siler (geri alınamaz)."""
+    # BARKODLARI SİLMEDEN ÖNCE AL. Kayıt gidince pazaryerindeki ilanın bizde
+    # hiçbir karşılığı kalmaz: hangi barkodu sıfırlayacağımızı bilemeyiz ve ilan
+    # Trendyol'da satışta kalır (canlıda tam olarak böyle 12 öksüz barkod oluştu).
+    from .trendyol_stock_guard import urun_barkodlari, barkodlari_sifirla
+    _barkodlar = await urun_barkodlari(product_id)
     result = await db.products.delete_one({"id": product_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Ürün bulunamadı")
+    if _barkodlar:
+        try:
+            await barkodlari_sifirla(_barkodlar)
+        except Exception:
+            pass          # silme işlemi pazaryeri hatası yüzünden bozulmasın
     return {"message": "Ürün kalıcı olarak silindi"}
 
 @router.post("/{product_id}/toggle-active")
@@ -2558,6 +2573,11 @@ async def toggle_product_active(
         _op = {"$set": {"is_active": False, "manual_deactivated": True,
                         "manual_deactivated_at": _now, "updated_at": _now}}
     await db.products.update_one({"id": product_id}, _op)
+
+    # Pasife alınan ürün pazaryerinde de satışta kalmasın.
+    if not new_status:
+        from .trendyol_stock_guard import urunu_pazaryerinde_kapat
+        await urunu_pazaryerinde_kapat(product_id)
 
     return {"is_active": new_status}
 
@@ -2601,6 +2621,9 @@ async def block_product(product_id: str, current_user: dict = Depends(require_ad
                       "blocked_by": (current_user or {}).get("email") or "",
                       "created_at": _now}},
             upsert=True)
+    # Vitrinden kalkan ürün pazaryerinde de satılamaz.
+    from .trendyol_stock_guard import urunu_pazaryerinde_kapat
+    await urunu_pazaryerinde_kapat(product_id)
     return {"success": True, "blocked_from_feed": bool(key),
             "warning": "" if key else
             "Ürünün tedarikçi anahtarı yok; beslemeden gelmiyor, kara liste gerekmedi."}

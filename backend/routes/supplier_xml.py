@@ -997,6 +997,14 @@ async def kapat_ve_engelle(product: Dict[str, Any], sebep: str,
         "retired_single_size": {"kalan": int(kalan), "beden": beden, "at": _now},
         "updated_at": _now,
     }})
+    # Vitrinden kalkan ürün pazaryerinde de satılamaz. Bu ürünler tek bedeni
+    # tükendiği için emekliye ayrılıyor; Trendyol'daki stoğu duruyorsa sipariş
+    # gelir ve tedarikçide mal bulunmaz.
+    try:
+        from .trendyol_stock_guard import urunu_pazaryerinde_kapat
+        await urunu_pazaryerinde_kapat(pid)
+    except Exception:
+        pass
     key = product.get("supplier_key")
     if not key:
         return "silindi"
@@ -1394,6 +1402,9 @@ async def sync_stock() -> Dict[str, Any]:
                 src = varyant_bul(v, besleme)
                 if src is not None:
                     eslesen += 1
+                    # Beslemeye geri döndüyse "kayıp" işareti kalkar.
+                    v.pop("feed_missing", None)
+                    v.pop("feed_missing_at", None)
                     _st = int(src.get("stock") or 0)
                     # Eşiğin altına düşen beden SATILAMAZ hale gelir. Stoğu
                     # olduğu gibi yazsak "son 3 ürün" diye satılır ve sipariş
@@ -1412,9 +1423,15 @@ async def sync_stock() -> Dict[str, Any]:
                             vat_included=kdv_dahil or bool(src.get("vat_included")),
                             markup=markup)
                 else:
-                    # Beslemeden düşen varyant → stoğu sıfırla, silme
-                    # (sipariş geçmişi ve pazaryeri eşlemesi bozulmasın).
+                    # Beslemeden düşen varyant → stoğu sıfırla, SİLME.
+                    # Silmek cazip ama yanlış: barkod kaybolunca pazaryerindeki
+                    # ilanın bizde karşılığı kalmaz ve orada satışta kalır
+                    # (öksüz barkod). Kayıt kalsın, satılamaz olsun, panelde
+                    # "beslemede yok" diye görünsün.
                     v["stock"] = 0
+                    if not v.get("feed_missing"):
+                        v["feed_missing_at"] = _now_iso()
+                    v["feed_missing"] = True
                 total += int(v.get("stock") or 0)
                 new_variants.append(v)
 
