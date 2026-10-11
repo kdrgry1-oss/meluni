@@ -30,3 +30,9 @@ Kaynak kurulumuna özel 39 otomatik scheduler düzeltme görevi çıkarıldı. S
 Henüz push veya canlı yayın yapılmadı. Canlı veritabanında marka/tema migration çalıştırılmadı.
 
 Referans test takımındaki `test_alert_instant_sms.py` Facette'ye özel otomatik telefon ayarı görevini, `test_audit_f05_f07_f20_f22_release_static.py` ise Facette Codemagic/backup dağıtım dosyalarını bekler. Bu dosyalar bilinçli olarak aktarılmadığı için ilk taramada bu testler başarısız oldu (24 geçti, 5 başarısız). Uygulanabilir sunucu testlerinin sonraki koşusunda bu iki referans kurulum testi hariç tutulur; Meluni deployment dosyaları ayrıca değerlendirilmelidir.
+
+## Yayın hazırlığı
+
+11 Ekim 2026 yayın dalı `069a2cd7` üzerine rebase edildi. Diğer çalışmanın kategori/cinsiyet eşleşmesi, tedarikçi beden eşleşmesi ve XML kilit kurtarma değişiklikleri korunur. Üretim ana sayfası `EditorialHome.jsx` ile Meluni API ürünlerinden oluşur; ProductCard, Header, Footer ve gerçek sepet/üyelik akışları kullanılır. Statik önizleme sipariş akışı üretime taşınmaz.
+
+Birleşmiş sürüm: 105 ön yüz testi, 98 sunucu/marka/SEO testi, üretim derlemesi, Python derleme ve diff denetimi geçti. Backend bağımlılık çözümlemesi dry-run geçti. Masaüstü ve mobil tarayıcı denetiminde ürünler yüklendi ve yatay taşma görülmedi.

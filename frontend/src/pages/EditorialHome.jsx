@@ -1,0 +1,23 @@
+import {useEffect,useState} from 'react';
+import axios from 'axios';
+import {Link} from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import ProductCard from '../components/ProductCard';
+import {firstImage} from '../lib/img';
+import './editorialHome.css';
+const API=`${process.env.REACT_APP_BACKEND_URL}/api`;
+const matches=(p,c)=>`${p.category_name||''} ${p.name||''}`.toLocaleLowerCase('tr-TR').includes(c);
+export default function EditorialHome(){
+ const [products,setProducts]=useState([]),[status,setStatus]=useState('loading'),[category,setCategory]=useState(''),[retry,setRetry]=useState(0);
+ useEffect(()=>{const controller=new AbortController();setStatus('loading');axios.get(`${API}/products`,{params:{limit:60},signal:controller.signal}).then(({data})=>{setProducts((Array.isArray(data)?data:data.products||data.items||[]).filter(p=>p.is_active!==false&&!p.is_deleted));setStatus('ready')}).catch(e=>{if(!axios.isCancel(e))setStatus('error')});return()=>controller.abort()},[retry]);
+ const illustrated=products.filter(p=>firstImage(p)),heroes=['878b96b2-a913-4bf1-8037-27f794e563af','8860956e-5497-4c1c-8c55-f608fd76983e'].map((id,i)=>illustrated.find(p=>p.id===id)||illustrated[i]).filter(Boolean);
+ const bluz=illustrated.find(p=>matches(p,'bluz')),elbise=illustrated.find(p=>matches(p,'elbise')),selected=products.filter(p=>!category||matches(p,category)).slice(0,8);
+ return <div className="meluni-editorial-shell"><Header/><main className="meluni-editorial"><section className="me-hero" aria-label="Meluni koleksiyonu">{heroes.map((p,i)=><Link key={p.id} to={`/${p.slug||p.id}`} className={`me-hero-photo me-photo-${i}`} aria-label={p.name}><img src={firstImage(p)} alt={p.name} fetchPriority={i===0?'high':'auto'}/></Link>)}<div className="me-hero-copy"><p>THE MELUNI COLLECTION</p><h1>Şehrin ritmi.<br/>Senin stilin.</h1><Link className="me-light-link" to="/en-yeniler">KOLEKSİYONU KEŞFET <span>↗</span></Link></div><span className="me-hero-caption">A NEW SEASON OF YOU</span></section>
+ <div className="me-collectionbar"><span>GÜNÜN HER ANINA EŞLİK EDEN PARÇALAR</span><Link to="/en-yeniler">MELUNI SEÇKİSİ ↗</Link></div>
+ <section className="me-section"><div className="me-section-head"><div><p className="me-eyebrow">GARDIROBUNUN YENİ FAVORİLERİ</p><h2>Yeni & şimdi</h2></div><Link className="me-line-link" to="/en-yeniler">TÜMÜNÜ GÖR ↗</Link></div><div className="me-tabs" role="group" aria-label="Ürün kategorileri">{[['','Tümü'],['elbise','Elbise'],['bluz','Bluz'],['etek','Etek']].map(([v,label])=><button key={v} aria-pressed={category===v} className={category===v?'selected':''} onClick={()=>setCategory(v)}>{label}</button>)}</div>
+ {status==='loading'?<div className="me-products" aria-label="Ürünler yükleniyor">{[0,1,2,3].map(i=><div key={i} className="me-skeleton"/>)}</div>:status==='error'?<p className="me-empty" role="status">Ürünler yüklenemedi. <button onClick={()=>setRetry(v=>v+1)}>Tekrar dene</button></p>:selected.length?<div className="me-products">{selected.map((p,i)=><ProductCard key={p.id} product={p} index={i} listId="meluni_editorial" listName="Yeni & şimdi"/>)}</div>:<p className="me-empty">Bu seçkide henüz ürün yok. <Link to="/en-yeniler">Tüm koleksiyonu keşfet ↗</Link></p>}</section>
+ {(bluz||elbise)&&<section className="me-collections" aria-label="Koleksiyonları keşfet">{[[bluz,'GÜÇLÜ SİLÜETLER','Yeni bir duruş.','BLUZLARI KEŞFET','/bluz'],[elbise,'GÜNDÜZDEN GECEYE','Her an, sen.','ELBİSELERİ KEŞFET','/elbise']].filter(([p])=>p).map(([p,eyebrow,title,cta,url])=><Link key={url} className="me-collection" to={url}><img src={firstImage(p)} alt={p.name} loading="lazy"/><div><p>{eyebrow}</p><h2>{title}</h2><span>{cta} ↗</span></div></Link>)}</section>}
+ <section className="me-story"><p className="me-eyebrow">MELUNI DÜNYASI</p><h2>Bir trendden fazlası.<br/>Kendin olmanın zarafeti.</h2><p>Hareketin içinden gelen, her gün yeniden keşfedilen bir stil.<br/>Güçlü çizgiler, yumuşak dokular ve sana ait bir duruş.</p><Link className="me-line-link" to="/en-yeniler">SEÇKİYİ KEŞFET ↗</Link></section>
+ {bluz&&<section className="me-section"><div className="me-section-head"><div><p className="me-eyebrow">THE MELUNI EDIT</p><h2>Günün seçkisi</h2></div></div><div className="me-look"><Link to={`/${bluz.slug||bluz.id}`}><img src={firstImage(bluz)} alt={bluz.name} loading="lazy"/></Link><div className="me-look-copy"><p className="me-eyebrow">01 / GÜNÜN SEÇKİSİ</p><h3>Çabasız bir uyum.</h3><p>Meluni koleksiyonundan, gününe eşlik eden parçalar.</p><Link className="me-dark-link" to={`/${bluz.slug||bluz.id}`}>ÜRÜNÜ İNCELE ↗</Link></div></div></section>}</main><Footer/></div>;
+}

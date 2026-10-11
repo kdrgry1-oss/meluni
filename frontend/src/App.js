@@ -10,7 +10,7 @@ import AppUpdateRequired from "./components/AppUpdateRequired";
 
 // Storefront — sadece ana sayfa (LCP) eager; gerisi route'a girilince yüklenir.
 // Bu, ilk açılışta indirilen JS'i ciddi şekilde küçültür (mobil TBT/LCP/FCP iyileşir).
-import Home from "./pages/Home";
+import Home from "./pages/EditorialHome";
 const GizlilikPolitikasi = lazy(() => import("./pages/GizlilikPolitikasi"));
 const Category = lazy(() => import("./pages/Category"));
 const CampaignProducts = lazy(() => import("./pages/CampaignProducts"));

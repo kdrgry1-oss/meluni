@@ -260,7 +260,7 @@ export default function Footer() {
   const social = {
     instagram: _socialCfg.instagram || "https://instagram.com/meluni",
     tiktok: _socialCfg.tiktok || "https://www.tiktok.com/@meluniofficial",
-    facebook: _socialCfg.facebook || "https://www.facebook.com/faceette",
+    facebook: _socialCfg.facebook || "",
     twitter: _socialCfg.twitter || "",
   };
   const copyright = tpl?.copyright || `© ${new Date().getFullYear()} Meluni – Tüm hakları saklıdır.`;
