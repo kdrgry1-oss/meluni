@@ -569,12 +569,17 @@ def generate_slug(name: str) -> str:
     return slug
 
 
-def slug_with_card_id(name: str, card_id) -> str:
-    """Ürün slug'ını her zaman `{urun-adi}-{kart_id}` biçiminde üretir; böylece
-    tüm ürün linkleri TEK formatta olur. card_id yoksa çağıran iç id'yi geçer."""
+async def slug_with_card_id(name: str, card_id=None, *, product_id=None) -> str:
+    """Ad tabanlı bağlantı; yalnız gerçek çakışmada kısa sayısal ek."""
     base = generate_slug(name or "") or "urun"
-    cid = str(card_id).strip() if card_id not in (None, "") else ""
-    return f"{base}-{cid}" if cid else base
+    candidate, suffix = base, 2
+    while await db.products.find_one(
+            {"id": {"$ne": product_id},
+             "$or": [{"slug": candidate}, {"slug_aliases": candidate}]},
+            {"_id": 0, "id": 1}):
+        candidate = f"{base}-{suffix}"
+        suffix += 1
+    return candidate
 
 
 def _slug_to_diacritic_regex(slug: str) -> str:
@@ -3089,7 +3094,7 @@ async def create_product(
         "name": product_data.get("name", ""),
         # Slug HER ZAMAN {ad}-{ürün kart id} (Kadir: "ürün kart id olması gerekir"). Eskiden admin
         # formu {ad}-{Date.now()} gönderiyordu (ör. ...-1788251144324) ve olduğu gibi kabul ediliyordu.
-        "slug": slug_with_card_id(product_data.get("name", ""), _card),
+        "slug": await slug_with_card_id(product_data.get("name", ""), _card),
         "description": product_data.get("description", ""),
         "short_description": product_data.get("short_description", ""),
         "price": float(product_data.get("price", 0)),
@@ -3180,7 +3185,7 @@ async def create_product(
         _doc["csv_card_id"] = group_card_id   # renk kardesligi PAYLASIMLI → "Diger Renkler" bagli kalir
         _doc["color"] = _col
         _doc["variants"] = _variants_for_color(_all_variants, _col)
-        _doc["slug"] = slug_with_card_id(f"{_base_name} {_col}", _color_card)
+        _doc["slug"] = await slug_with_card_id(f"{_base_name} {_col}", _color_card)
         _now = datetime.now(timezone.utc).isoformat()
         _doc["created_at"] = _doc.get("created_at") or _now
         _doc["updated_at"] = _now
@@ -3235,7 +3240,7 @@ async def split_product_by_color(product_id: str):
         "color": first,
         "csv_card_id": card,
         "urun_karti_id": p.get("urun_karti_id") or card,
-        "slug": slug_with_card_id(f"{base_name} {first}", card),
+        "slug": await slug_with_card_id(f"{base_name} {first}", card),
         "updated_at": now,
     }})
     # Diğer renkler → yeni ürün
@@ -3247,7 +3252,7 @@ async def split_product_by_color(product_id: str):
         clone["urun_karti_id"] = p.get("urun_karti_id") or card
         clone["color"] = col
         clone["variants"] = _variants_for_color(variants, col)
-        clone["slug"] = slug_with_card_id(f"{base_name} {col}", card)
+        clone["slug"] = await slug_with_card_id(f"{base_name} {col}", card)
         clone["created_at"] = now
         clone["updated_at"] = now
         await db.products.insert_one(clone)
@@ -3294,7 +3299,7 @@ async def duplicate_product(product_id: str):
 
     base_name = p.get("name") or ""
     clone["name"] = f"{base_name} (Kopya)"
-    clone["slug"] = slug_with_card_id(clone["name"], new_card)
+    clone["slug"] = await slug_with_card_id(clone["name"], new_card)
 
     # Varyantlar: yeni id + yeni barkod, Ticimax varyant id'si temizlenir
     new_vars = []
@@ -3439,12 +3444,12 @@ async def update_product(
     if not existing:
         raise HTTPException(status_code=404, detail="Ürün bulunamadı")
     
-    # Update slug if name changed — format: isim-kartid (tüm linkler tek biçim).
+    # Ad değişince bağlantıyı yeni ürün adından üret.
     # Eski slug, kırılan link/SEO olmaması için slug_aliases'a eklenir.
     if product_data.get("name") and product_data.get("name") != existing.get("name"):
         # Ürünün KENDİ kart id'si (csv_card_id renk-grubu anahtarıdır, slug'a yazılmaz).
         _card = existing.get("urun_karti_id") or existing.get("csv_card_id") or product_id
-        new_slug = slug_with_card_id(product_data["name"], _card)
+        new_slug = await slug_with_card_id(product_data["name"], _card, product_id=product_id)
         old_slug = existing.get("slug")
         product_data["slug"] = new_slug
         if old_slug and old_slug != new_slug:
@@ -3453,10 +3458,8 @@ async def update_product(
                 aliases.append(old_slug)
             product_data["slug_aliases"] = aliases
     elif product_data.get("slug") and product_data.get("slug") != existing.get("slug"):
-        # Ad değişmeden gelen slug yalnız {..}-{ürün kart id} biçimindeyse kabul edilir.
-        _card = str(existing.get("urun_karti_id") or "").strip()
-        if not (_card and str(product_data["slug"]).endswith("-" + _card)):
-            product_data.pop("slug", None)
+        # Ad değişmeden otomatik bağlantıyı eski kart koduna döndürme.
+        product_data.pop("slug", None)
     
     
     # Auto-generate barcodes for variants if missing

@@ -4607,7 +4607,7 @@ async def _supplier_xml_enabled() -> bool:
 
 
 async def _supplier_xml_stock_tick():
-    """Tedarikçi beslemesinden stok/fiyat eşitleme (günde 4)."""
+    """Tedarikçi beslemesinden stok/fiyat eşitleme (her 4 saatte bir)."""
     if not await _supplier_xml_enabled():
         return
     try:
@@ -5638,12 +5638,12 @@ def start_scheduler():
         max_instances=1, coalesce=True,
     )
     # ── Tedarikçi XML beslemesi ─────────────────────────────────────────
-    # Stok/fiyat: günde 4 kez (00, 06, 12, 18 UTC).
+    # Stok/fiyat: İstanbul saatine göre her 4 saatte bir.
     # Yeni ürünler: günde 1 kez (04:30 UTC) — stok turlarından ayrı saatte,
     # ikisi aynı anda çalışıp beslemeyi iki kez indirmesin.
     _add(
         _supplier_xml_stock_tick,
-        CronTrigger(hour="0,6,12,18", minute=15),
+        CronTrigger(hour="0,4,8,12,16,20", minute=15, timezone="Europe/Istanbul"),
         id="supplier_xml_stock_sync",
         max_instances=1, coalesce=True,
     )

@@ -1229,8 +1229,7 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
                 # görsellerini yazıyordu; yönetim yapay zekâ ile üretip
                 # kaydettiği görseller bir sonraki aktarımda siliniyor, ürün
                 # yine tedarikçinin düşük çözünürlüklü fotoğraflarına dönüyordu.
-                if existing.get("images_custom"):
-                    doc.pop("images", None)
+                feed_images = doc.pop("images", None)
                 # ELLE GİRİLEN ÖZNİTELİK/SEZON/KALIP KORUNUR. Bunları besleme
                 # değil biz türetiyoruz; yönetim panelden düzeltince tazeleme
                 # turu üstüne yazmamalı. Yalnız BOŞ olanı dolduruyoruz.
@@ -1240,8 +1239,16 @@ async def import_products(*, only_new: bool = True, limit: int = 0) -> Dict[str,
                     if str(existing.get(_alan) or "").strip() or not doc.get(_alan):
                         doc.pop(_alan, None)
                 await db.products.update_one({"id": existing["id"]}, {"$set": doc})
+                # Kilidi yazma anında denetle: okuma sırasında başlayan bir
+                # görsel yüklemesini XML turu eski bilgiyle ezmemeli.
+                if feed_images is not None and not existing.get("images_custom"):
+                    await db.products.update_one(
+                        {"id": existing["id"], "images_custom": {"$ne": True}},
+                        {"$set": {"images": feed_images}})
                 updated += 1
             else:
+                from .products import slug_with_card_id
+                doc["slug"] = await slug_with_card_id(doc.get("name") or rec["name"])
                 await db.products.insert_one(doc)
                 created += 1
         except _RetireProduct as e:
