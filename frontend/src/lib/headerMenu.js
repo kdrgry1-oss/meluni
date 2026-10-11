@@ -6,59 +6,35 @@
 
 export const DEFAULT_MENU_TABS = [
   { id: "yeni", label: "YENİ KOLEKSİYON", type: "link", link: "/en-yeniler", style: "accent", active: true },
-  {
-    id: "giyim", label: "GİYİM", type: "mega", link: "/giyim", style: "normal", active: true,
-    columns: [
-      {
-        title: "ÜST GİYİM", link: "/ust-giyim",
-        items: [
-          { name: "Elbise", link: "/elbise" },
-          { name: "Bluz", link: "/bluz" },
-          { name: "Kazak", link: "/kazak" },
-          { name: "Sweatshirt", link: "/sweatshirt" },
-          { name: "Takım", link: "/takim" },
-          { name: "Tişört", link: "/tisort" },
-          { name: "Gömlek", link: "/gomlek" },
-        ],
-      },
-      {
-        title: "ALT GİYİM", link: "/alt-giyim",
-        items: [
-          { name: "Etek", link: "/etek" },
-          { name: "Pantolon", link: "/pantolon" },
-          { name: "Şort", link: "/sort" },
-          { name: "Jean", link: "/jean" },
-        ],
-      },
-      {
-        title: "DIŞ GİYİM", link: "/dis-giyim",
-        items: [
-          { name: "Kaban", link: "/kaban" },
-          { name: "Mont", link: "/mont" },
-          { name: "Hırka", link: "/hirka" },
-          { name: "Trençkot", link: "/trenckot" },
-          { name: "Ceket", link: "/ceket" },
-        ],
-      },
-    ],
-  },
-  {
-    id: "aksesuar", label: "AKSESUAR", type: "mega", link: "/aksesuar", style: "normal", active: true,
-    columns: [
-      {
-        title: "AKSESUAR", link: "/aksesuar",
-        items: [
-          { name: "Çanta", link: "/canta" },
-          { name: "Şal", link: "/sal" },
-          { name: "Atkı", link: "/atki" },
-          { name: "Kemer", link: "/kemer" },
-          { name: "Şapka", link: "/sapka" },
-        ],
-      },
-    ],
-  },
+  { id: "kadin", label: "KADIN", type: "link", link: "/kadin", style: "normal", active: true },
+  { id: "erkek", label: "ERKEK", type: "link", link: "/erkek", style: "normal", active: true },
   { id: "sale", label: "SALE", type: "link", link: "/sale", style: "sale", active: true },
 ];
+
+// Kategori ağacı yetkilidir: kadın/erkek alt kategorileri kendi kökleri altında kalır.
+export function categoryMenu(categories) {
+  const roots = categories.filter(c => !c.parent_id && c.is_active !== false);
+  return DEFAULT_MENU_TABS.map(tab => {
+    const root = roots.find(c => c.slug === tab.id);
+    if (!root) return tab;
+    const children = categories.filter(c => String(c.parent_id) === String(root.id) && c.is_active !== false);
+    if (!children.length) return {...tab, link: `/${root.slug}`};
+    const groups=[
+      ['ÜST GİYİM', ['kazak','sweatshirt','gömlek','bluz','body','atlet','t-shirt','tişört']],
+      ['ALT GİYİM', ['pantolon','jean','etek','şort','eşofman altı','deniz şortu']],
+      ['DIŞ GİYİM', ['ceket','mont','kaban','trençkot','hırka','yelek','yağmurluk']],
+    ];
+    const used=new Set();
+    const columns=groups.map(([title,names])=>{
+      const items=children.filter(c=>names.includes(c.name.toLocaleLowerCase('tr-TR')));
+      items.forEach(c=>used.add(c.id));
+      return {title,link:`/${root.slug}`,items:items.map(c=>({name:c.name,link:`/${c.slug}`}))};
+    }).filter(c=>c.items.length);
+    const remaining=children.filter(c=>!used.has(c.id));
+    if(remaining.length) columns.push({title:'KOLEKSİYON',link:`/${root.slug}`,items:remaining.map(c=>({name:c.name,link:`/${c.slug}`}))});
+    return {...tab, type:'mega',link:`/${root.slug}`,columns};
+  });
+}
 
 // Link'ten ürün-fetch slug'ı türet: "/elbise" → "elbise", "/giyim?kategori=etek" → "etek"
 export function slugFromLink(link) {
@@ -78,7 +54,7 @@ let _menuTokenKey = null;
 // İLK karede bununla çizilir. Eskiden her sayfa açılışında önce koddaki varsayılan menü
 // (GİYİM/AKSESUAR…) bir kare görünüp sonra panelden gelen menüye dönüyordu.
 // Misafir/üye menüsü farklı (üyelere özel kategoriler) → ayrı anahtar.
-const _MENU_LS = "hdr_menu_v1";
+const _MENU_LS = "hdr_menu_v2";
 const _menuResolved = {};
 const _audKey = () => {
   try { return localStorage.getItem("token") ? "m" : "g"; } catch { return "g"; }
@@ -102,9 +78,14 @@ export function fetchHeaderMenu(apiBase) {
     _menuPromise = fetch(`${apiBase}/page-blocks/header-menu`,
       tok ? { headers: { Authorization: `Bearer ${tok}` } } : undefined)
       .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
+      .then(async (d) => {
         const tabs = Array.isArray(d?.tabs) ? d.tabs.filter((t) => t && t.label) : [];
-        const out = tabs.length ? tabs : DEFAULT_MENU_TABS;
+        let out = tabs;
+        if (!out.length) {
+          const response = await fetch(`${apiBase}/categories`);
+          const categories = response.ok ? await response.json() : [];
+          out = categoryMenu(Array.isArray(categories) ? categories : []);
+        }
         _menuResolved[aud] = out;
         try { localStorage.setItem(`${_MENU_LS}:${aud}`, JSON.stringify(out)); } catch { /* yoksay */ }
         return out;

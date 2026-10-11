@@ -8,7 +8,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import AdminProductActions from "../components/AdminProductActions";
-import { optimizeImg } from "../lib/img";
+import { optimizeImg, galleryImages, firstImage, isSizeTableImage, imageUrl } from "../lib/img";
 import { slugify } from "../lib/slug";
 import { priceView } from "../lib/price";
 import { resolveColor } from "../lib/colorMap";
@@ -262,6 +262,7 @@ export default function ProductDetail() {
   const [justAdded, setJustAdded] = useState(false);
   // Size Table (HTML) - fetched via public endpoint. Hooks must live at top level.
   const [sizeTableData, setSizeTableData] = useState(null);
+  const [sizeTableUnverified, setSizeTableUnverified] = useState(true);
   // "Gelince Haber Ver" — stokta olmayan beden için e-posta toplama
   const [notifyOpen, setNotifyOpen] = useState(false);
   const [notifyEmail, setNotifyEmail] = useState("");
@@ -333,14 +334,18 @@ export default function ProductDetail() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch HTML size table whenever product loads
+  // Ürün değişiminde önceki ürünün ölçüleri görünmez; tahmini kayıtlar doğrulanmış sayılmaz.
   useEffect(() => {
     const pid = product?.id;
+    setSizeTableData(null); setSizeTableUnverified(true);
     if (!pid) return;
-    axios.get(`${API}/size-tables-public/${pid}`)
-      .then(res => { if (res.data?.exists) setSizeTableData(res.data); })
-      .catch(() => { /* no table */ });
+    const controller=new AbortController();
+    axios.get(`${API}/size-tables-public/${pid}`, {signal:controller.signal})
+      .then(({data})=>{if(controller.signal.aborted)return;setSizeTableUnverified(!!data?.unverified);setSizeTableData(data?.exists?data:null);})
+      .catch(()=>{});
+    return()=>controller.abort();
   }, [product?.id]);
+
 
   useEffect(() => {
     const controller = new AbortController();
@@ -585,24 +590,10 @@ export default function ProductDetail() {
   const listUnit = _pv.list + variantPriceDiff;
   const displayPrice = _pv.display + variantPriceDiff;
 
-  // Remove duplicate images and hide size-table images from customer view
+  // Fotoğraf ve ölçü belgesi ayrı: string olarak kaydedilmiş eski tablolar da galeriye karışmaz.
   const allImages = product.images || [];
-  const uniqueImages = allImages.length > 1 && allImages[0] === allImages[1] ? allImages.slice(1) : allImages;
-  // Ölçü tablosu görseli: tablo VERİSİ girilmemiş ürünlerde modal bu görseli gösterir
-  // (aksi hâlde beden tablosuna hiçbir cihazdan erişilemiyordu).
-  const sizeTableImg = (() => {
-    for (const img of allImages) {
-      if (typeof img === "object" && img !== null && img.is_size_table && img.url) return img.url;
-    }
-    return null;
-  })();
-
-  // Ölçü tablosu görselleri {url, is_size_table:true} dict'i olarak işaretli — müşteriden gizle.
-  // Kalanları URL string'e normalize et (dict gelse bile <img src> kırılmasın).
-  const displayImages = uniqueImages
-    .filter((img) => !(typeof img === 'object' && img !== null && img.is_size_table))
-    .map((img) => (typeof img === 'object' && img !== null ? (img.url || img.src || img.image || '') : img))
-    .filter(Boolean);
+  const sizeTableImg = sizeTableUnverified ? null : (imageUrl(allImages.find(isSizeTableImage)) || null);
+  const displayImages = galleryImages(product);
 
   const toggleSection = (section) => {
     setExpandedSections(prev => ({
@@ -1496,9 +1487,9 @@ export default function ProductDetail() {
             <div className="p-4" data-testid="size-table-html">
               {/* Üst blok: sol ürün görseli + sağda ad & Ürün Özellikleri (örnek düzen) */}
               <div className="flex flex-row gap-4 mb-3">
-                {(product.images?.[0] || product.image) && (
+                {firstImage(product) && (
                   <img
-                    src={optimizeImg(product.images?.[0] || product.image, 500)}
+                    src={optimizeImg(firstImage(product), 500)}
                     alt={product.name}
                     className="w-28 sm:w-32 h-auto object-contain flex-shrink-0 self-start bg-gray-50"
                     loading="lazy"

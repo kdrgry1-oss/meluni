@@ -81,8 +81,8 @@ jobs:
           REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
           REACT_APP_SITE_NAME: ${{ secrets.REACT_APP_SITE_NAME }}
           REACT_APP_SITE_URL: ${{ secrets.REACT_APP_SITE_URL }}
-          REACT_APP_SITE_TITLE: ${{ secrets.REACT_APP_SITE_TITLE || 'Meluni | Kadın Giyim & Moda' }}
-          REACT_APP_SITE_DESC: ${{ secrets.REACT_APP_SITE_DESC || 'Meluni yeni sezon kadın giyim koleksiyonu.' }}
+          REACT_APP_SITE_TITLE: ${{ secrets.REACT_APP_SITE_TITLE || 'Meluni | Kadın ve Erkek Giyim' }}
+          REACT_APP_SITE_DESC: ${{ secrets.REACT_APP_SITE_DESC || 'Meluni kadın ve erkek sonbahar koleksiyonu.' }}
           REACT_APP_CDN_URL: ${{ secrets.REACT_APP_CDN_URL || secrets.REACT_APP_SITE_URL || 'https://meluni.com.tr' }}
           NODE_OPTIONS: --max-old-space-size=4096
         run: |

@@ -2066,6 +2066,10 @@ def _strip_internal_fields(p: dict) -> dict:
         p.pop(_k, None)
     _vs = p.get("variants")
     if isinstance(_vs, list):
+        # XML'de bulunmayan eski barkod kayıtları pazaryeri geçmişi için DB'de kalır,
+        # fakat vitrinde gerçek beden seçeneği gibi gösterilmez.
+        _vs = [v for v in _vs if not (isinstance(v, dict) and v.get("feed_missing"))]
+        p["variants"] = _vs
         for _v in _vs:
             if isinstance(_v, dict):
                 for _k in [k for k in _v.keys() if k not in PUBLIC_VARIANT_FIELDS]:

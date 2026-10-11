@@ -1367,6 +1367,13 @@ def varyant_bul(v: Dict[str, Any],
             continue
         src = harita.get(anahtar)
         if src is not None:
+            # Tek XML bedeni kaldığında ürün seviyesindeki stok kodu artık tekil
+            # görünür. Eski L/XL kaydına kalan S/M stoğunu taşımaya izin verme.
+            # Kimlik eşleşse bile beden/renk çelişkisi gerçek varyant değildir.
+            if any(_t(v.get(field)) and _t(src.get(field))
+                   and _t(v.get(field)) != _t(src.get(field))
+                   for field in ("size", "color")):
+                continue
             return src
     return None
 
@@ -1383,6 +1390,13 @@ async def sync_stock() -> Dict[str, Any]:
     markup = float(cfg.get("price_markup") or MARKUP_DEFAULT)
     kdv_dahil = bool(cfg.get("supplier_vat_included", SUPPLIER_VAT_INCLUDED_DEFAULT))
     records, _ = await load_items()
+
+    # Stok turu yeni barkod üretmez. Kayıtlı yedek eşlemeyi tek okumada alır;
+    # her beden için tekrar kod/numara sorgulamak binlerce gereksiz yazma yapıyordu.
+    kayitli_kodlar = {d["key"]: d.get("variants") or {}
+                      async for d in db.supplier_code_map.find(
+                          {"supplier": supplier}, {"_id": 0, "key": 1, "variants": 1})
+                      if d.get("key")}
 
     touched = missing = failed = retired = 0
     eslesmeyen_urun = 0
@@ -1411,11 +1425,14 @@ async def sync_stock() -> Dict[str, Any]:
             # ve beslemede değişmiyor — eşleme artık onlarla başlıyor. Bizim
             # kodumuz yalnız yedek; beden+renk en son çare.
             kodlar = []
+            gkey = supplier_codes.supplier_key(supplier, rec.get("group_ref") or rec["model_ref"])
+            kayitli = kayitli_kodlar.get(gkey, {})
             for v in rec["variants"]:
-                codes = await supplier_codes.get_or_create_variant_codes(
-                    db, supplier, rec["model_ref"], v.get("ref") or "0",
-                    rec.get("group_ref") or "")
-                kodlar.append(codes["stock_code"])
+                vref = str(v.get("ref") or "0").strip().lower()
+                if rec.get("group_ref"):
+                    vref = f"{str(rec['model_ref']).strip().lower()}|{vref}"
+                vkey = re.sub(r"[.$\x00]", "_", vref) or "0"
+                kodlar.append((kayitli.get(vkey) or {}).get("stock_code") or "")
             besleme = besleme_haritasi(rec["variants"], kodlar)
 
             new_variants, total, eslesen = [], 0, 0

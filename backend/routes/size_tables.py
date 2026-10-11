@@ -300,7 +300,8 @@ async def _inherited_size_table(product_id: str):
     if not sibling_ids:
         return None
     return await db.size_tables.find_one(
-        {"product_id": {"$in": sibling_ids}, "sizes": {"$exists": True, "$ne": []}},
+        {"product_id": {"$in": sibling_ids}, "sizes": {"$exists": True, "$ne": []},
+         "source": {"$ne": "tahmin"}},
         {"_id": 0},
         sort=[("updated_at", -1)],
     )
@@ -734,6 +735,8 @@ async def get_public_size_table(product_id: str):
     """Storefront reads the HTML-renderable data (NOT the image)."""
     own = await db.size_tables.find_one({"product_id": product_id}, {"_id": 0})
     st = own if (own and own.get("sizes")) else await _inherited_size_table(product_id)  # tablo kalıtımı
+    if st and st.get("source") == "tahmin":
+        return {"exists": False, "unverified": True}
     if not st or not st.get("sizes"):
         return {"exists": False}
     # model_info + product_size RENK/MANKEN özeldir → YALNIZ ürünün KENDİ tablosundan gösterilir.

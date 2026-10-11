@@ -49,17 +49,8 @@ ALLOWED_MODELS = ("gpt-image-1", "gpt-image-1-mini")
 _GEMINI_URL = ("https://generativelanguage.googleapis.com/v1beta/models/"
                "{model}:generateContent")
 _DEFAULT_ENHANCE_MODEL = "gemini-2.5-flash-image"
-# ÇIKTI ÖLÇÜSÜ — VİTRİNLE AYNI ORAN OLMAK ZORUNDA.
-# Önce 1200x1800 (2:3) üretiliyordu. Oysa vitrindeki görsel kutularının hepsi
-# 3:4 (`aspect-[3/4]`, on ayrı yerde) ve `object-contain` kullanıyor: 2:3 bir
-# görsel 3:4 kutuya sığdırılınca yanlarda boşluk kalıyor, ürün sayfası çerçeveli
-# duruyordu.
-#
-# Oranı VİTRİNE eşitliyoruz, tersini değil: tedarikçi görselleri de zaten 3:4
-# (630x840). Böylece iyileştirme sırasında dolgu/gerdirme HİÇ gerekmiyor —
-# görsel yalnız büyütülüyor, en temiz sonuç bu. Vitrini 2:3'e çevirmek ise
-# iyileştirilmemiş binlerce ürünü boşluklu gösterirdi.
-ENHANCE_TARGET = (1200, 1600)         # 3:4 dikey — vitrindeki kutularla aynı
+# Ürün dosyaları 2:3 oranında saklanır; kadraj ve ürün kesilmez.
+ENHANCE_TARGET = (1200, 1800)
 _DEFAULT_ENHANCE_PROMPT = (
     "Bu ürün fotoğrafının ÇÖZÜNÜRLÜĞÜNÜ ve netliğini artır. Görüntüyü YENİDEN "
     "YORUMLAMA: kadraj, kompozisyon, duruş, arka plan, ışık ve renkler birebir "
@@ -226,7 +217,7 @@ def _olcu_gorseli_mi(x) -> bool:
         if x.get("is_size_table"):
             return True
         x = x.get("url") or ""
-    return bool(re.search(r"-olcu(\d+|-elle|-kredisiz)?-[0-9a-f]{6,}\.", str(x or "")))
+    return bool(re.search(r"-olcu(\d+|-elle|-kredisiz|-oto)?-[0-9a-f]{6,}\.", str(x or "")))
 
 
 def _olcu_sona(images: List[Any]) -> List[Any]:
@@ -765,7 +756,7 @@ def _st_satirlara(st: Optional[Dict[str, Any]]) -> tuple:
     düğmesi hiç çalışmıyordu. Ne gelirse gelsin okunur, okunamıyorsa BOŞ
     döner — patlamaz.
     """
-    if not isinstance(st, dict) or not st:
+    if not isinstance(st, dict) or not st or st.get("source") == "tahmin":
         return [], []
     ham = st.get("sizes") or []
     if not isinstance(ham, list):
@@ -950,7 +941,7 @@ async def _kredisiz_olcu_verisi(product_id: str) -> Dict[str, Any]:
             kardes_q, {"_id": 0, "id": 1}) if p.get("id")]
         if kardes_ids:
             kst = await db.size_tables.find_one(
-                {"product_id": {"$in": kardes_ids}}, {"_id": 0},
+                {"product_id": {"$in": kardes_ids}, "source": {"$ne": "tahmin"}}, {"_id": 0},
                 sort=[("updated_at", -1)])
             adlar, satirlar = _st_satirlara(kst)
             if satirlar:
@@ -1020,63 +1011,18 @@ async def _gemini_key() -> str:
 
 
 def _fit_target(raw: bytes, target=ENHANCE_TARGET) -> bytes:
-    """Görseli hedef ölçüye getirir — HİÇBİR ŞEYİ KIRPMADAN.
-
-    Kaynak 3:4, hedef 2:3: oranlar tutmuyor, birini seçmek zorundayız.
-    Denenen iki yol da yanlıştı:
-      • contain + düz gri dolgu → vitrinde üstte/altta gri bant.
-      • cover + kırpma → görselin bir kısmı gidiyor. Ürün fotoğrafında bu
-        kabul edilemez: yönetim ürünün tamamını görmek istiyor, hem de
-        kırpılan yer bazen ürünün eteği ya da modelin başı oluyor.
-
-    Doğrusu: oranı koruyup TAMAMINI sığdırmak, kalan boşluğu da görselin
-    KENDİ KENARINI gererek doldurmak. Stüdyo fotoğrafında zemin düz olduğu
-    için dikiş görünmüyor; kırpma olmadığı için de ürünün tek pikseli bile
-    kaybolmuyor.
-    """
-    from PIL import Image
+    """Oranı koruyarak tüm fotoğrafı sığdırır; ürün kesilmez veya gerilmez."""
+    from PIL import Image, ImageOps
     import io
 
-    im = Image.open(io.BytesIO(raw)).convert("RGB")
-    tw, th = target
-    if (im.width, im.height) == (tw, th):
-        out = io.BytesIO()
-        im.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
-        return out.getvalue()
-
-    # TAMAMI SIĞSIN: küçük olan ölçek seçilir, taşma olmaz.
-    sigdir = min(tw / im.width, th / im.height)
-    nw = max(1, round(im.width * sigdir))
-    nh = max(1, round(im.height * sigdir))
-    im = im.resize((nw, nh), Image.LANCZOS)
-    x, y = (tw - nw) // 2, (th - nh) // 2
-
-    # Taban renk: dört kenarın ortalaması. Köşelerde şeritler buluşmadığı
-    # için altta düz bir renk kalmalı, siyah kalmasın.
-    kenar = im.resize((3, 3), Image.LANCZOS)
-    piksel = [kenar.getpixel((i, j)) for i in range(3) for j in range(3)
-              if (i, j) != (1, 1)]
-    taban = tuple(sum(p[k] for p in piksel) // len(piksel) for k in range(3))
-    tuval = Image.new("RGB", (tw, th), taban)
-
-    serit = max(1, min(nh, nw) // 50)          # kenardan alınacak şerit kalınlığı
-    if y > 0:                                   # üst ve alt boşluk
-        tuval.paste(im.crop((0, 0, nw, serit)).resize((nw, y), Image.LANCZOS), (x, 0))
-        alt = th - (y + nh)
-        if alt > 0:
-            tuval.paste(im.crop((0, nh - serit, nw, nh)).resize((nw, alt), Image.LANCZOS),
-                        (x, y + nh))
-    if x > 0:                                   # sol ve sağ boşluk
-        tuval.paste(im.crop((0, 0, serit, nh)).resize((x, nh), Image.LANCZOS), (0, y))
-        sag = tw - (x + nw)
-        if sag > 0:
-            tuval.paste(im.crop((nw - serit, 0, nw, nh)).resize((sag, nh), Image.LANCZOS),
-                        (x + nw, y))
-
-    tuval.paste(im, (x, y))                     # görselin TAMAMI, kırpılmadan
-
+    source = ImageOps.exif_transpose(Image.open(io.BytesIO(raw))).convert("RGBA")
+    # Şeffaf kaynaklar da doğal beyaz stüdyo zemini üzerinde tutulur.
+    canvas = Image.new("RGB", target, (255, 255, 255))
+    fitted = ImageOps.contain(source, target, Image.Resampling.LANCZOS)
+    position = ((target[0] - fitted.width) // 2, (target[1] - fitted.height) // 2)
+    canvas.paste(fitted, position, fitted)
     out = io.BytesIO()
-    tuval.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
+    canvas.save(out, "JPEG", quality=95, subsampling=0, optimize=True)
     return out.getvalue()
 
 
@@ -2214,21 +2160,8 @@ async def _olcu_otomatik_urun(product_id: str, *, gorsel: bool = True,
         except Exception as e:
             sonuc["kredi_hatasi"] = sonuc["kredi_hatasi"] or str(e)
     if not satirlar and tahmin:
-        # SON ÇARE — MANKENDEN TAHMİN. Tedarikçi tablo koymamış ama açıklamada
-        # manken ölçüsü ve giydiği beden var: "Göğüs:90, Bel:72, Kalça:100 ·
-        # M/38 bedendir". Diğer bedenler standart beden aralığıyla türetilir.
-        # Değerler TAHMİNDİR; tabloda da öyle yazar, kesin ölçü diye sunulmaz.
-        _manken = _manken_olculeri(urun.get("description") or "")
-        _bedenler = []
-        for _v in (urun.get("variants") or []):
-            _b = str((_v or {}).get("size") or "").strip()
-            if _b and _b not in _bedenler:
-                _bedenler.append(_b)
-        _a, _s = _tahmini_olcu(_manken, _bedenler)
-        if _s:
-            adlar, satirlar = _a, _s
-            veri = {"kaynak": "tahmin", "kaynak_adi": "manken ölçüsünden tahmin"}
-            sonuc["kaynak"] = "tahmin"
+        # Mankenin vücut ölçüsü ürünün ölçüsü değildir; beden aralığı türetmeyiz.
+        sonuc["warning"] = "Doğrulanmış ürün ölçüsü yok; manken ölçüsünden tablo üretilmedi."
 
     if not satirlar:
         sonuc["durum"] = "veri_yok"
