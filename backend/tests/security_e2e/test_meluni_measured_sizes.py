@@ -127,3 +127,15 @@ def test_changed_source_product_key_does_not_erase_a_matching_supplier_barcode(k
     result=kv_run(sx.sync_stock())
     assert result['absent_alias_skipped']==1
     assert kv_run(kv_db.products.find_one({'id':'previous-key'}))['stock']==11
+
+
+def test_trendyol_sizes_preserve_numeric_punctuation(kv_client):
+    from routes.integrations_trendyol import _size_value_key, _resolve_size_value_id
+    values = {_size_value_key(name): ident for name, ident in [("34", "adult"), ("3/4", "child"), ("38", "adult38"), ("3,8", "decimal"), ("48", "adult48"), ("4-8", "age"), ("S/M", "combined"), ("2XL", "alias")]}
+    assert _resolve_size_value_id(values, "34") == "adult"
+    assert _resolve_size_value_id(values, "38") == "adult38"
+    assert _resolve_size_value_id(values, "48") == "adult48"
+    assert _resolve_size_value_id(values, "S-M") == "combined"
+    assert _resolve_size_value_id(values, "XXL") == "alias"
+    assert _resolve_size_value_id({_size_value_key("3/4"): "child"}, "34") is None
+    assert _resolve_size_value_id({_size_value_key("XS"): "xs"}, "S") is None

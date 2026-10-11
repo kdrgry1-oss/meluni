@@ -233,22 +233,28 @@ _SIZE_ALIAS_GROUPS = [
 ]
 
 
+def _size_value_key(value):
+    """Keep numeric punctuation: 34, 3/4 and 3,4 are different sizes."""
+    key = re.sub(r"\s+", "", _normalize_attr_key(str(value or "")))
+    if key in {"std", "standart", "standard", "tekebat", "onesize"}:
+        return "std"
+    if re.fullmatch(r"(?:[2-5]?xl|x{0,3}s|s|m|l)[/-](?:[2-5]?xl|x{0,3}s|s|m|l)", key):
+        key = key.replace("-", "/")
+    return key
+
+
 def _resolve_size_value_id(name_map: dict, size_val):
-    """Beden değerini Trendyol value_id'ye çöz: birebir (normalize) → alias çifti.
-    name_map: {_norm_val(değer adı) -> value_id}. Substring/fuzzy YOK (yanlış beden riski).
-    _resolve_value_id (kod+DB eşanlamlı) yolunu TAMAMLAR; beden-özel alias'ları ekler."""
+    """Resolve exact sizes and equivalent letter-size notation only."""
     if not name_map or size_val in (None, ""):
         return None
-    nv = _norm_val(str(size_val))
-    if not nv:
-        return None
+    nv = _size_value_key(size_val)
     if nv in name_map:
         return name_map[nv]
-    for grp in _SIZE_ALIAS_GROUPS:
-        if nv in grp:
-            for alt in grp:
-                if alt != nv and alt in name_map:
-                    return name_map[alt]
+    for group in _SIZE_ALIAS_GROUPS:
+        if nv in group:
+            matches = {name_map[alt] for alt in group if alt in name_map}
+            if len(matches) == 1:
+                return matches.pop()
     return None
 
 
@@ -2064,6 +2070,7 @@ async def sync_products_to_trendyol(
                 "required": bool(a.get("required")),
                 "valid_value_ids": valid_value_ids,
                 "value_name_to_id": value_name_to_id,
+                "size_name_to_id": {_size_value_key(v["name"]): str(v["id"]) for v in (a.get("attributeValues") or []) if v.get("id") is not None and v.get("name")},
                 "name": a.get("name") or a.get("attribute", {}).get("name") or "",
             }
         _attr_meta_cache[mp_cat_id] = meta
@@ -2313,6 +2320,21 @@ async def sync_products_to_trendyol(
             else:
                 _push(m_ty_id, custom=fv)
 
+        # Saved/default mappings must never override the actual variant size.
+        # Aggressive generic normalization conflates 34 with child size 3/4.
+        if variant and variant.get("size"):
+            for size_id, size_meta in meta.items():
+                if _normalize_attr_key(size_meta.get("name") or "") != "beden":
+                    continue
+                size_value = variant["size"]
+                value_id = _resolve_size_value_id(size_meta.get("size_name_to_id") or {}, size_value)
+                if value_id:
+                    size_attr = {"attributeId": size_id, "attributeValueId": int(value_id)}
+                elif size_meta.get("allow_custom"):
+                    size_attr = {"attributeId": size_id, "customAttributeValue": str(size_value)}
+                else:
+                    raise ValueError(f"Beden Trendyol seçenekleriyle birebir eşleşmiyor: {size_value}")
+                item_attrs = [a for a in item_attrs if int(a["attributeId"]) != size_id] + [size_attr]
         return item_attrs
     
     # Marka Eşleştirme ekranındaki kayıtlar bir kez okunur (ürün başına
