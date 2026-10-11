@@ -1506,7 +1506,8 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
     images_custom işaretlendiği için tedarikçi güncellemesi de kilitlenir.
     """
     product = await db.products.find_one({"id": product_id},
-                                         {"_id": 0, "id": 1, "images": 1})
+                                         {"_id": 0, "id": 1, "images": 1,
+                                          "images_supplier_backup": 1})
     if not product:
         raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
     ham_liste = [u for u in (product.get("images") or []) if _gorsel_url(u)]
@@ -1575,7 +1576,7 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
         yeni = list(ham_liste)
         for r in basarili:
             yeni[r["index"]] = _gorsel_degistir(ham_liste[r["index"]], r["url"])
-        await db.products.update_one({"id": product_id}, {"$set": {
+        image_update = {
             "images": yeni,
             # KİLİT: bundan sonra tedarikçi aktarımı bu ürünün görsellerine
             # dokunmaz. Olmadığında yeni görseller ertesi günkü aktarımda
@@ -1583,9 +1584,16 @@ async def enhance_product_images(product_id: str, *, indexes: Optional[List[int]
             # geri dönüyordu.
             "images_custom": True,
             "images_enhanced_at": _now_iso(),
-            # Değiştirilen tedarikçi adresleri: geri almak isteyen için kayıt.
-            "images_supplier_backup": [images[r["index"]] for r in basarili],
-        }})
+        }
+        # Tam orijinal galeri ilk kez saklanır; sonraki iyileştirmeler ezmez.
+        if not product.get("images_supplier_backup"):
+            image_update["images_supplier_backup"] = product.get("images") or []
+        saved = await db.products.update_one(
+            {"id": product_id, "images": product.get("images")},
+            {"$set": image_update})
+        if not saved.matched_count:
+            raise HTTPException(status_code=409,
+                                detail="Ürün görselleri işlem sırasında değişti. Güncel galeriyle tekrar deneyin.")
 
     return {
         "product_id": product_id,
