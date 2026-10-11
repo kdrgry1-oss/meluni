@@ -73,6 +73,7 @@
   "scripts": {
     "start": "craco start",
     "build": "CI=false craco build",
+    "postbuild": "node scripts/strip-placeholders.js",
     "test": "craco test",
     "build:customer": "REACT_APP_APP_TARGET=customer CI=false craco build",
     "build:admin": "REACT_APP_APP_TARGET=admin CI=false craco build"
