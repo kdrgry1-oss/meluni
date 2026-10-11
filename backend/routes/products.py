@@ -710,13 +710,30 @@ async def _build_products_query(
             # Ürün ana kategoride olmasa bile (ör. ana "Pantolon") admin'de ekstra eklendiği
             # "Şort" kategorisinde de müşteriye görünür.
             _slug_cat_ids = []
+            # ÖNCE: bu slug'ı GERÇEKTEN taşıyan kategori var mı?
+            # Varsa ad-slug'ı üzerinden eşleşen DİĞER kategoriler kapsanmaz.
+            # Kadın "Bluz" (slug: bluz) ile Erkek "Bluz" (slug: erkek-bluz)
+            # aynı ADA sahip; ad-slug kolu ikisini birden topluyor ve kadın
+            # listesine erkek ürünü karışıyordu — cinsiyet ayrımı için yukarıda
+            # konan koruma tam burada deliniyordu. Ad-slug yalnız HİÇBİR
+            # kategorinin o slug'ı taşımadığı eski kayıtlar için yedek yoldur.
+            _gercek_slug_var = False
+            _kategoriler = []
             async for _c in db.categories.find({}, {"_id": 0, "id": 1, "name": 1, "slug": 1, "slug_aliases": 1}):
+                _kategoriler.append(_c)
+                _csl = (_c.get("slug") or "").strip().lower()
+                _als = [str(a).strip().lower() for a in (_c.get("slug_aliases") or [])]
+                if _csl == cat_slug or cat_slug in _als:
+                    _gercek_slug_var = True
+            for _c in _kategoriler:
                 _csl = (_c.get("slug") or "").strip().lower()
                 _cnm = (_c.get("name") or "").strip()
                 _als = [str(a).strip().lower() for a in (_c.get("slug_aliases") or [])]
-                if _csl == cat_slug or cat_slug in _als or (_cnm and generate_slug(_cnm) == cat_slug):
-                    if _c.get("id"):
-                        _slug_cat_ids.append(_c["id"])
+                _eslesti = _csl == cat_slug or cat_slug in _als
+                if not _eslesti and not _gercek_slug_var:
+                    _eslesti = bool(_cnm) and generate_slug(_cnm) == cat_slug
+                if _eslesti and _c.get("id"):
+                    _slug_cat_ids.append(_c["id"])
             if _slug_cat_ids:
                 cat_or.append({"category_ids": {"$in": _slug_cat_ids}})
             and_clauses.append({"$or": cat_or})

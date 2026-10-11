@@ -1319,17 +1319,34 @@ def _t(x) -> str:
 
 def besleme_haritasi(rec_variants: List[Dict[str, Any]],
                      kodlar: List[str]) -> Dict[str, Dict[str, Any]]:
-    """Besleme varyantlarını tüm eşleme anahtarlarıyla indeksler."""
-    harita: Dict[str, Dict[str, Any]] = {}
+    """Besleme varyantlarını tüm eşleme anahtarlarıyla indeksler.
+
+    YALNIZ VARYANTA ÖZEL ANAHTAR İNDEKSLENİR. Tedarikçinin stok kodu ÜRÜN
+    düzeyinde: aynı modelin bütün bedenleri aynı kodu taşıyor ("MLN-56189"),
+    beden yalnız barkodda ayrışıyor ("MLN-56189-STANDART"). Böyle bir anahtar
+    indekslenince `setdefault` İLK bedeni tutuyor ve o üründeki HER beden ilk
+    bedenin stoğunu alıyordu: olmayan beden stoklu görünüyor, olan beden
+    tükenmiş görünüyordu. Bir anahtar birden çok varyanta denk geliyorsa
+    haritaya hiç girmez; eşleşme bir alt anahtara düşer.
+    """
+    sayac: Dict[str, int] = {}
+    aday: List[tuple] = []
     for i, v in enumerate(rec_variants or []):
         kod = kodlar[i] if i < len(kodlar) else ""
-        for anahtar in (f"sb:{_t(v.get('supplier_barcode'))}",
-                        f"ss:{_t(v.get('supplier_stock_code'))}",
-                        f"ref:{_t(v.get('ref'))}",
-                        f"kod:{_t(kod)}",
-                        f"bs:{_t(v.get('size'))}|{_t(v.get('color'))}"):
+        anahtarlar = (f"sb:{_t(v.get('supplier_barcode'))}",
+                      f"ss:{_t(v.get('supplier_stock_code'))}",
+                      f"ref:{_t(v.get('ref'))}",
+                      f"kod:{_t(kod)}",
+                      f"bs:{_t(v.get('size'))}|{_t(v.get('color'))}")
+        for anahtar in anahtarlar:
             if not anahtar.split(":", 1)[1].strip("|"):
                 continue                      # boş alanla eşleşme yapma
+            sayac[anahtar] = sayac.get(anahtar, 0) + 1
+            aday.append((anahtar, v))
+
+    harita: Dict[str, Dict[str, Any]] = {}
+    for anahtar, v in aday:
+        if sayac.get(anahtar, 0) == 1:        # ayırt edici değilse KULLANMA
             harita.setdefault(anahtar, v)
     return harita
 
@@ -1340,7 +1357,11 @@ def varyant_bul(v: Dict[str, Any],
     for anahtar in (f"sb:{_t(v.get('supplier_barcode'))}",
                     f"ss:{_t(v.get('supplier_stock_code'))}",
                     f"kod:{_t(v.get('stock_code'))}",
-                    f"ref:{_t(v.get('supplier_stock_code'))}",
+                    # 'ref' beslemedeki varyantın kendi referansı; burada da
+                    # onunla aranmalı. supplier_stock_code ile aranıyordu, yani
+                    # bu kol 'ss' ile aynı şeyi tekrar deniyor, farklı bir ad
+                    # alanına yanlışlıkla çarpabiliyordu.
+                    f"ref:{_t(v.get('ref') or v.get('supplier_barcode'))}",
                     f"bs:{_t(v.get('size'))}|{_t(v.get('color'))}"):
         if not anahtar.split(":", 1)[1].strip("|"):
             continue
