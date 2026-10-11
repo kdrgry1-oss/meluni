@@ -1096,10 +1096,15 @@ async def _build_products_query(
             # kategoriden çıkarılan ürün eski kategoride görünmeye devam ediyordu (kullanıcı bug).
             # Artık YALNIZ güncel category_name + category_ids (atalar dahil) + category_slug yetkili.
             # Üst kategori listeleme category_ids ataları taşıdığı için bozulmaz (doğrulandı).
-            cat_or.append({"category_slug": cat_slug})
-            # ÇOKLU KATEGORİ: slug'a karşılık gelen kategori id'lerini category_ids içinde de ara.
-            # Ürün ana kategoride olmasa bile (ör. ana "Pantolon") admin'de ekstra eklendiği
-            # "Şort" kategorisinde de müşteriye görünür.
+            #
+            # `category_slug` ürünün ÜSTÜNDE duran bir alan ve breadcrumb ile
+            # aynı şekilde BAYATLAYABİLİYOR: cinsiyet ayrımından önce açılmış
+            # ürünlerde eski slug duruyor. Canlıda erkek 'alt-ust-takim'
+            # sayfasına 4 kadın ürünü tam bu koldan sızıyordu (kategori
+            # kimliğiyle bakıldığında o kategoride 23 ürün var, slug'la 27).
+            # Bu yüzden: slug'ı GERÇEKTEN taşıyan bir kategori varsa yetkili
+            # olan odur; ürün üzerindeki slug alanı yalnız hiçbir kategorinin
+            # o slug'ı taşımadığı durumda yedek yol olarak kullanılır.
             _slug_cat_ids = []
             # ÖNCE: bu slug'ı GERÇEKTEN taşıyan kategori var mı?
             # Varsa ad-slug'ı üzerinden eşleşen DİĞER kategoriler kapsanmaz.
@@ -1125,8 +1130,19 @@ async def _build_products_query(
                     _eslesti = bool(_cnm) and generate_slug(_cnm) == cat_slug
                 if _eslesti and _c.get("id"):
                     _slug_cat_ids.append(_c["id"])
+            if not _gercek_slug_var:
+                # Hiçbir kategori bu slug'ı taşımıyor → ürün üzerindeki slug
+                # alanı tek ipucu, yedek yol olarak kullanılır.
+                cat_or.append({"category_slug": cat_slug})
+            # ÇOKLU KATEGORİ: slug'a karşılık gelen kategori id'lerini category_ids
+            # içinde de ara. Ürün ana kategoride olmasa bile (ör. ana "Pantolon")
+            # admin'de ekstra eklendiği "Şort" kategorisinde de müşteriye görünür.
             if _slug_cat_ids:
                 cat_or.append({"category_ids": {"$in": _slug_cat_ids}})
+            if not cat_or:
+                # Hiçbir kol kurulamadıysa boş $or ile sorgu atma (geçersiz).
+                # Ürün üzerindeki slug son çare olarak kalsın.
+                cat_or.append({"category_slug": cat_slug})
             and_clauses.append({"$or": cat_or})
     
     if search:
