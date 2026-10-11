@@ -65,6 +65,8 @@ export default function Manufacturing() {
   const [counts, setCounts] = useState({});
   const [loading, setLoading] = useState(true);
   const [stageFilter, setStageFilter] = useState("");
+  // Varsayılan: depoya ALINMAMIŞ (devam eden) kalemler. Depoya alınanlar "Tümünü Gör" sekmesinde.
+  const [showAll, setShowAll] = useState(false);
   const [search, setSearch] = useState("");
 
   const [editing, setEditing] = useState(null);  // null | record
@@ -96,6 +98,7 @@ export default function Manufacturing() {
       cutting_start_date: "",       // kesim başlangıç tarihi (kesime geçerken sorulur)
       actual_distribution: {},      // gerçekleşen kesim adedi {"Renk|Beden": n}
       sewing_workshop: "",          // dikim atölyesi adı (dikime geçince girilir)
+      sewing_start_date: "",        // dikim başlangıç tarihi (formdan da girilebilir; stage_dates.dikim ile senkron)
       sewing_report_images: [],     // imalat (görsel) raporu — yüklenen görsel URL'leri
       qc_result: "",                // kalite kontrol: "" | "gecti" | "kaldi" (kaldi → Re-FRI)
       qc_date: "",                  // kalite kontrol tarihi
@@ -194,6 +197,7 @@ export default function Manufacturing() {
       cutting_start_date: item.cutting_start_date || "",
       actual_distribution: item.actual_distribution || {},
       sewing_workshop: item.sewing_workshop || "",
+      sewing_start_date: item.sewing_start_date || (item.stage_dates || {}).dikim || "",
       sewing_report_images: item.sewing_report_images || [],
       qc_result: item.qc_result || "",
       qc_date: item.qc_date || (item.stage_dates || {}).kalite_kontrol || "",
@@ -309,6 +313,7 @@ export default function Manufacturing() {
     const existingDate =
       (item.stage_dates || {})[newStage] ||
       (newStage === "kesim" ? item.cutting_start_date || "" : "") ||
+      (newStage === "dikim" ? item.sewing_start_date || "" : "") ||
       "";
     setAdvanceModal({
       item, stage: newStage, back,
@@ -496,6 +501,16 @@ export default function Manufacturing() {
   }));
   const showActuals = !!editing && ["kesim", "dikim", "kalite_kontrol", "teslim_alindi"].includes(form.current_stage);
 
+  // Depo teslim aşaması ve sonrası (teslim_alindi → fatura_kesildi …) "tamamlanmış" sayılır.
+  const _doneIdx = stages.findIndex((s) => s.key === "teslim_alindi");
+  const _isDone = (it) => {
+    const i = stages.findIndex((s) => s.key === it.current_stage);
+    return it.current_stage === "teslim_alindi" || (_doneIdx > -1 && i >= _doneIdx);
+  };
+  const doneCount = items.filter(_isDone).length;
+  // Bir aşamaya tıklanmışsa (timeline filtresi) o aşamanın kayıtları her zaman görünür.
+  const visibleItems = (showAll || stageFilter) ? items : items.filter((it) => !_isDone(it));
+
   const rowTotal = (color) => form.sizes.reduce((s, sz) => s + cellVal(color, sz), 0);
   const grandTotal = (form.colors.length ? form.colors : [""]).reduce((s, c) => s + rowTotal(c), 0);
 
@@ -542,12 +557,34 @@ export default function Manufacturing() {
         </div>
       </div>
 
+      {/* Sekmeler: Devam Edenler (depoya alınmamış) | Tümünü Gör */}
+      <div className="flex items-center gap-2 mb-3" data-testid="mfg-tabs">
+        {[{ k: false, l: "Devam Edenler", n: items.length - doneCount },
+          { k: true, l: "Tümünü Gör", n: items.length }].map((t) => (
+          <button key={String(t.k)} type="button" onClick={() => setShowAll(t.k)}
+            data-testid={t.k ? "mfg-tab-all" : "mfg-tab-active"}
+            className={`inline-flex items-center gap-2 h-9 px-4 rounded-lg text-sm font-semibold border transition
+              ${showAll === t.k ? "bg-black text-white border-black" : "bg-white text-gray-700 border-gray-300 hover:border-gray-500"}`}>
+            {t.l}
+            <span className={`inline-flex items-center justify-center min-w-[22px] h-5 px-1.5 rounded-full text-[11px] font-bold tabular-nums
+              ${showAll === t.k ? "bg-white text-black" : "bg-gray-100 text-gray-700"}`}>{t.n}</span>
+          </button>
+        ))}
+        {!showAll && !stageFilter && doneCount > 0 && (
+          <span className="text-xs text-gray-500 ml-1">{doneCount} depoya alınmış kayıt gizli</span>
+        )}
+      </div>
+
       {/* List */}
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-gray-500">Yükleniyor...</div>
-        ) : items.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">Kayıt bulunamadı. Sağ üstten yeni kayıt ekleyebilirsiniz.</div>
+        ) : visibleItems.length === 0 ? (
+          <div className="p-8 text-center text-gray-500">
+            {items.length > 0
+              ? "Devam eden imalat yok — depoya alınmış kayıtlar için \"Tümünü Gör\" sekmesine tıklayın."
+              : "Kayıt bulunamadı. Sağ üstten yeni kayıt ekleyebilirsiniz."}
+          </div>
         ) : (
           <table className="w-full">
             <thead className="border-b bg-gray-50">
@@ -563,11 +600,11 @@ export default function Manufacturing() {
                 <th className="text-left px-3 py-3 text-xs font-bold text-gray-500 uppercase" title="Kalite kontrol: Geçti/Kaldı (kaldıysa Re-FRI), tarih ve görseller">Kalite Kontrol</th>
                 <th className="text-left px-3 py-3 text-xs font-bold text-gray-500 uppercase" title="Depoya gelen toplam adet (birden çok sevkiyat toplanır) + irsaliye görselleri">Depo Sevkiyat</th>
                 <th className="px-3 py-3"></th>
-                <th className="text-center px-3 py-3 text-xs font-bold text-gray-500 uppercase">Ürün Aç</th>
+                <th className="text-center px-3 py-3 text-xs font-bold text-gray-500 uppercase whitespace-nowrap">Ürün Aç</th>
               </tr>
             </thead>
             <tbody>
-              {items.map((item, idx) => {
+              {visibleItems.map((item, idx) => {
                 // Kalan gün: tahmini teslim (sipariş tarihi + 21 gün kuralı) − bugün
                 // KURAL: 21 gün ÖDEMEDEN itibaren sayılır; ödeme yoksa sipariş tarihi tabanlı tahmin
                 const _exp = (item.payment_done && item.payment_done_at ? _plus21(item.payment_done_at)
@@ -617,7 +654,7 @@ export default function Manufacturing() {
                       ));
                     })()}
                     {_delivered ? (
-                      <p className="text-[10px] font-bold text-emerald-600">Teslim alındı ✓</p>
+                      <p className="text-[10px] font-bold text-emerald-600 whitespace-nowrap">Teslim alındı ✓</p>
                     ) : _days == null ? null : _days < 0 ? (
                       <p className="text-[11px] font-bold text-red-700">{Math.abs(_days)} gün GECİKTİ!</p>
                     ) : (
@@ -673,7 +710,7 @@ export default function Manufacturing() {
                       const _actTot = Object.values(item.actual_distribution || {}).reduce((a, b) => a + Number(b || 0), 0);
                       return (
                         <div>
-                          <p className="text-[9px] text-gray-400 whitespace-nowrap">Sipariş: <b className="text-gray-600">{item.total_units || 0}</b></p>
+                          <p className="text-sm font-bold tabular-nums whitespace-nowrap text-black">Sipariş: {item.total_units || 0}</p>
                           {_actTot > 0 ? (
                             <p className="text-sm font-bold tabular-nums whitespace-nowrap text-black">
                               Kesilen: {_actTot}
@@ -688,7 +725,7 @@ export default function Manufacturing() {
                   </td>
                   <td className="px-3 py-3 align-top">
                     {(() => {
-                      const _dkDate = (item.stage_dates || {}).dikim;
+                      const _dkDate = item.sewing_start_date || (item.stage_dates || {}).dikim;
                       const _imgs = item.sewing_report_images || [];
                       if (!_dkDate && !item.sewing_workshop && !_imgs.length)
                         return <span className="text-xs text-gray-300">—</span>;
@@ -732,7 +769,7 @@ export default function Manufacturing() {
                           </p>
                           <div className="min-h-[22px]">
                             {item.qc_result === "gecti" && (
-                              <p className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5 inline-block">GEÇTİ ✓</p>
+                              <p className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5 inline-block whitespace-nowrap">GEÇTİ ✓</p>
                             )}
                             {item.qc_result === "kaldi" && (
                               <p className="inline-flex items-center gap-1 whitespace-nowrap">
@@ -757,7 +794,7 @@ export default function Manufacturing() {
                                 <p className="text-xs text-gray-700 whitespace-nowrap">{new Date(item.qc2_date).toLocaleDateString("tr-TR")}</p>
                               )}
                               {item.qc2_result === "gecti" && (
-                                <p className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5 inline-block">GEÇTİ ✓</p>
+                                <p className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5 inline-block whitespace-nowrap">GEÇTİ ✓</p>
                               )}
                               {item.qc2_result === "kaldi" && (
                                 <p className="inline-flex items-center gap-1 whitespace-nowrap">
@@ -807,10 +844,10 @@ export default function Manufacturing() {
                       );
                     })()}
                   </td>
-                  <td className="px-4 py-3 text-right whitespace-nowrap">
+                  <td className="px-3 py-3 text-right whitespace-nowrap">
                     {/* Kırmızı yanıp sönen hatırlatıcı: bir sonraki aşamaya ilerletme gerekiyor */}
                     {_showDot && (
-                      <span className="relative inline-flex h-3 w-3 mr-2 align-middle"
+                      <span className="relative inline-flex h-3 w-3 mr-1 align-middle"
                         title={item.current_stage === "kumas_okeyi"
                           ? "Okeyler tamamlandı — Kesim Başlangıcı'na ilerletin!"
                           : "Bu aşama tamamlandıysa bir sonrakine ilerletin"}>
@@ -823,31 +860,36 @@ export default function Manufacturing() {
                         onClick={() => advanceStage(item, prevStage(item.current_stage))}
                         data-testid={`stage-back-${item.id}`}
                         title="Aşamayı bir önceki adıma geri al — girilen veriler (adet, tarih, kalite, atölye, görseller) korunur"
-                        className="px-2 py-1 text-xs text-gray-500 hover:bg-gray-100 rounded font-medium"
+                        aria-label="Geri Al"
+                        className="w-7 h-7 inline-flex items-center justify-center align-middle text-gray-500 hover:bg-gray-100 rounded"
                       >
-                        <ChevronLeft size={13} className="inline" /> Geri Al
+                        <ChevronLeft size={15} />
                       </button>
                     )}
                     {nextStage(item.current_stage) && (
                       <button
                         onClick={() => advanceStage(item, nextStage(item.current_stage))}
                         data-testid={`advance-${item.id}`}
-                        className="px-2 py-1 text-xs text-black hover:bg-gray-100 rounded font-medium"
+                        title="Bir sonraki aşamaya ilerlet"
+                        aria-label="İlerlet"
+                        className="w-7 h-7 inline-flex items-center justify-center align-middle text-black hover:bg-gray-100 rounded"
                       >
-                        <ChevronRight size={13} className="inline" /> İlerlet
+                        <ChevronRight size={15} />
                       </button>
                     )}
-                    <button onClick={() => openEdit(item)} className="px-2 py-1 text-xs text-indigo-600 hover:bg-indigo-50 rounded">
-                      <Edit size={13} className="inline" />
+                    <button onClick={() => openEdit(item)} title="Düzenle" aria-label="Düzenle"
+                      className="w-7 h-7 inline-flex items-center justify-center align-middle text-indigo-600 hover:bg-indigo-50 rounded">
+                      <Edit size={15} />
                     </button>
-                    <button onClick={() => deleteRecord(item)} className="px-2 py-1 text-xs text-red-600 hover:bg-red-50 rounded">
-                      <Trash2 size={13} className="inline" />
+                    <button onClick={() => deleteRecord(item)} title="Sil" aria-label="Sil"
+                      className="w-7 h-7 inline-flex items-center justify-center align-middle text-red-600 hover:bg-red-50 rounded">
+                      <Trash2 size={15} />
                     </button>
                   </td>
                   <td className="px-3 py-3 text-center">
                     {/* Ürün Aç HER aşamada kullanılabilir (kullanıcı isteği — dosya açılır açılmaz kart oluşturulabilsin) */}
                     {item.product_created ? (
-                      <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5">ürün açıldı ✓</span>
+                      <span className="inline-block whitespace-nowrap text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5">ürün açıldı ✓</span>
                     ) : (
                       <button onClick={() => openProductFromMfg(item)}
                         data-testid={`open-product-${item.id}`}
@@ -924,15 +966,6 @@ export default function Manufacturing() {
                   <input type="date" value={advanceModal.date}
                     onChange={(e) => setAdvanceModal({ ...advanceModal, date: e.target.value })}
                     className="w-full border px-3 py-2 rounded-lg text-sm" data-testid="advance-date" />
-                </div>
-              )}
-              {advanceModal.stage === "dikim" && (
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-1">Dikim Atölyesi <span className="text-gray-400 font-normal">(opsiyonel — sonradan da girilebilir)</span></label>
-                  <input type="text" value={advanceModal.workshop || ""}
-                    onChange={(e) => setAdvanceModal({ ...advanceModal, workshop: e.target.value })}
-                    placeholder="Ör: Yıldız Tekstil Atölyesi"
-                    className="w-full border px-3 py-2 rounded-lg text-sm" data-testid="advance-workshop" />
                 </div>
               )}
               <div>
@@ -1219,15 +1252,15 @@ export default function Manufacturing() {
             {/* Dikim Başlangıcı — atölye adı + görsel imalat raporu (listede sütun altında da görünür) */}
             <div className="border-2 border-purple-100 bg-purple-50/30 rounded-lg p-3">
               <p className="text-xs font-bold text-purple-700 uppercase mb-2">🧵 Dikim Başlangıcı</p>
+              {/* Kullanıcı isteği: "Dikim Atölyesi" alanı kaldırıldı, yerine tarih geldi (eski kayıtlardaki atölye adı listede rozet olarak görünmeye devam eder). */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-1">Dikim Atölyesi</label>
-                  <input value={form.sewing_workshop}
-                    onChange={e => setForm({ ...form, sewing_workshop: e.target.value })}
-                    placeholder="Ör: Yıldız Tekstil Atölyesi"
-                    data-testid="mfg-sewing-workshop"
+                  <label className="block text-xs font-bold text-gray-600 mb-1">Dikim Başlangıç Tarihi</label>
+                  <input type="date" value={form.sewing_start_date || ""}
+                    onChange={e => setForm({ ...form, sewing_start_date: e.target.value })}
+                    data-testid="mfg-sewing-start-date"
                     className="w-full border px-3 py-2 rounded text-sm" />
-                  <p className="text-[10px] text-gray-400 mt-1">Dikime ilerletirken de girilebilir; listede Dikim Başlangıcı sütununda görünür.</p>
+                  <p className="text-[10px] text-gray-400 mt-1">Dikime ilerletirken sorulan tarihle aynı alan; listede Dikim Başlangıcı sütununda görünür.</p>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-600 mb-1">Görsel Rapor <span className="text-gray-400 font-normal">(imalat raporu — fotoğraf)</span></label>

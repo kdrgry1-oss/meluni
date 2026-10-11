@@ -24,12 +24,13 @@ import json
 import os
 import re
 import secrets as _secrets
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import httpx
 from fastapi import APIRouter, HTTPException, Request, Form
 from fastapi.responses import RedirectResponse
 
+import uuid as _uuid_pm
 from .deps import db, logger, limiter
 try:
     from .deps import client_ip_from_request as _client_ip
@@ -41,6 +42,11 @@ except Exception:  # pragma: no cover
             return ""
 
 router = APIRouter(prefix="/payment", tags=["Payment"])
+
+# GÜVENLİK (denetim 2026-10 #2, INFRA-03): iyzico'ya bağlanırken oluşan istisnanın HAM metni
+# (iç host/proxy/soket ayrıntısı) misafire açık ödeme uçlarında istemciye dönüyordu. Ayrıntı yalnız
+# sunucu loguna yazılır; istemci bu genel mesajı alır. Statü/ödeme mantığı DEĞİŞMEZ.
+_IYZ_CONN_ERR = "iyzico bağlantı hatası — lütfen birkaç dakika sonra tekrar deneyin"
 
 
 def _card_bin(card: dict) -> str:
@@ -108,6 +114,10 @@ def _safe_return_base(return_url: str, request) -> str:
     ru = (return_url or "").strip()
     if not ru:
         return default
+    # Ayrıştırıcı farkı saldırıları: ters eğik çizgi, kimlik bilgisi (@), boşluk/kontrol karakteri
+    # içeren adresler tarayıcıda farklı bir host'a çözülebilir → hiç kabul edilmez.
+    if any(c in ru for c in ("\\", "@")) or any(ord(c) < 33 or ord(c) == 127 for c in ru):
+        return default
     try:
         from urllib.parse import urlparse
         p = urlparse(ru)
@@ -135,6 +145,29 @@ def _safe_return_base(return_url: str, request) -> str:
     return default
 
 
+def _safe_callback_url(callback_url: str, request) -> str:
+    """DENETİM (injection-redteam F4): iyzico callbackUrl İSTEMCİDEN geliyordu → saldırgan
+    callback_url=https://evil verip 3DS sonrası müşteriyi ödeme token'ıyla kendi adresine
+    yönlendirebiliyordu (open redirect + token sızıntısı). Yalnız KENDİ host'umuza izin ver;
+    yolu koru. Dış host → reddet."""
+    from urllib.parse import urlparse
+    ru = (callback_url or "").strip()
+    if not ru:
+        raise HTTPException(status_code=400, detail="callback_url gerekli")
+    if any(c in ru for c in ("\\", "@")) or any(ord(c) < 33 or ord(c) == 127 for c in ru):
+        raise HTTPException(status_code=400, detail="Geçersiz callback_url")
+    p = urlparse(ru)
+    if p.scheme not in ("http", "https"):
+        raise HTTPException(status_code=400, detail="Geçersiz callback_url")
+    host = (p.hostname or "").lower()
+    req_host = (urlparse(str(request.base_url)).hostname or "").lower()
+    allowed = {req_host, "meluni.com.tr", "www.meluni.com.tr", "api.meluni.com.tr"}
+    allowed.discard("")
+    if host not in allowed:
+        raise HTTPException(status_code=400, detail="callback_url yalnız kendi alan adımıza izinlidir")
+    return ru
+
+
 INIT_PATH = "/payment/iyzipos/checkoutform/initialize/auth/ecom"
 RETRIEVE_PATH = "/payment/iyzipos/checkoutform/auth/ecom/detail"
 # Doğrudan kart (kendi formumuz) — iyzico klasik Payment API yolları
@@ -158,6 +191,27 @@ async def _get_iyzico_settings() -> dict:
     return {"api_key": s["api_key"], "api_secret": _dec_secret(s["api_secret"]) or "", "mode": mode, "base_url": base}
 
 
+async def _assert_card_payments_enabled() -> None:
+    """ÖDEME KILL-SWITCH (denetim 2026-10): YENİ kart ödemesi BAŞLATMA uçları
+    (/initialize, /3ds/initialize, /card/pay) için. Ayarlar → Ödeme Yöntemleri'nde kredi kartı
+    AÇIKÇA kapatıldıysa (`payment_methods.credit_card is False`) ya da iyzico entegrasyonu
+    AÇIKÇA pasifse (`settings.iyzico.is_active is False`) yeni tahsilat başlatılmaz.
+    Ayar yok/boş → AÇIK (Checkout.jsx `pm.credit_card !== false` ile aynı varsayılan).
+
+    BİLEREK _get_iyzico_settings'e KONMADI: callback / webhook / reconcile / iade yolları da
+    o fonksiyonu kullanır — zaten başlamış (kartı çekilmiş olabilecek) bir ödemenin
+    sonuçlandırılması kill-switch ile ASLA engellenmemeli (değişmez 4)."""
+    try:
+        _main = await db.settings.find_one({"id": "main"}, {"_id": 0, "payment_methods": 1}) or {}
+        _iyz = await db.settings.find_one({"id": "iyzico"}, {"_id": 0, "is_active": 1}) or {}
+    except Exception:
+        return  # ayar okunamadı → bugünkü davranış (engelleme yok)
+    if ((_main.get("payment_methods") or {}).get("credit_card")) is False or _iyz.get("is_active") is False:
+        raise HTTPException(status_code=400, detail=(
+            "Kredi kartı ile ödeme şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin "
+            "veya başka bir ödeme yöntemi seçin."))
+
+
 def _v2_headers(api_key: str, secret_key: str, path: str, body_str: str) -> dict:
     """iyzico IYZWSv2 HMAC-SHA256 authorization header (randomKey + path + body imzalanır)."""
     random_key = _secrets.token_hex(16)
@@ -176,7 +230,7 @@ def _fmt(v: float) -> str:
     return f"{round(float(v or 0), 2):.2f}"
 
 
-def _is_paid(data: dict) -> bool:
+def _is_paid(data: dict, strict: bool = False) -> bool:
     """iyzico ödeme/3ds-auth yanıtından gerçek başarı tespiti.
 
     Not: iyzico'nun 3DS auth (ThreedsPayment) yanıtı çoğu zaman `paymentStatus`
@@ -196,20 +250,50 @@ def _is_paid(data: dict) -> bool:
     if str(data.get("fraudStatus", 1)) in ("-1", "0"):
         return False
     ps = data.get("paymentStatus")
+    if strict:
+        # Ödeme SORGULAMA yanıtı (/payment/detail — webhook/mutabakat yolu) her zaman
+        # paymentStatus taşır; orada yalnız AÇIK "SUCCESS" ödendi sayılır (denetim 2026-10).
+        # 3DS auth yanıtı (paymentStatus çoğu zaman null) bu bayrakla ÇAĞRILMAZ → davranışı aynı.
+        return str(ps or "").upper() == "SUCCESS"
     return ps in (None, "", "SUCCESS")
 
 
 def _payment_matches_order(data: dict, order: dict) -> bool:
     """Y1: iyzico yanıtının GERÇEKTEN bu siparişe ve tutara ait olduğunu doğrular.
+    `order` en az id, order_number, total alanlarını taşımalı.
     - conversationId (bizim gönderdiğimiz = sipariş id'si) yanıtta eşleşmeli
+    - basketId (bizim gönderdiğimiz = order_number/id) varsa eşleşmeli; ikisi de yoksa RED
+    - currency TRY olmalı (eksik/farklı → RED)
     - ödenen tutar sipariş toplamıyla uyuşmalı (taksitte vade farkı ile >= olabilir)
     Böylece başka/ucuz bir siparişin paymentId'siyle pahalı siparişi 'ödendi' işaretlemek
     (cross-order paymentId reuse) engellenir."""
     try:
         oid = str(order.get("id") or "")
-        conv = str(data.get("conversationId") or "")
+        conv = str(data.get("conversationId") or "").strip()
         if conv and oid and conv != oid:
             logger.warning(f"[ODEME DOGRULAMA] conversationId uyusmuyor: yanit={conv} siparis={oid}")
+            return False
+        # SİPARİŞ BAĞI (fail-closed, denetim 2026-10): basketId'yi biz init'te
+        # str(order_number or id) olarak gönderiyoruz (_build_initialize_payload); iyzico tüm ödeme
+        # yanıtlarında (3DS auth, non-3DS, checkout-form retrieve, /payment/detail) geri döndürür.
+        # Varsa siparişle eşleşmeli. conversationId boşsa tek bağ basketId'dir; İKİSİ DE yoksa
+        # yanıtın bu siparişe ait olduğu kanıtlanamaz → eşleşme YOK.
+        basket = str(data.get("basketId") or "").strip()
+        _basket_ok = {str(order.get("order_number") or "").strip(), oid}
+        _basket_ok.discard("")
+        if basket and basket not in _basket_ok:
+            logger.warning(f"[ODEME DOGRULAMA] basketId uyusmuyor: yanit={basket} siparis={oid}")
+            return False
+        if not conv and not basket:
+            logger.warning(f"[ODEME DOGRULAMA] conversationId VE basketId bos → red. siparis={oid}")
+            return False
+        # PARA BİRİMİ: init payload'ı her zaman TRY gönderir; FARKLI para birimli yanıt tutarı TL
+        # sanılarak 'paid' sayılmamalı. Alan HİÇ yoksa reddedilmez (bazı iyzico yanıt türleri
+        # alanı taşımayabilir; reddetmek kartı çekilmiş siparişi 'failed' bırakırdı) — tutar ve
+        # sipariş eşleşmesi yine zorunlu.
+        cur = str(data.get("currency") or "").strip().upper()
+        if cur and cur != "TRY":
+            logger.warning(f"[ODEME DOGRULAMA] para birimi gecersiz: yanit={cur} beklenen=TRY siparis={oid}")
             return False
         total = round(float(order.get("total") or 0), 2)
         paid = data.get("paidPrice")
@@ -276,6 +360,14 @@ def _payment_snapshot(data: dict) -> dict:
         "merchantCommissionRate": d.get("merchantCommissionRate"),
         "iyziCommissionRateAmount": d.get("iyziCommissionRateAmount"),
         "iyziCommissionFee": d.get("iyziCommissionFee"),
+        # Kalem başı iyzico tahsilatı: iyzico vade farkını sepetteki TÜM kalemlere (kargo dahil)
+        # orantılı dağıtır; iade/gider pusulası kalem tutarları bununla birebir olsun diye saklanır.
+        "itemTransactions": [
+            {"itemId": (t or {}).get("itemId"), "price": (t or {}).get("price"),
+             "paidPrice": (t or {}).get("paidPrice"),
+             "paymentTransactionId": (t or {}).get("paymentTransactionId")}
+            for t in (d.get("itemTransactions") or []) if isinstance(t, dict)
+        ][:100],
     }
 
 
@@ -295,7 +387,9 @@ def _build_initialize_payload(order: dict, callback_url: str) -> dict:
     ip = order.get("customer_ip") or "85.34.78.112"
 
     # TCKN: kurumsal faturada 11 hane TCKN varsa onu, yoksa varsayılan placeholder
-    tn = "".join(ch for ch in str(binfo.get("tax_number") or "") if ch.isdigit())
+    # KVKK: TCKN at-rest şifreli (security/pii.py) → gerçek değer yalnız burada çözülür.
+    from security.pii import reveal_tax_id as _reveal_tax_id
+    tn = "".join(ch for ch in str(_reveal_tax_id(binfo, "tax_number") or "") if ch.isdigit())
     identity = tn if len(tn) == 11 else DEFAULT_TCKN
 
     bill_first = (bill.get("first_name") or first).strip()
@@ -311,13 +405,30 @@ def _build_initialize_payload(order: dict, callback_url: str) -> dict:
     # gönderirsek iyzico farkı TÜM kalemlere (kargo dahil) kendi dağıtır → kargo indirimli görünür,
     # KDV matrahı karışır. Bunun yerine ürünleri indirimli gönderip price=paidPrice yaparız →
     # iyzico'nun redistribüte edeceği fark kalmaz; kalemler bizim muhasebemizle birebir olur.
+    # MUHASEBE MUTABAKATI (Merve, W11877): iyzico "Ödeme Kırılımları"ndaki KALEM tutarları,
+    # panelde gördüğümüz kalem tutarlarıyla AYNI olmalı. Panelde indirim kampanya KAPSAMINA
+    # göre kalem kalem dondurulur (item.discount_amount — W11214 kök çözümü): kapsamdaki ürüne
+    # %20, kapsam dışına 0. iyzico'ya ise indirim TÜM ürünlere ORANSAL dağıtılarak gidiyordu →
+    # genel toplam tutuyor ama kalemler tutmuyordu (kısmi iadede yanlış tutar riski).
+    # Artık dondurulmuş kalem indirimi esas alınır; yalnız kalem-dışı (puan, hediye çeki gibi
+    # sipariş-seviyesi) kalan fark oransal dağıtılır.
     _prods = []
     items_sum = 0.0
+    _frozen_disc = 0.0
     for it in (order.get("items") or []):
         qty = int(it.get("quantity") or 1)
         line = round(float(it.get("price") or 0) * qty, 2)
         items_sum += line
-        _prods.append([it, line])
+        try:
+            _d = round(float(it.get("discount_amount") or 0), 2)
+        except Exception:
+            _d = 0.0
+        _d = max(0.0, min(_d, line))
+        _frozen_disc += _d
+        _prods.append([it, round(line - _d, 2)])
+    _frozen_disc = round(_frozen_disc, 2)
+    _gross_sum = round(items_sum, 2)
+    items_sum = round(sum(p[1] for p in _prods), 2)   # kalem indirimleri düşülmüş taban
 
     shipping_cost = float(order.get("shipping_cost") or 0)
     gift_price = float(order.get("gift_wrap_price") or 0)
@@ -325,20 +436,65 @@ def _build_initialize_payload(order: dict, callback_url: str) -> dict:
 
     # Sipariş-seviyesi indirim = tam sepet − ödenen (order.total). Kargoya/ekstralara DEĞİL,
     # yalnız ürün satırlarına dağıtılır.
-    _full = round(items_sum + shipping_cost + gift_price + cod_fee, 2)
+    _full = round(_gross_sum + shipping_cost + gift_price + cod_fee, 2)
     _raw_total = round(float(order.get("total") or 0), 2)
     _order_disc = round(max(0.0, _full - _raw_total), 2) if _raw_total > 0.009 else 0.0
-    if _order_disc > 0.009 and items_sum > 0.009:
-        _ratio = _order_disc / items_sum
+    # Kalem bazında dondurulmuş indirim zaten düşüldü; geriye kalan (puan kullanımı, hediye
+    # çeki, ödeme tipi indirimi gibi SİPARİŞ-seviyesi kalemler) oransal dağıtılır.
+    _rest = round(max(0.0, _order_disc - _frozen_disc), 2)
+    # ORAN TAVANI + SATIR TABANI (ödeme çökmesi önlemi): puan + hediye çeki, ürün
+    # toplamını AŞABİLİR (kargo/hediye paketi/kapıda ödeme bedeli olan siparişlerde).
+    # Oran 1'i geçince kalem netleri NEGATİF oluyor ve _fmt(max(0,line)) ile "0.00"
+    # basılıyordu → iyzico sıfır fiyatlı sepet kalemini reddeder: ödeme HİÇ alınamaz,
+    # üstelik hediye çeki bakiyesi rezerve edilmiş kalır (iade yalnız sipariş iptalinde).
+    # Artık ürün satırları kalem başına en az 0,01'de tutulur; ürünlerin karşılayamadığı
+    # indirim VIRTUAL satırlardan (kargo → hediye paketi → kapıda ödeme) düşülür, böylece
+    # sepet toplamı = price = paidPrice kuruşu kuruşuna korunur.
+    _MIN_LINE = 0.01
+    if _rest > 0.009 and items_sum > 0.009:
+        _ratio = min(1.0, _rest / items_sum)
         for p in _prods:
-            p[1] = round(p[1] * (1 - _ratio), 2)
-        # YUVARLAMA MUTABAKATI (iyzico şartı: sepet toplamı = price, kuruşu kuruşuna): ürün
-        # satırları toplamı hedefe (ürün brüt − indirim) BİREBİR eşitlenir; fark son ürüne yazılır.
-        _prod_target = round(items_sum - _order_disc, 2)
+            p[1] = round(max(_MIN_LINE, p[1] * (1 - _ratio)), 2)
+    # YUVARLAMA MUTABAKATI (iyzico şartı: sepet toplamı = price, kuruşu kuruşuna): ürün
+    # satırları toplamı hedefe (ürün brüt − toplam indirim) BİREBİR eşitlenir; fark son ürüne yazılır.
+    _spill = 0.0
+    if _order_disc > 0.009:
+        _prod_target = round(_gross_sum - _order_disc, 2)
+        _floor = round(_MIN_LINE * len(_prods), 2)
+        if _prod_target < _floor:
+            _spill = round(_floor - _prod_target, 2)   # ürünlerin yutamadığı indirim
+            _prod_target = _floor
         _cur = round(sum(p[1] for p in _prods), 2)
         _d = round(_prod_target - _cur, 2)
         if _prods and abs(_d) >= 0.01:
-            _prods[-1][1] = round(_prods[-1][1] + _d, 2)
+            if _d > 0:
+                _prods[-1][1] = round(_prods[-1][1] + _d, 2)
+            else:
+                # eksiği sondan başa doğru, her satırı tabanın altına indirmeden düş
+                for p in reversed(_prods):
+                    if _d >= -0.005:
+                        break
+                    _take = round(min(-_d, max(0.0, p[1] - _MIN_LINE)), 2)
+                    if _take >= 0.01:
+                        p[1] = round(p[1] - _take, 2)
+                        _d = round(_d + _take, 2)
+                if _d < -0.005:
+                    _spill = round(_spill + (-_d), 2)
+    # Taşan indirimi VIRTUAL satırlardan sırayla düş (negatife inmeden).
+    if _spill > 0.005:
+        for _nm in ("shipping", "gift", "cod"):
+            if _spill <= 0.005:
+                break
+            _val = {"shipping": shipping_cost, "gift": gift_price, "cod": cod_fee}[_nm]
+            _cut = round(min(_spill, max(0.0, _val)), 2)
+            if _cut >= 0.01:
+                if _nm == "shipping":
+                    shipping_cost = round(shipping_cost - _cut, 2)
+                elif _nm == "gift":
+                    gift_price = round(gift_price - _cut, 2)
+                else:
+                    cod_fee = round(cod_fee - _cut, 2)
+                _spill = round(_spill - _cut, 2)
 
     basket_items = []
     for it, line in _prods:
@@ -361,12 +517,19 @@ def _build_initialize_payload(order: dict, callback_url: str) -> dict:
     # işlendiğinden price artık indirimli toplam (≈ order.total); paidPrice de aynı → iyzico'nun
     # yayacağı indirim farkı kalmaz (kargo tam bedeliyle, kendi KDV'siyle durur).
     price = round(sum(float(b["price"]) for b in basket_items), 2)
-    paid_price = round(float(order.get("total") or price), 2)
+    # `or price` KULLANMA: total=0 (çek/puan her şeyi kapattı) "yok" sayılıp sepetin TAMAMI
+    # çekiliyordu. 0 geçerli bir tutardır — yalnız alan HİÇ yoksa sepet toplamına düşülür.
+    _t_raw = order.get("total")
+    paid_price = round(float(_t_raw), 2) if _t_raw not in (None, "") else price
     # paidPrice price'ı geçemez (indirim sadece düşürür)
     if paid_price > price:
         paid_price = price
     if paid_price <= 0:
-        paid_price = price
+        # DEĞİŞMEZ: tahsil edilecek tutarı OLMAYAN sipariş iyzico'ya GİTMEZ. Eskiden
+        # paidPrice=0 görülünce sepet toplamı (price) çekiliyordu → hediye çeki/puan ile
+        # tamamen kapanmış siparişte müşteriden borcu olmayan para çekilebilirdi.
+        # (create_order bu siparişi zaten paid/confirmed açar; burası ikinci kapı.)
+        raise ValueError("Bu siparişte tahsil edilecek tutar yok (hediye çeki/puan ile kapandı).")
 
     return {
         "locale": "tr",
@@ -411,20 +574,30 @@ def _build_initialize_payload(order: dict, callback_url: str) -> dict:
 
 @router.post("/initialize")
 @(limiter.limit("20/minute") if limiter else (lambda f: f))
-async def initialize_payment(request: Request, order_id: str, callback_url: str, return_url: str = ""):
+async def initialize_payment(request: Request, order_id: str, callback_url: str, return_url: str = "",
+                             pay_token: str = ""):
     """Sipariş için iyzico Ödeme Formu başlatır (rate-limited)."""
     _ = request
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    _assert_payment_capability(order, pay_token or request.headers.get("x-pay-token"))
+    if order.get("coupon_superseded_by"):
+        raise HTTPException(status_code=409, detail=_SUPERSEDED_MSG)
     # GÜVENLİK: Zaten ödenmiş/tamamlanmış/iptal siparişte ödeme başlatma — kart-testi
     # ve tekrar-tahsilat yüzeyini kapatır.
     if order.get("payment_status") in ("paid", "refunded") or \
        order.get("status") in ("confirmed", "shipped", "delivered", "cancelled"):
         raise HTTPException(status_code=400, detail="Bu sipariş için ödeme alınamaz")
+    _pay_gate_expired(order)
+    await _assert_card_payments_enabled()  # kill-switch (yalnız YENİ başlatma)
 
+    callback_url = _safe_callback_url(callback_url, request)  # F4: dış callback reddedilir
     settings = await _get_iyzico_settings()
-    payload = _build_initialize_payload(order, callback_url)
+    try:
+        payload = _build_initialize_payload(order, callback_url)
+    except ValueError as _zv:
+        raise HTTPException(status_code=400, detail=str(_zv))
     body_str = json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
     headers = _v2_headers(settings["api_key"], settings["api_secret"], INIT_PATH, body_str)
 
@@ -434,7 +607,7 @@ async def initialize_payment(request: Request, order_id: str, callback_url: str,
         data = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {"status": "failure", "errorMessage": resp.text[:300]}
     except Exception as e:
         logger.error(f"iyzico initialize error: {e}")
-        raise HTTPException(status_code=502, detail=f"iyzico bağlantı hatası: {e}")
+        raise HTTPException(status_code=502, detail=_IYZ_CONN_ERR)  # ayrıntı yalnız logda (INFRA-03)
 
     if data.get("status") != "success":
         logger.warning(f"iyzico initialize failed order={order_id}: {data.get('errorCode')} {data.get('errorMessage')}")
@@ -445,7 +618,7 @@ async def initialize_payment(request: Request, order_id: str, callback_url: str,
         }
 
     await db.orders.update_one(
-        {"id": order_id},
+        {"id": order_id, "payment_status": {"$nin": list(_PAID_LIKE_STATUSES)}},
         {"$set": {
             "iyzico_token": data.get("token"),
             "iyzico_conversation_id": data.get("conversationId"),
@@ -479,15 +652,23 @@ async def _notify_paid_order_confirmed(order_id: str) -> None:
         # İdempotent; ikinci callback'te tekrar yazmaz.
         try:
             from .orders import record_order_redemptions
-            await record_order_redemptions(order)
+            # Başarılıysa 'coupon_redemptions_recorded' bayrağı yazılır → kaçırılan yan etki
+            # süpürmesi (scheduler.sweep_paid_order_side_effects) yalnız eksik olanları yeniden dener.
+            if await record_order_redemptions(order) is not False and not order.get("coupon_redemptions_recorded"):
+                await db.orders.update_one({"id": order_id}, {"$set": {"coupon_redemptions_recorded": True}})
         except Exception as _re:
             logger.warning(f"Odeme sonrasi kupon kaydi hatasi order_id={order_id}: {_re}")
         if order.get("order_confirmed_notified"):
             return
-        # Önce işaretle (tek mail garantisi), sonra gönder.
-        await db.orders.update_one(
-            {"id": order_id}, {"$set": {"order_confirmed_notified": True}}
+        # Önce işaretle (tek mail garantisi), sonra gönder. ATOMİK claim (denetim 2026-10):
+        # eşzamanlı iki çağrı (callback + webhook/kurtarma) bayrağı aynı anda unset görüp
+        # İKİ mail/push gönderebiliyordu; yalnız bayrağı gerçekten çeviren devam eder.
+        _nclaim = await db.orders.update_one(
+            {"id": order_id, "order_confirmed_notified": {"$ne": True}},
+            {"$set": {"order_confirmed_notified": True}}
         )
+        if _nclaim.modified_count != 1:
+            return
         import sys, os
         sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
         from notification_service import send_notification
@@ -507,63 +688,34 @@ async def _notify_paid_order_confirmed(order_id: str) -> None:
         # ONAYLANINCA buradan gider (yarıda kalan 3DS'te admin'e sahte yeni-sipariş gitmesin).
         try:
             from .push import send_push_to_admins
-            _tl = float(order.get("total") or 0)
-            _who = (f"{ship.get('first_name','')} {ship.get('last_name','')}".strip()
-                    or ship.get("full_name") or "Müşteri")
+            # GÜVENLİK (ADM-15): push kilit ekranında görünür / FCM'den geçer → müşteri adı ve tutar
+            # YOK; yalnız sipariş no + ürün adedi (ayrıntı panelde, yetkiyle).
+            _n_items = 0
+            for _it in (order.get("items") or []):
+                try:
+                    _n_items += max(1, int((_it or {}).get("quantity") or 1))
+                except (TypeError, ValueError):
+                    _n_items += 1
             await send_push_to_admins(
-                f"🛍️ Yeni Sipariş (ödendi) · {_tl:,.2f} TL".replace(",", "."),
-                f"{order.get('order_number','')} · {_who} · Kart",
+                "🛍️ Yeni Sipariş (ödendi)",
+                f"Yeni sipariş {order.get('order_number','')} · {_n_items} ürün",
                 {"type": "new_order", "order_id": str(order.get("id") or ""),
                  "order_number": str(order.get("order_number") or "")},
             )
         except Exception as _pe:
             logger.warning(f"admin push (kart ödeme sonrası) atlandı: {_pe}")
         # ADMIN E-POSTA BİLDİRİMİ: web sitesinden gelen (ödemesi ONAYLANMIŞ) sipariş için
-        # firmanın iletişim adresine (beyaz-etiket: company.contact_email) özet mail.
-        # order_confirmed_notified bayrağıyla tek sefer.
+        # firmanın iletişim adresine (beyaz-etiket: company.contact_email → varsayılan
+        # info@meluni.com.tr) özet mail. order_confirmed_notified bayrağıyla tek sefer.
         # Yarıda kalan 3DS'te BURAYA gelinmez → sahte "yeni sipariş" maili gitmez.
-        # BEYAZ ETİKET: koda gömülü adres YOK. İşletme ayarlarında iletişim adresi
-        # boşsa mail hiç gönderilmez — başka bir firmanın adresine sipariş bilgisi
-        # düşmesindense bildirim atlanır.
         try:
             import company as _company
             from notification_service import _email_send
             _ci = await _company.get_company(db)
-            _admin_to = str(_ci.get("contact_email") or _ci.get("email") or "").strip()
+            _admin_to = str(_ci.get("contact_email") or _ci.get("email") or "info@meluni.com.tr").strip()
             if _admin_to:
-                _tl2 = float(order.get("total") or 0)
-                _tl_fmt = f"{_tl2:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")  # 3,920.00 → 3.920,00
-                _who2 = (f"{ship.get('first_name','')} {ship.get('last_name','')}".strip()
-                         or ship.get("full_name") or "Müşteri")
-                _phone2 = ship.get("phone") or order.get("phone") or "-"
-                _pm = order.get("payment_method") or order.get("payment_type") or "Kart"
-                _rows_html = ""
-                for _it in (order.get("items") or []):
-                    _nm = _it.get("name") or _it.get("product_name") or "Ürün"
-                    _qty = _it.get("quantity") or _it.get("qty") or 1
-                    _sz = _it.get("size") or ""
-                    _clr = _it.get("color") or ""
-                    _var = " · ".join([x for x in (_clr, _sz) if x])
-                    _var_html = (" <span style='color:#888'>(" + _var + ")</span>") if _var else ""
-                    _rows_html += ("<tr><td style='padding:4px 8px;border-bottom:1px solid #eee'>"
-                                   + str(_nm) + _var_html + "</td>"
-                                   "<td style='padding:4px 8px;border-bottom:1px solid #eee;text-align:center'>"
-                                   + str(_qty) + "</td></tr>")
-                _adr = ship.get("address") or ""
-                _loc = " / ".join([x for x in (ship.get("district") or ship.get("ilce") or "",
-                                               ship.get("city") or ship.get("il") or "") if x])
-                _html = (
-                    f"<h2 style='margin:0 0 8px'>🛍️ Yeni Sipariş (ödendi)</h2>"
-                    f"<p style='margin:0 0 4px'><b>Sipariş No:</b> {order.get('order_number','')}</p>"
-                    f"<p style='margin:0 0 4px'><b>Müşteri:</b> {_who2} · {_phone2}</p>"
-                    f"<p style='margin:0 0 4px'><b>Tutar:</b> {_tl_fmt} TL</p>"
-                    f"<p style='margin:0 0 4px'><b>Ödeme:</b> {_pm}</p>"
-                    f"<p style='margin:0 0 8px'><b>Teslimat:</b> {_adr} {_loc}</p>"
-                    f"<table style='border-collapse:collapse;width:100%;max-width:520px'>"
-                    f"<tr><th style='text-align:left;padding:4px 8px;border-bottom:2px solid #333'>Ürün</th>"
-                    f"<th style='text-align:center;padding:4px 8px;border-bottom:2px solid #333'>Adet</th></tr>"
-                    f"{_rows_html}</table>"
-                )
+                from notification_service import build_admin_order_email_html as _bld
+                _html = _bld(order, ship, "Yeni Sipariş", "Ödendi ✓")
                 await _email_send(db, _admin_to, f"Yeni Sipariş · {order.get('order_number','')}", _html)
                 logger.info(f"admin sipariş maili gönderildi → {_admin_to} order={order.get('order_number')}")
         except Exception as _ae:
@@ -589,47 +741,23 @@ async def _retrieve_and_finalize(token: str) -> dict:
         resp = await c.post(f"{settings['base_url']}{RETRIEVE_PATH}", content=body_str.encode("utf-8"), headers=headers)
     data = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {"status": "failure"}
 
-    paid = _is_paid(data)
-    # Y1: tutar/sipariş eşleşmesini doğrula (token ile bulunduğu için conversationId zaten eşleşir,
-    # ama tutar doğrulaması cross-order paymentId'ye karşı korur).
-    if paid and not _payment_matches_order(data, order):
-        logger.warning(f"[ODEME] retrieve dogrulama basarisiz order={order.get('order_number')}")
-        paid = False
-    update = {
-        "iyzico_retrieve_response": _payment_snapshot(data),
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-    }
-    if paid:
-        update["payment_status"] = "paid"
-        update["payment_id"] = data.get("paymentId")
-        update["iyzico_payment_id"] = data.get("paymentId")
-        update["paid_at"] = datetime.now(timezone.utc).isoformat()
-        update["status"] = "confirmed"
-        await db.orders.update_one({"id": order.get("id")}, {"$set": update})
-    else:
-        update["payment_status"] = "failed"
-        await db.orders.update_one(
-            {"id": order.get("id"), "payment_status": {"$ne": "paid"}}, {"$set": update})
-    logger.info(f"iyzico payment {'PAID' if paid else 'FAILED'} order={order.get('order_number')} pid={data.get('paymentId')}")
-    if paid:
-        await _notify_paid_order_confirmed(order.get("id"))
-        # CAPI purchase (TikTok CompletePayment / Meta Purchase …) — sunucudan,
-        # idempotent (tek event), event_id = sipariş no (pixel'le dedup).
-        try:
-            from .orders import dispatch_purchase_capi
-            await dispatch_purchase_capi(order.get("id"), source="iyzico_callback")
-        except Exception as _ce:
-            logger.warning(f"CAPI purchase (callback) hata: {_ce}")
+    # TEK YETKİLİ YOL (CLAUDE.md değişmez 1; denetim 2026-09-29): eskiden bu eski hosted-form yolu
+    # siparişi kendisi, DURUM KONTROLSÜZ paid/confirmed yapıyordu (replay ile kargolanmış/iptal
+    # sipariş geri "onaylandı"ya dönebiliyordu). Artık tutar+sipariş eşleşmesi, paymentId replay
+    # kalkanı, idempotency ve bildirim/CAPI tek yerden: _mark_order_from_payment.
+    paid = await _mark_order_from_payment(order.get("id"), data)
     return {"ok": paid, "order": order, "return_url": order.get("iyzico_return_url") or ""}
 
 
 PAYMENT_DETAIL_PATH = "/payment/detail"
 
 
-async def _finalize_by_payment_id(order_id: str, payment_id: str) -> bool:
+async def _finalize_by_payment_id(order_id: str, payment_id: str, raise_on_uncertain: bool = False) -> bool:
     """3DS/kart akışında (hosted token YOK) paymentId ile iyzico'dan ödemeyi retrieve edip
     finalize eder — webhook/reconcile güvenlik ağı; 'çekildi ama kayıt yok/failed' vakalarını
-    kapatır. Belirsiz cevapta (non-JSON/exception) siparişe DOKUNMAZ (failed yazmaz)."""
+    kapatır. Belirsiz cevapta (non-JSON/exception) siparişe DOKUNMAZ (failed yazmaz).
+    raise_on_uncertain=True (webhook): belirsizlikte istisna fırlatır → webhook 500 döner,
+    iyzico bildirimi YENİDEN dener."""
     if not order_id or not payment_id:
         return False
     settings = await _get_iyzico_settings()
@@ -640,12 +768,24 @@ async def _finalize_by_payment_id(order_id: str, payment_id: str) -> bool:
         async with httpx.AsyncClient(timeout=30) as c:
             resp = await c.post(f"{settings['base_url']}{PAYMENT_DETAIL_PATH}", content=body_str.encode("utf-8"), headers=headers)
         if not resp.headers.get("content-type", "").startswith("application/json"):
+            if raise_on_uncertain:
+                raise RuntimeError(f"iyzico payment-detail JSON dönmedi (HTTP {resp.status_code})")
             return False   # belirsiz → failed yazma
         data = resp.json()
     except Exception as e:
         logger.warning(f"iyzico payment-detail retrieve hata order={order_id} pid={payment_id}: {e}")
+        if raise_on_uncertain:
+            raise
         return False
-    return await _mark_order_from_payment(order_id, data)
+    # SIKI DOĞRULAMA (denetim 2026-10): sorgu yanıtında paymentStatus YOKSA sonuç belirsizdir →
+    # siparişe dokunma (ne paid ne failed). Varsa yalnız açık "SUCCESS" ödendi sayılır.
+    if isinstance(data, dict) and str(data.get("status") or "") == "success" \
+            and not str(data.get("paymentStatus") or "").strip():
+        logger.warning(f"iyzico payment-detail paymentStatus boş → belirsiz, siparişe dokunulmadı order={order_id}")
+        if raise_on_uncertain:
+            raise RuntimeError("iyzico payment-detail paymentStatus boş (belirsiz)")
+        return False
+    return await _mark_order_from_payment(order_id, data, strict_status=True)
 
 
 @router.api_route("/callback", methods=["POST", "GET"])
@@ -720,7 +860,10 @@ async def _installment_total_price(settings: dict, bin_number: str, base_price: 
 def _build_card_payment_payload(order: dict, card: dict, installment: int,
                                 callback_url: str, is_3ds: bool) -> dict:
     """Checkout-form payload'ını doğrudan-kart isteğine uyarlar (paymentCard ekler)."""
-    base = _build_initialize_payload(order, callback_url)
+    try:
+        base = _build_initialize_payload(order, callback_url)
+    except ValueError as _zv:
+        raise HTTPException(status_code=400, detail=str(_zv))
     base.pop("enabledInstallments", None)
     if not is_3ds:
         base.pop("callbackUrl", None)
@@ -741,15 +884,309 @@ def _build_card_payment_payload(order: dict, card: dict, installment: int,
     return base
 
 
-async def _mark_order_from_payment(order_id: str, data: dict) -> bool:
-    """iyzico ödeme/3ds-auth yanıtına göre siparişi günceller. Döner: paid(bool)."""
-    paid = _is_paid(data)
+
+# DENETİM (2026-09-29, K1/O1): süresi dolup otomatik kapatılmış (stok/hediye çeki/puan İADE
+# edilmiş) siparişe sonradan ödeme başlatılamaz — aksi halde iade edilmiş çek/puan bakiyesi
+# müşteride kalırken sipariş yeniden 'paid' olabiliyordu. Havale/kapıda siparişi de kartla
+# ödenemez (havale indirimi karta taşınmasın). Müşteri sepetten yeni sipariş açar.
+# Ödemesi alınmış sayılan durumlar: bu siparişe yeni ödeme başlatılmaz / paid geçişi yapılmaz.
+_PAID_LIKE_STATUSES = ("paid", "refunded", "partially_refunded")
+_EXPIRED_ORDER_STATUSES = {"payment_failed", "cancel_requested", "cancel_refunded", "refunded", "returned"}
+_NON_CARD_METHODS = {"bank_transfer", "havale", "eft", "havale_eft", "banka_havale",
+                     "cash_on_delivery", "kapida", "kapida_odeme", "cod", "transfer"}
+
+
+# ── Denetim #4: siparişe özel ödeme yetkisi (capability) ─────────────────────────────────────
+# Ödeme başlatma uçları (initialize / 3ds/initialize / card/pay) eskiden yalnız sipariş id'si ile
+# çalışıyordu: id'yi ele geçiren biri başkasının bekleyen ödemesinin token'ını değiştirip akışı
+# bozabiliyordu. Artık sipariş oluşturulurken yalnız oluşturan istemciye, tahmin edilemez bir
+# "pay_token" verilir (DB'de yalnız SHA-256 özeti); ödeme başlatma bu token'ı ister.
+# Bu alan ödeme DURUMUNA dokunmaz (değişmez 1 korunur) — yalnız başlatmayı yetkilendirir.
+PAY_CAP_ENFORCED = True   # vitrin (cf90db2) pay_token gönderiyor — zorunluluk açık
+
+
+def _pay_cap_hash(token: str) -> str:
+    return hashlib.sha256(("paycap:" + str(token or "")).encode("utf-8")).hexdigest()
+
+
+async def issue_payment_capability(order_id: str) -> str:
+    """Sipariş için yeni ödeme yetkisi üretir; son 5 özet saklanır (idempotent tekrar POST'ta da
+    istemci geçerli bir token alır)."""
+    token = _secrets.token_urlsafe(32)
+    await db.orders.update_one(
+        {"id": order_id},
+        {"$push": {"pay_cap_hashes": {"$each": [_pay_cap_hash(token)], "$slice": -5}}})
+    return token
+
+
+def _assert_payment_capability(order: dict, token) -> None:
+    hashes = [str(h) for h in (order.get("pay_cap_hashes") or []) if h]
+    if not hashes:
+        # Bu sürümden önce oluşturulmuş sipariş (ödenmezse en geç 3 saatte otomatik iptal edilir).
+        return
+    tok = str(token or "").strip()
+    if tok:
+        got = _pay_cap_hash(tok)
+        if any(hmac.compare_digest(got, h) for h in hashes):
+            return
+    if PAY_CAP_ENFORCED:
+        raise HTTPException(status_code=403, detail="Ödeme oturumu doğrulanamadı. Sayfayı yenileyip tekrar deneyin.")
+
+
+def _pay_gate_expired(order: dict) -> None:
+    if str(order.get("status") or "") in _EXPIRED_ORDER_STATUSES or \
+       str(order.get("payment_status") or "") == "expired" or order.get("_restocked_by_autocancel"):
+        raise HTTPException(status_code=400, detail=(
+            "Bu siparişin ödeme süresi doldu. Lütfen sepetinizden yeniden sipariş oluşturun."))
+    if str(order.get("payment_method") or "").strip().lower() in _NON_CARD_METHODS:
+        raise HTTPException(status_code=400, detail="Bu sipariş kartla ödenemez")
+
+
+# ÖDEME BAŞLATMA KİLİDİ (denetim 2026-10): aynı sipariş için iki sekmede / çift tıkla eşzamanlı
+# kart ödemesi başlatılıp İKİ kez çekim yapılabiliyordu. Kısa ömürlü atomik kilit: yalnız kilit
+# yoksa veya süresi dolmuşsa alınır. Başarısız başlatmada hemen bırakılır; 3DS başarılı
+# başlatıldıysa banka dönüşüne (callback) kadar tutulur, en geç süre dolunca kendiliğinden düşer
+# → meşru yeniden deneme hiçbir koşulda bu pencereden uzun engellenmez.
+_PAY_INIT_LOCK_SECONDS = 90
+
+
+_SUPERSEDED_MSG = ("Bu siparişteki indirim hakkınız daha yeni bir siparişinizde kullanıldı. "
+                   "Lütfen sepetinizi yenileyip tekrar deneyin.")
+
+
+def _lock_ts(dt: datetime) -> str:
+    # Sabit biçim (UTC, milisaniye) → string karşılaştırması zaman sırasıyla birebir.
+    return dt.astimezone(timezone.utc).isoformat(timespec="milliseconds")
+
+
+async def _acquire_payment_init_lock(order_id: str) -> str:
+    now = datetime.now(timezone.utc)
+    lock_id = _secrets.token_hex(8)
+    got = await db.orders.find_one_and_update(
+        {"id": order_id,
+         "payment_status": {"$nin": list(_PAID_LIKE_STATUSES)},
+         # Denetim #21: kuponu yeni bir siparişle geçersiz kılınmış deneme ödenemez (atomik).
+         "coupon_superseded_by": {"$exists": False},
+         "$or": [{"payment_init_lock_until": None},
+                 {"payment_init_lock_until": {"$lte": _lock_ts(now)}}]},
+        {"$set": {"payment_init_lock_until": _lock_ts(now + timedelta(seconds=_PAY_INIT_LOCK_SECONDS)),
+                  "payment_init_lock_id": lock_id}},
+        projection={"_id": 0, "id": 1},
+    )
+    if got:
+        return lock_id
+    cur = await db.orders.find_one({"id": order_id}, {"_id": 0, "payment_status": 1, "coupon_superseded_by": 1})
+    if not cur:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    if str(cur.get("payment_status") or "").lower() in _PAID_LIKE_STATUSES:
+        raise HTTPException(status_code=400, detail="Bu siparişin ödemesi zaten alınmış.")
+    if cur.get("coupon_superseded_by"):
+        raise HTTPException(status_code=409, detail=_SUPERSEDED_MSG)
+    logger.warning(f"[ODEME] eşzamanlı ödeme başlatma reddedildi (kilit aktif) order_id={order_id}")
+    raise HTTPException(status_code=409, detail=(
+        "Bu sipariş için başka bir ödeme işlemi şu anda devam ediyor. Kartınızdan iki kez çekim "
+        "yapılmaması için lütfen 1-2 dakika bekleyip sayfayı yenileyerek tekrar deneyin."))
+
+
+async def _release_payment_init_lock(order_id: str, lock_id: str = None) -> None:
+    """Kilidi bırakır. lock_id verilirse yalnız O kilit bırakılır (başka denemenin kilidine dokunmaz)."""
+    if not order_id:
+        return
+    q = {"id": order_id}
+    if lock_id:
+        q["payment_init_lock_id"] = lock_id
+    try:
+        await db.orders.update_one(q, {"$unset": {"payment_init_lock_until": "", "payment_init_lock_id": ""}})
+    except Exception as _le:
+        logger.warning(f"[ODEME] başlatma kilidi bırakılamadı order_id={order_id}: {_le} (süre dolunca düşer)")
+
+async def _record_duplicate_payment(order_id: str, data: dict, existing_pid: str) -> None:
+    """ÇİFT TAHSİLAT KAYDI (denetim 2026-10): sipariş ZATEN ödenmişken iyzico'dan DOĞRULANMIŞ
+    (_is_paid + _payment_matches_order) ve FARKLI paymentId'li ikinci bir başarılı ödeme gelirse
+    (müşteri iki sekmede iki kez ödedi) eskiden sessizce yok sayılıyordu → para müşteriden çekilmiş,
+    hiçbir yerde kaydı yok. Artık: siparişe duplicate_payments kalemi + needs_reconciliation +
+    needs_duplicate_refund bayrağı + admin notu + entegrasyon logu + admin push. SİPARİŞ
+    STATÜSÜNE/ÖDEME DURUMUNA DOKUNMAZ (değişmez 1). İdempotent: aynı paymentId bir kez yazılır."""
+    pid = str((data or {}).get("paymentId") or "").strip()
+    if not order_id or not pid:
+        return
+    now_iso = datetime.now(timezone.utc).isoformat()
+    entry = {
+        "paymentId": pid,
+        "amount": (data or {}).get("paidPrice") if (data or {}).get("paidPrice") not in (None, "") else (data or {}).get("price"),
+        "currency": (data or {}).get("currency"),
+        "installment": (data or {}).get("installment"),
+        "original_payment_id": str(existing_pid or ""),
+        "status": "needs_refund",
+        "at": now_iso,
+    }
+    _txt = (f"⚠ ÇİFT TAHSİLAT: Sipariş zaten ödenmişken iyzico'da ikinci başarılı ödeme bulundu "
+            f"(paymentId={pid}, tutar={entry['amount']} {entry['currency'] or ''}). Bu tutar müşteriye "
+            f"İADE edilmelidir (iyzico panelinden kontrol edin).")
+    try:
+        res = await db.orders.update_one(
+            {"id": order_id, "duplicate_payments.paymentId": {"$ne": pid}},
+            {"$push": {"duplicate_payments": entry,
+                       "admin_notes": {"id": str(_uuid_pm.uuid4()), "text": _txt, "by": "sistem", "at": now_iso}},
+             "$set": {"needs_reconciliation": True, "needs_duplicate_refund": True, "updated_at": now_iso}})
+    except Exception as _de:
+        logger.error(f"[ODEME] ÇİFT TAHSİLAT kaydı YAZILAMADI order_id={order_id} pid={pid}: {_de}")
+        return
+    if res.modified_count != 1:
+        return  # bu paymentId zaten kayıtlı (tekrar gelen sonuç)
+    logger.error(f"[ODEME] ÇİFT TAHSİLAT order_id={order_id} yeni_pid={pid} mevcut_pid={existing_pid} "
+                 f"tutar={entry['amount']} → iade gerekli")
+    try:
+        from .integrations_common import log_integration_event
+        await log_integration_event(
+            "iyzico", "duplicate_payment", "order", order_id, "error",
+            f"Çift tahsilat: sipariş zaten ödenmiş (pid={existing_pid}); ikinci ödeme pid={pid} "
+            f"tutar={entry['amount']} — iade gerekli",
+            {"duplicate_payment": entry})
+    except Exception as _le:
+        logger.warning(f"[ODEME] çift tahsilat entegrasyon logu yazılamadı: {_le}")
+    try:
+        from .push import send_push_to_admins
+        _on = await db.orders.find_one({"id": order_id}, {"_id": 0, "order_number": 1})
+        await send_push_to_admins(
+            "⚠ Çift tahsilat — iade gerekli",
+            f"{(_on or {}).get('order_number', '')} · ikinci kart ödemesi · {entry['amount']} {entry['currency'] or ''}".strip(),
+            {"type": "duplicate_payment", "order_id": str(order_id),
+             "order_number": str((_on or {}).get("order_number") or "")},
+        )
+    except Exception as _pe:
+        logger.warning(f"[ODEME] çift tahsilat admin push atlandı: {_pe}")
+
+
+async def _maybe_record_duplicate(order_id: str, data: dict, verified_paid: bool) -> None:
+    """Zaten ödenmiş siparişe gelen DOĞRULANMIŞ ödeme farklı paymentId taşıyorsa çift tahsilat
+    olarak kaydeder. Aynı paymentId (callback/webhook tekrarı) → no-op."""
+    if not verified_paid:
+        return
+    pid = str((data or {}).get("paymentId") or "").strip()
+    if not pid:
+        return
+    cur = await db.orders.find_one(
+        {"id": order_id}, {"_id": 0, "payment_status": 1, "iyzico_payment_id": 1, "payment_id": 1})
+    if not cur or str(cur.get("payment_status") or "").lower() not in _PAID_LIKE_STATUSES:
+        return
+    existing = str(cur.get("iyzico_payment_id") or cur.get("payment_id") or "").strip()
+    if existing == pid:
+        return  # aynı ödemenin tekrarı — idempotent
+    await _record_duplicate_payment(order_id, data, existing)
+
+
+async def _redecrement_after_cancel_on_paid(order_id: str) -> bool:
+    """Ödeme doğrulanıp sipariş paid'e geçtiğinde (yalnız _mark_order_from_payment'ın KAZANAN
+    çağrısından), siparişin TÜKETİLMEMİŞ stok-iade (restore) hareketleri varsa — ör. personel
+    ödenmemiş kart siparişini iptal edip stoğu iade etti, banka dönüşü sonra geldi — iade edilen
+    miktarı yeniden düşer. update_order_status reaktivasyon mantığıyla aynı kaynak (restore
+    hareketleri) kullanılır; düşüm _stock_delta_for_order ile ATOMİK-koşullu (stok yetmezse 0'da
+    durur + admin push). İdempotent: _redecremented_after_cancel bayrağı koşullu claim edilir.
+    Sipariş manuel incelemeye işaretlenir (paid_after_cancel). Ödeme durumuna DOKUNMAZ."""
+    try:
+        from .orders import (_RESTORE_MOVE_TYPES, _stock_delta_for_order, _consume_restore_moves,
+                             _reverse_stock_moves, _resolve_move_level)
+    except Exception as _ie:  # pragma: no cover
+        logger.warning(f"[ODEME] restore yardımcıları yüklenemedi: {_ie}")
+        return False
+    restores = await db.stock_movements.find(
+        {"order_id": order_id, "type": {"$in": list(_RESTORE_MOVE_TYPES)}},
+        {"_id": 0, "items": 1, "type": 1}).to_list(100)
+    if not restores:
+        return False
+    claim = await db.orders.update_one(
+        {"id": order_id, "_redecremented_after_cancel": {"$ne": True}},
+        {"$set": {"_redecremented_after_cancel": True}})
+    if claim.modified_count != 1:
+        return False
+    try:
+        by_bc, no_bc = {}, []
+        for mv in restores:
+            for it in (mv.get("items") or []):
+                d = int(it.get("delta") or 0)
+                if d <= 0:
+                    continue
+                bc = str(it.get("barcode") or "").strip()
+                if bc:
+                    by_bc[bc] = by_bc.get(bc, 0) + d
+                else:
+                    no_bc.append({"barcode": "", "product_id": it.get("product_id"),
+                                  "variant_id": it.get("variant_id"),
+                                  "level": await _resolve_move_level(it), "delta": d})
+        o = await db.orders.find_one({"id": order_id}, {"_id": 0, "order_number": 1, "platform": 1}) or {}
+        virt = {"order_number": o.get("order_number", ""), "platform": o.get("platform") or "meluni",
+                "items": [{"barcode": bc, "quantity": q} for bc, q in by_bc.items()]}
+        moves = await _stock_delta_for_order(virt, -1) if virt["items"] else []
+        if no_bc:
+            await _reverse_stock_moves(no_bc)   # delta>0 verilir → iade edileni geri DÜŞER
+            moves += [{**x, "delta": -x["delta"]} for x in no_bc]
+        await _consume_restore_moves(order_id, "paid_after_cancel_redecrement")
+        now = datetime.now(timezone.utc).isoformat()
+        if moves:
+            await db.stock_movements.insert_one({
+                "id": str(_uuid_pm.uuid4()), "type": "paid_after_cancel_redecrement",
+                "order_id": order_id, "order_number": o.get("order_number", ""),
+                "items": moves, "source": "payment_after_cancel", "created_at": now})
+        _oversold = any(m.get("oversold") for m in moves)
+        _txt = ("⚠ Sipariş iptal edilip stok iade edildikten SONRA banka ödemeyi doğruladı (para çekildi). "
+                "Sipariş ödenmiş/onaylı; iade edilen stok yeniden düşüldü"
+                + (" — STOK YETMEDİ, 0'a sabitlendi (oversell riski)" if _oversold else "")
+                + ". Siparişi gönderin ya da müşteriye iade yapın.")
+        await db.orders.update_one({"id": order_id}, {
+            "$set": {"needs_manual_review": True, "paid_after_cancel": True,
+                     "manual_review_reason": "paid_after_cancel"},
+            "$push": {"admin_notes": {"id": str(_uuid_pm.uuid4()), "text": _txt, "by": "sistem", "at": now}}})
+        try:
+            from .integrations_common import log_integration_event
+            await log_integration_event("payment", "paid_after_cancel", "order", o.get("order_number", order_id),
+                                        "warning", _txt, {"moves": len(moves), "oversold": _oversold})
+        except Exception:
+            pass
+        logger.error(f"[ODEME] iptal sonrası ödeme doğrulandı → stok yeniden düşüldü, manuel inceleme order_id={order_id}")
+        return True
+    except Exception as _e:
+        await db.orders.update_one({"id": order_id}, {"$unset": {"_redecremented_after_cancel": ""}})
+        logger.warning(f"[ODEME] iptal-sonrası stok yeniden düşümü başarısız order_id={order_id}: {_e}")
+        return False
+
+
+async def _mark_order_from_payment(order_id: str, data: dict, strict_status: bool = False) -> bool:
+    """iyzico ödeme/3ds-auth yanıtına göre siparişi günceller. Döner: paid(bool).
+
+    TEK YETKİLİ 'paid/confirmed' YOLU (CLAUDE.md değişmez 1): _is_paid VE _payment_matches_order
+    VE cross-order replay kalkanı geçmeden sipariş ödendi sayılmaz. Geçiş ATOMİK-KOŞULLUDUR
+    (payment_status ödenmiş değilse); yalnız geçişi KAZANAN çağrı yan etkileri (kupon kaydı,
+    mail/push, CAPI, stok yeniden düşümü) çalıştırır — eşzamanlı ikinci çağrı aynı sonucu
+    yan etkisiz döndürür."""
+    # İDEMPOTENT (denetim 2026-09-29): sipariş ZATEN ödenmiş/iade edilmişse aynı ödeme sonucunun
+    # tekrarı (callback replay) siparişe DOKUNMAZ — eskiden kargolanmış/teslim/iade edilmiş sipariş
+    # yeniden "confirmed"a yazılabiliyor ve bildirimler tekrar gidiyordu. (Otomatik-iptal edilip
+    # sonradan parası çekildiği anlaşılan siparişin kurtarılması etkilenmez: onun ödeme durumu 'paid' değil.)
+    _ord = await db.orders.find_one(
+        {"id": order_id},
+        {"_id": 0, "id": 1, "total": 1, "order_number": 1, "payment_status": 1})
+    paid = _is_paid(data, strict=strict_status)
     # Y1: iyzico başarı dese bile tutar/sipariş eşleşmesini doğrula.
     if paid:
-        _ord = await db.orders.find_one({"id": order_id}, {"_id": 0, "id": 1, "total": 1, "order_number": 1})
         if not _ord or not _payment_matches_order(data, _ord):
             logger.warning(f"[ODEME] dogrulama basarisiz, PAID iptal edildi order_id={order_id}")
             paid = False
+        # Defense-in-depth (payment redteam F4): aynı iyzico paymentId BAŞKA bir ödenmiş
+        # siparişe bağlıysa reddet (cross-order paymentId replay — tutar eşleşmesine ek kalkan).
+        _pid = data.get("paymentId")
+        if paid and _pid:
+            _dup = await db.orders.find_one(
+                {"iyzico_payment_id": _pid, "payment_status": "paid", "id": {"$ne": order_id}},
+                {"_id": 0, "id": 1})
+            if _dup:
+                logger.warning(f"[ODEME] paymentId {_pid} zaten sipariş {_dup['id']}'e bağlı — PAID iptal (replay) order_id={order_id}")
+                paid = False
+    if _ord and str(_ord.get("payment_status") or "").lower() in _PAID_LIKE_STATUSES:
+        # Zaten ödenmiş: statüye dokunma. Farklı paymentId ile DOĞRULANMIŞ ikinci tahsilat ise kaydet.
+        logger.info(f"[ODEME] sipariş zaten {_ord.get('payment_status')} — tekrar gelen ödeme sonucu yok sayıldı order_id={order_id}")
+        await _maybe_record_duplicate(order_id, data, paid)
+        return str(_ord.get("payment_status")).lower() == "paid"
     update = {
         "iyzico_retrieve_response": _payment_snapshot(data),
         "updated_at": datetime.now(timezone.utc).isoformat(),
@@ -760,7 +1197,27 @@ async def _mark_order_from_payment(order_id: str, data: dict) -> bool:
         update["iyzico_payment_id"] = data.get("paymentId")
         update["paid_at"] = datetime.now(timezone.utc).isoformat()
         update["status"] = "confirmed"
-        await db.orders.update_one({"id": order_id}, {"$set": update})
+        # ATOMİK GEÇİŞ (denetim 2026-10): eskiden koşulsuz update_one → eşzamanlı iki çağrı (3DS
+        # callback + non-3DS / webhook / reconcile) ikisi de 'paid' yazıp bildirim/kupon/CAPI'yi
+        # İKİ kez çalıştırabiliyordu. Artık yalnız henüz ödenmemiş sipariş çevrilir.
+        _tr = await db.orders.update_one(
+            {"id": order_id, "payment_status": {"$nin": list(_PAID_LIKE_STATUSES)}},
+            {"$set": update})
+        if _tr.modified_count != 1:
+            # Yarışı başka çağrı kazandı (veya sipariş yok). Yan etki YOK; sonuç idempotent döner.
+            _now = await db.orders.find_one({"id": order_id}, {"_id": 0, "payment_status": 1})
+            _ps_now = str((_now or {}).get("payment_status") or "").lower()
+            logger.info(f"[ODEME] paid geçişi başka çağrıda tamamlandı (yarış) order_id={order_id} durum={_ps_now or '-'}")
+            if _ps_now in _PAID_LIKE_STATUSES:
+                await _maybe_record_duplicate(order_id, data, True)
+            return _ps_now == "paid"
+        # Ödeme onaylandı → sipariş rapora BU AN girer; önbelleği hemen düşür.
+        # try/except: rapor önbelleği hiçbir koşulda ödeme akışını etkilemez.
+        try:
+            from .reports import invalidate_report_cache as _inv_rc
+            await _inv_rc()
+        except Exception:
+            pass
         # Denetim #2: Bu sipariş daha önce auto-cancel ile RESTOCK edilmiş ve şimdi geç reconcile/
         # callback ile GERÇEKTEN ödendiği ortaya çıktıysa (para çekilmiş), stoğu TEKRAR düş —
         # aksi halde create(-1)+restock(+1)+confirm(0) = net 0 kalıp ürün fiilen sevk edilirken
@@ -777,13 +1234,30 @@ async def _mark_order_from_payment(order_id: str, data: dict) -> bool:
         if _claim.modified_count == 1:
             try:
                 _o2 = await db.orders.find_one({"id": order_id}, {"_id": 0})
-                from .orders import _stock_delta_for_order, _RESTORE_MOVE_TYPES
+                from .orders import _stock_delta_for_order, _consume_restore_moves
                 _moves = await _stock_delta_for_order(_o2, -1)
-                # B6: auto-cancel'in yazdığı BAYAT restore hareketini SİL. Aksi halde sonraki
-                # GERÇEK iptal _restock_order_once guard'ına takılıp (mevcut restore hareketi
-                # görülüp) stoğu ASLA iade etmiyordu → paid siparişin envanteri kalıcı kilitli.
-                await db.stock_movements.delete_many(
-                    {"order_id": order_id, "type": {"$in": _RESTORE_MOVE_TYPES}})
+                # B6: auto-cancel'in yazdığı BAYAT restore hareketini guard DIŞINA taşı ('tüketildi').
+                # Aksi halde sonraki GERÇEK iptal _restock_order_once guard'ına takılıp (mevcut restore
+                # hareketi görülüp) stoğu ASLA iade etmiyordu → paid siparişin envanteri kalıcı kilitli.
+                # Öncesinde delete_many ile SİLİNİYORDU (stok geçmişi kaybı); artık kayıt korunur.
+                await _consume_restore_moves(order_id, "reconcile_redecrement")
+                # DEFTER BOŞLUĞU (Faz 1): bu yeniden-düşüm stoğu gerçekten azaltıyor ama
+                # hiçbir hareket yazmıyordu → "defter toplamı = canlı stok" denkliği bozuluyor
+                # ve mutabakat raporu bunu sahte sapma sanıyordu. Yalnız KAYIT eklenir; stok
+                # mantığı DEĞİŞMEZ. Tip bilerek _DEDUCT_MOVE_TYPES'a konmaz: otoriter iade
+                # zaten asıl düşümü (order_created/order_imported) sayar; buraya da sayarsa
+                # ileride yapılacak gerçek iptal iki katını geri yükler.
+                try:
+                    if _moves:
+                        await db.stock_movements.insert_one({
+                            "id": str(_uuid_pm.uuid4()), "type": "reconcile_redecrement",
+                            "order_id": order_id,
+                            "order_number": (_o2 or {}).get("order_number", ""),
+                            "items": _moves, "source": "payment_reconcile",
+                            "created_at": datetime.now(timezone.utc).isoformat(),
+                        })
+                except Exception as _mv_err:
+                    logger.warning(f"[reconcile] hareket kaydı yazılamadı {order_id}: {_mv_err}")
                 logger.info(f"[reconcile] restock sonrası tekrar-ödendi → stok yeniden düşüldü order_id={order_id} moves={len(_moves or [])}")
             except Exception as _rse:
                 # Düşüm/temizlik başarısızsa claim'i GERİ AL — sonraki denemede tekrar işlensin.
@@ -792,6 +1266,29 @@ async def _mark_order_from_payment(order_id: str, data: dict) -> bool:
                     {"$set": {"_restocked_by_autocancel": True},
                      "$unset": {"_redecremented_after_reconcile": ""}})
                 logger.warning(f"[reconcile] tekrar-stok-düşümü hatası order_id={order_id}: {_rse}")
+        else:
+            # Değişmez 6: PERSONEL (ya da başka bir yol) ödemesi bekleyen kart siparişini iptal edip
+            # stoğu iade ettiyse ve doğrulanmış banka dönüşü SONRA geldiyse, ödenmiş sipariş iade
+            # edilmiş stoğu tutmuyordu (oversell). Kazanan paid geçişinde tüketilmemiş restore
+            # hareketleri varsa iade edilen miktar ATOMİK olarak yeniden düşülür (0'da durur + uyarı).
+            await _redecrement_after_cancel_on_paid(order_id)
+        # DENETİM (2026-09-29, K1/O8): sipariş kapatılırken hediye çeki / puan müşteriye İADE
+        # edilmişse ve ödeme sonradan gerçekleştiyse bakiye müşteride kalmıştır. Ödeme gerçek
+        # olduğundan sipariş 'paid' kalır; ekip görsün diye sipariş notu + bayrak yazılır.
+        try:
+            _o3 = await db.orders.find_one({"id": order_id}, {"_id": 0, "gift_card": 1,
+                                                              "points_refunded": 1, "points_used": 1})
+            _gc3 = (_o3 or {}).get("gift_card") or {}
+            if (isinstance(_gc3, dict) and _gc3.get("refunded")) or (_o3 or {}).get("points_refunded"):
+                _txt = ("⚠ Ödeme, sipariş otomatik kapatıldıktan SONRA onaylandı. Kapatılırken hediye çeki/"
+                        "puan müşteriye iade edilmişti — bakiyeyi kontrol edip gerekirse düşün.")
+                await db.orders.update_one({"id": order_id}, {
+                    "$set": {"needs_manual_review": True, "manual_review_reason": "gift_points_refunded_before_paid"},
+                    "$push": {"admin_notes": {"id": str(_uuid_pm.uuid4()), "text": _txt, "by": "sistem",
+                                              "at": datetime.now(timezone.utc).isoformat()}}})
+                logger.error(f"[ODEME] geç onay + iade edilmiş çek/puan → manuel inceleme order_id={order_id}")
+        except Exception as _mr:
+            logger.warning(f"[ODEME] manuel inceleme işareti yazılamadı {order_id}: {_mr}")
     else:
         # Y1: ZATEN ödenmiş bir siparişi 'failed'a düşürme (replay / sahte failure koruması).
         update["payment_status"] = "failed"
@@ -806,7 +1303,7 @@ async def _mark_order_from_payment(order_id: str, data: dict) -> bool:
             update["reconcile_payment_id"] = str(_pid_failed)
             update["needs_reconciliation"] = True
         await db.orders.update_one(
-            {"id": order_id, "payment_status": {"$ne": "paid"}}, {"$set": update})
+            {"id": order_id, "payment_status": {"$nin": list(_PAID_LIKE_STATUSES)}}, {"$set": update})
     logger.info(f"iyzico kart odeme {'PAID' if paid else 'FAILED'} order_id={order_id} pid={data.get('paymentId')}")
     if paid:
         await _notify_paid_order_confirmed(order_id)
@@ -823,7 +1320,7 @@ async def _mark_order_from_payment(order_id: str, data: dict) -> bool:
 async def initialize_3ds_payment(payload: dict, request: Request):
     """Kendi kart formumuzdan 3D Secure başlatır; threeDSHtmlContent döner."""
     order_id = (payload.get("order_id") or "").strip()
-    callback_url = (payload.get("callback_url") or "").strip()
+    callback_url = _safe_callback_url((payload.get("callback_url") or "").strip(), request)  # F4
     return_url = (payload.get("return_url") or "").strip()
     card = payload.get("card") or {}
     installment = int(payload.get("installment") or 1)
@@ -832,45 +1329,72 @@ async def initialize_3ds_payment(payload: dict, request: Request):
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
-    if order.get("payment_status") in ("paid", "refunded") or \
+    _assert_payment_capability(order, payload.get("pay_token") or request.headers.get("x-pay-token"))
+    if str(order.get("payment_status") or "").lower() in _PAID_LIKE_STATUSES or \
        order.get("status") in ("confirmed", "shipped", "delivered", "cancelled"):
         raise HTTPException(status_code=400, detail="Bu sipariş için ödeme alınamaz")
+    _pay_gate_expired(order)
+    await _assert_card_payments_enabled()  # kill-switch (yalnız YENİ başlatma)
 
     await _card_velocity_guard(request, order_id)  # A2.6: kart-testi hız sınırı
-    settings = await _get_iyzico_settings()
-    body = _build_card_payment_payload(order, card, installment, callback_url, is_3ds=True)
-    # Taksit seçildiyse paidPrice'i o taksitin gerçek toplamına (vade farkı dahil) eşitle
-    if installment > 1:
-        _tp = await _installment_total_price(settings, card.get("cardNumber"), float(body.get("paidPrice") or 0), installment)
-        if _tp and _tp > 0:
-            body["paidPrice"] = _fmt(_tp)
-    body_str = json.dumps(body, separators=(",", ":"), ensure_ascii=False)
-    headers = _v2_headers(settings["api_key"], settings["api_secret"], THREEDS_INIT_PATH, body_str)
-
+    # Eşzamanlı başlatma kilidi (çift çekim önlemi). 3DS init KART ÇEKMEZ (çekim callback'teki
+    # auth'ta) → başarısız/hatalı başlatmada kilit hemen bırakılır; başarılıda callback'e kadar tutulur.
+    _lock = await _acquire_payment_init_lock(order_id)
+    _keep_lock = False
     try:
-        async with httpx.AsyncClient(timeout=30) as c:
-            resp = await c.post(f"{settings['base_url']}{THREEDS_INIT_PATH}", content=body_str.encode("utf-8"), headers=headers)
-        data = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {"status": "failure", "errorMessage": resp.text[:300]}
-    except Exception as e:
-        logger.error(f"iyzico 3ds init error: {e}")
-        raise HTTPException(status_code=502, detail=f"iyzico bağlantı hatası: {e}")
+        settings = await _get_iyzico_settings()
+        body = _build_card_payment_payload(order, card, installment, callback_url, is_3ds=True)
+        # Taksit seçildiyse paidPrice'i o taksitin gerçek toplamına (vade farkı dahil) eşitle
+        if installment > 1:
+            _tp = await _installment_total_price(settings, card.get("cardNumber"), float(body.get("paidPrice") or 0), installment)
+            if _tp and _tp > 0:
+                body["paidPrice"] = _fmt(_tp)
+        body_str = json.dumps(body, separators=(",", ":"), ensure_ascii=False)
+        headers = _v2_headers(settings["api_key"], settings["api_secret"], THREEDS_INIT_PATH, body_str)
 
-    if data.get("status") != "success":
-        logger.warning(f"iyzico 3ds init failed order={order_id}: {data.get('errorCode')} {data.get('errorMessage')}")
-        await _record_card_attempt(request, card, order_id, "init_failed")  # A2.6
-        return {"success": False, "error": data.get("errorMessage") or "Ödeme başlatılamadı", "errorCode": data.get("errorCode")}
+        try:
+            async with httpx.AsyncClient(timeout=30) as c:
+                resp = await c.post(f"{settings['base_url']}{THREEDS_INIT_PATH}", content=body_str.encode("utf-8"), headers=headers)
+            data = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {"status": "failure", "errorMessage": resp.text[:300]}
+        except Exception as e:
+            logger.error(f"iyzico 3ds init error: {e}")
+            raise HTTPException(status_code=502, detail=_IYZ_CONN_ERR)  # ayrıntı yalnız logda (INFRA-03)
 
-    await db.orders.update_one(
-        {"id": order_id},
-        {"$set": {
+        if data.get("status") != "success":
+            logger.warning(f"iyzico 3ds init failed order={order_id}: {data.get('errorCode')} {data.get('errorMessage')}")
+            await _record_card_attempt(request, card, order_id, "init_failed")  # A2.6
+            return {"success": False, "error": data.get("errorMessage") or "Ödeme başlatılamadı", "errorCode": data.get("errorCode")}
+        # KÖK SEBEP (müşteri bildirimi): banka 3DS onayından sonra dönüş adımı tarayıcıda
+        # kırılırsa (iOS Safari "adres geçersiz", banka uygulamasına yönlendirme, ağ kopması)
+        # callback bize HİÇ ulaşmıyor. O ana kadar paymentId yalnız callback ile geldiğinden
+        # sipariş "doğrulanamaz" kalıyor ve 15 dakikalık mutabakat işi onu atlıyordu
+        # ("paymentId yok → otomatik doğrulanamaz"). Artık paymentId 3DS BAŞLATMA yanıtından
+        # da saklanır → callback gelmese bile mutabakat iyzico'ya sorup gerçekten çekilmişse
+        # siparişi kurtarabilir, çekilmemişse durum net görünür.
+        _init_pid = str(data.get("paymentId") or "").strip()
+        _set = {
             "iyzico_conversation_id": data.get("conversationId") or order_id,
             "iyzico_return_url": return_url,
             "payment_provider": "iyzico",
             "payment_flow": "3ds",
+            "threeds_started_at": datetime.now(timezone.utc).isoformat(),
             "updated_at": datetime.now(timezone.utc).isoformat(),
-        }},
-    )
-    return {"success": True, "threeDSHtmlContent": data.get("threeDSHtmlContent")}
+        }
+        if _init_pid:
+            # Ödeme HENÜZ tamamlanmadı; bu yalnız doğrulama anahtarıdır. 'iyzico_payment_id'
+            # (ödendi anlamına gelen alan) YAZILMAZ — yalnız mutabakatın kullandığı alan.
+            _set["reconcile_payment_id"] = _init_pid
+            # NOT: 'needs_reconciliation' bayrağı BİLEREK yazılmaz — mutabakat sorgusu zaten
+            # payment_status=pending siparişleri kapsıyor. Bayrak, ödeme hiç tamamlanmasa bile
+            # siparişi 7 gün boyunca 15 dakikada bir iyzico'ya sorulur hâlde bırakırdı.
+        await db.orders.update_one({"id": order_id}, {"$set": _set})
+        # Müşteri banka OTP ekranında: kilit callback'e (veya süre dolumuna) kadar KORUNUR —
+        # bu arada ikinci sekmeden ikinci 3DS başlatılıp iki kez onaylanamaz.
+        _keep_lock = True
+        return {"success": True, "threeDSHtmlContent": data.get("threeDSHtmlContent")}
+    finally:
+        if not _keep_lock:
+            await _release_payment_init_lock(order_id, _lock)
 
 
 @router.api_route("/3ds/callback", methods=["POST", "GET"])
@@ -923,19 +1447,32 @@ async def callback_3ds(request: Request):
                     return_base = _safe_return_base(order.get("iyzico_return_url"), request)
         if order:
             if _resp_certain:
+                # Sonuç iyzico'nun KENDİ auth yanıtından (sunucu-sunucu) → doğrulanmış.
                 ok = await _mark_order_from_payment(order.get("id"), data)
+                # Kesin sonuç alındı: başlatma kilidini bırak (paid → yeni başlatma zaten
+                # reddedilir; başarısız → müşteri hemen yeniden deneyebilsin).
+                await _release_payment_init_lock(order.get("id"))
             else:
                 # Fix 3: cevap belirsiz — 'failed' YAZMA; pending bırak + reconcile bayrağı.
+                # Kilit BIRAKILMAZ (çekim olmuş olabilir; süre dolunca kendiliğinden düşer).
                 await db.orders.update_one(
-                    {"id": order.get("id"), "payment_status": {"$ne": "paid"}},
+                    {"id": order.get("id"), "payment_status": {"$nin": list(_PAID_LIKE_STATUSES)}},
                     {"$set": {"needs_reconciliation": True,
                               "reconcile_payment_id": str(payment_id),
                               "updated_at": datetime.now(timezone.utc).isoformat()}})
     elif order:
-        # Y1: ödenmiş siparişi 'failed'a düşürme — sahte failure callback'i koruması.
-        await db.orders.update_one(
-            {"id": order.get("id"), "payment_status": {"$ne": "paid"}},
-            {"$set": {"payment_status": "failed", "updated_at": datetime.now(timezone.utc).isoformat()}})
+        # GÜVENLİK (denetim 2026-10): bu uç İMZASIZ (tarayıcı üzerinden form POST). Eskiden
+        # buraya gelen her "başarısız" callback siparişi payment_status='failed' yapıyordu →
+        # sipariş id'sini bilen biri sahte failure POST'u ile siparişin ödeme durumunu bozabiliyordu.
+        # Artık DOĞRULANMAMIŞ başarısızlık siparişe YAZILMAZ: sipariş awaiting_payment/pending
+        # kalır; ödeme hiç tamamlanmazsa 3 saatlik auto_cancel_unpaid_card_orders süpürür
+        # (değişmez 4). Gerçek başarısızlık iyzico'nun kendi yanıtıyla (auth/retrieve) yazılır.
+        logger.info(f"[3DS CALLBACK] doğrulanmamış başarısızlık — siparişe yazılmadı order_id={order.get('id')} "
+                    f"status={str(status)[:20]} mdStatus={md[:4]}")
+        # Müşteri hemen yeniden deneyebilsin diye başlatma kilidi bırakılır (yalnız kilit; ödeme
+        # durumuna dokunmaz — en kötü ihtimalle eşzamanlı başlatma kalkanı erken düşer, çift
+        # tahsilat yine _record_duplicate_payment ile yakalanır).
+        await _release_payment_init_lock(order.get("id"))
 
     onum = (order or {}).get("order_number") or ""
     sep = "&" if "?" in return_base else "?"
@@ -947,8 +1484,21 @@ async def callback_3ds(request: Request):
 @(limiter.limit("10/minute") if limiter else (lambda f: f))
 async def card_pay_non3ds(payload: dict, request: Request):
     """3DS'siz doğrudan tahsilat (use3DSecure kapalıysa). Yönlendirme yok.
-    Rate-limited: kart-testi / BIN saldırısı yüzeyini daraltır."""
+    Rate-limited: kart-testi / BIN saldırısı yüzeyini daraltır.
+
+    GÜVENLİK (denetim 2026-10): vitrin (Checkout.jsx) yalnız 3DS akışını kullanır; bu eski
+    3DS'siz uç kart-testi / 3DS atlatma yüzeyidir → VARSAYILAN KAPALI (410). Yalnız İşletme
+    Kuralı `payment.allow_non3ds_card_pay` açıkça True ise çalışır."""
     _ = request
+    try:
+        from business_rules import get_rule as _br_rule
+        _allow_non3ds = (await _br_rule(db, "payment.allow_non3ds_card_pay", False)) is True
+    except Exception:
+        _allow_non3ds = False
+    if not _allow_non3ds:
+        raise HTTPException(status_code=410, detail=(
+            "3D Secure'suz kart ödemesi kapatıldı. Lütfen 3D Secure ile ödeme yapın."))
+    await _assert_card_payments_enabled()  # kill-switch
     order_id = (payload.get("order_id") or "").strip()
     card = payload.get("card") or {}
     installment = int(payload.get("installment") or 1)
@@ -957,39 +1507,50 @@ async def card_pay_non3ds(payload: dict, request: Request):
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
-    if order.get("payment_status") in ("paid", "refunded") or \
+    _assert_payment_capability(order, payload.get("pay_token") or request.headers.get("x-pay-token"))
+    if str(order.get("payment_status") or "").lower() in _PAID_LIKE_STATUSES or \
        order.get("status") in ("confirmed", "shipped", "delivered", "cancelled"):
         raise HTTPException(status_code=400, detail="Bu sipariş için ödeme alınamaz")
+    _pay_gate_expired(order)
 
     await _card_velocity_guard(request, order_id)  # A2.6: kart-testi hız sınırı
-    settings = await _get_iyzico_settings()
-    body = _build_card_payment_payload(order, card, installment, "", is_3ds=False)
-    if installment > 1:
-        _tp = await _installment_total_price(settings, card.get("cardNumber"), float(body.get("paidPrice") or 0), installment)
-        if _tp and _tp > 0:
-            body["paidPrice"] = _fmt(_tp)
-    body_str = json.dumps(body, separators=(",", ":"), ensure_ascii=False)
-    headers = _v2_headers(settings["api_key"], settings["api_secret"], NON3DS_PATH, body_str)
-
+    # Eşzamanlı başlatma kilidi (çift çekim önlemi). Kesin sonuçta (paid/başarısız) bırakılır;
+    # belirsiz sonuçta (timeout — çekim olmuş olabilir) süre dolana dek tutulur.
+    _lock = await _acquire_payment_init_lock(order_id)
+    _keep_lock = False
     try:
-        async with httpx.AsyncClient(timeout=30) as c:
-            resp = await c.post(f"{settings['base_url']}{NON3DS_PATH}", content=body_str.encode("utf-8"), headers=headers)
-        data = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {"status": "failure", "errorMessage": resp.text[:300]}
-    except Exception as e:
-        logger.error(f"iyzico non-3ds error: {e}")
-        # Fix 3: çekim yapılmış OLABİLİR ama cevabı okuyamadık → siparişi 'failed' bırakma,
-        # reconcile bayrağı koy (cron/webhook iyzico'dan doğrulayıp finalize etsin).
-        await db.orders.update_one(
-            {"id": order_id, "payment_status": {"$ne": "paid"}},
-            {"$set": {"needs_reconciliation": True,
-                      "updated_at": datetime.now(timezone.utc).isoformat()}})
-        raise HTTPException(status_code=502, detail=f"iyzico bağlantı hatası: {e}")
+        settings = await _get_iyzico_settings()
+        body = _build_card_payment_payload(order, card, installment, "", is_3ds=False)
+        if installment > 1:
+            _tp = await _installment_total_price(settings, card.get("cardNumber"), float(body.get("paidPrice") or 0), installment)
+            if _tp and _tp > 0:
+                body["paidPrice"] = _fmt(_tp)
+        body_str = json.dumps(body, separators=(",", ":"), ensure_ascii=False)
+        headers = _v2_headers(settings["api_key"], settings["api_secret"], NON3DS_PATH, body_str)
 
-    paid = await _mark_order_from_payment(order_id, data)
-    await _record_card_attempt(request, card, order_id, "success" if paid else "auth_failed")  # A2.6
-    if paid:
-        return {"success": True, "order_number": order.get("order_number")}
-    return {"success": False, "error": data.get("errorMessage") or "Ödeme başarısız", "errorCode": data.get("errorCode")}
+        try:
+            async with httpx.AsyncClient(timeout=30) as c:
+                resp = await c.post(f"{settings['base_url']}{NON3DS_PATH}", content=body_str.encode("utf-8"), headers=headers)
+            data = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {"status": "failure", "errorMessage": resp.text[:300]}
+        except Exception as e:
+            logger.error(f"iyzico non-3ds error: {e}")
+            # Fix 3: çekim yapılmış OLABİLİR ama cevabı okuyamadık → siparişi 'failed' bırakma,
+            # reconcile bayrağı koy (cron/webhook iyzico'dan doğrulayıp finalize etsin).
+            _keep_lock = True
+            await db.orders.update_one(
+                {"id": order_id, "payment_status": {"$nin": list(_PAID_LIKE_STATUSES)}},
+                {"$set": {"needs_reconciliation": True,
+                          "updated_at": datetime.now(timezone.utc).isoformat()}})
+            raise HTTPException(status_code=502, detail=_IYZ_CONN_ERR)  # ayrıntı yalnız logda (INFRA-03)
+
+        paid = await _mark_order_from_payment(order_id, data)
+        await _record_card_attempt(request, card, order_id, "success" if paid else "auth_failed")  # A2.6
+        if paid:
+            return {"success": True, "order_number": order.get("order_number")}
+        return {"success": False, "error": data.get("errorMessage") or "Ödeme başarısız", "errorCode": data.get("errorCode")}
+    finally:
+        if not _keep_lock:
+            await _release_payment_init_lock(order_id, _lock)
 
 
 
@@ -1135,12 +1696,16 @@ async def iyzico_webhook(request: Request):
 
     # Henüz paid değilse webhook verisine körü körüne güvenme — iyzico'dan
     # retrieve ile doğrulayıp finalize et (bildirim + CAPI purchase içeride tetiklenir).
+    # DENETİM 2026-10: finalize İSTİSNA/BELİRSİZLİKLE biterse 200 DÖNMEYİZ — 500 dönülür ki
+    # iyzico (imzası doğrulanmış) bildirimi yeniden denesin; aksi halde çekilmiş ödeme yalnız
+    # 15 dk'lık mutabakat cron'una kalıyordu. Kesin sonuç (paid ya da doğrulanmış başarısız) → 200.
     if (order.get("payment_status") or "") != "paid":
         if token:
             try:
                 await _retrieve_and_finalize(token)          # hosted Checkout Form akışı
             except Exception as e:
                 logger.warning(f"iyzico webhook finalize hata order={order.get('id')}: {e}")
+                raise HTTPException(status_code=500, detail="finalize-retry")
         else:
             # Fix 1: 3DS/kart akışında hosted token YOK → paymentId ile finalize et.
             # Bu, callback'e ulaşamayan (sekme kapandı vb.) çekilmiş siparişleri kurtarır.
@@ -1148,9 +1713,10 @@ async def iyzico_webhook(request: Request):
                        or payload.get("iyziReferenceCode") or "").strip()
             if _pid:
                 try:
-                    await _finalize_by_payment_id(order["id"], _pid)
+                    await _finalize_by_payment_id(order["id"], _pid, raise_on_uncertain=True)
                 except Exception as e:
                     logger.warning(f"iyzico webhook paymentId finalize hata order={order.get('id')}: {e}")
+                    raise HTTPException(status_code=500, detail="finalize-retry")
 
     # Paid ise purchase'ı garanti et (daha önce gittiyse no-op)
     fresh = await db.orders.find_one({"id": order["id"]}, {"_id": 0, "payment_status": 1})

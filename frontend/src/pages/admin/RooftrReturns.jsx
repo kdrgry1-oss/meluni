@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, Fragment } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import RefundBankBox from "../../components/admin/RefundBankBox";
 import { RefreshCw, Search, ChevronDown, ChevronUp, CreditCard, Banknote, Truck, Package, Download, CheckCircle, XCircle, FileText, Trash2 } from "lucide-react";
 import MultiSelect from "../../components/admin/MultiSelect";
 
@@ -13,6 +14,15 @@ const BACKEND = process.env.REACT_APP_BACKEND_URL;
 // (ör. 4001.38 yerine 3801.31 olmalı). Ödeme indirimi olmayan siparişte payment_discount=0 →
 // davranış birebir aynı kalır.
 const _effDisc = (r) => (Number(r?.discount) || 0) + (Number(r?.payment_discount) || 0);
+
+// Per-ürün indirim: sipariş kalemlerinde DONMUŞ indirim varsa (row.frozen_item_discounts — checkout'ta
+// kampanya kapsamına göre yazıldı, kapsam-dışı ürün 0) o kalemin it.discount değerini kullan; yoksa
+// (eski sipariş) sipariş toplam indirimini düz-oransal (g × drFallback) dağıt. W11214 kök çözümü.
+const _itemDisc = (row, it, drFallback) => {
+  if (row && row.frozen_item_discounts) return Number(it?.discount) || 0;
+  const g = (Number(it?.qty ?? it?.quantity) || 1) * (Number(it?.price) || 0);
+  return g * (Number(drFallback) || 0);
+};
 
 // TÜM sipariş durumları — order_statuses.py kataloğuyla birebir (iade sayfasında da hepsi seçilebilir)
 const STATUS_OPTS = [
@@ -70,7 +80,10 @@ const fmtDate = (s) => {
   catch { return String(s).slice(0, 10); }
 };
 
-export default function RooftrReturns({ embedded = false, gpStart = "085490", onGiderCreated, onBulkGider }) {
+export default function RooftrReturns({ embedded = false, gpStart = "085490", onGiderCreated, onBulkGider,
+  // ÜSTTEKİ TARİH FİLTRESİ: panelde tarih seçilince alttaki liste DEĞİŞMİYORDU —
+  // bu bileşen tarih parametresi hiç almıyordu. Artık liste ve Excel aynı aralığı kullanır.
+  dateFrom = "", dateTo = "" }) {
   const [rows, setRows] = useState([]);
   // Tarih kolonuna göre sıralama: Sipariş Tarihi / İade Onay-Ret / İade Ödeme.
   // dir "desc" = en yeni üstte. Aynı başlığa tekrar tıklayınca yön değişir.
@@ -169,6 +182,8 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
       if (statusFilter) params.append("status", statusFilter);
       if (paymentFilter) params.append("payment", paymentFilter);
       if (debounced) params.append("search", debounced);
+      if (dateFrom) params.append("start_date", dateFrom);
+      if (dateTo) params.append("end_date", dateTo);
       params.append("limit", "10000");   // TÜMÜNÜ çek → client-side sırala + sayfala
       const res = await axios.get(`${API}/admin/rooftr/return-orders?${params}`, auth());
       setRows(res.data.orders || []);
@@ -183,7 +198,7 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
     } finally {
       setLoading(false);
     }
-  }, [statusFilter, paymentFilter, debounced]);
+  }, [statusFilter, paymentFilter, debounced, dateFrom, dateTo]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -253,6 +268,8 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
       if (statusFilter) params.append("status", statusFilter);
       if (paymentFilter) params.append("payment", paymentFilter);
       if (debounced) params.append("search", debounced);
+      if (dateFrom) params.append("start_date", dateFrom);
+      if (dateTo) params.append("end_date", dateTo);
       const res = await fetch(`${API}/admin/rooftr/return-orders/export?${params.toString()}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -261,7 +278,11 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "iade-siparisleri.xlsx";
+      // Dosya adı hangi aralığın indirildiğini taşısın — aynı klasörde
+      // birbirine karışan "iade-siparisleri.xlsx" yığını olmasın.
+      a.download = (dateFrom || dateTo)
+        ? `iade-web-sitesi_${dateFrom || "bas"}_${dateTo || "bitis"}.xlsx`
+        : "iade-web-sitesi.xlsx";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -354,7 +375,7 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
       const _base = Number(row.subtotal) || 0;
       const _dr = (_base > 0 && _effDisc(row) > 0) ? Math.min(1, _effDisc(row) / _base) : 0;
       const selAmount = isPartialSelection ? Math.round(selIdx.reduce(
-        (a, i) => a + (Number(row.items[i].qty) || 1) * (Number(row.items[i].price) || 0) * (1 - _dr), 0
+        (a, i) => a + ((Number(row.items[i].qty) || 1) * (Number(row.items[i].price) || 0) - _itemDisc(row, row.items[i], _dr)), 0
       ) * 100) / 100 : 0;
       const returnedNet = selAmount > 0 ? selAmount : null;
       // Kısmi onayda seçilen kalemler backend'e KİMLİKLERİYLE gönderilir (approve kaydına
@@ -375,6 +396,9 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
       } catch { /* önizleme alınamazsa modal yine açılır */ }
       setWf({
         row, returnId, status: br.data?.status || "created", fault,
+        // Sunucunun karar gerçeği: gerçek approval/rejection nesnesi ya da kapanmış durum.
+        // Çıplak status="approved" (kalem onayı yok) decided=false döner → onaylanabilir.
+        decided: br.data?.decided, decision: br.data?.decision || null,
         preview, returnedNet,
         selIdx: isPartialSelection ? selIdx : [], selIdents,
         finalAmount: preview ? preview.auto_refund : (returnedNet ?? 0),
@@ -416,7 +440,31 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
       toast.success(`İade onaylandı · ${fmtTL(res.data?.refund_amount)}`);
       setWf((m) => ({ ...m, status: "approved", loading: false }));
       load();
-    } catch (e) { toast.error(e.response?.data?.detail || "Onaylanamadı"); setWf((m) => ({ ...m, loading: false })); }
+    } catch (e) {
+      const det = e.response?.data?.detail || "";
+      // ZATEN KAPANMIŞ/ONAYLI iade: /approve bloke eder. Operatör yine de TUTARI düzenlemek
+      // istiyor → /update-approval'a düş (statü/stok değişmez, gider pusulası YENİ tutara göre
+      // yeniden kesilir). Böylece "kapanmış; onaylanamaz" hatası yerine düzenleme uygulanır.
+      if (/kapanm/i.test(det)) {
+        try {
+          const ub = { include_cargo: wf.fault === "customer" };
+          if (wf.edited) ub.refund_amount = Number(wf.finalAmount);
+          if (wf.returnedNet != null) ub.returned_net = wf.returnedNet;
+          if (wf.selIdx?.length) { ub.item_indexes = wf.selIdx; ub.selected_items = wf.selIdents || []; }
+          const res2 = await axios.post(`${API}/orders/returns/${wf.returnId}/update-approval`, ub, auth());
+          toast.success(`İade tutarı güncellendi · ${fmtTL(res2.data?.refund_amount)}${res2.data?.gp_regenerated ? " · gider pusulası yenilendi" : ""}`);
+          setWf((m) => ({ ...m, status: "approved", loading: false }));
+          load();
+          return;
+        } catch (e2) {
+          toast.error(e2.response?.data?.detail || "Güncellenemedi");
+          setWf((m) => ({ ...m, loading: false }));
+          return;
+        }
+      }
+      toast.error(det || "Onaylanamadı");
+      setWf((m) => ({ ...m, loading: false }));
+    }
   };
   const wfReject = async () => {
     if (!wf) return;
@@ -458,7 +506,7 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
       // oranında orantılı vade farkını TEK KAYNAKTAN ekler (çift sayım önlenir). Buradan yalnız
       // ürün neti gönderilir; initial-approve akışıyla (satır ~349) birebir aynı formül.
       const selAmount = isPartialSelection ? Math.round(selIdx.reduce(
-        (a, i) => a + (Number(r.items[i].qty) || 1) * (Number(r.items[i].price) || 0) * (1 - _dr), 0
+        (a, i) => a + ((Number(r.items[i].qty) || 1) * (Number(r.items[i].price) || 0) - _itemDisc(r, r.items[i], _dr)), 0
       ) * 100) / 100 : null;
       const selIdents = selIdx.map((i) => r.items[i]).filter(Boolean)
         .map((it) => ({ barcode: it.barcode || "", name: it.name || "", size: it.size || "", color: it.color || "" }));
@@ -596,11 +644,23 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
   const wfCanAct = can("returns.approve") || can("returns.reject") || can("returns.expense_note") || can("returns.refund_pay");
 
   // Bu iade daha önce karara bağlandı mı? (modal'da Onayla/Reddet'i soluklaştırmak için)
+  // YALNIZ iade KAYDININ (customer_returns, /open'dan gelen wf.status) durumu esas alınır.
+  // Sipariş durumu (return_approved/refunded/return_rejected) TEK BAŞINA karar sayılmaz:
+  // sessiz durum düzeltmesi / pazaryeri senkronu siparişi 'onaylı' gösterirken kayıt 'created'
+  // kalıyordu → pencere "Bu iade onaylanmış; tekrar işlem yapılamaz" deyip kalem onayını
+  // engelliyordu (W11262). Kayıt 'created' ise karar verilebilir.
+  // Öncelik: sunucunun /open'da döndürdüğü `decided` (gerçek karar nesnesi var mı). Yoksa
+  // (eski backend) kayıt durumuna düşülür. Çıplak "approved" bayrağı → decided=false → aktif.
   const wfDecided = wf
-    ? ((wf.status === "approved" || ["return_approved", "refunded", "partial_refunded"].includes(wf.row.status))
-        ? "approved"
-        : (wf.row.status === "return_rejected" ? "rejected" : null))
+    ? (typeof wf.decided === "boolean"
+        ? (wf.decided ? ((wf.decision?.kind === "rejected") ? "rejected" : "approved") : null)
+        : (["refunded", "partial_refunded"].includes(wf.status)
+            ? "approved"
+            : (["rejected", "return_rejected"].includes(wf.status) ? "rejected" : null)))
     : null;
+  const wfDecisionInfo = (wf && wf.decision && (wf.decision.by || wf.decision.at))
+    ? ` (${wf.decision.by || "?"}${wf.decision.at ? ", " + new Date(wf.decision.at).toLocaleString("tr-TR") : ""})`
+    : "";
 
   return (
     <div className={embedded ? "" : "p-4"}>
@@ -737,7 +797,11 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                       <div className="text-gray-800">{r.customer_name}</div>
                       {r.phone && <div className="text-xs text-gray-400">{r.phone}</div>}
                     </td>
-                    <td className="px-3 py-2.5 text-xs text-gray-600 max-w-[140px] truncate" title={r.reason || ""}>{r.reason || "—"}</td>
+                    <td className="px-3 py-2.5 text-xs text-gray-600 max-w-[200px]">
+                      <div className="truncate" title={r.reason || ""}>{r.reason || "—"}</div>
+                      {/* Havale iadesi → para bu hesaba gönderilir (müşteri iade talebinde girdi) */}
+                      <RefundBankBox info={r.refund_bank_info} />
+                    </td>
                     <td className="px-3 py-2.5">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs border ${r.payment_method === "credit_card" ? "bg-blue-100 text-blue-700 border-blue-200" : r.payment_method === "bank_transfer" ? "bg-purple-100 text-purple-700 border-purple-200" : "bg-gray-100 text-gray-700 border-gray-200"}`}>
                         {payIcon(r.payment_method)} {r.payment_label}
@@ -857,15 +921,18 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                                     const g = (Number(it.qty) || 1) * (Number(it.price) || 0);
                                     const dr = (Number(r.subtotal) > 0 && _effDisc(r) > 0)
                                       ? Math.min(1, _effDisc(r) / Number(r.subtotal)) : 0;
-                                    const dShare = g * dr;
+                                    const dShare = _itemDisc(r, it, dr);
+                                    const drShow = g > 0 ? dShare / g : dr;
                                     const netAfterDisc = g - dShare;
                                     // TABAN, backend ile BİREBİR AYNI olmalı (orders._compute_refund_breakdown
                                     // ve gider pusulası): ürünlerin NET toplamı = subtotal − indirim.
                                     // Eskiden r.total kullanılıyordu; kargo order.total'ın içinde olduğundan
                                     // kargolu siparişte pay küçük çıkıp panel ile onay modalı ayrışıyordu.
-                                    const vadeBase = (Number(r.subtotal) > 0)
-                                      ? Math.max(0, Number(r.subtotal) - _effDisc(r))
-                                      : Number(r.total) || 0;
+                                    // iyzico ile BİREBİR: vade farkı kargo DAHİL tüm kalemlere orantılı
+                                    // dağıtılır → taban r.total (ürün neti + kargo). W11676: 890 × 3.147,82/2.789 = 1.004,50.
+                                    const vadeBase = (Number(r.total) > 0)
+                                      ? Number(r.total)
+                                      : Math.max(0, Number(r.subtotal) - _effDisc(r));
                                     const vadeRatio = (Number(r.vade_farki) > 0 && vadeBase > 0)
                                       ? Number(r.vade_farki) / vadeBase : 0;
                                     const vadeShare = netAfterDisc * vadeRatio;
@@ -874,9 +941,9 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                                     if (!hasDisc && !hasVade) return <span className="font-semibold whitespace-nowrap">{fmtTL(g)}</span>;
                                     return (
                                       <span className="whitespace-nowrap inline-flex items-center gap-2"
-                                        title={`Brüt ${fmtTL(g)}${hasDisc ? ` · indirim −${fmtTL(dShare)}` : ""}${hasVade ? ` · vade farkı +${fmtTL(vadeShare)}` : ""} · net ${fmtTL(net)}`}>
+                                        title={`Brüt ${fmtTL(g)}${hasDisc ? ` · indirim (kampanya + ödeme indirimi) −${fmtTL(dShare)} = bu ürüne uygulanan indirim (%${(drShow * 100).toFixed(1).replace(".", ",")})` : ""}${hasVade ? ` · vade farkı +${fmtTL(vadeShare)} (kargo dahil orantılı, iyzico ile aynı oran)` : ""} · net ${fmtTL(net)}`}>
                                         {hasDisc && <span className="text-gray-400 line-through">{fmtTL(g)}</span>}
-                                        {hasDisc && <span className="text-orange-600">−{fmtTL(dShare)} <span className="text-[10px]">(%{(dr * 100).toFixed(0)})</span></span>}
+                                        {hasDisc && <span className="text-orange-600">−{fmtTL(dShare)} <span className="text-[10px]">(%{(drShow * 100).toFixed(1).replace(".", ",")})</span></span>}
                                         {hasVade && <span className="text-amber-600">+{fmtTL(vadeShare)} <span className="text-[10px]">vade</span></span>}
                                         {/* Taksitli siparişte kalem tutarı vade farkını İÇERİR — operatör
                                             "bu rakama vade farkı dahil mi?" diye tereddüt etmesin. */}
@@ -911,16 +978,18 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                           // net = subtotal − indirim (kargo HARİÇ). Eskiden r.total (kargo DAHİL) idi →
                           // kargolu taksitli siparişte İade net tutarı ürün satırından/gerçek iadeden DÜŞÜK
                           // çıkıyordu (panel önizlemesi ile gerçekte iade edilen tutar ayrışması).
-                          const _vadeBase = (Number(r.subtotal) > 0)
-                            ? Math.max(0, Number(r.subtotal) - _effDisc(r))
-                            : Number(r.total) || 0;
+                          // iyzico ile BİREBİR: taban r.total (kargo DAHİL) — kargonun kendi vade payı
+                          // kargo iadesine eklenir (aşağıda _shipVade).
+                          const _vadeBase = (Number(r.total) > 0)
+                            ? Number(r.total)
+                            : Math.max(0, Number(r.subtotal) - _effDisc(r));
                           const vadeRatio = (Number(r.vade_farki) > 0 && _vadeBase > 0)
                             ? Number(r.vade_farki) / _vadeBase : 0;
                           let selNet = 0, selN = 0;
                           (r.items || []).forEach((it, i) => {
                             if (!selItems[`${r.id}::${i}`]) return;
                             selN += 1;
-                            selNet += ((Number(it.qty) || 1) * (Number(it.price) || 0)) * (1 - dr) * (1 + vadeRatio);
+                            selNet += (((Number(it.qty) || 1) * (Number(it.price) || 0)) - _itemDisc(r, it, dr)) * (1 + vadeRatio);
                           });
                           const totalItems = (r.items || []).length;
                           const isFullSel = totalItems > 0 && selN >= totalItems;
@@ -930,11 +999,13 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                           // müşteriden kesiliyse (cargoSel) DÜŞÜLÜR. Kısmi iadede kargo otomatik iade
                           // edilmez (yalnız 'kargoyu müşteriden kes' ile mahsup).
                           const _ship = Number(r.shipping_cost) || 0;
+                          // Ödenmiş kargonun iyzico'daki karşılığı: kargo × (1 + vade oranı) (W11676: 99 → 111,74).
+                          const _shipVade = Math.round(_ship * (1 + vadeRatio) * 100) / 100;
                           const productNet = isFullSel
-                            ? Math.max(0, (Number(r.charged_total) || Number(r.total) || selNet) - _ship)
+                            ? Math.max(0, (Number(r.charged_total) || Number(r.total) || selNet) - _shipVade)
                             : selNet;
                           const _cargoDeduct = !!cargoSel[r.id];
-                          const cargoRefund = (isFullSel && _ship > 0 && !_cargoDeduct) ? _ship : 0;
+                          const cargoRefund = (isFullSel && _ship > 0 && !_cargoDeduct) ? _shipVade : 0;
                           const cargoDeducted = _cargoDeduct ? _ship : 0;
                           const total = Math.max(0, productNet + cargoRefund - cargoDeducted);
                           return (
@@ -982,12 +1053,12 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                           const _base = Number(r.subtotal);
                           const dr = (_base > 0 && _effDisc(r) > 0) ? Math.min(1, _effDisc(r) / _base) : 0;
                           // Vade farkı payı tabanı backend/ürün satırıyla BİREBİR: subtotal − (indirim + havale).
-                          const _vadeBase = (_base > 0) ? Math.max(0, _base - _effDisc(r)) : Number(r.total) || 0;
+                          const _vadeBase = (Number(r.total) > 0) ? Number(r.total) : Math.max(0, _base - _effDisc(r));
                           const vadeRatio = (Number(r.vade_farki) > 0 && _vadeBase > 0)
                             ? Number(r.vade_farki) / _vadeBase : 0;
                           let retNet = 0, anySel = false;
                           (r.items || []).forEach((it, i) => {
-                            if (selItems[`${r.id}::${i}`]) { anySel = true; retNet += ((Number(it.qty) || 1) * (Number(it.price) || 0)) * (1 - dr) * (1 + vadeRatio); }
+                            if (selItems[`${r.id}::${i}`]) { anySel = true; retNet += (((Number(it.qty) || 1) * (Number(it.price) || 0)) - _itemDisc(r, it, dr)) * (1 + vadeRatio); }
                           });
                           const orderNet = Number(r.total) || 0;
                           const keptNet = Math.max(0, orderNet - retNet);
@@ -1111,13 +1182,20 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                           </div>
                         )}
                         {wfCanAct && (() => {
-                          // Bu iade ZATEN onaylandı mı? (durum onay/iade/refund VEYA onay damgası
-                          // VEYA gider pusulası kesilmiş). Onaylıysa yeşil "İade Onay" tekrar bastırmaz;
-                          // soluk/pasif "İade Onaylandı" gösterilir (karışıklık gitsin).
-                          const rowApproved = ["return_approved", "returned", "refunded", "partial_refunded"].includes(r.status)
-                            || !!r.return_approved_at || !!r.has_gider_pusulasi || !!r.gider_pusulasi_no;
+                          // KALEM ONAYI gerçekten yapılmış mı? Yalnız iade KAYDI (items_approved) ve
+                          // kesilmiş gider pusulası kilitler. Sipariş durumu (return_approved/returned…)
+                          // veya return_approved_at damgası TEK BAŞINA onay sayılmaz: sessiz durum
+                          // düzeltmesi / pazaryeri senkronu siparişi 'onaylı' gösterirken kalem onayı hiç
+                          // yapılmamış olabiliyordu → "bu iade zaten onaylanmış" deyip onaylatmıyordu (W11262).
+                          const rowApproved = (r.items_approved === true) || !!r.has_gider_pusulasi || !!r.gider_pusulasi_no;
+                          const orderLooksApproved = ["return_approved", "returned", "refunded", "partial_refunded"].includes(r.status) || !!r.return_approved_at;
                           return (
                           <div className="mt-3">
+                            {!rowApproved && orderLooksApproved && can("returns.approve") && (
+                              <div className="mb-2 text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-md px-2.5 py-1.5">
+                                Sipariş durumu iade-onaylı görünüyor ama <b>kalem onayı yapılmamış</b>. Gelen ürünleri seçip "İade Onay" ile onaylayın (stok ve gider pusulası buna göre işlenir).
+                              </div>
+                            )}
                             <div className="flex flex-wrap gap-2">
                               {can("returns.approve") && (rowApproved ? (
                                 <span
@@ -1262,7 +1340,7 @@ export default function RooftrReturns({ embedded = false, gpStart = "085490", on
                       className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold cursor-not-allowed ${wfDecided === "rejected" ? "bg-rose-600 text-white opacity-80" : "bg-gray-200 text-gray-400 opacity-60"}`}>
                       {wfDecided === "rejected" && <XCircle size={14} />} {wfDecided === "rejected" ? "Reddedildi" : "Reddet"}
                     </button>
-                    <span className="text-[11px] text-gray-500">Bu iade {wfDecided === "approved" ? "onaylanmış" : "reddedilmiş"}; tekrar işlem yapılamaz.</span>
+                    <span className="text-[11px] text-gray-500">Bu iade {wfDecided === "approved" ? "onaylanmış" : "reddedilmiş"}{wfDecisionInfo}; tekrar işlem yapılamaz. Kalem/tutar değişikliği için listedeki "Düzenle"yi kullanın.</span>
                   </>
                 ) : (
                   <>

@@ -19,6 +19,14 @@ export default function GuestReturn() {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [ret, setRet] = useState(null);
+  // Havale/EFT iadesinde para banka hesabına döner → IBAN + ad soyad ZORUNLU.
+  const [refundIban, setRefundIban] = useState("");
+  const [refundName, setRefundName] = useState("");
+  const [refundBank, setRefundBank] = useState("");
+  const isHavale = !!order && ["bank_transfer", "havale", "eft", "bank"].includes(
+    String(order.payment_method || "").toLowerCase());
+  const ibanClean = refundIban.replace(/\s/g, "").toUpperCase();
+  const ibanValid = /^TR\d{24}$/.test(ibanClean);
 
   const lookup = async (e) => {
     e?.preventDefault?.();
@@ -28,11 +36,17 @@ export default function GuestReturn() {
       return toast.error("Doğrulama için e-posta veya telefon giriniz");
     try {
       setLoading(true);
-      const o = await axios.get(`${API}/orders/by-number/${encodeURIComponent(on)}`);
+      // Denetim #27: sipariş ayrıntısı yalnız siparişteki e-posta/telefonla doğrulanınca gelir.
+      const o = await axios.get(`${API}/orders/by-number/${encodeURIComponent(on)}`,
+        { headers: { "X-Order-Contact": email.trim() || phone.trim() } });
       setOrder(o.data);
       setStep("form");
     } catch (err) {
-      toast.error(err.response?.status === 404 ? "Sipariş bulunamadı" : "Sipariş getirilemedi");
+      const st = err.response?.status;
+      toast.error(st === 404 ? "Sipariş bulunamadı"
+        : st === 403 ? "Girdiğiniz bilgiler sipariş kayıtları ile eşleşmiyor."
+        : st === 429 ? "Çok fazla hatalı deneme. Lütfen 1 saat sonra tekrar deneyin."
+        : "Sipariş getirilemedi");
     } finally {
       setLoading(false);
     }
@@ -43,6 +57,10 @@ export default function GuestReturn() {
   const submit = async () => {
     const idxs = Object.keys(selected).filter((k) => selected[k]).map(Number);
     if (!reasonCode) { toast.error("Lütfen bir iade sebebi seçin"); return; }
+    if (isHavale) {
+      if (!ibanValid) { toast.error("Geçerli bir IBAN girin (TR ile başlayan 26 haneli)"); return; }
+      if (!refundName.trim()) { toast.error("IBAN sahibinin ad soyadını girin"); return; }
+    }
     const reason = reasonCode === "Diğer"
       ? (reasonDetail.trim() ? `Diğer: ${reasonDetail.trim()}` : "Diğer")
       : reasonCode;
@@ -50,7 +68,10 @@ export default function GuestReturn() {
       setSubmitting(true);
       const res = await axios.post(
         `${API}/orders/by-number/${encodeURIComponent(orderNumber.trim())}/return-request`,
-        { items: idxs, reason, reason_code: reasonCode, email: email.trim(), phone: phone.trim() }
+        {
+          items: idxs, reason, reason_code: reasonCode, email: email.trim(), phone: phone.trim(),
+          ...(isHavale ? { refund_iban: ibanClean, refund_name: refundName.trim(), refund_bank: refundBank.trim() } : {}),
+        }
       );
       if (res.data?.return) {
         setRet(res.data.return);
@@ -213,9 +234,37 @@ export default function GuestReturn() {
               />
             )}
 
+            {/* Havale/EFT iadesi → para banka hesabına döner: IBAN + ad soyad ZORUNLU */}
+            {isHavale && (
+              <div className="border border-gray-200 bg-gray-50 p-4 mb-4 space-y-3" data-testid="guest-return-refund-bank">
+                <p className="text-[12px] text-gray-600 leading-relaxed">
+                  Ödemenizi <b>Havale/EFT</b> ile yaptığınız için iade tutarı <b>banka hesabınıza</b> gönderilecektir.
+                  Lütfen IBAN ve hesap sahibi bilgilerini eksiksiz girin.
+                </p>
+                <div>
+                  <label className="block text-xs uppercase tracking-[0.15em] text-gray-500 mb-1">IBAN <span className="text-red-600">*</span></label>
+                  <input value={refundIban} onChange={(e) => setRefundIban(e.target.value.toUpperCase())}
+                    placeholder="TR00 0000 0000 0000 0000 0000 00" autoComplete="off" data-testid="guest-return-iban"
+                    className={`w-full border p-3 text-sm bg-white focus:outline-none font-mono tracking-wide ${refundIban && !ibanValid ? "border-red-400 focus:border-red-500" : "border-gray-200 focus:border-gray-500"}`} />
+                  {refundIban && !ibanValid && <p className="text-[11px] text-red-600 mt-1">IBAN TR ile başlamalı ve 26 haneli olmalı.</p>}
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-[0.15em] text-gray-500 mb-1">IBAN Sahibi Ad Soyad <span className="text-red-600">*</span></label>
+                  <input value={refundName} onChange={(e) => setRefundName(e.target.value)} placeholder="Hesap sahibinin adı soyadı"
+                    autoComplete="name" data-testid="guest-return-iban-name"
+                    className="w-full border border-gray-200 p-3 text-sm bg-white focus:outline-none focus:border-gray-500" />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-[0.15em] text-gray-500 mb-1">Banka <span className="text-gray-400 normal-case tracking-normal">(opsiyonel)</span></label>
+                  <input value={refundBank} onChange={(e) => setRefundBank(e.target.value)} placeholder="Örn. Ziraat Bankası"
+                    className="w-full border border-gray-200 p-3 text-sm bg-white focus:outline-none focus:border-gray-500" />
+                </div>
+              </div>
+            )}
+
             <button
               onClick={submit}
-              disabled={submitting || !reasonCode}
+              disabled={submitting || !reasonCode || (isHavale && (!ibanValid || !refundName.trim()))}
               className="w-full bg-black text-white py-3 text-xs uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors disabled:opacity-40"
             >
               {submitting ? "Oluşturuluyor…" : "İade Talebi Oluştur"}

@@ -1,0 +1,53 @@
+.full-look-page{background:#fff;color:#20201e;min-height:60vh}
+.full-look-heading{max-width:1500px;margin:auto;padding:48px 32px 30px;border-bottom:1px solid #e5e3df}
+.full-look-heading h1{font-size:clamp(28px,4vw,48px);font-weight:400;letter-spacing:.08em;text-transform:uppercase;margin:0}
+.full-look-heading p{max-width:650px;margin:14px 0 0;color:#686761;font-size:14px;line-height:1.7}
+.full-look-flow{max-width:1500px;margin:auto;container-type:inline-size}
+.full-look-section{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);padding:40px 32px 56px;border-bottom:1px solid #e5e3df;align-items:start}
+.full-look-hero{position:sticky;top:88px;background:#fff;min-width:0}
+.full-look-section{scroll-margin-top:84px}
+.full-look-section{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+.full-look-hero>img{width:100%;height:auto;object-fit:contain;display:block;background:#fff}
+.full-look-label{color:#20201e;font-weight:600}
+.full-look-selection{scroll-margin-top:88px}
+.full-look-placeholder{aspect-ratio:2/3;display:grid;place-content:center;text-align:center;color:#777;padding:20px}
+.full-look-caption{padding:4px 0 24px}
+.full-look-caption-meta{display:flex;justify-content:space-between;gap:10px;font-size:10px;letter-spacing:.16em;color:#78766f}
+.full-look-caption h2{font-size:22px;font-weight:400;line-height:1.3;margin:10px 0 0}
+.full-look-products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 18px}
+.full-look-product{display:block;color:inherit;text-decoration:none;min-width:0}
+.full-look-product-image{aspect-ratio:3/4;background:#f5f4f1;overflow:hidden;display:grid;place-items:center}
+.full-look-product-image img{width:100%;height:100%;object-fit:contain;transition:transform .3s ease}
+a.full-look-product:hover img{transform:scale(1.025)}
+a.full-look-product:focus-visible{outline:2px solid #292824;outline-offset:5px}
+.full-look-product h3{font-size:12px;line-height:1.5;font-weight:400;margin:10px 0 5px}
+.full-look-product-action{display:none}
+.full-look-price{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;margin:0}.full-look-price del{color:#888}.full-look-price span{font-weight:500}
+.full-look-empty-products{padding:30px 0;font-size:13px;color:#777}
+.full-look-editor-preview{max-width:100%;background:white;border:1px solid #e5e3df;border-radius:8px;overflow:hidden}
+.full-look-editor-preview .full-look-section{padding:18px;gap:20px;border-bottom:0}
+.full-look-editor-preview .full-look-caption{padding-bottom:14px}.full-look-editor-preview .full-look-caption h2{font-size:18px}
+.full-look-editor-preview .full-look-products{gap:16px 12px}
+.full-look-editor-preview.is-mobile{max-width:390px;margin:auto}.full-look-editor-preview.is-mobile .full-look-section{grid-template-columns:1fr}
+@media(max-width:640px){.full-look-heading{padding:26px 20px 24px;border-bottom:0}.full-look-heading h1{font-size:27px;letter-spacing:.12em}.full-look-heading p{font-size:13px;margin-top:10px}}
+/* Container sizing also gives the admin's 390px preview the real mobile layout. */
+@container (max-width:640px){
+  .full-look-section,.full-look-editor-preview .full-look-section{grid-template-columns:1fr;padding:0 0 24px;gap:0;border-bottom:1px solid #e5e3df;margin-bottom:0}
+  .full-look-section:last-child{border-bottom:0}
+  .full-look-hero>img{max-height:none;width:100%;height:auto;object-fit:contain}
+  .full-look-hero{position:relative;top:auto}
+  .full-look-selection{padding:24px 16px 0;min-width:0;max-width:100%;overflow-x:hidden}
+  .full-look-caption,.full-look-editor-preview .full-look-caption{padding:0 0 18px}
+  .full-look-caption-meta{font-size:10px;letter-spacing:.13em;align-items:center}
+  .full-look-caption h2{font-size:21px;line-height:1.4;margin-top:12px}
+  .full-look-products,.full-look-editor-preview .full-look-products{gap:26px 12px}
+  .full-look-product h3{font-size:13px;line-height:1.5;min-height:39px;margin:12px 0 6px;overflow-wrap:anywhere}
+  .full-look-price{font-size:13px;gap:5px 8px;line-height:1.6;align-items:baseline;font-variant-numeric:tabular-nums}
+  .full-look-price del{font-size:11px}
+  .full-look-price span{font-weight:500}
+  .full-look-product-action{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #e7e5e0;padding:10px 0 0;margin-top:12px;font-size:11px;color:#605e57}
+}
+@media(prefers-reduced-motion:reduce){.full-look-product-image img{transition:none}}
+/* Site standart ürün kartı (ProductCard) ile: kart kendi görsel/fiyat/rozet/beden düzenini getirir */
+.full-look-products--cards{gap:28px 16px;align-items:start}
+.full-look-product-card{min-width:0}

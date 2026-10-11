@@ -14,7 +14,11 @@ import {
   LayoutDashboard, ShoppingCart, Package, TrendingUp, Factory, PenTool,
   Users, Megaphone, FileText, Cable, Settings,
 } from "lucide-react";
-import { TRAINING, trainingSearchIndex } from "../../lib/trainingContent";
+import { TRAINING } from "../../lib/trainingContent";
+import {
+  TRAINING_CONTENT_VERSION,
+  mergeTrainingUpdates,
+} from "../../lib/trainingUpdates";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const authHeaders = () => ({ Authorization: `Bearer ${localStorage.getItem("token")}` });
@@ -27,6 +31,7 @@ const ICONS = {
 const linesToArr = (s) => (s || "").split("\n").map((x) => x.trim()).filter(Boolean);
 const arrToLines = (a) => (Array.isArray(a) ? a.join("\n") : "");
 const deepCopy = (x) => JSON.parse(JSON.stringify(x));
+const DEFAULT_TRAINING = mergeTrainingUpdates(TRAINING);
 
 function buildIndex(sections) {
   const rows = [];
@@ -42,9 +47,9 @@ function buildIndex(sections) {
 
 export default function TrainingPanel() {
   const [q, setQ] = useState("");
-  const [sections, setSections] = useState(TRAINING);   // gösterilen içerik
+  const [sections, setSections] = useState(DEFAULT_TRAINING);   // gösterilen içerik
   const [isCustom, setIsCustom] = useState(false);       // DB'de özel içerik var mı
-  const [active, setActive] = useState(TRAINING[0]?.key || "");
+  const [active, setActive] = useState(DEFAULT_TRAINING[0]?.key || "");
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(null);              // düzenleme kopyası
   const [saving, setSaving] = useState(false);
@@ -53,9 +58,10 @@ export default function TrainingPanel() {
     axios.get(`${API}/help-content`, { headers: authHeaders() })
       .then((r) => {
         if (Array.isArray(r.data?.sections) && r.data.sections.length) {
-          setSections(r.data.sections);
+          const merged = mergeTrainingUpdates(r.data.sections);
+          setSections(merged);
           setIsCustom(true);
-          setActive(r.data.sections[0]?.key || "");
+          setActive(merged[0]?.key || "");
         }
       })
       .catch(() => {});
@@ -77,12 +83,15 @@ export default function TrainingPanel() {
       const clean = (draft || []).map((s) => ({
         key: s.key, title: s.title, icon: s.icon, intro: s.intro,
         items: (s.items || []).map((it) => ({
-          title: it.title, path: it.path, what: it.what, where: it.where,
+          key: it.key, title: it.title, path: it.path, what: it.what, where: it.where,
           how: Array.isArray(it.how) ? it.how : linesToArr(it._howText),
           tips: Array.isArray(it.tips) ? it.tips : linesToArr(it._tipsText),
         })),
       }));
-      await axios.put(`${API}/admin/help-content`, { sections: clean }, { headers: authHeaders() });
+      await axios.put(`${API}/admin/help-content`, {
+        sections: clean,
+        content_version: TRAINING_CONTENT_VERSION,
+      }, { headers: authHeaders() });
       setSections(clean); setIsCustom(true); setEditing(false); setDraft(null);
       toast.success("Yardım içeriği kaydedildi");
     } catch (e) {
@@ -94,7 +103,7 @@ export default function TrainingPanel() {
     if (!window.confirm("Özel içerik silinsin ve varsayılan yönergelere dönülsün mü?")) return;
     try {
       await axios.delete(`${API}/admin/help-content`, { headers: authHeaders() });
-      setSections(TRAINING); setIsCustom(false); setActive(TRAINING[0]?.key || "");
+      setSections(DEFAULT_TRAINING); setIsCustom(false); setActive(DEFAULT_TRAINING[0]?.key || "");
       setEditing(false); setDraft(null);
       toast.success("Varsayılana döndürüldü");
     } catch { toast.error("İşlem başarısız"); }

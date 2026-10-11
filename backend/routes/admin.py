@@ -4,7 +4,7 @@ Admin routes - Dashboard, stats, settings
 from fastapi import APIRouter, HTTPException, Query, Depends
 from datetime import datetime, timezone, timedelta
 
-from .deps import db, require_admin, generate_barcode_from_range, logger, generate_id
+from .deps import db, require_admin, generate_barcode_from_range, logger, generate_id, require_permission
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
 
@@ -12,7 +12,7 @@ router = APIRouter(prefix="/admin", tags=["Admin"])
 async def get_dashboard_stats(
     days: int = Query(30, ge=0, le=365),
     platform: str = Query("all"),
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("dashboard.view"))
 ):
     """Admin dashboard istatistikleri.
 
@@ -21,10 +21,16 @@ async def get_dashboard_stats(
     28k+ siparişte grafik/ciro/gün eksiksiz gelir; önceki günler/aylar 0 görünmez.
     """
     try:
+        # ── TÜRKİYE YEREL GÜNÜ (UTC+3) ── Kritik: "Bugün"/gün sınırları TR takvim gününe göre
+        # hesaplanır. Eskiden UTC gece yarısı alınıyordu → gece 00:00–03:00 TR arası (UTC'de hâlâ
+        # önceki gün) panelde bir önceki günün TÜM cirosunu "Bugün" gösteriyordu (ör. 02:17'de 69
+        # sipariş). Artık today_midnight = TR 00:00'ın UTC karşılığı.
+        _TR = timezone(timedelta(hours=3))
         end_date = datetime.now(timezone.utc)
-        today_midnight = end_date.replace(hour=0, minute=0, second=0, microsecond=0)
+        tr_now = end_date.astimezone(_TR)
+        today_midnight = tr_now.replace(hour=0, minute=0, second=0, microsecond=0).astimezone(timezone.utc)
         if days <= 0:
-            # "Bugün" — takvim günü 00:00'dan itibaren; kıyas dün (00:00–bugün 00:00).
+            # "Bugün" — TR takvim günü 00:00'dan itibaren; kıyas dün (00:00–bugün 00:00).
             start_date = today_midnight
             prev_start = today_midnight - timedelta(days=1)
             prev_end = today_midnight
@@ -92,16 +98,26 @@ async def get_dashboard_stats(
         pending_orders = await db.orders.count_documents(_with({"status": "pending", "created_at": {"$gte": start_iso}}))
         shipped_orders = await db.orders.count_documents(_with({"status": "shipped", "created_at": {"$gte": start_iso}}))
 
-        # Günlük seri (aggregation — limitsiz)
+        # Günlük seri (aggregation — limitsiz). GÜNLER TR YERELİNE (Europe/Istanbul) göre gruplanır
+        # (aksi halde gece yarısına yakın siparişler yanlış güne düşer). "Bugün" seçilse bile grafik
+        # KARŞILAŞTIRMA amaçlı son 14 günü gösterir (tek çubuk gibi durmasın — kullanıcı isteği).
+        chart_days = days if (days and days > 0) else 14
+        chart_start = today_midnight - timedelta(days=chart_days)   # TR 00:00 (UTC karşılığı) - N gün
         daily_agg = await db.orders.aggregate([
-            {"$match": _with({"created_at": {"$gte": start_iso}})},
-            {"$group": {"_id": {"$substr": [{"$toString": "$created_at"}, 0, 10]},
-                        "orders": {"$sum": 1}, "revenue": {"$sum": _rev}}},
+            {"$match": _with({"created_at": {"$gte": chart_start.isoformat()}})},
+            {"$addFields": {"_trd": {"$dateToString": {
+                "format": "%Y-%m-%d", "timezone": "Europe/Istanbul",
+                "date": {"$cond": [
+                    {"$eq": [{"$type": "$created_at"}, "string"]},
+                    {"$dateFromString": {"dateString": "$created_at", "onError": None}},
+                    "$created_at"]}}}}},
+            {"$match": {"_trd": {"$ne": None}}},
+            {"$group": {"_id": "$_trd", "orders": {"$sum": 1}, "revenue": {"$sum": _rev}}},
         ]).to_list(500)
         daily_map = {r["_id"]: r for r in daily_agg}
         daily_series = []
-        for i in range(days, -1, -1):
-            d = (end_date - timedelta(days=i)).strftime("%Y-%m-%d")
+        for i in range(chart_days, -1, -1):
+            d = (tr_now - timedelta(days=i)).strftime("%Y-%m-%d")   # TR takvim günü etiketi
             b = daily_map.get(d)
             daily_series.append({"date": d, "orders": (b["orders"] if b else 0),
                                  "revenue": round((b["revenue"] if b else 0) or 0, 2)})
@@ -247,54 +263,17 @@ async def get_dashboard_stats(
         logger.error(f"Dashboard stats error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/users")
-async def get_users(
-    page: int = Query(1, ge=1),
-    limit: int = Query(20, ge=1, le=100),
-    search: str = Query(None),
-    current_user: dict = Depends(require_admin)
-):
-    """PANEL personeli listesi (admin only).
-
-    ÖNEMLİ: Bu uç, /admin/users path'inde admin_rbac.list_panel_users ile ÇAKIŞIYORDU ve
-    filtresiz olduğu için 20 MÜŞTERİYİ 'kullanıcı' gibi gösteriyordu. Artık yalnız GERÇEK
-    panel personeli döner (elle eklenen = created_by; süper-admin; varsayılan admin). Müşteri
-    (register) hesapları 'Üyeler' (/admin/members) sayfasında görünür; burada GÖRÜNMEZ."""
-    import re as _re
-    skip = (page - 1) * limit
-    # Panel personeli ayırt edici işaretleri (admin_rbac.PANEL_STAFF_OR ile birebir).
-    _staff_or = [
-        {"created_by": {"$exists": True, "$nin": [None, ""]}},
-        {"is_super_admin": True},
-        {"email": "admin@meluni.com.tr"},
-        {"role_id": {"$exists": True, "$nin": [None, ""]}},
-    ]
-    query = {"is_admin": True, "$or": _staff_or}
-
-    if search:
-        _s = _re.escape(search.strip())  # ReDoS/regex-injection koruması
-        query["$and"] = [{"$or": [
-            {"email": {"$regex": _s, "$options": "i"}},
-            {"first_name": {"$regex": _s, "$options": "i"}},
-            {"last_name": {"$regex": _s, "$options": "i"}},
-        ]}]
-
-    users = await db.users.find(query, {"_id": 0, "password": 0}).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
-    total = await db.users.count_documents(query)
-    
-    return {
-        "users": users,
-        "total": total,
-        "page": page,
-        "pages": (total + limit - 1) // limit
-    }
+# Denetim #16: /admin/users burada İKİNCİ (güvensiz) bir kopya olarak tanımlıydı — settings.view
+# yetkili (ör. finans) personele diğer personelin parola geçmişi / MFA sırrı meta verisini
+# döndürüyordu ve admin_rbac.list_panel_users'ı gölgeliyordu. Kopya kaldırıldı; tek kaynak
+# admin_rbac.list_panel_users (açık izin listesi projeksiyonu).
 
 import random
 
 @router.get("/generate-stock-code")
 async def generate_stock_code(
     prefix: str = Query("FCSS"),
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("products.create"))
 ):
     """Generate a unique 7-digit stock code suffix under the given prefix"""
     existing = await db.products.distinct("stock_code")
@@ -315,7 +294,7 @@ async def generate_stock_code(
 
 @router.get("/generate-barcode")
 async def generate_barcode(
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("products.create"))
 ):
     """Generate a unique 13-digit GTIN barcode within the configured range"""
     barcode = await generate_barcode_from_range()
@@ -327,7 +306,7 @@ async def generate_barcode(
     return {"barcode": barcode}
 
 @router.get("/cleanup/dry-run")
-async def cleanup_dry_run(current_user: dict = Depends(require_admin)):
+async def cleanup_dry_run(current_user: dict = Depends(require_permission("products.edit"))):
     """Salt-okunur veri temizlik raporu (#1 combine + #3 mükerrer varyant).
     HİÇBİR ŞEY DEĞİŞTİRMEZ; sadece rapor döner."""
     from collections import defaultdict
@@ -452,7 +431,7 @@ async def cleanup_dry_run(current_user: dict = Depends(require_admin)):
 
 
 @router.post("/cleanup/dedupe-barcodes")
-async def cleanup_dedupe_barcodes(payload: dict = None, current_user: dict = Depends(require_admin)):
+async def cleanup_dedupe_barcodes(payload: dict = None, current_user: dict = Depends(require_permission("products.edit"))):
     """Ürün İÇİNDE aynı barkodlu mükerrer varyantları siler.
     Her barkoddan EN YÜKSEK STOKLU olanı tutar, diğer kopyalarını kaldırır.
     Barkodsuz varyantlara ve farklı barkodlu (aynı beden bile olsa) varyantlara
@@ -533,7 +512,7 @@ async def cleanup_dedupe_barcodes(payload: dict = None, current_user: dict = Dep
 
 
 @router.post("/cleanup/combine-dead-refs")
-async def cleanup_combine_dead_refs(payload: dict = None, current_user: dict = Depends(require_admin)):
+async def cleanup_combine_dead_refs(payload: dict = None, current_user: dict = Depends(require_permission("products.edit"))):
     """combine_products ('Görünümü Tamamla') içindeki ÖLÜ referansları temizler:
     var olmayan / is_active=False / görselsiz ürün id'leri listeden çıkarılır.
     Ürünleri/varyantları SİLMEZ — sadece kırık işaretçileri temizler.

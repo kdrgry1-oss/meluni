@@ -23,7 +23,8 @@ import re
 
 # Emergent kaldırıldı → sağlayıcı-bağımsız doğrudan SDK çağrısı: llm_chat() (aşağıda)
 
-from .deps import db, require_admin, logger
+from .deps import db, require_admin, logger, require_permission
+from security.ai_budget import ai_slot, charge as ai_charge
 
 router = APIRouter(prefix="/ai", tags=["ai-chatbot"])
 
@@ -96,6 +97,13 @@ async def llm_chat(api_key: str, provider: str, model: str,
     """Sağlayıcı-bağımsız tek-tur sohbet (Emergent yerine DOĞRUDAN resmi SDK).
     provider: 'openai' | 'anthropic'/'claude' | 'gemini'/'google'. Düz metin döner."""
     prov = (provider or "openai").strip().lower()
+    # KVKK (tek nokta): müşteri telefonu / e-postası / adresi LLM sağlayıcısına GİTMEZ — chatbot ve
+    # WhatsApp asistanı bu fonksiyondan geçer; metindeki kalıplar maskelenir.
+    from security.contact_pii import scrub_contact_text as _sct
+    import re as _re_llm
+    _em = _re_llm.compile(r"[\w.+-]+@[\w-]+\.[\w.]+")
+    system_message = _sct(_em.sub("[e-posta]", system_message or ""))
+    user_text = _sct(_em.sub("[e-posta]", user_text or ""))
 
     if prov in ("anthropic", "claude"):
         from anthropic import AsyncAnthropic
@@ -139,7 +147,7 @@ async def llm_chat(api_key: str, provider: str, model: str,
 # -------------------- Settings endpoints --------------------
 
 @router.get("/settings")
-async def get_ai_chatbot_settings(current_user: dict = Depends(require_admin)):
+async def get_ai_chatbot_settings(current_user: dict = Depends(require_permission("questions.view"))):
     s = await get_ai_settings()
     # Hassas anahtar ASLA düz dönmez: şifreli blob gizlenir; sadece "tanımlı mı" bilgisi maske olarak verilir.
     has_key = bool(s.get("custom_api_key_enc") or s.get("custom_api_key"))
@@ -149,8 +157,26 @@ async def get_ai_chatbot_settings(current_user: dict = Depends(require_admin)):
     return s
 
 
+_AI_SENSITIVE_FIELDS = ("enabled", "provider", "model", "fast_model", "use_emergent_key")
+
+
 @router.post("/settings")
-async def save_ai_chatbot_settings(payload: dict, current_user: dict = Depends(require_admin)):
+async def save_ai_chatbot_settings(payload: dict, current_user: dict = Depends(require_permission("questions.answer"))):
+    # Denetim #1 (tamamlama): sağlayıcı/model/anahtar/aç-kapa değişikliği (faturalı hesap + tüm AI
+    # davranışı) yalnız AYAR DÜZENLEME yetkisiyle; persona/kanal/eşik soru ekibinin yetkisinde kalır.
+    # Panel tüm alanları birlikte gönderir → yalnız GERÇEKTEN değişen hassas alan yetki ister.
+    _cur = await db.settings.find_one({"id": "ai_chatbot"}, {"_id": 0}) or {}
+    _newk = (payload.get("custom_api_key") or "").strip()
+    _sens_change = [f for f in _AI_SENSITIVE_FIELDS if f in payload and payload.get(f) != _cur.get(f)]
+    if _newk and _newk != "********":
+        _sens_change.append("custom_api_key")
+    if _sens_change:
+        from .deps import get_effective_permissions
+        _perms = await get_effective_permissions(current_user)
+        if "*" not in _perms and "settings.edit" not in _perms:
+            raise HTTPException(status_code=403, detail=(
+                "AI sağlayıcı/model/anahtar değişikliği için 'Ayarları Düzenle' yetkisi gerekir: "
+                + ", ".join(_sens_change)))
     update = {
         "id": "ai_chatbot",
         "updated_at": datetime.now(timezone.utc).isoformat(),
@@ -182,13 +208,13 @@ async def save_ai_chatbot_settings(payload: dict, current_user: dict = Depends(r
 @router.get("/kb")
 async def list_kb_entries(
     q: Optional[str] = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("questions.view")),
 ):
     query = {}
     if q:
         query["$or"] = [
-            {"question": {"$regex": q, "$options": "i"}},
-            {"answer": {"$regex": q, "$options": "i"}},
+            {"question": {"$regex": re.escape(q), "$options": "i"}},
+            {"answer": {"$regex": re.escape(q), "$options": "i"}},
         ]
     items = await db.ai_knowledge_base.find(query, {"_id": 0}).sort("usage_count", -1).limit(500).to_list(500)
     total = await db.ai_knowledge_base.count_documents({})
@@ -196,7 +222,7 @@ async def list_kb_entries(
 
 
 @router.post("/kb")
-async def add_kb_entry(payload: dict, current_user: dict = Depends(require_admin)):
+async def add_kb_entry(payload: dict, current_user: dict = Depends(require_permission("questions.answer"))):
     question = (payload or {}).get("question", "").strip()
     answer = (payload or {}).get("answer", "").strip()
     if not question or not answer:
@@ -218,7 +244,7 @@ async def add_kb_entry(payload: dict, current_user: dict = Depends(require_admin
 
 
 @router.delete("/kb/{entry_id}")
-async def delete_kb_entry(entry_id: str, current_user: dict = Depends(require_admin)):
+async def delete_kb_entry(entry_id: str, current_user: dict = Depends(require_permission("questions.answer"))):
     res = await db.ai_knowledge_base.delete_one({"id": entry_id})
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
@@ -317,8 +343,15 @@ async def _gather_product_context(product_name: str) -> str:
     rule_txt = await _gather_product_qa_rules(product_name)
     if not product_name:
         return rule_txt
+    # ÜYELERE ÖZEL + pasif/silinmiş ürünler bota (anonim müşteri) HİÇ verilmez.
+    from .products import _members_only_cat_ids, members_only_exclusion
+    _q_pub = {"name": {"$regex": re.escape(product_name[:40]), "$options": "i"},
+              "is_active": True, "is_deleted": {"$ne": True}}
+    _mo_bot = await _members_only_cat_ids()
+    if _mo_bot:
+        _q_pub["$and"] = members_only_exclusion(_mo_bot)
     prods = await db.products.find(
-        {"name": {"$regex": re.escape(product_name[:40]), "$options": "i"}},
+        _q_pub,
         {"_id": 0, "id": 1, "name": 1, "price": 1, "stock": 1, "variants": 1, "description": 1, "attributes": 1, "category_name": 1}
     ).limit(3).to_list(3)
     lines = []
@@ -357,7 +390,8 @@ async def generate_draft_answer(
     marketplace: str,
     question_id: str,
     payload: Optional[dict] = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("questions.answer")),
+    _ai_guard: None = Depends(ai_slot("draft_answer")),  # denetim #25: yetki kontrolünden SONRA
 ):
     return await taslak_uret(marketplace, question_id,
                              kaydeden=current_user.get("email", ""))
@@ -385,6 +419,7 @@ async def taslak_uret(marketplace: str, question_id: str,
     api_key = _api_key_for(settings)
     if not api_key:
         raise HTTPException(status_code=400, detail="AI anahtarı yapılandırılmamış")
+    await ai_charge(current_user, "draft_answer")   # denetim #25
 
     kb_ctx = await _gather_kb_context(q.get("question_text", ""))
     prod_ctx = await _gather_product_context(q.get("product_name", ""))
@@ -473,7 +508,7 @@ async def taslak_uret(marketplace: str, question_id: str,
 
 
 @router.post("/train-from-question")
-async def train_from_question(payload: dict, current_user: dict = Depends(require_admin)):
+async def train_from_question(payload: dict, current_user: dict = Depends(require_permission("questions.answer"))):
     """Add an approved Q+A to the knowledge base (called from 'AI'yı Eğit' button)."""
     question = (payload or {}).get("question", "").strip()
     answer = (payload or {}).get("answer", "").strip()
@@ -499,20 +534,20 @@ async def train_from_question(payload: dict, current_user: dict = Depends(requir
 # Soru product_name taşıdığından eşleşme isim bazlıdır. EN YÜKSEK ÖNCELİK.
 # ──────────────────────────────────────────────────────────────────────────
 @router.get("/product-qa-rules")
-async def list_product_qa_rules(current_user: dict = Depends(require_admin)):
+async def list_product_qa_rules(current_user: dict = Depends(require_permission("questions.view"))):
     """Tanımlı tüm ürüne özel kuralları listeler (sekme için)."""
     rows = await db.product_qa_rules.find({}, {"_id": 0}).sort("updated_at", -1).limit(1000).to_list(1000)
     return {"items": rows, "total": len(rows)}
 
 
 @router.get("/product-qa-rules/{product_id}")
-async def get_product_qa_rule(product_id: str, current_user: dict = Depends(require_admin)):
+async def get_product_qa_rule(product_id: str, current_user: dict = Depends(require_permission("questions.view"))):
     doc = await db.product_qa_rules.find_one({"product_id": str(product_id)}, {"_id": 0})
     return doc or {"product_id": str(product_id), "instructions": "", "rules": []}
 
 
 @router.post("/product-qa-rules")
-async def upsert_product_qa_rule(payload: dict, current_user: dict = Depends(require_admin)):
+async def upsert_product_qa_rule(payload: dict, current_user: dict = Depends(require_permission("questions.answer"))):
     """Bir ürüne özel cevap kuralını kaydeder/günceller.
     Body: {product_id, product_name, instructions?, rules?: [{q, a}]}"""
     pid = str((payload or {}).get("product_id", "")).strip()
@@ -539,13 +574,13 @@ async def upsert_product_qa_rule(payload: dict, current_user: dict = Depends(req
 
 
 @router.delete("/product-qa-rules/{product_id}")
-async def delete_product_qa_rule(product_id: str, current_user: dict = Depends(require_admin)):
+async def delete_product_qa_rule(product_id: str, current_user: dict = Depends(require_permission("questions.answer"))):
     res = await db.product_qa_rules.delete_one({"product_id": str(product_id)})
     return {"success": True, "deleted": res.deleted_count}
 
 
 @router.post("/kb/backfill-marketplace")
-async def backfill_kb_from_marketplace(payload: Optional[dict] = None, current_user: dict = Depends(require_admin)):
+async def backfill_kb_from_marketplace(payload: Optional[dict] = None, current_user: dict = Depends(require_permission("questions.sync"))):
     """Geçmişteki TÜM cevaplanmış TY/HB/Temu sorularını Bilgi Bankası'na aktarır (tek tıkla eğit).
     Aynı soru-cevap zaten varsa atlar (idempotent)."""
     colls = {"trendyol": "trendyol_questions", "hepsiburada": "hepsiburada_questions", "temu": "temu_questions"}

@@ -238,16 +238,6 @@ export const TRAINING = [
         tips: ["Koleksiyon ayrımı stok kodunun başındaki FcFw/FCss ön ekinden gelir."],
       },
       {
-        title: "Kârlılık Analizi & Pazaryeri Karlılık",
-        path: "/admin/raporlar/karlilik",
-        what: "Kategori × pazaryeri net kâr: komisyon, kargo, reklam, KDV, kurumlar vergisi dahil.",
-        where: "Raporlar → Kârlılık Analizi / Pazaryeri Karlılık.",
-        how: [
-          "Komisyon/hizmet/reklam oranlarını ayar kartından gir (aylık reklam bütçesi tarih aralığına orantılanır).",
-          "Net kârı kanal ve kategori bazında oku.",
-        ],
-      },
-      {
         title: "Stok Raporu / Kâr & Stok Değer",
         path: "/admin/raporlar/stok",
         what: "Varyant bazında güncel stok ve stok değerlemesi.",
@@ -361,11 +351,11 @@ export const TRAINING = [
         tips: ["Eksik ad-soyad bilgisi düzeltmesi bu ekrandan yapılır."],
       },
       {
-        title: "Üye Grupları (B2B) & Segmentler (RFM)",
-        path: "/admin/uye-gruplari",
-        what: "Toptan/bayi fiyat grupları ve RFM tabanlı müşteri segmentleri.",
-        where: "Üyeler → Üye Grupları / Müşteri Segmentleri.",
-        how: ["Grup oluştur, fiyat çarpanı/indirim tanımla; segmentleri kampanyada hedefle."],
+        title: "Müşteri Segmentleri (RFM)",
+        path: "/admin/musteri-segmentleri",
+        what: "RFM tabanlı müşteri segmentleri.",
+        where: "Üyeler → Müşteri Segmentleri.",
+        how: ["Segmentleri kampanyada hedefle."],
       },
       {
         title: "Müşteri Soruları & Destek Talepleri",
@@ -387,7 +377,7 @@ export const TRAINING = [
     key: "pazarlama",
     title: "Pazarlama",
     icon: "Megaphone",
-    intro: "Kampanya, kupon, kargo/ödeme kuralları, toplu mail ve yorumlar.",
+    intro: "Kampanya, kupon, kargo/ödeme kuralları, e-posta pazarlama ve yorumlar.",
     items: [
       {
         title: "Kampanyalar",
@@ -413,12 +403,12 @@ export const TRAINING = [
         tips: ["Kapıda ödeme ücreti gibi sabitler Ayarlar → İşletme Kuralları'nda da yönetilir."],
       },
       {
-        title: "Toplu Mail",
-        path: "/admin/toplu-mail",
-        what: "Segment/gruba toplu e-posta gönderimi.",
-        where: "Pazarlama → Toplu Mail.",
-        how: ["Hedef kitleyi seç, şablonu hazırla, test gönder, yayınla."],
-        tips: ["Gönderim için SMTP (Ayarlar → E-posta) ve gönderim kredisi gerekir."],
+        title: "E-posta Pazarlama",
+        path: "/admin/eposta-pazarlama",
+        what: "Brevo Marketing birincil, Amazon SES yedek sağlayıcı olacak şekilde izinli kitle, kampanya, şablon ve gönderim geçmişini tek ekranda yönetir.",
+        where: "Pazarlama → E-posta Pazarlama.",
+        how: ["Brevo API anahtarı, doğrulanmış gönderen ve liste ID'sini kaydet; bağlantıyı doğrula.", "Şablonu hazırla ve test gönder; ardından rızalı kitleyi Brevo listesiyle eşitleyerek kampanyayı yayınla."],
+        tips: ["Amazon SES yedek ayarları silinmez ve gerektiğinde seçilebilir.", "Eski /admin/toplu-mail adresi bu ekrana yönlendirilir; gönderim geçmişi silinmez."],
       },
       {
         title: "Ürün Yorumları & Trendyol Yorumları",

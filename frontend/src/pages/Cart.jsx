@@ -5,12 +5,13 @@ import { toast } from "sonner";
 import axios from "axios";
 import { shareCart } from "../lib/shareCart";
 import { useShipping } from "../lib/shipping";
+import { shippingQuote } from "../lib/shippingRules";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import { optimizeImg } from "../lib/img";
-import { priceView, cartLineView } from "../lib/price";
+import { optimizeImg, firstImage } from "../lib/img";
+import { priceView, cartLineView, cartSummary } from "../lib/price";
 import { trackViewCart } from "../utils/pixelEvents";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -46,11 +47,17 @@ export default function Cart() {
     shareLoadedRef.current = true;
     axios.get(`${API}/shared-carts/${shareId}`)
       .then((res) => {
-        const list = res.data?.items || [];
+        // Paylaşılan sepet / hatırlatma linki: sepette ZATEN olan kalem tekrar eklenmez — aynı link
+        // yeni sekmede tekrar açılınca adetler katlanıyordu (36 kalemlik sepette 176 adet görüldü).
+        const fromReminder = searchParams.get("hatirlatma") === "1";
+        const has = (pid, vid) => items.some((it) => it.productId === pid && (it.variantId || null) === (vid || null));
+        const list = (res.data?.items || []).filter(({ product, variant }) =>
+          product?.id && !has(product.id, variant?.id));
         list.forEach(({ product, variant, quantity }) => {
-          if (product?.id) addItem(product, variant || null, quantity || 1);
+          addItem(product, variant || null, quantity || 1);
         });
-        if (list.length) toast.success(`Paylaşılan sepetten ${list.length} ürün eklendi`);
+        if (list.length) toast.success(fromReminder ? "Sepetin hazır" : `Paylaşılan sepetten ${list.length} ürün eklendi`);
+        else if ((res.data?.items || []).length) toast.success("Paylaşılan sepetteki ürünler zaten sepetinde");
         sessionStorage.setItem(seenKey, "1");
       })
       .catch((e) => {
@@ -93,17 +100,20 @@ export default function Cart() {
   // (orders.create_order: (_subtotal - _server_discount) >= eşik). Eskiden indirimSİZ ara
   // toplam baz alınıyordu → hem "X TL daha" yazısı yanlış çıkıyor hem de sepet ekranı
   // "ücretsiz kargo" gösterip siparişte kargo ücreti ekleniyordu (tutarsızlık).
-  const netTotal = Math.max(0, total - promoDiscount);
+  // Payment/points choices are not known in the cart: this is an estimate only.
+  const shipping = shippingQuote({ subtotal: total, discounts: [promoDiscount], threshold: freeShippingThreshold, fee: shippingFee });
+  const netTotal = shipping.basis;
   const remaining = freeShippingThreshold != null ? Math.max(0, freeShippingThreshold - netTotal) : 0;
-  const shippingCost = (freeShippingThreshold != null && netTotal >= freeShippingThreshold) ? 0 : shippingFee;
+  const shippingCost = shipping.cost;
 
   // Ürün-seviyesi indirim (sale_price + otomatik kampanya) — satırlarla birebir tutarlı özet.
-  const listSum = items.reduce((s, it) => s + cartLineView(it).listUnit * it.quantity, 0);
-  const effSum = items.reduce((s, it) => s + cartLineView(it).unit * it.quantity, 0);
-  const productDisc = Math.max(0, listSum - effSum);
-  const extraDisc = Math.max(0, promoDiscount - productDisc);   // kupon/koşullu kampanya farkı
-  const totalDisc = productDisc + extraDisc;
-  const grandTotal = Math.max(0, effSum - extraDisc) + shippingCost;
+  const { listSum, productDisc, extraDisc, totalDisc, grand: _grandNoShip } = cartSummary(items, promoDiscount);
+  const grandTotal = _grandNoShip + shippingCost;
+  // Sepet-seviyesi kampanya adları (ör. "3 Al 2 Öde — Body"); kalemde zaten gösterilen
+  // otomatik yüzde kampanyaları hariç.
+  const extraTitles = (appliedPromotions || [])
+    .filter((p) => p && Number(p.discount) > 0 && p.type !== "percent")
+    .map((p) => p.title || p.code).filter(Boolean);
 
   // Kombin / sale öneriler
   const [suggestions, setSuggestions] = useState([]);
@@ -141,7 +151,7 @@ export default function Cart() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-white" data-testid="cart-page">
+      <div className="sf-page min-h-screen bg-white" data-testid="cart-page">
         <Header />
         <div className="container-main py-24 text-center">
           <p className="text-[10px] tracking-[0.3em] text-black/50 uppercase mb-6">SEPETİM</p>
@@ -163,7 +173,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-white pb-32 md:pb-12" data-testid="cart-page">
+    <div className="sf-page min-h-screen bg-white pb-32 md:pb-12" data-testid="cart-page">
       <Header />
 
       <div className="container-main py-6 md:py-12">
@@ -207,7 +217,7 @@ export default function Cart() {
               ) : (
                 <div className="mb-8 p-4 bg-emerald-50 border border-emerald-200">
                   <p className="text-xs text-center mb-2 text-emerald-800 font-medium">
-                    🎉 Ücretsiz kargo kazandın!
+                    Mevcut sepet ücretsiz kargo eşiğinde. Kargo, ödeme adımında tüm indirimlerden sonra kesinleşir.
                   </p>
                   <div className="h-[2px] bg-emerald-200 overflow-hidden">
                     <div className="h-full bg-emerald-600 w-full" />
@@ -307,13 +317,16 @@ export default function Cart() {
                   <span className="text-black/60">Ara toplam</span>
                   <span className="tabular-nums">{listSum.toFixed(2)} TL</span>
                 </div>
-                {totalDisc > 0.001 && (
+                {productDisc > 0.001 && (
+                  <div className="flex justify-between text-emerald-700" data-testid="cart-product-discount">
+                    <span>Ürün indirimleri</span>
+                    <span className="tabular-nums">-{productDisc.toFixed(2)} TL</span>
+                  </div>
+                )}
+                {extraDisc > 0.001 && (
                   <div className="flex justify-between text-emerald-700" data-testid="cart-promo-discount">
-                    <span>
-                      İndirim
-                      {appliedPromotions.length > 0 && appliedPromotions[0]?.title ? ` (${appliedPromotions[0].title})` : ""}
-                    </span>
-                    <span className="tabular-nums">-{totalDisc.toFixed(2)} TL</span>
+                    <span>{extraTitles.length ? extraTitles.join(" + ") : "Kampanya indirimi"}</span>
+                    <span className="tabular-nums">-{extraDisc.toFixed(2)} TL</span>
                   </div>
                 )}
                 <div className="flex justify-between">
@@ -355,7 +368,7 @@ export default function Cart() {
             <div className="md:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
               <div className="flex gap-3" style={{ minWidth: "max-content" }}>
                 {suggestions.map((p) => {
-                  const img = optimizeImg((p.images && p.images[0]) || p.image, 500) || PLACEHOLDER;
+                  const img = optimizeImg(firstImage(p), 500) || PLACEHOLDER;
                   const pv = priceView(p);
                   return (
                     <div key={p.id} className="snap-start shrink-0 w-[44vw]" data-testid={`cart-suggestion-${p.id}`}>
@@ -383,7 +396,7 @@ export default function Cart() {
             {/* Desktop grid */}
             <div className="hidden md:grid grid-cols-4 gap-5">
               {suggestions.map((p) => {
-                const img = (p.images && p.images[0]) || p.image || "";
+                const img = firstImage(p);
                 const pv = priceView(p);
                 return (
                   <div key={p.id} className="group relative">
@@ -424,7 +437,7 @@ export default function Cart() {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
               {deals.map((p) => {
-                const img = (p.images && p.images[0]) || p.image || "";
+                const img = firstImage(p);
                 const pv = priceView(p);
                 const off = pv.discountPct;
                 return (

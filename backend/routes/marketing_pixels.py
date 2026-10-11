@@ -24,13 +24,54 @@ Admin dışında kimse yeni kod ekleyemez.
 """
 from datetime import datetime, timezone, timedelta
 from typing import Optional, List
+import hashlib
 import logging
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Response, Request
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
-from .deps import db, require_admin, generate_id
+from .deps import db, require_admin, require_super_admin, generate_id, require_permission
+from activity_audit import record_admin_audit
+
+# ── SÜRÜMLEME + DENETİM ─────────────────────────────────────────────────────────────────
+# Piksel snippet'leri vitrinde çalışan serbest HTML/JS'dir. Her kayıt/silmeden ÖNCE mevcut
+# sürüm `marketing_pixel_history`'e yazılır (piksel başına son 20) ve audit_logs'a kod gövdesi
+# yerine hash+uzunluk özeti düşer. Token alanları geçmişe ASLA kopyalanmaz.
+_PIXEL_HISTORY_KEEP = 20
+_PIXEL_HISTORY_DROP = {"_id", "access_token"}
+
+
+def _pixel_summary(doc: Optional[dict]) -> dict:
+    doc = doc or {}
+    out = {k: doc.get(k) for k in ("provider", "name", "tag_id", "is_active", "capi_enabled", "tenant_id")}
+    for k in ("head_snippet", "body_snippet"):
+        v = str(doc.get(k) or "")
+        out[f"{k}_sha256"] = hashlib.sha256(v.encode()).hexdigest()[:16] if v else ""
+        out[f"{k}_length"] = len(v)
+    out["token_source"] = "vault" if doc.get("vault_key") else ("env" if doc.get("env_token_key") else "")
+    return out
+
+
+async def _snapshot_pixel(prev: Optional[dict], action: str, by: str) -> None:
+    if not prev:
+        return
+    try:
+        snap = {k: v for k, v in prev.items() if k not in _PIXEL_HISTORY_DROP}
+        await db.marketing_pixel_history.insert_one({
+            "id": generate_id(),
+            "pixel_id": prev.get("id"),
+            "action": action,
+            "archived_at": datetime.now(timezone.utc).isoformat(),
+            "archived_by": by,
+            "snapshot": snap,
+        })
+        old = await db.marketing_pixel_history.find({"pixel_id": prev.get("id")}, {"_id": 0, "id": 1}) \
+            .sort("archived_at", -1).skip(_PIXEL_HISTORY_KEEP).to_list(length=1000)
+        if old:
+            await db.marketing_pixel_history.delete_many({"id": {"$in": [o["id"] for o in old]}})
+    except Exception as e:  # noqa: BLE001 — sürüm kaydı ana işlemi engellemesin
+        logger.warning(f"[marketing-pixels] geçmiş sürüm yazılamadı: {e}")
 
 router = APIRouter(prefix="/marketing-pixels", tags=["marketing-pixels"])
 
@@ -238,12 +279,12 @@ async def list_active_public(response: Response):
 
 
 @router.get("/providers")
-async def get_providers(current_user: dict = Depends(require_admin)):
+async def get_providers(current_user: dict = Depends(require_permission("settings.view"))):
     return {"providers": PIXEL_PROVIDERS}
 
 
 @router.get("")
-async def list_pixels(current_user: dict = Depends(require_admin)):
+async def list_pixels(current_user: dict = Depends(require_permission("settings.view"))):
     rows = await db.marketing_pixels.find({}, {"_id": 0}).sort("created_at", -1).to_list(length=200)
     # Token'ları maskele
     for r in rows:
@@ -256,7 +297,9 @@ async def list_pixels(current_user: dict = Depends(require_admin)):
 
 
 @router.post("")
-async def upsert_pixel(req: PixelReq, current_user: dict = Depends(require_admin)):
+async def upsert_pixel(req: PixelReq, request: Request, current_user: dict = Depends(require_super_admin)):
+    # GÜVENLİK (denetim 2026-09-29): piksel kodu vitrinde (ödeme sayfası dahil) ÇALIŞAN serbest
+    # HTML/JS'dir → yalnız süper-admin yazabilir (herhangi bir personel rolü kod enjekte edemesin).
     valid = {p["key"] for p in PIXEL_PROVIDERS}
     if req.provider not in valid:
         raise HTTPException(status_code=400, detail=f"Geçersiz sağlayıcı. Geçerli: {sorted(valid)}")
@@ -280,6 +323,11 @@ async def upsert_pixel(req: PixelReq, current_user: dict = Depends(require_admin
         head = tpl.get("head") or ""
         body = tpl.get("body") or body
 
+    # ADM-08: karantinaya alınmış (zararlı işaretli) piksel kodu yeniden yayınlanamaz (409; liste
+    # okunamazsa 503).
+    from security.storefront_integrity import assert_code_not_quarantined
+    await assert_code_not_quarantined([head, body], source="marketing_pixel", actor=current_user, request=request)
+
     now_iso = datetime.now(timezone.utc).isoformat()
     data = {
         "provider": req.provider,
@@ -299,40 +347,55 @@ async def upsert_pixel(req: PixelReq, current_user: dict = Depends(require_admin
         "updated_at": now_iso,
         "updated_by": current_user.get("email", ""),
     }
-    # Access token: vault'a şifreli olarak yazılır; plain MongoDB'de tutulmaz
-    if req.access_token:
-        # Eğer vault_key belirtilmemişse otomatik üret (SaaS-safe)
-        if not (req.vault_key or req.env_token_key):
+    # Access token: vault'a şifreli olarak yazılır; plain MongoDB'de tutulmaz.
+    _incoming = (req.access_token or "").strip()
+    # GET yanıtı token'ı '***' maskeler. Kullanıcı değeri değiştirmeden tekrar kaydederse
+    # bu maskeli değer geri gelir → token'ı BOZMA/atma, dokunma (mevcut vault/env korunur).
+    _masked = (not _incoming) or _incoming in ("***", "********") or set(_incoming) <= {"*", "•", "·", " "}
+    if not _masked:
+        # KULLANICI PANELDEN GERÇEK TOKEN GİRDİ → onu kullan. Eskiden env_token_key dolu olunca
+        # bu token vault'a YAZILMADAN atılıyordu ('kaydolmuyor' şikayeti). Artık: env_token_key
+        # dolu OLSA BİLE token vault'a yazılır ve env_token_key TEMİZLENİR — panelden girilen token
+        # env yaklaşımının yerini alır; env öncelik girilen token'ı gölgelemesin.
+        if not (req.vault_key or "").strip():
             from hashlib import sha1
             sig = sha1(f"{req.provider}-{(req.tag_id or '').strip()}-{req.tenant_id or 'default'}".encode()).hexdigest()[:10]
             req.vault_key = f"capi_{req.provider}_{sig}"
-            data["vault_key"] = req.vault_key
-        # Vault'a yaz (env_token_key yoksa)
-        if req.vault_key and not req.env_token_key:
-            try:
-                from security.crypto import encrypt as _vault_encrypt
-                enc = _vault_encrypt(req.access_token.strip())
-                await db.vault_secrets.update_one(
-                    {"key": req.vault_key.strip()},
-                    {"$set": {
-                        "key": req.vault_key.strip(),
-                        "value_enc": enc,
-                        "description": f"CAPI {req.provider} token — {req.name or req.tag_id}",
-                        "scope": "capi",
-                        "updated_by": current_user.get("email"),
-                        "updated_at": now_iso,
-                    }, "$setOnInsert": {"created_at": now_iso}},
-                    upsert=True,
-                )
-            except Exception as e:
-                logger.warning(f"Vault upsert failed: {e}")
+        data["vault_key"] = req.vault_key
+        try:
+            from security.crypto import encrypt as _vault_encrypt
+            enc = _vault_encrypt(_incoming)
+            await db.vault_secrets.update_one(
+                {"key": req.vault_key.strip()},
+                {"$set": {
+                    "key": req.vault_key.strip(),
+                    "value_enc": enc,
+                    "description": f"CAPI {req.provider} token — {req.name or req.tag_id}",
+                    "scope": "capi",
+                    "updated_by": current_user.get("email"),
+                    "updated_at": now_iso,
+                }, "$setOnInsert": {"created_at": now_iso}},
+                upsert=True,
+            )
+            # Panelden token girildi → env_token_key'e gerek yok; öncelik çakışmasını da önle.
+            data["env_token_key"] = None
+        except Exception as e:
+            logger.warning(f"Vault upsert failed: {e}")
         # PLAIN text token'ı MongoDB'de tutma
         data["access_token"] = ""
 
+    _by = current_user.get("email") or current_user.get("id") or ""
+    try:
+        from .custom_theme import storefront_script_hosts as _sf_hosts
+        _prev_hosts = await _sf_hosts()
+    except Exception:  # noqa: BLE001
+        _prev_hosts = set()
+    existing = None
     if req.id:
-        existing = await db.marketing_pixels.find_one({"id": req.id}, {"_id": 0, "id": 1})
+        existing = await db.marketing_pixels.find_one({"id": req.id}, {"_id": 0})
         if not existing:
             raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
+        await _snapshot_pixel(existing, "update", _by)
         await db.marketing_pixels.update_one({"id": req.id}, {"$set": data})
         data["id"] = req.id
     else:
@@ -340,36 +403,87 @@ async def upsert_pixel(req: PixelReq, current_user: dict = Depends(require_admin
         data["created_at"] = now_iso
         await db.marketing_pixels.insert_one(data)
     data.pop("_id", None)
+    await record_admin_audit(
+        db, action="marketing_pixel.update" if existing else "marketing_pixel.create",
+        entity_type="marketing_pixel", entity_id=data["id"],
+        before=_pixel_summary(existing) if existing else None, after=_pixel_summary(data),
+        current_user=current_user, request=request,
+    )
+    # T19/ADM-08: vitrinde çalışan piksel kodu/host'u değiştiyse güvenlik uyarısı + host manifesti.
+    await _notify_pixel_change(existing, data, current_user, request, _prev_hosts)
     return {"success": True, "pixel": data}
 
 
+_SCRIPT_KEYS = ("head_snippet_sha256", "body_snippet_sha256", "is_active", "provider", "tag_id")
+
+
+async def _notify_pixel_change(before: Optional[dict], after: Optional[dict], actor: dict, request,
+                               prev_hosts) -> None:
+    b, a = _pixel_summary(before) if before else {}, _pixel_summary(after) if after else {}
+    if before and after and all(b.get(k) == a.get(k) for k in _SCRIPT_KEYS):
+        return   # yalnız CAPI/etiket ayarı değişti → vitrine ulaşan kod aynı
+    try:
+        from .custom_theme import note_storefront_script_change
+        await note_storefront_script_change(
+            source="marketing_pixel", actor=actor, request=request, before=b, after=a,
+            prev_hosts=prev_hosts, target=str((after or before or {}).get("id") or ""))
+    except Exception as e:  # noqa: BLE001
+        logger.warning(f"[marketing-pixels] vitrin kodu değişikliği bildirilemedi: {type(e).__name__}")
+
+
+_CAPI_TEST_MODE_PROVIDERS = ("meta", "facebook", "tiktok")
+_CAPI_TEST_PER_HOUR = 10
+
+
 @router.post("/test-connection")
-async def test_capi_connection(req: PixelReq, current_user: dict = Depends(require_admin)):
+async def test_capi_connection(req: PixelReq, current_user: dict = Depends(require_permission("settings.edit"))):
     """CAPI bağlantısını test event göndererek dener.
 
-    Frontend'den ya kayıtlı pixel id'yi referans edebilir ya da form verisini
-    doğrudan yollayabilir. test_event_code önerilir (canlı raporu kirletmemek için).
+    GÜVENLİK (denetim #15): yalnız görüntüleme yetkisi YETMEZ (settings.edit). Kayıtlı anahtar
+    kullanılıyorsa sağlayıcı ve piksel kimliği KAYITTAN alınır (çağıranın seçtiği sağlayıcı/etiketle
+    kayıtlı anahtar birleştirilemez); test modunu destekleyen sağlayıcılarda test kodu zorunludur
+    (canlı dönüşüm verisi kirlenmez); kişi başına saatlik sınır + denetim kaydı vardır.
     """
-    from datetime import datetime
+    from datetime import datetime, timedelta
     from services.capi.orchestrator import _resolve_access_token, PROVIDERS
 
     provider = req.provider.lower()
-    mod = PROVIDERS.get(provider)
-    if not mod:
-        raise HTTPException(status_code=400,
-                            detail=f"Bu sağlayıcı için CAPI desteklenmiyor: {provider}")
-
+    pixel_id = (req.tag_id or "").strip()
     # Resolve token: from form, else from existing record's vault/env
     token = (req.access_token or "").strip()
+    used_stored = False
     if not token and req.id:
         existing = await db.marketing_pixels.find_one({"id": req.id}, {"_id": 0})
         if existing:
             token = await _resolve_access_token(existing) or ""
-
-    pixel_id = (req.tag_id or "").strip()
-    if not pixel_id or not token:
+            used_stored = bool(token)
+            provider = str(existing.get("provider") or provider).lower()
+            pixel_id = str(existing.get("tag_id") or "").strip()
+    mod = PROVIDERS.get(provider)
+    if not mod:
         raise HTTPException(status_code=400,
-                            detail="Test için pixel_id ve access_token gerekli.")
+                            detail=f"Bu sağlayıcı için CAPI desteklenmiyor: {provider}")
+    if used_stored and provider in _CAPI_TEST_MODE_PROVIDERS and not (req.test_event_code or "").strip():
+        raise HTTPException(status_code=400,
+                            detail="Kayıtlı anahtarla test için 'Test Event Code' zorunludur (canlı raporu kirletmemek için).")
+    _since = (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()
+    _n = await db.capi_event_logs.count_documents({"event_name": "test_connection",
+                                                   "actor_id": current_user.get("id"),
+                                                   "created_at": {"$gte": _since}})
+    if _n >= _CAPI_TEST_PER_HOUR:
+        raise HTTPException(status_code=429, detail="Saatlik bağlantı testi sınırına ulaşıldı, daha sonra deneyin.")
+
+    # Hangi alanın eksik olduğunu NET söyle (eskiden 'pixel_id ve access_token gerekli' genel mesajı
+    # kafa karıştırıyordu: token girildiği hâlde Pixel ID boşken de aynı hata çıkıyordu).
+    if not pixel_id and not token:
+        raise HTTPException(status_code=400,
+                            detail="Test için hem 'Etiket / Pixel ID' hem 'Access Token' gerekli — ikisi de boş.")
+    if not pixel_id:
+        raise HTTPException(status_code=400,
+                            detail="'Etiket / Pixel ID' alanı boş. Meta Pixel/Dataset ID'yi girip tekrar test edin.")
+    if not token:
+        raise HTTPException(status_code=400,
+                            detail="Access Token bulunamadı. Token'ı forma girin (veya kayıtlı pixel'de vault/env anahtarını doğrulayın).")
 
     res = await mod.test_connection(
         pixel_id=pixel_id, access_token=token,
@@ -380,6 +494,8 @@ async def test_capi_connection(req: PixelReq, current_user: dict = Depends(requi
         "id": generate_id(),
         "provider": provider, "event_name": "test_connection",
         "tenant_id": req.tenant_id, "ok": bool(res.get("ok")),
+        "actor_id": current_user.get("id"), "actor_email": current_user.get("email"),
+        "pixel_record_id": req.id or None, "used_stored_token": used_stored,
         "status": res.get("status"), "response": res.get("response") or {},
         "error": res.get("error"),
         "created_at": datetime.now(timezone.utc).isoformat(),
@@ -389,7 +505,7 @@ async def test_capi_connection(req: PixelReq, current_user: dict = Depends(requi
 
 
 @router.get("/{pid}")
-async def get_pixel(pid: str, current_user: dict = Depends(require_admin)):
+async def get_pixel(pid: str, current_user: dict = Depends(require_permission("settings.view"))):
     px = await db.marketing_pixels.find_one({"id": pid}, {"_id": 0})
     if not px:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
@@ -401,7 +517,7 @@ async def get_pixel(pid: str, current_user: dict = Depends(require_admin)):
 
 
 @router.get("/capi/queue/status")
-async def capi_queue_status(current_user: dict = Depends(require_admin)):
+async def capi_queue_status(current_user: dict = Depends(require_permission("settings.view"))):
     """Stuck CAPI eventlerin özet durumu."""
     pending = await db.capi_event_queue.count_documents({"dead": {"$ne": True}})
     dead = await db.capi_event_queue.count_documents({"dead": True})
@@ -414,7 +530,7 @@ async def capi_queue_status(current_user: dict = Depends(require_admin)):
 
 
 @router.post("/capi/queue/run-now")
-async def capi_queue_run_now(current_user: dict = Depends(require_admin)):
+async def capi_queue_run_now(current_user: dict = Depends(require_permission("settings.edit"))):
     """Tüm bekleyen kuyruğu hemen tetikle (cron'u beklemeden)."""
     from services.capi.orchestrator import retry_queue_once
     res = await retry_queue_once(db)
@@ -445,7 +561,7 @@ def _capi_logs_query(provider=None, event_name=None, ok=None, date_from=None, da
 
 @router.get("/capi/logs")
 async def capi_logs(
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("settings.view")),
     limit: int = 100,
     skip: int = 0,
     provider: Optional[str] = None,
@@ -463,7 +579,7 @@ async def capi_logs(
 
 @router.get("/capi/logs/export")
 async def capi_logs_export(
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("settings.view")),
     provider: Optional[str] = None,
     event_name: Optional[str] = None,
     ok: Optional[bool] = None,
@@ -472,6 +588,9 @@ async def capi_logs_export(
     limit: int = 50000,
 ):
     """Filtrelenmiş CAPI loglarını CSV olarak indir (PII'siz). match_signals düzleştirilir."""
+    # ACİL ANAHTAR: freeze_exports açıkken toplu veri dışa aktarımı yapılmaz (423).
+    from security_switches import require_switch_off as _sw_off, emit_security_event as _sec_emit
+    await _sw_off("freeze_exports")
     import csv as _csv
     import io as _io
     q = _capi_logs_query(provider, event_name, ok, date_from, date_to)
@@ -480,20 +599,29 @@ async def capi_logs_export(
     cols = ["created_at", "provider", "event_name", "event_id", "ok", "status", "from_retry", "is_test",
             "s_email", "s_phone", "s_external_id", "s_fbp", "s_fbc", "s_ttclid", "s_ttp", "s_ip", "s_ua", "ip_version",
             "message"]
+    # GÜVENLİK (DENETİM SEC-4 F8): Excel/CSV formül enjeksiyonu — müşteri UA/email/mesaj gibi
+    # alanlar =HYPERLINK(...) ile başlayabilir; admin CSV'yi açınca çalışır. = + - @ / tab / CR
+    # ile başlayan metin hücrelerini tek-tırnakla kaçır.
+    def _cg(v):
+        s = "" if v is None else str(v)
+        return ("'" + s) if s[:1] in ("=", "+", "-", "@", "\t", "\r") else s
+
     w = _csv.writer(buf)
     w.writerow(cols)
     for r in rows:
         ms = r.get("match_signals") or {}
         msg = r.get("error") or r.get("response") or ""
         msg = str(msg).replace("\n", " ")[:300]
-        w.writerow([
+        w.writerow([_cg(x) for x in [
             r.get("created_at", ""), r.get("provider", ""), r.get("event_name", ""), r.get("event_id", ""),
             r.get("ok", ""), r.get("status", ""), r.get("from_retry", ""), r.get("is_test", ""),
             ms.get("email", ""), ms.get("phone", ""), ms.get("external_id", ""), ms.get("fbp", ""),
             ms.get("fbc", ""), ms.get("ttclid", ""), ms.get("ttp", ""), ms.get("ip", ""), ms.get("ua", ""),
             ms.get("ip_version", ""), msg,
-        ])
+        ]])
     fname = f"capi_logs_{(date_from or 'all')}_{(date_to or 'all')}.csv"
+    # Güvenlik olayı: toplu dışa aktarım (denetim izi + süper admin uyarısı; asla istisna fırlatmaz).
+    await _sec_emit("capi_logs_export", current_user, {"export": "capi-logs.csv", "rows": len(rows)})
     return Response(
         content=buf.getvalue(),
         media_type="text/csv; charset=utf-8",
@@ -503,7 +631,7 @@ async def capi_logs_export(
 
 @router.get("/capi/queue")
 async def capi_queue(
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("settings.view")),
     limit: int = 100,
     dead: Optional[bool] = None,
 ):
@@ -516,7 +644,7 @@ async def capi_queue(
 
 
 @router.post("/capi/queue/{qid}/retry")
-async def capi_retry_one(qid: str, current_user: dict = Depends(require_admin)):
+async def capi_retry_one(qid: str, current_user: dict = Depends(require_permission("settings.edit"))):
     """Tek bir kuyruk öğesini hemen denemek için işaretle (next_try_at=now)."""
     res = await db.capi_event_queue.update_one(
         {"id": qid},
@@ -535,7 +663,7 @@ def _pct(n: int, d: int) -> float:
 
 @router.get("/capi/audit")
 async def capi_audit(
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("settings.view")),
     provider: str = "meta",
     sample: int = 100,
     window_hours: int = 72,
@@ -734,14 +862,14 @@ async def capi_audit(
 
 
 @router.delete("/capi/queue/{qid}")
-async def capi_delete_one(qid: str, current_user: dict = Depends(require_admin)):
+async def capi_delete_one(qid: str, current_user: dict = Depends(require_permission("settings.edit"))):
     res = await db.capi_event_queue.delete_one({"id": qid})
     return {"ok": True, "deleted": res.deleted_count}
 
 
 @router.delete("/capi/logs/clear-old")
 async def capi_logs_clear_old(
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("settings.edit")),
     days: int = 30,
 ):
     """X günden eski logları temizle."""
@@ -751,9 +879,32 @@ async def capi_logs_clear_old(
     return {"ok": True, "deleted": res.deleted_count, "older_than_days": days}
 
 
+@router.get("/{pid}/history")
+async def get_pixel_history(pid: str, current_user: dict = Depends(require_permission("settings.view"))):
+    """Pikselin son 20 önceki sürümü (yeniden eskiye; token alanları içermez)."""
+    rows = await db.marketing_pixel_history.find({"pixel_id": pid}, {"_id": 0}) \
+        .sort("archived_at", -1).to_list(length=_PIXEL_HISTORY_KEEP)
+    return {"items": rows}
+
+
 @router.delete("/{pid}")
-async def delete_pixel(pid: str, current_user: dict = Depends(require_admin)):
+async def delete_pixel(pid: str, request: Request, current_user: dict = Depends(require_permission("settings.edit"))):
+    existing = await db.marketing_pixels.find_one({"id": pid}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
+    try:
+        from .custom_theme import storefront_script_hosts as _sf_hosts
+        _prev_hosts = await _sf_hosts()
+    except Exception:  # noqa: BLE001
+        _prev_hosts = set()
+    await _snapshot_pixel(existing, "delete", current_user.get("email") or current_user.get("id") or "")
     res = await db.marketing_pixels.delete_one({"id": pid})
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
+    await record_admin_audit(
+        db, action="marketing_pixel.delete", entity_type="marketing_pixel", entity_id=pid,
+        before=_pixel_summary(existing), after=None, current_user=current_user, request=request,
+    )
+    if existing.get("is_active"):
+        await _notify_pixel_change(existing, None, current_user, request, _prev_hosts)
     return {"success": True}

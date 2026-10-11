@@ -9,9 +9,11 @@ AMAÇ:
      pazarlama modeli; VIP / Riskli / Kaybedilen / Yeni gibi gruplar için
      hedefli kampanya yapmayı sağlar.
 
-  2) **Marketplace Karlılık Raporu** — Her pazaryeri için net ciro =
-     brüt - komisyon - kargo - iade. Komisyon yüzdesi
+  2) **Marketplace Karlılık Raporu** — Her pazaryeri için net kâr =
+     brüt - COGS (ürün maliyeti) - komisyon - kargo - iade. Komisyon yüzdesi
      `marketplace_accounts.{key}.transfer_rules.commission_value`'dan okunur.
+     COGS, profitability raporuyla AYNI zincirden gelir (purchase_price>0 else
+     cost_price; eksikse cog_fallback_ratio ile oranla tahmin).
 
   3) **Google Merchant Feed** — Google Shopping için XML feed. Ücretsiz
      listeleme ve Google Ads Shopping kampanyaları için zorunludur.
@@ -22,14 +24,18 @@ ENDPOINT'LER:
   GET /api/feeds/google-merchant.xml   (public — token gerektirmez)
 =============================================================================
 """
-from fastapi import APIRouter, Depends, Query, Response
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 from xml.sax.saxutils import escape
 
-from .deps import db, require_admin
+from .deps import db, require_admin, tr_range_to_utc, require_permission
+from .report_dedup import effective_order_date_match, merge_match, load_dup_dep
 
+# IAM-01: load_dup_dep (DB taraması/önbellek ısıtma) router düzeyinde yetkiden ÖNCE çalışıyordu ve herkese
+# açık besleme ucunu da kapsıyordu. Artık yalnız personel uçlarında, require_admin'den SONRA çalışır.
 router = APIRouter(tags=["Analytics Extra"])
+_ADMIN_DEPS = [Depends(require_admin), Depends(load_dup_dep)]
 
 
 # ---------------------------------------------------------------------------
@@ -52,10 +58,13 @@ def _rfm_segment(r: int, f: int, m: int) -> str:
     return "Standart"
 
 
-@router.get("/analytics-extra/rfm")
+from security.contact_pii import mask_phone as _mask_phone  # noqa: E402
+
+
+@router.get("/analytics-extra/rfm", dependencies=_ADMIN_DEPS)
 async def rfm_analysis(
     lookback_days: int = Query(365, ge=30, le=1460),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("customers.view", any_in_area=True)),
 ):
     """
     Son lookback_days içindeki siparişleri kullanıcı e-postasına göre
@@ -66,13 +75,26 @@ async def rfm_analysis(
               "VIP" segmentine öncelikli teslimat teklifleri üretir.
     """
     cutoff = (datetime.now(timezone.utc) - timedelta(days=lookback_days)).isoformat()
+    # NET CİRO (kullanıcı isteği): iptal/tam iade/ödenmemiş siparişler sayılmaz; KISMİ iadeli
+    # sipariş (partial_refunded vb.) sayılır ama onaylanan iade tutarı (customer_returns.refund_amount)
+    # harcamadan düşülür → segment (VIP vb.) iptal-iade düştükten sonraki tutarla belirlenir.
+    _RET_OK = ["approved", "return_approved", "refunded", "partial_refunded", "completed"]
     pipeline = [
         {"$match": {"created_at": {"$gte": cutoff},
                     "status": {"$nin": [
                         "cancelled", "cancel_refunded",
-                        "awaiting_payment", "payment_failed", "pending", "payment_notified",
+                        "awaiting_payment", "payment_failed", "failed", "pending", "payment_notified",
                         "return_requested", "return_approved", "return_in_transit",
-                        "returned", "refunded", "partial_refunded"]}}},
+                        "returned", "refunded"]},
+                    "payment_status": {"$nin": ["expired", "failed", "refunded"]}}},
+        {"$match": merge_match({})},  # ticimax_history ÇİFT kayıtları hariç
+        {"$lookup": {"from": "customer_returns", "localField": "id", "foreignField": "order_id", "as": "_rets"}},
+        {"$addFields": {"_net": {"$max": [0, {"$subtract": [
+            {"$ifNull": ["$total", {"$ifNull": ["$total_amount", 0]}]},
+            {"$sum": {"$map": {
+                "input": {"$filter": {"input": "$_rets", "as": "r",
+                                      "cond": {"$in": [{"$ifNull": ["$$r.status", ""]}, _RET_OK]}}},
+                "as": "r", "in": {"$ifNull": ["$$r.refund_amount", 0]}}}}]}]}}},
         {"$group": {
             "_id": {"$ifNull": ["$customer_email",
                                 {"$ifNull": ["$user_email",
@@ -80,7 +102,8 @@ async def rfm_analysis(
                                                           "$shipping_address.email"]}]}]},
             "last_order": {"$max": "$created_at"},
             "order_count": {"$sum": 1},
-            "total_spent": {"$sum": {"$ifNull": ["$total", "$total_amount"]}},
+            "total_spent": {"$sum": "$_net"},
+            "gross_spent": {"$sum": {"$ifNull": ["$total", {"$ifNull": ["$total_amount", 0]}]}},
             "name": {"$last": {"$ifNull": ["$customer_name",
                                            {"$ifNull": ["$shipping_address.full_name",
                                                         "$shipping_address.name"]}]}},
@@ -134,11 +157,14 @@ async def rfm_analysis(
         items.append({
             "email": r["_id"],
             "name": r.get("name"),
-            "phone": r.get("phone"),
+            # KVKK: segment listesinde (ve ondan üretilen CSV'de) telefon yalnız son 2 hane.
+            "phone": _mask_phone(r.get("phone")),
             "last_order": r["last_order"],
             "recency_days": r["recency_days"],
             "order_count": r["order_count"],
             "total_spent": round(r["total_spent"] or 0, 2),
+            "gross_spent": round(r.get("gross_spent") or 0, 2),
+            "returns_deducted": round((r.get("gross_spent") or 0) - (r["total_spent"] or 0), 2),
             "r": R, "f": F, "m": M,
             "rfm": f"{R}{F}{M}",
             "segment": seg,
@@ -149,22 +175,55 @@ async def rfm_analysis(
         "total": len(items),
         "segments": seg_counts,
         "items": items,
+        "net_basis": True,
+        "note": "Tutarlar NET: iptal/tam iade/ödenmemiş siparişler sayılmaz, kısmi iade tutarı düşülür.",
     }
 
 
 # ---------------------------------------------------------------------------
 # MARKETPLACE PROFIT REPORT
 # ---------------------------------------------------------------------------
-@router.get("/analytics-extra/marketplace-profit")
+@router.get("/analytics-extra/marketplace-profit", dependencies=_ADMIN_DEPS)
 async def marketplace_profit(
     days: int = Query(30, ge=1, le=3650),
-    current_user: dict = Depends(require_admin),
+    start_date: Optional[str] = Query(None),
+    end_date: Optional[str] = Query(None),
+    current_user: dict = Depends(require_permission("reports.financial")),
 ):
     """
-    Her kanal/pazaryeri için brüt ciro, komisyon (transfer_rules'tan),
-    kargo maliyeti, iade tutarı ve net kâr hesaplar.
+    Her kanal/pazaryeri için brüt ciro, COGS (ürün maliyeti), komisyon
+    (transfer_rules'tan), kargo maliyeti, iade tutarı ve net kâr hesaplar.
+
+    DENETİM DÜZELTMESİ (K3): Eskiden net kâr = brüt − komisyon − kargo − iade
+    idi; ürün maliyeti (COGS) HİÇ düşülmüyordu → 80₺'ye alıp 100₺'ye satılan
+    (%18 komisyon) üründe gerçek kâr 2₺ iken rapor ~82₺ (~40x şişik) gösteriyordu.
+    Artık net = brüt − COGS − komisyon − kargo − iade. COGS, profitability
+    raporuyla AYNI zincir/eşleşmeyle çekilir (aşağıdaki _cogs_pipeline).
     """
-    cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+    if bool(start_date) != bool(end_date):
+        raise HTTPException(status_code=400, detail="start_date ve end_date birlikte verilmelidir")
+    if start_date and end_date:
+        try:
+            range_start, range_end = tr_range_to_utc(start_date, end_date)
+        except (TypeError, ValueError):
+            raise HTTPException(status_code=400, detail="Geçersiz tarih aralığı")
+    else:
+        # `days` geriye uyumlu kalır; sınırlar Türkiye yerel günüdür.
+        today_tr = (datetime.now(timezone.utc) + timedelta(hours=3)).date()
+        first_tr = today_tr - timedelta(days=days - 1)
+        range_start, range_end = tr_range_to_utc(first_tr.isoformat(), today_tr.isoformat())
+    date_match = effective_order_date_match(range_start, range_end)
+
+    # Maliyet-oranı yapılandırması (profitability ile ortak): maliyeti bilinmeyen
+    # kalemlerde satış fiyatının bu oranı COGS sayılır → eksik maliyet SAHTE %100
+    # marj üretmesin (denetim bulgusu D4). Yerelde import: modül-yükleme sırasında
+    # döngüsel bağımlılık riskini önlemek için fonksiyon içinde (feed'deki `import os` stili).
+    try:
+        from .reports import _profitability_config
+        _cfg = await _profitability_config()
+        cog_fallback_ratio = float(_cfg.get("cog_fallback_ratio") or 0.5)
+    except Exception:
+        cog_fallback_ratio = 0.5
 
     # Komisyon ayarlarını çek
     accounts_cursor = db.marketplace_accounts.find({}, {"_id": 0, "key": 1, "transfer_rules": 1})
@@ -181,10 +240,17 @@ async def marketplace_profit(
     pipeline = [
         # Denetim: iptal/ödenmemiş siparişler brüt/net kâra girmesin (yalnız gerçek satışlar).
         # İade grubu brütte KALIR ve aşağıda 'refunded' olarak düşülür.
-        {"$match": {"created_at": {"$gte": cutoff},
+        # DENETİM (finansal F1): TAM iade (returned/refunded) siparişler hariç — eskiden gross'a
+        # dahil edilip sonra tam total'i "refunded" düşülüyordu ama COGS sayılmaya devam ettiği
+        # için her iade siparişi kârı kendi COGS'u kadar HAYALET zarara çekiyordu. Artık tam
+        # iadeler hem gross hem cogs'tan çıkarılır (net katkı 0). KISMİ iade (partial_refunded)
+        # gross'ta kalır; yalnız GERÇEK iade tutarı (refund_amount) net'ten düşülür (eskiden tüm
+        # sipariş total'i düşülüp koca siparişi zarara çekiyordu).
+        {"$match": merge_match({"$and": [date_match, {
                     "status": {"$nin": ["cancelled", "cancel_refunded",
                                         "awaiting_payment", "payment_failed",
-                                        "pending", "payment_notified"]}}},
+                                        "pending", "payment_notified",
+                                        "returned", "refunded"]}}]})},
         {"$group": {
             # Denetim: var olmayan 'channel' alanı yüzünden HER sipariş 'web'e düşüyordu.
             # Gerçek kaynak platform/marketplace'ten: trendyol/hepsiburada/temu/site.
@@ -193,8 +259,8 @@ async def marketplace_profit(
             "gross": {"$sum": {"$ifNull": ["$total", "$total_amount"]}},
             "shipping_cost": {"$sum": {"$ifNull": ["$shipping_cost", 0]}},
             "refunded": {"$sum": {"$cond": [
-                {"$in": ["$status", ["returned", "refunded", "partial_refunded"]]},
-                {"$ifNull": ["$total", "$total_amount"]},
+                {"$eq": ["$status", "partial_refunded"]},
+                {"$ifNull": ["$refund_amount", 0]},
                 0
             ]}},
         }},
@@ -202,8 +268,55 @@ async def marketplace_profit(
     ]
     agg = await db.orders.aggregate(pipeline).to_list(length=50)
 
+    # COGS (ürün maliyeti) — kanal bazında. Kalemleri aç, ürünü profitability'nin
+    # $lookup'ı ile TIPATIP aynı şekilde eşleştir: product_id VEYA barcode (üst-seviye
+    # ya da varyant). Pazaryeri kalemleri Meluni id'si değil productCode/barcode taşır.
+    # Birim maliyet zinciri: purchase_price(>0) → cost_price. Maliyeti bilinmeyen
+    # kalemin cirosu revenue_nocost'ta toplanır ve aşağıda cog_fallback_ratio ile tahmin edilir.
+    cogs_pipeline = [
+        # F1: tam iadeler COGS'tan da çıkar (mal stoğa döndü → COGS geri çevrilmeli).
+        {"$match": merge_match({"$and": [date_match, {
+                    "status": {"$nin": ["cancelled", "cancel_refunded",
+                                        "awaiting_payment", "payment_failed",
+                                        "pending", "payment_notified",
+                                        "returned", "refunded"]}}]})},
+        {"$addFields": {"_ch": {"$toLower": {"$ifNull": ["$platform", {"$ifNull": ["$marketplace", "site"]}]}}}},
+        {"$unwind": "$items"},
+        {"$addFields": {"_bc": {"$toString": {"$ifNull": ["$items.barcode", ""]}}}},
+        {"$lookup": {
+            "from": "products",
+            "let": {"pid": "$items.product_id", "bc": "$_bc"},
+            "pipeline": [
+                {"$match": {"$expr": {"$or": [
+                    {"$eq": ["$id", "$$pid"]},
+                    {"$and": [{"$ne": ["$$bc", ""]}, {"$eq": [{"$toString": "$barcode"}, "$$bc"]}]},
+                    {"$and": [{"$ne": ["$$bc", ""]}, {"$in": ["$$bc", {"$map": {"input": {"$ifNull": ["$variants", []]}, "as": "v", "in": {"$toString": "$$v.barcode"}}}]}]},
+                ]}}},
+                {"$limit": 1},
+                {"$project": {"_id": 0, "purchase_price": 1, "cost_price": 1}},
+            ],
+            "as": "p",
+        }},
+        {"$unwind": {"path": "$p", "preserveNullAndEmptyArrays": True}},
+        {"$addFields": {"_unit_cost": {"$let": {
+            "vars": {"pp": {"$ifNull": ["$p.purchase_price", 0]}, "cp": {"$ifNull": ["$p.cost_price", 0]}},
+            "in": {"$cond": [{"$gt": ["$$pp", 0]}, "$$pp", "$$cp"]}}}}},
+        {"$group": {
+            "_id": "$_ch",
+            "cogs": {"$sum": {"$multiply": [{"$ifNull": ["$_unit_cost", 0]}, {"$ifNull": ["$items.quantity", 1]}]}},
+            "revenue_nocost": {"$sum": {"$cond": [{"$gt": [{"$ifNull": ["$_unit_cost", 0]}, 0]}, 0,
+                                {"$multiply": [{"$ifNull": ["$items.price", 0]}, {"$ifNull": ["$items.quantity", 1]}]}]}},
+        }},
+    ]
+    cogs_map = {}
+    async for r in db.orders.aggregate(cogs_pipeline):
+        ch = (r["_id"] or "site")
+        # Maliyeti bilinmeyen kalemler için oranla tahmin ekle (sahte %100 marj önlenir).
+        est = float(r.get("cogs") or 0) + float(r.get("revenue_nocost") or 0) * cog_fallback_ratio
+        cogs_map[ch] = est
+
     result = []
-    totals = {"orders": 0, "gross": 0, "commission": 0, "shipping_cost": 0, "refunded": 0, "net": 0}
+    totals = {"orders": 0, "gross": 0, "cogs": 0, "commission": 0, "shipping_cost": 0, "refunded": 0, "net": 0}
     for r in agg:
         ch = r["_id"] or "site"
         cfg = comm_map.get(ch, {"type": "none", "value": 0})
@@ -212,11 +325,13 @@ async def marketplace_profit(
             commission = (r["gross"] or 0) * cfg["value"] / 100
         elif cfg["type"] == "amount":
             commission = (r["orders"] or 0) * cfg["value"]
-        net = (r["gross"] or 0) - commission - (r["shipping_cost"] or 0) - (r["refunded"] or 0)
+        cogs = float(cogs_map.get(ch, 0) or 0)
+        net = (r["gross"] or 0) - cogs - commission - (r["shipping_cost"] or 0) - (r["refunded"] or 0)
         result.append({
             "channel": ch,
             "orders": r["orders"],
             "gross": round(r["gross"] or 0, 2),
+            "cogs": round(cogs, 2),
             "commission": round(commission, 2),
             "commission_rate": cfg["value"],
             "commission_type": cfg["type"],
@@ -225,11 +340,17 @@ async def marketplace_profit(
             "net": round(net, 2),
             "net_margin_pct": round((net / r["gross"] * 100) if r["gross"] else 0, 2),
         })
-        for k in ["orders", "gross", "commission", "shipping_cost", "refunded", "net"]:
+        for k in ["orders", "gross", "cogs", "commission", "shipping_cost", "refunded", "net"]:
             totals[k] += result[-1][k] if k != "orders" else r["orders"]
-    return {"days": days, "items": result, "totals": {
+    return {"days": days, "start_date": start_date, "end_date": end_date,
+            "effective_start": range_start, "effective_end": range_end,
+            "items": result, "totals": {
         **{k: round(v, 2) for k, v in totals.items() if k != "orders"},
         "orders": totals["orders"],
+    }, "warning": {
+        "code": "legacy_marketplace_profit_scope",
+        "message": "Bu sonuç legacy/tahmini kapsamdadır; finansal karar için kanonik Kârlılık Analizi kullanılmalıdır.",
+        "authoritative_endpoint": "/api/admin/reports/profitability",
     }}
 
 

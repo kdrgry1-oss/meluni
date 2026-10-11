@@ -16,7 +16,7 @@ ENDPOINTS:
 from fastapi import APIRouter, Depends, HTTPException
 from datetime import datetime, timezone
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_permission
 
 public_router = APIRouter(prefix="/footer-template", tags=["footer-public"])
 admin_router = APIRouter(prefix="/admin/footer-template", tags=["footer-admin"])
@@ -132,7 +132,7 @@ async def get_footer_template():
 
 
 @admin_router.get("")
-async def admin_get_footer_template(current_user: dict = Depends(require_admin)):
+async def admin_get_footer_template(current_user: dict = Depends(require_permission("tasarim.view"))):
     """Admin (yönetim için)."""
     doc = await db.settings.find_one({"id": "footer"}, {"_id": 0})
     return await _with_company(doc or _DEFAULT)
@@ -141,7 +141,7 @@ async def admin_get_footer_template(current_user: dict = Depends(require_admin))
 @admin_router.put("")
 async def admin_update_footer_template(
     payload: dict,
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("tasarim.footer"))
 ):
     """Footer şablonunu güncelle (whitelist)."""
     allowed = {"mode", "custom_html", "columns", "newsletter", "social", "copyright"}
@@ -158,7 +158,7 @@ async def admin_update_footer_template(
 
 
 @admin_router.post("/reset-default")
-async def reset_footer_default(current_user: dict = Depends(require_admin)):
+async def reset_footer_default(current_user: dict = Depends(require_permission("tasarim.footer"))):
     """Footer'ı varsayılan değerlere döndür."""
     await db.settings.update_one(
         {"id": "footer"},

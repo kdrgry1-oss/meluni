@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Bookmark, ShoppingBag } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
-import { optimizeImg } from "../lib/img";
+import { optimizeImg, galleryImages } from "../lib/img";
 import { resolveColor, needsBorder, MULTI_GRADIENT } from "../lib/colorMap";
 import { sortLikeSize } from "../utils/sizeSort";
 import { priceView } from "../lib/price";
@@ -25,7 +25,8 @@ export default function ProductCard({ product, listId = "", listName = "", index
   const imageContainerRef = useRef(null);
 
   // Remove duplicate first image
-  const allImages = product.images || [];
+  // Yalnız gerçek görseller (beden tablosu/video nesneleri süzülür — lib/img.galleryImages)
+  const allImages = galleryImages(product);
   const images = allImages.length > 1 && allImages[0] === allImages[1]
     ? allImages.slice(1)
     : allImages;
@@ -282,6 +283,13 @@ export default function ProductCard({ product, listId = "", listName = "", index
       {/* Product Info */}
       <div className="mt-3">
         <Link to={`/${targetSlug}`} onClick={handleSelect}>
+          {/* "3 AL 2 ÖDE" gibi adet kampanyası ibaresi — panelde aktif otomatik X-al-Y-öde
+              kampanyasının kapsamındaki ürünlerde sunucu (promo_badge) doldurur. */}
+          {product.promo_badge ? (
+            <p className="text-[11px] md:text-xs font-bold tracking-wide uppercase text-red-600 mb-1 line-clamp-1" data-testid={`promo-badge-${product.id}`}>
+              {product.promo_badge}
+            </p>
+          ) : null}
           <div className="flex items-start justify-between gap-2">
             <h3 className="text-sm leading-snug flex-1 line-clamp-2">{product.name}</h3>
             <button
@@ -307,6 +315,13 @@ export default function ProductCard({ product, listId = "", listName = "", index
               <span className="text-sm">{(displayPrice || 0).toFixed(2).replace('.', ',')} TL</span>
             )}
           </div>
+          {/* Sepet-tutarı kampanyası ("5000 TL üzerine 500 TL indirim") — sunucu (tier_badge) doldurur;
+              fiyatı değiştirmez, indirim sepette tutar koşuluyla oluşur. */}
+          {product.tier_badge ? (
+            <p className="mt-1 text-[11px] md:text-xs text-red-600 line-clamp-1" data-testid={`tier-badge-${product.id}`}>
+              {product.tier_badge}
+            </p>
+          ) : null}
         </Link>
 
         {/* Renk kutucukları (swatch) — aynı modelin diğer renkleri */}
@@ -342,7 +357,7 @@ export default function ProductCard({ product, listId = "", listName = "", index
                   aria-label={sib.color || "Renk"}
                 >
                   {fallback
-                    ? <span className="block w-full h-full bg-gradient-to-br from-gray-200 to-gray-400" />
+                      ? <span className="block w-full h-full bg-neutral-200" />
                     : <span className="block w-full h-full" style={bgStyle} />}
                 </Link>
               );

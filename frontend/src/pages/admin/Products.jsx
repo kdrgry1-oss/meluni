@@ -34,10 +34,12 @@
  */
 import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams, useParams, useNavigate } from "react-router-dom";
-import { Plus, Search, Edit, Trash2, Eye, EyeOff, Copy, Upload, Image, X, MoreHorizontal, Layers, Filter, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Store, RefreshCw, Check, Globe, Download, FileSpreadsheet, CheckSquare, Square, Printer, Tag, AlertTriangle } from "lucide-react";
+import { Plus, Search, Edit, Trash2, Eye, EyeOff, Copy, Upload, Image, X, MoreHorizontal, Layers, Filter, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Store, RefreshCw, Check, Globe, Download, FileSpreadsheet, CheckSquare, Square, Printer, Tag, AlertTriangle, History } from "lucide-react";
 import axios from "axios";
 import ProductAiImages from "../../components/admin/ProductAiImages";
+import { openAdminDocument } from "../../lib/adminDocuments";
 import { toast } from "sonner";
+import { stockActorDetails, stockSyncDetails, stockSyncLabel } from "../../lib/stockHistoryView";
 import {
   Dialog,
   DialogContent,
@@ -59,12 +61,15 @@ import {
 import SizeTablePanel from "./SizeTablePanel";
 import Pagination from "../../components/admin/Pagination";
 import { priceView } from "../../lib/price";
+import { buildProductPrintHtml } from "../../lib/productPrint";
 import SearchableAttribute from "../../components/admin/product-form/SearchableAttribute";
 import SearchableMapSelect from "../../components/admin/SearchableMapSelect";
 import SeoTab from "../../components/admin/product-form/SeoTab";
 import CombineProductsTab from "../../components/admin/product-form/CombineProductsTab";
 import ProductDetailFields from "../../components/admin/product-form/ProductDetailFields";
 import ProductFilters from "../../components/admin/ProductFilters";
+import { sanitizeHtml } from "../../lib/sanitizeHtml";
+import { FIT_SIZE_OPTIONS, isStandardSized, sortFitSizes, fitSizesText } from "../../lib/fitSizes";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 // API.replace('/api','') HATALIYDI: "https://api.meluni.com.tr/api" icinde ilk "/api"
@@ -103,8 +108,9 @@ function DescriptionEditor({ value, onChange, onGenerate, generating }) {
   const previewRef = useRef(null);
   useEffect(() => {
     const el = previewRef.current;
-    if (el && el.innerHTML !== (value || "")) {
-      el.innerHTML = value || "";
+    const safeValue = sanitizeHtml(value || "");
+    if (el && el.innerHTML !== safeValue) {
+      el.innerHTML = safeValue;
     }
   }, [value, mode]);
   const tabBtn = (m, label) => (
@@ -122,7 +128,7 @@ function DescriptionEditor({ value, onChange, onGenerate, generating }) {
   const stripHtml = (html) => {
     if (!html) return "";
     const t = document.createElement("div");
-    t.innerHTML = html;
+    t.innerHTML = sanitizeHtml(html);
     return (t.textContent || t.innerText || "").trim();
   };
   const charsHtml = (value || "").length;
@@ -299,6 +305,11 @@ export default function AdminProducts() {
   const [globalTrendyolMarkup, setGlobalTrendyolMarkup] = useState(0);
   const [globalVatRate, setGlobalVatRate] = useState(10);
   const [activeTab, setActiveTab ] = useState("basic");
+  const [stockHistory, setStockHistory] = useState([]);
+  const [stockHistoryCoverage, setStockHistoryCoverage] = useState("");
+  const [stockHistoryLoading, setStockHistoryLoading] = useState(false);
+  const [stockHistoryError, setStockHistoryError] = useState("");
+  const stockHistoryRequest = useRef(0);
   const [attributeSearchTerm, setAttributeSearchTerm] = useState("");
   const [showAllAttributes, setShowAllAttributes] = useState(false);
   const [variantSearchTerm, setVariantSearchTerm] = useState("");
@@ -312,6 +323,7 @@ export default function AdminProducts() {
   const imageInputRef = useRef(null);   // Görsel yükleme inputu — Excel import ref'iyle ÇAKIŞMASIN
   const techFileInputRef = useRef(null);
   const [exporting, setExporting] = useState(false);
+  const [exportImages, setExportImages] = useState(false);   // Excel'e ürün görseli göm
   const [importing, setImporting] = useState(false);
   const [techImportModalOpen, setTechImportModalOpen] = useState(false);
   const [techImportResults, setTechImportResults] = useState(null);
@@ -569,7 +581,9 @@ export default function AdminProducts() {
 
   useEffect(() => {
     if (modalOpen && !editingProduct) {
-      axios.get(`${API}/settings`)
+      axios.get(`${API}/settings/product-defaults`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
         .then(res => {
           if (res.data.default_vat_rate) {
             setFormData(prev => ({ ...prev, vat_rate: res.data.default_vat_rate }));
@@ -630,8 +644,10 @@ export default function AdminProducts() {
             manufacturer: p.manufacturer || "MELUNİ",
             mfg_record_id: p.mfg_record_id || "",
             is_active: false, // satışa açmadan önce kalan bilgiler girilecek
+            // Varyant id ürünler arası BENZERSİZ olmalı (Meta katalog content_id'si). Eski
+            // `var-mfg-${i}-…` her imalat ürününde aynı çıkıyordu → katalogda çakışıyordu.
             variants: (p.variants || []).map((v, i) => ({
-              id: `var-mfg-${i}-${v.size}-${v.color}`.replace(/\s+/g, ""),
+              id: `var-mfg-${Date.now()}-${i}-${v.size}-${v.color}`.replace(/\s+/g, ""),
               size: v.size || "", color: v.color || "",
               stock: Number(v.stock || 0), barcode: "", stock_code: p.stock_code || "",
             })),
@@ -666,8 +682,7 @@ export default function AdminProducts() {
     fetchProducts();
     fetchCategories();
     fetchTrendyolCategories();
-    fetchGlobalTrendyolMarkup();
-    fetchGlobalSettings();
+    fetchProductDefaults();
   }, [page, pageSize, debouncedSearch, JSON.stringify(appliedFilters), JSON.stringify(sortBy)]);
 
   // Görünüm kalıcılığı: yenilemede sayfa + boyut + filtreler + sıralama korunur.
@@ -735,31 +750,22 @@ export default function AdminProducts() {
     }
   };
 
-  const fetchGlobalTrendyolMarkup = async () => {
+  // Ürün formu varsayılanları (KDV + Trendyol fiyat farkı %) — dar, ürün yetkisiyle okunan uç
+  // (/settings/product-defaults). Tüm ayar belgesi / Trendyol API bilgisi gerekmez (en az yetki).
+  const fetchProductDefaults = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${API}/integrations/trendyol/settings`, {
+      const res = await axios.get(`${API}/settings/product-defaults`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (res.data && res.data.default_markup !== undefined) {
-        setGlobalTrendyolMarkup(res.data.default_markup);
+      if (res.data && res.data.trendyol_markup !== undefined) {
+        setGlobalTrendyolMarkup(res.data.trendyol_markup);
       }
-    } catch (err) {
-      console.error("Global markup fetch error:", err);
-    }
-  };
-
-  const fetchGlobalSettings = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.get(`${API}/settings`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
       if (res.data && res.data.default_vat_rate !== undefined) {
         setGlobalVatRate(res.data.default_vat_rate);
       }
     } catch (err) {
-      console.error("Global settings fetch error:", err);
+      console.error("Product defaults fetch error:", err);
     }
   };
 
@@ -782,7 +788,7 @@ export default function AdminProducts() {
       'date_from', 'date_to', 'pub_date_from', 'pub_date_to',
       'has_image', 'has_variants', 'has_video', 'multi_barcode', 'discounted',
       'is_free_shipping', 'is_showcase', 'is_opportunity', 'is_new',
-      'attr_key', 'attr_value',
+      'attr_key', 'attr_value', 'sizes',
     ].forEach((k) => set(k, f[k]));
 
     // ticimax_fields sayısal aralıkları
@@ -810,23 +816,109 @@ export default function AdminProducts() {
     return p;
   };
 
-  const handleExport = async () => {
+  // YAZDIR — ekrandaki görünümün (görsel, ad, stok kodu, bedenler, fiyat, stok…) A4 çıktısı
+  // + elle not için çizgili NOT sütunu. Seçili ürün varsa YALNIZ onlar; yoksa ekrandaki
+  // arama + tüm filtrelere uyan ürünlerin TAMAMI (sayfalamadan bağımsız) yazdırılır.
+  const [printing, setPrinting] = useState(false);
+  const categoryTextOf = (product) => {
+    const _ids = [...new Set([...(product.category_ids || []), ...(product.categories || [])].map(String))];
+    const _names = _ids.map((id) => categories.find((c) => String(c.id) === id)?.name).filter(Boolean);
+    return [...new Set([product.category_name, ..._names].filter(Boolean))].join(" · ");
+  };
+  const printFilterText = () => {
+    const f = appliedFilters || {};
+    const lbl = { status: "Durum", season: "Sezon", brand: "Marka", supplier: "Tedarikçi", tag: "Etiket",
+      name: "Ad", stock_code: "Stok kodu", barcode: "Barkod", min_stock: "Min stok", max_stock: "Maks stok",
+      min_price: "Min fiyat", max_price: "Maks fiyat", date_from: "Eklenme ≥", date_to: "Eklenme ≤",
+      has_image: "Görsel", has_variants: "Varyant", discounted: "İndirimli" };
+    const parts = [];
+    if (debouncedSearch) parts.push(`Arama: "${debouncedSearch}"`);
+    if (f.category_id) {
+      const c = categories.find((x) => String(x.id) === String(f.category_id));
+      parts.push(`Kategori: ${c?.name || f.category_id}`);
+    }
+    Object.entries(f).forEach(([k, v]) => {
+      if (k === "category_id" || v === "" || v === undefined || v === null || v === false) return;
+      parts.push(`${lbl[k] || k}: ${v === true ? "evet" : v}`);
+    });
+    return parts.length ? `Filtre — ${parts.join(" · ")}` : "Tüm ürünler (filtre yok)";
+  };
+  const handlePrintList = async () => {
+    // Açılır pencere engellenmesin diye pencere TIKLAMA ANINDA açılır, içerik sonra yazılır.
+    const win = window.open("", "_blank");
+    if (!win) { toast.error("Yazdırma penceresi engellendi — tarayıcıda açılır pencereye izin verin"); return; }
+    win.document.write('<p style="font-family:sans-serif;padding:24px">Ürünler hazırlanıyor…</p>');
+    setPrinting(true);
+    try {
+      const token = localStorage.getItem("token");
+      const headers = { Authorization: `Bearer ${token}` };
+      const base = buildProductParams({ paging: false });   // ekrandaki arama + filtre + sıralama
+      const PAGE = 500, all = [];
+      for (let pg = 1; pg <= 40; pg += 1) {
+        const q = new URLSearchParams(base); q.set("page", pg); q.set("limit", PAGE);
+        const r = await axios.get(`${API}/products?${q.toString()}&admin_view=1`, { headers, timeout: 120000 });
+        const batch = r.data?.products || [];
+        all.push(...batch);
+        const tot = Number(r.data?.total || 0);
+        if (win.closed) return;
+        win.document.body.innerHTML = `<p style="font-family:sans-serif;padding:24px">Ürünler hazırlanıyor… ${all.length}${tot ? " / " + tot : ""}</p>`;
+        if (batch.length < PAGE || (tot && all.length >= tot)) break;
+      }
+      const sel = new Set(selectedProducts.map(String));
+      let list = sel.size ? all.filter((p) => sel.has(String(p.id))) : all;
+      // Seçili ürün filtrenin dışında kaldıysa (filtre değişti) ekrandaki sayfadan tamamla.
+      if (sel.size && list.length < sel.size) {
+        const have = new Set(list.map((p) => String(p.id)));
+        list = list.concat(products.filter((p) => sel.has(String(p.id)) && !have.has(String(p.id))));
+      }
+      if (!list.length) { win.close(); toast.error("Yazdırılacak ürün yok"); return; }
+      let storeName = "", logoUrl = "";
+      try {
+        // Marka adı + logo vitrinde zaten herkese açık (bakım uç noktası tenant markasını döner);
+        // ürün yetkilisinin tüm firma yapılandırmasını (tenant-config, settings.view) okumasına gerek yok.
+        const t = await axios.get(`${API}/settings/maintenance`);
+        storeName = t.data?.site_name || "";
+        logoUrl = t.data?.logo_url || "";
+      } catch (_) { /* firma bilgisi yoksa başlıksız yazdır */ }
+      const html = buildProductPrintHtml({
+        products: list, priceView, fixImg, categoryText: categoryTextOf, storeName, logoUrl,
+        filterText: sel.size ? `Seçili ürünler (${list.length})` : printFilterText(),
+      });
+      if (win.closed) return;
+      win.document.open(); win.document.write(html); win.document.close();
+    } catch (err) {
+      console.error("Print error:", err);
+      try { win.close(); } catch (_) { /* yoksay */ }
+      toast.error("Yazdırma listesi hazırlanamadı");
+    } finally {
+      setPrinting(false);
+    }
+  };
+
+  // grouped=true → aynı ürün+renk TEK satır (bedenler birleşik); false → her beden ayrı satır.
+  const handleExport = async (grouped = false) => {
     setExporting(true);
-    toast.info("Excel dosyası hazırlanıyor...");
+    toast.info(exportImages
+      ? "Excel hazırlanıyor — görseller indiriliyor, biraz sürebilir…"
+      : "Excel dosyası hazırlanıyor...");
     try {
       const token = localStorage.getItem("token");
       const p = buildProductParams({ paging: false });   // ekrandaki arama + tüm filtreler
+      // GÖRSELLİ AKTARIM: her satırın başına ürün fotoğrafı gömülür (oran korunur, kırpma yok).
+      if (exportImages) { p.set("with_images", "1"); p.set("img_size", "medium"); }
+      if (grouped === true) p.set("group_sizes", "1");
       const _qs = p.toString();
       const response = await axios.get(`${API}/products/export/excel${_qs ? `?${_qs}` : ""}`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'blob',
-        timeout: 120000,   // büyük katalog export'u uzun sürebilir → erken kopma olmasın
+        // Görselli aktarımda yüzlerce fotoğraf indirilip gömülür → daha uzun süre tanı.
+        timeout: exportImages ? 600000 : 120000,
       });
       
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `urunler_${new Date().toISOString().split('T')[0]}.xlsx`);
+      link.setAttribute('download', `urunler${grouped === true ? "_beden_tek_satir" : ""}_${new Date().toISOString().split('T')[0]}.xlsx`);
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -1296,7 +1388,10 @@ export default function AdminProducts() {
   const removeImage = (index) => {
     const newImages = [...formData.images];
     newImages.splice(index, 1);
-    setFormData({ ...formData, images: newImages });
+    // Son görsel de kullanıcı tarafından silindiyse sunucuya BİLİNÇLİ temizlik olduğunu bildir:
+    // sunucu, kaza eseri boş galeri kaydına karşı boş `images` listesini yok sayar (veri koruması);
+    // bu işaret olmadan "sil → kaydet → hâlâ duruyor" oluyordu (yalnız ölçü görseli olan ürünler).
+    setFormData({ ...formData, images: newImages, images_clear_confirmed: newImages.length === 0 });
   };
   // Görsel sıralama — sürükle-bırak ile diziyi yeniden düzenler. İlk görsel = KAPAK.
   const reorderImages = (from, to) => {
@@ -1359,7 +1454,7 @@ export default function AdminProducts() {
       return;
     }
     // Beden Önerisi (Kalıp) zorunlu (kullanıcı isteği) — ürün sayfası kalıp tavsiyesi buradan beslenir
-    if (!formData.size_advice) {
+    if (!formData.size_advice && !isStandardSized(formData.variants)) {
       toast.error("Beden Önerisi (Kalıp) zorunlu — Temel sekmesinde Sezon'un altından seçin");
       return;
     }
@@ -1463,7 +1558,7 @@ export default function AdminProducts() {
           const colorPayload = {
             ...payload,
             name: `${formData.name} ${color}`,
-            slug: generateSlug(`${formData.name} ${color}`) + `-${Date.now()}`,
+            slug: undefined,   // sunucu üretir: {ad}-{ürün kart id}
             attributes: colorAttrs,
             variants: colorVariants,
             csv_card_id: groupCardId || undefined,   // paylaşımlı renk-kardeşi anahtarı
@@ -1501,7 +1596,7 @@ export default function AdminProducts() {
         const singlePayload = {
           ...payload,
           name: formData.name.includes(color) ? formData.name : `${formData.name} ${color}`,
-          slug: generateSlug(formData.name.includes(color) ? formData.name : `${formData.name} ${color}`) + `-${Date.now()}`,
+          slug: undefined,   // sunucu üretir: {ad}-{ürün kart id}
           attributes: colorAttrs,
         };
         delete singlePayload.newVariant;
@@ -1594,60 +1689,21 @@ export default function AdminProducts() {
   };
 
   /**
-   * handleTrendyolUpdate — Mevcut Trendyol ürününün STOK/FİYAT bilgisini günceller.
-   *   (Yeni ürün göndermek için handleTrendyolSync kullanılır; bu fonksiyon
-   *    sadece envanter/price güncellemesi yapar.)
-   *   BACKEND: POST /api/integrations/trendyol/products/{id}/sync-inventory
-   */
-  const handleTrendyolUpdate = async (product) => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.post(`${API}/integrations/trendyol/products/${product.id}/sync-inventory`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      toast.success(res.data.message || "Trendyol stok/fiyat güncellendi");
-    } catch (err) {
-      toast.error("Güncelleme başarısız: " + (err.response?.data?.detail || err.message));
-    }
-  };
-
-  /**
-   * handleSplitByColor — Bu ürünün farklı RENK varyantlarını AYRI ürünlere böler.
-   *   İlk renk ana üründe kalır; diğer renkler yeni ürün olur (aynı kart id → "Diğer Renkler").
-   *   Bedenler her renk ürününün altında varyant olarak kalır.
-   *   BACKEND: POST /api/products/{id}/split-by-color
-   */
-  const handleSplitByColor = async (product) => {
-    if (!window.confirm(`"${product.name}" ürününün farklı renkleri AYRI ürünlere bölünecek. Devam edilsin mi?`)) return;
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.post(`${API}/products/${product.id}/split-by-color`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.data?.success) {
-        toast.success(res.data.message || "Renkler ayrıldı");
-        fetchProducts();
-      } else {
-        toast.info(res.data?.message || "Ayırma gerekmedi");
-      }
-    } catch (err) {
-      toast.error("Ayırma başarısız: " + (err.response?.data?.detail || err.message));
-    }
-  };
-
-  /**
    * handlePrintBarcode — TEK ürünün barkod/ürün kartını yeni sekmede açar ve
    *   yazdırma diyalogunu tetikler.
    *   Backend endpoint'i her varyant için ayrı bir barkod kartı döner
    *   (giyim firmalarındaki gibi: ürün adı, stok kodu, GTIN barkod, beden, renk).
    *   BACKEND: GET /api/products/{id}/barcode-card
    */
-  const handlePrintBarcode = (productId, sizes = null) => {
-    const token = localStorage.getItem('token');
-    const q = sizes && sizes.length ? `&sizes=${encodeURIComponent(sizes.join(','))}` : '';
-    const url = `${API}/products/${productId}/barcode-card?token=${token}${q}`;
-    const w = window.open(url, '_blank', 'width=820,height=1000');
-    if (w) { w.focus(); } // otomatik yazdirma yok: kopya adedini secip "Yazdir"a bas
+  const handlePrintBarcode = async (productId, sizes = null, counts = null) => {
+    const params = [];
+    if (sizes && sizes.length) params.push(`sizes=${encodeURIComponent(sizes.join(','))}`);
+    // Beden-başına adet: {"XS/S": 2, "M/L": 3} → "XS/S:2,M/L:3" (backend her bedeni o kadar basar)
+    const cEntries = counts ? Object.entries(counts).filter(([, n]) => Number.isFinite(Number(n))) : [];
+    if (cEntries.length) params.push(`counts=${encodeURIComponent(cEntries.map(([s, n]) => `${s}:${Math.max(0, parseInt(n, 10) || 0)}`).join(','))}`);
+    const q = params.length ? `?${params.join('&')}` : '';
+    try { await openAdminDocument(`/products/${productId}/barcode-card${q}`, 'width=820,height=1000'); }
+    catch (err) { toast.error(err.message || "Barkod kartı açılamadı"); }
   };
 
   /**
@@ -1659,11 +1715,13 @@ export default function AdminProducts() {
     let sizeList = [];
     if (mode === 'single') {
       sizeList = [...new Set((product?.variants || []).map(v => (v.size || '').trim()).filter(Boolean))];
-      if (sizeList.length <= 1) { handlePrintBarcode(product.id); return; } // tek/0 beden → direkt yazdır
+      // Beden yoksa (varyantsız ürün) seçici tek satır "Tüm barkodlar" ile açılır (adet yine burada girilir;
+      // yazdırma sayfasında ikinci bir adet çubuğu ÇIKMAZ).
+      if (sizeList.length === 0) sizeList = ['*'];
     } else {
       const chosen = products.filter(p => selectedProducts.includes(p.id));
       sizeList = [...new Set(chosen.flatMap(p => (p.variants || []).map(v => (v.size || '').trim())).filter(Boolean))];
-      if (sizeList.length <= 1) { handleBulkPrintBarcodes(); return; }
+      if (sizeList.length === 0) sizeList = ['*'];
     }
     // Bedenleri mantıklı sırala (XS→XXL, sonra sayısal/diğer alfabetik)
     const ORDER = ['XXS','XS','S','M','L','XL','XXL','3XL','4XL'];
@@ -1679,19 +1737,24 @@ export default function AdminProducts() {
       productId: product?.id || null,
       sizes: sizeList,
       selected: Object.fromEntries(sizeList.map(s => [s, true])),
+      // Beden-başına adet (kullanıcı isteği: "her beden için kaçar tane yazdıracağımızı girebilelim")
+      counts: Object.fromEntries(sizeList.map(s => [s, 1])),
     });
   };
 
   const confirmBarcodeSizePrint = () => {
     if (!barcodeSizeModal) return;
-    const picked = barcodeSizeModal.sizes.filter(s => barcodeSizeModal.selected[s]);
-    if (picked.length === 0) { toast.error("En az bir beden seçiniz"); return; }
+    const cnt = barcodeSizeModal.counts || {};
+    const picked = barcodeSizeModal.sizes.filter(s => barcodeSizeModal.selected[s] && (parseInt(cnt[s], 10) || 0) > 0);
+    if (picked.length === 0) { toast.error("En az bir beden seçip adet giriniz"); return; }
     const all = picked.length === barcodeSizeModal.sizes.length;
-    const sizes = all ? null : picked; // hepsi seçiliyse filtre gönderme
+    // hepsi seçiliyse (ya da '*' = tüm barkodlar) beden filtresi gönderme; adetler counts ile gider
+    const sizes = (all || picked.includes('*')) ? null : picked;
+    const counts = Object.fromEntries(picked.map(s => [s, Math.max(1, parseInt(cnt[s], 10) || 1)]));
     if (barcodeSizeModal.mode === 'single') {
-      handlePrintBarcode(barcodeSizeModal.productId, sizes);
+      handlePrintBarcode(barcodeSizeModal.productId, sizes, counts);
     } else {
-      handleBulkPrintBarcodes(sizes);
+      handleBulkPrintBarcodes(sizes, counts);
     }
     setBarcodeSizeModal(null);
   };
@@ -1701,7 +1764,7 @@ export default function AdminProducts() {
    *   yazdırılabilir sayfada gösterir. A4'e sığacak şekilde 2-4 kart/satır.
    *   BACKEND: POST /api/products/barcode-cards/bulk (body: { ids: [...], sizes?: [...] })
    */
-  const handleBulkPrintBarcodes = async (sizes = null) => {
+  const handleBulkPrintBarcodes = async (sizes = null, counts = null) => {
     if (selectedProducts.length === 0) {
       toast.error("Lütfen ürün seçiniz");
       return;
@@ -1710,6 +1773,7 @@ export default function AdminProducts() {
       const token = localStorage.getItem('token');
       const body = { ids: selectedProducts };
       if (sizes && sizes.length) body.sizes = sizes;
+      if (counts && Object.keys(counts).length) body.counts = counts; // beden-başına adet
       const res = await axios.post(
         `${API}/products/barcode-cards/bulk`,
         body,
@@ -1719,7 +1783,7 @@ export default function AdminProducts() {
       if (w) {
         w.document.write(res.data);
         w.document.close();
-        w.focus(); // otomatik yazdirma yok: kopya adedini secip "Yazdir"a bas
+        w.focus(); // adetler seçicide girildi: sayfa açılınca yazdırma diyaloğu kendiliğinden açılır
       }
     } catch (err) {
       toast.error("Barkod kartları oluşturulamadı: " + (err.response?.data?.detail || err.message));
@@ -1762,6 +1826,28 @@ export default function AdminProducts() {
    *   yerleştirir. Ölçü Tablosu sekmesinde SizeTablePanel bileşeni
    *   `product.id`'yi kullanarak kendi verisini çeker.
    */
+  const loadStockHistory = async (id) => {
+    if (!id) return;
+    const historySeq = ++stockHistoryRequest.current;
+    setStockHistory([]);
+    setStockHistoryCoverage("");
+    setStockHistoryError("");
+    setStockHistoryLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const historyResponse = await axios.get(`${API}/products/${id}/stock-movements`, {
+        headers: { Authorization: `Bearer ${token}` }, params: { limit: 500 },
+      });
+      if (historySeq !== stockHistoryRequest.current) return;
+      setStockHistory(historyResponse.data?.movements || []);
+      setStockHistoryCoverage(historyResponse.data?.coverage || "");
+    } catch {
+      if (historySeq === stockHistoryRequest.current) setStockHistoryError("Stok geçmişi alınamadı.");
+    } finally {
+      if (historySeq === stockHistoryRequest.current) setStockHistoryLoading(false);
+    }
+  };
+
   const openEditModal = async (productArg, options = {}) => {
     const { skipNavigate = false } = options;
     // Liste scroll konumunu YAKALA (navigate/re-render öncesi) → kapanışta geri yüklenir.
@@ -1772,6 +1858,7 @@ export default function AdminProducts() {
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
       const id = typeof productArg === "string" ? productArg : productArg.id;
+      loadStockHistory(id);
       const res = await axios.get(`${API}/products/${id}`, { headers });
       if (res.data) product = res.data;
     } catch {
@@ -1826,6 +1913,7 @@ export default function AdminProducts() {
       price: product.price || 0,
       sale_price: product.sale_price || null,
       size_advice: product.size_advice || "",
+      fit_sizes: Array.isArray(product.fit_sizes) ? product.fit_sizes : [],
       category_name: product.category_name || "",
       categories: (() => {
         // Yaprak seçim: önce product.categories, yoksa category_id / category_name eşlemesi.
@@ -1910,7 +1998,10 @@ export default function AdminProducts() {
       trendyol_attributes: product.trendyol_attributes || {},
       hepsiburada_attributes: product.hepsiburada_attributes || {},
       temu_attributes: product.temu_attributes || {},
-      variants: product.variants || [],
+      // _stock0 = forma YÜKLENEN stok (temel). Sunucu bunu kullanarak "admin stoğa
+      // dokunmadı" durumunu ayırt eder ve form açıkken gelen sipariş/iade hareketini
+      // EZMEZ. Dokunulmuş alan (stock !== _stock0) ise aynen yazılır.
+      variants: (product.variants || []).map((v) => ({ ...v, _stock0: Number(v.stock || 0) })),
       combine_products: product.combine_products || [],
       attributes: (() => {
         const base = { "Yaş Grubu": "Yetişkin", "Menşei": "TR" };
@@ -1939,6 +2030,9 @@ export default function AdminProducts() {
 
   const resetForm = () => {
     setEditingProduct(null);
+    setActiveTab("basic");
+    stockHistoryRequest.current += 1;
+    setStockHistory([]); setStockHistoryCoverage(""); setStockHistoryError(""); setStockHistoryLoading(false);
     setShowAllAttributes(false);
     setTechnicalDetails({});   // önceki düzenlemeden teknik detay TAŞINMASIN (yeni üründe boş)
     setMemberPriceManual(false); setMultiSizes([]); setMultiColors([]);
@@ -1946,7 +2040,7 @@ export default function AdminProducts() {
       name: "", slug: "", description: "", short_description: "",
       price: 0, sale_price: null, category_name: "", categories: [], brand: "MELUNİ",
       images: [], is_active: false, is_featured: false, is_new: false,
-      stock: 0, stock_code: "", season: "", barcode: "", sku: "",
+      stock: 0, stock_code: "", season: "", barcode: "", sku: "", fit_sizes: [],
       urun_karti_id: "", urun_id: "",
       variation_code: "", gtip_code: "", unit: "ADET", keywords: "",
       supplier: "", manufacturer: "MELUNİ", max_installment: 9, purchase_price: 0, member_price_1: null,
@@ -2066,7 +2160,11 @@ export default function AdminProducts() {
   };
 
   const openVariantsModal = (product) => {
-    setSelectedProductForVariants(product);
+    // Düzenleme modalıyla AYNI koruma: yüklenen stok temel olarak damgalanır.
+    setSelectedProductForVariants({
+      ...product,
+      variants: (product.variants || []).map((v) => ({ ...v, _stock0: Number(v.stock || 0) })),
+    });
     setVariantsModalOpen(true);
   };
 
@@ -2195,13 +2293,41 @@ export default function AdminProducts() {
             </div>
           )}
           <button
-            onClick={handleExport}
+            onClick={() => handleExport(false)}
             disabled={exporting}
+            title="Her beden ayrı satır"
             className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-all font-medium text-sm shadow-sm disabled:opacity-50"
           >
             {exporting ? <RefreshCw className="animate-spin" size={16} /> : <Download size={16} />}
             Excel İndir
           </button>
+          <button
+            onClick={() => handleExport(true)}
+            disabled={exporting}
+            data-testid="products-export-grouped"
+            title="Aynı ürün + renk tek satır: bedenler birleşik, stok toplam, beden bazlı stok ayrı sütunda"
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-all font-medium text-sm shadow-sm disabled:opacity-50"
+          >
+            {exporting ? <RefreshCw className="animate-spin" size={16} /> : <Download size={16} />}
+            Excel (Bedenler Tek Satır)
+          </button>
+          <button
+            onClick={handlePrintList}
+            disabled={printing}
+            data-testid="products-print-list-btn"
+            title="Ekrandaki görünümü (görsel, ad, stok kodu, bedenler, fiyat, stok) not sütunuyla A4'e yazdırır. Seçili ürün varsa yalnız onlar, yoksa filtreye uyan tüm ürünler."
+            className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded hover:bg-black transition-all font-medium text-sm shadow-sm disabled:opacity-50"
+          >
+            {printing ? <RefreshCw className="animate-spin" size={16} /> : <Printer size={16} />}
+            {selectedProducts.length > 0 ? `Seçilenleri Yazdır (${selectedProducts.length})` : "Listeyi Yazdır"}
+          </button>
+          {/* Görselli aktarım — rapor sunumlarında ürün fotoğrafları Excel'in içinde gelsin */}
+          <label className="flex items-center gap-1.5 px-2 py-2 text-sm text-gray-700 select-none cursor-pointer"
+            title="Excel'e her ürünün fotoğrafı gömülür (tam görünür, kırpılmaz). Görsel indirme nedeniyle biraz daha uzun sürer.">
+            <input type="checkbox" className="accent-green-600" data-testid="export-with-images"
+              checked={exportImages} onChange={(e) => setExportImages(e.target.checked)} />
+            Görselli
+          </label>
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={importing}
@@ -2334,6 +2460,7 @@ export default function AdminProducts() {
           onClear={clearFilters}
           categories={categories}
           filterOptions={filterOptions}
+          sizeOptions={globalSizes.map((x) => x.value).filter(Boolean)}
         />
       )}
 
@@ -2451,13 +2578,22 @@ export default function AdminProducts() {
                   </td>
                   <td>
                     {product.images?.[0] ? (
-                      <div className="relative group/img overflow-visible z-0 hover:z-50">
-                        <img 
-                          src={fixImg(product.images[0])} 
-                          alt="" 
-                          className="w-10 h-14 object-cover rounded shadow-sm border border-gray-100 transition-all duration-300 group-hover/img:scale-[3.0] group-hover/img:shadow-xl group-hover/img:border-orange-200 cursor-zoom-in" 
+                      // Görsele tıklayınca ürünün MÜŞTERİ GÖZÜYLE sayfası yeni sekmede açılır
+                      // (panel bağlamı kaybolmasın). Satır seçimini tetiklemesin diye tıklama durdurulur.
+                      <a
+                        href={`/urun/${encodeURIComponent(product.slug || product.id)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        title="Müşteri gözüyle ürün sayfasını aç"
+                        className="relative group/img overflow-visible z-0 hover:z-50 block w-10"
+                      >
+                        <img
+                          src={fixImg(product.images[0])}
+                          alt=""
+                          className="w-10 h-14 object-cover rounded shadow-sm border border-gray-100 transition-all duration-300 group-hover/img:scale-[3.0] group-hover/img:shadow-xl group-hover/img:border-orange-200 cursor-pointer"
                         />
-                      </div>
+                      </a>
                     ) : (
                       <div className="w-10 h-14 bg-gray-100 flex items-center justify-center rounded border border-gray-50 text-gray-400">
                         <Image size={14} />
@@ -2579,10 +2715,10 @@ export default function AdminProducts() {
                           if (pv.hasDiscount) {
                             return (
                               <div>
+                                {/* Sayısal '-%X' rozeti KALDIRILDI: kampanya adı (ör. SEPETTE10) yanında
+                                    ikinci bir yüzde göstermek kafa karıştırıyordu (Belgin). İndirim zaten
+                                    üstü-çizili liste → kırmızı fiyat ile görünür; kampanya adı ayrıca yazılır. */}
                                 <span className="text-red-600">{pv.display?.toFixed(2)} TL</span>
-                                {pv.campaignPct > 0 && (
-                                  <span className="ml-1 text-[10px] font-bold text-red-500">-%{pv.campaignPct}</span>
-                                )}
                                 <span className="text-xs text-gray-400 line-through block">{pv.list?.toFixed(2)} TL</span>
                                 {pv.campaignPct > 0 && (
                                   <span className="block text-[10px] text-purple-600 font-medium truncate max-w-[140px]"
@@ -2636,27 +2772,10 @@ export default function AdminProducts() {
                         <button onClick={() => handleDuplicate(product)} className="p-1.5 hover:bg-gray-100 rounded" title="Kopyala">
                           <Copy size={16} />
                         </button>
-                        <button
-                          onClick={() => handleTrendyolSync(product.id)}
-                          className="p-1.5 hover:bg-orange-100 rounded text-orange-600 transition-colors"
-                          title="Trendyola Aktar (Yeni Ürün)"
-                        >
-                          <Store size={16} />
-                        </button>
-                        <button
-                          onClick={() => handleTrendyolUpdate(product)}
-                          className="p-1.5 hover:bg-orange-100 rounded text-orange-600 transition-colors"
-                          title="Trendyol Stok/Fiyat Güncelle"
-                        >
-                          <RefreshCw size={16} />
-                        </button>
-                        <button
-                          onClick={() => handleSplitByColor(product)}
-                          className="p-1.5 hover:bg-teal-50 rounded text-teal-600 transition-colors"
-                          title="Renge Göre Ayır (her renk ayrı ürün)"
-                        >
-                          <Layers size={16} />
-                        </button>
+                        {/* "Trendyola Aktar" satır butonu KALDIRILDI (kullanıcı isteği).
+                            Tek ürünü Trendyol'a göndermek hâlâ mümkün: ürün düzenleme →
+                            Pazaryeri Entegrasyonu sekmesi. Toplu gönderim için de
+                            "Barkod ile Trendyol'a Aktar" işlemi duruyor. */}
                         <button
                           onClick={() => openBarcodeSizePicker('single', product)}
                           className="p-1.5 hover:bg-purple-50 rounded text-purple-600 transition-colors"
@@ -2726,6 +2845,7 @@ export default function AdminProducts() {
                  <TabsTrigger value="pricing" className="data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm px-6 py-2 text-sm font-medium rounded-lg transition-all">Fiyat</TabsTrigger>
                  <TabsTrigger value="images" className="data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm px-6 py-2 text-sm font-medium rounded-lg transition-all">Görseller</TabsTrigger>
                  <TabsTrigger value="variants" className="data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm px-6 py-2 text-sm font-medium rounded-lg transition-all">Varyantlar</TabsTrigger>
+                 {editingProduct && <TabsTrigger value="stock-history" data-testid="stock-history-tab" className="data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm px-6 py-2 text-sm font-medium rounded-lg transition-all">Stok Geçmişi</TabsTrigger>}
                  <TabsTrigger value="seo" className="data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm px-6 py-2 text-sm font-medium rounded-lg transition-all">SEO</TabsTrigger>
                  <TabsTrigger value="attributes" className="data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm px-6 py-2 text-sm font-medium rounded-lg transition-all">Özellikler</TabsTrigger>
                  <TabsTrigger value="sizetable" className="data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm px-6 py-2 text-sm font-medium rounded-lg transition-all">Ölçü Tablosu</TabsTrigger>
@@ -2834,7 +2954,7 @@ export default function AdminProducts() {
                             </div>
                           )}
                         </div>
-                        <div>
+                        <div className="col-span-2">
                           <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Kategoriler (birden fazla seçilebilir)</label>
                           <div className="relative">
                             <div
@@ -2926,6 +3046,20 @@ export default function AdminProducts() {
                             value={formData.brand}
                             onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
                             className="w-full border-gray-200 border px-3 py-2.5 rounded-lg focus:border-black outline-none transition-all"
+                          />
+                        </div>
+                        {/* Renk (Ana) Temel'de (eskiden Fiyat sekmesindeydi). Değişince tek renkli kartın
+                            varyant renkleri + Renk/Web Color özellikleri de sunucuda yeni renge çekilir
+                            (products.py::_sync_main_color_into_card) — faturaya varyant rengi yazılır. */}
+                        <div>
+                          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Renk (Ana)</label>
+                          <input
+                            type="text"
+                            value={formData.color || ""}
+                            onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+                            placeholder="ör. Siyah / Ekru / Antrasit"
+                            className="w-full border-gray-200 border px-3 py-2.5 rounded-lg focus:border-black outline-none transition-all"
+                            data-testid="product-color"
                           />
                         </div>
                       </div>
@@ -3039,6 +3173,11 @@ export default function AdminProducts() {
                           <option value="bol">Bol / Oversize → bir beden küçük öner</option>
                         </select>
                       </div>
+                      {/* STANDART bedenli ürün: hangi bedenlere uyar (vitrinde "X – Y bedenler arası uyumludur") */}
+                      {isStandardSized(formData.variants) && (
+                        <FitSizesField value={formData.fit_sizes || []}
+                          onChange={(v) => setFormData({ ...formData, fit_sizes: v })} />
+                      )}
                       <div>
                         <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Üretici</label>
                         <input
@@ -3201,18 +3340,7 @@ export default function AdminProducts() {
                         <p className="text-[10px] text-gray-400 mt-1">Üye Tipi 1 fiyatından çekilir. Storefront'ta üye tipi 1 grubuna özel fiyat olarak gösterilir.</p>
                       </div>
                       {/* Koleksiyon alanı kullanıcı isteğiyle kaldırıldı (sezon zorunlu alanı Temel'de) */}
-                      <div>
-                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Renk (Ana)</label>
-                        <input
-                          type="text"
-                          value={formData.color || ""}
-                          onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                          placeholder="ör. Siyah / Ekru / Antrasit"
-                          className="w-full border-gray-200 border px-3 py-2 rounded-lg focus:border-black outline-none transition-all"
-                          data-testid="product-color"
-                        />
-                      </div>
-                      <div>
+                      <div className="col-span-2">
                         <label className="block text-xs font-bold text-gray-500 uppercase mb-1 text-orange-600">KDV ORANI (%)</label>
                         <input
                           type="number"
@@ -3292,12 +3420,19 @@ export default function AdminProducts() {
                   const hiddenAttrNames = [
                     "beden", "renk", "web color", "yaka",
                     "alt siluet", "ust siluet", "silüet", "kesim", "ozellik", "stil",
-                    "urun icerik bilgisi", "kumas", "yikama talimati", "materyal analiz testi",
+                    // DENETİM FIX: "urun icerik bilgisi" gizli listeden ÇIKARILDI — Trendyol'da
+                    // zorunlu "Materyal Bileşeni"ne bridge olur (integrations_trendyol.py:1474);
+                    // gizliyken yeni/boş üründe hiç girilemiyor → boş → push'ta atlanıyordu.
+                    // "materyal/kimyasal analiz testi" gizli KALIR (Trendyol dosya/sertifika ister).
+                    "kumas", "yikama talimati", "materyal analiz testi",
                     "kimyasal analiz testi", "ürün tipi", "ürün detayı",
                   ].map(_attrNorm);
                   const _isHiddenAttr = (nm) => hiddenAttrNames.includes(_attrNorm(nm));
 
                   const baseList = globalAttributes
+                    // "Ürün kartında göster" kapalı (show_in_product_card===false) özellikleri gizle.
+                    // Ayar: Katalog → Ürün Özellikleri → özellik ayar kartı. Varsayılan (alan yok) = göster.
+                    .filter(a => a.show_in_product_card !== false)
                     .filter(a => !_isHiddenAttr(a.name))
                     .filter(a => a.name.toLowerCase().includes(attributeSearchTerm.toLowerCase()));
 
@@ -3370,6 +3505,15 @@ export default function AdminProducts() {
                     }
                   };
 
+                  // 🔗 KATALOG SENKRONU: Katalog → Ürün Özellikleri → Ayar Kartı'nda kullanıcı
+                  // her özellik için "Tüm sistemde varsayılan değer" (default_value) girebilir.
+                  // Ürün kartı BU değeri AYNI kaynaktan (globalAttributes = GET /api/attributes)
+                  // okur → ürün o özelliği taşımıyorsa katalog varsayılanı DOLU görünür (senkron).
+                  // İsimle eşleşir (Türkçe-duyarsız). FIXED_DEFAULT_ATTRS yalnız fallback'tir.
+                  const _catalogDefaults = {};
+                  (globalAttributes || []).forEach(a => {
+                    if (a && a.name && a.default_value) _catalogDefaults[a.name] = a.default_value;
+                  });
                   // 🎯 Ortak SABİT varsayılanlar — HER pazaryeri bölümünde DOLU görünmeli.
                   const FIXED_DEFAULT_ATTRS = {
                     "Menşei": "TR", "Cinsiyet": "Kadın", "Yaş Grubu": "Yetişkin",
@@ -3492,7 +3636,8 @@ export default function AdminProducts() {
                     // 🎯 Değer çözümü: önce pazaryerine-özel harita, yoksa NÖTR formData.attributes,
                     // yoksa sabit varsayılan, yoksa GPSR üretici/ithalatçı sabiti → DOLU görünür.
                     const _effVal = (name) =>
-                      valuesMap[name] || (formData.attributes || {})[name] || FIXED_DEFAULT_ATTRS[name]
+                      valuesMap[name] || (formData.attributes || {})[name]
+                      || _catalogDefaults[name] || FIXED_DEFAULT_ATTRS[name]
                       || _companyValFor(name) || "";
                     // Sabit varsayılanları bu bölümün listesinde yoksa DOLU satır olarak ekle
                     // (özellikle HB: kategori seçilmeden liste boş kalıyordu).
@@ -3520,14 +3665,17 @@ export default function AdminProducts() {
                     })
                     // Beden ürün kartından gizlenir: pazaryeri varyant (beden) alanından eşleştiriliyor.
                     .filter(x => (x.attr.name || '').toLocaleLowerCase('tr').trim() !== 'beden')
-                    // Mükerrer dedup YALNIZ opsiyonel alanlara: ZORUNLU pazaryeri alanı Teknik Detay
-                    // etiketiyle çakışsa bile GİZLENMEZ (gizli+boş = sessiz red riski). Değer tek
-                    // kaynaktan (_effVal) dolar; satır görünür kalır → kullanıcı görüp doğrular.
-                    // İSTİSNA (Kadir): 'Kalıp' Teknik Detay'da olsa/opsiyonel olsa bile pazaryeri
-                    // özellik bölümünde HER ZAMAN görünür (kullanıcı buradan da seçip aktarabilsin).
+                    // Mükerrer dedup YALNIZ opsiyonel VE BOŞ alanlara: Teknik Detay paneli
+                    // KALDIRILDIĞI için (bkz. ~3529) teknik-etiketli bir özelliğin görüneceği
+                    // BAŞKA yer kalmadı. Dolayısıyla DEĞERİ OLAN hiçbir özellik dedup ile
+                    // GİZLENMEZ — aksi hâlde "Materyal Bileşeni" gibi teknik-etiketle eşleşen
+                    // (Materyal→"matery" substring) dolu özellikler karttan tümüyle kaybolur.
+                    // ZORUNLU pazaryeri alanı (gizli+boş = sessiz red riski) ve 'Kalıp' da
+                    // istisna olarak HER ZAMAN görünür. Yalnız OPSİYONEL + BOŞ + teknik-etiketli
+                    // satırlar (mükerrer gürültü) elenir.
                     .filter(x => {
                       const _nm = (x.attr.name || '').toLocaleLowerCase('tr').trim();
-                      return x.isRequired || _nm === 'kalıp' || !_techNames.has(_nm);
+                      return x.isRequired || x.hasValue || _nm === 'kalıp' || !_techNames.has(_nm);
                     });
                     const filledAttrs = processed.filter(a => a.hasValue).sort((a, b) => a.attr.name.localeCompare(b.attr.name));
                     const requiredEmpty = processed.filter(a => a.isRequired && !a.hasValue).sort((a, b) => a.attr.name.localeCompare(b.attr.name));
@@ -3979,13 +4127,22 @@ export default function AdminProducts() {
                               toast.error("Beden seçimi zorunludur");
                               return;
                             }
+                            // Renk boş bırakılırsa ürünün rengine, o da yoksa mevcut
+                            // varyantların rengine düş. "Aynı renge ek beden açtık" senaryosunda
+                            // renksiz varyant kaydedilirse Trendyol Renk/Web Color zorunlu
+                            // alanları boş gidiyor ve tüm ürünü reddediyor.
+                            const inheritedColor =
+                              formData.newVariant.color ||
+                              formData.color ||
+                              (formData.variants || []).map((v) => v.color).find((c) => c) ||
+                              "";
                             const newVar = {
                               id: `var-${Date.now()}`,
                               size: formData.newVariant.size,
                               stock: formData.newVariant.stock || 0,
                               barcode: formData.newVariant.barcode || "",
                               stock_code: formData.stock_code || "",
-                              color: formData.newVariant.color || ""
+                              color: inheritedColor
                             };
                             setFormData({
                               ...formData,
@@ -4002,6 +4159,60 @@ export default function AdminProducts() {
                   </div>
                 </div>
               </TabsContent>
+
+              {editingProduct && (
+                <TabsContent value="stock-history" className="space-y-4 m-0 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="bg-white rounded-xl border shadow-sm overflow-hidden" data-testid="stock-history-panel">
+                    <div className="p-5 border-b flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="font-semibold text-gray-900 flex items-center gap-2"><History size={18} /> Stok Hareket Geçmişi</h3>
+                        <p className="text-xs text-amber-700 mt-1">{stockHistoryCoverage || "Kesin eski/yeni stok ve kullanıcı bilgisi kayıt başlangıcından itibaren gösterilir; geçmiş eksikler tahmin edilmez."}</p>
+                      </div>
+                      <button type="button" onClick={() => loadStockHistory(editingProduct.id)}
+                        className="px-3 py-1.5 text-xs border rounded hover:bg-gray-50">Yenile</button>
+                    </div>
+                    {stockHistoryLoading ? (
+                      <div className="p-8 text-center text-sm text-gray-500">Stok geçmişi yükleniyor…</div>
+                    ) : stockHistoryError ? (
+                      <div role="alert" className="m-4 p-3 rounded border border-red-200 bg-red-50 text-sm text-red-700">{stockHistoryError}</div>
+                    ) : stockHistory.length === 0 ? (
+                      <div className="p-8 text-center text-sm text-gray-500">Kayıt başlangıcından itibaren stok hareketi bulunamadı.</div>
+                    ) : (
+                      <div className="overflow-x-auto max-h-[520px] overflow-y-auto">
+                        <table className="w-full text-xs">
+                          <thead className="bg-gray-50 sticky top-0 text-gray-600 uppercase">
+                            <tr>
+                              <th className="text-left p-3">Tarih / Saat</th><th className="text-left p-3">Kullanıcı</th>
+                              <th className="text-left p-3">Kaynak</th><th className="text-left p-3">Varyant / SKU</th>
+                              <th className="text-right p-3">Eski</th><th className="text-right p-3">Yeni</th>
+                              <th className="text-right p-3">Fark</th><th className="text-left p-3">Senkron</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y">
+                            {stockHistory.map((move, idx) => {
+                              const dt = move.date ? new Date(move.date) : null;
+                              const dateText = dt && !Number.isNaN(dt.getTime()) ? dt.toLocaleString("tr-TR") : (move.date || "—");
+                              const variant = [move.color, move.size].filter(Boolean).join(" / ");
+                              const syncStatus = stockSyncLabel(move.sync_result);
+                              const syncDetails = stockSyncDetails(move.sync_result);
+                              return <tr key={`${move.date}-${move.sku}-${idx}`} className="hover:bg-gray-50">
+                                <td className="p-3 whitespace-nowrap">{dateText}</td>
+                                <td className="p-3" title={stockActorDetails(move)}>{move.by || "Sistem"}</td>
+                                <td className="p-3"><div className="font-medium">{move.reason || move.action || "—"}</div><div className="text-[10px] text-gray-400">{move.source || "—"}</div></td>
+                                <td className="p-3"><div>{variant || "Ana stok"}</div><div className="font-mono text-[10px] text-gray-500">{move.sku || move.barcode || move.variant_id || "—"}</div></td>
+                                <td className="p-3 text-right tabular-nums">{move.old_stock ?? "—"}</td>
+                                <td className="p-3 text-right tabular-nums">{move.new_stock ?? "—"}</td>
+                                <td className={`p-3 text-right font-bold tabular-nums ${move.delta > 0 ? "text-emerald-600" : move.delta < 0 ? "text-red-600" : "text-gray-500"}`}>{move.delta > 0 ? "+" : ""}{move.delta ?? 0}</td>
+                                <td className="p-3" title={syncDetails}>{syncStatus}</td>
+                              </tr>;
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                </TabsContent>
+              )}
 
               {/* Trendyol Tab */}
               <TabsContent value="trendyol" className="space-y-6 m-0 animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -4868,32 +5079,59 @@ export default function AdminProducts() {
             <h3 className="text-sm font-semibold text-gray-800 mb-1">Barkod Yazdır — Beden Seçimi</h3>
             <p className="text-xs text-gray-500 mb-3">
               {barcodeSizeModal.mode === 'bulk'
-                ? `${selectedProducts.length} üründe bulunan bedenler. Yalnız işaretli bedenlerin kartları basılır.`
-                : 'Yalnız işaretli bedenlerin kartları basılır.'}
+                ? `${selectedProducts.length} üründe bulunan bedenler. İşaretli bedenler, yanındaki adet kadar basılır.`
+                : 'İşaretli bedenler, yanındaki adet kadar basılır.'}
             </p>
-            <label className="flex items-center gap-2 py-1.5 border-b border-gray-100 mb-1 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={barcodeSizeModal.sizes.every(s => barcodeSizeModal.selected[s])}
-                onChange={(e) => {
-                  const all = e.target.checked;
-                  setBarcodeSizeModal(m => ({ ...m, selected: Object.fromEntries(m.sizes.map(s => [s, all])) }));
-                }}
-                className="rounded border-gray-300"
-              />
-              <span className="text-sm font-medium text-gray-800">Tüm Bedenler</span>
-            </label>
-            <div className="max-h-52 overflow-y-auto grid grid-cols-3 gap-x-3">
+            <div className="flex items-center justify-between gap-2 py-1.5 border-b border-gray-100 mb-1">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={barcodeSizeModal.sizes.every(s => barcodeSizeModal.selected[s])}
+                  onChange={(e) => {
+                    const all = e.target.checked;
+                    setBarcodeSizeModal(m => ({ ...m, selected: Object.fromEntries(m.sizes.map(s => [s, all])) }));
+                  }}
+                  className="rounded border-gray-300"
+                />
+                <span className="text-sm font-medium text-gray-800">Tüm Bedenler</span>
+              </label>
+              {/* Hepsine aynı adet — tek hamlede doldur */}
+              <label className="flex items-center gap-1 text-xs text-gray-600">
+                Hepsine adet:
+                <input
+                  type="number" min="1" max="500" defaultValue={1}
+                  onChange={(e) => {
+                    const n = Math.max(1, parseInt(e.target.value, 10) || 1);
+                    setBarcodeSizeModal(m => ({ ...m, counts: Object.fromEntries(m.sizes.map(s => [s, n])) }));
+                  }}
+                  className="w-14 border border-gray-300 rounded px-1.5 py-0.5 text-sm"
+                />
+              </label>
+            </div>
+            <div className="max-h-60 overflow-y-auto grid grid-cols-2 gap-x-4">
               {barcodeSizeModal.sizes.map(s => (
-                <label key={s} className="flex items-center gap-2 py-1.5 cursor-pointer">
+                <div key={s} className="flex items-center justify-between gap-2 py-1.5">
+                  <label className="flex items-center gap-2 cursor-pointer flex-1">
+                    <input
+                      type="checkbox"
+                      checked={!!barcodeSizeModal.selected[s]}
+                      onChange={(e) => setBarcodeSizeModal(m => ({ ...m, selected: { ...m.selected, [s]: e.target.checked } }))}
+                      className="rounded border-gray-300"
+                    />
+                    <span className="text-sm text-gray-700">{s === '*' ? 'Tüm barkodlar' : s}</span>
+                  </label>
                   <input
-                    type="checkbox"
-                    checked={!!barcodeSizeModal.selected[s]}
-                    onChange={(e) => setBarcodeSizeModal(m => ({ ...m, selected: { ...m.selected, [s]: e.target.checked } }))}
-                    className="rounded border-gray-300"
+                    type="number" min="0" max="500"
+                    value={(barcodeSizeModal.counts || {})[s] ?? 1}
+                    disabled={!barcodeSizeModal.selected[s]}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      setBarcodeSizeModal(m => ({ ...m, counts: { ...(m.counts || {}), [s]: v === '' ? '' : Math.max(0, parseInt(v, 10) || 0) } }));
+                    }}
+                    title={s === '*' ? 'Her barkoddan kaç etiket' : `${s} bedeninden kaç etiket`}
+                    className="w-16 border border-gray-300 rounded px-1.5 py-0.5 text-sm text-right disabled:opacity-40"
                   />
-                  <span className="text-sm text-gray-700">{s}</span>
-                </label>
+                </div>
               ))}
             </div>
             <div className="flex justify-end gap-2 mt-4">
@@ -5034,3 +5272,47 @@ function TeknikDetayPanel({ details = {}, onChange }) {
   );
 }
 
+
+// Standart bedenli ürün — uyumlu bedenler seçimi. Hazır bedenler tek tık aç/kapa; listede
+// olmayan beden "Diğer" kutusuna yazılıp Ekle ile eklenir. Önizleme vitrindeki metnin aynısı.
+function FitSizesField({ value, onChange }) {
+  const [custom, setCustom] = useState("");
+  const sel = sortFitSizes(value);
+  const toggle = (sz) => onChange(sel.includes(sz) ? sel.filter((x) => x !== sz) : sortFitSizes([...sel, sz]));
+  const addCustom = () => {
+    const t = custom.trim().toLocaleUpperCase("tr");
+    if (!t) return;
+    onChange(sortFitSizes([...sel, t]));
+    setCustom("");
+  };
+  const extras = sel.filter((x) => !FIT_SIZE_OPTIONS.includes(x));
+  return (
+    <div data-testid="fit-sizes-field">
+      <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Uyduğu Bedenler (Standart Beden)</label>
+      <div className="flex flex-wrap items-center gap-2">
+        {[...FIT_SIZE_OPTIONS, ...extras].map((sz) => {
+          const on = sel.includes(sz);
+          return (
+            <button key={sz} type="button" onClick={() => toggle(sz)} data-testid={`fit-size-${sz}`}
+              className={`inline-flex items-center justify-center h-9 min-w-[44px] px-3 rounded-lg border text-sm font-semibold transition
+                ${on ? "bg-black text-white border-black" : "bg-white text-gray-700 border-gray-300 hover:border-black"}`}>
+              {sz}
+            </button>
+          );
+        })}
+      </div>
+      <div className="flex items-center gap-2 mt-2">
+        <input type="text" value={custom} onChange={(e) => setCustom(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustom(); } }}
+          placeholder="Diğer beden (ör. 36, 38)" maxLength={12}
+          className="h-9 flex-1 border-gray-200 border px-3 rounded-lg text-sm focus:border-black outline-none" />
+        <button type="button" onClick={addCustom}
+          className="h-9 px-4 rounded-lg border border-gray-300 text-sm font-semibold hover:border-black">Ekle</button>
+      </div>
+      <p className="text-[10px] text-gray-500 mt-1">
+        {sel.length ? <>Vitrinde: <b>{fitSizesText(sel)}</b></> : "Seçim yoksa vitrinde yalnız \"Standart Beden\" yazar."}
+        {" "}Kaydedince aynı stok kodlu diğer renklere de uygulanır.
+      </p>
+    </div>
+  );
+}

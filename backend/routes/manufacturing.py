@@ -7,12 +7,14 @@ Tracks manufacturing orders end-to-end:
 - Stage history per record with user + timestamp
 - On "teslim alındı" (delivered/stocked) the product stock is incremented
 """
-from fastapi import APIRouter, HTTPException, Depends, Query
+from fastapi import APIRouter, HTTPException, Depends, Query, Request
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 import uuid
+import copy
+from stock_audit import record_stock_audit
 
-from .deps import db, require_admin, logger
+from .deps import db, require_admin, logger, require_permission
 
 router = APIRouter(prefix="/manufacturing", tags=["manufacturing"])
 
@@ -57,15 +59,62 @@ async def _migrate_legacy_stages():
 
 
 @router.get("/stages")
-async def get_stages(current_user: dict = Depends(require_admin)):
+async def get_stages(current_user: dict = Depends(require_permission("manufacturing.view"))):
     return {"stages": [{"key": k, "label": STAGE_LABELS[k]} for k in STAGES]}
+
+
+async def _sync_live_product_names(items: list) -> list:
+    """İmalat kaydındaki ürün adı DİNAMİK (kullanıcı, 2026-09-30): ürün kartında ad değişince
+    imalat kaydı da güncel adı gösterir. Kaynak: bağlı ürün kartı (product_id /
+    created_product_ids, yoksa aynı stok kodu). Renk başına ayrı kart olduğundan kart adının
+    sonundaki renk atılır (imalat kaydı çok renkli). Fark varsa kayıt da güncellenir (arama
+    yeni adla çalışsın)."""
+    ids, codes = set(), set()
+    for r in items:
+        for x in [r.get("product_id")] + list(r.get("created_product_ids") or []):
+            if x:
+                ids.add(str(x))
+        if r.get("stock_code"):
+            codes.add(str(r["stock_code"]).strip())
+    if not ids and not codes:
+        return items
+    prods = await db.products.find(
+        {"$or": [{"id": {"$in": list(ids)}}, {"stock_code": {"$in": list(codes)}}], "is_deleted": {"$ne": True}},
+        {"_id": 0, "id": 1, "name": 1, "color": 1, "stock_code": 1}).to_list(5000)
+    by_id = {str(p["id"]): p for p in prods}
+    by_code: dict = {}
+    for p in prods:
+        by_code.setdefault(str(p.get("stock_code") or "").strip(), []).append(p)
+
+    def _base(p) -> str:
+        name = str(p.get("name") or "").strip()
+        col = str(p.get("color") or "").strip()
+        if col and name.lower().endswith(" " + col.lower()):
+            name = name[: -len(col) - 1].strip()
+        return name
+
+    for r in items:
+        linked = [by_id[str(x)] for x in ([r.get("product_id")] + list(r.get("created_product_ids") or []))
+                  if x and str(x) in by_id]
+        if not linked and r.get("stock_code"):
+            linked = by_code.get(str(r["stock_code"]).strip(), [])
+        if not linked:
+            continue
+        live = _base(linked[0])
+        if live and live != (r.get("product_name") or ""):
+            r["product_name"] = live
+            try:
+                await db.manufacturing.update_one({"id": r["id"]}, {"$set": {"product_name": live}})
+            except Exception:
+                pass
+    return items
 
 
 @router.get("")
 async def list_manufacturing(
     stage: Optional[str] = None,
     search: Optional[str] = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("manufacturing.view")),
 ):
     await _migrate_legacy_stages()  # idempotent — eski aşama anahtarlarını yeni sete taşır
     query = {}
@@ -80,6 +129,7 @@ async def list_manufacturing(
             {"code": {"$regex": _s, "$options": "i"}},
         ]
     items = await db.manufacturing.find(query, {"_id": 0}).sort("created_at", -1).to_list(500)
+    items = await _sync_live_product_names(items)
     # Summary counts per stage
     pipeline = [{"$group": {"_id": "$current_stage", "count": {"$sum": 1}}}]
     counts = {}
@@ -89,15 +139,15 @@ async def list_manufacturing(
 
 
 @router.get("/{record_id}")
-async def get_manufacturing(record_id: str, current_user: dict = Depends(require_admin)):
+async def get_manufacturing(record_id: str, current_user: dict = Depends(require_permission("manufacturing.view"))):
     rec = await db.manufacturing.find_one({"id": record_id}, {"_id": 0})
     if not rec:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
-    return rec
+    return (await _sync_live_product_names([rec]))[0]
 
 
 @router.post("")
-async def create_manufacturing(payload: dict, current_user: dict = Depends(require_admin)):
+async def create_manufacturing(payload: dict, current_user: dict = Depends(require_permission("manufacturing.create"))):
     now_iso = datetime.now(timezone.utc).isoformat()
     # Code: IMLT-yyyy-### incremental
     year = datetime.now(timezone.utc).year
@@ -193,7 +243,7 @@ async def create_manufacturing(payload: dict, current_user: dict = Depends(requi
 
 
 @router.put("/{record_id}")
-async def update_manufacturing(record_id: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def update_manufacturing(record_id: str, payload: dict, current_user: dict = Depends(require_permission("manufacturing.update_stage"))):
     existing = await db.manufacturing.find_one({"id": record_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
@@ -205,7 +255,7 @@ async def update_manufacturing(record_id: str, payload: dict, current_user: dict
         "purchase_orders", "waste_meters", "supplier_id", "notes",
         "order_no", "order_flags", "stock_code", "colors",
         "has_lining", "color_approvals", "cutting_start_date", "actual_distribution", "product_created",
-        "sewing_workshop", "sewing_report_images",
+        "sewing_workshop", "sewing_report_images", "sewing_start_date",
         "qc_result", "qc_date", "qc_images",
         "qc2_result", "qc2_date", "qc2_images", "deliveries",
     ):
@@ -245,6 +295,13 @@ async def update_manufacturing(record_id: str, payload: dict, current_user: dict
             update["stage_dates.kesim"] = _v
         else:
             unset["stage_dates.kesim"] = ""
+    # Dikim başlangıç tarihi (kullanıcı isteği): formdaki alan ↔ stage_dates.dikim senkron.
+    if "sewing_start_date" in payload:
+        _v = str(payload.get("sewing_start_date") or "").strip()
+        if _v:
+            update["stage_dates.dikim"] = _v
+        else:
+            unset["stage_dates.dikim"] = ""
 
     ops = {"$set": update}
     if unset:
@@ -254,7 +311,8 @@ async def update_manufacturing(record_id: str, payload: dict, current_user: dict
 
 
 @router.post("/{record_id}/advance")
-async def advance_stage(record_id: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def advance_stage(record_id: str, payload: dict, request: Request,
+                        current_user: dict = Depends(require_permission("manufacturing.update_stage"))):
     rec = await db.manufacturing.find_one({"id": record_id}, {"_id": 0})
     if not rec:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
@@ -279,6 +337,8 @@ async def advance_stage(record_id: str, payload: dict, current_user: dict = Depe
     _sd = str(payload.get("stage_date") or payload.get("cutting_start_date") or "").strip()[:10]
     if _sd:
         update[f"stage_dates.{new_stage}"] = _sd
+        if new_stage == "dikim":
+            update["sewing_start_date"] = _sd   # form alanıyla aynı kaynak
         if new_stage == "kesim":
             update["cutting_start_date"] = _sd  # geriye uyumluluk
     # Dikime geçerken atölye adı girilebilir (kullanıcı isteği)
@@ -300,8 +360,13 @@ async def advance_stage(record_id: str, payload: dict, current_user: dict = Depe
         _do_increment = (_claim.modified_count == 1)
     if _do_increment:
         try:
-            product = await db.products.find_one({"id": rec["product_id"]}, {"_id": 0, "id": 1, "variants": 1, "stock": 1})
+            product = await db.products.find_one(
+                {"id": rec["product_id"]},
+                {"_id": 0, "id": 1, "name": 1, "stock_code": 1, "barcode": 1,
+                 "variants": 1, "stock": 1},
+            )
             if product:
+                before_product = copy.deepcopy(product)
                 variants = product.get("variants") or []
                 size_dist = rec.get("size_distribution") or {}
                 total_increment = 0
@@ -319,6 +384,11 @@ async def advance_stage(record_id: str, payload: dict, current_user: dict = Depe
                         c = vd["attributes"].get("color") or vd["attributes"].get("renk") or ""
                     return str(c).strip()
 
+                # KAYIP-GÜNCELLEME KORUMASI: eskiden varyant dizisi Python'da değiştirilip
+                # TAMAMI $set ile geri yazılıyordu. Okuma ile yazma arasında gelen bir sipariş
+                # düşümü / iade artışı SESSİZCE siliniyordu (stok şaşması). Artık her varyant
+                # arrayFilters + $inc ile ATOMİK artırılır; araya giren hareket korunur.
+                _incs = []   # [(eşleşme_alanı, değer, adet)]
                 for v in variants:
                     size_name = (v.get("size") or v.get("name") or "").strip()
                     color_name = _vcolor(v)
@@ -330,33 +400,52 @@ async def advance_stage(record_id: str, payload: dict, current_user: dict = Depe
                         key = size_name
                     qty = int(size_dist.get(key, 0) or 0) if key else 0
                     if qty > 0:
-                        v["stock"] = int(v.get("stock", 0) or 0) + qty
-                        total_increment += qty
-                        _consumed.add(key)
+                        _mf = next((f for f in ("barcode", "id", "urun_id")
+                                    if str(v.get(f) or "").strip()), None)
+                        if _mf:
+                            _incs.append((_mf, str(v[_mf]).strip(), qty))
+                            total_increment += qty
+                            _consumed.add(key)
+                        else:
+                            logger.warning(
+                                f"[imalat] varyant eşleşme anahtarı yok (barkod/id), stok "
+                                f"artırılamadı: {product.get('id')} {color_name}|{size_name}")
+                        v["stock"] = int(v.get("stock", 0) or 0) + qty   # yalnız denetim kaydı için
+                _now_mf = datetime.now(timezone.utc).isoformat()
                 if not variants and size_dist:
-                    # Product-level stock fallback
+                    # Varyantsız ürün — ürün düzeyi stok (zaten atomik).
                     total_increment = sum(int(v or 0) for v in size_dist.values())
                     await db.products.update_one(
                         {"id": product["id"]},
-                        {"$inc": {"stock": total_increment}, "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
+                        {"$inc": {"stock": total_increment}, "$set": {"updated_at": _now_mf}}
                     )
                 else:
-                    new_total = sum(int(v.get("stock", 0) or 0) for v in variants)
-                    await db.products.update_one(
-                        {"id": product["id"]},
-                        {"$set": {"variants": variants, "stock": new_total, "updated_at": datetime.now(timezone.utc).isoformat()}}
-                    )
-                await db.stock_movements.insert_one({
-                    "id": str(uuid.uuid4()),
-                    "type": "manufacturing_delivered",
-                    "record_id": record_id,
-                    "code": rec.get("code"),
-                    "product_id": product["id"],
-                    "total_increment": total_increment,
-                    "size_distribution": size_dist,
-                    "created_by": current_user.get("email", ""),
-                    "created_at": datetime.now(timezone.utc).isoformat(),
-                })
+                    for _mf, _mv, _q in _incs:
+                        await db.products.update_one(
+                            {"id": product["id"]},
+                            {"$inc": {"variants.$[v].stock": _q}, "$set": {"updated_at": _now_mf}},
+                            array_filters=[{f"v.{_mf}": _mv}],
+                        )
+                    if _incs:
+                        # Parent stok = Σvaryant (tek atomik pipeline update)
+                        await db.products.update_one(
+                            {"id": product["id"]},
+                            [{"$set": {"stock": {"$sum": {"$map": {
+                                "input": {"$ifNull": ["$variants", []]}, "as": "vv",
+                                "in": {"$toInt": {"$ifNull": ["$$vv.stock", 0]}}}}}}}])
+                # Denetim kaydı CANLI sonuçtan yazılır (tahminden değil).
+                after_product = await db.products.find_one(
+                    {"id": product["id"]},
+                    {"_id": 0, "id": 1, "name": 1, "stock_code": 1, "barcode": 1,
+                     "variants": 1, "stock": 1}) or {
+                    **product, "variants": variants,
+                    "stock": int(product.get("stock", 0) or 0) + total_increment}
+                await record_stock_audit(
+                    db, product_id=product["id"], product_name=product.get("name", ""),
+                    before=before_product, after=after_product, source="manufacturing",
+                    current_user=current_user, request=request, action="manufacturing_delivered",
+                    metadata={"record_id": record_id, "code": rec.get("code")},
+                )
         except Exception as e:
             logger.error(f"Stock increment on manufacturing delivery failed: {e}")
 
@@ -365,7 +454,8 @@ async def advance_stage(record_id: str, payload: dict, current_user: dict = Depe
 
 
 @router.post("/{record_id}/create-product")
-async def create_product_from_manufacturing(record_id: str, current_user: dict = Depends(require_admin)):
+async def create_product_from_manufacturing(record_id: str, request: Request,
+                                            current_user: dict = Depends(require_permission("manufacturing.create"))):
     """"Ürünler Kartına Aktar" — imalat kaydından ürün oluşturur (kullanıcı isteği:
     ürün İLK imalatta doğar, son aşamada onaylanınca Ürünler sayfasına aktarılır).
 
@@ -418,7 +508,7 @@ async def create_product_from_manufacturing(record_id: str, current_user: dict =
         "notes": f"İmalat kaydından aktarıldı: {rec.get('code')}",
     }
     try:
-        res = await _create_product(payload, current_user)
+        res = await _create_product(payload, request, current_user)
     except Exception as e:
         # Aktarım başarısızsa bayrağı geri aç (tekrar denenebilsin)
         await db.manufacturing.update_one({"id": record_id}, {"$set": {"product_created": False}})
@@ -430,19 +520,15 @@ async def create_product_from_manufacturing(record_id: str, current_user: dict =
         {"$set": {"product_id": (pids[0] if pids else ""), "created_product_ids": pids,
                   "stock_incremented": True,
                   "updated_at": datetime.now(timezone.utc).isoformat()}})
-    await db.stock_movements.insert_one({
-        "id": str(uuid.uuid4()), "type": "manufacturing_delivered",
-        "record_id": record_id, "record_code": rec.get("code"),
-        "items": [{"color_size": k, "qty": v} for k, v in dist.items()],
-        "created_by": current_user.get("email", ""),
-        "created_at": datetime.now(timezone.utc).isoformat(),
-    })
+    # Product creation already writes one canonical schema-v2 stock audit per
+    # created product/SKU. A second manufacturing-only summary here used to
+    # duplicate the same receipt and lacked product/SKU before/after values.
     return {"success": True, "product_ids": pids,
             "message": f"{len(pids) or 1} ürün kartı oluşturuldu (taslak) — Ürünler sayfasından fiyat/görsel ekleyip yayına alın"}
 
 
 @router.post("/{record_id}/files")
-async def add_file(record_id: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def add_file(record_id: str, payload: dict, current_user: dict = Depends(require_permission("manufacturing.files"))):
     rec = await db.manufacturing.find_one({"id": record_id}, {"_id": 0, "files": 1})
     if not rec:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
@@ -461,7 +547,7 @@ async def add_file(record_id: str, payload: dict, current_user: dict = Depends(r
 
 
 @router.delete("/{record_id}")
-async def delete_manufacturing(record_id: str, current_user: dict = Depends(require_admin)):
+async def delete_manufacturing(record_id: str, current_user: dict = Depends(require_permission("manufacturing.delete"))):
     res = await db.manufacturing.delete_one({"id": record_id})
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
@@ -473,13 +559,13 @@ suppliers_router = APIRouter(prefix="/manufacturing-suppliers", tags=["manufactu
 
 
 @suppliers_router.get("")
-async def list_suppliers(current_user: dict = Depends(require_admin)):
+async def list_suppliers(current_user: dict = Depends(require_permission("manufacturing.view"))):
     items = await db.manufacturing_suppliers.find({}, {"_id": 0}).sort("name", 1).to_list(500)
     return {"items": items}
 
 
 @suppliers_router.post("")
-async def create_supplier(payload: dict, current_user: dict = Depends(require_admin)):
+async def create_supplier(payload: dict, current_user: dict = Depends(require_permission("manufacturing.create"))):
     name = (payload or {}).get("name", "").strip()
     if not name:
         raise HTTPException(status_code=400, detail="Tedarikçi adı gerekli")
@@ -501,7 +587,7 @@ async def create_supplier(payload: dict, current_user: dict = Depends(require_ad
 
 
 @suppliers_router.put("/{sid}")
-async def update_supplier(sid: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def update_supplier(sid: str, payload: dict, current_user: dict = Depends(require_permission("manufacturing.update_stage"))):
     update = {"updated_at": datetime.now(timezone.utc).isoformat()}
     for f in ("name", "type", "contact", "phone", "address", "quality_rating", "notes"):
         if f in payload:
@@ -513,7 +599,7 @@ async def update_supplier(sid: str, payload: dict, current_user: dict = Depends(
 
 
 @suppliers_router.delete("/{sid}")
-async def delete_supplier(sid: str, current_user: dict = Depends(require_admin)):
+async def delete_supplier(sid: str, current_user: dict = Depends(require_permission("manufacturing.delete"))):
     res = await db.manufacturing_suppliers.delete_one({"id": sid})
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Tedarikçi bulunamadı")

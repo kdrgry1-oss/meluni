@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 // =============================================================================
 // OrderPaymentDetail.jsx — Sipariş detayında Iyzico ödeme detayı (FAZ 3)
 // -----------------------------------------------------------------------------
@@ -20,6 +22,8 @@ const CARD_TYPE = {
   PREPAID_CARD: "Ön Ödemeli",
 };
 
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
 function Row({ label, value }) {
   if (value === "" || value === null || value === undefined) return null;
   return (
@@ -31,6 +35,26 @@ function Row({ label, value }) {
 }
 
 export default function OrderPaymentDetail({ order }) {
+  const [check, setCheck] = useState(null);
+  const [busy, setBusy] = useState(false);
+  useEffect(() => { setCheck(null); }, [order?.id]);
+
+  // W11805 dersi: müşteri kartla iki kez denemişti; iyzico listesinde YARIDA KALAN deneme
+  // siparişle karıştırılıp "para çekilmemiş" sanıldı, ürün iade alındı ve iade elle
+  // işaretlendi — oysa tahsilat yapılmıştı. Bu düğme siparişin KENDİ ödeme numarasını
+  // iyzico'ya sorar; eşleştirme tahmine kalmaz. Sorgu salt okunur, siparişi değiştirmez.
+  const dogrula = async () => {
+    setBusy(true);
+    try {
+      const { data } = await axios.get(`${API}/orders/${order.id}/iyzico-verify`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setCheck(data);
+    } catch (e) {
+      setCheck({ ok: false, mesaj: e.response?.data?.detail || "Sorgulanamadı" });
+    } finally { setBusy(false); }
+  };
+
   if (!order) return null;
   const p = order.iyzico_retrieve_response || null;
   const pid = (p && p.paymentId) || order.iyzico_payment_id || order.payment_id || "";
@@ -62,6 +86,43 @@ export default function OrderPaymentDetail({ order }) {
       <Row label="Iyzico Ödeme No" value={pid} />
       <Row label="Iyzico Komisyonu" value={komisyon > 0 ? money(komisyon) : ""} />
       <Row label="Durum" value={d.paymentStatus || d.status} />
+
+      <button type="button" onClick={dogrula} disabled={busy} data-testid="iyzico-verify-btn"
+        className="mt-2 w-full text-xs border border-emerald-300 rounded px-2 py-1.5
+          text-emerald-800 hover:bg-emerald-100 disabled:opacity-50">
+        {busy ? "iyzico'ya soruluyor…" : "iyzico'dan doğrula (canlı)"}
+      </button>
+
+      {check && (
+        <div className="mt-2 text-xs rounded border p-2 bg-white" data-testid="iyzico-verify-result">
+          {check.sorgulandi ? (
+            <>
+              <div className={check.tahsil_edildi ? "text-emerald-700 font-semibold" : "text-red-700 font-semibold"}>
+                {check.tahsil_edildi
+                  ? `Tahsil edildi · ${money(check.tahsil_edilen)}`
+                  : `iyzico tahsilat bildirmiyor (${check.iyzico_durum || "-"})`}
+              </div>
+              <div className="text-gray-600 mt-1 space-y-0.5">
+                <div>Ödeme No: {check.paymentId}</div>
+                {check.auth_code && <div>Auth Code: {check.auth_code}</div>}
+                {check.host_reference && <div>Banka Ref: {check.host_reference}</div>}
+                <div>Sipariş tutarı: {money(check.siparis_tutari)}</div>
+                <div>iyzico iade kaydı: {check.iyzico_iade_kaydi > 0
+                  ? `${check.iyzico_iade_kaydi} adet · ${money(check.iade_edilen_tutar)}`
+                  : "yok"}</div>
+                {check.hata_mesaji && <div className="text-red-600">{check.hata_mesaji}</div>}
+              </div>
+            </>
+          ) : (
+            <div className="text-gray-600">{check.mesaj}</div>
+          )}
+          {check.uyari && (
+            <div className="mt-2 rounded bg-amber-50 border border-amber-300 text-amber-900 px-2 py-1.5">
+              ⚠ {check.uyari}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { shippingQuote } from "../lib/shippingRules";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { CreditCard, Building, CheckCircle, AlertCircle, ChevronDown, ChevronUp, ChevronLeft, MapPin, Mail, Plus, ShieldCheck, Lock, X, Pencil } from "lucide-react";
+import { CreditCard, Building, CheckCircle, AlertCircle, ChevronDown, ChevronUp, ChevronLeft, MapPin, Mail, Plus, ShieldCheck, Lock, X, Pencil, Gift, StickyNote } from "lucide-react";
 import axios from "axios";
 import { useShipping } from "../lib/shipping";
 import { toast } from "sonner";
@@ -13,8 +14,13 @@ import { useAuth } from "../context/AuthContext";
 import { trackInitiateCheckout, trackPurchase, trackAddPaymentInfo, trackAddShippingInfo } from "../utils/pixelEvents";
 import { collectClickIds } from "../lib/dataLayer";
 import { getSessionId } from "../lib/attribution";
+import { saveOrderToken, orderAccessHeaders } from "../lib/orderAccess";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+// Sunucunun OTOMATİK eklediği indirimler (üye grubu / .edu.tr öğrenci): kampanya değil,
+// müşteriye hakkı olan indirim → listede görünür ama "×" ile kaldırılamaz.
+const AUTO_PROMO_IDS = ["member_discount", "edu_discount"];
 
 const emptyAddress = {
   id: "",
@@ -80,7 +86,9 @@ export default function Checkout() {
 
   // Coupons
   const [couponCode, setCouponCode] = useState("");
-  const [showCoupon, setShowCoupon] = useState(false); // Mango usulü katlanır promosyon alanı
+  // İlk-siparişe-özel bir kod kimlik (giriş/e-posta) yokken reddedildiyse burada tutulur;
+  // müşteri giriş yapınca / e-postasını girince OTOMATİK yeniden uygulanır (destek talebi).
+  const [pendingCode, setPendingCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [appliedPromotions, setAppliedPromotions] = useState([]); // Madde 4 motor sonucu
@@ -133,7 +141,7 @@ export default function Checkout() {
   useEffect(() => { idemKeyRef.current = _getIdemKey(); }, [items]);
 
   // Payment options
-  const [paymentMethod, setPaymentMethod] = useState("credit_card");
+  const [paymentMethod, setPaymentMethod] = useState("bank_transfer");
   const [use3DSecure, setUse3DSecure] = useState(true);
   const [card, setCard] = useState({ holder: "", number: "", expiry: "", cvc: "" });
   const [installments, setInstallments] = useState([{ number: 1 }]);
@@ -155,7 +163,6 @@ export default function Checkout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
   // C2 Hediye çeki / mağaza kredisi
-  const [giftCardCode, setGiftCardCode] = useState("");
   const [giftCardApplied, setGiftCardApplied] = useState(null); // {code, balance, kind}
   const [giftCardBusy, setGiftCardBusy] = useState(false);
   // Aktif ödeme yöntemleri — admin "Ödeme Yöntemleri" ayarından gelir (public /settings).
@@ -172,6 +179,9 @@ export default function Checkout() {
   const COD_FEE = Number(bizRules["shipping.cod_fee"] ?? 10);
   const POINTS_MAX_PCT = Number(bizRules["payment.points_redeem_max_pct"] ?? 10);
   const [giftNote, setGiftNote] = useState("");
+  // Siparişe dair GENEL not — hediye notundan AYRI. Hediye paketi seçilmese de girilebilir;
+  // panelde 📌 not alanında görünür, hediye notuyla karışmaz.
+  const [orderNote, setOrderNote] = useState("");
   const [giftWrap, setGiftWrap] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   // İYS ticari ileti izni + OTP
@@ -247,34 +257,17 @@ export default function Checkout() {
     return () => { cancel = true; };
   }, []);
 
-  // DENETİM FIX (#41): Oturum açan üyenin üye-grubu indirimi (yüzde) uygulanır.
-  const [memberDiscPct, setMemberDiscPct] = useState(0);
-  const [memberGroupName, setMemberGroupName] = useState("");
-  useEffect(() => {
-    if (!user?.id) { setMemberDiscPct(0); return; }
-    let cancel = false;
-    const token = localStorage.getItem("token");
-    axios
-      .get(`${API}/storefront/member-discount`, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
-      .then((r) => {
-        if (cancel) return;
-        setMemberDiscPct(Number(r.data?.discount_percent) || 0);
-        setMemberGroupName(r.data?.group_name || "");
-      })
-      .catch(() => {});
-    return () => { cancel = true; };
-  }, [user?.id]);
+  // ÜYE GRUBU İNDİRİMİ — artık SUNUCUDA, kampanya motorunun içinde hesaplanıyor
+  // (/coupons/evaluate + create_order aynı kaynak). Burada AYRICA düşülmemeli: eskiden
+  // yalnız ekranda düşülüyor, siparişte hesaplanmıyordu → indirimli gruptaki üye onay-tutarı
+  // denetimine takılıp (409) sipariş VEREMİYORDU. İndirim, uygulanan kampanyalar listesinde
+  // "Üye İndirimi (grup)" satırı olarak görünür ve `discount` içinde gelir.
 
   // Y25: Ücretsiz kargo kuponu uygulandıysa kargo 0 gösterilir (önceden etiket "Ücretsiz Kargo"
   // yazsa da tutara kargo ekleniyordu). Eşik ya da kupon → kargo bedava.
   const hasFreeShippingPromo = (appliedPromotions || []).some((p) => p && p.free_shipping);
-  const baseShipFee = ruleShipCost != null ? ruleShipCost : shippingFee;
-  // Eşik tabanı sunucuyla AYNI: İNDİRİM SONRASI tutar (orders.create_order:
-  // (_subtotal - _server_discount) >= eşik). Eskiden indirimsiz `total` bakılıyordu →
-  // checkout "ücretsiz kargo" gösterip sunucu kargo ücreti ekleyebiliyordu.
-  const shippingCost = (hasFreeShippingPromo
-    || (freeShippingThreshold != null && Math.max(0, total - discount) >= freeShippingThreshold))
-    ? 0 : baseShipFee;
+  // A rule's preliminary zero fee cannot bypass the final merchandise minimum.
+  const baseShipFee = ruleShipCost > 0 ? ruleShipCost : shippingFee;
   const giftWrapTotal = giftWrap ? GIFT_WRAP_PRICE : 0;
   const codFee = paymentMethod === "cash_on_delivery" ? COD_FEE : 0;
   // Puan tavanı SUNUCUYLA aynı tabandan hesaplanır: (ara toplam − kupon/kampanya indirimi).
@@ -295,30 +288,30 @@ export default function Checkout() {
         ? Math.round((total - discount) * ((_payRule.percent || 0) / 100) * 100) / 100
         : (Number(_payRule.amount) || 0))
     : 0;
-  // Üye grubu indirimi — kupon indiriminden sonraki tutar üzerinden yüzde.
-  const memberGroupDiscount = memberDiscPct > 0
-    ? Math.round((total - discount) * (memberDiscPct / 100) * 100) / 100
-    : 0;
-  const preGiftTotal = Math.max(0, total + shippingCost - discount - bankTransferDiscount - paymentMethodDiscount - memberGroupDiscount - pointsDeduction + giftWrapTotal + codFee);
+  const shipping = shippingQuote({
+    subtotal: total,
+    discounts: [discount, bankTransferDiscount, paymentMethodDiscount, pointsDeduction],
+    threshold: freeShippingThreshold, fee: baseShipFee, freeShippingPromotion: hasFreeShippingPromo,
+  });
+  const shippingCost = shipping.cost;
+  const visiblePromotions = appliedPromotions.filter((p) => !p.free_shipping || shipping.free || Number(p.discount) > 0);
+  const preGiftTotal = Math.max(0, total + shippingCost - discount - bankTransferDiscount - paymentMethodDiscount - pointsDeduction + giftWrapTotal + codFee);
   // C2 Hediye çeki: tüm indirimlerden SONRA, ödenecek tutardan düşer (sunucu-otoriter;
   // burada yalnız gösterim). Bakiye kısmi kullanılır, kalan çekte kalır.
-  const giftCardDeduction = giftCardApplied ? Math.min(Number(giftCardApplied.balance) || 0, preGiftTotal) : 0;
+  // Hediye çeki: TL bakiye → min(bakiye, tutar); YÜZDE çeki → tutar × % (maks. tutar tavanlı). Sunucu yine kendi hesaplar.
+  const giftCardDeduction = giftCardApplied
+    ? (giftCardApplied.value_type === "percent"
+        ? Math.min(Math.round(preGiftTotal * (Number(giftCardApplied.percent) || 0)) / 100,
+                   Number(giftCardApplied.max_amount) > 0 ? Number(giftCardApplied.max_amount) : Infinity, preGiftTotal)
+        : Math.min(Number(giftCardApplied.balance) || 0, preGiftTotal))
+    : 0;
   const grandTotal = Math.max(0, Math.round((preGiftTotal - giftCardDeduction) * 100) / 100);
 
-  // Ürün-seviyesi indirim (sale_price + otomatik kampanya) — Sepet sayfasıyla BİREBİR aynı
-  // gösterim. Böylece kasada da her kalem indirimli birim fiyatıyla (üstü çizili liste +
-  // kırmızı indirimli) görünür; müşteri "indirimsiz fiyat görüyorum" yaşamaz. Ödeme tutarı
-  // (grandTotal) DEĞİŞMEZ — yalnız sunum: effSum - extraDisc === total - discount (kanıtlı).
+  // Yalnız ürün kartındaki sale_price farkı motorun dışında kalır. Kampanyaları
+  // cartLineView/campaignPct ile TEKRAR hesaplama: üst ve alt özet aynı sunucu
+  // sonucunu kullanmalı (kapsam, kaldırılan kampanya, global tavan dahil).
   const listSum = items.reduce((s, it) => s + cartLineView(it).listUnit * it.quantity, 0);
-  const effSum = items.reduce((s, it) => s + cartLineView(it).unit * it.quantity, 0);
-  const productDisc = Math.max(0, listSum - effSum);              // sale_price + otomatik kampanya
-  // Otomatik kampanya kısmı (birim: it.price → unit farkı) promo motoru `discount`ında ZATEN var;
-  // sale_price farkı ise motorda YOK (üründe gömülü). Bu yüzden extraDisc yalnız motor
-  // indiriminden KAMPANYA kısmını düşer → kupon/koşullu indirim çift sayılmaz, sale+kupon
-  // bileşiminde kupon kaybolmaz. Kanıt: listSum - productDisc - extraDisc === total - discount.
-  const campaignPortion = items.reduce(
-    (s, it) => s + Math.max(0, (Number(it.price) || 0) - cartLineView(it).unit) * it.quantity, 0);
-  const extraDisc = Math.max(0, discount - campaignPortion);      // kupon/koşullu kampanya
+  const productDisc = Math.max(0, listSum - total);
 
   // Seçili taksitin GERÇEK ödeme değerleri — özet "Toplam" ve "Ödeme Yap" butonu
   // peşin grandTotal'ı değil, seçilen taksitin totalPrice/installmentPrice'ını yansıtır.
@@ -363,10 +356,17 @@ export default function Checkout() {
 
   // Load saved addresses for logged-in users
   useEffect(() => {
+    let active = true;
+    setSavedAddresses([]);
+    setShippingAddress({ ...emptyAddress, email: user?.email || "" });
+    setBillingAddress({ ...emptyAddress });
+    setAddressForm({ ...emptyAddress });
+    setAddressModal(null);
     if (!user) return;
     const token = localStorage.getItem("token");
     axios.get(`${API}/my-addresses`, { headers: { Authorization: `Bearer ${token}` } })
       .then((r) => {
+        if (!active) return;
         const list = r.data?.addresses || [];
         setSavedAddresses(list);
         const def = list.find((a) => a.is_default) || list[0];
@@ -376,27 +376,16 @@ export default function Checkout() {
         }
       })
       .catch(() => {});
-  }, [user]);
-
-  // Kayıtlı adres yoksa (misafir dahil) tarayıcıda daha önce girilen adresi otomatik yükle
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("meluni_last_address");
-      if (!saved) return;
-      const a = JSON.parse(saved);
-      if (!a || (!a.first_name && !a.address)) return;
-      setShippingAddress((p) => (p.first_name || p.address) ? p : { ...emptyAddress, ...a, email: user?.email || a.email || "" });
-      setBillingAddress((p) => (p.first_name || p.address) ? p : { ...emptyAddress, ...a });
-    } catch {}
+    return () => { active = false; };
+    // Only an account change should clear an address being edited.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user?.id]);
 
-  // Girilen adresi tarayıcıda hatırla → sonraki siparişte otomatik gelsin
+  // Legacy unscoped addresses can belong to another person on a shared device.
+  // Saved addresses are loaded only through the authenticated address API above.
   useEffect(() => {
-    if (shippingAddress && (shippingAddress.first_name || shippingAddress.address)) {
-      try { localStorage.setItem("meluni_last_address", JSON.stringify(shippingAddress)); } catch {}
-    }
-  }, [shippingAddress]);
+    try { localStorage.removeItem("meluni_last_address"); } catch {}
+  }, []);
 
   // Madde 4 — Kampanya motoru: otomatik kampanyalar + (varsa) girilen kodu BIRLIKTE hesaplar.
   // Sunucudaki /coupons/evaluate ile ayni sonuc (onizleme = siparis).
@@ -494,6 +483,19 @@ export default function Checkout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, total, user?.id, appliedCoupon?.code, paymentMethod, excludedIds, shippingAddress?.email]);
 
+  // İLK-SİPARİŞ KODU OTOMATİK YENİDEN UYGULAMA: müşteri kodu kimlik yokken girip
+  // reddedildiyse (pendingCode), sonradan GİRİŞ yapınca (user.id) veya GEÇERLİ bir üyelik
+  // e-postası girince kodu otomatik yeniden uygular. Böylece "uygulanamadı" deneyimi biter.
+  useEffect(() => {
+    if (!pendingCode || appliedCoupon) return;
+    const em = (shippingAddress?.email || user?.email || "").trim();
+    const emailValid = /.+@.+\..+/.test(em);
+    if (user?.id || emailValid) {
+      applyCode(pendingCode);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, shippingAddress?.email]);
+
   // Payment callback — iyzico → backend → storefront'a ?status=success|fail&order=.. ile döner
   useEffect(() => {
     const status = searchParams.get("status");
@@ -542,7 +544,7 @@ export default function Checkout() {
     setPaymentStep("processing");
     let amount = grandTotal;
     try {
-      const r = await axios.get(`${API}/orders/by-number/${orderNumber}`);
+      const r = await axios.get(`${API}/orders/by-number/${orderNumber}`, { headers: orderAccessHeaders(orderNumber) });
       amount = r.data?.total || grandTotal;
     } catch (e) { /* sessiz */ }
     const _userInfo = {
@@ -584,42 +586,69 @@ export default function Checkout() {
     setTimeout(() => navigate(`/order-success/${orderNumber}`), 1200);
   };
 
-  const applyCode = async (rawCode) => {
-    const code = (rawCode || "").trim().toUpperCase();
+  // Kodu HARF-DUYARSIZ + TÜRKÇE-I DUYARSIZ tek forma indir (İ/ı → I). Böylece 'HOSGELDİN',
+  // 'hosgeldin', 'hosgeldın' hepsi kayıtlı 'HOSGELDIN' ile eşleşir (kullanıcı isteği).
+  const foldCode = (s) => {
+    const folded = (s || "").trim()
+      .replace(/[İı]/g, "I").replace(/[Şş]/g, "S").replace(/[Ğğ]/g, "G")
+      .replace(/[Üü]/g, "U").replace(/[Öö]/g, "O").replace(/[Çç]/g, "C")
+      .toUpperCase();
+    const compact = folded.replace(/[\s_-]+/g, "");
+    return ["HOSGELDIN", "HOSGELDIN10"].includes(compact) ? "HOSGELDIN10" : folded;
+  };
+
+  const applyCode = async (rawCode, _fromGift = false) => {
+    const code = foldCode(rawCode);
     if (!code) return;
     const d = await recalcPromotions(code);
     if (!d) { toast.error("Kampanya hesaplanamadı"); return; }
-    const hit = (d.applied || []).find((a) => (a.code || "").toUpperCase() === code);
+    // BULANIK ÇÖZÜMLEME: sunucu, yazılan varyantı (hoş geldin %10, HOSGELDN10, HOSGELDIN1O…)
+    // sistemdeki KANONİK koda çözer (entered_resolved). applied/rejected eşlemesi ve
+    // appliedCoupon bu kanonik kodla yapılır; böylece sonraki hesaplamalar/sipariş doğru kodu taşır.
+    const resolved = foldCode(d.entered_resolved || code);
+    const hit = (d.applied || []).find((a) => foldCode(a.code) === resolved || foldCode(a.code) === code);
     if (hit) {
-      setAppliedCoupon({ code });
-      toast.success(`Kupon uygulandı: ${Number(hit.discount).toFixed(2)} TL indirim`);
-    } else {
-      const rej = (d.rejected || []).find((r) => (r.code || "").toUpperCase() === code);
-      toast.error(rej?.reason || "Kupon uygulanamadı (daha yüksek öncelikli kampanya olabilir)");
+      setAppliedCoupon({ code: hit.code || resolved });
+      setCouponCode(rawCode);
+      setPendingCode(""); // uygulandı → bekleyen kod kalmasın
+      toast.success(`Kupon uygulandı (${hit.code || resolved}): ${Number(hit.discount).toFixed(2)} TL indirim`);
+      return;
     }
-  };
-
-  const handleApplyCoupon = () => applyCode(couponCode);
-
-  // C2: Hediye çeki doğrula + uygula (bakiye sunucudan; asıl düşüm sipariş oluşturmada atomik)
-  const handleApplyGiftCard = async () => {
-    const code = giftCardCode.trim().toUpperCase();
-    if (!code || giftCardBusy) return;
-    setGiftCardBusy(true);
-    try {
-      const { data } = await axios.post(`${API}/gift-cards/check`, {
-        code, email: shippingAddress.email || user?.email || "",
-      });
-      if (data?.valid) {
-        setGiftCardApplied({ code, balance: Number(data.balance) || 0, kind: data.kind || "gift" });
-        toast.success(`Hediye çeki uygulandı — bakiye: ${(Number(data.balance) || 0).toFixed(2)} TL`);
+    const rej = (d.rejected || []).find((r) =>
+      foldCode(r.code) === resolved || foldCode(r.code) === code || foldCode(r.entered || "") === code);
+    if (rej) {
+      // Kod GEÇERLİ bir kupon ama bu sepete uygulanamıyor (ör. kampanya çakışması / ilk sipariş).
+      // İLK-SİPARİŞ + KİMLİK YOK: kodu HATIRLA; müşteri giriş yapınca/e-posta girince otomatik uygulanır.
+      const _em = (shippingAddress?.email || user?.email || "").trim();
+      const _noIdentity = !(user?.id) && !_em;
+      if (_noIdentity && /giriş yap|ilk sipariş/i.test(rej.reason || "")) {
+        setPendingCode(code);
+        toast.error("Bu kod ilk siparişe özeldir — giriş yapın ya da üyelik e-postanızı girin; kod otomatik uygulanacak.");
       } else {
-        setGiftCardApplied(null);
-        toast.error(data?.error || "Hediye çeki geçersiz");
+        setPendingCode(""); // kimlik var ama yine reddedildi → gerçekten uygulanamıyor
+        toast.error(rej.reason || "Bu kupon şu an bu sepete uygulanamıyor.");
       }
-    } catch (e) {
-      toast.error(e?.response?.data?.detail || "Hediye çeki doğrulanamadı");
-    } finally { setGiftCardBusy(false); }
+      return;
+    }
+    // Kod hiçbir kampanyayla eşleşmedi → belki HEDİYE ÇEKİdir; giftcard olarak dene (döngü yok).
+    if (!_fromGift) {
+      setGiftCardBusy(true);
+      try {
+        const { data } = await axios.post(`${API}/gift-cards/check`, {
+          code, email: shippingAddress.email || user?.email || "",
+        });
+        if (data?.valid) {
+          setGiftCardApplied({ code, balance: Number(data.balance) || 0, kind: data.kind || "gift",
+                               value_type: data.value_type || "amount", percent: Number(data.percent) || 0, max_amount: Number(data.max_amount) || 0 });
+          toast.success(data.value_type === "percent"
+            ? `Hediye çeki uygulandı — %${Number(data.percent) || 0} indirim${Number(data.max_amount) > 0 ? ` (en fazla ${Number(data.max_amount).toFixed(0)} TL)` : ""}`
+            : `Hediye çeki uygulandı — bakiye: ${(Number(data.balance) || 0).toFixed(2)} TL`);
+          return;
+        }
+      } catch { /* sessiz */ }
+      finally { setGiftCardBusy(false); }
+    }
+    toast.error("Bu kod geçersiz veya bu sepete uygulanamıyor.");
   };
 
   const handleRemoveCoupon = () => {
@@ -755,6 +784,7 @@ export default function Checkout() {
         // sunucu bu kampanyaları yeniden uygulayıp onaylanandan FARKLI tutar çekiyordu.
         excluded_ids: excludedIds,
         gift_note: giftNote || "", gift_wrap: giftWrap, gift_wrap_price: giftWrapTotal,
+        notes: orderNote.trim(),
         use_points: usePoints, points_used: pointsDeduction,
         use_3d_secure: use3DSecure,
         total: grandTotal,
@@ -779,10 +809,26 @@ export default function Checkout() {
 
       // Üye girişliyse token'ı gönder ki sipariş user_id'ye bağlansın (misafirde token yok → eskisi gibi).
       const _authToken = localStorage.getItem("token");
-      const orderRes = await axios.post(`${API}/orders`, orderData,
-        _authToken ? { headers: { Authorization: `Bearer ${_authToken}` } } : undefined);
+      const _orderCfg = _authToken ? { headers: { Authorization: `Bearer ${_authToken}` } } : undefined;
+      let orderRes;
+      try {
+        orderRes = await axios.post(`${API}/orders`, orderData, _orderCfg);
+      } catch (e1) {
+        // İdempotency çakışması: aynı anahtar daha önce FARKLI içerikle (adres/ödeme yöntemi/
+        // kupon/tutar) kullanılmış → yeni anahtar üretip BİR kez yeniden gönder.
+        if (e1.response?.status === 409 && e1.response?.data?.code === "idempotency_conflict") {
+          const _fresh = _newIdemKey();
+          try { window.sessionStorage.setItem(_idemStoreKey(), _fresh); } catch { /* yoksay */ }
+          idemKeyRef.current = _fresh;
+          orderData.idempotency_key = _fresh;
+          orderRes = await axios.post(`${API}/orders`, orderData, _orderCfg);
+        } else {
+          throw e1;
+        }
+      }
       const newOrderId = orderRes.data.order_id;
       setOrderId(newOrderId);
+      saveOrderToken(orderRes.data.order_number, orderRes.data.pay_token);
       // Başarı sayfası sipariş NUMARASI ile açılır (by-number). Numara yoksa akışı kırma:
       // order_id'ye düşme (OrderSuccess her ikisini de dener) — 'undefined' rotası oluşmasın.
       const _successNum = orderRes.data.order_number || orderRes.data.order_id;
@@ -822,6 +868,7 @@ export default function Checkout() {
         {
           const res = await axios.post(`${API}/payment/3ds/initialize`, {
             order_id: newOrderId,
+            pay_token: orderRes.data.pay_token || "",
             callback_url: `${API}/payment/3ds/callback`,
             return_url: `${window.location.origin}/odeme`,
             card: cardPayload,
@@ -1039,8 +1086,8 @@ export default function Checkout() {
 
               {/* 1) İletişim — yalnızca misafir (üye girişliyse gizli; mail otomatik) */}
               {!user && (
-              <section data-testid="contact-block">
-                <Step n={1} title="İletişim" icon={Mail} hint="üyeliksiz devam et" />
+              <section data-testid="contact-block" className="border border-stone-200 rounded-xl p-4 md:p-5 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+                <Step n={1} title="İletişim" icon={Mail} />
                 <input
                   type="email"
                   value={shippingAddress.email || ""}
@@ -1052,7 +1099,7 @@ export default function Checkout() {
                   required
                 />
                 <p className="text-[11px] text-gray-500 mt-1.5">
-                  Sipariş onayı ve faturanız bu adrese gönderilir. <span className="text-black/70 font-medium">Üyelik gerekmez.</span>
+                  Sipariş onayı ve faturanız bu adrese gönderilir.
                 </p>
                 <p className="text-[11px] text-gray-600 mt-2">
                   Hesabın var mı?{" "}
@@ -1063,8 +1110,9 @@ export default function Checkout() {
               </section>
               )}
 
-              {/* 2) Teslimat Adresi — Zara/Mango sadeliği: tek adres. Fatura varsayılan olarak
-                  teslimatla aynı; ayrı fatura adresi YALNIZCA istenirse açılır (tekrar eden alan yok). */}
+              {/* 2) Teslimat Adresi + Kurumsal Fatura — TEK KART (Zara/Mango sadeliği: tek adres.
+                  Fatura varsayılan teslimatla aynı; ayrı fatura YALNIZCA istenirse açılır). */}
+              <div className="border border-stone-200 rounded-xl p-4 md:p-5 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
               <section data-testid="address-block">
                 <div className="flex items-center justify-between">
                   <Step n={sBase + 1} title="Teslimat Adresi" icon={MapPin} />
@@ -1113,20 +1161,17 @@ export default function Checkout() {
                 )}
               </section>
 
-              {/* 2.b) Kurumsal Fatura */}
-              <div className="border border-stone-200 rounded-lg" data-testid="corporate-invoice-block">
-                <label className="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-stone-50 transition-colors">
+              {/* 2.b) Kurumsal Fatura — sade/kompakt tik-kutu; üstteki 'aynı adres' satırına
+                  yaklaştırıldı (-mt-4, space-y-7 boşluğunu azaltır). İşlev/tik→alan-açma aynı. */}
+              <div data-testid="corporate-invoice-block" className="mt-4 pt-4 border-t border-stone-100">
+                <label className="inline-flex items-center gap-2 text-sm cursor-pointer pt-1">
                   <input type="checkbox" checked={corporateInvoice}
                     onChange={(e) => setCorporateInvoice(e.target.checked)}
                     className="accent-black" data-testid="corporate-invoice-checkbox" />
-                  <Building size={18} className="text-black" />
-                  <div className="flex-1">
-                    <div className="font-medium text-sm">Kurumsal Fatura İstiyorum</div>
-                    <div className="text-xs text-gray-500">Şirket adına fatura kesilecekse VKN ve vergi dairesi bilgilerinizi girin.</div>
-                  </div>
+                  <span>Kurumsal Fatura İstiyorum</span>
                 </label>
                 {corporateInvoice && (
-                  <div className="px-5 pb-5 border-t pt-4 space-y-3" data-testid="corporate-invoice-fields">
+                  <div className="mt-3 space-y-3" data-testid="corporate-invoice-fields">
                     <div className="grid md:grid-cols-2 gap-3">
                       <div>
                         <label className="block text-xs text-gray-700 mb-1">Firma Ünvanı *</label>
@@ -1162,18 +1207,21 @@ export default function Checkout() {
                   </div>
                 )}
               </div>
+              </div>
 
               {/* 3) Ödeme */}
-              <section data-testid="payment-block">
+              <section data-testid="payment-block" className="border border-stone-200 rounded-xl p-4 md:p-5 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
                 <Step n={sBase + 2} title="Ödeme" icon={CreditCard} />
                 <div className="space-y-3">
                   {/* Method radios */}
                   <div className="grid sm:grid-cols-2 gap-3">
                     {[
-                      { key: "credit_card", label: "Kredi / Banka Kartı", icon: CreditCard },
                       { key: "bank_transfer", label: "Havale / EFT", icon: Building },
+                      { key: "credit_card", label: "Kredi / Banka Kartı", icon: CreditCard },
                     ].filter(({ key }) => enabledPM[key]).map(({ key, label, icon: Icon }) => (
-                      <label key={key} className={`relative flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === key ? "border-stone-900 ring-1 ring-stone-900 bg-stone-50" : "border-stone-200 hover:border-stone-400"}`}>
+                      // SHOP12: radyo sr-only olduğundan klavye odağı kartın kendisinde görünür olmalı
+                      // (Tab ile gelen kullanıcı hangi seçenekte olduğunu görsün) → has-[:focus-visible] halkası.
+                      <label key={key} className={`relative flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-stone-900 has-[:focus-visible]:ring-offset-2 ${paymentMethod === key ? "border-stone-900 ring-1 ring-stone-900 bg-stone-50" : "border-stone-200 hover:border-stone-400"}`}>
                         <input type="radio" name="payment" value={key}
                           checked={paymentMethod === key}
                           onChange={(e) => {
@@ -1212,17 +1260,12 @@ export default function Checkout() {
                         <span className="min-w-0 flex-1">
                           <span className="flex items-center gap-2">
                             <span className="text-sm font-semibold text-stone-900">{label}</span>
-                            {key === "bank_transfer" && bankPct > 0 && (
-                              <span className="text-[10px] font-bold tracking-wide text-[#7b1e2b] bg-[#7b1e2b]/10 border border-[#7b1e2b]/25 px-1.5 py-0.5 rounded-full">
-                                %{bankPct} İNDİRİM
-                              </span>
-                            )}
                           </span>
                           <span className="block text-xs text-stone-500">
                             {key === "credit_card"
                               ? "Tek çekim veya taksit imkânı"
                               : (bankPct > 0
-                                  ? <>Havale/EFT'de <span className="text-[#7b1e2b] font-semibold">%{bankPct} indirim</span> · IBAN sipariş sonrası paylaşılır</>
+                                  ? <>Havale/EFT'de <span className="text-red-600 font-bold">%{bankPct} indirim</span> · IBAN sipariş sonrası paylaşılır</>
                                   : "Sipariş sonrası IBAN paylaşılır")}
                           </span>
                         </span>
@@ -1308,8 +1351,8 @@ export default function Checkout() {
               </section>
 
               {/* 4) Hediye */}
-              <section data-testid="gift-options-section">
-                <Step n={sBase + 3} title="Hediye Seçenekleri" hint="opsiyonel" />
+              <section data-testid="gift-options-section" className="border border-stone-200 rounded-xl p-4 md:p-5 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+                <Step n={sBase + 3} title="Hediye Seçenekleri" icon={Gift} hint="opsiyonel" />
                 <div className="space-y-3">
                   {/* Sadeleştirildi (Zara/Mango): tek satır onay; not yalnızca paket seçilince görünür. */}
                   <label className="flex items-center justify-between gap-3 cursor-pointer">
@@ -1328,6 +1371,25 @@ export default function Checkout() {
                   )}
                 </div>
               </section>
+
+              {/* 5) Sipariş Notu — hediye notundan BAĞIMSIZ. Hediye paketi alınmasa da
+                     müşteri siparişiyle ilgili not bırakabilsin (teslimat saati, kapı kodu…). */}
+              <section data-testid="order-note-section" className="border border-stone-200 rounded-xl p-4 md:p-5 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+                <Step n={sBase + 4} title="Sipariş Notu" icon={StickyNote} hint="opsiyonel" />
+                <textarea
+                  value={orderNote}
+                  onChange={(e) => setOrderNote(e.target.value.slice(0, 500))}
+                  rows={3}
+                  placeholder="Siparişinizle ilgili bize iletmek istediğiniz bir şey var mı? (ör. teslimat saati tercihi, kapı/zil bilgisi)"
+                  className="w-full border px-3 py-2 text-sm focus:outline-none focus:border-stone-900 resize-none"
+                  data-testid="order-note-input" />
+                <div className="flex items-center justify-between mt-1">
+                  <p className="text-[11px] text-gray-400">
+                    Bu not hediye notundan farklıdır — hediye kartına yazdırılmaz, yalnız ekibimiz görür.
+                  </p>
+                  <span className="text-[11px] text-gray-400">{orderNote.length}/500</span>
+                </div>
+              </section>
             </div>
 
             {/* SAĞ — Sticky Sipariş Özeti */}
@@ -1340,19 +1402,21 @@ export default function Checkout() {
                 {/* En avantajlı indirim otomatik uygulandı + uygulanan kampanyalar (X ile kaldır) */}
                 {(appliedPromotions.length > 0 || eligiblePromotions.length > 0) && (
                   <div className="px-5 pt-4" data-testid="applied-promotions">
-                    {appliedPromotions.length > 0 && (
+                    {visiblePromotions.length > 0 && (
                       <>
                         <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-green-700 mb-2">
                           <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3 3 6.8-6.8a1 1 0 011.4 0z" clipRule="evenodd" /></svg>
-                          En avantajlı indirim otomatik uygulandı
+                          İndirimler uygulandı
                         </div>
                         <div className="space-y-1">
-                          {appliedPromotions.map((p, i) => (
+                          {visiblePromotions.map((p, i) => (
                             <div key={i} className="flex items-center justify-between text-xs gap-2">
-                              <span className="text-gray-700 truncate flex-1">{p.title || p.code}{p.free_shipping ? " · Ücretsiz Kargo" : ""}</span>
+                              <span className="text-gray-700 truncate flex-1">{p.title || p.code}{p.free_shipping && shipping.free ? " · Ücretsiz Kargo" : ""}</span>
                               <span className="text-green-600 font-semibold shrink-0">-{Number(p.discount).toFixed(2)} ₺</span>
-                              <button type="button" onClick={() => removePromotion(p)} title="Kampanyayı kaldır" aria-label="Kaldır"
-                                className="shrink-0 w-5 h-5 flex items-center justify-center rounded-full text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors">×</button>
+                              {!AUTO_PROMO_IDS.includes(p.coupon_id) && (
+                                <button type="button" onClick={() => removePromotion(p)} title="Kampanyayı kaldır" aria-label="Kaldır"
+                                  className="shrink-0 w-5 h-5 flex items-center justify-center rounded-full text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors">×</button>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -1364,70 +1428,59 @@ export default function Checkout() {
                   </div>
                 )}
 
-                {/* Promosyon kodu — katlanır (Mango usulü; kullanıcıyı kod avına itmez) */}
+                {/* TEK KUTU: indirim VEYA hediye çeki kodu — ne girilirse otomatik algılanır
+                    (kullanıcı isteği: iki ayrı alan yerine tek alan; kod hangi türse o uygulanır). */}
                 <div className="px-5 pt-4">
-                  {(showCoupon || appliedCoupon) ? (
-                    <div className="flex gap-2">
-                      <input type="text" value={couponCode}
-                        onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                        placeholder="Promosyon kodu"
-                        className="flex-1 border rounded px-3 py-2 text-sm"
-                        data-testid="manual-coupon-input" />
-                      {appliedCoupon
-                        ? <button type="button" onClick={handleRemoveCoupon} className="text-xs px-3 border rounded hover:bg-stone-50" data-testid="remove-coupon-btn">Kaldır</button>
-                        : <button type="button" onClick={handleApplyCoupon} className="text-xs px-3 border rounded hover:bg-stone-50" data-testid="apply-coupon-btn">Uygula</button>}
+                  {/* Uygulanmış hediye çeki (varsa) ayrı satırda gösterilir + kaldırılabilir */}
+                  {bizRules["giftcard.enabled"] !== false && giftCardApplied && (
+                    <div className="mb-2 flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded px-3 py-2 text-xs" data-testid="gift-card-applied">
+                      <span className="text-emerald-800">
+                        🎁 {giftCardApplied.kind === "credit" ? "Mağaza kredisi" : "Hediye çeki"} <b>{giftCardApplied.code}</b> — {giftCardApplied.value_type === "percent" ? `%${giftCardApplied.percent} indirim${giftCardApplied.max_amount > 0 ? ` (en fazla ${Number(giftCardApplied.max_amount).toFixed(0)} TL)` : ""}` : `bakiye ${Number(giftCardApplied.balance).toFixed(2)} TL`}
+                      </span>
+                      <button type="button" onClick={() => setGiftCardApplied(null)}
+                        className="text-emerald-700 underline" data-testid="remove-gift-card-btn">Kaldır</button>
                     </div>
-                  ) : (
-                    <button type="button" onClick={() => setShowCoupon(true)}
-                      className="text-xs text-gray-500 underline hover:text-stone-900"
-                      data-testid="show-coupon-btn">Promosyon kodun var mı?</button>
                   )}
-                  {/* C2: Hediye çeki / mağaza kredisi (İşletme Kuralları ile açılır/kapanır) */}
-                  {bizRules["giftcard.enabled"] !== false && (
-                    giftCardApplied ? (
-                      <div className="mt-2 flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded px-3 py-2 text-xs" data-testid="gift-card-applied">
-                        <span className="text-emerald-800">
-                          🎁 {giftCardApplied.kind === "credit" ? "Mağaza kredisi" : "Hediye çeki"} <b>{giftCardApplied.code}</b> — bakiye {Number(giftCardApplied.balance).toFixed(2)} TL
-                        </span>
-                        <button type="button" onClick={() => { setGiftCardApplied(null); setGiftCardCode(""); }}
-                          className="text-emerald-700 underline" data-testid="remove-gift-card-btn">Kaldır</button>
-                      </div>
-                    ) : (
-                      <div className="mt-2 flex gap-2">
-                        <input type="text" value={giftCardCode}
-                          onChange={(e) => setGiftCardCode(e.target.value.toUpperCase())}
-                          placeholder="Hediye çeki kodu (HED-...)"
-                          className="flex-1 border rounded px-3 py-2 text-sm"
-                          data-testid="gift-card-input" />
-                        <button type="button" onClick={handleApplyGiftCard} disabled={giftCardBusy || !giftCardCode.trim()}
-                          className="text-xs px-3 border rounded hover:bg-stone-50 disabled:opacity-50"
-                          data-testid="apply-gift-card-btn">
+                  {/* Kupon/hediye çeki giriş alanı HER ZAMAN AÇIK (soru/toggle yok) — işlev aynı. */}
+                  <div className="flex gap-2">
+                    <input type="text" value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                      onKeyDown={(e) => { if (e.key === "Enter" && !appliedCoupon && !giftCardBusy) applyCode(couponCode); }}
+                      placeholder="İndirim veya hediye çeki kodu"
+                      className="flex-1 border rounded px-3 py-2 text-sm"
+                      data-testid="manual-coupon-input" />
+                    {appliedCoupon
+                      ? <button type="button" onClick={handleRemoveCoupon} className="text-xs px-3 border rounded hover:bg-stone-50" data-testid="remove-coupon-btn">Kaldır</button>
+                      : <button type="button" onClick={() => applyCode(couponCode)} disabled={giftCardBusy || !couponCode.trim()}
+                          className="text-xs px-3 border rounded hover:bg-stone-50 disabled:opacity-50" data-testid="apply-coupon-btn">
                           {giftCardBusy ? "..." : "Uygula"}
-                        </button>
-                      </div>
-                    )
-                  )}
+                        </button>}
+                  </div>
                 </div>
 
                 {/* Totals */}
                 <div className="px-5 py-4 mt-3 border-t space-y-2 text-sm">
                   <div className="flex justify-between"><span className="text-gray-600">Ara Toplam</span><span>{listSum.toFixed(2)} TL</span></div>
-                  {productDisc > 0.001 && <div className="flex justify-between text-emerald-700"><span>Ürün İndirimi</span><span>-{productDisc.toFixed(2)} TL</span></div>}
-                  {/* NOT: alt "Kupon" satırı kupon/koşullu indirimi gösterir; ürün-içi indirim yukarıda ayrı. */}
-                  <div className="flex justify-between">
+                  {productDisc > 0.001 && <div className="flex justify-between text-emerald-700"><span>Ürün fiyat indirimi</span><span>-{productDisc.toFixed(2)} TL</span></div>}
+                  <div data-testid="promotion-totals" className="space-y-2">
+                    {visiblePromotions.filter((p) => Number(p.discount) > 0).map((p, i) => (
+                      <div key={p.coupon_id || i} className="flex justify-between text-green-600 gap-2">
+                        <span>{p.title || p.code}</span><span className="shrink-0">-{Number(p.discount).toFixed(2)} TL</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-between" data-testid="shipping-cost">
                     <span className="text-gray-600">Kargo Tutarı</span>
                     {shippingCost === 0
-                      ? <span><s className="text-gray-400">59,99 TL</s> <span className="ml-1 inline-block bg-green-50 text-green-700 px-1.5 py-0.5 text-[10px] font-semibold rounded">Bedava</span></span>
+                      ? <span><s className="text-gray-400">{baseShipFee.toFixed(2)} TL</s> <span className="ml-1 inline-block bg-green-50 text-green-700 px-1.5 py-0.5 text-[10px] font-semibold rounded">Bedava</span></span>
                       : <span>{shippingCost.toFixed(2)} TL</span>}
                   </div>
                   <div className="flex justify-between text-xs text-gray-500" data-testid="delivery-estimate">
                     <span>Tahmini teslimat</span>
                     <span>{estimateDelivery()} <span className="text-gray-400">· 2-4 iş günü</span></span>
                   </div>
-                  {extraDisc > 0.001 && <div className="flex justify-between text-green-600"><span>Kupon{appliedCoupon?.code ? ` (${appliedCoupon.code})` : ""}</span><span>-{extraDisc.toFixed(2)} TL</span></div>}
-                  {bankTransferDiscount > 0 && <div className="flex justify-between" style={{ color: "#7b1e2b" }}><span>Havale/EFT İndirimi (%{bankPct})</span><span>-{bankTransferDiscount.toFixed(2)} TL</span></div>}
+                  {bankTransferDiscount > 0 && <div className="flex justify-between" style={{ color: "#dc2626" }}><span>Havale/EFT İndirimi (%{bankPct})</span><span>-{bankTransferDiscount.toFixed(2)} TL</span></div>}
                   {paymentMethodDiscount > 0 && <div className="flex justify-between" style={{ color: "#7b1e2b" }}><span>{_payRule?.label || "Ödeme İndirimi"}</span><span>-{paymentMethodDiscount.toFixed(2)} TL</span></div>}
-                  {memberGroupDiscount > 0 && <div className="flex justify-between" style={{ color: "#7b1e2b" }}><span>Üye İndirimi{memberGroupName ? ` (${memberGroupName})` : ""} (%{memberDiscPct})</span><span>-{memberGroupDiscount.toFixed(2)} TL</span></div>}
                   {pointsDeduction > 0 && <div className="flex justify-between text-black"><span>Puan Kullanımı</span><span>-{pointsDeduction.toFixed(2)} TL</span></div>}
                   {giftCardDeduction > 0 && <div className="flex justify-between text-emerald-700" data-testid="gift-card-row"><span>Hediye Çeki ({giftCardApplied?.code})</span><span>-{giftCardDeduction.toFixed(2)} TL</span></div>}
                   {giftWrap && <div className="flex justify-between"><span className="text-gray-600">Hediye paketi</span><span>+{GIFT_WRAP_PRICE.toFixed(2)} TL</span></div>}

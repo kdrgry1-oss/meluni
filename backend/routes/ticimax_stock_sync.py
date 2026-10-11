@@ -16,7 +16,7 @@ ENDPOINT:
   POST /api/admin/ticimax/sync-stock?max_products=500&aktif=1
 =============================================================================
 """
-from fastapi import APIRouter, Depends, Query, BackgroundTasks
+from fastapi import APIRouter, Depends, Query, BackgroundTasks, Request
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any, List
 import sys, os
@@ -28,6 +28,7 @@ if _BACKEND_PATH not in sys.path:
 
 from .deps import db, logger, require_admin
 from .marketplace_hub import log_integration_event
+from stock_audit import record_stock_audit
 
 router = APIRouter(prefix="/admin/ticimax", tags=["admin-ticimax-stock"])
 
@@ -100,7 +101,7 @@ async def ticimax_orders_probe(
     import asyncio
     from ticimax_client import get_orders as tc_get_orders
     s = await db.settings.find_one({"id": "ticimax"}) or {}
-    api_key = s.get("api_key") or "AKG0M8DTRSEBAIA898JA6HW22EDIU3"
+    api_key = s.get("api_key") or (os.environ.get("TICIMAX_API_KEY") or "").strip()
     orders = await asyncio.to_thread(
         tc_get_orders, page, 5, api_key, start_date, end_date,
         not include_marketplace, False)
@@ -113,6 +114,7 @@ async def sync_ticimax_stock(
     aktif: Optional[int] = Query(None, description="1=aktif, 0=pasif, None=hepsi"),
     page_size: int = Query(50, ge=10, le=100),
     current_user: dict = Depends(require_admin),
+    request: Request = None,
 ):
     """Ticimax SelectUrun ile canlı stok değerlerini çek + DB'de güncelle.
 
@@ -137,7 +139,7 @@ async def sync_ticimax_stock(
     from ticimax_client import get_products, get_product_count  # type: ignore
 
     settings = await db.settings.find_one({"id": "ticimax"}) or {}
-    api_key = settings.get("api_key") or "AKG0M8DTRSEBAIA898JA6HW22EDIU3"
+    api_key = settings.get("api_key") or (os.environ.get("TICIMAX_API_KEY") or "").strip()
     _dom = settings.get("domain")
     if _dom:
         try:
@@ -199,7 +201,8 @@ async def sync_ticimax_stock(
         if tc_card_id:
             product_doc = await db.products.find_one(
                 {"csv_card_id": {"$in": [tc_card_id, str(tc_card_id)]}},
-                {"_id": 0, "id": 1, "variants": 1}
+                {"_id": 0, "id": 1, "name": 1, "stock": 1, "stock_code": 1,
+                 "barcode": 1, "variants": 1}
             )
 
         # ÖNCELİK 2: ticimax variant barkod/stock_code'larından bizdeki ürünü bul
@@ -215,7 +218,9 @@ async def sync_ticimax_stock(
                 or_clauses.append({"barcode": {"$in": tv_bars}})
             if or_clauses:
                 product_doc = await db.products.find_one(
-                    {"$or": or_clauses}, {"_id": 0, "id": 1, "variants": 1}
+                    {"$or": or_clauses},
+                    {"_id": 0, "id": 1, "name": 1, "stock": 1, "stock_code": 1,
+                     "barcode": 1, "variants": 1}
                 )
 
         # ÖNCELİK 3: Top-level StokKodu (Varyasyon yoksa) - tek varyantlı ürünler
@@ -231,7 +236,9 @@ async def sync_ticimax_stock(
                 tcl.append({"barcode": top_bar})
             if tcl:
                 product_doc = await db.products.find_one(
-                    {"$or": tcl}, {"_id": 0, "id": 1, "variants": 1}
+                    {"$or": tcl},
+                    {"_id": 0, "id": 1, "name": 1, "stock": 1, "stock_code": 1,
+                     "barcode": 1, "variants": 1}
                 )
 
         if not product_doc:
@@ -251,6 +258,8 @@ async def sync_ticimax_stock(
 
         new_variants: List[Dict] = list(local_variants)
         new_variants_lookup = {lv.get("id"): idx for idx, lv in enumerate(new_variants) if lv.get("id")}
+        # Yalnız DEĞİŞEN varyantların {variant_id: yeni_stok} haritası → varyant-kapsamlı yazım
+        variant_stock_changes: Dict[Any, int] = {}
         local_total_stock = 0
         for tv in variants_raw:
             tv_id   = tv.get("ID") or tv.get("VaryasyonID")
@@ -272,6 +281,7 @@ async def sync_ticimax_stock(
                     idx = new_variants_lookup[lv_id]
                     if new_variants[idx].get("stock") != int(tv_stk):
                         new_variants[idx] = {**new_variants[idx], "stock": int(tv_stk)}
+                        variant_stock_changes[lv_id] = int(tv_stk)
                         updated_variants_total += 1
                     local_total_stock += int(tv_stk)
             else:
@@ -283,14 +293,56 @@ async def sync_ticimax_stock(
 
         new_stock = int(ticimax_total_stock if ticimax_total_stock > 0 else local_total_stock)
         try:
-            await db.products.update_one(
-                {"id": product_doc["id"]},
-                {"$set": {
-                    "stock": new_stock,
-                    "variants": new_variants,
-                    "stock_synced_at": datetime.now(timezone.utc).isoformat(),
-                    "updated_at": datetime.now(timezone.utc).isoformat(),
-                }}
+            _now_iso = datetime.now(timezone.utc).isoformat()
+            if local_variants:
+                # VARYANT-KAPSAMLI YAZIM (kayıp-güncelleme koruması): eskiden TÜM `variants`
+                # dizisi okunup $set ediliyordu → okuma ile yazma arasında gelen sipariş düşümü,
+                # panel düzenlemesi ya da yeni varyant sessizce ESKİYE dönüyordu. Artık yalnız
+                # değişen varyantın `stock` alanı arrayFilters ile (id'ye göre) yazılır; diğer
+                # varyant alanlarına/varyantlara dokunulmaz.
+                if variant_stock_changes:
+                    _set: Dict[str, Any] = {}
+                    _filters: List[Dict] = []
+                    for _i, (_vid, _stk) in enumerate(variant_stock_changes.items()):
+                        _set[f"variants.$[v{_i}].stock"] = _stk
+                        _filters.append({f"v{_i}.id": _vid})
+                    await db.products.update_one(
+                        {"id": product_doc["id"]}, {"$set": _set}, array_filters=_filters)
+                # Ürün toplam stoğu = GÜNCEL varyant stoklarının toplamı (sunucu tarafında, atomik
+                # pipeline; okunan anlık görüntüden değil).
+                await db.products.update_one(
+                    {"id": product_doc["id"]},
+                    [{"$set": {
+                        "stock": {"$sum": {"$map": {
+                            "input": {"$ifNull": ["$variants", []]}, "as": "v",
+                            "in": {"$convert": {"input": "$$v.stock", "to": "int",
+                                                "onError": 0, "onNull": 0}}}}},
+                        "stock_synced_at": _now_iso,
+                        "updated_at": _now_iso,
+                    }}],
+                )
+                def _int0(x):
+                    try:
+                        return int(float(x or 0))
+                    except (TypeError, ValueError):
+                        return 0
+                new_stock = sum(_int0(v.get("stock")) for v in new_variants if isinstance(v, dict))  # yalnız audit için
+            else:
+                await db.products.update_one(
+                    {"id": product_doc["id"]},
+                    {"$set": {
+                        "stock": new_stock,
+                        "stock_synced_at": _now_iso,
+                        "updated_at": _now_iso,
+                    }}
+                )
+            await record_stock_audit(
+                db, product_id=product_doc["id"], product_name=product_doc.get("name", ""),
+                before=product_doc,
+                after={**product_doc, "stock": new_stock, "variants": new_variants},
+                source="ticimax_inbound", current_user=current_user, request=request,
+                action="marketplace_stock_imported",
+                sync_result={"status": "success", "platform": "ticimax"},
             )
         except Exception as e:
             errors.append(f"product {product_doc['id']}: {e}")
@@ -323,6 +375,7 @@ async def sync_ticimax_stock(
 @router.post("/sync-stock-async")
 async def sync_ticimax_stock_async(
     background_tasks: BackgroundTasks,
+    request: Request,
     max_products: int = Query(5000, ge=10, le=20000),
     aktif: Optional[int] = Query(None),
     page_size: int = Query(50, ge=10, le=100),
@@ -334,7 +387,7 @@ async def sync_ticimax_stock_async(
         try:
             from ticimax_client import get_products  # noqa
             await sync_ticimax_stock(max_products=max_products, aktif=aktif,
-                                     page_size=page_size, current_user=current_user)
+                                     page_size=page_size, current_user=current_user, request=request)
         except Exception as e:
             await log_integration_event(
                 marketplace="ticimax", action="stock_sync", status="error",
@@ -475,7 +528,7 @@ async def ticimax_category_probe(
     yapısını (kategori alanının adı, yeni-ürün bayrağı) görmek içindir."""
     from ticimax_client import get_products, get_all_categories  # type: ignore
     settings = await db.settings.find_one({"id": "ticimax"}) or {}
-    api_key = settings.get("api_key") or "AKG0M8DTRSEBAIA898JA6HW22EDIU3"
+    api_key = settings.get("api_key") or (os.environ.get("TICIMAX_API_KEY") or "").strip()
     _dom = settings.get("domain")
     if _dom:
         try:
@@ -600,7 +653,7 @@ async def sync_ticimax_categories(
     from ticimax_client import get_products, get_product_count  # type: ignore
 
     settings = await db.settings.find_one({"id": "ticimax"}) or {}
-    api_key = settings.get("api_key") or "AKG0M8DTRSEBAIA898JA6HW22EDIU3"
+    api_key = settings.get("api_key") or (os.environ.get("TICIMAX_API_KEY") or "").strip()
     _dom = settings.get("domain")
     if _dom:
         try:

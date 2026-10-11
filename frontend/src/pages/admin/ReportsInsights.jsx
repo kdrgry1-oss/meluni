@@ -3,32 +3,29 @@
  * Tarih aralığı + kaynak filtresiyle: konum, satış kanalı (Instagram/Google/pazaryeri),
  * ve uzun süredir satış görmeyen ürünler.
  */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import { MapPin, Radio, PackageX, TrendingUp, Clock, CreditCard, Ticket, UserPlus } from "lucide-react";
 import ReportScopeBadge from "../../components/ReportScopeBadge";
+import { REPORT_MIN_DATE, clampReportDate, defaultReportRange, reportPresetRange } from "../../lib/reportFilters";
+import { createLatestRequestManager, isCanceledRequest } from "../../lib/latestRequest";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const auth = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 const TRY = (n) => `${Number(n || 0).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺`;
 
 const CHANNEL_LABELS = {
-  trendyol: "Trendyol", hepsiburada: "Hepsiburada", temu: "Temu",
+  trendyol: "Trendyol", hepsiburada: "Hepsiburada", temu: "Temu", n11: "n11", amazon: "Amazon",
   instagram: "Instagram", google: "Google", meta: "Meta/Facebook",
   tiktok: "TikTok", youtube: "YouTube", pinterest: "Pinterest",
   email: "E-posta", sms: "SMS", direct: "Doğrudan / Site",
 };
 
-function todayISO(offsetDays = 0) {
-  // Not: sabit bir referans yok; tarayıcı tarihini kullanır (admin aracı).
-  const d = new Date(Date.now() - offsetDays * 86400000);
-  return d.toISOString().slice(0, 10);
-}
-
 export default function ReportsInsights() {
+  const initial = defaultReportRange();
   const [tab, setTab] = useState("location");
-  const [start, setStart] = useState(todayISO(30));
-  const [end, setEnd] = useState(todayISO(0));
+  const [start, setStart] = useState(initial.from);
+  const [end, setEnd] = useState(initial.to);
   const [source, setSource] = useState("all");
   const [locGroup, setLocGroup] = useState("city");
   const [days, setDays] = useState(90);
@@ -41,23 +38,44 @@ export default function ReportsInsights() {
   const [coupon, setCoupon] = useState(null);
   const [cust, setCust] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState("");
+  const requestManagerRef = useRef(null);
+  if (!requestManagerRef.current) requestManagerRef.current = createLatestRequestManager();
 
   const load = useCallback(async () => {
+    const query = Object.freeze({ start, end, source, locGroup, days, tab });
+    const request = requestManagerRef.current.begin();
+    const requestAuth = { ...auth(), signal: request.signal };
     setLoading(true);
-    const q = `start_date=${start}T00:00:00Z&end_date=${end}T23:59:59Z`;
+    const q = `start_date=${encodeURIComponent(query.start)}&end_date=${encodeURIComponent(query.end)}`;
     try {
-      if (tab === "location") setLoc((await axios.get(`${API}/admin/reports/by-location?${q}&group=${locGroup}&source=${source}&limit=200`, auth())).data);
-      else if (tab === "source") setSrc((await axios.get(`${API}/admin/reports/by-source?${q}`, auth())).data);
-      else if (tab === "never") setNever((await axios.get(`${API}/admin/reports/never-sold?days=${days}&limit=1000`, auth())).data);
-      else if (tab === "hour") setHour((await axios.get(`${API}/admin/reports/by-hour?${q}&source=${source}`, auth())).data);
-      else if (tab === "pay") setPay((await axios.get(`${API}/admin/reports/by-payment?${q}&source=${source}`, auth())).data);
-      else if (tab === "coupon") setCoupon((await axios.get(`${API}/admin/reports/coupon-performance?${q}`, auth())).data);
-      else if (tab === "cust") setCust((await axios.get(`${API}/admin/reports/customer-type?${q}`, auth())).data);
-    } catch (_) { /* sessiz */ }
-    finally { setLoading(false); }
+      let commit;
+      if (query.tab === "location") { const value = (await axios.get(`${API}/admin/reports/by-location?${q}&group=${query.locGroup}&source=${query.source}&limit=200`, requestAuth)).data; commit = () => setLoc(value); }
+      else if (query.tab === "source") { const value = (await axios.get(`${API}/admin/reports/by-source?${q}`, requestAuth)).data; commit = () => setSrc(value); }
+      else if (query.tab === "never") { const value = (await axios.get(`${API}/admin/reports/never-sold?days=${query.days}&limit=1000`, requestAuth)).data; commit = () => setNever(value); }
+      else if (query.tab === "hour") { const value = (await axios.get(`${API}/admin/reports/by-hour?${q}&source=${query.source}`, requestAuth)).data; commit = () => setHour(value); }
+      else if (query.tab === "pay") { const value = (await axios.get(`${API}/admin/reports/by-payment?${q}&source=${query.source}`, requestAuth)).data; commit = () => setPay(value); }
+      else if (query.tab === "coupon") { const value = (await axios.get(`${API}/admin/reports/coupon-performance?${q}`, requestAuth)).data; commit = () => setCoupon(value); }
+      else if (query.tab === "cust") { const value = (await axios.get(`${API}/admin/reports/customer-type?${q}`, requestAuth)).data; commit = () => setCust(value); }
+      if (!requestManagerRef.current.isCurrent(request.id)) return;
+      commit?.();
+      setLoadError("");
+    } catch (error) {
+      if (!isCanceledRequest(error) && requestManagerRef.current.isCurrent(request.id)) {
+        setLoadError("Rapor yüklenemedi; önceki filtreye ait değerleri karar amacıyla kullanmayın.");
+      }
+    } finally {
+      if (requestManagerRef.current.isCurrent(request.id)) setLoading(false);
+    }
   }, [tab, start, end, source, locGroup, days]);
 
   useEffect(() => { load(); }, [load]);
+  useEffect(() => () => requestManagerRef.current?.cancel(), []);
+
+  const setDatePreset = (kind) => {
+    const { from: s, to: e } = reportPresetRange(kind);
+    setStart(s); setEnd(e);
+  };
 
   const maxRev = tab === "location"
     ? Math.max(1, ...((loc?.rows || []).map((x) => x.revenue)))
@@ -66,13 +84,18 @@ export default function ReportsInsights() {
   return (
     <div className="space-y-5" data-testid="reports-insights">
       <div>
-        <h1 className="text-2xl font-semibold flex items-center gap-2"><TrendingUp size={22} /> Gelişmiş Raporlar <ReportScopeBadge kind={tab === "never" ? "stock" : "exclude"} /></h1>
-        <p className="text-sm text-gray-500 mt-1">İl/ilçe, satış kanalı (Instagram/Google/pazaryeri) ve uzun süredir satılmayan ürünler. <span className="text-gray-400">(Tüm satış sekmelerinde iptal &amp; iade hariç.)</span></p>
+        {/* Rozet sekmenin GERÇEK kümesini söyler: il/kanal/saat/ödeme/kupon sekmeleri
+            brüt (iptal & iade dahil) uçlardan beslenir; yalnız Yeni/Tekrar Müşteri statü
+            bazlı iptal & iade hariç sayar. Eskiden hepsi "hariç" etiketliydi. */}
+        <h1 className="text-2xl font-semibold flex items-center gap-2"><TrendingUp size={22} /> Gelişmiş Raporlar <ReportScopeBadge kind={tab === "never" ? "stock" : tab === "cust" ? "exclude" : "gross"} /></h1>
+        <p className="text-sm text-gray-500 mt-1">İl/ilçe, satış kanalı (Instagram/Google/pazaryeri) ve uzun süredir satılmayan ürünler. <span className="text-gray-400">(İl/İlçe, Satış Kanalı, Saatlik, Ödeme Tipi ve Kupon sekmeleri brüttür: iptal &amp; iade dahil, ödenmemiş hariç. Yeni/Tekrar Müşteri sekmesi iptal &amp; iade statüsündeki siparişleri hariç tutar.)</span></p>
       </div>
 
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-900">
         <span className="font-semibold">Bu raporda:</span> Seçtiğiniz tarih aralığında satışlarınızı farklı açılardan kesersiniz — <b>il/ilçe bazlı</b> (nereden ne kadar satıyorsunuz), <b>satış kanalı</b> (pazaryeri + Instagram/Google/Meta gibi trafik kaynakları), <b>saatlik yoğunluk</b>, <b>ödeme tipi</b>, <b>kupon performansı</b> ve <b>yeni/tekrar eden müşteri</b> kırılımı. <b>Uzun süredir satılmayan</b> sekmesiyle 30–365 gündür hiç satmayan ürünleri ve bunlara bağlanmış stok değerini görüp indirim/tasfiye kararı verebilirsiniz.
       </div>
+
+      {loadError && <div role="alert" className="rounded border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800">{loadError}</div>}
 
       {/* Sekmeler */}
       <div className="flex flex-wrap gap-2">
@@ -98,23 +121,28 @@ export default function ReportsInsights() {
           <>
             <div>
               <label className="block text-xs text-gray-500 mb-1">Başlangıç</label>
-              <input type="date" value={start} onChange={(e) => setStart(e.target.value)} className="border rounded px-2 py-1.5 text-sm" />
+              <input type="date" min={REPORT_MIN_DATE} value={start} onChange={(e) => setStart(clampReportDate(e.target.value))} className="border rounded px-2 py-1.5 text-sm" />
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">Bitiş</label>
-              <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} className="border rounded px-2 py-1.5 text-sm" />
+              <input type="date" min={REPORT_MIN_DATE} value={end} onChange={(e) => setEnd(clampReportDate(e.target.value))} className="border rounded px-2 py-1.5 text-sm" />
+            </div>
+            <div className="flex flex-wrap gap-1 items-center">
+              {[["today","Bugün"],["yesterday","Dün"],["7","Son 7"],["30","Son 30"],["month","Bu Ay"],["lastmonth","Geçen Ay"]].map(([k,l]) => (
+                <button key={k} type="button" onClick={() => setDatePreset(k)} className="px-2 py-1 border rounded text-xs bg-white hover:bg-gray-100 transition-colors">{l}</button>
+              ))}
             </div>
           </>
         )}
-        {tab === "location" && (
+        {["location", "hour", "pay"].includes(tab) && (
           <>
-            <div>
+            {tab === "location" && <div>
               <label className="block text-xs text-gray-500 mb-1">Grup</label>
               <select value={locGroup} onChange={(e) => setLocGroup(e.target.value)} className="border rounded px-2 py-1.5 text-sm">
                 <option value="city">İl bazlı</option>
                 <option value="district">İlçe bazlı</option>
               </select>
-            </div>
+            </div>}
             <div>
               <label className="block text-xs text-gray-500 mb-1">Kaynak</label>
               <select value={source} onChange={(e) => setSource(e.target.value)} className="border rounded px-2 py-1.5 text-sm">
@@ -123,6 +151,8 @@ export default function ReportsInsights() {
                 <option value="trendyol">Trendyol</option>
                 <option value="hepsiburada">Hepsiburada</option>
                 <option value="temu">Temu</option>
+                <option value="n11">n11</option>
+                <option value="amazon">Amazon</option>
               </select>
             </div>
           </>
@@ -260,7 +290,8 @@ export default function ReportsInsights() {
       {tab === "pay" && (
         <div className="bg-white border rounded-xl overflow-hidden">
           <div className="flex items-center justify-between p-4 border-b"><h3 className="font-semibold">Ödeme Tipine Göre Satış</h3><span className="text-sm text-gray-500">Toplam {TRY(pay?.totals?.revenue)}</span></div>
-          <table className="w-full text-sm"><thead className="bg-gray-50 text-gray-500 text-xs uppercase"><tr><th className="text-left p-3">Ödeme</th><th className="text-right p-3">Sipariş</th><th className="text-right p-3">Ciro</th></tr></thead>
+          <p className="px-4 pt-3 text-[11px] text-gray-400">Brüt ciro (iptal &amp; iade dahil, ödenmemiş hariç). Satış Raporları'ndaki Ödeme Yöntemi paneli aynı yöntem adlarıyla NET (bu dönemin siparişlerinden iptal &amp; iade düşülmüş) tutarı gösterir.</p>
+          <table className="w-full text-sm"><thead className="bg-gray-50 text-gray-500 text-xs uppercase"><tr><th className="text-left p-3">Ödeme</th><th className="text-right p-3">Sipariş</th><th className="text-right p-3">Brüt Ciro</th></tr></thead>
             <tbody>
               {(pay?.rows || []).map((r, i) => (<tr key={i} className="border-t"><td className="p-3 font-medium">{r.method}</td><td className="p-3 text-right">{r.orders}</td><td className="p-3 text-right font-semibold">{TRY(r.revenue)}</td></tr>))}
               {(!pay?.rows || pay.rows.length === 0) && <tr><td colSpan={3} className="p-6 text-center text-gray-400">Veri yok.</td></tr>}
@@ -282,6 +313,12 @@ export default function ReportsInsights() {
 
       {/* YENİ / TEKRAR EDEN MÜŞTERİ */}
       {tab === "cust" && (
+        <div className="space-y-2">
+        {/* Hangi küme sayılıyor (backend customer_type → kapsam): sipariş STATÜSÜNE göre;
+            satış kartlarının brüt/net kümesiyle birebir tutmaz, bu yüzden açıkça yazılır. */}
+        <p className="text-[11px] text-gray-500" data-testid="cust-scope-note">
+          Sayılan küme: seçili aralıkta verilen, <b>iptal, iade (açık talep ve kısmi iade dahil) ve ödenmemiş statüsünde OLMAYAN</b> siparişler — tüm kanallar (kaynak süzgeci uygulanmaz). Kısmi iadeli sipariş tamamen hariçtir; bu yüzden toplamlar Satış Raporları'ndaki brüt/net kartlarıyla birebir tutmaz. Müşterinin ilk sipariş tarihi iptal/iade dahil tüm siparişlerinden bulunur.
+        </p>
         <div className="grid sm:grid-cols-3 gap-4">
           <div className="bg-white border rounded-xl p-5">
             <p className="text-xs uppercase tracking-wider text-gray-500">Yeni Müşteri</p>
@@ -298,6 +335,7 @@ export default function ReportsInsights() {
             <p className="text-3xl font-bold mt-1">%{cust?.repeat_rate ?? 0}</p>
             <p className="text-sm text-white/60 mt-1">Sadık müşteri göstergesi</p>
           </div>
+        </div>
         </div>
       )}
     </div>

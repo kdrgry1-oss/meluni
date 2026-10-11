@@ -15,7 +15,7 @@ from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
-from .deps import db as _db, require_admin, generate_id
+from .deps import db as _db, require_admin, generate_id, require_permission
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/integrations/trendyol/retry-queue", tags=["Trendyol Retry Queue"])
@@ -82,7 +82,7 @@ async def update_attempt(db: AsyncIOMotorDatabase, barcode: str, result: str):
 async def list_queue(
     resolved: bool = False,
     limit: int = 200,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("integrations.view", any_in_area=True)),
     db: AsyncIOMotorDatabase = Depends(get_db)
 ):
     """Kuyruktaki barkodları listeler."""
@@ -94,7 +94,7 @@ async def list_queue(
 
 @router.post("/run-now")
 async def run_now(
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("integrations.sync_actions")),
     db: AsyncIOMotorDatabase = Depends(get_db)
 ):
     """Kuyruğu manuel tetikler — pending barkodları tekrar push eder."""
@@ -105,7 +105,7 @@ async def run_now(
 @router.delete("/barcode/{barcode}")
 async def remove_barcode(
     barcode: str,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("integrations.sync_actions")),
     db: AsyncIOMotorDatabase = Depends(get_db)
 ):
     """Bir barkodu kuyruktan kaldırır."""
@@ -116,7 +116,7 @@ async def remove_barcode(
 @router.post("/add")
 async def add_barcodes(
     payload: dict,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("integrations.sync_actions")),
     db: AsyncIOMotorDatabase = Depends(get_db)
 ):
     """Manuel olarak barkod ekleme (ileri-test için)."""
@@ -138,38 +138,32 @@ async def process_queue(db: AsyncIOMotorDatabase) -> dict:
     barcodes = [str(p["barcode"]) for p in pending]
     logger.info(f"Trendyol retry queue: {len(barcodes)} barkod işleniyor")
 
-    # Internal HTTP call ile kendi sync endpoint'ini çağır (döngü kırılması için
-    # x-internal-trigger header'ı ile mark ediyoruz, ana sync queue_failures yapmaz)
-    import httpx
-    import os as _os
-    backend_url = _os.environ.get("INTERNAL_BACKEND_URL", "http://localhost:8001")
-    # Admin user için temporary token oluştur
-    admin = await db.users.find_one({"email": "admin@meluni.com.tr"})
-    if not admin:
-        return {"processed": 0, "succeeded": 0, "still_stuck": len(barcodes), "error": "Admin user yok"}
-    from routes.deps import create_token
-    token = create_token(admin.get("id"), admin.get("is_admin", True), token_version=admin.get("token_version", 0))
+    # GÜVENLİK (denetim 2026-10): eskiden sabit bir admin e-postası için JWT ÜRETİLİP kendi
+    # HTTP uç noktamız çağrılıyordu (kimlik taklidi + o hesap yoksa kuyruk sessizce dururdu).
+    # Artık senkron mantığı DOĞRUDAN fonksiyon çağrısıyla çalıştırılır; kullanıcı token'ı yok.
+    # sync_products_to_trendyol yalnız `await request.json()` okur, current_user'ı kullanmaz.
+    class _InternalRequest:
+        headers = {"X-Internal-Retry": "true"}
+
+        def __init__(self, body: dict):
+            self._body = body
+
+        async def json(self):
+            return self._body
 
     result = {}
     try:
-        async with httpx.AsyncClient(timeout=120.0) as http:
-            resp = await http.post(
-                f"{backend_url}/api/integrations/trendyol/products/sync",
-                json={"barcodes": barcodes},
-                headers={
-                    "Authorization": f"Bearer {token}",
-                    "X-Internal-Retry": "true",
-                },
-            )
-            try:
-                result = resp.json()
-            except Exception:
-                result = {"text": resp.text}
+        from routes.integrations_trendyol import sync_products_to_trendyol as _sync
+        result = await _sync(request=_InternalRequest({"barcodes": barcodes}),
+                             current_user={"id": "system", "email": "system:trendyol_retry_queue"})
+        if not isinstance(result, dict):
+            result = {}
     except Exception as e:
-        logger.error(f"Retry queue HTTP call error: {e}")
+        _msg = getattr(e, "detail", None) or str(e)
+        logger.error(f"Retry queue sync call error: {_msg}")
         for bc in barcodes:
-            await update_attempt(db, bc, f"HTTP hatası: {str(e)[:100]}")
-        return {"processed": len(barcodes), "succeeded": 0, "still_stuck": len(barcodes), "error": str(e)}
+            await update_attempt(db, bc, f"Senkron hatası: {str(_msg)[:100]}")
+        return {"processed": len(barcodes), "succeeded": 0, "still_stuck": len(barcodes), "error": str(_msg)[:300]}
 
     # Sonuçları kuyruğa yansıt
     failed_barcodes = set()

@@ -59,22 +59,45 @@ async def _send_one(db, px: dict, *, event_name: str, event_id: str,
                     event_payload: dict, event_source_url: Optional[str]) -> dict:
     """Send to one provider; on failure, enqueue for retry."""
     provider_key = (px.get("provider") or "").lower()
+
+    async def _skip(reason: str, ok: bool = False):
+        # GÖZLEMLENEBİLİRLİK (root-cause görünürlüğü): skip'ler eskiden log YAZILMADAN return
+        # ediliyordu → TikTok gibi bir sağlayıcı token/tag eksikliğinden dispatch'e girse bile
+        # audit'te total=0/error=0 görünüp NEDEN'i gizli kalıyordu. Artık 'purchase' (düşük hacimli,
+        # kritik dönüşüm) skip'lerini skip_reason ile logluyoruz → panelde "tiktok purchase skipped:
+        # <reason>" görünür. Yüksek hacimli event'lerde (view_item vb.) log şişmesini önlemek için
+        # yalnız purchase loglanır. Gönderim YAPILMAZ; Meta skip'e hiç girmediğinden ETKİLENMEZ.
+        if event_name == "purchase":
+            try:
+                await db.capi_event_logs.insert_one({
+                    "id": str(uuid4()), "provider": provider_key,
+                    "pixel_doc_id": px.get("id"), "event_name": event_name,
+                    "event_id": event_id, "tenant_id": px.get("tenant_id"),
+                    "ok": ok, "skipped": True, "skip_reason": reason,
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                })
+            except Exception:
+                pass
+        return {"provider": provider_key, "ok": ok, "skipped": True,
+                "reason": reason, "skip_reason": reason}
+
     mod = PROVIDERS.get(provider_key)
     if not mod:
-        return {"provider": provider_key, "ok": False, "skipped": True,
-                "reason": "unknown provider"}
+        return await _skip("unknown_provider")
 
     if not px.get("capi_enabled"):
-        return {"provider": provider_key, "ok": True, "skipped": True,
-                "reason": "capi disabled"}
+        return await _skip("capi_disabled", ok=True)
 
     pixel_id = (px.get("tag_id") or "").strip()
     access_token = await _resolve_access_token(px)
     test_event_code = (px.get("test_event_code") or "").strip() or None
 
-    if not pixel_id or not access_token:
-        return {"provider": provider_key, "ok": False, "skipped": True,
-                "reason": "missing pixel_id or access_token"}
+    if not access_token:
+        # En sık root-cause: token env/vault/plain hiçbirinden çözülemedi (ör. env_token_key set
+        # ama Railway'de o env değişkeni tanımsız). Artık audit'te NET görünür.
+        return await _skip("missing_access_token")
+    if not pixel_id:
+        return await _skip("missing_tag_id")
 
     # Meta + TikTok alan-bazlı feature flag geçir (rollback); diğer sağlayıcılar etkilenmez.
     _extra = {"field_flags": px.get("field_flags")} if provider_key in ("meta", "tiktok") else {}

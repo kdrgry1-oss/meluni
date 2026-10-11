@@ -4,10 +4,11 @@ import { ChevronLeft, ChevronRight, Play, ArrowRight, Instagram, ShoppingBag, X 
 import axios from "axios";
 import { toast } from "sonner";
 import Header from "../components/Header";
+import RotatingText from "../components/RotatingText";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import { useCart } from "../context/CartContext";
-import { optimizeImg, aspectFromDims } from "../lib/img";
+import { optimizeImg, aspectFromDims, firstImage } from "../lib/img";
 import { trackSelectPromotion } from "../lib/dataLayer";
 import { dedupeColorGroups } from "../lib/colorGroups";
 
@@ -151,7 +152,7 @@ function HeroSlider({ block }) {
 // sonra sayfa (ürünler) doğal olarak devam eder. Video slaytlar yalnızca EKRANDAYKEN oynar
 // (IntersectionObserver, performans). İlk slaytta ince "aşağı kaydır" ipucu.
 // Tek slaytın medyası + yazısı (hem tekli hem sticky slider için ortak).
-function HeroSlide({ img, cap, title, vidRef, eager }) {
+function HeroSlide({ img, cap, title, vidRef, eager, onDims }) {
   return (
     <>
       {isVideoUrl(img) ? (
@@ -161,6 +162,7 @@ function HeroSlide({ img, cap, title, vidRef, eager }) {
           className="absolute inset-0 w-full h-full object-cover"
           muted loop playsInline
           preload={eager ? "auto" : "none"}
+          onLoadedMetadata={(e) => { const w = e.target.videoWidth, h = e.target.videoHeight; if (w && h) onDims?.(w, h); }}
         />
       ) : (
         <img
@@ -170,6 +172,7 @@ function HeroSlide({ img, cap, title, vidRef, eager }) {
           loading={eager ? "eager" : "lazy"}
           fetchPriority={eager ? "high" : "auto"}
           decoding="async"
+          onLoad={(e) => { const w = e.target.naturalWidth, h = e.target.naturalHeight; if (w && h) onDims?.(w, h); }}
         />
       )}
       {/* Yazılar YALNIZCA admin girmişse çıkar (görselde zaten yazı varsa çift olmaz). */}
@@ -208,29 +211,18 @@ function HeroEditorial({ block, isFirst = false }) {
   const safeActive = Math.min(active, Math.max(0, n - 1));
   useEffect(() => { activeRef.current = safeActive; }, [safeActive]);
 
-  // Header overlay: hero ekranı kapladığı sürece "1" (şeffaf/beyaz header). Slaytlar arası sayfa
-  // kaymadığından bu, tüm slider boyunca açık kalır; hero yukarı kayıp çıkınca "0" olur.
+  // Görsel KENDİ oranında görünsün — container'ı doldurmak için 100vh'ye ZORLAMA (kırpma yok).
+  // Aktif slaytın gerçek en-boy oranı: yüklenen doğal piksel (öncelik) → kayıtlı img_dims → yedek.
+  const [loadedDims, setLoadedDims] = useState({});
+  const savedDims = block?.settings?.img_dims;
+  const dimsFor = (i) => loadedDims[i] || (savedDims && savedDims[i]) || null;
+  const heroAspect = aspectFromDims(dimsFor(safeActive), "4 / 5");
+
+  // Şeffaf-overlay KALDIRILDI (Option A): header home'da da SOLID → data-hero-overlay artık
+  // yazılmaz. Kalıntı bırakmamak için bir kez temizle (header rengini bozmaz).
   useEffect(() => {
-    if (!isFirst) return;
-    const compute = () => {
-      const el = sectionRef.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      // Sticky header/duyuru barı hero'yu birkaç px aşağı itebilir → r.top tam 0 olmayabilir.
-      // "Hero ekranın çoğunu kaplıyor mu" diye bak (üst ofsete toleranslı).
-      const covering = r.top < vh * 0.5 && r.bottom > vh * 0.5;
-      document.documentElement.setAttribute("data-hero-overlay", covering ? "1" : "0");
-    };
-    compute();
-    window.addEventListener("scroll", compute, { passive: true });
-    window.addEventListener("resize", compute);
-    return () => {
-      window.removeEventListener("scroll", compute);
-      window.removeEventListener("resize", compute);
-      document.documentElement.removeAttribute("data-hero-overlay");
-    };
-  }, [isFirst, n]);
+    try { document.documentElement.removeAttribute("data-hero-overlay"); } catch (_) { /* noop */ }
+  }, []);
 
   // Jest yakalama: hero ekranı tam kapladığında ve sınır slaytta değilken tek kaydırma = tek slayt.
   useEffect(() => {
@@ -308,13 +300,24 @@ function HeroEditorial({ block, isFirst = false }) {
       ref={sectionRef}
       data-testid="hero-editorial"
       className="relative w-full overflow-hidden bg-stone-100"
-      // İlk hero: üstteki siyah duyuru barıyla arasında beyaz boşluk/çizgi kalmasın diye yukarı çek.
-      style={{ height: "100vh", marginTop: isFirst ? "-2px" : 0 }}
+      // Şeffaf-overlay KALDIRILDI (Option A): header artık home'da da SOLID + normal akış/sticky.
+      // Hero, üstteki solid şeridin (barlar + header) ALTINDA doğal akışta başlar → marginTop
+      // offset'e GEREK YOK (örtme/zıplama yok, üstü kesilmez). 100vh + jest + slaytlar korunur.
+      style={{ aspectRatio: heroAspect, marginTop: 0 }}
     >
       {images.map((img, i) => {
         const cap = captions[i] || {};
-        const offset = (i - safeActive) * 100;                 // dikey kayma: aktif 0, diğerleri ekran dışı
         const isActive = i === safeActive;
+        // GEÇİŞ EFEKTİ: varsayılan "stack/creative" (Swiper 'creative' benzeri, Swiper'sız/saf CSS).
+        // Admin settings.hero_transition = "kaydir" derse eski klasik dikey kayma kullanılır.
+        //  - STACK: geçmiş+aktif slaytlar YERİNDE durur (translateY 0), üzerine gelen slayt ALTTAN
+        //    biner (100%→0); zIndex=i → sonraki slayt öncekinin ÜSTÜNE örtülür; giden slayt SABİT
+        //    kalıp GÖLGELENİR (covered → koyu overlay). Geri kaydırınca üstteki slayt aşağı iner.
+        //  - KAYDIR: aktif 0, diğerleri (i-active)*100 → ikisi birlikte hareket eder (klasik).
+        const _stack = (block?.settings?.hero_transition || "stack") !== "kaydir";
+        const offset = _stack ? (i <= safeActive ? 0 : 100) : (i - safeActive) * 100;
+        const passed = _stack && i < safeActive;   // üstü örtülen (arkada, gölgeli) slayt
+        const zi = _stack ? i + 1 : (isActive ? 2 : 1);
         return (
           <div
             key={i}
@@ -322,7 +325,7 @@ function HeroEditorial({ block, isFirst = false }) {
             style={{
               transform: `translateY(${offset}%)`,
               transition: "transform .62s cubic-bezier(0.22,1,0.36,1)",
-              zIndex: isActive ? 2 : 1,
+              zIndex: zi,
             }}
             aria-hidden={!isActive}
           >
@@ -332,8 +335,15 @@ function HeroEditorial({ block, isFirst = false }) {
               className="block w-full h-full"
               tabIndex={isActive ? 0 : -1}
             >
-              <HeroSlide img={img} cap={cap} title={block?.title} vidRef={(el) => { vids.current[i] = el; }} eager={i === 0} />
+              <HeroSlide img={img} cap={cap} title={block?.title} vidRef={(el) => { vids.current[i] = el; }} eager={i === 0}
+                onDims={(w, h) => setLoadedDims((prev) => (prev[i] ? prev : { ...prev, [i]: [w, h] }))} />
             </Link>
+            {/* Giden slaytın 'gölge' hissi (Swiper creativeEffect.prev.shadow karşılığı) — yalnız stack modunda */}
+            <div
+              className="pointer-events-none absolute inset-0 bg-black"
+              style={{ opacity: passed ? 0.4 : 0, transition: "opacity .62s cubic-bezier(0.22,1,0.36,1)" }}
+              aria-hidden="true"
+            />
           </div>
         );
       })}
@@ -585,7 +595,7 @@ function ShopLookModal({ post, onClose }) {
     toast.success(`Sepete eklendi · Beden ${s.size}`);
     setJustAdded(true);
   };
-  const addNoSize = (p) => { addItem(p, null, 1); toast.success("Sepete eklendi 🛍️"); setJustAdded(true); };
+  const addNoSize = (p) => { addItem(p, null, 1); toast.success("Sepete eklendi"); setJustAdded(true); };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center" onClick={onClose}>
@@ -615,7 +625,7 @@ function ShopLookModal({ post, onClose }) {
               return (
                 <div key={p.id} className="flex gap-3 border rounded-xl p-2.5">
                   <Link to={href} onClick={onClose} className="shrink-0">
-                    <img src={optimizeImg((Array.isArray(p.images) && p.images[0]) || p.image, 200)} alt={p.name || p.title || ""}
+                    <img src={optimizeImg(firstImage(p), 200)} alt={p.name || p.title || ""}
                       className="w-20 h-24 object-cover rounded-lg bg-gray-100" loading="lazy" />
                   </Link>
                   <div className="flex-1 min-w-0 flex flex-col">
@@ -844,44 +854,6 @@ function VideoBanner({ block }) {
   );
 }
 
-function RotatingText({ block }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const texts = (block?.settings?.texts || ["500 TL Üzeri Ücretsiz Kargo"]).filter((t) => (t || "").trim());
-
-  useEffect(() => {
-    if (texts.length < 2) return;
-    const sec = Math.max(2, Number(block?.settings?.interval) || 4);
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % texts.length);
-    }, sec * 1000);
-    return () => clearInterval(interval);
-  }, [texts.length, block]);
-
-  if (texts.length === 0) return null;
-  const bg = block?.settings?.bg_color || "#ffffff";
-  const fg = block?.settings?.text_color || "#374151";
-
-  return (
-    <div
-      className="text-center py-1"
-      style={{ backgroundColor: bg }}
-      data-testid="rotating-text"
-    >
-      <span
-        key={currentIndex}
-        className="text-[10px] md:text-[12px] uppercase"
-        style={{
-          color: fg,
-          fontWeight: 500,
-          letterSpacing: "0.12em",
-        }}
-      >
-        {texts[currentIndex % texts.length]}
-      </span>
-    </div>
-  );
-}
-
 // İlk yükleme skeleton'u — page-blocks fetch tamamlanana kadar gösterilir.
 // Böylece hardcoded DEFAULT_HERO_BANNERS (eski görseller) bir an flash etmez.
 function HomeSkeleton() {
@@ -889,7 +861,7 @@ function HomeSkeleton() {
     <div data-testid="home-skeleton">
       <div className="w-full aspect-[16/7] bg-stone-100 animate-pulse" />
       <section className="w-full px-2 md:px-4 py-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[2px] gap-y-3 md:gap-y-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-[2px] gap-y-3 md:gap-y-4">
           {[...Array(8)].map((_, i) => (
             <div key={i} className="animate-pulse">
               <div className="aspect-[2/3] bg-stone-100 mb-3" />
@@ -968,6 +940,26 @@ export default function Home() {
     return () => { active = false; };
   }, []);
 
+  // ZAMANLI BANNER: sekme yeniden öne gelince blokları tazele. Yayın aralığı BİTEN
+  // banner açık sekmede takılı kalmasın, BAŞLAYAN da yenilemeden görünsün. Süzmeyi
+  // sunucu yapıyor (routes/cms.py) — burada tek yaptığımız yeniden sormak.
+  useEffect(() => {
+    let lastAt = Date.now();
+    const onVisible = async () => {
+      if (document.visibilityState !== "visible") return;
+      if (Date.now() - lastAt < 60000) return;      // gereksiz istek yok
+      lastAt = Date.now();
+      const res = await axios.get(`${API}/page-blocks?page=home`).catch(() => null);
+      if (!res) return;                              // hata: mevcut içerik korunur
+      const isPreview = new URLSearchParams(window.location.search).get('preview') === 'true';
+      setBlocks((res.data || [])
+        .filter(b => isPreview || b.is_active)
+        .toSorted((a, b) => (a.sort_order || 0) - (b.sort_order || 0)));
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, []);
+
   // Check if we have CMS blocks to render
   const hasCMSBlocks = blocks.length > 0;
   
@@ -979,26 +971,26 @@ export default function Home() {
   // Üst duyuru barı (rotating_text) — orijinaldeki gibi en üstte (header üstü) gösterilir,
   // blok akışında tekrar render edilmemesi için ayrılır.
   const rotatingBlock = blocks.find(b => b.type === "rotating_text");
+  const countdownBlock = blocks.find(b => b.type === "countdown_bar");
+  // Üst bar SIRASI: Sayfa Tasarımı'ndaki blok sırasına (sort_order) göre — koda gömülü değil.
+  // Duyuru barı sayaçtan ÖNCE tasarlandıysa üstte gösterilir.
+  const announcementFirst = !!(rotatingBlock && countdownBlock)
+    && (Number(rotatingBlock.sort_order ?? 0) < Number(countdownBlock.sort_order ?? 0));
   const flowBlocks = blocks.filter(b => b.type !== "rotating_text");
 
-  // İLK blok TAM EKRAN editorial hero mu? Öyleyse header şeffaf-overlay (beyaz logo/ikon) olur.
-  // <html data-hero-overlay="1"> bayrağını Header okur; sayfadan ayrılınca temizlenir.
-  const firstIsEditorialHero = flowBlocks[0]?.type === "hero_slider"
-    && flowBlocks[0]?.settings?.hero_style !== "klasik"
-    && (flowBlocks[0]?.show_mobile !== false || flowBlocks[0]?.show_desktop !== false);
+  // Şeffaf-overlay KALDIRILDI (Option A): header home'da da SOLID; editorial hero olsa bile
+  // data-hero-overlay bayrağı YAZILMAZ (header akıştan çıkmaz, hero solid şeridin altında akar).
   useEffect(() => {
-    // Editorial hero VARSA bayrağı hemen "1" yap → header ANINDA fixed/şeffaf olur, akıştan çıkar,
-    // hero en üste (y=0) oturur; böylece deadlock kırılır (sticky header hero'yu aşağı itmez).
-    // Sonrasında değeri HeroEditorial kapsama alanına göre "1"/"0" günceller.
-    if (firstIsEditorialHero) document.documentElement.setAttribute("data-hero-overlay", "1");
-    else document.documentElement.removeAttribute("data-hero-overlay");
-    return () => document.documentElement.removeAttribute("data-hero-overlay");
-  }, [firstIsEditorialHero]);
+    try { document.documentElement.removeAttribute("data-hero-overlay"); } catch (_) { /* noop */ }
+    return () => { try { document.documentElement.removeAttribute("data-hero-overlay"); } catch (_) { /* noop */ } };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-white" data-testid="home-page">
-      {rotatingBlock && <RotatingText block={rotatingBlock} />}
-      <Header />
+    <div className="sf-page min-h-screen bg-white" data-testid="home-page">
+      {/* Üst Duyuru Barı (rotating_text) artık Header'ın FIXED sarmalayıcısı İÇİNDE
+          (CountdownBar'ın hemen ALTINDA, bitişik) render edilir → editorial-hero overlay
+          header'ı onu ÖRTMEZ; sayaç + duyuru barı ikisi de görünür ve boşluksuz altlı-üstlü durur. */}
+      <Header announcement={rotatingBlock ? <RotatingText block={rotatingBlock} /> : null} announcementFirst={announcementFirst} />
       
       {/* İlk yüklemede eski görsellerin (hardcoded default) flash etmemesi için
           page-blocks fetch tamamlanana kadar skeleton göster. */}
@@ -1013,7 +1005,7 @@ export default function Home() {
           {/* Add default product grid if no product_slider block */}
           {!hasProductSlider && products.length > 0 && (
             <section className="w-full px-2 md:px-4 py-10">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[2px] gap-y-3 md:gap-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-[2px] gap-y-3 md:gap-y-4">
                 {dedupeColorGroups(products).slice(0, 8).map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -1055,7 +1047,7 @@ export default function Home() {
           {/* Products Grid */}
           <section className="w-full px-2 md:px-4 py-10">
             {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 gap-y-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-8">
                 {[...Array(8)].map((_, i) => (
                   <div key={i} className="animate-pulse">
                     <div className="aspect-[2/3] bg-gray-100 mb-3" />
@@ -1065,7 +1057,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[2px] gap-y-3 md:gap-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-[2px] gap-y-3 md:gap-y-4">
                 {dedupeColorGroups(products).map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}

@@ -1,0 +1,11 @@
+# Güvenlik uçtan uca testleri (backend/tests/security_e2e) için ek bağımlılıklar.
+# Uygulamanın kendisi backend/requirements.txt ile kurulur.
+pytest==9.1.1
+pytest-asyncio==1.4.0
+mongomock==4.3.0
+mongomock-motor==0.0.36
+respx==0.23.1
+freezegun==1.5.5
+# SHOP12 tarayıcı arayüz testleri (backend/tests/browser) İSTEĞE BAĞLIDIR ve CI'da çalışmaz:
+# STOREFRONT_BASE_URL verilmezse modül atlanır. Yerelde: pip install playwright==1.56.0 &&
+# python -m playwright install chromium (tarayıcı ~150 MB; CI kurulumunu şişirmemek için burada pinlenmedi).

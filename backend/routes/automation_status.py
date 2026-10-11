@@ -19,7 +19,7 @@ from fastapi import APIRouter, Depends, Query
 from datetime import datetime, timezone, timedelta
 from typing import List, Dict, Any
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_permission
 
 router = APIRouter(prefix="/admin/automation", tags=["admin-automation"])
 
@@ -52,7 +52,7 @@ def _interval_label(seconds: int) -> str:
 @router.get("/status")
 async def get_automation_status(
     log_limit: int = Query(50, ge=10, le=500),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("integrations.view", any_in_area=True)),
 ):
     """Tüm otomatik işlerin tek seferde özet durumu."""
 

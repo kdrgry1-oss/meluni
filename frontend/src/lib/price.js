@@ -71,3 +71,34 @@ export function cartLineView(item) {
   const discountPct = hasDiscount ? Math.round(((listUnit - unit) / listUnit) * 100) : 0;
   return { listUnit, unit, hasDiscount, discountPct, campaignPct: camp };
 }
+
+
+/**
+ * Sepet özeti (sepet sayfası + çekmece ORTAK). `promoDiscount` = /coupons/evaluate
+ * total_discount: kalem fiyatı (sale_price tabanı) ÜZERİNDEN hesaplanır → indirimli-fiyat
+ * farkını İÇERMEZ; yalnız kampanya/kupon indirimidir. Eskiden bu tutar tüm ürün-seviyesi
+ * indirimden (indirimli fiyat farkı DAHİL) düşülüyordu → indirimli ürünlerde "3 Al 2 Öde"
+ * gibi sepet kampanyası ekranda hiç düşülmüyordu (ödeme adımı ve sipariş doğruydu).
+ * Kalemde gösterilen otomatik yüzde (campaignPct) evaluate'in içinde de olduğundan yalnız
+ * o kısım mahsup edilir.
+ */
+export function cartSummary(items, promoDiscount) {
+  let listSum = 0, moneySum = 0, effSum = 0;
+  for (const it of items || []) {
+    const v = cartLineView(it);
+    const q = Number(it.quantity || 0);
+    listSum += v.listUnit * q;
+    moneySum += Number(it.price || 0) * q;
+    effSum += v.unit * q;
+  }
+  const r2 = (x) => Math.round(x * 100) / 100;
+  const saleDisc = Math.max(0, listSum - moneySum);          // indirimli fiyat farkı
+  const lineCampDisc = Math.max(0, moneySum - effSum);       // kalemde gösterilen otomatik %
+  const extraDisc = Math.max(0, Number(promoDiscount || 0) - lineCampDisc);  // sepet-seviyesi kampanya/kupon
+  const productDisc = saleDisc + lineCampDisc;
+  return {
+    listSum: r2(listSum), effSum: r2(effSum), productDisc: r2(productDisc),
+    extraDisc: r2(extraDisc), totalDisc: r2(productDisc + extraDisc),
+    grand: r2(Math.max(0, effSum - extraDisc)),
+  };
+}

@@ -1,0 +1,145 @@
+/* MELUNI storefront design system. Deliberately scoped: admin UI is untouched. */
+.storefront-shell {
+  --sf-ink: #11100f;
+  --sf-ink-soft: #383532;
+  --sf-canvas: #ffffff;
+  --sf-surface: #f7f6f4;
+  --sf-surface-strong: #efede9;
+  --sf-border: #d8d4ce;
+  --sf-muted: #68635d;
+  --sf-accent: #6f1d2b;
+  --sf-success: #23633f;
+  --sf-warning: #81520c;
+  --sf-danger: #a1262f;
+  --sf-focus: #1a1a1a; /* eskiden mavi (#245bdb) — kullanıcı isteği: mavi odak halkası olmasın; nötr koyu */
+  --sf-font-body: "Mulish", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --sf-space-1: 0.25rem;
+  --sf-space-2: 0.5rem;
+  --sf-space-3: 0.75rem;
+  --sf-space-4: 1rem;
+  --sf-space-6: 1.5rem;
+  --sf-space-8: 2rem;
+  --sf-radius-sm: 2px;
+  --sf-radius-md: 4px;
+  --sf-shadow-soft: 0 8px 30px rgb(17 16 15 / 0.08);
+  min-height: 100vh;
+  background: var(--sf-canvas);
+  color: var(--sf-ink);
+  font-family: var(--sf-font-body);
+}
+
+/* Odak halkası YALNIZ klavye ile gezilen bağlantı/düğmelerde (erişilebilirlik). Metin
+   kutuları (input/select/textarea) HARİÇ: onlar dokunmayla odaklanınca da :focus-visible
+   eşleştiğinden site genelinde (arama, ödeme adımları) mavi çerçeve çıkıyordu (kullanıcı
+   isteği: "mavi bir şey çıkmasın"). Form alanları kendi alt-çizgi/kenarlık odak stilini kullanır. */
+.storefront-shell :where(a, button, [tabindex]):not(input):not(select):not(textarea):focus-visible {
+  outline: 2px solid var(--sf-focus);
+  outline-offset: 3px;
+}
+
+/* Form alanlarında hiçbir odak halkası/kutusu yok (tarayıcı varsayılanı dahil); odak göstergesi
+   yalnız kenarlık/alt-çizgi rengi (aşağıdaki :focus kuralı). Mobilde dokunma vurgusu da kapalı. */
+.storefront-shell :where(input, select, textarea):focus,
+.storefront-shell :where(input, select, textarea):focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+/* SHOP12 (klavye erişilebilirliği): onay kutusu / radyo kenarlık rengiyle odak GÖSTEREMEZ → yukarıdaki
+   kural onları klavye kullanıcısı için görünmez yapıyordu (ödeme sözleşme onayı, İYS izinleri).
+   :focus-visible bu türlerde YALNIZ klavyeyle eşleşir (dokunma/tıklamada halka çıkmaz); renk ve
+   ölçü bağlantı/düğme odağıyla aynı (nötr koyu, mavi değil). */
+.storefront-shell :where(input[type="checkbox"], input[type="radio"]):focus-visible {
+  outline: 2px solid var(--sf-focus);
+  outline-offset: 3px;
+}
+.storefront-shell,
+.storefront-shell :where(a, button, input, select, textarea) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.storefront-shell :where(input, select, textarea) {
+  border-color: var(--sf-border);
+  border-radius: var(--sf-radius-sm);
+}
+
+.storefront-shell :where(input, select, textarea):focus {
+  border-color: var(--sf-ink);
+}
+
+.storefront-shell :where(button, [role="button"]) {
+  transition-property: color, background-color, border-color, opacity, transform;
+  transition-duration: 180ms;
+}
+
+.storefront-shell :where(button, input, select, textarea):disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.storefront-shell [data-meluni-contact-fab="true"] {
+  display: flex !important;
+}
+
+.storefront-shell .btn-primary {
+  border-radius: var(--sf-radius-sm);
+  background: var(--sf-ink);
+  box-shadow: none;
+}
+
+.storefront-shell .btn-primary:hover { background: var(--sf-ink-soft); }
+.storefront-shell .btn-secondary { border-radius: var(--sf-radius-sm); }
+.storefront-shell .skeleton { background: var(--sf-surface-strong); }
+.storefront-shell .badge-sale { background: var(--sf-accent); }
+.storefront-shell .price-sale { color: var(--sf-accent); }
+
+.sf-page-title {
+  color: var(--sf-ink);
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1.12;
+}
+
+.sf-page {
+  min-width: 0;
+  background-color: var(--sf-canvas);
+}
+
+.sf-page h1 {
+  color: var(--sf-ink);
+  text-wrap: balance;
+}
+
+.sf-page :where(p, li) { text-wrap: pretty; }
+
+.storefront-shell[data-storefront-section="static"] .sf-page main {
+  color: var(--sf-ink-soft);
+  line-height: 1.7;
+}
+
+.sf-panel {
+  border: 1px solid var(--sf-border);
+  border-radius: var(--sf-radius-md);
+  background: var(--sf-canvas);
+}
+
+.sf-empty, .sf-error, .sf-loading {
+  display: grid;
+  min-height: 12rem;
+  place-items: center;
+  padding: var(--sf-space-8);
+  text-align: center;
+}
+
+.sf-empty { color: var(--sf-muted); }
+.sf-error { color: var(--sf-danger); }
+.sf-loading { color: var(--sf-ink-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  .storefront-shell *, .storefront-shell *::before, .storefront-shell *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

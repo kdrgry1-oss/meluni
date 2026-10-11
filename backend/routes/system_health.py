@@ -14,7 +14,7 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_permission
 from security.monitoring import compute_health
 from security.alerts import send_alert
 from security.circuit_breaker import all_states
@@ -30,7 +30,7 @@ def _is_super(user: dict) -> bool:
 
 
 @router.get("/health")
-async def health(_=Depends(require_admin)):
+async def health(_=Depends(require_permission("admin.logs"))):
     return await compute_health()
 
 
@@ -39,7 +39,7 @@ async def errors(
     level: Optional[str] = Query(None, regex="^(info|warning|critical)$"),
     page: int = Query(1, ge=1, le=1000),
     limit: int = Query(50, ge=1, le=200),
-    _=Depends(require_admin),
+    _=Depends(require_permission("admin.logs")),
 ):
     q = {}
     if level:
@@ -56,7 +56,7 @@ async def alerts(
     only_unread: bool = Query(False),
     page: int = Query(1, ge=1, le=1000),
     limit: int = Query(50, ge=1, le=200),
-    _=Depends(require_admin),
+    _=Depends(require_permission("admin.logs")),
 ):
     q = {}
     if only_unread:
@@ -70,13 +70,13 @@ async def alerts(
 
 
 @router.post("/alerts/{alert_id}/read")
-async def mark_alert_read(alert_id: str, _=Depends(require_admin)):
+async def mark_alert_read(alert_id: str, _=Depends(require_permission("admin.logs"))):
     res = await db.alerts.update_one({"id": alert_id}, {"$set": {"read": True, "read_at": datetime.now(timezone.utc).isoformat()}})
     return {"ok": res.modified_count > 0}
 
 
 @router.post("/alerts/test")
-async def fire_test_alert(admin=Depends(require_admin)):
+async def fire_test_alert(admin=Depends(require_permission("admin.logs"))):
     if not _is_super(admin):
         raise HTTPException(status_code=403, detail="Sadece süper admin test alarmı tetikleyebilir")
     # Soft rate-limit: 1 test alert per 30s per super_admin
@@ -101,10 +101,10 @@ async def fire_test_alert(admin=Depends(require_admin)):
 
 
 @router.get("/circuits")
-async def circuits(_=Depends(require_admin)):
+async def circuits(_=Depends(require_permission("admin.logs"))):
     return {"breakers": all_states()}
 
 
 @router.get("/cache")
-async def cache(_=Depends(require_admin)):
+async def cache(_=Depends(require_permission("admin.logs"))):
     return await cache_stats()

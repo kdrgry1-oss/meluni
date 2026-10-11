@@ -114,7 +114,6 @@ class ProductBase(BaseModel):
     is_showcase: bool = False  # VITRIN
     is_opportunity: bool = False  # FIRSATURUNU
     is_free_shipping: bool = False  # UCRETSIZKARGO
-    consignment_stock: int = 0  # KONSINYESTOKADEDI
     purchase_price: Optional[float] = None  # ALISFIYATI
     market_price: Optional[float] = None  # PIYASAFIYATI
     member_price_1: Optional[float] = None  # UYETIPIFIYAT1 (üye tipi 1 fiyatı)

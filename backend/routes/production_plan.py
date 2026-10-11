@@ -28,6 +28,7 @@ Sütunlar:
  18. delivered_qty       (manuel, +%/-% otomatik)
 =============================================================================
 """
+import re
 from datetime import datetime, timezone, timedelta
 from io import BytesIO
 from typing import Optional, List, Dict, Any
@@ -35,7 +36,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from .deps import db, require_admin, generate_id
+from .deps import db, require_admin, generate_id, require_permission
 
 router = APIRouter(prefix="/production-plan", tags=["production-plan"])
 
@@ -115,7 +116,7 @@ async def list_plan(
     manufacturer_id: Optional[str] = None,
     collection: Optional[str] = None,
     limit: int = Query(500, le=2000),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("manufacturing.view")),
 ):
     q: Dict[str, Any] = {}
     if manufacturer_id:
@@ -124,16 +125,16 @@ async def list_plan(
         q["collection"] = collection
     if search:
         q["$or"] = [
-            {"model_no": {"$regex": search, "$options": "i"}},
-            {"product_description": {"$regex": search, "$options": "i"}},
-            {"manufacturer_name": {"$regex": search, "$options": "i"}},
+            {"model_no": {"$regex": re.escape(search), "$options": "i"}},
+            {"product_description": {"$regex": re.escape(search), "$options": "i"}},
+            {"manufacturer_name": {"$regex": re.escape(search), "$options": "i"}},
         ]
     rows = await db.production_plan.find(q, {"_id": 0}).sort("seq_no", 1).to_list(limit)
     return {"items": rows, "total": len(rows)}
 
 
 @router.post("")
-async def create_plan_row(req: PlanRowReq, current_user: dict = Depends(require_admin)):
+async def create_plan_row(req: PlanRowReq, current_user: dict = Depends(require_permission("manufacturing.create"))):
     # Ürün kartından otomatik doldur (verilmemiş alanlar için)
     product = None
     if req.product_id:
@@ -176,7 +177,7 @@ async def create_plan_row(req: PlanRowReq, current_user: dict = Depends(require_
 
 
 @router.put("/{row_id}")
-async def update_plan_row(row_id: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def update_plan_row(row_id: str, payload: dict, current_user: dict = Depends(require_permission("manufacturing.update_stage"))):
     existing = await db.production_plan.find_one({"id": row_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
@@ -208,7 +209,7 @@ async def update_plan_row(row_id: str, payload: dict, current_user: dict = Depen
 
 
 @router.delete("/{row_id}")
-async def delete_plan_row(row_id: str, current_user: dict = Depends(require_admin)):
+async def delete_plan_row(row_id: str, current_user: dict = Depends(require_permission("manufacturing.delete"))):
     res = await db.production_plan.delete_one({"id": row_id})
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
@@ -216,7 +217,7 @@ async def delete_plan_row(row_id: str, current_user: dict = Depends(require_admi
 
 
 @router.get("/collections")
-async def list_collections(current_user: dict = Depends(require_admin)):
+async def list_collections(current_user: dict = Depends(require_permission("manufacturing.view"))):
     """Distinct koleksiyon listesi — ürün ve plan kayıtlarından."""
     prod_cols = await db.products.distinct("collection")
     plan_cols = await db.production_plan.distinct("collection")
@@ -265,8 +266,11 @@ def _row_to_excel(row: Dict[str, Any]) -> Dict[str, Any]:
 
 
 @router.get("/export")
-async def export_excel(current_user: dict = Depends(require_admin)):
+async def export_excel(current_user: dict = Depends(require_permission("manufacturing.view"))):
     """İmalat planını Excel (.xlsx) olarak indir."""
+    # ACİL ANAHTAR: freeze_exports açıkken toplu veri dışa aktarımı yapılmaz (423).
+    from security_switches import require_switch_off as _sw_off, emit_security_event as _sec_emit
+    await _sw_off("freeze_exports")
     from openpyxl import Workbook
     from openpyxl.styles import Font, PatternFill, Alignment
 
@@ -298,9 +302,17 @@ async def export_excel(current_user: dict = Depends(require_admin)):
         ws.column_dimensions[ws.cell(row=1, column=i).column_letter].width = 22
 
     out = BytesIO()
+    # DENETİM (injection F8): Excel/CSV formül enjeksiyonu — =+-@ ile başlayan hücreleri kaçır
+    for _ws in wb.worksheets:
+        for _row in _ws.iter_rows():
+            for _c in _row:
+                if isinstance(_c.value, str) and _c.value[:1] in ('=', '+', '-', '@', '\t', '\r'):
+                    _c.value = "'" + _c.value
     wb.save(out)
     out.seek(0)
     filename = f"imalat-plani-{datetime.now().strftime('%Y%m%d-%H%M')}.xlsx"
+    # Güvenlik olayı: toplu dışa aktarım (denetim izi + süper admin uyarısı; asla istisna fırlatmaz).
+    await _sec_emit("production_plan_export", current_user, {"export": "uretim-plani.xlsx", "rows": len(rows)})
     return StreamingResponse(
         out,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -312,7 +324,7 @@ async def export_excel(current_user: dict = Depends(require_admin)):
 async def import_excel(
     file: UploadFile = File(...),
     update_existing: bool = Query(True, description="model_no eşleşen kayıtları güncelle (false → hep yeni satır)"),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("manufacturing.create")),
 ):
     """Excel'den toplu satır ekle/güncelle.
     Başlık sırası export ile aynıdır. model_no alanı key olarak kullanılır."""
@@ -320,12 +332,15 @@ async def import_excel(
 
     if not file.filename or not file.filename.lower().endswith((".xlsx", ".xlsm")):
         raise HTTPException(status_code=400, detail="Sadece .xlsx dosya kabul edilir")
-    content = await file.read()
+    from security.spreadsheet_guard import read_spreadsheet_upload, check_rows  # denetim #18
+    content = await read_spreadsheet_upload(file)
     try:
-        wb = load_workbook(BytesIO(content), data_only=True)
+        from security.spreadsheet_guard import parse_offloop
+        wb = await parse_offloop(load_workbook, BytesIO(content), data_only=True)  # denetim #18
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Excel okunamadı: {e}")
     ws = wb.active
+    check_rows(ws.max_row)
 
     # Başlık satırı → key mapping
     headers = {}

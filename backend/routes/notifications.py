@@ -20,7 +20,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_permission
 from notification_service import (
     SMS_PROVIDERS,
     DEFAULT_EVENTS,
@@ -31,6 +31,7 @@ from notification_service import (
     _get_template,
 )
 from email_layout import email_shell, info_row
+from security.crypto import encrypt as _enc, is_encrypted
 
 router = APIRouter(prefix="/notifications", tags=["notifications"])
 
@@ -68,7 +69,7 @@ class TestTemplateReq(BaseModel):
 
 
 @router.get("/providers/catalog")
-async def get_catalog(current_user: dict = Depends(require_admin)):
+async def get_catalog(current_user: dict = Depends(require_permission("settings.view"))):
     return {
         "sms_providers": SMS_PROVIDERS,
         "channels": CHANNELS,
@@ -77,7 +78,7 @@ async def get_catalog(current_user: dict = Depends(require_admin)):
 
 
 @router.get("/providers")
-async def get_providers(current_user: dict = Depends(require_admin)):
+async def get_providers(current_user: dict = Depends(require_permission("settings.view"))):
     cfg = await db.settings.find_one({"id": "notification_providers"}, {"_id": 0})
     if not cfg:
         cfg = {
@@ -88,7 +89,7 @@ async def get_providers(current_user: dict = Depends(require_admin)):
             "providers": {},
         }
     # Secret alanları maskele (ekranda görünsün ama ham şekilde değil)
-    SECRET_FIELDS = {"password", "auth_token", "api_hash", "api_key", "access_token", "api_secret", "app_secret", "page_access_token"}
+    from notification_service import PROVIDER_SECRET_FIELDS as SECRET_FIELDS  # denetim #6: tek liste
     masked = dict(cfg)
     prov = {}
     for pkey, fields in (cfg.get("providers") or {}).items():
@@ -105,12 +106,12 @@ async def get_providers(current_user: dict = Depends(require_admin)):
 
 
 @router.post("/providers")
-async def save_providers(req: ProviderConfigReq, current_user: dict = Depends(require_admin)):
+async def save_providers(req: ProviderConfigReq, current_user: dict = Depends(require_permission("settings.edit"))):
     # Mevcut config (gizli alanlar için). Eğer UI maskeli bir değeri aynen geri gönderdiyse
     # orijinal değeri koru (yani "xx****yy" gönderilmişse değiştirmiyor sayılır).
     existing = await db.settings.find_one({"id": "notification_providers"}, {"_id": 0}) or {}
     existing_provs = existing.get("providers", {})
-    SECRET_FIELDS = {"password", "auth_token", "api_hash", "api_key", "access_token", "api_secret", "app_secret", "page_access_token"}
+    from notification_service import PROVIDER_SECRET_FIELDS as SECRET_FIELDS  # denetim #6: tek liste
     merged_provs: Dict[str, Dict[str, Any]] = {}
     for pkey, fields in req.providers.items():
         merged = dict(fields or {})
@@ -126,6 +127,12 @@ async def save_providers(req: ProviderConfigReq, current_user: dict = Depends(re
                         merged[f] = old[f]
         # __has_ bayraklarını DB'ye yazma
         merged = {k: v for k, v in merged.items() if not k.startswith("__has_")}
+        # DENETİM (kimlik B-1): sır alanlarını at-rest Fernet ile şifrele. Zaten şifreli
+        # (v1:…) veya boş değerlere dokunma → idempotent, migration güvenli.
+        for f in SECRET_FIELDS:
+            v = merged.get(f)
+            if isinstance(v, str) and v and not is_encrypted(v):
+                merged[f] = _enc(v)
         merged_provs[pkey] = merged
 
     data = {
@@ -142,13 +149,13 @@ async def save_providers(req: ProviderConfigReq, current_user: dict = Depends(re
 
 
 @router.get("/templates")
-async def list_templates(current_user: dict = Depends(require_admin)):
+async def list_templates(current_user: dict = Depends(require_permission("settings.view"))):
     rows = await db.notification_templates.find({}, {"_id": 0}).to_list(length=None)
     return {"templates": rows}
 
 
 @router.post("/templates")
-async def upsert_template(req: TemplateReq, current_user: dict = Depends(require_admin)):
+async def upsert_template(req: TemplateReq, current_user: dict = Depends(require_permission("settings.edit"))):
     if req.channel not in CHANNELS:
         raise HTTPException(status_code=400, detail="Geçersiz kanal")
     data = req.model_dump()
@@ -165,21 +172,23 @@ async def upsert_template(req: TemplateReq, current_user: dict = Depends(require
 _DEFAULT_TEMPLATES = {
     # (event, channel) → payload
     ("order_confirmed", "sms"):
-        "Merhaba {customer_name}, {order_number} numarali siparisiniz onaylandi. {store_name}",
+        "Merhaba {customer_name}, {order_number} numaralı Meluni siparişiniz onaylandı. İlginiz için teşekkür ederiz.",
     ("order_shipped", "sms"):
-        "Siparisiniz kargoya verildi. Kargo takip: {tracking_number}. {store_name}",
+        "Merhaba {customer_name}, {order_number} numaralı Meluni siparişiniz kargoya verilmiştir. Kargo gönderinizi aşağıdaki link üzerinden takip edebilirsiniz: {tracking_url}",
     ("order_delivered", "sms"):
-        "Siparisiniz teslim edildi. Bizi tercih ettiginiz icin tesekkurler. {store_name}",
+        "Merhaba {customer_name}, {order_number} numaralı Meluni siparişiniz başarıyla teslim edilmiştir. Siparişinizi keyifle kullanmanızı dileriz. Bizi tercih ettiğiniz için teşekkür ederiz.",
     ("order_undelivered", "sms"):
-        "Kargonuz teslim edilemedi, subede bekliyor. Takip: {tracking_number}. {store_name}",
+        "Merhaba {customer_name}, {order_number} numaralı Meluni kargonuz teslim edilemedi, şubede sizi bekliyor. Takip: {tracking_url}",
     ("order_cancelled", "sms"):
-        "{order_number} numarali siparisiniz iptal edildi. Bilgi: destek@meluni.com.tr",
+        "Merhaba {customer_name}, {order_number} numaralı Meluni siparişiniz iptal edilmiştir. Bilgi için bizimle iletişime geçebilirsiniz.",
     ("order_awaiting_payment", "sms"):
-        "Merhaba {customer_name}, {order_number} numarali siparisiniz alindi. Havale/EFT odemenizi bekliyoruz; detaylar e-postanizda. {store_name}",
+        "Merhaba {customer_name}, {order_number} numaralı Meluni siparişiniz alındı. Havale/EFT ödemenizi bekliyoruz; ödeme detayları e-postanızda. Meluni",
     ("order_payment_reminder", "sms"):
-        "Sayin {customer_name}, {order_number} numarali siparisinizin havale/EFT odemesini henuz alamadik. {bank_name} IBAN {bank_iban} ({bank_account_holder}), Tutar {amount}. Odeme bildirimi: {payment_url} {store_name}",
+        "Merhaba {customer_name}, {order_number} no'lu siparişiniz için havale/EFT ödemenizin henüz ulaşmadığını hatırlatmak isteriz. Ödemenizi tamamlamanızın ardından siparişiniz işleme alınacaktır. İlginiz için teşekkür ederiz.",
     ("order_payment_notified", "sms"):
-        "Merhaba {customer_name}, {order_number} numarali siparisiniz icin odeme bildiriminiz alindi, kontrol ediliyor. {store_name}",
+        "Merhaba {customer_name}, {order_number} numaralı siparişiniz için ödeme bildiriminiz alındı, kontrol ediliyor. Meluni",
+    ("order_payment_approved", "sms"):
+        "Merhaba {customer_name}, {order_number} numaralı siparişinizin havale/EFT ödemesini aldık. Siparişiniz onaylandı ve işleme alınmıştır. İlginiz için teşekkür ederiz.",
     ("order_return_requested", "sms"):
         "Merhaba {customer_name}, {order_number} numarali siparisiniz icin iade talebiniz olusturuldu. Iade kodu: {return_code}. {store_name}",
     ("order_return_approved", "sms"):
@@ -191,7 +200,9 @@ _DEFAULT_TEMPLATES = {
     ("order_partial_refunded", "sms"):
         "Merhaba {customer_name}, {order_number} numarali siparisiniz icin {refund_amount} TL kismi iade yapildi. {store_name}",
     ("password_reset_otp", "sms"):
-        "{store_name} dogrulama kodunuz: {otp_code} (5 dk gecerli).",
+        "Meluni dogrulama kodunuz: {otp_code} (5 dk gecerli).",
+    ("login_verification_code", "sms"):
+        "Meluni giris dogrulama kodunuz: {otp_code} (5 dk gecerli).",
     ("abandoned_cart", "sms"):
         "Sepetinizde urunler kaldi! Siparis tamamlama baglantisi: {cart_url}",
 }
@@ -221,7 +232,41 @@ _CONFIRMED_BODY = (
       '</div>'
 )
 
+# DOĞRULAMA KODU (giriş / şifre sıfırlama) — kodun kendisi BÜYÜK ve net gösterilir.
+# Bu şablon yoksa sistem jenerik gövde üretiyordu ve e-postada KOD HİÇ GÖRÜNMÜYORDU.
+_OTP_BODY = (
+    '<div style="margin:18px 0 6px;text-align:center">'
+    '<div style="font-size:11px;letter-spacing:2px;color:#8a8a8a;text-transform:uppercase">Doğrulama kodunuz</div>'
+    '<div style="display:inline-block;margin-top:10px;padding:14px 26px;border:1px solid #e3e0da;'
+    'border-radius:8px;background:#faf9f7;font-family:\'Courier New\',monospace;font-size:34px;'
+    'font-weight:700;letter-spacing:10px;color:#111">{otp_code}</div>'
+    '<div style="margin-top:12px;font-size:12px;color:#8a8a8a">Kod <b>5 dakika</b> geçerlidir.</div>'
+    '</div>'
+)
+
 _EMAIL_HTML_TEMPLATES = {
+    "login_verification_code": {
+        "subject": "Giriş doğrulama kodunuz: {otp_code}",
+        "body": email_shell(
+            eyebrow="GÜVENLİK", title="Giriş Doğrulama Kodu",
+            intro_html="Merhaba {customer_name}, giriş yapabilmek için aşağıdaki doğrulama kodunu kullanın.",
+            body_html=_OTP_BODY,
+            note_title="Bu girişi siz yapmadıysanız",
+            note_html="Kodu kimseyle paylaşmayın. Şifrenizi değiştirmenizi ve bize bildirmenizi öneririz.",
+            preheader="Giriş doğrulama kodunuz: {otp_code}",
+        ),
+    },
+    "password_reset_otp": {
+        "subject": "Doğrulama kodunuz: {otp_code}",
+        "body": email_shell(
+            eyebrow="GÜVENLİK", title="Doğrulama Kodu",
+            intro_html="Merhaba {customer_name}, hesabınıza giriş için doğrulama kodunuz aşağıdadır.",
+            body_html=_OTP_BODY,
+            note_title="Bu isteği siz yapmadıysanız",
+            note_html="Kodu kimseyle paylaşmayın ve bu e-postayı dikkate almayın. Şifreniz değişmez.",
+            preheader="Doğrulama kodunuz: {otp_code}",
+        ),
+    },
     "order_confirmed": {
         "subject": "Siparişin alındı · {order_number}",
         "body": email_shell(
@@ -407,7 +452,7 @@ except Exception:
 @router.post("/templates/seed")
 async def seed_templates(
     force: bool = False,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("settings.edit")),
 ):
     """Default şablonları oluştur. force=true ise mevcut zengin olmayan
     e-posta şablonlarını da günceller (override)."""
@@ -461,7 +506,7 @@ async def seed_templates(
 
 
 @router.post("/templates/fix-names")
-async def fix_template_names(current_user: dict = Depends(require_admin)):
+async def fix_template_names(current_user: dict = Depends(require_permission("settings.edit"))):
     """Kayıtlı TÜM şablonlarda (subject + body) sadece ADI basan yer tutucuları
     AD SOYAD basan {customer_name} ile değiştirir. Kullanıcı isteği: bazı özel SMS
     şablonları {first_name} kullandığı için müşteriye yalnız ad gidiyordu; soyad da
@@ -512,14 +557,39 @@ async def fix_template_names(current_user: dict = Depends(require_admin)):
     return {"success": True, "changed": changed, "samples": samples}
 
 
+@router.post("/templates/apply-sms-defaults")
+async def apply_sms_defaults(current_user: dict = Depends(require_permission("settings.edit"))):
+    """SMS şablonlarını GÜNCEL varsayılan metinlere ZORLA uygular (manually_edited olsa bile üzerine yazar).
+    Kullanıcı isteği: sipariş SMS'leri isim/soyisim, sipariş no ve kargo LİNKİ çekmiyordu ({tracking_number}
+    yerine {tracking_url}) → tüm sipariş-döngüsü SMS metinleri değişken-dolu yeni sürüme çekilir.
+    Yalnız 'sms' kanalı; e-posta/whatsapp'a dokunmaz."""
+    applied, items = 0, []
+    for (ev, ch), body in _DEFAULT_TEMPLATES.items():
+        if ch != "sms" or not body:
+            continue
+        await db.notification_templates.update_one(
+            {"event": ev, "channel": "sms"},
+            {"$set": {
+                "event": ev, "channel": "sms", "body": body, "enabled": True,
+                "manually_edited": False,  # varsayılana sıfırlandı
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+                "updated_by": current_user.get("email", ""),
+            }},
+            upsert=True,
+        )
+        applied += 1
+        items.append(ev)
+    return {"success": True, "applied": applied, "events": items}
+
+
 @router.post("/test")
-async def send_test(req: TestReq, current_user: dict = Depends(require_admin)):
+async def send_test(req: TestReq, current_user: dict = Depends(require_permission("settings.edit"))):
     res = await test_provider(db, req.channel, req.provider_key, req.to, req.message)
     return res
 
 
 @router.post("/test-template")
-async def send_test_template(req: TestTemplateReq, current_user: dict = Depends(require_admin)):
+async def send_test_template(req: TestTemplateReq, current_user: dict = Depends(require_permission("settings.edit"))):
     """
     Seçilen sipariş durumunun (event) GERÇEK şablonunu, en son kargoya verilen
     siparişin gerçek verisiyle doldurup verilen numaraya/e-postaya gönderir.
@@ -608,8 +678,28 @@ async def send_test_template(req: TestTemplateReq, current_user: dict = Depends(
     }
 
 
+@router.get("/coverage")
+async def notification_coverage(days: int = Query(90, ge=1, le=365), current_user: dict = Depends(require_permission("settings.view"))):
+    """Bildirim KAPSAM raporu (JSON): her bildirim tipi kodda nereden tetikleniyor (otomatik/elle/hiç),
+    son N günde SMS/e-posta gerçekten gitmiş mi (notification_logs), eksikler ve mükerrerler."""
+    from notification_coverage import live_counts, build_report
+    live = await live_counts(db, days=days)
+    return build_report(live)
+
+
+@router.get("/coverage-report")
+async def notification_coverage_report(days: int = Query(90, ge=1, le=365), print: int = Query(0),
+                                       current_user: dict = Depends(require_permission("settings.view"))):
+    """Aynı raporun YAZDIRILABİLİR (PDF) HTML sürümü — Admin → Bildirim Şablonları → Kapsam Raporu."""
+    from fastapi.responses import HTMLResponse
+    from notification_coverage import live_counts, build_report, render_html
+    live = await live_counts(db, days=days)
+    html = render_html(build_report(live), auto_print=bool(print))
+    return HTMLResponse(content=html, headers={"Cache-Control": "no-store", "Referrer-Policy": "no-referrer"})
+
+
 @router.get("/logs")
-async def list_logs(limit: int = Query(50, ge=1, le=500), current_user: dict = Depends(require_admin)):
+async def list_logs(limit: int = Query(50, ge=1, le=500), current_user: dict = Depends(require_permission("settings.view"))):
     rows = (
         await db.notification_logs.find({}, {"_id": 0})
         .sort("created_at", -1)

@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { Plus, Edit, Trash2, GripVertical, Image, Upload, X, Eye, EyeOff, ChevronUp, ChevronDown } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import FullLookEditor from './FullLookEditor';
+import { Plus, Edit, Trash2, GripVertical, Upload, X, Eye, EyeOff, Copy, Undo2, Redo2, Save, Search, Monitor, Smartphone } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 import {
@@ -18,6 +19,14 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import {
+  buildPageDesignSavePlan,
+  clonePageDesign,
+  createDraftBlock,
+  duplicateDraftBlock,
+  normalizeBlockOrder,
+  samePageDesign,
+} from "../../lib/pageDesignDraft";
 import {
   Dialog,
   DialogContent,
@@ -41,8 +50,111 @@ const BLOCK_TYPES = [
   { value: "video_banner", label: "Video Banner", icon: "🎬", description: "Video arka planlı banner" },
 ];
 
+// ── ZAMANLI YAYIN (banner/slayt zaman aralığı) ──────────────────────────────
+// Her slayt (ve istenirse bloğun tamamı) "şu tarih-saat aralığında yayında olsun"
+// kuralı alabilir. Saat YEREL duvar saati olarak saklanır + saat dilimi adı; süzmeyi
+// SUNUCU yapar (backend/routes/cms.py), burada yalnız girdi + durum rozeti var.
+const SCHED_TZ = [
+  { value: "Europe/Istanbul", label: "Türkiye (UTC+3)" },
+  { value: "Europe/London", label: "Londra" },
+  { value: "Europe/Berlin", label: "Berlin / Paris" },
+  { value: "America/New_York", label: "New York" },
+  { value: "Asia/Dubai", label: "Dubai" },
+];
+const DEFAULT_SCHED_TZ = "Europe/Istanbul";
+
+// Slayta PARALEL giden settings dizileri — biri unutulursa slaytın zamanı/ölçüsü/yazısı
+// komşusuna kayar. TEK LİSTE: buraya ekle, ekleme/silme/sıralama otomatik uygular.
+const SLIDE_PARALLEL = ["img_dims", "slide_schedule", "captions"];
+
+// Seçilen saat diliminde "şu an" — 'YYYY-MM-DDTHH:MM' (input değeriyle aynı biçim).
+const nowInTz = (tz) => {
+  try {
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: tz || DEFAULT_SCHED_TZ, year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(new Date());
+    const g = (t) => (parts.find((x) => x.type === t) || {}).value || "00";
+    return `${g("year")}-${g("month")}-${g("day")}T${g("hour")}:${g("minute")}`;
+  } catch {
+    return "";
+  }
+};
+
+const schedState = (sc) => {
+  if (!sc || (!sc.start && !sc.end)) return { key: "none", label: "Sürekli", cls: "bg-gray-100 text-gray-600" };
+  const now = nowInTz(sc.tz);
+  if (!now) return { key: "live", label: "Yayında", cls: "bg-green-100 text-green-700" };
+  if (sc.start && now < sc.start) return { key: "waiting", label: "Beklemede", cls: "bg-amber-100 text-amber-800" };
+  if (sc.end && now > sc.end) return { key: "expired", label: "Süresi doldu", cls: "bg-red-100 text-red-700" };
+  return { key: "live", label: "Yayında", cls: "bg-green-100 text-green-700" };
+};
+
+const fmtSched = (sc) => {
+  if (!sc || (!sc.start && !sc.end)) return "";
+  const f = (v) => (v ? `${v.slice(8, 10)}.${v.slice(5, 7)}.${v.slice(0, 4)} ${v.slice(11, 16)}` : "");
+  if (sc.start && sc.end) return `${f(sc.start)} → ${f(sc.end)}`;
+  return sc.start ? `${f(sc.start)}'den itibaren` : `${f(sc.end)}'e kadar`;
+};
+
+function ScheduleEditor({ value, onChange }) {
+  const v = value || {};
+  const set = (patch) => onChange({ start: v.start || "", end: v.end || "", tz: v.tz || DEFAULT_SCHED_TZ, ...patch });
+  const st = schedState(v);
+  return (
+    <div className="mt-1.5 border rounded bg-gray-50 p-2 space-y-1.5">
+      <div>
+        <label className="block text-[10px] text-gray-600 mb-0.5">Başlangıç</label>
+        <input
+          type="datetime-local"
+          value={v.start || ""}
+          onChange={(e) => set({ start: e.target.value })}
+          className="w-full text-[11px] border px-2 py-1 rounded"
+        />
+      </div>
+      <div>
+        <label className="block text-[10px] text-gray-600 mb-0.5">Bitiş</label>
+        <input
+          type="datetime-local"
+          value={v.end || ""}
+          onChange={(e) => set({ end: e.target.value })}
+          className="w-full text-[11px] border px-2 py-1 rounded"
+        />
+      </div>
+      <div>
+        <label className="block text-[10px] text-gray-600 mb-0.5">Saat dilimi</label>
+        <select
+          value={v.tz || DEFAULT_SCHED_TZ}
+          onChange={(e) => set({ tz: e.target.value })}
+          className="w-full text-[11px] border px-2 py-1 rounded bg-white"
+        >
+          {SCHED_TZ.map((t) => (
+            <option key={t.value} value={t.value}>{t.label}</option>
+          ))}
+        </select>
+      </div>
+      <div className="flex items-center justify-between pt-0.5">
+        <span className={`text-[10px] px-1.5 py-0.5 rounded ${st.cls}`}>{st.label}</span>
+        {(v.start || v.end) && (
+          <button
+            type="button"
+            onClick={() => onChange(null)}
+            className="text-[10px] text-red-600 hover:underline"
+          >
+            Kuralı kaldır
+          </button>
+        )}
+      </div>
+      <p className="text-[10px] text-gray-500 leading-snug">
+        Boş bırakılan uç sınırsızdır. Aralık dışındaysa bu içerik sitede <b>hiç görünmez</b>;
+        süzme sunucuda yapılır, sayfa yenilenince otomatik kaybolur.
+      </p>
+    </div>
+  );
+}
+
 // Sortable Block Item Component
-function SortableBlockItem({ block, onEdit, onDelete, onToggleActive, getBlockTypeInfo }) {
+function SortableBlockItem({ block, selected, onSelect, onEdit, onDelete, onToggleActive, onDuplicate, getBlockTypeInfo }) {
   const {
     attributes,
     listeners,
@@ -65,37 +177,40 @@ function SortableBlockItem({ block, onEdit, onDelete, onToggleActive, getBlockTy
     <div 
       ref={setNodeRef}
       style={style}
-      className={`bg-white rounded-lg shadow-sm border-2 transition-all ${
-        isDragging ? 'border-blue-500 shadow-lg' : 'border-transparent hover:border-gray-200'
+      onClick={() => onSelect(block.id)}
+      className={`bg-white rounded-xl shadow-sm border-2 transition-all ${
+        isDragging ? 'border-blue-500 shadow-lg' : selected ? 'border-gray-900' : 'border-gray-200 hover:border-gray-400'
       } ${!block.is_active ? 'opacity-60' : ''}`}
     >
-      <div className="flex items-start p-4 gap-4">
+      <div className="flex items-start p-3 gap-3">
         {/* Drag Handle */}
         <div 
           {...attributes} 
           {...listeners}
-          className="pt-2 cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600"
+          className="mt-1 cursor-grab rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700 active:cursor-grabbing"
+          aria-label={`${block.title || typeInfo.label} bloğunu sırala`}
+          title="Sürükleyerek sırala"
         >
           <GripVertical size={20} />
         </div>
 
         {/* Preview */}
-        <div className="flex-shrink-0 w-40">
+        <div className="hidden flex-shrink-0 sm:block sm:w-24">
           {block.images?.[0] ? (
             /\.(mp4|webm|mov|m4v|ogg)(\?|$)/i.test(block.images[0]) ? (
               <div className="relative w-full h-20">
-                <video src={block.images[0]} className="w-full h-20 object-cover rounded" muted playsInline preload="metadata" />
+                <video src={block.images[0]} className="w-full h-16 object-cover rounded" muted playsInline preload="metadata" />
                 <span className="absolute bottom-1 left-1 bg-black/70 text-white text-[9px] px-1 rounded">🎬</span>
               </div>
             ) : (
               <img
                 src={block.images[0]}
                 alt=""
-                className="w-full h-20 object-cover rounded"
+                className="w-full h-16 object-cover rounded"
               />
             )
           ) : (
-            <div className="w-full h-20 bg-gray-100 rounded flex items-center justify-center text-2xl">
+            <div className="w-full h-16 bg-gray-100 rounded flex items-center justify-center text-2xl">
               {typeInfo.icon || "📦"}
             </div>
           )}
@@ -152,7 +267,7 @@ function SortableBlockItem({ block, onEdit, onDelete, onToggleActive, getBlockTy
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-wrap justify-end gap-1" onClick={(event) => event.stopPropagation()}>
           <button 
             onClick={() => onToggleActive(block)}
             className={`p-2 rounded transition-colors ${
@@ -169,6 +284,14 @@ function SortableBlockItem({ block, onEdit, onDelete, onToggleActive, getBlockTy
           >
             <Edit size={16} />
           </button>
+          <button
+            onClick={() => onDuplicate(block)}
+            className="p-2 hover:bg-gray-100 rounded"
+            title="Çoğalt"
+            aria-label="Bloğu çoğalt"
+          >
+            <Copy size={16} />
+          </button>
           <button 
             onClick={() => onDelete(block.id)}
             className="p-2 hover:bg-red-50 rounded text-red-600"
@@ -183,7 +306,26 @@ function SortableBlockItem({ block, onEdit, onDelete, onToggleActive, getBlockTy
 }
 
 export default function PageDesign() {
+  const initialFullLook = new URLSearchParams(window.location.search).get('tab') === 'full-look';
+  const [tab, setTab] = useState(initialFullLook ? 'full-look' : 'home');
+  const [visited, setVisited] = useState({ home: !initialFullLook, 'full-look': initialFullLook });
+  return <>
+    <div className="flex gap-2 border-b mb-4 pb-3" role="tablist" aria-label="Düzenlenecek sayfa">
+      {[['home', 'Ana Sayfa'], ['full-look', 'Full Look Sayfası Düzenleme']].map(([key, title]) =>
+        <button key={key} type="button" role="tab" aria-selected={tab === key} className={`px-4 py-2 rounded ${tab === key ? 'bg-black text-white' : 'bg-white text-gray-600'}`} onClick={() => { setTab(key); setVisited(v => ({ ...v, [key]: true })); }}>{title}</button>)}
+    </div>
+    <div hidden={tab !== 'home'}>{visited.home && <HomePageDesign />}</div>
+    <div hidden={tab !== 'full-look'}>{visited['full-look'] && <FullLookEditor />}</div>
+  </>;
+}
+
+function HomePageDesign() {
   const [blocks, setBlocks] = useState([]);
+  const [savedBlocks, setSavedBlocks] = useState([]);
+  const [history, setHistory] = useState([[]]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+  const [selectedId, setSelectedId] = useState(null);
+  const [librarySearch, setLibrarySearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -199,12 +341,41 @@ export default function PageDesign() {
       })
       .catch(() => setSliderCategories([]));
   }, []);
-  const [hasChanges, setHasChanges] = useState(false);
   const [previewMode, setPreviewMode] = useState("mobile"); // "mobile" | "desktop"
-  
-  const refreshPreview = () => {
-    const iframe = document.getElementById('preview-frame');
-    if (iframe) iframe.src = iframe.src;
+  const hasChanges = useMemo(() => !samePageDesign(savedBlocks, blocks), [savedBlocks, blocks]);
+  const selectedBlock = blocks.find((block) => block.id === selectedId) || null;
+  const filteredBlockTypes = BLOCK_TYPES.filter((type) =>
+    `${type.label} ${type.description}`.toLocaleLowerCase("tr").includes(librarySearch.toLocaleLowerCase("tr").trim())
+  );
+
+  const commitBlocks = (nextOrUpdater, nextSelectedId) => {
+    const next = normalizeBlockOrder(
+      typeof nextOrUpdater === "function" ? nextOrUpdater(blocks) : nextOrUpdater
+    );
+    setBlocks(next);
+    const branch = history.slice(0, historyIndex + 1);
+    const updated = [...branch, clonePageDesign(next)].slice(-50);
+    setHistory(updated);
+    setHistoryIndex(updated.length - 1);
+    if (nextSelectedId !== undefined) setSelectedId(nextSelectedId);
+  };
+
+  const undo = () => {
+    if (historyIndex <= 0) return;
+    const nextIndex = historyIndex - 1;
+    const next = clonePageDesign(history[nextIndex]);
+    setHistoryIndex(nextIndex);
+    setBlocks(next);
+    if (selectedId && !next.some((block) => block.id === selectedId)) setSelectedId(next[0]?.id || null);
+  };
+
+  const redo = () => {
+    if (historyIndex >= history.length - 1) return;
+    const nextIndex = historyIndex + 1;
+    const next = clonePageDesign(history[nextIndex]);
+    setHistoryIndex(nextIndex);
+    setBlocks(next);
+    if (selectedId && !next.some((block) => block.id === selectedId)) setSelectedId(next[0]?.id || null);
   };
   
   const [formData, setFormData] = useState({
@@ -233,53 +404,35 @@ export default function PageDesign() {
     fetchBlocks();
   }, []);
 
+  useEffect(() => {
+    const warnUnsaved = (event) => {
+      if (!hasChanges) return;
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warnUnsaved);
+    return () => window.removeEventListener("beforeunload", warnUnsaved);
+  }, [hasChanges]);
+
   const fetchBlocks = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${API}/page-blocks?page=home`, {
+      // all=1: zamanı gelmemiş/süresi dolmuş slaytlar da gelsin (panelde düzenlenebilsin).
+      const res = await axios.get(`${API}/page-blocks?page=home&all=1`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Sort by sort_order
       const sorted = (res.data || []).sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
-      setBlocks(sorted);
+      const snapshot = normalizeBlockOrder(sorted);
+      setBlocks(snapshot);
+      setSavedBlocks(clonePageDesign(snapshot));
+      setHistory([clonePageDesign(snapshot)]);
+      setHistoryIndex(0);
+      setSelectedId((current) => snapshot.some((block) => block.id === current) ? current : snapshot[0]?.id || null);
     } catch (err) {
-      // Default blocks if API fails
-      setBlocks([
-        {
-          id: "hero",
-          type: "hero_slider",
-          title: "Hero Slider",
-          images: [
-            "https://cdn.meluni.com.tr/pagedesign/en-yeniler-dc2e-1920.webp",
-            "https://cdn.meluni.com.tr/pagedesign/ae79c961-ba0b-49e3-b274-2c6cc78ab700-1920.webp"
-          ],
-          links: ["/kategori/en-yeniler", "/kategori/sale"],
-          is_active: true,
-          sort_order: 1
-        },
-        {
-          id: "full",
-          type: "full_banner",
-          title: "Bloom Together",
-          images: ["https://cdn.meluni.com.tr/pagedesign/title-cb23757c-6-1920.webp"],
-          links: ["/kategori/en-yeniler"],
-          is_active: true,
-          sort_order: 2
-        },
-        {
-          id: "half",
-          type: "half_banners",
-          title: "Kategori Bannerları",
-          images: [
-            "https://cdn.meluni.com.tr/pagedesign/title-65777bd3-0-1920.webp",
-            "https://cdn.meluni.com.tr/pagedesign/title-7b3e27f9-5-1920.webp"
-          ],
-          links: ["/kategori/gomlek", "/kategori/aksesuar"],
-          is_active: true,
-          sort_order: 3
-        }
-      ]);
+      // Yükleme hatasında mevcut içeriği örnek/default veriyle ASLA değiştirme.
+      toast.error("Sayfa blokları yüklenemedi; mevcut içerik korunuyor.");
     } finally {
       setLoading(false);
     }
@@ -289,32 +442,40 @@ export default function PageDesign() {
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      setBlocks((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-        const newItems = arrayMove(items, oldIndex, newIndex);
-        // Update sort_order
-        return newItems.map((item, index) => ({ ...item, sort_order: index + 1 }));
-      });
-      setHasChanges(true);
+      const oldIndex = blocks.findIndex((item) => item.id === active.id);
+      const newIndex = blocks.findIndex((item) => item.id === over.id);
+      commitBlocks(arrayMove(blocks, oldIndex, newIndex));
     }
   };
 
   const handleSaveOrder = async () => {
+    if (!hasChanges) return;
     setSaving(true);
     try {
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
-      // Bulk reorder — tek API call
-      await axios.post(`${API}/page-blocks/reorder`,
-        { ids: blocks.map(b => b.id) },
-        { headers }
-      );
-      toast.success("Sıralama kaydedildi");
-      setHasChanges(false);
-      refreshPreview();
+      const plan = buildPageDesignSavePlan(savedBlocks, blocks);
+      for (const id of plan.deletedIds) {
+        await axios.delete(`${API}/page-blocks/${id}`, { headers });
+      }
+      for (const block of plan.updates) {
+        await axios.put(`${API}/page-blocks/${block.id}`, block, { headers });
+      }
+      const createdIds = new Map();
+      for (const block of plan.creates) {
+        const res = await axios.post(`${API}/page-blocks`, block, { headers });
+        createdIds.set(block.id, res.data?.id);
+      }
+      const resolvedIds = blocks
+        .map((block) => createdIds.get(block.id) || block.id)
+        .filter(Boolean);
+      if (resolvedIds.length) {
+        await axios.post(`${API}/page-blocks/reorder`, { ids: resolvedIds }, { headers });
+      }
+      toast.success("Tüm sayfa değişiklikleri kaydedildi");
+      await fetchBlocks();
     } catch (err) {
-      toast.error("Kaydetme başarısız");
+      toast.error("Toplu kaydetme tamamlanamadı. Taslağınız ekranda korunuyor.");
     } finally {
       setSaving(false);
     }
@@ -385,7 +546,16 @@ export default function PageDesign() {
             newImages.push(url);
             newLinks.push("/");
           }
-          setFormData({ ...formData, images: newImages, links: newLinks });
+          // Paralel diziler yeni slayt sayısına hizalansın (zaman kuralı/yazı kaymasın).
+          const vidSettings = { ...formData.settings };
+          SLIDE_PARALLEL.forEach((key) => {
+            if (Array.isArray(vidSettings[key])) {
+              const arr = [...vidSettings[key]];
+              while (arr.length < newImages.length) arr.push(null);
+              vidSettings[key] = arr;
+            }
+          });
+          setFormData({ ...formData, images: newImages, links: newLinks, settings: vidSettings });
           toast.success("Video yüklendi");
         }
         return;
@@ -424,6 +594,15 @@ export default function PageDesign() {
         }
 
         const newSettings = { ...formData.settings };
+        // Paralel diziler yeni slayt sayısına hizalansın (aksi halde sonraki slaytın
+        // zaman kuralı/yazısı bir öncekine kayardı).
+        SLIDE_PARALLEL.forEach((key) => {
+          if (Array.isArray(newSettings[key])) {
+            const arr = [...newSettings[key]];
+            while (arr.length < newImages.length) arr.push(null);
+            newSettings[key] = arr;
+          }
+        });
         if (dims) {
           const imgDims = Array.isArray(newSettings.img_dims) ? [...newSettings.img_dims] : [];
           imgDims[targetIndex] = dims;
@@ -453,28 +632,49 @@ export default function PageDesign() {
     newImages.splice(index, 1);
     newLinks.splice(index, 1);
     const newSettings = { ...formData.settings };
-    if (Array.isArray(newSettings.img_dims)) {
-      const imgDims = [...newSettings.img_dims];
-      imgDims.splice(index, 1);
-      newSettings.img_dims = imgDims;
-    }
+    SLIDE_PARALLEL.forEach((key) => {
+      if (Array.isArray(newSettings[key])) {
+        const arr = [...newSettings[key]];
+        arr.splice(index, 1);
+        newSettings[key] = arr;
+      }
+    });
     setFormData({ ...formData, images: newImages, links: newLinks, settings: newSettings });
+  };
+
+  // Slaytın zaman kuralı (settings.slide_schedule[index])
+  const slideSched = (index) => {
+    const arr = formData.settings?.slide_schedule;
+    return (Array.isArray(arr) ? arr[index] : null) || null;
+  };
+  const setSlideSched = (index, val) => {
+    const arr = Array.isArray(formData.settings?.slide_schedule)
+      ? [...formData.settings.slide_schedule] : [];
+    while (arr.length <= index) arr.push(null);
+    arr[index] = val && (val.start || val.end) ? val : null;
+    setFormData({ ...formData, settings: { ...formData.settings, slide_schedule: arr } });
   };
 
   // Slaytları SÜRÜKLEYEREK yeniden sırala (görsel + video birlikte). images/links/img_dims
   // paralel taşınır ki her slaytın linki ve en-boy oranı doğru kalsın.
   const [dragIdx, setDragIdx] = useState(null);
+  const [schedOpen, setSchedOpen] = useState(null);   // açık zaman-aralığı paneli (slayt index'i)
   const isVideoUrl = (u) => typeof u === "string" && /\.(mp4|webm|mov|m4v|ogg)(\?|$)/i.test(u);
   const moveSlide = (from, to) => {
     if (from == null || to == null || from === to) return;
     const imgs = [...formData.images];
     const lnks = formData.links && formData.links.length ? [...formData.links] : imgs.map(() => "/");
     while (lnks.length < imgs.length) lnks.push("/");
-    const dims = Array.isArray(formData.settings?.img_dims) ? [...formData.settings.img_dims] : null;
     const [mi] = imgs.splice(from, 1); imgs.splice(to, 0, mi);
     const [ml] = lnks.splice(from, 1); lnks.splice(to, 0, ml);
     const newSettings = { ...formData.settings };
-    if (dims) { const [md] = dims.splice(from, 1); dims.splice(to, 0, md); newSettings.img_dims = dims; }
+    SLIDE_PARALLEL.forEach((key) => {
+      if (!Array.isArray(newSettings[key])) return;
+      const arr = [...newSettings[key]];
+      while (arr.length < imgs.length) arr.push(null);
+      const [mv] = arr.splice(from, 1); arr.splice(to, 0, mv);
+      newSettings[key] = arr;
+    });
     setFormData({ ...formData, images: imgs, links: lnks, settings: newSettings });
   };
 
@@ -554,74 +754,46 @@ export default function PageDesign() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const token = localStorage.getItem('token');
-      const headers = { Authorization: `Bearer ${token}` };
-      
-      const payload = {
-        ...formData,
-        sort_order: editingBlock ? formData.sort_order : blocks.length + 1
-      };
-      
-      if (editingBlock) {
-        await axios.put(`${API}/page-blocks/${editingBlock.id}`, payload, { headers });
-        toast.success("Blok güncellendi");
-      } else {
-        await axios.post(`${API}/page-blocks`, payload, { headers });
-        toast.success("Blok eklendi");
-      }
-      setModalOpen(false);
-      resetForm();
-      fetchBlocks();
-      refreshPreview();
-    } catch (err) {
-      toast.error("İşlem başarısız");
-    }
+    const id = editingBlock?.id || createDraftBlock(formData.type, blocks.length).id;
+    const payload = { ...formData, id, sort_order: editingBlock ? formData.sort_order : blocks.length + 1 };
+    const next = editingBlock
+      ? blocks.map((block) => block.id === editingBlock.id ? payload : block)
+      : [...blocks, payload];
+    commitBlocks(next, id);
+    toast.success(editingBlock ? "Değişiklik taslağa alındı" : "Blok taslağa eklendi");
+    setModalOpen(false);
+    resetForm();
   };
 
   const handleDelete = async (id) => {
-    if (!await window.appConfirm("Bloğu silmek istediğinize emin misiniz?")) return;
-    try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`${API}/page-blocks/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      toast.success("Blok silindi");
-      fetchBlocks();
-      refreshPreview();
-    } catch (err) {
-      toast.error("Silme başarısız");
-    }
+    const confirmDelete = window.appConfirm
+      ? await window.appConfirm("Blok taslaktan kaldırılsın mı? Kaydetmeden geri alabilirsiniz.")
+      : window.confirm("Blok taslaktan kaldırılsın mı? Kaydetmeden geri alabilirsiniz.");
+    if (!confirmDelete) return;
+    const next = blocks.filter((block) => block.id !== id);
+    commitBlocks(next, selectedId === id ? next[0]?.id || null : selectedId);
   };
 
   const handleToggleActive = async (block) => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.put(`${API}/page-blocks/${block.id}`, {
-        ...block,
-        is_active: !block.is_active
-      }, { headers: { Authorization: `Bearer ${token}` } });
-      
-      setBlocks(blocks.map(b => 
-        b.id === block.id ? { ...b, is_active: !b.is_active } : b
-      ));
-      toast.success(block.is_active ? "Blok taslağa alındı" : "Blok yayınlandı");
-      refreshPreview();
-    } catch (err) {
-      toast.error("İşlem başarısız");
-    }
+    commitBlocks(blocks.map((item) => item.id === block.id ? { ...item, is_active: !item.is_active } : item));
   };
 
-  const moveBlock = (index, direction) => {
-    const newIndex = direction === 'up' ? index - 1 : index + 1;
-    if (newIndex < 0 || newIndex >= blocks.length) return;
-    
-    const newBlocks = arrayMove(blocks, index, newIndex).map((item, i) => ({
-      ...item,
-      sort_order: i + 1
-    }));
-    setBlocks(newBlocks);
-    setHasChanges(true);
+  const addBlockFromLibrary = (type) => {
+    const block = createDraftBlock(type, blocks.length);
+    commitBlocks([...blocks, block], block.id);
+  };
+
+  const duplicateBlock = (block) => {
+    const index = blocks.findIndex((item) => item.id === block.id);
+    const copy = duplicateDraftBlock(block, index + 1);
+    const next = [...blocks];
+    next.splice(index + 1, 0, copy);
+    commitBlocks(next, copy.id);
+  };
+
+  const updateSelectedBlock = (patch) => {
+    if (!selectedBlock) return;
+    commitBlocks(blocks.map((block) => block.id === selectedBlock.id ? { ...block, ...patch } : block));
   };
 
   const openEditModal = (block) => {
@@ -670,172 +842,144 @@ export default function PageDesign() {
 
 
   return (
-    <div data-testid="page-design" className="flex flex-col lg:flex-row gap-8 h-screen pb-20">
-      {/* Sol Panel: Yönetim */}
-      <div className="flex-1 overflow-y-auto pr-4">
-        <div className="flex items-center justify-between mb-6">
+    <div data-testid="page-design" className="min-h-screen bg-gray-50 pb-20">
+      <header className="sticky top-0 z-20 mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 bg-white/95 px-4 py-3 backdrop-blur">
         <div>
-          <h1 className="text-2xl font-bold">Sayfa Tasarımı</h1>
-          <p className="text-sm text-gray-500 mt-1">Ana sayfa blokları - Sürükle bırak ile sırala</p>
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl font-bold">Sayfa Tasarımı</h1>
+            <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${hasChanges ? "bg-amber-100 text-amber-800" : "bg-emerald-100 text-emerald-700"}`} data-testid="unsaved-indicator">
+              {hasChanges ? "Kaydedilmemiş değişiklikler" : "Tüm değişiklikler kayıtlı"}
+            </span>
+          </div>
+          <p className="mt-0.5 text-xs text-gray-500">Blokları taslakta düzenleyin, tamamını tek seferde kaydedin.</p>
         </div>
-        <div className="flex items-center gap-3 flex-wrap">
-          {hasChanges && (
-            <button 
-              onClick={handleSaveOrder}
-              disabled={saving}
-              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
-              data-testid="save-order-btn"
-            >
-              {saving ? "Kaydediliyor..." : "Sıralamayı Kaydet"}
-            </button>
-          )}
-          <button
-            onClick={async () => {
-              if (blocks.length > 0 && !window.confirm("Anasayfada zaten bloklar var. Bunları silip varsayılan tasarımla değiştirmek istiyor musunuz?")) return;
-              try {
-                const token = localStorage.getItem('token');
-                const res = await axios.post(
-                  `${API}/page-blocks/seed-default-home?overwrite=${blocks.length > 0}`,
-                  {},
-                  { headers: { Authorization: `Bearer ${token}` } }
-                );
-                if (res.data?.success) {
-                  toast.success(res.data.message || "Varsayılan anasayfa yüklendi");
-                  fetchBlocks();
-                } else {
-                  toast.error(res.data?.message || "İşlem başarısız");
-                }
-              } catch (e) {
-                toast.error(e.response?.data?.detail || "Hata oluştu");
-              }
-            }}
-            className="flex items-center gap-2 bg-stone-800 text-white px-4 py-2 rounded hover:bg-black"
-            data-testid="seed-default-home-btn"
-          >
-            <Image size={16} /> Varsayılanı Yükle
-          </button>
-          <button 
-            onClick={() => { resetForm(); setModalOpen(true); }}
-            className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
-          >
-            <Plus size={18} />
-            Yeni Blok
+        <div className="flex items-center gap-2">
+          <button type="button" onClick={undo} disabled={historyIndex <= 0} aria-label="Geri al" title="Geri al"
+            className="rounded-lg border bg-white p-2 text-gray-700 disabled:opacity-30"><Undo2 size={17} /></button>
+          <button type="button" onClick={redo} disabled={historyIndex >= history.length - 1} aria-label="Yinele" title="Yinele"
+            className="rounded-lg border bg-white p-2 text-gray-700 disabled:opacity-30"><Redo2 size={17} /></button>
+          <button type="button" onClick={handleSaveOrder} disabled={!hasChanges || saving}
+            className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40"
+            data-testid="save-order-btn">
+            <Save size={16} /> {saving ? "Kaydediliyor…" : "Tümünü Kaydet"}
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* Info Box */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 mb-6">
-        <div className="flex items-start gap-3">
-          <div className="text-2xl">💡</div>
-          <div>
-            <p className="text-sm font-medium text-blue-900">Sürükle & Bırak ile Düzenle</p>
-            <p className="text-xs text-blue-700 mt-1">
-              Blokları sol taraftaki tutma noktasından sürükleyerek sıralayabilirsiniz. 
-              Değişikliklerinizi kaydetmek için yeşil &quot;Sıralamayı Kaydet&quot; butonuna tıklayın.
-            </p>
+      <div className="grid gap-4 px-4 xl:grid-cols-[240px_minmax(420px,1fr)_360px]">
+        <aside className="h-fit rounded-xl border border-gray-200 bg-white p-3 xl:sticky xl:top-24" aria-label="Blok kütüphanesi">
+          <h2 className="mb-2 text-sm font-semibold">Blok Kütüphanesi</h2>
+          <div className="relative mb-3">
+            <Search size={15} className="absolute left-2.5 top-2.5 text-gray-400" />
+            <input value={librarySearch} onChange={(event) => setLibrarySearch(event.target.value)}
+              placeholder="Blok ara…" aria-label="Blok ara"
+              className="w-full rounded-lg border border-gray-300 py-2 pl-8 pr-2 text-sm" />
           </div>
-        </div>
-      </div>
-
-      {/* Blocks List with Drag & Drop */}
-      <DndContext 
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext 
-          items={blocks.map(b => b.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          <div className="space-y-3">
-            {loading ? (
-              <div className="text-center py-8">Yükleniyor...</div>
-            ) : blocks.length === 0 ? (
-              <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-                <div className="text-4xl mb-3">📦</div>
-                <p className="text-gray-500 mb-4">Henüz blok eklenmemiş</p>
-                <button 
-                  onClick={() => { resetForm(); setModalOpen(true); }}
-                  className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
-                >
-                  <Plus size={16} /> İlk Bloğu Ekle
-                </button>
-              </div>
-            ) : (
-              blocks.map((block, index) => (
-                <SortableBlockItem
-                  key={block.id}
-                  block={block}
-                  onEdit={openEditModal}
-                  onDelete={handleDelete}
-                  onToggleActive={handleToggleActive}
-                  getBlockTypeInfo={getBlockTypeInfo}
-                />
-              ))
-            )}
-          </div>
-        </SortableContext>
-      </DndContext>
-
-      {/* Block Types Legend */}
-      {blocks.length > 0 && (
-        <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-          <h3 className="text-sm font-medium mb-3">Blok Tipleri</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            {BLOCK_TYPES.map(type => (
-              <div key={type.value} className="flex items-center gap-2 text-xs text-gray-600">
-                <span>{type.icon}</span>
-                <span>{type.label}</span>
-              </div>
+          <div className="grid gap-1.5 sm:grid-cols-2 xl:grid-cols-1">
+            {filteredBlockTypes.map((type) => (
+              <button key={type.value} type="button" onClick={() => addBlockFromLibrary(type.value)}
+                className="group flex items-start gap-2 rounded-lg border border-gray-200 p-2 text-left hover:border-gray-400 hover:bg-gray-50">
+                <span className="text-lg" aria-hidden="true">{type.icon}</span>
+                <span className="min-w-0">
+                  <span className="block text-xs font-semibold text-gray-800">{type.label}</span>
+                  <span className="mt-0.5 block text-[10px] leading-tight text-gray-500">{type.description}</span>
+                </span>
+                <Plus size={14} className="ml-auto shrink-0 text-gray-400 group-hover:text-gray-900" />
+              </button>
             ))}
           </div>
-        </div>
-      )}
-      </div>
+          {!filteredBlockTypes.length && <p className="py-6 text-center text-xs text-gray-500">Eşleşen blok yok.</p>}
+        </aside>
 
-      {/* Sağ Panel: Canlı Önizleme */}
-      <div 
-        className={`hidden lg:flex flex-col shrink-0 border-[6px] border-gray-900 bg-gray-100 overflow-hidden shadow-2xl relative mb-8 transition-all duration-300 ${
-          previewMode === "mobile" 
-            ? "w-[375px] xl:w-[414px] rounded-[2.5rem]" 
-            : "flex-1 rounded-xl max-w-4xl"
-        }`}
-      >
-        <div className="bg-gray-900 text-white py-2 px-6 flex justify-between items-center text-xs font-medium">
-          <div className="flex items-center gap-4">
-            <span>Canlı Önizleme</span>
-            <div className="flex bg-gray-800 rounded p-1">
-              <button 
-                onClick={() => setPreviewMode("mobile")}
-                className={`px-3 py-1 rounded transition-colors ${previewMode === "mobile" ? "bg-gray-700 text-white" : "text-gray-400 hover:text-white"}`}
-              >
-                Mobil
-              </button>
-              <button 
-                onClick={() => setPreviewMode("desktop")}
-                className={`px-3 py-1 rounded transition-colors ${previewMode === "desktop" ? "bg-gray-700 text-white" : "text-gray-400 hover:text-white"}`}
-              >
-                Masaüstü
-              </button>
+        <main className="min-w-0 rounded-xl border border-gray-200 bg-white p-4" aria-label="Sayfa akışı">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="font-semibold">Ana Sayfa Akışı</h2>
+              <p className="text-xs text-gray-500">{blocks.length} blok · tutma noktasından sürükleyin</p>
             </div>
           </div>
-          <button 
-            type="button"
-            onClick={refreshPreview} 
-            className="text-gray-300 hover:text-white transition-colors flex items-center gap-1"
-          >
-            Yenile
-          </button>
-        </div>
-        <div className="flex-1 w-full bg-white relative">
-          <iframe
-            id="preview-frame"
-            src="/?preview=true"
-            title="Canlı Önizleme"
-            className="w-full h-full border-0 absolute inset-0 bg-white"
-          />
-        </div>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={blocks.map((block) => block.id)} strategy={verticalListSortingStrategy}>
+              <div className="space-y-2">
+                {loading ? (
+                  <div className="py-12 text-center text-sm text-gray-500">Yükleniyor…</div>
+                ) : blocks.length === 0 ? (
+                  <div className="rounded-xl border-2 border-dashed border-gray-200 px-4 py-12 text-center">
+                    <p className="font-medium text-gray-700">Bu sayfada henüz blok yok</p>
+                    <p className="mt-1 text-xs text-gray-500">Sol kütüphaneden bir blok ekleyin. Otomatik içerik yüklenmez.</p>
+                  </div>
+                ) : blocks.map((block) => (
+                  <SortableBlockItem key={block.id} block={block} selected={block.id === selectedId}
+                    onSelect={setSelectedId} onEdit={openEditModal} onDelete={handleDelete}
+                    onToggleActive={handleToggleActive} onDuplicate={duplicateBlock} getBlockTypeInfo={getBlockTypeInfo} />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+        </main>
+
+        <aside className="space-y-4 xl:sticky xl:top-24 xl:h-[calc(100vh-7rem)] xl:overflow-y-auto" aria-label="Özellikler ve önizleme">
+          <section className="rounded-xl border border-gray-200 bg-white p-4">
+            <h2 className="mb-3 text-sm font-semibold">Blok Özellikleri</h2>
+            {selectedBlock ? (
+              <div className="space-y-3">
+                <div>
+                  <label htmlFor="selected-block-title" className="mb-1 block text-xs font-medium text-gray-600">Başlık</label>
+                  <input id="selected-block-title" value={selectedBlock.title || ""}
+                    onChange={(event) => updateSelectedBlock({ title: event.target.value })}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <label className="flex items-center gap-1.5 rounded-lg border p-2"><input type="checkbox" checked={selectedBlock.is_active !== false} onChange={(e) => updateSelectedBlock({ is_active: e.target.checked })} /> Yayında</label>
+                  <label className="flex items-center gap-1.5 rounded-lg border p-2"><input type="checkbox" checked={selectedBlock.show_desktop !== false} onChange={(e) => updateSelectedBlock({ show_desktop: e.target.checked })} /> Masaüstü</label>
+                  <label className="flex items-center gap-1.5 rounded-lg border p-2"><input type="checkbox" checked={selectedBlock.show_mobile !== false} onChange={(e) => updateSelectedBlock({ show_mobile: e.target.checked })} /> Mobil</label>
+                </div>
+                <button type="button" onClick={() => openEditModal(selectedBlock)}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50">
+                  <Edit size={15} /> Gelişmiş İçeriği Düzenle
+                </button>
+              </div>
+            ) : <p className="text-sm text-gray-500">Özelliklerini düzenlemek için akıştan bir blok seçin.</p>}
+          </section>
+
+          <section className="rounded-xl border border-gray-200 bg-white p-3">
+            <div className="mb-3 flex items-center justify-between">
+              <div>
+                <h2 className="text-sm font-semibold">Gerçek Zamanlı Önizleme</h2>
+                <p className="text-[10px] text-gray-500">Kaydedilmemiş taslağı gösterir</p>
+              </div>
+              <div className="flex rounded-lg bg-gray-100 p-1">
+                <button type="button" onClick={() => setPreviewMode("mobile")} aria-label="Mobil önizleme"
+                  className={`rounded p-1.5 ${previewMode === "mobile" ? "bg-white shadow" : "text-gray-400"}`}><Smartphone size={15} /></button>
+                <button type="button" onClick={() => setPreviewMode("desktop")} aria-label="Masaüstü önizleme"
+                  className={`rounded p-1.5 ${previewMode === "desktop" ? "bg-white shadow" : "text-gray-400"}`}><Monitor size={15} /></button>
+              </div>
+            </div>
+            <div className={`mx-auto overflow-hidden border-[5px] border-gray-900 bg-gray-50 shadow-inner transition-all ${previewMode === "mobile" ? "max-w-[230px] rounded-[24px]" : "w-full rounded-lg"}`} data-testid="draft-preview">
+              <div className="flex h-7 items-center justify-center bg-gray-900 text-[8px] tracking-[0.2em] text-white">MELUNI</div>
+              <div className="max-h-[420px] min-h-[260px] overflow-y-auto bg-white">
+                {blocks.filter((block) => block.is_active !== false && (previewMode === "mobile" ? block.show_mobile !== false : block.show_desktop !== false)).map((block) => {
+                  const info = getBlockTypeInfo(block.type);
+                  const image = block.images?.[0];
+                  return (
+                    <div key={block.id} className={`relative border-b border-gray-100 ${block.id === selectedId ? "ring-2 ring-inset ring-blue-500" : ""}`} onClick={() => setSelectedId(block.id)}>
+                      {image ? <img src={image} alt="" className={`w-full object-cover ${block.type === "hero_slider" ? "h-28" : "h-20"}`} /> : (
+                        <div className="flex h-16 items-center justify-center bg-gray-100 text-xl">{info.icon}</div>
+                      )}
+                      <div className="px-2 py-1.5">
+                        <p className="truncate text-[9px] font-semibold">{block.title || info.label}</p>
+                        <p className="text-[7px] text-gray-400">{info.label}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+                {!blocks.some((block) => block.is_active !== false && (previewMode === "mobile" ? block.show_mobile !== false : block.show_desktop !== false)) && (
+                  <div className="flex min-h-[230px] items-center justify-center px-6 text-center text-[10px] text-gray-400">Bu cihazda gösterilecek aktif blok yok.</div>
+                )}
+              </div>
+            </div>
+          </section>
+        </aside>
       </div>
 
       {/* Block Modal */}
@@ -897,6 +1041,29 @@ export default function PageDesign() {
                 <span className="text-sm">Yayında (Ana sayfada müşterilere göster)</span>
               </label>
               <p className="text-xs text-gray-500 ml-6 block w-full">- Seçilmezse &quot;Taslak&quot; olur, sadece önizlemede görünür.</p>
+            </div>
+
+            {/* BLOK ZAMAN ARALIĞI — tüm blok için (slayt ızgarası olmayan tiplerde de çalışır) */}
+            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <p className="text-xs font-semibold uppercase tracking-wider text-gray-600">
+                  ⏱ Bloğun Yayın Aralığı
+                </p>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded ${schedState(formData.settings?.schedule).cls}`}>
+                  {schedState(formData.settings?.schedule).label}
+                </span>
+              </div>
+              <p className="text-[11px] text-gray-500 mb-1">
+                Bloğun TAMAMI yalnız bu aralıkta yayında olur. Tek tek bannerlar için her
+                görselin altındaki <b>Zaman aralığı</b> butonunu kullan.
+              </p>
+              <ScheduleEditor
+                value={formData.settings?.schedule || null}
+                onChange={(nv) => setFormData({
+                  ...formData,
+                  settings: { ...formData.settings, schedule: nv && (nv.start || nv.end) ? nv : null },
+                })}
+              />
             </div>
 
             {/* Visibility Toggles (Mobile / Desktop) */}
@@ -1002,6 +1169,33 @@ export default function PageDesign() {
                         placeholder="/kategori/..."
                         className="w-full text-xs border px-2 py-1.5 rounded mt-2"
                       />
+                      {/* Bu banner'a özel yayın aralığı — girilen tarih/saat dışında sitede görünmez */}
+                      {(() => {
+                        const sc = slideSched(index);
+                        const st = schedState(sc);
+                        const open = schedOpen === index;
+                        return (
+                          <div className="mt-1.5">
+                            <button
+                              type="button"
+                              onClick={() => setSchedOpen(open ? null : index)}
+                              className={`w-full text-[11px] px-2 py-1 rounded border flex items-center justify-between gap-1 ${
+                                st.key === "none" ? "border-gray-300 text-gray-600 hover:border-black"
+                                  : "border-black bg-gray-50 text-black"}`}
+                              title={fmtSched(sc) || "Bu banner için özel aktif aralık gir"}
+                            >
+                              <span className="flex items-center gap-1">⏱ Zaman aralığı</span>
+                              <span className={`px-1.5 py-0.5 rounded ${st.cls}`}>{st.label}</span>
+                            </button>
+                            {!open && fmtSched(sc) && (
+                              <p className="text-[10px] text-gray-500 mt-0.5 truncate" title={fmtSched(sc)}>{fmtSched(sc)}</p>
+                            )}
+                            {open && (
+                              <ScheduleEditor value={sc} onChange={(nv) => setSlideSched(index, nv)} />
+                            )}
+                          </div>
+                        );
+                      })()}
                       {formData.type === "hero_slider" && formData.settings?.hero_style === "dikey" && (() => {
                         const caps = Array.isArray(formData.settings?.captions) ? formData.settings.captions : [];
                         const cap = caps[index] || {};
@@ -1202,7 +1396,7 @@ export default function PageDesign() {
                       type="text"
                       value={formData.settings?.fallback_text || ""}
                       onChange={(e) => setFormData({ ...formData, settings: { ...formData.settings, fallback_text: e.target.value } })}
-                      placeholder="500 TL Üzeri Ücretsiz Kargo"
+                      placeholder="Bar pasifken gösterilecek metin (opsiyonel)"
                       className="w-full border border-gray-300 px-3 py-2 rounded text-sm"
                     />
                     <p className="text-[10px] text-gray-500 mt-1">Boşsa pasif iken bar tamamen gizli.</p>
@@ -1247,7 +1441,7 @@ export default function PageDesign() {
                             arr[i] = e.target.value;
                             setFormData({ ...formData, settings: { ...formData.settings, texts: arr } });
                           }}
-                          placeholder="Örn: 500 TL Üzeri Ücretsiz Kargo"
+                          placeholder="Örn: Yeni Sezon Geldi"
                           className="flex-1 border border-gray-300 px-3 py-2 rounded text-sm"
                           data-testid={`rotating-text-input-${i}`}
                         />
@@ -1514,7 +1708,7 @@ export default function PageDesign() {
                 type="submit"
                 className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
               >
-                {editingBlock ? "Güncelle" : "Ekle"}
+                {editingBlock ? "Taslağa Uygula" : "Taslağa Ekle"}
               </button>
             </div>
           </form>

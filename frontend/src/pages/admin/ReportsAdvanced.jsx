@@ -8,17 +8,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { TrendingUp, RotateCcw, Award, Sparkles } from "lucide-react";
 import ReportScopeBadge from "../../components/ReportScopeBadge";
+import { defaultReportRange, reportCoverageDays } from "../../lib/reportFilters";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 export default function ReportsAdvanced() {
+  const reportRange = defaultReportRange();
   const [bySize, setBySize] = useState([]);
   const [byProduct, setByProduct] = useState([]);
   const [reasons, setReasons] = useState([]);
   const [fastSelling, setFastSelling] = useState([]);
   const [mfgPerf, setMfgPerf] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [windowDays, setWindowDays] = useState(14);
+  const [windowDays, setWindowDays] = useState(Math.min(90, reportCoverageDays()));
   const [minSold, setMinSold] = useState(10);
 
   const token = localStorage.getItem("token");
@@ -28,9 +30,9 @@ export default function ReportsAdvanced() {
     setLoading(true);
     try {
       const [s, p, r, f, m] = await Promise.all([
-        axios.get(`${API}/admin/reports/returns/by-size`, auth),
-        axios.get(`${API}/admin/reports/returns/by-product`, auth),
-        axios.get(`${API}/admin/reports/returns/reasons`, auth),
+        axios.get(`${API}/admin/reports/returns/by-size`, { ...auth, params: { start_date: reportRange.from, end_date: reportRange.to } }),
+        axios.get(`${API}/admin/reports/returns/by-product`, { ...auth, params: { start_date: reportRange.from, end_date: reportRange.to } }),
+        axios.get(`${API}/admin/reports/returns/reasons`, { ...auth, params: { start_date: reportRange.from, end_date: reportRange.to } }),
         axios.get(`${API}/admin/reports/fast-selling?window_days=${windowDays}&min_sold=${minSold}`, auth),
         axios.get(`${API}/admin/reports/manufacturer-performance`, auth),
       ]);
@@ -49,6 +51,7 @@ export default function ReportsAdvanced() {
       <div>
         <h1 className="text-2xl font-semibold">Gelişmiş Raporlar</h1>
         <p className="text-sm text-gray-500 mt-1">İade analizleri, hızlı satış dedektörü ve üretici performansı.</p>
+        <p className="text-xs text-gray-400 mt-1">Varsayılan iade dönemi: {reportRange.from} → {reportRange.to}</p>
       </div>
 
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-900">
@@ -103,9 +106,9 @@ export default function ReportsAdvanced() {
               <thead className="text-xs text-gray-500 border-b">
                 <tr>
                   <th className="text-left pb-2">Ürün</th>
-                  <th className="text-right pb-2">Satılan</th>
-                  <th className="text-right pb-2">İade</th>
-                  <th className="text-right pb-2">Oran</th>
+                  <th className="text-right pb-2">İptal Hariç Satış Ürün Adedi</th>
+                  <th className="text-right pb-2">İade Ürün Adedi</th>
+                  <th className="text-right pb-2">İade % (Trendyol)</th>
                 </tr>
               </thead>
               <tbody>
@@ -115,9 +118,9 @@ export default function ReportsAdvanced() {
                     <td className="py-2 text-right">{p.sold}</td>
                     <td className="py-2 text-right text-orange-600 font-semibold">{p.returned}</td>
                     <td className="py-2 text-right">
-                      {p.return_rate_pct != null ? (
-                        <span className={`font-semibold ${p.return_rate_pct >= 50 ? "text-red-600" : p.return_rate_pct >= 20 ? "text-orange-500" : "text-gray-700"}`}>
-                          %{p.return_rate_pct}
+                      {p.trendyol_return_rate_pct != null ? (
+                        <span title="İade / Brüt Satış; iptaller iade adedine eklenmez" className={`font-semibold ${p.trendyol_return_rate_pct >= 50 ? "text-red-600" : p.trendyol_return_rate_pct >= 20 ? "text-orange-500" : "text-gray-700"}`}>
+                          %{p.trendyol_return_rate_pct}
                         </span>
                       ) : "—"}
                     </td>

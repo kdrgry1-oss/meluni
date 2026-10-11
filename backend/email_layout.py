@@ -104,17 +104,32 @@ def email_shell(*, eyebrow="", title="", intro_html="", icon="",
     # Sentinel — render_email zaten markalı maili tekrar sarmasın diye.
     P.append("<!--fct-shell-->")
 
+    # Kabuk tam HTML belgesi üretmiyor; <body>'yi mail istemcisi sağlıyor ve varsayılan
+    # 8px kenar boşluğu + BEYAZ zeminle geliyordu. Sonuç: bej alan mailin kenarlarına
+    # kadar gitmiyor, etrafında beyaz şerit kalıyor ve kart bej içinde ortalı olsa bile
+    # kompozisyon kaymış görünüyordu (kullanıcı bildirimi). Bunu sıfırla.
+    P.append(
+        '<style>'
+        'body{margin:0!important;padding:0!important;'
+        'background:' + _BG + '!important;'
+        '-webkit-text-size-adjust:100%;}'
+        'table{border-collapse:collapse;}'
+        'img{border:0;outline:none;text-decoration:none;}'
+        '</style>'
+    )
+
     if preheader:
         P.append('<div style="display:none;max-height:0;overflow:hidden;opacity:0;'
                  'mso-hide:all;">' + preheader + '</div>')
 
     # Dış sarmal + ortalanmış 600px kart
     P.append(
-        '<div style="background:' + _BG + ';margin:0;padding:32px 16px;font-family:' + _FONT + ';">'
+        '<div style="background:' + _BG + ';margin:0;padding:32px 16px;width:100%;'
+        'box-sizing:border-box;font-family:' + _FONT + ';">'
         '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">'
         '<tr><td align="center">'
-        '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" '
-        'style="width:600px;max-width:600px;background:' + _CARD + ';">'
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" '
+        'style="width:100%;max-width:600px;background:' + _CARD + ';">'
     )
 
     # Header — gerçek logo görseli (resim engellenirse alt="MELUNİ" görünür)
@@ -181,8 +196,8 @@ def email_shell(*, eyebrow="", title="", intro_html="", icon="",
 
     # Footer — sosyal + telif
     P.append(
-        '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" '
-        'style="width:600px;max-width:600px;"><tr><td style="padding:26px 24px 8px;text-align:center;">'
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" '
+        'style="width:100%;max-width:600px;"><tr><td style="padding:26px 24px 8px;text-align:center;">'
         '<a href="' + _BRAND.get("instagram", INSTAGRAM_URL) + '" style="font-size:11px;letter-spacing:2px;color:' + _MUTED + ';'
         'text-decoration:none;">INSTAGRAM</a>'
         '<span style="color:' + _FAINT + ';padding:0 12px;">·</span>'

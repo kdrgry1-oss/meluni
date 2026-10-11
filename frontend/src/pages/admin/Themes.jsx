@@ -1,436 +1,74 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import {
-  Palette, Eye, CheckCircle2, Trash2, RotateCcw, Plus, GripVertical, Image as ImageIcon,
-  Upload, ExternalLink, ArrowLeft, Save,
-} from "lucide-react";
+import { Palette, Eye, CheckCircle2, Trash2, RotateCcw, Plus, GripVertical, Upload, ExternalLink, ArrowLeft, Save, Monitor, Smartphone, History, X } from "lucide-react";
+import { themeCssVariables, themeImage, themePrice } from "../../lib/themeGallery";
+import "./themeGallery.css";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-
 const BLOCK_TYPES = [
-  { value: "announcement_bar", label: "Duyuru Bandı" },
-  { value: "hero_fullscreen", label: "Hero (Full-screen)" },
-  { value: "editorial_card", label: "Editöryel Kart" },
-  { value: "product_scroller", label: "Ürün Şeridi" },
-  { value: "lookbook_mosaic", label: "Lookbook (Mozaik)" },
-  { value: "newsletter", label: "Bülten" },
-  { value: "text_section", label: "Metin Bölümü" },
+  ["announcement_bar","Duyuru Bandı"],["hero_fullscreen","Hero"],["editorial_card","Editöryel Kart"],
+  ["product_scroller","Ürün Şeridi"],["newsletter","Bülten"],["text_section","Metin Bölümü"],
 ];
 
 export default function Themes() {
-  const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [editing, setEditing] = useState(null); // theme object being edited
+  const [list,setList]=useState([]), [data,setData]=useState({company:{name:"Meluni"},categories:[],products:[]});
+  const [loading,setLoading]=useState(true), [editing,setEditing]=useState(null), [preview,setPreview]=useState(null);
+  const [viewport,setViewport]=useState("desktop"), [versions,setVersions]=useState([]), [showHistory,setShowHistory]=useState(false);
+  const active=useMemo(()=>list.find(t=>t.is_active),[list]);
 
-  const fetchList = async () => {
-    setLoading(true);
-    try {
-      const r = await axios.get(`${API}/admin/themes`);
-      setList(r.data.items || []);
-    } catch (e) {
-      toast.error("Temalar yüklenemedi");
-    } finally {
-      setLoading(false);
-    }
+  const fetchAll=async()=>{ setLoading(true); try { const [themes,previewData]=await Promise.all([axios.get(`${API}/admin/themes`),axios.get(`${API}/admin/themes/preview-data`)]); setList(themes.data.items||[]); setData(previewData.data||data); } catch(e){ toast.error(e.response?.data?.detail||"Tema galerisi yüklenemedi"); } finally { setLoading(false); }};
+  useEffect(()=>{fetchAll();},[]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const apply=async(theme)=>{
+    if(!window.confirm(`“${theme.name}” temasını canlı mağazada uygulamak üzeresiniz. Mevcut tema sürüm olarak saklanacak ve geri alınabilecektir. Devam edilsin mi?`)) return;
+    try { const r=await axios.post(`${API}/admin/themes/${theme.id}/activate`,{confirm:true,expected_current_theme_id:active?.id||null}); toast.success(`Tema uygulandı. Geri alma sürümü: ${r.data.rollback_version_id||"mevcut"}`); await fetchAll(); }
+    catch(e){ toast.error(e.response?.data?.detail||"Tema uygulanamadı"); }
   };
+  const remove=async theme=>{ if(!window.confirm(`“${theme.name}” temasını silmek istiyor musunuz?`))return; try{await axios.delete(`${API}/admin/themes/${theme.id}`);toast.success("Tema silindi");fetchAll();}catch(e){toast.error(e.response?.data?.detail||"Tema silinemedi");}};
+  const reset=async id=>{ if(!window.confirm("Bu temayı özgün fabrika ayarlarına döndürmek istiyor musunuz? Önce mevcut sürüm saklanacaktır."))return; try{const r=await axios.post(`${API}/admin/themes/${id}/reset`);setEditing(r.data);toast.success("Tema sıfırlandı; önceki sürüm saklandı");fetchAll();}catch(e){toast.error(e.response?.data?.detail||"Tema sıfırlanamadı");}};
+  const openHistory=async()=>{try{const r=await axios.get(`${API}/admin/themes/versions`);setVersions(r.data.items||[]);setShowHistory(true);}catch{toast.error("Sürüm geçmişi yüklenemedi");}};
+  const rollback=async v=>{if(!window.confirm(`“${v.theme_name}” temasının ${new Date(v.created_at).toLocaleString("tr-TR")} sürümüne dönülsün mü? Mevcut durum da saklanacaktır.`))return;try{await axios.post(`${API}/admin/themes/versions/${v.id}/rollback`,{confirm:true});toast.success("Tema sürümü geri yüklendi");setShowHistory(false);fetchAll();}catch(e){toast.error(e.response?.data?.detail||"Geri alma başarısız");}};
 
-  useEffect(() => { fetchList(); }, []);
-
-  const activate = async (id) => {
-    try {
-      await axios.post(`${API}/admin/themes/${id}/activate`);
-      toast.success("Tema aktive edildi");
-      fetchList();
-    } catch { toast.error("Aktivasyon başarısız"); }
-  };
-
-  /** Aktif temayı (yoksa ilkini) kopyalayarak yeni bir tema açar. */
-  const yeniTema = async () => {
-    const kaynak = list.find(t => t.is_active) || list[0];
-    const ad = window.prompt("Yeni temanın adı", kaynak ? `${kaynak.name} — kopya` : "Yeni Tema");
-    if (!ad) return;
-    const slug = ad.toLocaleLowerCase("tr")
-      .replace(/ı/g, "i").replace(/ş/g, "s").replace(/ğ/g, "g")
-      .replace(/ü/g, "u").replace(/ö/g, "o").replace(/ç/g, "c")
-      .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
-    try {
-      const r = await axios.post(`${API}/admin/themes`, {
-        name: ad,
-        slug: slug || `tema-${Date.now()}`,
-        description: kaynak ? `${kaynak.name} temasından türetildi.` : "",
-        preview_image: kaynak?.preview_image || "",
-        // Bloklar YENİ kimlikle kopyalanır; kaynak temanın blokları etkilenmez.
-        blocks: (kaynak?.blocks || []).map(({ id, ...b }) => ({ ...b })),
-        menu: kaynak?.menu || [],
-        settings: JSON.parse(JSON.stringify(kaynak?.settings || {})),
-      });
-      toast.success("Tema oluşturuldu — düzenleyip aktive edebilirsiniz");
-      await fetchList();
-      setEditing(r.data);
-    } catch (e) {
-      toast.error(e.response?.data?.detail || "Tema oluşturulamadı");
-    }
-  };
-
-  const remove = async (t) => {
-    if (t.is_default) { toast.error("Varsayılan tema silinemez"); return; }
-    if (!window.confirm(`"${t.name}" temasını silmek istediğinize emin misiniz?`)) return;
-    try {
-      await axios.delete(`${API}/admin/themes/${t.id}`);
-      toast.success("Tema silindi");
-      fetchList();
-    } catch { toast.error("Silinemedi"); }
-  };
-
-  const resetMiumiu = async (id) => {
-    if (!window.confirm("Miu Miu temasını fabrika ayarlarına döndürmek istediğinize emin misiniz?")) return;
-    try {
-      const r = await axios.post(`${API}/admin/themes/${id}/reset`);
-      toast.success("Tema sıfırlandı");
-      setEditing(r.data);
-      fetchList();
-    } catch { toast.error("Sıfırlanamadı"); }
-  };
-
-  if (editing) {
-    return <ThemeEditor theme={editing} onClose={() => { setEditing(null); fetchList(); }} onReset={resetMiumiu} />;
-  }
-
-  return (
-    <div className="space-y-6" data-testid="themes-page">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2"><Palette size={24} /> Tema Yönetimi</h1>
-          <p className="text-sm text-zinc-500 mt-1">Müşterilere açık ön yüz (storefront) tasarımları. Aktif tema, ziyaretçilerin gördüğü tasarımdır.</p>
-        </div>
-        {/* Sezonluk tema üretmenin pratik yolu KOPYALAMAK: mevcut temanın
-            blokları ve renkleri gelir, üzerinde oynanır, hazır olunca aktive
-            edilir. Aktif tema bu sırada bozulmaz. */}
-        <button onClick={yeniTema} disabled={loading}
-          className="px-4 py-2 text-xs font-semibold bg-zinc-900 text-white rounded hover:bg-black disabled:opacity-50 flex items-center gap-1.5"
-          data-testid="btn-new-theme">
-          <Plus size={13} /> Yeni Tema
-        </button>
-      </div>
-
-      {loading ? <div className="text-zinc-500">Yükleniyor…</div> : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {list.map(t => (
-            <ThemeCard key={t.id} theme={t} onEdit={() => setEditing(t)} onActivate={() => activate(t.id)} onDelete={() => remove(t)} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  if(editing) return <ThemeEditor initial={editing} data={data} onClose={()=>{setEditing(null);fetchAll();}} onReset={reset}/>;
+  return <div className="space-y-6" data-testid="themes-page">
+    <div className="flex flex-wrap items-start justify-between gap-3"><div><h1 className="text-2xl font-bold flex items-center gap-2"><Palette size={24}/> Tema Yönetimi</h1><p className="text-sm text-zinc-500 mt-1">Gerçek logo, kategori ve ürünlerle canlı önizleme. Önizleme değişiklik yapmaz; yalnız “Uygula” mağazayı değiştirir.</p></div><button onClick={openHistory} className="px-3 py-2 border rounded flex items-center gap-2 text-sm"><History size={15}/> Sürüm geçmişi</button></div>
+    <div className="flex items-center justify-between rounded-xl border bg-white p-3"><div className="text-xs text-zinc-600"><b>Önizleme verisi:</b> {data.company?.name} · {data.categories?.length||0} kategori · {data.products?.length||0} gerçek ürün</div><ViewportToggle value={viewport} onChange={setViewport}/></div>
+    {loading?<div>Yükleniyor…</div>:<div className="grid grid-cols-1 xl:grid-cols-3 gap-5">{list.map(theme=><ThemeCard key={theme.id} theme={theme} data={data} viewport={viewport} onPreview={()=>setPreview(theme)} onEdit={()=>setEditing(theme)} onApply={()=>apply(theme)} onDelete={()=>remove(theme)}/>)}</div>}
+    {preview&&<PreviewModal theme={preview} data={data} viewport={viewport} setViewport={setViewport} onClose={()=>setPreview(null)} onEdit={()=>{setEditing(preview);setPreview(null);}}/>}
+    {showHistory&&<HistoryModal versions={versions} onRollback={rollback} onClose={()=>setShowHistory(false)}/>}
+  </div>;
 }
 
-function ThemeCard({ theme, onEdit, onActivate, onDelete }) {
-  return (
-    <div className="bg-white border border-zinc-200 rounded-md overflow-hidden hover:shadow-sm transition" data-testid={`theme-card-${theme.slug}`}>
-      <div className="aspect-[16/10] bg-zinc-100 relative overflow-hidden">
-        {theme.preview_image ? (
-          <img src={theme.preview_image} alt={theme.name} className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-zinc-400"><ImageIcon size={32} /></div>
-        )}
-        {theme.is_active && (
-          <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-600 text-white text-[11px] font-semibold uppercase tracking-wider">
-            <CheckCircle2 size={12} /> Aktif
-          </span>
-        )}
-      </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-zinc-900">{theme.name}</h3>
-        <p className="text-xs text-zinc-500 mt-1 line-clamp-2 min-h-[32px]">{theme.description || theme.slug}</p>
-        <div className="text-[11px] text-zinc-400 mt-2 flex items-center gap-3">
-          <span>{(theme.blocks || []).length} blok</span>
-          <span>{(theme.menu || []).length} menü</span>
-        </div>
-        <div className="grid grid-cols-2 gap-2 mt-4">
-          <button onClick={onEdit} data-testid={`btn-edit-${theme.slug}`} className="px-3 py-2 text-xs font-medium border border-zinc-900 hover:bg-zinc-900 hover:text-white transition rounded">Düzenle</button>
-          <a href={`/tema/${theme.slug}`} target="_blank" rel="noreferrer" data-testid={`btn-preview-${theme.slug}`} className="px-3 py-2 text-xs font-medium border border-zinc-200 hover:bg-zinc-100 transition rounded flex items-center justify-center gap-1.5"><Eye size={13}/> Önizle</a>
-          {!theme.is_active && (
-            <button onClick={onActivate} data-testid={`btn-activate-${theme.slug}`} className="col-span-2 px-3 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded">Aktive Et</button>
-          )}
-          {!theme.is_default && (
-            <button onClick={onDelete} data-testid={`btn-delete-${theme.slug}`} className="col-span-2 px-3 py-2 text-xs font-medium border border-rose-200 text-rose-600 hover:bg-rose-50 rounded flex items-center justify-center gap-1.5"><Trash2 size={13}/> Sil</button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
+function ViewportToggle({value,onChange}) { return <div className="flex rounded-lg border p-1" aria-label="Önizleme boyutu">{[["desktop",Monitor,"Masaüstü"],["mobile",Smartphone,"Mobil"]].map(([v,I,l])=><button key={v} onClick={()=>onChange(v)} aria-pressed={value===v} className={`px-2 py-1 rounded flex items-center gap-1 text-xs ${value===v?"bg-zinc-900 text-white":""}`}><I size={13}/>{l}</button>)}</div>; }
 
-/** Temanın renk ve yazı tipi belirteçleri — vitrinin görünümünü belirler. */
-const BELIRTEC_ALANLARI = [
-  ["ink", "Metin (mürekkep)", "renk"],
-  ["paper", "Zemin", "renk"],
-  ["line", "Ayraç / çerçeve", "renk"],
-  ["muted", "İkincil metin", "renk"],
-  ["accent", "Vurgu", "renk"],
-  ["display", "Başlık yazı tipi", "metin"],
-  ["sans", "Gövde yazı tipi", "metin"],
-  ["wordmark", "Logo yazı tipi", "metin"],
-  ["radius", "Köşe yarıçapı", "metin"],
-];
+function ThemeCard({theme,data,viewport,onPreview,onEdit,onApply,onDelete}) { return <article className="bg-white border rounded-xl overflow-hidden shadow-sm" data-testid={`theme-card-${theme.slug}`}>
+  <div className="h-64 bg-zinc-100 p-3 overflow-hidden"><MiniPreview theme={theme} data={data} viewport={viewport}/></div>
+  <div className="p-4"><div className="flex justify-between gap-2"><div><h2 className="font-semibold">{theme.name}</h2><p className="text-xs text-zinc-500 mt-1 min-h-8">{theme.description}</p></div>{theme.is_active&&<span className="h-fit bg-emerald-100 text-emerald-800 rounded-full px-2 py-1 text-[11px] flex items-center gap-1"><CheckCircle2 size={12}/>Aktif</span>}</div>
+    <div className="grid grid-cols-2 gap-2 mt-4"><button onClick={onPreview} className="border rounded py-2 text-xs flex justify-center gap-1"><Eye size={13}/>Önizle</button><button onClick={onEdit} className="border rounded py-2 text-xs">Özelleştir</button>{!theme.is_active&&<button onClick={onApply} className="col-span-2 bg-zinc-900 text-white rounded py-2 text-xs font-semibold">Uygula</button>}{!theme.is_default&&!theme.is_active&&<button onClick={onDelete} className="col-span-2 text-rose-600 border border-rose-200 rounded py-2 text-xs flex justify-center gap-1"><Trash2 size={13}/>Sil</button>}</div>
+  </div></article>; }
 
-function TemaBelirtecleri({ tokens, fontUrl, onChange }) {
-  const yaz = (ad, deger) => onChange({ ...tokens, [ad]: deger }, fontUrl);
-  return (
-    <div className="bg-white border border-zinc-200 rounded p-4">
-      <h2 className="text-sm font-semibold text-zinc-700 mb-1">Renk & Tipografi</h2>
-      <p className="text-xs text-zinc-500 mb-3">
-        Vitrinin görünümü buradan değişir. Boş bırakılan alan varsayılanı kullanır.
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {BELIRTEC_ALANLARI.map(([ad, etiket, tip]) => (
-          <div key={ad}>
-            <label className="text-xs font-semibold text-zinc-700">{etiket}</label>
-            <div className="mt-1 flex items-center gap-2">
-              {tip === "renk" && (
-                <input type="color" value={tokens[ad] || "#000000"}
-                  onChange={(e) => yaz(ad, e.target.value)}
-                  className="h-9 w-10 border border-zinc-300 rounded cursor-pointer shrink-0" />
-              )}
-              <input value={tokens[ad] || ""} onChange={(e) => yaz(ad, e.target.value)}
-                placeholder={tip === "renk" ? "#100f0c" : "'Jost', system-ui, sans-serif"}
-                className="w-full px-3 py-2 border border-zinc-300 rounded text-sm font-mono" />
-            </div>
-          </div>
-        ))}
-        <div className="md:col-span-3">
-          <label className="text-xs font-semibold text-zinc-700">Web font adresi (Google Fonts)</label>
-          <input value={fontUrl} onChange={(e) => onChange(tokens, e.target.value)}
-            placeholder="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap"
-            className="mt-1 w-full px-3 py-2 border border-zinc-300 rounded text-sm font-mono" />
-          <p className="text-[11px] text-zinc-400 mt-1">
-            Yazı tipi alanlarında bir web fontu kullandıysanız adresini buraya girin, yoksa yüklenmez.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
+function MiniPreview({theme,data,viewport,page="home"}) { const products=data.products||[], cats=data.categories||[], company=data.company||{}; return <div className={`tg-preview tg-${viewport}`} data-layout={theme.settings?.layout||"editorial"} style={themeCssVariables(theme.settings?.tokens)}>
+  <header><div className="tg-mark">{company.logo_url?<img src={company.logo_url} alt=""/>:company.name}</div><nav>{cats.slice(0,4).map(c=><span key={c.id}>{c.name}</span>)}</nav><b>⌕　♡　▢</b></header>
+  {page==="home"&&<><section className="tg-hero" style={{backgroundImage:`linear-gradient(#0004,#0004),url(${theme.blocks?.find(b=>b.type==="hero_fullscreen")?.image||themeImage(products[0])})`}}><small>MELUNI SEÇKİSİ</small><h3>{theme.blocks?.find(b=>b.type==="hero_fullscreen")?.title||"Yeni sezon"}</h3><button>KEŞFET</button></section><PreviewGrid products={products}/></>}
+  {page==="category"&&<><div className="tg-page-title"><small>KOLEKSİYON</small><h3>{cats[0]?.name||"Tüm ürünler"}</h3></div><PreviewGrid products={products}/></>}
+  {page==="product"&&<ProductPreview product={products[0]}/>}
+  {!products.length&&page!=="home"&&<div className="tg-empty">Katalogda gösterilebilir ürün bulunamadı.</div>}
+  </div>; }
+function PreviewGrid({products}) { return <section className="tg-grid">{products.slice(0,4).map(p=><div key={p.id}><div style={{backgroundImage:`url(${themeImage(p)})`}}/><b>{p.name||p.title}</b><span>{themePrice(p)}</span></div>)}</section>; }
+function ProductPreview({product}) { if(!product)return null; return <section className="tg-product"><div style={{backgroundImage:`url(${themeImage(product)})`}}/><aside><small>YENİ SEZON</small><h3>{product.name||product.title}</h3><b>{themePrice(product)}</b><p>Renk ve beden seçeneklerini keşfedin.</p><button>SEPETE EKLE</button></aside></section>; }
 
-function ThemeEditor({ theme: initial, onClose, onReset }) {
-  const [theme, setTheme] = useState(initial);
-  const [saving, setSaving] = useState(false);
+function PreviewModal({theme,data,viewport,setViewport,onClose,onEdit}) { const [page,setPage]=useState("home"); return <div className="fixed inset-0 z-[100] bg-black/60 p-4 md:p-8 flex items-center justify-center" role="dialog" aria-modal="true"><div className="bg-white rounded-xl w-full max-w-6xl max-h-full overflow-auto"><div className="sticky top-0 z-10 bg-white border-b p-3 flex flex-wrap justify-between gap-2"><div><b>{theme.name}</b><div className="flex gap-1 mt-2">{[["home","Ana sayfa"],["category","Kategori"],["product","Ürün detayı"]].map(([v,l])=><button key={v} onClick={()=>setPage(v)} className={`px-2 py-1 rounded text-xs ${page===v?"bg-zinc-900 text-white":"bg-zinc-100"}`}>{l}</button>)}</div></div><div className="flex items-center gap-2"><ViewportToggle value={viewport} onChange={setViewport}/><button onClick={onEdit} className="border rounded px-3 py-2 text-xs">Özelleştir</button><a href={`/tema/${theme.slug}`} target="_blank" rel="noreferrer" className="border rounded px-3 py-2 text-xs flex gap-1"><ExternalLink size={13}/>Tam ekran</a><button onClick={onClose} aria-label="Kapat"><X/></button></div></div><div className={`mx-auto p-5 ${viewport==="mobile"?"max-w-sm":"max-w-full"}`}><MiniPreview theme={theme} data={data} viewport={viewport} page={page}/></div></div></div>; }
 
-  const setBlocks = (blocks) => setTheme(t => ({ ...t, blocks }));
+function HistoryModal({versions,onRollback,onClose}) { return <div className="fixed inset-0 z-[100] bg-black/50 flex justify-end" role="dialog" aria-modal="true"><aside className="w-full max-w-md bg-white h-full p-5 overflow-auto"><div className="flex justify-between"><h2 className="font-bold">Tema sürüm geçmişi</h2><button onClick={onClose} aria-label="Kapat"><X/></button></div><p className="text-xs text-zinc-500 mt-2">Her uygulama ve özelleştirme öncesindeki geri alınabilir kopyalar.</p><div className="mt-5 space-y-3">{versions.map(v=><div key={v.id} className="border rounded p-3"><b className="text-sm">{v.theme_name}</b><p className="text-xs text-zinc-500">{v.action} · {new Date(v.created_at).toLocaleString("tr-TR")}</p><button onClick={()=>onRollback(v)} className="mt-2 text-xs border rounded px-2 py-1"><RotateCcw size={12} className="inline"/> Bu sürüme dön</button></div>)}{!versions.length&&<p className="text-sm text-zinc-500">Henüz sürüm kaydı yok.</p>}</div></aside></div>; }
 
-  const updateBlock = (id, patch) => {
-    setBlocks(theme.blocks.map(b => b.id === id ? { ...b, ...patch } : b));
-  };
+function ThemeEditor({initial,data,onClose,onReset}) { const [theme,setTheme]=useState(initial),[saving,setSaving]=useState(false),[viewport,setViewport]=useState("desktop"); const blocks=theme.blocks||[];
+ const updateBlock=(id,patch)=>setTheme(t=>({...t,blocks:t.blocks.map(b=>b.id===id?{...b,...patch}:b)}));
+ const move=(idx,dir)=>{const next=[...blocks],to=idx+dir;if(to<0||to>=next.length)return;[next[idx],next[to]]=[next[to],next[idx]];next.forEach((b,i)=>b.order=i);setTheme({...theme,blocks:next});};
+ const save=async()=>{setSaving(true);try{const r=await axios.put(`${API}/admin/themes/${theme.id}`,{name:theme.name,slug:theme.slug,description:theme.description,preview_image:theme.preview_image,blocks:theme.blocks,menu:theme.menu,settings:theme.settings});setTheme(r.data);toast.success("Tema taslağı kaydedildi; canlı tema değiştirilmedi");}catch(e){toast.error(e.response?.data?.detail||"Kaydedilemedi");}finally{setSaving(false);}};
+ return <div className="space-y-5"><div className="flex flex-wrap justify-between gap-3"><div className="flex gap-2"><button onClick={onClose}><ArrowLeft/></button><div><h1 className="text-xl font-bold">{theme.name}</h1><p className="text-xs text-zinc-500">Özelleştirme taslağı</p></div></div><div className="flex gap-2"><button onClick={()=>onReset(theme.id)} className="border rounded px-3 py-2 text-xs"><RotateCcw size={13} className="inline"/> Fabrika ayarları</button><button onClick={save} disabled={saving} className="bg-zinc-900 text-white rounded px-4 py-2 text-xs"><Save size={13} className="inline"/> {saving?"Kaydediliyor…":"Taslağı kaydet"}</button></div></div>
+ <div className="grid xl:grid-cols-2 gap-5"><div className="space-y-4"><div className="bg-white border rounded p-4 grid gap-3"><label className="text-xs font-semibold">Tema adı<input value={theme.name} onChange={e=>setTheme({...theme,name:e.target.value})} className="block w-full border rounded p-2 mt-1 font-normal"/></label><label className="text-xs font-semibold">Açıklama<textarea value={theme.description||""} onChange={e=>setTheme({...theme,description:e.target.value})} className="block w-full border rounded p-2 mt-1 font-normal"/></label><TokenFields theme={theme} setTheme={setTheme}/></div><div className="flex justify-between"><h2 className="font-semibold text-sm">İçerik blokları</h2><button onClick={()=>setTheme({...theme,blocks:[...blocks,{id:`tmp-${Date.now()}`,type:"text_section",title:"Yeni bölüm",subtitle:"",order:blocks.length,is_active:true,settings:{}}]})} className="text-xs border rounded px-2"><Plus size={12} className="inline"/> Blok ekle</button></div>{blocks.map((b,i)=><BlockRow key={b.id} block={b} idx={i} total={blocks.length} onChange={p=>updateBlock(b.id,p)} onMove={d=>move(i,d)} onRemove={()=>setTheme({...theme,blocks:blocks.filter(x=>x.id!==b.id)})}/>)}</div><div className="xl:sticky xl:top-4 h-fit"><div className="flex justify-between mb-2"><b className="text-sm">Canlı taslak önizlemesi</b><ViewportToggle value={viewport} onChange={setViewport}/></div><MiniPreview theme={theme} data={data} viewport={viewport}/></div></div></div>; }
 
-  const moveBlock = (idx, dir) => {
-    const next = [...theme.blocks];
-    const target = idx + dir;
-    if (target < 0 || target >= next.length) return;
-    [next[idx], next[target]] = [next[target], next[idx]];
-    next.forEach((b, i) => { b.order = i; });
-    setBlocks(next);
-  };
+function TokenFields({theme,setTheme}) { const tokens=theme.settings?.tokens||{}; const set=(k,v)=>setTheme({...theme,settings:{...theme.settings,tokens:{...tokens,[k]:v}}}); return <div><p className="text-xs font-semibold mb-2">Tema renkleri (CSS değişkenleri)</p><div className="grid grid-cols-3 gap-2">{[["background","Arka plan"],["surface","Yüzey"],["text","Metin"],["muted","İkincil"],["accent","Vurgu"],["border","Çizgi"]].map(([k,l])=><label key={k} className="text-[11px]">{l}<span className="flex border rounded p-1 mt-1"><input type="color" value={tokens[k]||"#000000"} onChange={e=>set(k,e.target.value)}/><input value={tokens[k]||""} onChange={e=>set(k,e.target.value)} className="w-full text-[10px] px-1"/></span></label>)}</div></div>; }
 
-  const addBlock = () => {
-    const newBlock = {
-      id: `tmp-${Date.now()}`,
-      type: "editorial_card",
-      title: "Yeni Blok",
-      subtitle: "",
-      image: "",
-      mobile_image: "",
-      link_url: "",
-      link_label: "Shop",
-      order: theme.blocks.length,
-      is_active: true,
-      settings: { text_color: "#ffffff", align: "center", overlay: 0.3 },
-    };
-    setBlocks([...theme.blocks, newBlock]);
-  };
-
-  const removeBlock = (id) => {
-    if (!window.confirm("Bu bloğu silmek istediğinize emin misiniz?")) return;
-    setBlocks(theme.blocks.filter(b => b.id !== id));
-  };
-
-  const uploadImage = async (blockId, field, file) => {
-    const fd = new FormData();
-    fd.append("file", file);
-    try {
-      const r = await axios.post(`${API}/upload`, fd, { headers: { "Content-Type": "multipart/form-data" } });
-      const url = r.data.url || r.data.file_url || r.data.path;
-      if (url) {
-        updateBlock(blockId, { [field]: url.startsWith("http") ? url : `${process.env.REACT_APP_BACKEND_URL}${url}` });
-        toast.success("Görsel yüklendi");
-      } else { toast.error("Upload yanıtı tanınamadı"); }
-    } catch { toast.error("Görsel yüklenemedi"); }
-  };
-
-  const save = async () => {
-    setSaving(true);
-    try {
-      const payload = {
-        name: theme.name,
-        slug: theme.slug,
-        description: theme.description,
-        preview_image: theme.preview_image,
-        blocks: theme.blocks,
-        menu: theme.menu,
-        settings: theme.settings,
-      };
-      const r = await axios.put(`${API}/admin/themes/${theme.id}`, payload);
-      toast.success("Tema kaydedildi");
-      setTheme(r.data);
-    } catch { toast.error("Kayıt başarısız"); }
-    finally { setSaving(false); }
-  };
-
-  return (
-    <div className="space-y-5" data-testid="theme-editor">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <button onClick={onClose} className="p-2 hover:bg-zinc-100 rounded" data-testid="btn-back-themes"><ArrowLeft size={18}/></button>
-          <div>
-            <h1 className="text-xl font-bold">{theme.name}</h1>
-            <p className="text-xs text-zinc-500">slug: <code className="px-1.5 py-0.5 bg-zinc-100 rounded">{theme.slug}</code></p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <a href={`/tema/${theme.slug}`} target="_blank" rel="noreferrer" className="px-3 py-2 text-xs font-medium border border-zinc-200 rounded hover:bg-zinc-50 flex items-center gap-1.5"><ExternalLink size={13}/> Önizle</a>
-          {theme.slug === "miumiu" && (
-            <button onClick={() => onReset(theme.id)} className="px-3 py-2 text-xs font-medium border border-amber-200 text-amber-700 rounded hover:bg-amber-50 flex items-center gap-1.5" data-testid="btn-reset-miumiu"><RotateCcw size={13}/> Fabrika Ayarları</button>
-          )}
-          <button onClick={save} disabled={saving} className="px-4 py-2 text-xs font-semibold bg-zinc-900 text-white rounded hover:bg-black disabled:opacity-50 flex items-center gap-1.5" data-testid="btn-save-theme"><Save size={13}/> {saving ? "Kaydediliyor…" : "Kaydet"}</button>
-        </div>
-      </div>
-
-      {/* Meta */}
-      <div className="bg-white border border-zinc-200 rounded p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label className="text-xs font-semibold text-zinc-700">Tema Adı</label>
-          <input value={theme.name} onChange={e => setTheme({ ...theme, name: e.target.value })} className="mt-1 w-full px-3 py-2 border border-zinc-300 rounded text-sm" />
-        </div>
-        <div>
-          <label className="text-xs font-semibold text-zinc-700">Slug (URL)</label>
-          <input value={theme.slug} disabled={theme.is_default} onChange={e => setTheme({ ...theme, slug: e.target.value })} className="mt-1 w-full px-3 py-2 border border-zinc-300 rounded text-sm disabled:bg-zinc-50" />
-        </div>
-        <div>
-          <label className="text-xs font-semibold text-zinc-700">Önizleme Görseli (URL)</label>
-          <input value={theme.preview_image || ""} onChange={e => setTheme({ ...theme, preview_image: e.target.value })} className="mt-1 w-full px-3 py-2 border border-zinc-300 rounded text-sm" />
-        </div>
-        <div className="md:col-span-3">
-          <label className="text-xs font-semibold text-zinc-700">Açıklama</label>
-          <textarea value={theme.description || ""} onChange={e => setTheme({ ...theme, description: e.target.value })} rows={2} className="mt-1 w-full px-3 py-2 border border-zinc-300 rounded text-sm" />
-        </div>
-      </div>
-
-      {/* Renk & tipografi — TEMANIN ASIL KİMLİĞİ.
-          Bunlar mağaza kökünde CSS değişkenine çevrilir; blok içeriği değil,
-          vitrinin görünümü buradan değişir. Boş bırakılan alan varsayılana düşer. */}
-      <TemaBelirtecleri
-        tokens={theme.settings?.tokens || {}}
-        fontUrl={theme.settings?.font_url || ""}
-        onChange={(tokens, font_url) =>
-          setTheme({ ...theme, settings: { ...(theme.settings || {}), tokens, font_url } })}
-      />
-
-      {/* Blocks list */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-zinc-700">Bloklar ({theme.blocks.length})</h2>
-          <button onClick={addBlock} className="px-3 py-2 text-xs font-medium border border-dashed border-zinc-300 rounded hover:bg-zinc-50 flex items-center gap-1.5" data-testid="btn-add-block"><Plus size={13}/> Blok Ekle</button>
-        </div>
-        {theme.blocks.map((b, idx) => (
-          <BlockRow
-            key={b.id}
-            block={b}
-            idx={idx}
-            total={theme.blocks.length}
-            onChange={(patch) => updateBlock(b.id, patch)}
-            onMove={(dir) => moveBlock(idx, dir)}
-            onRemove={() => removeBlock(b.id)}
-            onUpload={(field, file) => uploadImage(b.id, field, file)}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function BlockRow({ block, idx, total, onChange, onMove, onRemove, onUpload }) {
-  return (
-    <div className="bg-white border border-zinc-200 rounded p-4" data-testid={`block-row-${block.id}`}>
-      <div className="flex items-center gap-3 mb-3">
-        <div className="flex flex-col">
-          <button onClick={() => onMove(-1)} disabled={idx === 0} className="text-zinc-400 hover:text-zinc-900 disabled:opacity-30 text-xs">▲</button>
-          <span className="text-[10px] text-zinc-400 text-center">{idx + 1}</span>
-          <button onClick={() => onMove(1)} disabled={idx === total - 1} className="text-zinc-400 hover:text-zinc-900 disabled:opacity-30 text-xs">▼</button>
-        </div>
-        <GripVertical size={16} className="text-zinc-300" />
-        <select value={block.type} onChange={e => onChange({ type: e.target.value })} className="px-2 py-1.5 border border-zinc-200 rounded text-xs font-medium">
-          {BLOCK_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-        </select>
-        <input value={block.title || ""} onChange={e => onChange({ title: e.target.value })} placeholder="Başlık" className="flex-1 px-3 py-1.5 border border-zinc-200 rounded text-sm font-medium" />
-        <label className="text-xs flex items-center gap-1.5 cursor-pointer">
-          <input type="checkbox" checked={!!block.is_active} onChange={e => onChange({ is_active: e.target.checked })} />
-          Aktif
-        </label>
-        <button onClick={onRemove} className="text-rose-600 hover:bg-rose-50 p-1.5 rounded" data-testid={`btn-remove-block-${block.id}`}><Trash2 size={14}/></button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 ml-12">
-        <div>
-          <label className="text-[11px] font-semibold text-zinc-600 uppercase tracking-wider">Alt başlık / metin</label>
-          <input value={block.subtitle || ""} onChange={e => onChange({ subtitle: e.target.value })} className="mt-1 w-full px-3 py-2 border border-zinc-200 rounded text-sm" />
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <label className="text-[11px] font-semibold text-zinc-600 uppercase tracking-wider">Buton metni</label>
-            <input value={block.link_label || ""} onChange={e => onChange({ link_label: e.target.value })} className="mt-1 w-full px-3 py-2 border border-zinc-200 rounded text-sm" />
-          </div>
-          <div>
-            <label className="text-[11px] font-semibold text-zinc-600 uppercase tracking-wider">Link (URL)</label>
-            <input value={block.link_url || ""} onChange={e => onChange({ link_url: e.target.value })} className="mt-1 w-full px-3 py-2 border border-zinc-200 rounded text-sm" />
-          </div>
-        </div>
-
-        {(block.type === "hero_fullscreen" || block.type === "editorial_card") && (
-          <>
-            <ImageField label="Masaüstü Görsel" value={block.image} onChange={(v) => onChange({ image: v })} onUpload={(f) => onUpload("image", f)} />
-            <ImageField label="Mobil Görsel" value={block.mobile_image} onChange={(v) => onChange({ mobile_image: v })} onUpload={(f) => onUpload("mobile_image", f)} />
-          </>
-        )}
-
-        {block.type === "product_scroller" && (
-          <div className="md:col-span-2 grid grid-cols-2 gap-2">
-            <div>
-              <label className="text-[11px] font-semibold text-zinc-600 uppercase tracking-wider">Kategori Slug</label>
-              <input value={block.settings?.category_slug || ""} onChange={e => onChange({ settings: { ...block.settings, category_slug: e.target.value } })} className="mt-1 w-full px-3 py-2 border border-zinc-200 rounded text-sm" />
-            </div>
-            <div>
-              <label className="text-[11px] font-semibold text-zinc-600 uppercase tracking-wider">Ürün adedi (limit)</label>
-              <input type="number" value={block.settings?.limit || 12} onChange={e => onChange({ settings: { ...block.settings, limit: parseInt(e.target.value || "12", 10) } })} className="mt-1 w-full px-3 py-2 border border-zinc-200 rounded text-sm" />
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function ImageField({ label, value, onChange, onUpload }) {
-  const inputRef = React.useRef(null);
-  return (
-    <div>
-      <label className="text-[11px] font-semibold text-zinc-600 uppercase tracking-wider">{label}</label>
-      <div className="mt-1 flex items-center gap-2">
-        {value && <img src={value} alt="" className="w-14 h-14 object-cover border border-zinc-200 rounded" />}
-        <input value={value || ""} onChange={e => onChange(e.target.value)} placeholder="https://… veya yükle" className="flex-1 px-3 py-2 border border-zinc-200 rounded text-xs" />
-        <button onClick={() => inputRef.current?.click()} className="px-2 py-2 border border-zinc-300 rounded hover:bg-zinc-50 text-xs flex items-center gap-1"><Upload size={12}/> Yükle</button>
-        <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) onUpload(f); }} />
-      </div>
-    </div>
-  );
-}
+function BlockRow({block,idx,total,onChange,onMove,onRemove}) { const inputRef=useRef(); const upload=async file=>{const fd=new FormData();fd.append("file",file);try{const r=await axios.post(`${API}/upload`,fd,{headers:{"Content-Type":"multipart/form-data"}});const u=r.data.url||r.data.file_url||r.data.path;if(u)onChange({image:u.startsWith("http")?u:`${process.env.REACT_APP_BACKEND_URL}${u}`});}catch{toast.error("Görsel yüklenemedi");}}; return <div className="bg-white border rounded p-3"><div className="flex gap-2 items-center"><GripVertical size={14}/><div><button disabled={!idx} onClick={()=>onMove(-1)}>▲</button><button disabled={idx===total-1} onClick={()=>onMove(1)}>▼</button></div><select value={block.type} onChange={e=>onChange({type:e.target.value})} className="border rounded p-1 text-xs">{BLOCK_TYPES.map(([v,l])=><option value={v} key={v}>{l}</option>)}</select><input value={block.title||""} onChange={e=>onChange({title:e.target.value})} className="border rounded p-1 flex-1 text-sm"/><button onClick={onRemove} className="text-rose-600"><Trash2 size={14}/></button></div><div className="grid grid-cols-2 gap-2 mt-2"><input value={block.subtitle||""} onChange={e=>onChange({subtitle:e.target.value})} placeholder="Alt başlık" className="border rounded p-2 text-xs"/><input value={block.link_label||""} onChange={e=>onChange({link_label:e.target.value})} placeholder="Buton metni" className="border rounded p-2 text-xs"/>{["hero_fullscreen","editorial_card"].includes(block.type)&&<><input value={block.image||""} onChange={e=>onChange({image:e.target.value})} placeholder="Görsel URL" className="border rounded p-2 text-xs"/><button onClick={()=>inputRef.current?.click()} className="border rounded text-xs"><Upload size={12} className="inline"/> Görsel yükle</button><input ref={inputRef} type="file" accept="image/*" hidden onChange={e=>e.target.files?.[0]&&upload(e.target.files[0])}/></>}</div></div>; }

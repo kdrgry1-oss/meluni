@@ -141,7 +141,6 @@ async def import_products():
                 "is_showcase": safe_int(row.get('VITRIN')) == 1,
                 "is_opportunity": safe_int(row.get('FIRSATURUNU')) == 1,
                 "is_free_shipping": safe_int(row.get('UCRETSIZKARGO')) == 1,
-                "consignment_stock": safe_int(row.get('KONSINYESTOKADEDI')),
                 "purchase_price": safe_float(row.get('ALISFIYATI')),
                 "market_price": safe_float(row.get('PIYASAFIYATI')),
                 "vat_rate": safe_float(row.get('KDVORANI'), 10),

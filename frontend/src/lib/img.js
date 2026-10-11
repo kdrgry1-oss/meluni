@@ -69,3 +69,29 @@ export function aspectFromDims(dims, fallback = "16 / 9") {
   }
   return fallback;
 }
+
+/**
+ * Vitrin/arama/sepet galerisi: yalnız gerçek ürün görselleri (URL string).
+ * Beden tablosu nesneleri ({url, is_size_table:true}) ve video kayıtları atılır; nesne ise url'i alınır.
+ * (Beden tablosu galeride ilk sıraya düşünce kartlar "[object Object]" ile boş kalıyordu.)
+ */
+export function galleryImages(product) {
+  const list = Array.isArray(product?.images) ? product.images : [];
+  const out = [];
+  for (const im of list) {
+    if (!im) continue;
+    if (typeof im === "object") {
+      if (im.is_size_table || im.is_video) continue;
+      const u = im.url || im.src || im.image;
+      if (typeof u === "string" && u && !out.includes(u)) out.push(u);
+    } else if (typeof im === "string" && !out.includes(im)) {
+      out.push(im);
+    }
+  }
+  if (!out.length && typeof product?.image === "string" && product.image) out.push(product.image);
+  return out;
+}
+
+export function firstImage(product) {
+  return galleryImages(product)[0] || "";
+}

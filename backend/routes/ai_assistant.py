@@ -24,7 +24,8 @@ import re
 
 # Emergent kaldırıldı → ai_chatbot.llm_chat kullanılıyor
 
-from .deps import db, require_admin, logger
+from .deps import db, require_admin, logger, require_permission
+from security.ai_budget import ai_slot, charge as ai_charge
 from .ai_chatbot import (
     get_ai_settings, _api_key_for, llm_chat, DEFAULT_PERSONA, MARKETPLACE_TO_COLL,
     _gather_kb_context, _gather_product_context,
@@ -57,14 +58,15 @@ KB_ANSWER:   <TEACH_QA ise cevap metni, değilse boş>
 INSTRUCTION: <INSTRUCT ise tek satır talimat, değilse boş>
 
 META üstündeki kısımda admin'e Türkçe, kısa, samimi yanıt ver:
-- TEACH_QA → "Eklendi: 'soru' → KB'ye kaydettim ✓"
-- INSTRUCT → "Talimat alındı: ... — sonraki cevaplarda uygulayacağım."
+- TEACH_QA → "Önerilen KB kaydı: 'soru' — onaylamak için 'Kaydet'e bas."
+- INSTRUCT → "Önerilen talimat: ... — onaylarsan sonraki cevaplarda uygulanır."
 - ASK → Soruya kısa, profesyonel bir yanıt + "Bu cevap KB'ye otomatik eklenmedi; istersen 'Kaydet' diyebilirsin."
 """
 
 
 @router.post("/chat")
-async def chat_with_assistant(payload: dict, current_user: dict = Depends(require_admin)):
+async def chat_with_assistant(payload: dict, current_user: dict = Depends(require_permission("questions.view")),
+                              _ai_guard: None = Depends(ai_slot("assistant_chat"))):  # denetim #25: yetkiden SONRA
     """Admin AI asistanla doğrudan sohbet eder, bot eğitimi yapar.
 
     Body: {"text": "...", "session_id": "<opt>"}
@@ -80,6 +82,7 @@ async def chat_with_assistant(payload: dict, current_user: dict = Depends(requir
     api_key = _api_key_for(settings)
     if not api_key:
         raise HTTPException(status_code=400, detail="AI anahtarı yapılandırılmamış")
+    await ai_charge(current_user, "assistant_chat")   # denetim #25: bütçe + kullanım kaydı
 
     try:
         resp_raw = await llm_chat(
@@ -116,34 +119,14 @@ async def chat_with_assistant(payload: dict, current_user: dict = Depends(requir
         instruction = m.group(4).strip().strip("\"'")
         reply_text = resp[: m.start()].strip()
 
-    kb_added = False
-    instruction_saved = False
-
+    # Güvenlik (AI-01): model çıktısı (LLM sınıflandırması) ASLA doğrudan veritabanına
+    # yazılmaz. Sohbet yalnız bir ÖNERİ döndürür; kalıcı yazma ayrı /chat/apply ucundan,
+    # personelin açık onayı + yazma yetkisi (questions.answer) ile yapılır.
+    proposal = None
     if intent == "TEACH_QA" and kb_q and kb_a:
-        await db.ai_knowledge_base.insert_one({
-            "id": str(uuid.uuid4()),
-            "question": kb_q,
-            "answer": kb_a,
-            "tags": ["chat-trained"],
-            "channel": "all",
-            "created_at": datetime.now(timezone.utc).isoformat(),
-            "created_by": current_user.get("email", ""),
-            "usage_count": 0,
-        })
-        kb_added = True
-
+        proposal = {"kind": "kb", "question": kb_q[:2000], "answer": kb_a[:4000]}
     elif intent == "INSTRUCT" and instruction:
-        # Persona'ya append et
-        cur_persona = settings.get("persona") or DEFAULT_PERSONA
-        new_persona = cur_persona + f"\n• {instruction}"
-        await db.settings.update_one(
-            {"id": "ai_chatbot"},
-            {"$set": {"persona": new_persona,
-                      "persona_updated_at": datetime.now(timezone.utc).isoformat(),
-                      "persona_updated_by": current_user.get("email")}},
-            upsert=True,
-        )
-        instruction_saved = True
+        proposal = {"kind": "instruction", "instruction": instruction[:1000]}
 
     # Audit log
     await db.ai_chat_history.insert_one({
@@ -153,25 +136,68 @@ async def chat_with_assistant(payload: dict, current_user: dict = Depends(requir
         "input": text,
         "reply": reply_text,
         "intent": intent,
-        "kb_added": kb_added,
-        "instruction_saved": instruction_saved,
+        "kb_added": False,
+        "instruction_saved": False,
+        "proposal": proposal,
         "created_at": datetime.now(timezone.utc).isoformat(),
     })
 
     return {
         "reply": reply_text,
         "intent": intent,
-        "kb_added": kb_added,
-        "instruction_saved": instruction_saved,
-        "kb_question": kb_q if kb_added else None,
-        "kb_answer": kb_a if kb_added else None,
-        "instruction": instruction if instruction_saved else None,
+        "kb_added": False,
+        "instruction_saved": False,
+        "proposal": proposal,
         "session_id": session_id,
     }
 
 
+@router.post("/chat/apply")
+async def apply_chat_proposal(payload: dict, current_user: dict = Depends(require_permission("questions.answer"))):
+    """Sohbette önerilen KB kaydını / persona talimatını personelin AÇIK onayıyla kaydeder.
+
+    Body: {"kind": "kb", "question": "...", "answer": "..."}
+       ya da {"kind": "instruction", "instruction": "..."}
+    Yazma yetkisi (questions.answer) zorunludur; yalnız görüntüleme yetkisi yetmez.
+    """
+    p = payload or {}
+    kind = str(p.get("kind") or "").strip()
+    now = datetime.now(timezone.utc).isoformat()
+    if kind == "kb":
+        q = str(p.get("question") or "").strip()[:2000]
+        a = str(p.get("answer") or "").strip()[:4000]
+        if not q or not a:
+            raise HTTPException(status_code=400, detail="Soru ve cevap boş olamaz")
+        await db.ai_knowledge_base.insert_one({
+            "id": str(uuid.uuid4()),
+            "question": q,
+            "answer": a,
+            "tags": ["chat-trained"],
+            "channel": "all",
+            "created_at": now,
+            "created_by": current_user.get("email", ""),
+            "usage_count": 0,
+        })
+        return {"success": True, "kb_added": True, "kb_question": q, "kb_answer": a}
+    if kind == "instruction":
+        instr = " ".join(str(p.get("instruction") or "").split())[:1000]
+        if not instr:
+            raise HTTPException(status_code=400, detail="Talimat boş olamaz")
+        settings = await get_ai_settings()
+        cur_persona = settings.get("persona") or DEFAULT_PERSONA
+        await db.settings.update_one(
+            {"id": "ai_chatbot"},
+            {"$set": {"persona": cur_persona + f"\n• {instr}",
+                      "persona_updated_at": now,
+                      "persona_updated_by": current_user.get("email")}},
+            upsert=True,
+        )
+        return {"success": True, "instruction_saved": True, "instruction": instr}
+    raise HTTPException(status_code=400, detail="Geçersiz öneri türü")
+
+
 @router.get("/chat/history")
-async def get_chat_history(limit: int = 100, current_user: dict = Depends(require_admin)):
+async def get_chat_history(limit: int = 100, current_user: dict = Depends(require_permission("questions.view"))):
     items = await db.ai_chat_history.find(
         {"admin_email": current_user.get("email")},
         {"_id": 0}
@@ -186,7 +212,7 @@ async def get_chat_history(limit: int = 100, current_user: dict = Depends(requir
 @router.post("/bulk-train")
 async def bulk_train_from_history(
     payload: Optional[dict] = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("questions.answer")),
 ):
     """Trendyol/HB/Temu collection'larındaki ANSWERED soruları KB'ye toplu aktar.
 
@@ -277,7 +303,7 @@ async def bulk_train_from_history(
 
 
 @router.get("/bulk-train-status")
-async def bulk_train_status(current_user: dict = Depends(require_admin)):
+async def bulk_train_status(current_user: dict = Depends(require_permission("questions.view"))):
     last = await db.settings.find_one({"id": "ai_assistant_last_train"}, {"_id": 0})
     kb_total = await db.ai_knowledge_base.count_documents({})
     kb_chat_trained = await db.ai_knowledge_base.count_documents({"tags": "chat-trained"})
@@ -304,7 +330,8 @@ Tek satır JSON döndür:
 
 
 @router.post("/evaluate-answer")
-async def evaluate_answer(payload: dict, current_user: dict = Depends(require_admin)):
+async def evaluate_answer(payload: dict, current_user: dict = Depends(require_permission("questions.answer")),
+                          _ai_guard: None = Depends(ai_slot("evaluate_answer"))):  # denetim #25: yetkiden SONRA
     question = (payload or {}).get("question", "").strip()
     answer = (payload or {}).get("answer", "").strip()
     if not question or not answer:
@@ -314,6 +341,7 @@ async def evaluate_answer(payload: dict, current_user: dict = Depends(require_ad
     api_key = _api_key_for(settings)
     if not api_key:
         raise HTTPException(status_code=400, detail="AI anahtarı yok")
+    await ai_charge(current_user, "evaluate_answer")   # denetim #25
 
     try:
         resp = await llm_chat(
@@ -343,7 +371,8 @@ async def evaluate_answer(payload: dict, current_user: dict = Depends(require_ad
 @router.post("/auto-answer-batch")
 async def auto_answer_batch(
     payload: Optional[dict] = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("questions.answer")),
+    _ai_guard: None = Depends(ai_slot("auto_answer_batch")),  # denetim #25: yetkiden SONRA
 ):
     """Bekleyen WAITING_FOR_ANSWER Trendyol soruları için draft + auto-send.
 
@@ -377,6 +406,8 @@ async def auto_answer_batch(
     api_key = _api_key_for(settings)
     if not api_key:
         raise HTTPException(status_code=400, detail="AI anahtarı yok")
+    if waiting:
+        await ai_charge(current_user, "auto_answer_batch", len(waiting))   # denetim #25: soru başına 1
 
     results = []
     sent_count = 0
@@ -525,7 +556,7 @@ async def auto_answer_batch(
 
 
 @router.get("/auto-answer-stats")
-async def auto_answer_stats(current_user: dict = Depends(require_admin)):
+async def auto_answer_stats(current_user: dict = Depends(require_permission("questions.view"))):
     last = await db.settings.find_one({"id": "ai_assistant_last_auto_answer"}, {"_id": 0})
     pending_trendyol = await db.trendyol_questions.count_documents({"status": "WAITING_FOR_ANSWER"})
     auto_answered_today = await db.trendyol_questions.count_documents({

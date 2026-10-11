@@ -6,15 +6,20 @@ Amazon DPP (Veri Koruma Politikası) uyum yönetimi.
   cevaplayabilmesi için).
 """
 from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_permission
+from activity_audit import record_admin_audit
+
+# GÜVENLİK (denetim 2026-10): PII saklama ayarı/çalıştırma KVKK işlemidir → ayrı yetki
+# (permissions.py: admin.compliance). Süper admin ('*') geçer.
+_PII_PERM = "admin.compliance"
 
 router = APIRouter(prefix="/compliance", tags=["Compliance / DPP"])
 
 
 @router.get("/pii-retention/status")
-async def pii_retention_status(current_user: dict = Depends(require_admin)):
+async def pii_retention_status(current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     cfg = await db.settings.find_one({"id": "pii_retention"}, {"_id": 0}) or {}
     redacted = await db.orders.count_documents({"pii_redacted": True})
     pending = await db.orders.count_documents({
@@ -33,24 +38,37 @@ async def pii_retention_status(current_user: dict = Depends(require_admin)):
 
 
 @router.post("/pii-retention/config")
-async def pii_retention_config(payload: dict, current_user: dict = Depends(require_admin)):
-    days = int(payload.get("days", 30))
+async def pii_retention_config(payload: dict, request: Request,
+                               current_user: dict = Depends(require_permission(_PII_PERM))):
+    try:
+        days = int(payload.get("days", 30))
+    except Exception:
+        raise HTTPException(status_code=400, detail="days sayı olmalı")
     if days < 1 or days > 365:
         raise HTTPException(status_code=400, detail="days 1-365 arası olmalı")
+    _plats = payload.get("platforms") or ["amazon"]
+    if not isinstance(_plats, list) or not all(isinstance(x, str) and 0 < len(x) <= 40 for x in _plats) or len(_plats) > 20:
+        raise HTTPException(status_code=400, detail="platforms metin listesi olmalı")
+    before = await db.settings.find_one({"id": "pii_retention"}, {"_id": 0}) or {}
     update = {
         "id": "pii_retention",
         "enabled": bool(payload.get("enabled", True)),
         "days": days,
-        "platforms": payload.get("platforms") or ["amazon"],
+        "platforms": _plats,
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "updated_by": current_user.get("email"),
     }
     await db.settings.update_one({"id": "pii_retention"}, {"$set": update}, upsert=True)
+    await record_admin_audit(
+        db, action="compliance.pii_retention_config", entity_type="settings", entity_id="pii_retention",
+        before={k: before.get(k) for k in ("enabled", "days", "platforms")},
+        after={k: update.get(k) for k in ("enabled", "days", "platforms")},
+        current_user=current_user, request=request, source="admin.compliance")
     return {"success": True, "config": update}
 
 
 @router.post("/pii-retention/run")
-async def pii_retention_run(current_user: dict = Depends(require_admin)):
+async def pii_retention_run(request: Request, current_user: dict = Depends(require_permission(_PII_PERM))):
     """PII anonimleştirmeyi manuel tetikler."""
     from scheduler import _pii_retention_purge
     await _pii_retention_purge()
@@ -60,6 +78,10 @@ async def pii_retention_run(current_user: dict = Depends(require_admin)):
         upsert=True,
     )
     redacted = await db.orders.count_documents({"pii_redacted": True})
+    await record_admin_audit(
+        db, action="compliance.pii_retention_run", entity_type="settings", entity_id="pii_retention",
+        current_user=current_user, request=request, source="admin.compliance",
+        metadata={"total_redacted_orders": redacted})
     return {"success": True, "total_redacted_orders": redacted}
 
 
@@ -94,7 +116,9 @@ DPP_CHECKLIST = [
      "note": "DATA_PROTECTION_POLICY.md dokümanında tanımlı."},
     {"q": "PII şifreleme (AES-128/RSA-2048+ ve KMS)",
      "status": "implemented", "answer": "Evet",
-     "note": "Hassas kimlik bilgileri AES (Fernet/AES-128) ile vault'ta; DB erişimi şifreli bağlantı."},
+     "note": "Hassas kimlik bilgileri AES (Fernet/AES-128) ile vault'ta; iade IBAN'ı + hesap sahibi adı ve "
+             "havale dekontları alan düzeyinde Fernet ile şifreli (BL-040); DB erişimi şifreli bağlantı. "
+             "VKN/TCKN henüz düz metin (okuyucuların tek yardımcıya taşınması bekleniyor)."},
     {"q": "PII erişimini kısıtlayan ayrıntılı erişim kontrolleri",
      "status": "implemented", "answer": "Evet",
      "note": "Rol bazlı admin erişimi + audit_logs ile erişim izleme."},
@@ -111,5 +135,5 @@ DPP_CHECKLIST = [
 
 
 @router.get("/dpp-checklist")
-async def dpp_checklist(current_user: dict = Depends(require_admin)):
+async def dpp_checklist(current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     return {"items": DPP_CHECKLIST, "total": len(DPP_CHECKLIST)}

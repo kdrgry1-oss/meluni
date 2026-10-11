@@ -27,13 +27,57 @@ from datetime import datetime, timezone
 import asyncio
 import re as _re
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_super_admin, logger   # logger kullanılıyordu ama ithal edilmemişti
 
-router = APIRouter(prefix="/category-mapping", tags=["Category Mapping"])
+# PAZARYERİ YÖNETİMİ — YALNIZ SÜPER-ADMIN (kullanıcı kararı).
+# Bu ekranlar pazaryeri hesaplarını, kategori/marka eşleştirmesini ve entegrasyon
+# günlüklerini yönetir; muhasebe/depo gibi rol atanmış personelin işi değildir ve
+# yanlış bir eşleştirme tüm katalog aktarımını bozabilir. Router düzeyinde kilit:
+# tek tek uçlara güvenmek yerine yeni eklenen uç da otomatik korunur.
+# DİKKAT: sipariş çekme ve iade (claims) uçları integrations_*.py içindedir ve
+# BİLEREK kilitlenmemiştir — muhasebe gider pusulası kesebilmeli, sipariş senkronu
+# çalışmaya devam etmeli.
+router = APIRouter(prefix="/category-mapping", tags=["Category Mapping"],
+                   dependencies=[Depends(require_super_admin)])
 
 MARKETPLACES = ["trendyol", "hepsiburada", "temu", "n11", "amazon-tr",
                 "amazon-de", "aliexpress", "etsy", "hepsi-global",
                 "fruugo", "emag", "trendyol-ihracat", "ciceksepeti"]
+
+
+# ── DEĞER EŞANLAMLILARI (DB-driven) — koddaki _VALUE_SYNONYMS'e EK; UI'dan yönetilebilir.
+# NOT: /{marketplace} catch-all'dan ÖNCE tanımlı (path çakışması olmasın).
+@router.get("/value-synonyms")
+async def list_value_synonyms(current_user: dict = Depends(require_admin)):
+    """DB eşanlamlıları (düzenlenebilir) + koddakiler (salt-okunur 'sistem')."""
+    from .integrations_common import _VALUE_SYNONYMS as _CODE_SYN
+    db_rows = await db.value_synonyms.find({}, {"_id": 0}).sort("from_val", 1).to_list(2000)
+    code = [{"from_val": frm, "to_val": to, "source": "sistem"}
+            for frm, tos in _CODE_SYN.items() for to in tos]
+    return {"db": db_rows, "code": code}
+
+
+@router.post("/value-synonyms")
+async def add_value_synonym(payload: dict, current_user: dict = Depends(require_admin)):
+    frm = str((payload or {}).get("from_val") or "").strip()
+    to = str((payload or {}).get("to_val") or "").strip()
+    if not frm or not to:
+        raise HTTPException(status_code=400, detail="from_val ve to_val gerekli")
+    import uuid as _u
+    doc = {"id": _u.uuid4().hex[:12], "from_val": frm, "to_val": to,
+           "created_by": current_user.get("email", ""),
+           "created_at": datetime.now(timezone.utc).isoformat()}
+    await db.value_synonyms.update_one({"from_val": frm, "to_val": to},
+                                       {"$setOnInsert": doc}, upsert=True)
+    return {"success": True, "synonym": doc}
+
+
+@router.delete("/value-synonyms/{sid}")
+async def delete_value_synonym(sid: str, current_user: dict = Depends(require_admin)):
+    res = await db.value_synonyms.delete_one({"id": sid})
+    if not res.deleted_count:
+        raise HTTPException(status_code=404, detail="Eşanlamlı bulunamadı")
+    return {"success": True}
 
 
 @router.get("/{marketplace}")
@@ -778,6 +822,21 @@ async def search_marketplace_categories(
         rows.sort(key=lambda c: (not c["leaf"], len(c["full_path"] or "")))
         return {"items": rows, "count": len(rows)}
 
+    if marketplace.startswith("amazon"):
+        # Amazon'da "kategori" = productType (Product Type Definitions API). q ile arama.
+        if (mode or "flat").lower() == "tree":
+            return {"tree": [], "hint": "Amazon için liste (arama) görünümünü kullanın."}
+        try:
+            from .amazon_autosetup import search_product_types_tr
+            pts = await search_product_types_tr((q or "").strip())
+        except Exception as e:
+            return {"items": [], "hint": f"Amazon productType çekilemedi (bağlantı/rol?): {e}"}
+        rows = [{"id": pt["name"], "name": pt.get("displayName") or pt["name"],
+                 "full_path": pt.get("displayName") or pt["name"], "leaf": True}
+                for pt in pts if pt.get("name")]
+        return {"items": rows[:max(1, min(500, int(limit)))], "count": len(rows),
+                "hint": "Amazon'da kategori yerine ürün tipi (productType) seçilir."}
+
     if marketplace != "trendyol":
         return {"items": [], "tree": [], "hint": f"{marketplace} için kategori cache yok, manuel ID girin"}
 
@@ -1071,9 +1130,10 @@ async def bulk_auto_match_attributes(
         nm = (mp_name or "").lower().strip()
         if not nm:
             return None
-        # Trendyol "Materyal Bileşeni" → bizdeki veri "Ürün İçerik Bilgisi"nde durur
+        # Trendyol "Materyal Bileşeni" — global katalogdaki TEK terim (id 6981); lokal attribute
+        # adı da buna sabitlenir (tekilleştirme: "Ürün İçerik Bilgisi" ikinci terimi kaldırıldı).
         if "materyal bileşeni" in nm:
-            return "Ürün İçerik Bilgisi"
+            return "Materyal Bileşeni"
         for ga in global_attrs:
             gn = (ga.get("name") or "").lower().strip()
             if not gn:
@@ -1447,7 +1507,7 @@ async def _auto_setup_mapping(marketplace: str, category_id: str) -> dict:
         if not n:
             return None
         if "materyal bileşeni" in n:
-            return "Ürün İçerik Bilgisi"
+            return "Materyal Bileşeni"
         for ga in global_attrs:
             gn = (ga.get("name") or "").lower().strip()
             if not gn:
@@ -1827,6 +1887,11 @@ async def set_mapping(marketplace: str, category_id: str, payload: dict,
         {"category_id": category_id, "marketplace": marketplace},
         {"$set": doc}, upsert=True
     )
+    # Gizlenmiş bir kategori yeniden eşlendiğinde aynı anda tekrar kapsama alınsın.
+    await db.categories.update_one(
+        {"id": category_id},
+        {"$pull": {"excluded_marketplaces": marketplace}},
+    )
     # 🚀 OTOMATIK kurulum: attribute eşleştir + değer eşleştir + şirket bilgisi + Yaş Grubu/Menşei
     auto_skip = bool((payload or {}).get("skip_auto_setup"))
     auto_result = None
@@ -2104,6 +2169,33 @@ async def get_advanced_attributes(
             "attribute_mappings": mapping.get("attribute_mappings", []),
             "default_mappings": mapping.get("default_mappings", {}),
             "value_mappings": mapping.get("value_mappings", {}),
+        }
+
+    if marketplace.startswith("amazon"):
+        # Amazon: mp_cat_id = productType adı. LISTING zorunlu/opsiyonel attribute şeması.
+        try:
+            from .amazon_spapi import _amazon_product_type_schema
+            sch = await _amazon_product_type_schema(str(mp_cat_id))
+        except Exception as e:
+            sch = {"required": [], "optional": [], "values": {}, "error": str(e)}
+        _vals_map = sch.get("values") or {}
+
+        def _mk_amz(a, req):
+            vv = _vals_map.get(a) or []
+            return {"id": a, "name": a, "required": req,
+                    "attributeValues": [{"id": v.get("value"), "name": v.get("label") or v.get("value")}
+                                        for v in vv],
+                    "allowCustom": len(vv) == 0}
+        _attrs = ([_mk_amz(a, True) for a in (sch.get("required") or [])]
+                  + [_mk_amz(a, False) for a in (sch.get("optional") or [])])
+        return {
+            "attributes": _attrs,
+            "attribute_mappings": mapping.get("attribute_mappings", []),
+            "default_mappings": mapping.get("default_mappings", {}),
+            "value_mappings": mapping.get("value_mappings", {}),
+            "hint": ("Amazon productType zorunlu (kırmızı) + opsiyonel alanları. Listeleme için "
+                     "zorunlu alanlar Meluni ürün alanlarından otomatik doldurulur; eksikleri "
+                     "Amazon aktarım sonucu (issues) gösterir."),
         }
 
     # Diğer MP'ler — yerel cache (varsa) veya boş + hint

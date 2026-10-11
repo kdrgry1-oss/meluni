@@ -18,7 +18,7 @@ from typing import Optional
 from urllib.parse import urlparse
 import uuid
 
-from .deps import db, require_admin, logger
+from .deps import db, require_admin, logger, safe_str, limiter, require_permission
 
 router = APIRouter(prefix="/attribution", tags=["attribution"])
 
@@ -154,13 +154,19 @@ def detect_device(user_agent: str) -> str:
 
 
 @router.post("/track-visit")
+@(limiter.limit("60/minute") if limiter else (lambda f: f))
 async def track_visit(payload: dict, request: Request):
     """Storefront calls this on first paint of any page (once per session).
     Payload: { utm_source, utm_medium, utm_campaign, utm_term, utm_content,
                referrer, landing_page, session_id? }
     Returns: { session_id } — the client persists this in localStorage.
     """
-    sid = payload.get("session_id") or str(uuid.uuid4())
+    # session_id metne zorlanır: {"$ne": null} gibi operatörle BAŞKA bir oturumun atıfı ezilemesin.
+    sid = safe_str(payload.get("session_id"), 80) or str(uuid.uuid4())
+    for _k in ("utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+               "referrer", "landing_page", "gclid", "fbclid", "ttclid", "aff_id", "coupon"):
+        if _k in payload:
+            payload[_k] = safe_str(payload.get(_k), 500)
 
     # Upsert — if session already exists keep first-touch intact, update last-touch
     existing = await db.attribution_sessions.find_one({"session_id": sid}, {"_id": 0})
@@ -261,7 +267,7 @@ async def get_session(sid: str):
 async def stats(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("campaigns.view", any_in_area=True)),
 ):
     """Orders grouped by (first_touch) channel/source/campaign within date range."""
     query = {"attribution.channel": {"$exists": True}}

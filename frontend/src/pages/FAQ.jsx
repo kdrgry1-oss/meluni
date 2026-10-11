@@ -116,7 +116,7 @@ export default function FAQ() {
   const panel = data.find((t) => t.id === activeTab) || data[0];
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="sf-page min-h-screen bg-white flex flex-col">
       <Header />
       <main className="flex-1 max-w-[1200px] w-full mx-auto px-3 md:px-4 pt-8 pb-24">
         <h1 className="text-center text-[22px] md:text-[28px] font-bold mb-6 md:mb-8">Sıkça Sorulan Sorular</h1>

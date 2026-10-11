@@ -5,19 +5,36 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
+import {
+  consumeOAuthState,
+  createGooglePopupFlow,
+  createOAuthState,
+  googleErrorMessage,
+  isEmbeddedWebView,
+  safeReturnPath,
+} from "../lib/googleAuthFlow";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "49503095707-cahr1ntbc30lqeho6nj1pbggq3tatien.apps.googleusercontent.com";
+const BUILD_GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID_V2 || process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
+const GOOGLE_FLOW_VERSION = "2026-09-08-popup-fallback-1";
+const FB_STATE_KEY = "fb_oauth_state";
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const _redirectTo = new URLSearchParams(location.search).get("redirect") || "/hesabim";
+  const _redirectTo = safeReturnPath(new URLSearchParams(location.search).get("redirect"));
   const { login, register, user, loginWithToken } = useAuth();
   const [isRegister, setIsRegister] = useState(false);
   const [loading, setLoading] = useState(false);
   // FAZ 3+ — Hangi sosyal sağlayıcılar aktif?
-  const [socialProviders, setSocialProviders] = useState({ apple: false, facebook: false });
+  const [socialProviders, setSocialProviders] = useState({
+    apple: false,
+    facebook: false,
+    google: Boolean(BUILD_GOOGLE_CLIENT_ID),
+    google_client_id: BUILD_GOOGLE_CLIENT_ID,
+  });
+  const [googleStatus, setGoogleStatus] = useState({ phase: "idle", message: "" });
+  const embeddedGoogle = isEmbeddedWebView();
   useEffect(() => {
     fetch(`${API}/auth/social/providers`).then((r) => r.ok && r.json())
       .then((d) => d && setSocialProviders(d)).catch(() => {});
@@ -31,23 +48,56 @@ export default function Login() {
   });
 
   const googleBtnRef = useRef(null);
+  const googleFlowRef = useRef(null);
 
-  // Google ile giriş — kendi Client ID'miz üzerinden Google Identity Services (GIS).
-  const handleGoogleCredential = async (response) => {
-    setLoading(true);
-    try {
-      const res = await axios.post(`${API}/auth/google`, { credential: response.credential });
-      if (res.data?.success) {
-        loginWithToken(res.data.token, res.data.user);
-        toast.success("Google ile giriş başarılı!");
-        navigate(_redirectTo);
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.detail || "Google ile giriş başarısız");
-    } finally {
-      setLoading(false);
+  // Tam-sayfa Google dönüşü: URL'deki kısa ömürlü kodu backend'de bir kez JWT'ye çevir.
+  useEffect(() => {
+    const q = new URLSearchParams(location.search);
+    const code = q.get("google_code");
+    const error = q.get("google_error");
+    if (!code && !error) return;
+    const returnTo = safeReturnPath(q.get("redirect") || (() => {
+      try { return sessionStorage.getItem("google_redirect_to"); } catch { return ""; }
+    })());
+    window.history.replaceState({}, "", `/giris?redirect=${encodeURIComponent(returnTo)}`);
+    if (error) {
+      const message = googleErrorMessage(error);
+      setGoogleStatus({ phase: "error", message });
+      toast.error(message);
+      return;
     }
-  };
+    (async () => {
+      setLoading(true);
+      setGoogleStatus({ phase: "exchanging", message: "Google oturumu doğrulanıyor…" });
+      try {
+        const res = await axios.post(`${API}/auth/google/exchange`, { code });
+        if (res.data?.token) {
+          loginWithToken(res.data.token, res.data.user);
+          toast.success("Google ile giriş başarılı!");
+          try { sessionStorage.removeItem("google_redirect_to"); } catch {}
+          navigate(returnTo, { replace: true });
+        } else {
+          throw new Error("missing app token");
+        }
+      } catch (err) {
+        const message = err.response?.data?.detail || googleErrorMessage("verification");
+        setGoogleStatus({ phase: "error", message });
+        toast.error(message);
+      } finally { setLoading(false); }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // E-posta doğrulama dönüşü: /api/auth/verify-email (onay butonu, POST) → /giris?email_verified=1|0.
+  // Doğrulama hesabın açık oturumlarını kapatır (güvenlik) → kullanıcıdan yeniden giriş istenir.
+  useEffect(() => {
+    const v = new URLSearchParams(location.search).get("email_verified");
+    if (v === null) return;
+    window.history.replaceState({}, "", "/giris");
+    if (v === "1") toast.success("E-posta adresin doğrulandı. Güvenliğin için lütfen yeniden giriş yap.");
+    else toast.error("Doğrulama bağlantısı geçersiz ya da süresi dolmuş.");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ---- Facebook ile giriş (sunucu-taraflı OAuth code akışı) ----
   const FB_REDIRECT = typeof window !== "undefined" ? `${window.location.origin}/giris` : "";
@@ -55,18 +105,31 @@ export default function Login() {
     const appId = socialProviders.facebook_app_id;
     if (!appId) { toast.error("Facebook girişi yapılandırılmamış"); return; }
     try { sessionStorage.setItem("fb_redirect_to", _redirectTo); } catch {}
+    // Giriş-CSRF: tahmin edilemez, sekmeye bağlı tek kullanımlık state (dönüşte doğrulanır).
+    let fbState = "";
+    try { fbState = createOAuthState("facebook", window.sessionStorage, FB_STATE_KEY); } catch { fbState = ""; }
+    if (!fbState) { toast.error("Facebook girişi bu tarayıcıda başlatılamadı (depolama kapalı)"); return; }
     const url = `https://www.facebook.com/v20.0/dialog/oauth?client_id=${encodeURIComponent(appId)}`
       + `&redirect_uri=${encodeURIComponent(FB_REDIRECT)}`
       + `&scope=${encodeURIComponent("email,public_profile")}`
-      + `&response_type=code&state=facebook`;
+      + `&response_type=code&state=${encodeURIComponent(fbState)}`;
     window.location.href = url;
   };
   // FB dönüşü: /giris?code=...&state=facebook → kodu backend'e verip giriş yap.
   useEffect(() => {
     const q = new URLSearchParams(location.search);
-    if (q.get("state") !== "facebook" || !q.get("code")) return;
+    const fbState = q.get("state") || "";
+    if (!(fbState === "facebook" || fbState.startsWith("facebook.")) || !q.get("code")) return;
     const code = q.get("code");
     window.history.replaceState({}, "", "/giris"); // kod tekrar kullanılmasın
+    // GÜVENLİK (giriş-CSRF): yalnız BU sekmede başlatılmış girişin state'i kabul edilir; dışarıdan
+    // gelen (saldırganın kendi kodunu taşıyan) bağlantı kurbanı saldırganın hesabına sokamaz.
+    let stateOk = false;
+    try { stateOk = consumeOAuthState(fbState, window.sessionStorage, FB_STATE_KEY); } catch { stateOk = false; }
+    if (!stateOk) {
+      toast.error("Facebook giriş doğrulaması güvenlik kontrolünden geçemedi. Lütfen yeniden deneyin.");
+      return;
+    }
     (async () => {
       setLoading(true);
       try {
@@ -76,7 +139,7 @@ export default function Login() {
           toast.success("Facebook ile giriş başarılı!");
           let to = "/hesabim";
           try { to = sessionStorage.getItem("fb_redirect_to") || to; } catch {}
-          navigate(to);
+          navigate(safeReturnPath(to));
         }
       } catch (err) {
         toast.error(err.response?.data?.detail || "Facebook ile giriş başarısız");
@@ -141,12 +204,47 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (!GOOGLE_CLIENT_ID) return;
+    const googleClientId = socialProviders.google_client_id || BUILD_GOOGLE_CLIENT_ID;
+    if (!socialProviders.google || !googleClientId) return;
+    if (embeddedGoogle) {
+      setGoogleStatus({
+        phase: "embedded",
+        message: "Bu uygulama içi tarayıcı Google penceresini desteklemeyebilir.",
+      });
+      return;
+    }
+    let disposed = false;
+    const flow = createGooglePopupFlow({
+      exchangeCredential: async (credential) => {
+        const res = await axios.post(`${API}/auth/google`, { credential });
+        return res.data;
+      },
+      onSuccess: (result) => {
+        if (disposed) return;
+        loginWithToken(result.token, result.user);
+        try { sessionStorage.removeItem("google_redirect_to"); } catch {}
+        setLoading(false);
+        setGoogleStatus({ phase: "success", message: "Giriş başarılı, yönlendiriliyorsunuz…" });
+        navigate(_redirectTo, { replace: true });
+      },
+      onError: (code, error) => {
+        if (disposed) return;
+        const message = error?.response?.data?.detail || googleErrorMessage(code);
+        setLoading(false);
+        setGoogleStatus({ phase: "error", message });
+      },
+    });
+    googleFlowRef.current = flow;
     const init = () => {
-      if (!window.google?.accounts?.id) return;
+      if (disposed || !window.google?.accounts?.id) return;
       window.google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: handleGoogleCredential,
+        client_id: googleClientId,
+        callback: (response) => flow.credential(response),
+        error_callback: (event) => flow.popupError(event),
+        ux_mode: "popup",
+        button_auto_select: false,
+        auto_select: false,
+        itp_support: true,
       });
       if (googleBtnRef.current) {
         window.google.accounts.id.renderButton(googleBtnRef.current, {
@@ -155,7 +253,14 @@ export default function Login() {
           type: "icon",       // kompakt ikon buton → Facebook ile yan yana sığar
           shape: "square",
           locale: "tr",
+          click_listener: () => {
+            try { sessionStorage.setItem("google_redirect_to", _redirectTo); } catch {}
+            setLoading(true);
+            setGoogleStatus({ phase: "popup", message: "Google hesap penceresi bekleniyor…" });
+            flow.begin();
+          },
         });
+        setGoogleStatus((current) => current.phase === "idle" ? { phase: "ready", message: "" } : current);
       }
     };
     if (window.google?.accounts?.id) {
@@ -171,22 +276,41 @@ export default function Login() {
         document.body.appendChild(s);
       }
       s.addEventListener("load", init);
+      s.addEventListener("error", () => {
+        if (!disposed) setGoogleStatus({ phase: "error", message: "Google giriş bileşeni yüklenemedi." });
+      }, { once: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => {
+      disposed = true;
+      flow.dispose();
+      googleFlowRef.current = null;
+    };
+  }, [socialProviders.google, socialProviders.google_client_id, embeddedGoogle, _redirectTo, loginWithToken, navigate]);
 
-  if (user) {
-    navigate(_redirectTo);
-    return null;
-  }
+  const handleGoogleRedirectFallback = () => {
+    try { sessionStorage.setItem("google_redirect_to", _redirectTo); } catch {}
+    setGoogleStatus({ phase: "redirect", message: "Google'ın güvenli giriş sayfasına yönlendiriliyorsunuz…" });
+    const url = `${API}/auth/google/login?return_to=${encodeURIComponent(_redirectTo)}`;
+    window.location.assign(url);
+  };
+
+  useEffect(() => {
+    if (user) navigate(_redirectTo, { replace: true });
+  }, [user, navigate, _redirectTo]);
+
+  if (user) return <div className="sf-page min-h-screen flex items-center justify-center text-sm">Yönlendiriliyorsunuz…</div>;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isRegister && (!formData.first_name.trim() || !formData.last_name.trim())) {
+      toast.error("Ad ve soyad zorunludur");
+      return;
+    }
     setLoading(true);
 
     try {
       if (isRegister) {
-        await register(formData);
+        await register({ ...formData, first_name: formData.first_name.trim(), last_name: formData.last_name.trim() });
         toast.success("Kayıt başarılı!");
       } else {
         await login(formData.email, formData.password);
@@ -201,7 +325,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="sf-page min-h-screen">
       <Header />
 
       <div className="max-w-screen-2xl mx-auto px-4 py-16">
@@ -213,7 +337,9 @@ export default function Login() {
           {/* Sosyal giriş — ikon butonlar yan yana (Google + Facebook + Apple), eşit ölçü */}
           <div className="flex items-center justify-center gap-3 mb-6">
             {/* Google — resmi GIS ikon butonu (kırpma yok; kendi boyutunda render olur) */}
-            <div ref={googleBtnRef} data-testid="google-login-btn" className="flex items-center justify-center" />
+            {!embeddedGoogle && socialProviders.google && (
+              <div ref={googleBtnRef} data-testid="google-login-btn" data-flow-version={GOOGLE_FLOW_VERSION} className="flex items-center justify-center" />
+            )}
             {/* Facebook */}
             {socialProviders.facebook && (
               <button type="button" onClick={handleFacebookLogin} disabled={loading}
@@ -239,28 +365,49 @@ export default function Login() {
             )}
           </div>
 
-          <div className="flex items-center gap-4 mb-6">
+          {socialProviders.google && ["error", "embedded"].includes(googleStatus.phase) && (
+            <div className="mb-6 border border-amber-200 bg-amber-50 px-3 py-3 text-center" role="alert" data-testid="google-login-status">
+              <p className="text-xs text-amber-900 mb-2">{googleStatus.message}</p>
+              <button
+                type="button"
+                onClick={handleGoogleRedirectFallback}
+                disabled={googleStatus.phase === "redirect"}
+                className="text-xs underline font-medium disabled:opacity-60"
+                data-testid="google-redirect-fallback"
+              >
+                Tam sayfa Google girişiyle devam et
+              </button>
+            </div>
+          )}
+
+          {["popup", "exchanging", "redirect", "success"].includes(googleStatus.phase) && googleStatus.message && (
+            <p className="mb-6 text-center text-xs text-gray-600" role="status">{googleStatus.message}</p>
+          )}
+
+          {!isRegister && <div className="flex items-center gap-4 mb-6">
             <div className="flex-1 h-px bg-gray-200" />
             <span className="text-xs text-gray-500">veya</span>
             <div className="flex-1 h-px bg-gray-200" />
-          </div>
+          </div>}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {isRegister && (
               <>
                 <div>
-                  <label className="block text-xs mb-1">Ad</label>
+                  <label htmlFor="register-first-name" className="block text-xs mb-1">Ad *</label>
                   <input
                     type="text"
+                    id="register-first-name" name="given-name" autoComplete="given-name" required maxLength={100} pattern=".*\S.*"
                     value={formData.first_name}
                     onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
                     className="w-full border px-3 py-2.5 text-sm focus:outline-none focus:border-black"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs mb-1">Soyad</label>
+                  <label htmlFor="register-last-name" className="block text-xs mb-1">Soyad *</label>
                   <input
                     type="text"
+                    id="register-last-name" name="family-name" autoComplete="family-name" required maxLength={100} pattern=".*\S.*"
                     value={formData.last_name}
                     onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
                     className="w-full border px-3 py-2.5 text-sm focus:outline-none focus:border-black"

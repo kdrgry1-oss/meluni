@@ -1,162 +1,51 @@
-"""
-Theme Management Routes
-- Themes are pluggable storefront designs (e.g., Miu Miu clone, minimal, classic)
-- Each theme has editable blocks (hero, card, product_scroller, newsletter, etc.)
-- Admin can activate one theme; public storefront route reads active theme
-"""
-from fastapi import APIRouter, HTTPException, Depends
-from typing import Optional, List
+"""Accessible, original and versioned storefront theme gallery."""
+from copy import deepcopy
 from datetime import datetime, timezone
-
-from .deps import db, logger, require_admin, generate_id
+from fastapi import APIRouter, Depends, HTTPException, Request
+from .deps import db, logger, require_admin, generate_id, require_permission
+from tenant_config import get_tenant_config
 
 admin_router = APIRouter(prefix="/admin/themes", tags=["Themes Admin"])
 public_router = APIRouter(prefix="/storefront/themes", tags=["Storefront Themes"])
 
+def _now(): return datetime.now(timezone.utc).isoformat()
 
-# ----- Defaults / seed -----
-def _miumiu_default_blocks():
-    """Default block configuration for Miu Miu clone theme."""
-    base = [
-        {
-            "type": "announcement_bar",
-            "title": "ÜCRETSİZ KARGO · 500₺ ÜZERİ",
-            "subtitle": "",
-            "image": "",
-            "mobile_image": "",
-            "link_url": "",
-            "link_label": "",
-            "order": 0,
-            "settings": {"bg": "#000000", "color": "#ffffff"},
-        },
-        {
-            "type": "hero_fullscreen",
-            "title": "Holiday",
-            "subtitle": "Eclectic spirit, festive charm",
-            "image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=1900&q=80",
-            "mobile_image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=900&q=80",
-            "link_url": "/tema/miumiu/kategori/canta",
-            "link_label": "Shop",
-            "order": 1,
-            "settings": {"text_color": "#ffffff", "align": "center", "overlay": 0.35},
-        },
-        {
-            "type": "editorial_card",
-            "title": "L'Eté à la Plage",
-            "subtitle": "New essentials for summer",
-            "image": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1900&q=80",
-            "mobile_image": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=80",
-            "link_url": "/tema/miumiu/kategori/yeni-sezon",
-            "link_label": "Shop",
-            "order": 2,
-            "settings": {"text_color": "#ffffff", "align": "left", "overlay": 0.3},
-        },
-        {
-            "type": "editorial_card",
-            "title": "Bags",
-            "subtitle": "Versatile lines in luminous hues",
-            "image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1900&q=80",
-            "mobile_image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80",
-            "link_url": "/tema/miumiu/kategori/canta",
-            "link_label": "Shop",
-            "order": 3,
-            "settings": {"text_color": "#ffffff", "align": "right", "overlay": 0.3},
-        },
-        {
-            "type": "editorial_card",
-            "title": "Shoes",
-            "subtitle": "Textures and artisanal details",
-            "image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1900&q=80",
-            "mobile_image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=80",
-            "link_url": "/tema/miumiu/kategori/ayakkabi",
-            "link_label": "Shop",
-            "order": 4,
-            "settings": {"text_color": "#ffffff", "align": "center", "overlay": 0.35},
-        },
-        {
-            "type": "product_scroller",
-            "title": "The new Miu Miu L'Eté collection",
-            "subtitle": "",
-            "image": "",
-            "mobile_image": "",
-            "link_url": "/tema/miumiu/kategori/yeni-sezon",
-            "link_label": "Shop",
-            "order": 5,
-            "settings": {"category_slug": "yeni-sezon", "limit": 12},
-        },
-        {
-            "type": "editorial_card",
-            "title": "Eyewear",
-            "subtitle": "Bold, distinctive, expressive",
-            "image": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=1900&q=80",
-            "mobile_image": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=900&q=80",
-            "link_url": "/tema/miumiu/kategori/aksesuar",
-            "link_label": "Shop",
-            "order": 6,
-            "settings": {"text_color": "#ffffff", "align": "left", "overlay": 0.3},
-        },
-        {
-            "type": "newsletter",
-            "title": "SUBSCRIBE TO OUR NEWSLETTER",
-            "subtitle": "Be first to discover new collections and exclusive events.",
-            "image": "",
-            "mobile_image": "",
-            "link_url": "",
-            "link_label": "Subscribe",
-            "order": 7,
-            "settings": {"bg": "#000000", "color": "#ffffff"},
-        },
+THEME_TOKENS = {
+    "atelier-editorial": {"background":"#F7F3ED","surface":"#FFFFFF","text":"#171512","muted":"#6F675E","accent":"#8B4A38","border":"#D8D0C5","font_heading":"Georgia, 'Times New Roman', serif","font_body":"Inter, ui-sans-serif, system-ui, sans-serif","radius":"2px"},
+    "gallery-minimal": {"background":"#FFFFFF","surface":"#F3F4F1","text":"#10130F","muted":"#5D655B","accent":"#315C43","border":"#D9DED7","font_heading":"Inter, ui-sans-serif, system-ui, sans-serif","font_body":"Inter, ui-sans-serif, system-ui, sans-serif","radius":"14px"},
+    "nocturne-studio": {"background":"#101114","surface":"#1A1C21","text":"#F7F3EA","muted":"#B9B5AD","accent":"#E8B86A","border":"#34363D","font_heading":"Georgia, 'Times New Roman', serif","font_body":"Inter, ui-sans-serif, system-ui, sans-serif","radius":"0px"},
+}
+THEME_META = {
+    "atelier-editorial": ("Atelier Editorial", "Editöryel, görsel odaklı ve zarif vitrin.", "editorial", "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1800&q=82"),
+    "gallery-minimal": ("Gallery Minimal", "Ferahlığı ve ürünü öne çıkaran modern galeri.", "minimal", "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1800&q=82"),
+    "nocturne-studio": ("Nocturne Studio", "Yüksek kontrastlı, sinematik ve güçlü sunum.", "nocturne", "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1800&q=82"),
+}
+
+def _blocks(slug):
+    name, _, _, image = THEME_META[slug]
+    raw = [
+        {"type":"announcement_bar","title":"Yeni koleksiyonu keşfedin","order":0,"settings":{"bg":THEME_TOKENS[slug]["text"],"color":THEME_TOKENS[slug]["background"]}},
+        {"type":"hero_fullscreen","title":{"atelier-editorial":"Yeni sezon, zamansız çizgiler","gallery-minimal":"Günün seçkisi","nocturne-studio":"Geceye yeni bir yorum"}[slug],"subtitle":"Editöryel seçki","image":image,"mobile_image":image,"link_url":f"/tema/{slug}/kategori/tumu","link_label":"Koleksiyonu keşfet","order":1,"settings":{"text_color":"#FFFFFF","align":"center","overlay":0.32}},
+        {"type":"product_scroller","title":"Öne çıkan ürünler","link_url":f"/tema/{slug}/kategori/tumu","link_label":"Tümünü gör","order":2,"settings":{"category_slug":"","limit":10}},
+        {"type":"newsletter","title":"Bültenimize katılın","subtitle":"Yeni koleksiyon ve duyurulardan haberdar olun.","link_label":"Kaydol","order":3,"settings":{"bg":THEME_TOKENS[slug]["surface"],"color":THEME_TOKENS[slug]["text"]}},
     ]
-    for b in base:
-        b["id"] = generate_id()
-        b["is_active"] = True
-    return base
+    for b in raw:
+        b.setdefault("subtitle",""); b.setdefault("image",""); b.setdefault("mobile_image",""); b.setdefault("link_url",""); b.setdefault("link_label","")
+        b["id"] = generate_id(); b["is_active"] = True
+    return raw
 
+def _definition(slug, active=False):
+    name, description, layout, _ = THEME_META[slug]; now = _now()
+    return {"id":generate_id(),"template_key":slug,"name":name,"slug":slug,"description":description,"preview_image":"","is_active":active,"is_default":slug=="atelier-editorial","blocks":_blocks(slug),"menu":[],"settings":{"layout":layout,"tokens":deepcopy(THEME_TOKENS[slug]),"scroll_to_explore":layout=="editorial"},"created_at":now,"updated_at":now}
 
-def _miumiu_default_menu():
-    return [
-        {"label": "HIGHLIGHTS", "url": "/tema/miumiu/kategori/yeni-sezon", "columns": []},
-        {"label": "READY TO WEAR", "url": "/tema/miumiu/kategori/giyim", "columns": [
-            {"title": "Categories", "links": [
-                {"label": "Dresses", "url": "/tema/miumiu/kategori/elbise"},
-                {"label": "Tops", "url": "/tema/miumiu/kategori/ust-giyim"},
-                {"label": "Knitwear", "url": "/tema/miumiu/kategori/triko"},
-                {"label": "Skirts", "url": "/tema/miumiu/kategori/etek"},
-                {"label": "Trousers", "url": "/tema/miumiu/kategori/pantolon"},
-            ]},
-        ]},
-        {"label": "BAGS", "url": "/tema/miumiu/kategori/canta", "columns": []},
-        {"label": "SHOES", "url": "/tema/miumiu/kategori/ayakkabi", "columns": []},
-        {"label": "ACCESSORIES", "url": "/tema/miumiu/kategori/aksesuar", "columns": []},
-        {"label": "WALLETS", "url": "/tema/miumiu/kategori/cuzdan", "columns": []},
-        {"label": "FASHION JEWELLERY", "url": "/tema/miumiu/kategori/taki", "columns": []},
-        {"label": "GIFTS", "url": "/tema/miumiu/kategori/hediye", "columns": [], "accent": True},
-    ]
+def _clean(doc):
+    if not doc: return None
+    out=deepcopy(doc); out.pop("_id",None); return out
 
-
-def _build_default_theme():
-    return {
-        "id": generate_id(),
-        "name": "Miu Miu Clone",
-        "slug": "miumiu",
-        "description": "Miu Miu birebir kopya — siyah-beyaz minimal, full-screen editorial bloklar, mega menü, scroll-to-explore davranışı.",
-        "preview_image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=600&q=70",
-        "is_active": True,
-        "is_default": True,
-        "blocks": _miumiu_default_blocks(),
-        "menu": _miumiu_default_menu(),
-        "settings": {
-            "brand_name": "miu miu",
-            "brand_font": "italic-serif",  # logo style flag
-            "primary": "#000000",
-            "secondary": "#ffffff",
-            "accent": "#c8b87a",
-            "scroll_to_explore": True,
-        },
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-    }
-
+def _validate_settings(settings):
+    out=deepcopy(settings or {}); allowed=set(next(iter(THEME_TOKENS.values())))
+    out["tokens"]={k:str(v)[:160] for k,v in (out.get("tokens") or {}).items() if k in allowed}
+    return out
 
 def _meluni_blocks():
     """Meluni Editorial — sade, geniş nefes alanlı editoryal düzen."""
@@ -231,179 +120,154 @@ def _build_meluni_theme():
 
 
 async def _ensure_seed():
-    """Hazır temaları eksikse ekler.
+    legacy=await db.themes.find_one({"slug":"miumiu"},{"_id":0})
+    if legacy:
+        # Eski temanın bloklarını/ayarlarını bir GET çağrısında ezmek veri kaybıdır.
+        # Yalnız müşteri-facing taklit adını nötrleştir; içerik ve aktiflik korunur.
+        await db.themes.update_one({"id":legacy["id"]},{"$set":{
+            "name":"Arşiv Tema", "description":"Önceki sürümden taşınan özel tema.",
+            "legacy_source":"miumiu", "updated_at":_now(),
+        }})
+        logger.info("Neutralized legacy theme display metadata without replacing its content")
+    for i,slug in enumerate(THEME_TOKENS):
+        exists=await db.themes.find_one({"$or":[{"template_key":slug},{"slug":slug}]},{"_id":0,"id":1})
+        if not exists:
+            active=await db.themes.find_one({"is_active":True},{"_id":0,"id":1})
+            await db.themes.insert_one(_definition(slug,i==0 and not active))
+    active=await db.themes.find_one({"is_active":True},{"_id":0,"id":1})
+    await db.theme_activation_state.update_one(
+        {"id":"main"},{"$setOnInsert":{"id":"main","active_theme_id":(active or {}).get("id"),"updated_at":_now()}},upsert=True
+    )
 
-    Slug'a bakılır, sayıya değil: yeni bir hazır tema eklendiğinde mevcut
-    kurulumlar da onu görsün ama AKTİF tema değişmesin (yeni tema
-    is_active=False gelir; seçim yönetime ait).
-    """
-    cnt = await db.themes.count_documents({})
-    if cnt == 0:
-        theme = _build_default_theme()
-        await db.themes.insert_one(theme)
-        logger.info(f"Seeded default theme: {theme['slug']}")
+async def _version(theme,action,actor,metadata=None):
+    v={"id":generate_id(),"theme_id":theme.get("id"),"theme_name":theme.get("name"),"action":action,"snapshot":_clean(theme),"metadata":metadata or {},"actor":actor.get("email") or actor.get("id") or "admin","created_at":_now()}
+    await db.theme_versions.insert_one(deepcopy(v)); return v
 
-    for kur in (_build_meluni_theme,):
-        tema = kur()
-        if not await db.themes.count_documents({"slug": tema["slug"]}):
-            await db.themes.insert_one(tema)
-            logger.info(f"Seeded theme: {tema['slug']}")
-
-
-# ----- Admin Routes -----
 @admin_router.get("")
-async def list_themes(current_user: dict = Depends(require_admin)):
-    """List all themes."""
-    await _ensure_seed()
-    themes = await db.themes.find({}, {"_id": 0}).sort("created_at", -1).to_list(50)
-    return {"items": themes, "total": len(themes)}
+async def list_themes(current_user:dict=Depends(require_permission("tasarim.view"))):
+    await _ensure_seed(); items=await db.themes.find({},{"_id":0}).sort("created_at",1).to_list(50)
+    return {"items":items,"total":len(items)}
 
+@admin_router.get("/preview-data")
+async def preview_data(current_user:dict=Depends(require_permission("tasarim.view"))):
+    tenant=await get_tenant_config(db)
+    cats=await db.categories.find({"is_active":{"$ne":False}},{"_id":0,"id":1,"name":1,"slug":1,"parent_id":1,"image":1}).sort("sort_order",1).to_list(8)
+    products=await db.products.find({"is_active":{"$ne":False},"is_deleted":{"$ne":True}},{"_id":0,"id":1,"slug":1,"name":1,"title":1,"images":1,"image":1,"price":1,"sale_price":1,"category_id":1}).sort("updated_at",-1).to_list(8)
+    return {"company":{"name":tenant["brand"].get("store_name") or "Mağaza","logo_url":tenant["brand"].get("logo_url") or ""},"categories":cats,"products":products}
+
+@admin_router.get("/versions")
+async def list_versions(limit:int=20,current_user:dict=Depends(require_permission("tasarim.view"))):
+    items=await db.theme_versions.find({},{"_id":0,"snapshot":0}).sort("created_at",-1).to_list(min(max(limit,1),100)); return {"items":items}
+
+@admin_router.post("/versions/{version_id}/rollback")
+async def rollback_version(version_id:str,data:dict,current_user:dict=Depends(require_permission("tasarim.themes"))):
+    if data.get("confirm") is not True: raise HTTPException(400,"Geri alma işlemi açık onay gerektirir")
+    version=await db.theme_versions.find_one({"id":version_id},{"_id":0}); snapshot=(version or {}).get("snapshot")
+    if not snapshot: raise HTTPException(404,"Tema sürümü bulunamadı")
+    current=await db.themes.find_one({"id":snapshot.get("id")},{"_id":0})
+    if current: await _version(current,"before_rollback",current_user,{"rollback_of":version_id})
+    if snapshot.get("is_active"):
+        state=await db.theme_activation_state.find_one({"id":"main"},{"_id":0,"active_theme_id":1})
+        current_id=(state or {}).get("active_theme_id")
+        cas=await db.theme_activation_state.update_one({"id":"main","active_theme_id":current_id},{"$set":{"active_theme_id":snapshot["id"],"updated_at":_now()}})
+        if cas.modified_count != 1: raise HTTPException(409,"Aktif tema değişti; geçmişi yenileyip tekrar deneyin")
+    await db.themes.update_one({"id":snapshot["id"]},{"$set":{**snapshot,"updated_at":_now()}},upsert=True)
+    if snapshot.get("is_active"):
+        await db.themes.update_one({"id":snapshot["id"]},{"$set":{"is_active":True}})
+        await db.themes.update_many({"id":{"$ne":snapshot["id"]}},{"$set":{"is_active":False}})
+    return {"ok":True,"theme":await db.themes.find_one({"id":snapshot["id"]},{"_id":0})}
 
 @admin_router.get("/{theme_id}")
-async def get_theme(theme_id: str, current_user: dict = Depends(require_admin)):
-    theme = await db.themes.find_one({"id": theme_id}, {"_id": 0})
-    if not theme:
-        raise HTTPException(404, "Tema bulunamadı")
+async def get_theme(theme_id:str,current_user:dict=Depends(require_permission("tasarim.view"))):
+    theme=await db.themes.find_one({"id":theme_id},{"_id":0})
+    if not theme: raise HTTPException(404,"Tema bulunamadı")
     return theme
-
 
 @admin_router.post("")
-async def create_theme(data: dict, current_user: dict = Depends(require_admin)):
-    """Create a new theme (with empty or default blocks)."""
-    theme = {
-        "id": generate_id(),
-        "name": data.get("name", "Yeni Tema"),
-        "slug": data.get("slug", "yeni-tema"),
-        "description": data.get("description", ""),
-        "preview_image": data.get("preview_image", ""),
-        "is_active": False,
-        "is_default": False,
-        "blocks": data.get("blocks", []),
-        "menu": data.get("menu", []),
-        "settings": data.get("settings", {}),
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-    }
-    # Ensure block ids
-    for b in theme["blocks"]:
-        if not b.get("id"):
-            b["id"] = generate_id()
-    # Slug uniqueness
-    existing = await db.themes.find_one({"slug": theme["slug"]}, {"_id": 0})
-    if existing:
-        raise HTTPException(400, f"Slug zaten kullanılıyor: {theme['slug']}")
-    await db.themes.insert_one(theme)
-    return {k: v for k, v in theme.items() if k != "_id"}
-
+async def create_theme(data:dict,current_user:dict=Depends(require_permission("tasarim.themes"))):
+    slug=str(data.get("slug") or "yeni-tema").strip().lower()
+    if await db.themes.find_one({"slug":slug},{"_id":0,"id":1}): raise HTTPException(400,"Tema adresi zaten kullanılıyor")
+    now=_now(); theme={"id":generate_id(),"name":str(data.get("name") or "Yeni Tema")[:100],"slug":slug,"description":str(data.get("description") or "")[:500],"preview_image":data.get("preview_image") or "","is_active":False,"is_default":False,"blocks":data.get("blocks") or [],"menu":data.get("menu") or [],"settings":_validate_settings(data.get("settings")),"created_at":now,"updated_at":now}
+    for b in theme["blocks"]: b.setdefault("id",generate_id()); b.setdefault("is_active",True)
+    await db.themes.insert_one(deepcopy(theme)); return theme
 
 @admin_router.put("/{theme_id}")
-async def update_theme(theme_id: str, data: dict, current_user: dict = Depends(require_admin)):
-    """Update theme fields and/or all blocks."""
-    theme = await db.themes.find_one({"id": theme_id}, {"_id": 0})
-    if not theme:
-        raise HTTPException(404, "Tema bulunamadı")
-    update = {}
-    for key in ("name", "slug", "description", "preview_image", "settings", "menu"):
-        if key in data:
-            update[key] = data[key]
+async def update_theme(theme_id:str,data:dict,current_user:dict=Depends(require_permission("tasarim.themes"))):
+    theme=await db.themes.find_one({"id":theme_id},{"_id":0})
+    if not theme: raise HTTPException(404,"Tema bulunamadı")
+    await _version(theme,"before_customize",current_user); update={}
+    for key in ("name","slug","description","preview_image","menu"):
+        if key in data: update[key]=data[key]
+    if "settings" in data: update["settings"]=_validate_settings(data["settings"])
     if "blocks" in data:
-        blocks = data["blocks"] or []
-        for b in blocks:
-            if not b.get("id"):
-                b["id"] = generate_id()
-            if "is_active" not in b:
-                b["is_active"] = True
-        update["blocks"] = blocks
-    update["updated_at"] = datetime.now(timezone.utc).isoformat()
-    await db.themes.update_one({"id": theme_id}, {"$set": update})
-    return await db.themes.find_one({"id": theme_id}, {"_id": 0})
-
+        update["blocks"]=data["blocks"] or []
+        for b in update["blocks"]: b.setdefault("id",generate_id()); b.setdefault("is_active",True)
+    if update.get("slug")!=theme.get("slug") and await db.themes.find_one({"slug":update.get("slug")},{"_id":0,"id":1}): raise HTTPException(400,"Tema adresi zaten kullanılıyor")
+    update["updated_at"]=_now(); await db.themes.update_one({"id":theme_id},{"$set":update}); return await db.themes.find_one({"id":theme_id},{"_id":0})
 
 @admin_router.put("/{theme_id}/blocks/{block_id}")
-async def update_block(theme_id: str, block_id: str, data: dict, current_user: dict = Depends(require_admin)):
-    """Update a single block of a theme."""
-    theme = await db.themes.find_one({"id": theme_id}, {"_id": 0})
-    if not theme:
-        raise HTTPException(404, "Tema bulunamadı")
-    blocks = theme.get("blocks", [])
-    found = False
-    for b in blocks:
-        if b.get("id") == block_id:
-            for key in ("type", "title", "subtitle", "image", "mobile_image", "link_url", "link_label", "order", "is_active", "settings"):
-                if key in data:
-                    b[key] = data[key]
-            found = True
-            break
-    if not found:
-        raise HTTPException(404, "Block bulunamadı")
-    await db.themes.update_one({"id": theme_id}, {"$set": {"blocks": blocks, "updated_at": datetime.now(timezone.utc).isoformat()}})
-    return {"ok": True, "blocks": blocks}
-
+async def update_block(theme_id:str,block_id:str,data:dict,current_user:dict=Depends(require_permission("tasarim.themes"))):
+    theme=await db.themes.find_one({"id":theme_id},{"_id":0})
+    if not theme: raise HTTPException(404,"Tema bulunamadı")
+    await _version(theme,"before_customize",current_user,{"block_id":block_id}); target=next((b for b in theme.get("blocks",[]) if b.get("id")==block_id),None)
+    if not target: raise HTTPException(404,"Blok bulunamadı")
+    for key in ("type","title","subtitle","image","mobile_image","link_url","link_label","order","is_active","settings"):
+        if key in data: target[key]=data[key]
+    await db.themes.update_one({"id":theme_id},{"$set":{"blocks":theme["blocks"],"updated_at":_now()}}); return {"ok":True,"blocks":theme["blocks"]}
 
 @admin_router.post("/{theme_id}/activate")
-async def activate_theme(theme_id: str, current_user: dict = Depends(require_admin)):
-    """Set this theme active (deactivates others)."""
-    theme = await db.themes.find_one({"id": theme_id}, {"_id": 0})
-    if not theme:
-        raise HTTPException(404, "Tema bulunamadı")
-    await db.themes.update_many({}, {"$set": {"is_active": False}})
-    await db.themes.update_one({"id": theme_id}, {"$set": {"is_active": True, "updated_at": datetime.now(timezone.utc).isoformat()}})
-    return {"ok": True, "active_theme": theme_id}
-
+async def activate_theme(theme_id:str,data:dict,current_user:dict=Depends(require_permission("tasarim.themes"))):
+    if data.get("confirm") is not True: raise HTTPException(400,"Tema uygulama işlemi açık onay gerektirir")
+    theme=await db.themes.find_one({"id":theme_id},{"_id":0})
+    if not theme: raise HTTPException(404,"Tema bulunamadı")
+    active=await db.themes.find_one({"is_active":True},{"_id":0}); expected=data.get("expected_current_theme_id")
+    if expected!=(active or {}).get("id"): raise HTTPException(409,"Aktif tema değişti; listeyi yenileyip tekrar onaylayın")
+    if active and active.get("id")==theme_id: return {"ok":True,"active_theme":theme_id,"already_active":True}
+    version=await _version(active or theme,"before_activate",current_user,{"target_theme_id":theme_id})
+    # A single compare-and-swap document serializes concurrent apply requests.
+    cas=await db.theme_activation_state.update_one(
+        {"id":"main","active_theme_id":expected},{"$set":{"active_theme_id":theme_id,"updated_at":_now()}}
+    )
+    if cas.modified_count != 1: raise HTTPException(409,"Aktif tema değişti; listeyi yenileyip tekrar onaylayın")
+    await db.themes.update_one({"id":theme_id},{"$set":{"is_active":True,"updated_at":_now()}})
+    await db.themes.update_many({"id":{"$ne":theme_id}},{"$set":{"is_active":False}})
+    return {"ok":True,"active_theme":theme_id,"rollback_version_id":version["id"]}
 
 @admin_router.delete("/{theme_id}")
-async def delete_theme(theme_id: str, current_user: dict = Depends(require_admin)):
-    theme = await db.themes.find_one({"id": theme_id}, {"_id": 0})
-    if not theme:
-        raise HTTPException(404, "Tema bulunamadı")
-    if theme.get("is_default"):
-        raise HTTPException(400, "Varsayılan tema silinemez")
-    await db.themes.delete_one({"id": theme_id})
-    return {"ok": True}
-
+async def delete_theme(theme_id:str,current_user:dict=Depends(require_permission("tasarim.themes"))):
+    theme=await db.themes.find_one({"id":theme_id},{"_id":0})
+    if not theme: raise HTTPException(404,"Tema bulunamadı")
+    if theme.get("is_default") or theme.get("is_active"): raise HTTPException(400,"Varsayılan veya aktif tema silinemez")
+    await _version(theme,"before_delete",current_user); await db.themes.delete_one({"id":theme_id}); return {"ok":True}
 
 @admin_router.post("/{theme_id}/reset")
-async def reset_theme(theme_id: str, current_user: dict = Depends(require_admin)):
-    """Reset theme blocks to factory defaults (only works for Miu Miu)."""
-    theme = await db.themes.find_one({"id": theme_id}, {"_id": 0})
-    if not theme:
-        raise HTTPException(404, "Tema bulunamadı")
-    if theme.get("slug") != "miumiu":
-        raise HTTPException(400, "Sadece Miu Miu temasının fabrika ayarlarına dönüş desteği mevcut")
-    defaults = _build_default_theme()
-    await db.themes.update_one({"id": theme_id}, {"$set": {
-        "blocks": defaults["blocks"],
-        "menu": defaults["menu"],
-        "settings": defaults["settings"],
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-    }})
-    return await db.themes.find_one({"id": theme_id}, {"_id": 0})
+async def reset_theme(theme_id:str,current_user:dict=Depends(require_permission("tasarim.themes"))):
+    theme=await db.themes.find_one({"id":theme_id},{"_id":0}); key=theme.get("template_key") if theme else None
+    if not theme: raise HTTPException(404,"Tema bulunamadı")
+    if key not in THEME_TOKENS: raise HTTPException(400,"Bu tema için fabrika ayarı bulunmuyor")
+    await _version(theme,"before_reset",current_user); defaults=_definition(key)
+    await db.themes.update_one({"id":theme_id},{"$set":{"blocks":defaults["blocks"],"menu":defaults["menu"],"settings":defaults["settings"],"name":defaults["name"],"description":defaults["description"],"updated_at":_now()}})
+    return await db.themes.find_one({"id":theme_id},{"_id":0})
 
+def _public(theme):
+    out=_clean(theme); out["blocks"]=sorted([b for b in out.get("blocks",[]) if b.get("is_active",True)],key=lambda b:b.get("order",0)); out.pop("created_at",None); return out
 
-# ----- Public Storefront Routes -----
 @public_router.get("/active")
 async def get_active_theme():
-    """Public: get currently active theme."""
-    await _ensure_seed()
-    theme = await db.themes.find_one({"is_active": True}, {"_id": 0})
-    if not theme:
-        # Fall back to first theme available
-        theme = await db.themes.find_one({}, {"_id": 0})
-    if not theme:
-        raise HTTPException(404, "Aktif tema yok")
-    # Public-safe blocks (only active)
-    theme["blocks"] = [b for b in theme.get("blocks", []) if b.get("is_active", True)]
-    theme["blocks"].sort(key=lambda b: b.get("order", 0))
-    return theme
-
+    await _ensure_seed(); state=await db.theme_activation_state.find_one({"id":"main"},{"_id":0,"active_theme_id":1})
+    theme=await db.themes.find_one({"id":(state or {}).get("active_theme_id")},{"_id":0}) if (state or {}).get("active_theme_id") else None
+    # Denetim #29: rastgele (taslak) tema yedeği KALDIRILDI — yalnız etkin ya da varsayılan tema.
+    theme=theme or await db.themes.find_one({"is_active":True},{"_id":0}) or await db.themes.find_one({"is_default":True},{"_id":0})
+    if not theme: raise HTTPException(404,"Aktif tema yok")
+    return _public(theme)
 
 @public_router.get("/{slug}")
-async def get_theme_by_slug(slug: str):
-    """Public: get a theme by slug (for preview)."""
-    await _ensure_seed()
-    theme = await db.themes.find_one({"slug": slug}, {"_id": 0})
-    if not theme:
-        raise HTTPException(404, "Tema bulunamadı")
-    theme["blocks"] = [b for b in theme.get("blocks", []) if b.get("is_active", True)]
-    theme["blocks"].sort(key=lambda b: b.get("order", 0))
-    return theme
+async def get_theme_by_slug(slug:str, request: Request):
+    await _ensure_seed(); theme=await db.themes.find_one({"slug":slug},{"_id":0})
+    if not theme: raise HTTPException(404,"Tema bulunamadı")
+    # Denetim #29: etkin olmayan (taslak) tema yalnız personele (panel önizlemesi) gösterilir.
+    if not theme.get("is_active"):
+        from .deps import optional_admin
+        if (await optional_admin(request)) is None:
+            raise HTTPException(404,"Tema bulunamadı")
+    return _public(theme)

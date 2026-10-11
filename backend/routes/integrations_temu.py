@@ -33,7 +33,8 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel
 
-from .deps import db, require_admin
+from .deps import db, require_admin, generate_id, require_permission
+from .marketplace_order_mapping import temu_order_fields
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/temu", tags=["Integrations-Temu"])
@@ -260,7 +261,7 @@ class ReturnDecisionReq(BaseModel):
 # =============================================================================
 
 @router.get("/egress-ip")
-async def temu_egress_ip(current_user=Depends(require_admin)):
+async def temu_egress_ip(current_user=Depends(require_permission("integrations.view", any_in_area=True))):
     """Backend'in dışarı çıkış (egress) IP'sini döner — Temu IP whitelist için.
 
     Temu uygulamasının IP whitelist alanına yazılacak adres BUDUR (kişisel IP'in
@@ -305,16 +306,21 @@ async def temu_egress_ip(current_user=Depends(require_admin)):
 # =============================================================================
 
 @router.post("/products")
-async def temu_create_product(req: ProductCreateReq, current_user=Depends(require_admin)):
-    # 🎯 MELUNİ SABİT VARSAYILANLAR (gap-fill): ürünün taşımadığı ortak özellikleri
+async def temu_create_product(req: ProductCreateReq, current_user=Depends(require_permission("integrations.temu"))):
+    # 🎯 MELUNI SABİT VARSAYILANLAR (gap-fill): ürünün taşımadığı ortak özellikleri
     # (Menşei/Cinsiyet/Yaş Grubu/Ortam/Ek Özellik/Kutu Durumu/Persona/Performans +
     # Üretici/İthalatçı GPSR) Temu attribute'larına ekle. Mevcut değer DOKUNULMAZ.
     from meluni_defaults import MELUNI_FIXED_ATTR_DEFAULTS, MELUNI_COMPANY, _norm as _fnorm
+    from .integrations_common import db_attr_default_map, _normalize_attr_key
     attrs_in = dict(req.attributes or {})
     _have = {_fnorm(k) for k in attrs_in}
+    # TEK OTORİTE DB VARSAYILANLARI (Özellik Ayar Kartı) — Trendyol/HB ile aynı kaynak.
+    # DB'de değer varsa onu kullan (kullanıcı düzenledi); yoksa statik MELUNI sabiti fallback.
+    _db_defs = await db_attr_default_map()
     for k, v in MELUNI_FIXED_ATTR_DEFAULTS.items():
         if _fnorm(k) not in _have:
-            attrs_in[k] = v
+            _dv = _db_defs.get(_normalize_attr_key(k))
+            attrs_in[k] = _dv if _dv else v
     # BEYAZ ETİKET: GPSR üretici bilgisi merkezî Firma Bilgileri'nden (varsa) — koddan değil.
     try:
         from company import get_company as _get_company
@@ -343,7 +349,7 @@ async def temu_create_product(req: ProductCreateReq, current_user=Depends(requir
 
 @router.get("/products")
 async def temu_list_products(page: int = 1, page_size: int = 50, status: Optional[str] = None,
-                              search: Optional[str] = None, current_user=Depends(require_admin)):
+                              search: Optional[str] = None, current_user=Depends(require_permission("integrations.view", any_in_area=True))):
     params = {"page": page, "page_size": min(page_size, 100)}
     if status: params["status"] = status
     if search: params["search_term"] = search
@@ -351,12 +357,12 @@ async def temu_list_products(page: int = 1, page_size: int = 50, status: Optiona
 
 
 @router.get("/products/{product_id}")
-async def temu_get_product(product_id: str, current_user=Depends(require_admin)):
+async def temu_get_product(product_id: str, current_user=Depends(require_permission("integrations.view", any_in_area=True))):
     return await _temu_request("GET", f"/product/{product_id}/details", params={"product_id": product_id})
 
 
 @router.put("/products/{product_id}")
-async def temu_update_product(product_id: str, payload: dict, current_user=Depends(require_admin)):
+async def temu_update_product(product_id: str, payload: dict, current_user=Depends(require_permission("integrations.temu"))):
     return await _temu_request("PUT", f"/product/{product_id}/update", json_body={"product_id": product_id, "updates": payload})
 
 
@@ -365,7 +371,7 @@ async def temu_update_product(product_id: str, payload: dict, current_user=Depen
 # =============================================================================
 
 @router.post("/stock/update")
-async def temu_update_stock(req: StockUpdateReq, current_user=Depends(require_admin)):
+async def temu_update_stock(req: StockUpdateReq, current_user=Depends(require_permission("integrations.temu"))):
     if len(req.items) == 1:
         it = req.items[0]
         return await _temu_request("POST", "/inventory/update-stock", json_body=it)
@@ -373,7 +379,7 @@ async def temu_update_stock(req: StockUpdateReq, current_user=Depends(require_ad
 
 
 @router.get("/stock/{product_id}")
-async def temu_get_stock(product_id: str, sku: Optional[str] = None, current_user=Depends(require_admin)):
+async def temu_get_stock(product_id: str, sku: Optional[str] = None, current_user=Depends(require_permission("integrations.view", any_in_area=True))):
     params = {"product_id": product_id}
     if sku: params["sku"] = sku
     return await _temu_request("GET", "/inventory/stock-status", params=params)
@@ -384,7 +390,7 @@ async def temu_get_stock(product_id: str, sku: Optional[str] = None, current_use
 # =============================================================================
 
 @router.post("/price/update")
-async def temu_update_price(req: PriceUpdateReq, current_user=Depends(require_admin)):
+async def temu_update_price(req: PriceUpdateReq, current_user=Depends(require_permission("integrations.temu"))):
     if len(req.items) == 1:
         return await _temu_request("POST", "/pricing/update-price", json_body=req.items[0])
     return await _temu_request("POST", "/pricing/bulk-update-prices", json_body={"updates": req.items})
@@ -397,7 +403,7 @@ async def temu_update_price(req: PriceUpdateReq, current_user=Depends(require_ad
 @router.get("/orders")
 async def temu_list_orders(page: int = 1, page_size: int = 50, status: Optional[str] = None,
                             start_date: Optional[str] = None, end_date: Optional[str] = None,
-                            current_user=Depends(require_admin)):
+                            current_user=Depends(require_permission("integrations.view", any_in_area=True))):
     params = {"page": page, "page_size": min(page_size, 100)}
     if status: params["status"] = status
     if start_date: params["start_date"] = start_date
@@ -406,17 +412,17 @@ async def temu_list_orders(page: int = 1, page_size: int = 50, status: Optional[
 
 
 @router.get("/orders/{order_id}")
-async def temu_get_order(order_id: str, current_user=Depends(require_admin)):
+async def temu_get_order(order_id: str, current_user=Depends(require_permission("integrations.view", any_in_area=True))):
     return await _temu_request("GET", f"/orders/{order_id}/details", params={"order_id": order_id})
 
 
 @router.post("/orders/{order_id}/confirm")
-async def temu_confirm_order(order_id: str, current_user=Depends(require_admin)):
+async def temu_confirm_order(order_id: str, current_user=Depends(require_permission("integrations.temu"))):
     return await _temu_request("POST", f"/orders/{order_id}/status", json_body={"order_id": order_id, "status": "confirmed"})
 
 
 @router.post("/orders/{order_id}/ship")
-async def temu_ship_order(order_id: str, req: ShipReq, current_user=Depends(require_admin)):
+async def temu_ship_order(order_id: str, req: ShipReq, current_user=Depends(require_permission("integrations.temu"))):
     return await _temu_request("POST", f"/orders/{order_id}/ship", json_body={
         "order_id": order_id,
         "tracking_number": req.tracking_number,
@@ -426,7 +432,7 @@ async def temu_ship_order(order_id: str, req: ShipReq, current_user=Depends(requ
 
 
 @router.post("/orders/{order_id}/cancel")
-async def temu_cancel_order(order_id: str, reason: str = Query("Stok yok"), current_user=Depends(require_admin)):
+async def temu_cancel_order(order_id: str, reason: str = Query("Stok yok"), current_user=Depends(require_permission("integrations.temu"))):
     return await _temu_request("POST", f"/orders/{order_id}/status",
                                 json_body={"order_id": order_id, "status": "cancelled", "reason": reason})
 
@@ -437,7 +443,7 @@ async def temu_cancel_order(order_id: str, reason: str = Query("Stok yok"), curr
 
 @router.get("/messages")
 async def temu_list_messages(page: int = 1, page_size: int = 20, status: Optional[str] = None,
-                              order_id: Optional[str] = None, current_user=Depends(require_admin)):
+                              order_id: Optional[str] = None, current_user=Depends(require_permission("integrations.view", any_in_area=True))):
     params = {"page": page, "page_size": min(page_size, 50)}
     if status: params["status"] = status
     if order_id: params["order_id"] = order_id
@@ -445,19 +451,19 @@ async def temu_list_messages(page: int = 1, page_size: int = 20, status: Optiona
 
 
 @router.get("/messages/{thread_id}")
-async def temu_get_thread(thread_id: str, current_user=Depends(require_admin)):
+async def temu_get_thread(thread_id: str, current_user=Depends(require_permission("integrations.view", any_in_area=True))):
     return await _temu_request("GET", f"/messages/thread/{thread_id}", params={"thread_id": thread_id})
 
 
 @router.post("/messages/{thread_id}/reply")
-async def temu_reply(thread_id: str, req: ReplyReq, current_user=Depends(require_admin)):
+async def temu_reply(thread_id: str, req: ReplyReq, current_user=Depends(require_permission("integrations.temu"))):
     return await _temu_request("POST", f"/messages/thread/{thread_id}/reply", json_body={
         "thread_id": thread_id, "message": req.message, "attachments": req.attachments,
     })
 
 
 @router.post("/messages/{thread_id}/resolve")
-async def temu_resolve(thread_id: str, current_user=Depends(require_admin)):
+async def temu_resolve(thread_id: str, current_user=Depends(require_permission("integrations.temu"))):
     return await _temu_request("POST", f"/messages/thread/{thread_id}/resolve",
                                 json_body={"thread_id": thread_id, "status": "resolved"})
 
@@ -468,14 +474,18 @@ async def temu_resolve(thread_id: str, current_user=Depends(require_admin)):
 
 @router.get("/returns")
 async def temu_list_returns(page: int = 1, page_size: int = 20, status: Optional[str] = None,
-                             current_user=Depends(require_admin)):
+                             current_user=Depends(require_permission("integrations.view", any_in_area=True))):
     params = {"page": page, "page_size": min(page_size, 50)}
     if status: params["status"] = status
     return await _temu_request("GET", "/returns/list", params=params)
 
 
 @router.post("/returns/{return_id}/approve")
-async def temu_approve_return(return_id: str, req: ReturnDecisionReq, current_user=Depends(require_admin)):
+async def temu_approve_return(return_id: str, req: ReturnDecisionReq, current_user=Depends(require_permission("integrations.temu"))):
+    # ACİL ANAHTAR (CHAIN08): iade tutarı taşıyan onay bir para-iadesi komutudur → freeze_refunds /
+    # restore_mode / geri yükleme sonrası iade kilidi açıkken Temu'ya istek GÖNDERİLMEZ (423).
+    from security_switches import require_switch_off
+    await require_switch_off("freeze_refunds")
     return await _temu_request("POST", f"/returns/{return_id}/approve", json_body={
         "return_id": return_id, "action": "approve",
         "refund_amount": req.refund_amount, "return_instructions": req.instructions,
@@ -483,13 +493,16 @@ async def temu_approve_return(return_id: str, req: ReturnDecisionReq, current_us
 
 
 @router.post("/returns/{return_id}/reject")
-async def temu_reject_return(return_id: str, req: ReturnDecisionReq, current_user=Depends(require_admin)):
+async def temu_reject_return(return_id: str, req: ReturnDecisionReq, current_user=Depends(require_permission("integrations.temu"))):
     return await _temu_request("POST", f"/returns/{return_id}/reject",
                                 json_body={"return_id": return_id, "action": "reject", "reason": req.reason or "Rejected"})
 
 
 @router.post("/returns/{return_id}/refund")
-async def temu_refund(return_id: str, req: ReturnDecisionReq, current_user=Depends(require_admin)):
+async def temu_refund(return_id: str, req: ReturnDecisionReq, current_user=Depends(require_permission("integrations.temu"))):
+    # ACİL ANAHTAR (CHAIN08): para-iadesi komutu → freeze_refunds / restore_mode / restore sonrası kilit → 423.
+    from security_switches import require_switch_off
+    await require_switch_off("freeze_refunds")
     return await _temu_request("POST", f"/returns/{return_id}/refund", json_body={
         "return_id": return_id, "refund_amount": req.refund_amount, "reason": req.reason or "Customer return",
     })
@@ -526,26 +539,74 @@ async def temu_webhook(request: Request):
 
     # Sipariş webhook'u → ana orders koleksiyonuna düş
     if event in ("order.created", "order.updated"):
-        oid = data.get("order_id")
+        _payload = data.get("order") or data.get("payload") or data
+        _payload = _payload if isinstance(_payload, dict) else data
+        oid = (_payload.get("order_id") or _payload.get("orderId")
+               or data.get("order_id") or data.get("orderId"))
         if oid:
             # O5: Pipeline kanalı `platform` alanında tutar (marketplace değil) ve durumlar
             # dahili katalogla eşlenmeli — aksi halde Temu siparişleri platform filtrelerinde
             # görünmez ve tanınmayan ham durum stringi taşırdı.
-            _raw_status = str(data.get("status") or "").lower().strip()
-            _status_map = {
-                "pending": "pending", "created": "pending", "unpaid": "awaiting_payment",
-                "paid": "confirmed", "confirmed": "confirmed", "processing": "confirmed",
-                "shipped": "shipped", "in_transit": "shipped", "delivered": "delivered",
-                "completed": "delivered", "cancelled": "cancelled", "canceled": "cancelled",
-                "refunded": "refunded", "returned": "returned",
-            }
-            _internal = _status_map.get(_raw_status, "pending")
+            _mapped = temu_order_fields(_payload)
+            # RC6 DENETİM FIX: upsert eskiden created_at/id/order_number YAZMIYORDU → Temu
+            # siparişleri tarih-aralıklı raporlarda (created_at filtresi) HİÇ görünmüyor,
+            # kanal adedi ~0 çıkıyordu. $setOnInsert ile YALNIZ ilk oluşturmada eklenir
+            # (sonraki güncellemeler bu alanları değiştirmez). Payload gerçek sipariş tarihi
+            # taşıyorsa marketplace_order_date olarak ayrıca korunur; yoksa veri uydurulmaz.
+            _now = datetime.now(timezone.utc).isoformat()
+            _set = {"platform": "temu", "marketplace": "temu",
+                    "marketplace_order_id": oid, "raw_data": data,
+                    "updated_at": _now, **{k: v for k, v in _mapped.items()
+                                              if k != "integration_incomplete"}}
+            _on_insert = {"id": generate_id(), "order_number": str(oid), "created_at": _now,
+                          "integration_incomplete": _mapped["integration_incomplete"]}
+            if not _mapped["integration_incomplete"]:
+                _set["integration_incomplete"] = False
+            _existing = await db.orders.find_one(
+                {"platform": "temu", "marketplace_order_id": oid}, {"_id": 0, "status": 1})
+            if ((_existing or {}).get("status") in
+                    ("cancelled", "return_approved", "returned", "refunded", "partial_refunded")
+                    and _mapped.get("status") not in
+                    ("cancelled", "return_approved", "returned", "refunded", "partial_refunded")):
+                _set.pop("status", None)
             await db.orders.update_one(
                 {"platform": "temu", "marketplace_order_id": oid},
-                {"$set": {"platform": "temu", "marketplace": "temu",
-                          "marketplace_order_id": oid, "raw_data": data,
-                          "status": _internal, "marketplace_status_raw": _raw_status,
-                          "updated_at": datetime.now(timezone.utc).isoformat()}},
+                {"$set": _set, "$setOnInsert": _on_insert},
                 upsert=True,
             )
+    # İade/refund bildirimleri yalnız mevcut siparişe idempotent alan güncellemesi yapar.
+    # Sipariş bulunmazsa finansal verisi eksik bir order kabuğu üretmez.
+    if event in ("return.approved", "return.completed", "order.returned",
+                 "refund.completed", "order.refunded"):
+        _payload = data.get("return") or data.get("refund") or data.get("payload") or data
+        _payload = _payload if isinstance(_payload, dict) else data
+        oid = (_payload.get("order_id") or _payload.get("orderId")
+               or data.get("order_id") or data.get("orderId"))
+        if oid:
+            _now = datetime.now(timezone.utc).isoformat()
+            _is_refund = event in ("refund.completed", "order.refunded")
+            _status = ("refunded" if _is_refund else
+                       "return_approved" if event == "return.approved" else "returned")
+            _set = {
+                "status": _status,
+                "return_source": "temu_webhook",
+                "updated_at": _now,
+            }
+            amount = _payload.get("refund_amount")
+            if amount is None:
+                amount = _payload.get("refundAmount")
+            if amount not in (None, ""):
+                try:
+                    _set["refund_amount"] = float(amount)
+                except (TypeError, ValueError):
+                    pass
+            if _is_refund:
+                _set["refund_paid_at"] = _now
+            else:
+                _set["returned_at"] = _now
+            _terminal_guard = ({"$ne": "refunded"} if _is_refund else
+                               {"$nin": ["return_approved", "returned", "refunded"]})
+            await db.orders.update_one(
+                {"platform": "temu", "marketplace_order_id": oid,
+                 "status": _terminal_guard}, {"$set": _set})
     return {"status": "received", "event_type": event}

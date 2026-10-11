@@ -42,7 +42,6 @@ export default function OrderMarketplaceInfo({ order }) {
   const isMarketplace = isTY || isHB;
   const mpName = isTY ? "Trendyol" : isHB ? "Hepsiburada" : "Pazaryeri";
 
-  const att = order.attribution || {};
   const est =
     order.marketplace_estimated_delivery_start || order.marketplace_estimated_delivery_end
       ? `${fmtDate(order.marketplace_estimated_delivery_start)}${
@@ -61,10 +60,9 @@ export default function OrderMarketplaceInfo({ order }) {
       order.cargo_provider_name ||
       order.is_micro_export);
 
-  const hasUtm = !!(att.source || att.medium || att.campaign || att.content || att.landing_page);
-  const showSource = !!(order.customer_ip || hasUtm);
-
-  if (!showMarketplace && !showSource) return null;
+  // Kullanıcı isteği: "Kaynak & Reklam" (IP/UTM) kutusu sipariş detayından KALDIRILDI;
+  // yerine "Müşterinin Diğer Siparişleri" bloğu var. Yalnız pazaryeri bilgileri gösterilir.
+  if (!showMarketplace) return null;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -80,17 +78,6 @@ export default function OrderMarketplaceInfo({ order }) {
         </div>
       )}
 
-      {showSource && (
-        <div className="border rounded-lg p-3 bg-slate-50">
-          <h3 className="font-medium text-slate-700 mb-2 text-sm">Kaynak &amp; Reklam</h3>
-          <Row label="IP Adresi" value={order.customer_ip} />
-          <Row label="Reklam Kaynağı" value={att.source} />
-          <Row label="Mecra" value={att.medium} />
-          <Row label="Kampanya" value={att.campaign} />
-          <Row label="İçerik" value={att.content} />
-          <Row label="Giriş Sayfası" value={att.landing_page} />
-        </div>
-      )}
     </div>
   );
 }

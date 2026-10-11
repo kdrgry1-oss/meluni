@@ -30,7 +30,7 @@ import logging
 import os
 from typing import Optional
 
-from cryptography.fernet import Fernet, InvalidToken
+from cryptography.fernet import Fernet, InvalidToken, MultiFernet
 
 logger = logging.getLogger(__name__)
 
@@ -45,8 +45,24 @@ def _derive_key_from_jwt(secret: str) -> bytes:
     return base64.urlsafe_b64encode(okm)
 
 
+def _jwt_secret_for_kdf() -> str:
+    try:
+        from routes.deps import JWT_SECRET as jwt_secret
+    except Exception:
+        jwt_secret = (os.environ.get("JWT_SECRET") or "").strip()
+        if len(jwt_secret) < 32:
+            try:
+                _p = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", ".jwt_secret")
+                if os.path.exists(_p):
+                    with open(_p) as _fh:
+                        jwt_secret = _fh.read().strip()
+            except Exception:
+                pass
+    return jwt_secret or ""
+
+
 def _load_master_key() -> bytes:
-    raw = os.environ.get("SECRETS_MASTER_KEY")
+    raw = (os.environ.get("SECRETS_MASTER_KEY") or "").strip()
     if raw:
         # Expect base64url 32-byte fernet key
         try:
@@ -73,6 +89,8 @@ def _load_master_key() -> bytes:
                         jwt_secret = _fh.read().strip()
             except Exception:
                 pass
+    if not jwt_secret or len(jwt_secret) < 32:
+        raise RuntimeError("A strong SECRETS_MASTER_KEY or JWT_SECRET is required for secret encryption")
     logger.warning(
         "SECRETS_MASTER_KEY missing. Deriving from JWT_SECRET (NOT recommended for production). "
         "Generate a strong key with: python -c \"from cryptography.fernet import Fernet;print(Fernet.generate_key().decode())\""
@@ -81,7 +99,24 @@ def _load_master_key() -> bytes:
 
 
 _MASTER_KEY = _load_master_key()
+
+# GEÇİŞ (2026-10): SECRETS_MASTER_KEY sonradan eklendiğinde, o güne kadar JWT_SECRET'tan
+# türetilmiş anahtarla şifrelenmiş satırlar (entegrasyon şifreleri, MFA sırları, kasa) ÇÖZÜLEBİLİR
+# kalsın diye çözme MultiFernet ile yapılır: önce yeni anahtar, sonra eski türetilmiş anahtar.
+# Şifreleme HER ZAMAN birincil (yeni) anahtarla. Eski satırlar okunup yeniden kaydedildikçe ya da
+# rotate_secret() ile yeni anahtara geçer. JWT_SECRET değişmedikçe eski anahtar türetilebilir.
 _fernet = Fernet(_MASTER_KEY)
+_decrypt_keys = [_fernet]
+if (os.environ.get("SECRETS_MASTER_KEY") or "").strip():
+    try:
+        _legacy_secret = _jwt_secret_for_kdf()
+        if len(_legacy_secret) >= 32:
+            _legacy_key = _derive_key_from_jwt(_legacy_secret)
+            if _legacy_key != _MASTER_KEY:
+                _decrypt_keys.append(Fernet(_legacy_key))
+    except Exception as _lk_err:  # pragma: no cover
+        logger.warning(f"Eski (JWT türetilmiş) şifre anahtarı yüklenemedi: {_lk_err}")
+_fernet_dec = MultiFernet(_decrypt_keys)
 
 
 def encrypt(plaintext: Optional[str]) -> Optional[str]:
@@ -105,7 +140,7 @@ def decrypt(ciphertext: Optional[str]) -> Optional[str]:
         # Legacy plaintext value — flag once and return raw
         return ciphertext
     try:
-        return _fernet.decrypt(ciphertext[3:].encode()).decode("utf-8")
+        return _fernet_dec.decrypt(ciphertext[3:].encode()).decode("utf-8")
     except InvalidToken:
         logger.error("Failed to decrypt secret — wrong master key or tampered ciphertext")
         return None

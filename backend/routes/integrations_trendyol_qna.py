@@ -25,8 +25,9 @@ import socket
 import asyncio
 import httpx
 
-from .deps import db, logger, require_admin, generate_id
+from .deps import db, logger, require_admin, generate_id, require_permission
 
+from security.ai_budget import ai_slot as _ai_slot  # denetim #25
 router = APIRouter(tags=["Integrations - Trendyol Q&A"])
 
 
@@ -36,7 +37,7 @@ router = APIRouter(tags=["Integrations - Trendyol Q&A"])
 async def sync_trendyol_questions(
     days_back: int = 90,
     status: Optional[str] = None,
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("questions.sync"))
 ):
     """Sync questions from Trendyol and store in DB.
 
@@ -157,7 +158,7 @@ async def get_trendyol_questions(
     status: Optional[str] = None,
     page: int = 0,
     size: int = 20,
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("questions.view"))
 ):
     """Get questions from local DB"""
     query = {}
@@ -175,7 +176,7 @@ async def get_trendyol_questions(
 
 
 @router.post("/trendyol/questions/{question_id}/answer")
-async def answer_trendyol_question(question_id: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def answer_trendyol_question(question_id: str, payload: dict, current_user: dict = Depends(require_permission("questions.answer"))):
     """Send an answer to a Trendyol customer question"""
     from .integrations import get_trendyol_config, get_trendyol_headers, log_integration_event
 
@@ -310,7 +311,7 @@ async def auto_answer_trendyol_questions(
 @router.post("/trendyol/questions/sync-answers")
 async def sync_trendyol_answers(
     payload: Optional[dict] = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("questions.sync")),
 ):
     """ANSWERED status'lu fakat answer alanı boş olan trendyol_questions için
     tek tek /questions/{id} çağrısı atıp answer text'lerini doldur.
@@ -409,7 +410,7 @@ async def sync_trendyol_answers(
 @router.post("/trendyol/reviews/scrape")
 async def scrape_trendyol_reviews(
     payload: dict,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("campaigns.manage")),
 ):
     """Public Trendyol storefront'tan bir ürünün yorumlarını çeker.
 
@@ -502,7 +503,7 @@ async def scrape_trendyol_reviews(
 @router.post("/trendyol/reviews/scrape-bulk")
 async def scrape_trendyol_reviews_bulk(
     payload: dict,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("campaigns.manage")),
 ):
     """Birden fazla ürün için toplu yorum çekimi."""
     items = (payload or {}).get("items") or []
@@ -1129,7 +1130,7 @@ async def sync_all_trendyol_reviews_core(min_rating: int = 4, limit: int = 0, dr
 @router.post("/trendyol/reviews/sync-all")
 async def sync_all_trendyol_reviews(
     payload: dict,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("campaigns.manage")),
 ):
     """
     TÜM aktif site ürünleri için Trendyol 4-5 yıldız yorumlarını toplu çeker.
@@ -1193,7 +1194,7 @@ async def sync_all_trendyol_reviews(
 
 
 @router.get("/trendyol/reviews/sync-status")
-async def trendyol_review_sync_status(current_user: dict = Depends(require_admin)):
+async def trendyol_review_sync_status(current_user: dict = Depends(require_permission("campaigns.view", any_in_area=True))):
     """Arka plan yorum senkronunun canlı durumu + ürün bazında çekildi/çekilemedi listesi."""
     st = await db.settings.find_one({"id": "trendyol_review_sync_state"}, {"_id": 0}) or {}
     rows = await db.trendyol_review_sync_products.find({}, {"_id": 0}) \
@@ -1213,7 +1214,7 @@ async def trendyol_reviews_list(
     max_rating: Optional[int] = None,
     min_rating: Optional[int] = None,
     limit: int = 300,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("campaigns.view", any_in_area=True)),
 ):
     """Tek tek Trendyol yorumlarını (admin görünümü) döndürür. `ratings=1,2` → sadece o
     yıldızlar (tek tek seçim). product_id → tek ürün. approved=false → mağazada gizli. PII yok."""
@@ -1269,7 +1270,7 @@ _REVIEW_CATS = [
 async def trendyol_reviews_grouped(
     product_id: str,
     ratings: Optional[str] = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("campaigns.view", any_in_area=True)),
 ):
     """Bir ürünün düşük yıldızlı yorumlarını şikayet kategorilerine GRUPLAR ve her grubun
     ALTINDAKİ yorumları döndürür (popup detay için). Bir yorum birden çok gruba girebilir;
@@ -1310,7 +1311,8 @@ async def trendyol_reviews_analyze(
     product_id: Optional[str] = None,
     max_rating: Optional[int] = None,
     limit: int = 250,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("campaigns.view", any_in_area=True)),
+    _ai_guard: None = Depends(_ai_slot("reviews_analyze")),  # denetim #25: yetki kontrolünden SONRA
 ):
     """AI ile şikayet-nedeni analizi: seçili düşük yıldızlı yorumları LLM'e verip
     şikayet nedenlerini kategorilere ayırır ve KAÇ yorumda geçtiğini sayar. Küçükten büyüğe
@@ -1348,6 +1350,8 @@ async def trendyol_reviews_analyze(
     settings = await get_ai_settings()
     api_key = _api_key_for(settings)
     if api_key:
+        from security.ai_budget import charge as _ai_charge
+        await _ai_charge(current_user, "reviews_analyze")   # denetim #25
         _provider = settings.get("provider") or "openai"
         _model = settings.get("model") or "gpt-5.4-mini"
         sys_msg = (
@@ -1418,7 +1422,7 @@ async def trendyol_reviews_analyze(
 
 
 @router.get("/trendyol/reviews/by-product")
-async def reviews_by_product(limit: int = 300, current_user: dict = Depends(require_admin)):
+async def reviews_by_product(limit: int = 300, current_user: dict = Depends(require_permission("campaigns.view", any_in_area=True))):
     """Hangi ürüne kaç Trendyol yorumu çekildiğini listeler (en çok yorumlu önce)."""
     limit = max(1, min(limit, 2000))
     pipeline = [
@@ -1521,7 +1525,7 @@ async def hourly_trendyol_question_answer():
 
 
 @router.get("/trendyol/reviews/fetch-config")
-async def get_review_fetch_config(current_user: dict = Depends(require_admin)):
+async def get_review_fetch_config(current_user: dict = Depends(require_permission("campaigns.view", any_in_area=True))):
     """Yorum çekme yolu ayarı (Cloudflare Worker URL / proxy) — 530 engelini aşmak için."""
     s = await db.settings.find_one({"id": "trendyol"}, {"_id": 0}) or {}
     return {
@@ -1572,7 +1576,7 @@ def _assert_safe_relay_url(raw: str, field: str, require_https: bool = True) -> 
 
 
 @router.put("/trendyol/reviews/fetch-config")
-async def set_review_fetch_config(payload: dict, current_user: dict = Depends(require_admin)):
+async def set_review_fetch_config(payload: dict, current_user: dict = Depends(require_permission("campaigns.manage"))):
     """Cloudflare Worker URL veya proxy adresini kaydeder. Trendyol yorumları bunlar üzerinden çekilir."""
     upd = {}
     if "review_worker_url" in (payload or {}):

@@ -12,6 +12,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import { safeUrl } from "../lib/safeUrl";
+import { tintEmojis } from "../lib/emojiTint";
+
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 export default function AnnouncementBar() {
@@ -51,7 +54,7 @@ export default function AnnouncementBar() {
   const fg = a.text_color || "#ffffff";
 
   const inner = (
-    <span className="text-xs md:text-sm font-medium tracking-wide">{text}</span>
+    <span className="text-xs md:text-sm font-medium tracking-wide">{tintEmojis(text, fg)}</span>
   );
 
   return (
@@ -61,7 +64,7 @@ export default function AnnouncementBar() {
       data-testid="announcement-bar"
     >
       {a.link ? (
-        <a href={a.link} className="hover:underline">{inner}</a>
+        <a href={safeUrl(a.link)} className="hover:underline">{inner}</a>
       ) : (
         inner
       )}

@@ -10,6 +10,9 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 export default function MarketingPixelsInjector() {
   useEffect(() => {
+    // GÜVENLİK: pazarlama/izleme kodları yönetim panelinde ÇALIŞMAZ (panel oturumu ve
+    // token'ı üçüncü taraf koda açılmasın). Panel doğrudan açıldığında hiç yüklenmez.
+    if ((window.location.pathname || "").startsWith("/admin")) return undefined;
     let cancelled = false;
     const run = () => {
       if (cancelled) return;

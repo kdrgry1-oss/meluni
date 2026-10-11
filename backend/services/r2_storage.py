@@ -81,3 +81,40 @@ def health_check() -> dict:
         return {"ok": True, "bucket": os.environ["R2_BUCKET"]}
     except Exception as e:  # noqa: BLE001
         return {"ok": False, "error": str(e)}
+
+
+# ---------------------------------------------------------------------------
+# GİZLİ ARŞİV DEPOSU (R2_ARCHIVE_BUCKET) — dekont / fatura gibi kişisel/finansal belgeler.
+# Herkese açık CDN deposundan AYRI, public erişimi KAPALI bir bucket olmalıdır; dosyalar yalnız
+# backend üzerinden (yetkili panel isteğiyle) okunur. Tanımlı değilse arşivleme hiç çalışmaz.
+# ---------------------------------------------------------------------------
+def archive_bucket() -> str:
+    return (os.environ.get("R2_ARCHIVE_BUCKET") or "").strip()
+
+
+def archive_enabled() -> bool:
+    b = archive_bucket()
+    return bool(b and os.environ.get("R2_ENDPOINT") and os.environ.get("R2_ACCESS_KEY_ID")
+                and os.environ.get("R2_SECRET_ACCESS_KEY") and b != (os.environ.get("R2_BUCKET") or "").strip())
+
+
+def archive_put(key: str, data: bytes, content_type: str = "application/octet-stream") -> None:
+    _get_client().put_object(Bucket=archive_bucket(), Key=key.lstrip("/"), Body=data,
+                             ContentType=content_type or "application/octet-stream")
+
+
+def archive_get(key: str):
+    """Arşivden (bytes, content_type); yoksa (None, None)."""
+    try:
+        resp = _get_client().get_object(Bucket=archive_bucket(), Key=key.lstrip("/"))
+        return resp["Body"].read(), resp.get("ContentType", "application/octet-stream")
+    except (BotoCoreError, ClientError):
+        return None, None
+
+
+def archive_health() -> dict:
+    try:
+        _get_client().head_bucket(Bucket=archive_bucket())
+        return {"ok": True, "bucket": archive_bucket()}
+    except Exception as e:  # noqa: BLE001
+        return {"ok": False, "error": str(e)[:200]}

@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
@@ -83,22 +84,32 @@ export function CartProvider({ children }) {
   // (POST /api/cart/track). Daha önce storefront bunu HİÇ çağırmıyordu → cart_sessions
   // boş kalıyor, "Terk Edilen Sepet" paneli hep 0 gösteriyordu. Sipariş sonrası sepet
   // boşalınca (items=[]) kayıt "total 0" olur ve admin listesinde (total>0 filtresi) çıkmaz.
+  // Giriş/çıkışta sepet yeniden izlenir → misafirken doldurulan sepet girişten sonra üyeye bağlanır.
+  const { token: authToken } = useAuth() || {};
+  const trackedNonEmptyRef = useRef(false);
   useEffect(() => {
-    if (!items || items.length === 0) return;
+    // Boş sepet yalnız daha önce dolu izlendiyse gönderilir (ürünleri elle silen müşteri
+    // "sepetinde ürün unuttun" maili almasın); ilk açılıştaki boş sepet için istek atılmaz.
+    if (!items || (items.length === 0 && !trackedNonEmptyRef.current)) return;
+    trackedNonEmptyRef.current = items.length > 0;
     const t = setTimeout(() => {
       try {
         const API = process.env.REACT_APP_BACKEND_URL;
         if (!API) return;
         let sid = localStorage.getItem("cart_session_id");
         if (!sid) {
-          sid = (window.crypto?.randomUUID?.() || (String(Date.now()) + Math.random().toString(36).slice(2)));
+          if (!window.crypto?.getRandomValues) return;
+          sid = window.crypto.randomUUID?.() || Array.from(
+            window.crypto.getRandomValues(new Uint8Array(16)),
+            (byte) => byte.toString(16).padStart(2, "0")
+          ).join("");
           localStorage.setItem("cart_session_id", sid);
         }
         const payload = {
           session_id: sid,
           items: items.map((it) => ({
-            product_id: it.productId, name: it.name, qty: it.quantity,
-            price: it.price, image: it.image,
+            product_id: it.productId, variant_id: it.variantId || null, size: it.size || null,
+            name: it.name, qty: it.quantity, price: it.price, image: it.image,
           })),
           total: items.reduce((s, it) => s + (Number(it.price) || 0) * (it.quantity || 1), 0),
         };
@@ -108,16 +119,22 @@ export function CartProvider({ children }) {
           if (u && u.id) payload.user_id = u.id;
           if (u && u.phone) payload.phone = u.phone;
         } catch (_) { /* yoksay */ }
+        // Oturum token'ı: sepet yalnız DOĞRULANMIŞ üyeye bağlanır (sunucu user_id'yi token'dan alır).
+        const headers = { "Content-Type": "application/json" };
+        try {
+          const tok = localStorage.getItem("token");
+          if (tok) headers.Authorization = `Bearer ${tok}`;
+        } catch (_) { /* yoksay */ }
         fetch(`${API}/api/cart/track`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify(payload),
           keepalive: true,
         }).catch(() => {});
       } catch (_) { /* sessiz */ }
     }, 2500);
     return () => clearTimeout(t);
-  }, [items]);
+  }, [items, authToken]);
 
   const addItem = (product, variant = null, quantity = 1) => {
     // Y28: Kimliksiz (uydurma) varyantı varyantsız gibi işle — aksi halde variantId=null ile

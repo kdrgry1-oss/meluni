@@ -18,7 +18,7 @@ import xml.etree.ElementTree as ET
 import httpx
 import hashlib
 
-from .deps import db, logger, get_current_user, require_admin, generate_id, generate_short_id
+from .deps import db, logger, get_current_user, require_admin, generate_id, generate_short_id, require_permission
 from meluni_defaults import meluni_fixed_value_for  # tüm-pazaryeri sabit varsayılan (gap-fill)
 
 router = APIRouter(tags=["Integrations"])
@@ -276,7 +276,7 @@ from .integrations_hepsiburada import (
 @router.post("/site/teknik-detay/sync")
 async def sync_ticimax_teknik_detay(
     use_cache: bool = Query(True, description="Cache (DB) varsa kullan, yoksa SOAP'tan çek"),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("products.import_technical")),
 ):
     """
     Ticimax 'Teknik Detay Özellik + Değer' master listesini çekip her ürünün
@@ -399,7 +399,7 @@ async def import_ticimax_orders(
     exclude_marketplace: bool = Query(False, description="True ise Trendyol/HB/N11 vb. pazaryeri siparişleri hariç tutulur"),
     only_with_phone: bool = Query(False, description="True ise telefon numarası olmayan siparişler atlanır"),
     pages: int = Query(20, ge=1, le=100, description="Kaç sayfa çekilecek"),
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("returns.manage"))
 ):
     # [ticimax-off 2026-06-22] Ticimax SOAP entegrasyonu kapatildi; bu uc devre disi.
     return {"success": False, "message": "Ticimax siparis cekme kapatildi. Site siparisleri React/iyzico checkout'tan gelir."}
@@ -410,7 +410,7 @@ async def backfill_broken_ticimax_orders(
     pages: int = Query(20, ge=1, le=100, description="Kaç sayfa Ticimax'tan çekilsin"),
     page_size: int = Query(100, ge=50, le=200),
     items_chunk: int = Query(40, ge=0, le=300, description="Her çağrıda kaç eski sipariş için ürün listesi çekilsin (0=atla)"),
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("integrations.sync_actions"))
 ):
     # [ticimax-off 2026-06-22] Ticimax SOAP entegrasyonu kapatildi; bu uc devre disi.
     return {"success": False, "message": "Ticimax backfill kapatildi (entegrasyon sonlandirildi)."}

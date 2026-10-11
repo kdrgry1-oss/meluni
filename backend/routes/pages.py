@@ -2,24 +2,25 @@
 İçerik sayfaları (Hakkımızda, KVKK, İade, SSS, Mesafeli Satış, vb.) — Footer/Header/Checkout linkleri.
 db.pages koleksiyonu. Public: GET /pages/{slug} (StaticPage.jsx). Admin: liste/ekle/güncelle/sil + seed.
 """
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from datetime import datetime, timezone
 
-from .deps import db, logger, require_admin, generate_id
+from .deps import db, logger, require_admin, generate_id, require_permission
+from activity_audit import record_admin_audit
 
 router = APIRouter(prefix="/pages", tags=["Pages"])
 
 
 @router.get("")
-async def list_pages(current_user: dict = Depends(require_admin)):
+async def list_pages(current_user: dict = Depends(require_permission("tasarim.view"))):
     """Admin: tüm içerik sayfaları (aktif/pasif dahil)."""
     rows = await db.pages.find({}, {"_id": 0}).sort("title", 1).to_list(500)
     return rows
 
 
 @router.post("/seed-defaults")
-async def seed_default_pages(force: bool = False, slugs: str = "", current_user: dict = Depends(require_admin)):
-    """MELUNİ varsayılan içerik sayfalarını yükler (Hakkımızda, KVKK, İade, SSS, Gizlilik,
+async def seed_default_pages(force: bool = False, slugs: str = "", current_user: dict = Depends(require_permission("tasarim.cms"))):
+    """MELUNI varsayılan içerik sayfalarını yükler (Hakkımızda, KVKK, İade, SSS, Gizlilik,
     Mesafeli Satış, Ön Bilgilendirme, İletişim).
     force=false (varsayılan): yalnızca eksik slug'ları ekler, mevcut içeriği KORUR.
     force=true: varsayılan sayfaların içeriğini yeniden yazar (üzerine yazar).
@@ -72,7 +73,7 @@ async def get_page(slug: str):
 
 
 @router.post("")
-async def create_page(payload: dict, current_user: dict = Depends(require_admin)):
+async def create_page(payload: dict, request: Request, current_user: dict = Depends(require_permission("tasarim.cms"))):
     slug = (payload.get("slug") or "").strip()
     if not slug:
         raise HTTPException(status_code=400, detail="slug zorunlu")
@@ -87,12 +88,17 @@ async def create_page(payload: dict, current_user: dict = Depends(require_admin)
         "created_at": now, "updated_at": now,
     }
     await db.pages.insert_one(doc)
+    await record_admin_audit(
+        db, action="page.create", entity_type="page", entity_id=doc["id"],
+        before={}, after=doc, current_user=current_user, request=request, source="content.pages",
+    )
     doc.pop("_id", None)
     return doc
 
 
 @router.put("/{page_id}")
-async def update_page(page_id: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def update_page(page_id: str, payload: dict, request: Request,
+                      current_user: dict = Depends(require_permission("tasarim.cms"))):
     existing = await db.pages.find_one({"$or": [{"id": page_id}, {"slug": page_id}]})
     if not existing:
         raise HTTPException(status_code=404, detail="Sayfa bulunamadı")
@@ -106,12 +112,23 @@ async def update_page(page_id: str, payload: dict, current_user: dict = Depends(
             raise HTTPException(status_code=400, detail="Bu slug zaten kullanılıyor")
     update_set["updated_at"] = datetime.now(timezone.utc).isoformat()
     await db.pages.update_one({"id": existing["id"]}, {"$set": update_set})
+    await record_admin_audit(
+        db, action="page.update", entity_type="page", entity_id=existing["id"],
+        before=existing, after={**existing, **update_set}, current_user=current_user,
+        request=request, source="content.pages",
+    )
     return {"ok": True}
 
 
 @router.delete("/{page_id}")
-async def delete_page(page_id: str, current_user: dict = Depends(require_admin)):
+async def delete_page(page_id: str, request: Request, current_user: dict = Depends(require_permission("tasarim.cms"))):
+    existing = await db.pages.find_one({"$or": [{"id": page_id}, {"slug": page_id}]}, {"_id": 0})
     res = await db.pages.delete_one({"$or": [{"id": page_id}, {"slug": page_id}]})
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Sayfa bulunamadı")
+    await record_admin_audit(
+        db, action="page.delete", entity_type="page", entity_id=(existing or {}).get("id") or page_id,
+        before=existing or {}, after={}, current_user=current_user, request=request,
+        source="content.pages",
+    )
     return {"ok": True}

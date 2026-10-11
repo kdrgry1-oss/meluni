@@ -39,11 +39,11 @@ KULLANAN FRONTEND:
   - /app/frontend/src/pages/admin/CargoSettings.jsx
 =============================================================================
 """
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from typing import Optional
 from datetime import datetime, timezone
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_permission
 try:
     from security.crypto import encrypt as _encrypt, decrypt as _decrypt, is_encrypted as _is_enc
 except Exception:  # kripto yoksa güvenli-degrade (yine de çalışsın)
@@ -483,7 +483,7 @@ def _mask_config_doc(kind: str, doc: dict) -> dict:
 # SCHEMAS
 # ---------------------------------------------------------------------------
 @router.get("/{kind}/schemas")
-async def get_schemas(kind: str, current_user: dict = Depends(require_admin)):
+async def get_schemas(kind: str, current_user: dict = Depends(require_permission("settings.view"))):
     """
     Belirtilen tür için (einvoice|cargo) tüm provider şemalarını döner.
     Frontend bu şemayı alıp dinamik form render eder.
@@ -502,54 +502,113 @@ async def get_schemas(kind: str, current_user: dict = Depends(require_admin)):
 # CONFIG (read / write)
 # ---------------------------------------------------------------------------
 @router.get("/{kind}/config")
-async def get_config(kind: str, current_user: dict = Depends(require_admin)):
+async def get_config(kind: str, current_user: dict = Depends(require_permission("settings.view"))):
     """Kayıtlı active_provider + per-provider credential map döner.
     Y14: Gizli alanlar (şifre/api anahtarı) maskelenir ('********'); düz metin sızmaz."""
     doc = await _get_config_doc(kind)
     return _mask_config_doc(kind, doc)
 
 
+_MAX_FIELD_LEN = 4000
+
+
+def _schema_field_keys(kind: str, provider_key: str) -> set:
+    return {f.get("key") for f in (PROVIDERS_BY_KIND.get(kind, {}).get(provider_key, {}).get("fields") or [])
+            if f.get("key")}
+
+
+def _field_spec(kind: str, provider_key: str, field_key: str) -> dict:
+    for f in (PROVIDERS_BY_KIND.get(kind, {}).get(provider_key, {}).get("fields") or []):
+        if f.get("key") == field_key:
+            return f
+    return {}
+
+
+def _validate_field_value(kind: str, pkey: str, fk: str, fv) -> None:
+    """Denetim #8: alan TÜRÜNE göre doğrulama — seçim listesi yalnız tanımlı değerler, sayı alanı sayı,
+    adres alanı yalnız https ve iç ağ/özel IP olmayan host (sağlayıcı çağrıları SSRF'e açılmasın)."""
+    if fv in (None, ""):
+        return
+    spec = _field_spec(kind, pkey, fk)
+    typ = spec.get("type")
+    if typ == "select":
+        allowed = {str(o.get("value")) for o in (spec.get("options") or []) if isinstance(o, dict)}
+        if allowed and str(fv) not in allowed:
+            raise HTTPException(status_code=400, detail=f"Geçersiz seçim: {pkey}.{fk}")
+    elif typ == "number":
+        try:
+            float(fv)
+        except (TypeError, ValueError):
+            raise HTTPException(status_code=400, detail=f"Sayı bekleniyor: {pkey}.{fk}")
+    if "url" in fk.lower() or "endpoint" in fk.lower():
+        from security_fetch import check_url_shape, UnsafeURLError
+        try:
+            check_url_shape(str(fv), allowed_schemes=("https",))
+        except UnsafeURLError as e:
+            raise HTTPException(status_code=400, detail=f"Geçersiz adres ({pkey}.{fk}): {e}")
+        except Exception:
+            raise HTTPException(status_code=400, detail=f"Geçersiz adres: {pkey}.{fk}")
+
+
 @router.post("/{kind}/config")
-async def save_config(kind: str, payload: dict,
-                      current_user: dict = Depends(require_admin)):
+async def save_config(kind: str, payload: dict, request: Request,
+                      current_user: dict = Depends(require_permission("integrations.edit"))):
     """
-    Tüm config'i (active_provider + providers map) günceller. Provider
-    credential'ları `providers.<key>.<field>` şeklinde saklanır.
+    Config'i (active_provider + providers map) günceller. Provider credential'ları
+    `providers.<key>.<field>` şeklinde saklanır.
+
+    GÜVENLİK (denetim #8): yazma için `integrations.edit` gerekir (görüntüleme yetkisi YETMEZ);
+    yalnız şemadaki alanlar kabul edilir; gönderilmeyen provider/sır alanları KORUNUR (yalnız açıkça
+    yeni değer ya da boş gönderilirse değişir); her değişiklik denetim kaydına (değer değil, alan
+    adlarıyla) yazılır.
     """
     _kind_guard(kind)
     active = payload.get("active_provider")
-    providers = payload.get("providers") or {}
+    providers_in = payload.get("providers") or {}
+    if not isinstance(providers_in, dict):
+        raise HTTPException(status_code=400, detail="providers bir nesne olmalı")
     valid_keys = set(PROVIDERS_BY_KIND[kind].keys())
     if active and active not in valid_keys:
         raise HTTPException(status_code=400, detail=f"Geçersiz provider: {active}")
 
-    # Yalnızca tanınan provider'ların verisini saklıyoruz (diğerlerini at)
-    providers = {k: v for k, v in providers.items() if k in valid_keys}
-
-    # Y14: Frontend gizli alanları maskeli ('********') geri gönderir. Maskeli değer GELİRSE
-    # (kullanıcı değiştirmediyse) mevcut kayıtlı sırrı KORU — maske ile ezme.
     _existing = await _get_config_doc(kind)
     _existing_providers = _existing.get("providers") or {}
-    for pkey, pval in providers.items():
-        secrets_keys = _secret_fields_for(kind, pkey)
-        cur = _existing_providers.get(pkey) or {}
-        for fk in list((pval or {}).keys()):
-            if fk in secrets_keys and pval.get(fk) == _SECRET_MASK:
-                if cur.get(fk) not in (None, ""):
-                    pval[fk] = cur.get(fk)
-                else:
-                    pval.pop(fk, None)
 
-    # A1.1: Gizli alanları AT-REST ŞİFRELE (düz metin disk/DB'ye yazılmasın).
-    # Maske-koruma yukarıda mevcut (zaten şifreli) değeri geri yazmış olabilir;
-    # yalnız henüz şifrelenmemiş gerçek değerleri şifrele (is_encrypted ile idempotent).
-    for pkey, pval in providers.items():
+    # Gönderilmeyen provider'lar olduğu gibi kalır (sessizce silinmez).
+    providers = {k: dict(v or {}) for k, v in _existing_providers.items() if k in valid_keys}
+    changed_fields = {}
+    for pkey, pval in providers_in.items():
+        if pkey not in valid_keys:
+            continue   # yalnızca tanınan provider'lar
+        if not isinstance(pval, dict):
+            raise HTTPException(status_code=400, detail=f"Geçersiz alanlar: {pkey}")
+        allowed = _schema_field_keys(kind, pkey)
         secrets_keys = _secret_fields_for(kind, pkey)
-        for fk in list((pval or {}).keys()):
-            if fk in secrets_keys:
-                v = pval.get(fk)
-                if isinstance(v, str) and v not in ("", _SECRET_MASK) and not _is_enc(v):
-                    pval[fk] = _encrypt(v)
+        cur = dict(_existing_providers.get(pkey) or {})
+        merged = dict(cur)
+        for fk, fv in pval.items():
+            if fk not in allowed:
+                continue   # şemada olmayan alan yazılmaz
+            if fv is not None and not isinstance(fv, (str, bool, int, float)):
+                raise HTTPException(status_code=400, detail=f"Geçersiz değer: {pkey}.{fk}")
+            if isinstance(fv, str):
+                fv = fv.strip()
+                if len(fv) > _MAX_FIELD_LEN:
+                    raise HTTPException(status_code=400, detail=f"Değer çok uzun: {pkey}.{fk}")
+                if any(ord(ch) < 32 for ch in fv):
+                    raise HTTPException(status_code=400, detail=f"Geçersiz karakter: {pkey}.{fk}")
+            if cur.get(fk) != fv:   # yalnız DEĞİŞEN değer doğrulanır (kayıtlı eski değer kaydı engellemez)
+                _validate_field_value(kind, pkey, fk, fv)
+            # Y14: Maskeli değer GELİRSE (kullanıcı değiştirmediyse) mevcut sırrı KORU.
+            if fk in secrets_keys and fv == _SECRET_MASK:
+                continue
+            # A1.1: Gizli alanları AT-REST ŞİFRELE.
+            if fk in secrets_keys and isinstance(fv, str) and fv and not _is_enc(fv):
+                fv = _encrypt(fv)
+            if merged.get(fk) != fv:
+                changed_fields.setdefault(pkey, []).append(fk)
+            merged[fk] = fv
+        providers[pkey] = merged
 
     update_doc = {
         "kind": kind,
@@ -558,9 +617,21 @@ async def save_config(kind: str, payload: dict,
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "updated_by": current_user.get("email") or current_user.get("id"),
     }
-    await db.providers_config.update_one(
-        {"kind": kind}, {"$set": update_doc}, upsert=True
-    )
+
+    async def _perform():
+        await db.providers_config.update_one({"kind": kind}, {"$set": update_doc}, upsert=True)
+
+    try:
+        from activity_audit import run_audited
+        await run_audited(
+            db, action="provider_settings.update", entity_type="providers_config", entity_id=kind,
+            perform=_perform,
+            before={"active_provider": _existing.get("active_provider")},
+            after={"active_provider": active},
+            current_user=current_user, request=request, source="admin.provider_settings",
+            metadata={"changed_fields": {k: sorted(v) for k, v in changed_fields.items()}})
+    except ImportError:
+        await _perform()
     return {"success": True, "message": "Ayarlar kaydedildi",
             "active_provider": active,
             "configured_providers": list(providers.keys())}
@@ -571,7 +642,7 @@ async def save_config(kind: str, payload: dict,
 # ---------------------------------------------------------------------------
 @router.post("/{kind}/test")
 async def test_connection(kind: str, payload: dict,
-                          current_user: dict = Depends(require_admin)):
+                          current_user: dict = Depends(require_permission("settings.view"))):
     """
     Seçili provider için bağlantı testi. Şu an mock — gerçek SDK'lar
     canlı API key'leri geldiğinde devreye alınacak. Zorunlu alanların

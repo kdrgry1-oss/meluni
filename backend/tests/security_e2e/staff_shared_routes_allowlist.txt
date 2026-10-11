@@ -1,0 +1,43 @@
+# IAM-02 — Gözden geçirilmiş "HER PERSONEL" uçları (yalnız require_admin; sayfa/özellik izni İSTEMEZ).
+#
+# Önceden 735 panel ucu yalnız require_admin ile korunuyordu (herhangi bir rol/izin yeterliydi). IAM-02 ile
+# her uç, onu kullanan ekranın iznine (require_permission) bağlandı. Burada kalanlar GERÇEKTEN her panel
+# personelinin kullandığı ortak uçlardır. test_iam01_authz_matrix.py::test_staff_any_surface_matches_reviewed_list
+# "staff" sınıfını bu listeyle BİREBİR karşılaştırır: listede olmayan yeni bir yalnız-require_admin uç
+# (ya da listede kalmış/izne bağlanmış uç) testi KIRMIZI yapar — yeni uç ya sayfasının iznini almalı ya da
+# buraya GEREKÇESİYLE eklenmelidir.
+#
+# Biçim:  METHOD /tam/yol | tek satır gerekçe
+
+## Kimlik / kişisel panel tercihleri (her personelin KENDİ kaydı)
+GET /api/admin/me/permissions | Personelin kendi etkin izinleri — her panel sayfasında menü/sayfa görünürlüğü için (AdminLayout) okunur
+GET /api/settings/admin-menu-prefs | Personelin KENDİ menü sıra/gizleme tercihi (kullanıcı başına kayıt); her panel sayfası okur
+PUT /api/settings/admin-menu-prefs | Personelin KENDİ menü tercihini kaydeder (yalnız kendi kaydı)
+
+## Görevler (menüde izin bağı yok — tüm personel; Dashboard görev kartı da kullanır)
+POST /api/admin/tasks/seed-defaults | Görevler sayfası: standart görev listesini kurar (yalnız is_default görevler; özel görevlere dokunmaz)
+GET /api/admin/tasks | Görevler sayfası + Dashboard görev kartı
+POST /api/admin/tasks | Görevler sayfası: görev ekle
+PUT /api/admin/tasks/{tid} | Görevler sayfası: görev düzenle
+POST /api/admin/tasks/{tid}/complete | Görevler sayfası + Dashboard görev kartı: tamamlandı işaretle
+POST /api/admin/tasks/{tid}/snooze | Görevler sayfası: ertele
+DELETE /api/admin/tasks/{tid} | Görevler sayfası: görev sil
+GET /api/admin/tasks/history | Görevler sayfası: tamamlanan görev geçmişi
+GET /api/admin/tasks/summary | Görevler sayfası + Dashboard görev kartı: özet sayaçlar
+
+## Eğitim & Yardım (menüde izin bağı yok — tüm personel; içerik iş verisi değil, yardım metni)
+GET /api/admin/help-content | Eğitim & Yardım sayfası: firma yardım metnini okur
+PUT /api/admin/help-content | Eğitim & Yardım sayfası tüm personele düzenleme sunar (yalnız yardım metni)
+DELETE /api/admin/help-content | Eğitim & Yardım: özel yardım metnini varsayılana döndürür (yalnız yardım metni)
+
+## Ortak sözlük / araçlar (birden çok alanın ekranları kullanır)
+GET /api/settings/order-statuses | Sipariş durumu ETİKET/RENK sözlüğü: Siparişler, İptaller, İadeler ve Ayarlar ekranları okur (ticari veri yok; kaydetme settings.edit)
+POST /api/upload/image | Ortak görsel yükleme: ürün, imalat, banner/sayfa tasarımı, e-posta pazarlama ekranları (yalnız personel; tür/boyut sunucuda içerikten doğrulanır)
+POST /api/upload/video | Ortak medya yükleme (görselle aynı sınıf; tür sunucuda sihirli baytlardan doğrulanır)
+
+## Gizli Kasa (Secrets Vault) — yetkiyi GÖVDE uygular
+GET /api/admin/vault/secrets | Tasarımı gereği her personel: değerler herkes için MASKELİ, açma yetkisi (can_reveal) yalnız süper admin
+GET /api/admin/vault/secret/{key}/reveal | Gövde süper-admin değilse 403 VE reddi güvenlik günlüğüne yazar (vault_secret_reveal_denied — içeriden yoklama sinyali); bağımlılıkta reddedilse iz kaybolurdu
+POST /api/auth/staff/refresh | Personelin KENDİ oturumunu sessizce yeniler (panel etkin kullanımda); yeni token aynı kimlik kanıtını taşır, ilk girişten en çok panel.max_session_days gün
+GET /api/admin/users | Personel dizini (denetim #16): yalnız ad/e-posta/rol/aktiflik — açık izin listesi projeksiyonu, kimlik/MFA meta verisi YOK
+GET /api/help-content | Eğitim & Yardım sayfası (denetim #30): panel yardım metni yalnız personele (kimliksiz erişim kapatıldı)

@@ -61,9 +61,18 @@ from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import Optional, List
 from datetime import datetime, timezone, timedelta
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_permission, require_super_admin
 
-router = APIRouter(prefix="/marketplace-hub", tags=["Marketplace Hub"])
+# PAZARYERİ YÖNETİMİ — YALNIZ SÜPER-ADMIN (kullanıcı kararı).
+# Bu ekranlar pazaryeri hesaplarını, kategori/marka eşleştirmesini ve entegrasyon
+# günlüklerini yönetir; muhasebe/depo gibi rol atanmış personelin işi değildir ve
+# yanlış bir eşleştirme tüm katalog aktarımını bozabilir. Router düzeyinde kilit:
+# tek tek uçlara güvenmek yerine yeni eklenen uç da otomatik korunur.
+# DİKKAT: sipariş çekme ve iade (claims) uçları integrations_*.py içindedir ve
+# BİLEREK kilitlenmemiştir — muhasebe gider pusulası kesebilmeli, sipariş senkronu
+# çalışmaya devam etmeli.
+router = APIRouter(prefix="/marketplace-hub", tags=["Marketplace Hub"],
+                   dependencies=[Depends(require_super_admin)])
 
 
 # ---------------------------------------------------------------------------
@@ -385,7 +394,7 @@ async def get_account(key: str, current_user: dict = Depends(require_admin)):
 
 
 @router.post("/accounts/{key}")
-async def save_account(key: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def save_account(key: str, payload: dict, current_user: dict = Depends(require_permission("integrations.view"))):
     """Hesap bilgileri + transfer rules + auto-sync'i kaydeder."""
     if key not in MARKETPLACES:
         raise HTTPException(status_code=404, detail="Pazaryeri bulunamadı")
@@ -472,6 +481,7 @@ async def log_integration_event(
     direction: "outbound" (biz onlara) | "inbound" (onlar bize)
     status: "success" | "failed" | "partial" | "queued"
     """
+    from security.pii import scrub_tax_ids as _scrub_tax_ids
     doc = {
         "marketplace": marketplace,
         "action": action,
@@ -479,12 +489,18 @@ async def log_integration_event(
         "direction": direction,
         "ref_id": ref_id,
         "message": message or "",
-        "payload_in": payload_in,
-        "payload_out": payload_out,
+        # KVKK: ham yüklerde TCKN/VKN maskelenir (security/pii.py).
+        "payload_in": _scrub_tax_ids(payload_in) if payload_in is not None else None,
+        "payload_out": _scrub_tax_ids(payload_out) if payload_out is not None else None,
         "duration_ms": duration_ms,
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     try:
+        try:
+            from .deps import instance_tag as _itag
+            doc["instance"] = _itag()
+        except Exception:
+            pass
         await db.integration_logs.insert_one(doc)
     except Exception:
         # Log yazmak ana akışı bozmamalı
@@ -505,7 +521,10 @@ async def list_logs(
 ):
     """Entegrasyon logları listeleme (filtrelerle)."""
     q = {}
-    if marketplace: q["marketplace"] = marketplace
+    # Eski/ortak kaydedici (integrations_common.log_integration_event) pazaryerini `platform` alanına
+    # yazar (ör. Trendyol aynı gün kargo "delivery_option", sipariş aktarım hataları) — pazaryeri
+    # filtresi yalnız `marketplace`'e bakınca bu kayıtlar ekranda HİÇ görünmüyordu.
+    if marketplace: q["$or"] = [{"marketplace": marketplace}, {"platform": marketplace}]
     if action: q["action"] = action
     if status: q["status"] = status
     if ref_id: q["ref_id"] = ref_id
@@ -520,6 +539,9 @@ async def list_logs(
     cursor = db.integration_logs.find(q, {"_id": 0}).sort("created_at", -1) \
         .skip((page - 1) * limit).limit(limit)
     items = await cursor.to_list(length=limit)
+    for it in items:
+        if not it.get("marketplace") and it.get("platform"):
+            it["marketplace"] = it["platform"]   # yalnız yanıtta; kayıt değişmez
     return {"logs": items, "total": total, "page": page, "limit": limit}
 
 

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { Save, RotateCcw, Plus, Trash2, Code, Layers, Eye } from "lucide-react";
+import { sanitizeHtml } from "../../lib/sanitizeHtml";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -101,7 +102,7 @@ export default function FooterDesign() {
         <div className="mt-6 bg-black rounded-xl overflow-hidden border-2 border-amber-200" data-testid="footer-preview">
           <div className="bg-amber-50 text-amber-900 text-xs font-semibold uppercase tracking-wider px-4 py-2">📺 Canlı Önizleme</div>
           {isHtml
-            ? <div className="text-white p-6" dangerouslySetInnerHTML={{ __html: tpl.custom_html || "<p style='color:#888'>(HTML yok)</p>" }} />
+            ? <div className="text-white p-6" dangerouslySetInnerHTML={{ __html: sanitizeHtml(tpl.custom_html || "<p>(HTML yok)</p>") }} />
             : <StructuredPreview tpl={tpl} />}
         </div>
       )}

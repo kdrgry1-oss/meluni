@@ -14,12 +14,14 @@ Endpoint'ler (full path):
   GET  /api/admin/rooftr/return-orders     → iade siparişleri listesi + istatistik
 =============================================================================
 """
-from fastapi import APIRouter, Query, Depends, HTTPException
+from fastapi import APIRouter, Query, Depends, HTTPException, Request
 from typing import Optional
 import re
 
-from .deps import db, logger, require_admin, generate_id, _search_tr_regex
+from .deps import db, logger, require_admin, require_permission, generate_id, _search_tr_regex, tr_range_to_utc
+from activity_audit import record_admin_audit
 from .orders import _order_vade_farki, _order_is_efatura, _compute_refund_breakdown
+from .orders import present_refund_bank_info_in
 
 router = APIRouter(prefix="/admin/rooftr", tags=["rooftr-returns"])
 
@@ -47,6 +49,32 @@ def _payment_label(method: str, raw: str = "") -> str:
     return (raw or "").strip() or lbl or "Bilinmiyor"
 
 
+
+def _iade_tarih_filtresi(start_date: Optional[str], end_date: Optional[str]) -> dict:
+    """Üstteki 'İADE ONAY BAŞ./BİT.' filtresini Mongo koşuluna çevirir.
+
+    Panelde tarih seçildiğinde alttaki liste DEĞİŞMİYORDU: filtre yalnız toplu gider
+    pusulası bölümünü besliyor, liste ucu tarih parametresi hiç almıyordu. Bu yüzden
+    ekranda "Toplam 1776 iade siparişi" gibi dönemden bağımsız bir sayı duruyordu.
+
+    Ölçüt ekrandaki 'İade Onay/Ret' sütunuyla AYNI alandır: return_approved_at.
+    Onay damgası olmayan (henüz karar verilmemiş) iadeler tarih aralığı verildiğinde
+    listeye GİRMEZ — aksi halde "şu tarihte onaylananlar" sorusu cevaplanamaz.
+    Tarih verilmezse davranış eskisi gibi: hiçbir tarih süzgeci uygulanmaz.
+    """
+    if not start_date and not end_date:
+        return {}
+    try:
+        s_iso, e_iso = tr_range_to_utc(start_date or end_date, end_date or start_date)
+    except Exception:
+        return {}
+    # İŞLEM TARİHİ = kararın verildiği an; karar yoksa talebin açıldığı an.
+    # Yalnız onay tarihine bakılsaydı "Talep Oluşturulan" sekmesi tarih seçilince
+    # tamamen boşalırdı (henüz onaylanmamış iadenin onay tarihi yoktur).
+    _eff = {"$ifNull": ["$return_approved_at",
+                        {"$ifNull": ["$return_request.created_at", "$updated_at"]}]}
+    return {"$expr": {"$and": [{"$gte": [_eff, s_iso]}, {"$lte": [_eff, e_iso]}]}}
+
 @router.get("/return-orders")
 async def list_rooftr_return_orders(
     status: Optional[str] = Query(None, description="Tek durum filtresi (örn. partial_refunded). Boş = tüm iade durumları"),
@@ -54,7 +82,9 @@ async def list_rooftr_return_orders(
     search: Optional[str] = Query(None, description="Sipariş no / müşteri adı / telefon araması"),
     page: int = Query(1, ge=1),
     limit: int = Query(50, ge=1, le=10000),  # frontend TÜMÜNÜ çeker (client-side sırala+sayfala)
-    current_user: dict = Depends(require_admin),
+    start_date: Optional[str] = Query(None, description="İade ONAY tarihi başlangıcı (TR günü, YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="İade ONAY tarihi bitişi (TR günü, YYYY-MM-DD)"),
+    current_user: dict = Depends(require_permission("returns.view")),
 ):
     """Ticimax kaynaklı iade / kısmi iade siparişlerini listeler.
 
@@ -72,6 +102,7 @@ async def list_rooftr_return_orders(
     base_filter = {
         "platform": {"$nin": ["trendyol", "hepsiburada"]},
     }
+    base_filter.update(_iade_tarih_filtresi(start_date, end_date))
 
     # Durum filtresi: tek durum verilmişse onu, yoksa tüm iade grubunu kullan
     if status:
@@ -248,6 +279,9 @@ async def list_rooftr_return_orders(
             # kullanıyor). Yoksa yalnız kupon düşülüp havale %5 kaçıyordu (4001 yerine 3801 olmalı).
             "payment_discount": float(o.get("payment_discount") or 0),
             "reason": (o.get("return_request") or {}).get("reason") or "",
+            # Havale/EFT iadesinde müşterinin girdiği IBAN + ad soyad (para bu hesaba iade edilir).
+            # Panel bu alanı okuyup sebep sütununun altında sarı kutuda gösterir — satıra eklenmiyordu.
+            "refund_bank_info": (o.get("return_request") or {}).get("refund_bank_info") or o.get("refund_bank_info") or None,
             "coupon_code": o.get("coupon_code") or "",
             "notes": o.get("notes") or "",
             # Personel (admin) notlari — siparis ekranindan girilen notlar iade panelinde de gorunsun.
@@ -256,6 +290,9 @@ async def list_rooftr_return_orders(
                 for n in (o.get("admin_notes") or []) if (n or {}).get("text")
             ],
             "item_count": sum(int(i.get("quantity") or 1) for i in items),
+            # Kalemlerde DONMUŞ per-ürün indirim (checkout) var mı? Varsa panel/gider-pusulası düz-
+            # oransal dağıtım yerine bu değeri kullanır (W11214: kapsam-dışı ürüne hayali indirim yok).
+            "frozen_item_discounts": bool(items) and all(isinstance(i, dict) and ("discount_amount" in i) for i in items),
             "items": [
                 {
                     "name": i.get("product_name") or i.get("name") or "",
@@ -305,20 +342,28 @@ async def list_rooftr_return_orders(
     _oids = [r["id"] for r in rows if r.get("id")]
     _cr_map = {}
     if _oids:
+        # MÜKERRER kayıt güvenliği: siparişe ait TÜM kayıtları topla, kanonik olanı seç
+        # (_pick_return_record — /open ile AYNI kural). Eskiden 'son gelen kazanır' idi.
+        _cr_all = {}
         async for cr in db.customer_returns.find(
             {"order_id": {"$in": _oids}},
             {"_id": 0, "order_id": 1, "return_code": 1, "barcode_url": 1, "cargo_provider_name": 1,
              "iade_no": 1, "gonderi_no": 1, "mng_ref": 1, "contract_no": 1,
              "reship_code": 1, "reshipped_at": 1, "refund_payment": 1, "reason": 1,
+             "refund_bank_info": 1,
              "has_gider_pusulasi": 1, "gider_pusulasi_no": 1,
-             "status": 1, "approval": 1, "approved_item_indexes": 1, "approved_items": 1,
-             "refund_breakdown": 1, "items": 1},
+             "status": 1, "approval": 1, "rejection": 1, "approved_item_indexes": 1, "approved_items": 1,
+             "refund_breakdown": 1, "items": 1, "created_at": 1, "updated_at": 1},
         ):
-            _cr_map[cr.get("order_id")] = cr
+            _cr_all.setdefault(cr.get("order_id"), []).append(cr)
+        for _k, _lst in _cr_all.items():
+            _cr_map[_k] = _pick_return_record(_lst) or {}
     for r in rows:
         cr = _cr_map.get(r["id"]) or {}
         if cr.get("reason"):
             r["reason"] = cr["reason"]
+        if cr.get("refund_bank_info"):
+            r["refund_bank_info"] = cr["refund_bank_info"]
         r["return_code"] = cr.get("return_code") or ""
         r["iade_no"] = cr.get("iade_no") or cr.get("mng_ref") or ""
         r["gonderi_no"] = cr.get("gonderi_no") or ""
@@ -337,6 +382,15 @@ async def list_rooftr_return_orders(
         _is_approved = bool(_appr) or _cr_status in ("approved", "return_approved", "refunded", "partial_refunded") \
             or r.get("status") in ("return_approved", "refunded", "partial_refunded")
         r["return_is_approved"] = _is_approved
+        # KALEM ONAYI GERÇEĞİ (W11262 — "bu iade zaten onaylanmış" ama onaylanmamıştı): yalnız
+        # customer_returns KAYDI esas alınır; sipariş durumu/damgası (sessiz durum düzeltmesi,
+        # pazaryeri senkronu) tek başına kalem onayı SAYILMAZ. Panel "İade Onay" kilidini buna bağlar.
+        r["record_status"] = _cr_status
+        # KARAR GERÇEĞİ: yalnız gerçek karar nesnesi (approval/rejection) ya da kapanmış durum
+        # (refunded/partial_refunded/cancelled) kilitler. ÇIPLAK "approved" bayrağı (köprü kaydı
+        # sipariş durumundan türetilirken ya da durum menüsünden yazılmış, kalem onayı YOK) kilitlemez.
+        _dec, _dkind, _, _ = _decision_of(cr)
+        r["items_approved"] = bool(_dec and _dkind == "approved")
         # KRİTİK: panel r["items"] = SİPARİŞİN TÜM kalemleri; customer_returns.items = GERÇEKTE
         # İADE EDİLEN kalemler (alt küme olabilir). "Tam onay" = iadenin TÜM kalemleri, siparişin
         # tümü DEĞİL. W10205: 2 kalemli siparişte yalnız M iade edildi; eski kod range(2) yazıp
@@ -438,6 +492,10 @@ async def list_rooftr_return_orders(
     except Exception:
         _free_ship_fee = 0.0
 
+    # BL-040: iade IBAN'ı şifreli saklanır → iadeyi ödeyen yetkili personele (returns.refund_pay /
+    # returns.iyzico_refund / orders.cancelled_tab / süper admin) çözülmüş, diğerlerine maskeli.
+    await present_refund_bank_info_in(rows, current_user)
+
     return {
         "success": True,
         "orders": rows,
@@ -456,7 +514,7 @@ async def list_rooftr_return_orders(
 async def bulk_approve_site_returns(
     until: str = Query(..., description="Bu tarihe (dahil) kadar oluşan iadeler — ISO YYYY-MM-DD"),
     confirm: bool = Query(False, description="true → gerçekten onayla; false → dry-run"),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("returns.manage")),
 ):
     """SESSİZ TOPLU ONAY (Kadir talebi: '1 Temmuz'a kadar site iadelerinin hepsi onaylansın').
     'İade Talebi Oluşturuldu' (return_requested) durumundaki SİTE (pazaryeri-dışı) iadelerini,
@@ -497,6 +555,7 @@ async def bulk_approve_site_returns(
                 "price": float(it.get("price") or it.get("unit_price") or 0),
                 "unit_price": float(it.get("unit_price") or it.get("price") or 0),
                 "product_id": it.get("barcode") or it.get("product_id") or it.get("sku") or "",
+                "discount_amount": it.get("discount_amount"),  # donmuş per-ürün indirim (W11214)
             } for it in _src]
             rid = generate_id()
             rec = {"id": rid, "order_id": oid, "order_number": order.get("order_number", ""),
@@ -536,7 +595,7 @@ async def bulk_approve_site_returns(
 @router.post("/set-return-status")
 async def set_return_status_silent(
     payload: dict,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("returns.manage")),
 ):
     """SESSİZ durum düzeltme (Kadir: 'iade edilmiş ama iade sayfasında yoklar'). Verilen sipariş
     no'larının durumunu bir İADE durumuna çeker → iade sayfasında görünürler. Historik düzeltme
@@ -548,6 +607,11 @@ async def set_return_status_silent(
         raise HTTPException(status_code=400, detail="order_numbers ve status gerekli")
     if status not in RETURN_STATUSES:
         raise HTTPException(status_code=400, detail=f"status bir iade durumu olmalı: {sorted(RETURN_STATUSES)}")
+    if status in ("refunded", "partial_refunded"):
+        # ACİL ANAHTAR (CHAIN08): sessiz "iade ödendi" işaretlemesi de para-iadesi kaydıdır →
+        # freeze_refunds / restore_mode / geri yükleme sonrası iade kilidi açıkken 423.
+        from security_switches import require_switch_off as _rso
+        await _rso("freeze_refunds")
     from datetime import datetime, timezone
     now_iso = datetime.now(timezone.utc).isoformat()
     updated = []
@@ -572,7 +636,7 @@ async def set_return_status_silent(
 async def flatten_order_financials(
     order_id: str,
     amount: Optional[float] = Query(None, description="Hedef düz tutar (TL). Verilmezse Σ kalem fiyatı."),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("returns.manage")),
 ):
     """TEK SİPARİŞİ 'DÜMDÜZ' TUTARA NORMALLE (Kadir: Senem Birdal — Ticimax import'undan gelen
     hayalet indirim/kargo düzeltmesi). İndirim (discount+payment_discount) ve kargoyu SIFIRLAR,
@@ -623,6 +687,7 @@ async def flatten_order_financials(
         "quantity": int(it.get("quantity", 1) or 1),
         "price": float(it.get("price") or 0), "unit_price": float(it.get("unit_price") or 0),
         "product_id": it.get("barcode") or it.get("product_id") or it.get("sku") or "",
+        "discount_amount": it.get("discount_amount"),  # donmuş per-ürün indirim (W11214)
     } for it in new_items]
     await db.customer_returns.update_many(
         {"order_id": order_id}, {"$set": {"items": _cr_items}})
@@ -637,7 +702,7 @@ async def flatten_order_financials(
 async def refresh_order_dates(
     page: int = Query(1, ge=1),
     per_pages: int = Query(5, ge=1, le=15),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("returns.manage")),
 ):
     # [ticimax-off 2026-06-22] Ticimax SOAP entegrasyonu kapatildi; bu uc devre disi.
     return {"success": False, "message": "Ticimax tarih senkronu kapatildi."}
@@ -691,7 +756,7 @@ async def _return_record_signals(o: dict) -> dict:
 @router.get("/duplicate-returns")
 async def scan_duplicate_returns(
     confirm: bool = Query(False, description="true → junk mükerrer kayıtları arşivle+sil"),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("returns.view")),
 ):
     """Aynı order_number'a sahip birden fazla İADE kaydını (site/pazaryeri-dışı) bul.
     Her grupta EN ZENGİN kayıt tutulur; yalnız telefon+iade köprüsü+pusula+iade-talebi
@@ -762,7 +827,7 @@ async def scan_duplicate_returns(
 @router.post("/duplicate-returns/merge-ambiguous")
 async def merge_ambiguous_duplicate_returns(
     confirm: bool = Query(False, description="true → köprüyü taşı + twin'i sil"),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("returns.manage")),
 ):
     """BELİRSİZ mükerrer gruplar: aynı order_number'da iki kayıt da iade köprüsü (customer_returns)
     taşıyor. GERÇEK kayıt telefonlu meluni kaydıdır; twin (telefonsuz ticimax backfill) silinmeden
@@ -834,11 +899,19 @@ async def export_rooftr_return_orders(
     status: Optional[str] = Query(None),
     payment: Optional[str] = Query(None),
     search: Optional[str] = Query(None),
-    current_user: dict = Depends(require_admin),
+    start_date: Optional[str] = Query(None, description="İade ONAY tarihi başlangıcı (TR günü)"),
+    end_date: Optional[str] = Query(None, description="İade ONAY tarihi bitişi (TR günü)"),
+    request: Request = None,
+    # GÜVENLİK (denetim 2026-10): toplu kişisel veri (ad soyad + sipariş) dışa aktarımı →
+    # 'Dışa Aktar' yetkisi (reports.export) + denetim kaydı. Süper admin ('*') geçer.
+    current_user: dict = Depends(require_permission("reports.export")),
 ):
     """İade siparişlerini listelemeyle AYNI filtrelerle Excel'e aktarır.
     Kolonlar: Ürün Adı | Tutar | Sipariş Tarihi | Sipariş ID | Sipariş No |
     Ad Soyad | Durum | Kaynak | Ödeme Tipi."""
+    # ACİL ANAHTAR: freeze_exports açıkken toplu kişisel veri dışa aktarımı yapılmaz (423).
+    from security_switches import require_switch_off, emit_security_event
+    await require_switch_off("freeze_exports")
     from io import BytesIO
     from openpyxl import Workbook
     from openpyxl.styles import Font, PatternFill, Alignment
@@ -849,7 +922,11 @@ async def export_rooftr_return_orders(
     except Exception:
         status_label = {}
 
-    base_filter = {"$or": [{"platform": "ticimax"}, {"source": "ticimax"}]}
+    # Excel, EKRANDAKİ listeyle aynı nüfusu vermeli. Eski hâli yalnız ticimax
+    # kaynaklı siparişleri alıyordu; liste ucu ise pazaryeri DIŞI her kaynağı
+    # (meluni + ticimax + boş) gösteriyor → Excel ekrandan eksik çıkıyordu.
+    base_filter = {"platform": {"$nin": ["trendyol", "hepsiburada"]}}
+    base_filter.update(_iade_tarih_filtresi(start_date, end_date))
     if status:
         _st = [s.strip() for s in status.split(",") if s.strip()]
         base_filter["status"] = {"$in": _st} if len(_st) > 1 else (_st[0] if _st else {"$in": RETURN_STATUSES})
@@ -888,8 +965,10 @@ async def export_rooftr_return_orders(
         c.fill = hfill
         c.alignment = Alignment(horizontal="center", vertical="center")
 
+    _row_count = 0
     cursor = db.orders.find(base_filter, proj).sort("created_at", -1)
     async for o in cursor:
+        _row_count += 1
         addr = o.get("shipping_address") or {}
         bill = o.get("billing_address") or {}
         name = (" ".join([addr.get("first_name") or "", addr.get("last_name") or ""]).strip()
@@ -919,12 +998,22 @@ async def export_rooftr_return_orders(
     for i, w in enumerate(widths, start=1):
         ws.column_dimensions[chr(64 + i)].width = w
 
-    # GÜVENLİK: Excel/CSV formül injection — = + - @ ile başlayan metin hücrelerini kaçışla
+    # GÜVENLİK: Excel/CSV formül injection — = + - @ TAB CR ile başlayan metin hücrelerini kaçışla.
+    # Üye dışa aktarımıyla aynı kural: "+90 5xx ..." gibi SAF telefon numarası formül değildir → okunur kalır.
+    _plain_phone = re.compile(r"^\+[0-9][0-9 ()]*$")
     for _ws in wb.worksheets:
-        for _row in _ws.iter_rows():
+        for _row in _ws.iter_rows(min_row=2):
             for _c in _row:
-                if isinstance(_c.value, str) and _c.value[:1] in ("=", "+", "-", "@", "\t", "\r"):
+                if (isinstance(_c.value, str) and _c.value[:1] in ("=", "+", "-", "@", "\t", "\r")
+                        and not _plain_phone.match(_c.value)):
                     _c.value = "'" + _c.value
+    await record_admin_audit(
+        db, action="returns.export_xlsx", entity_type="export", entity_id="rooftr_return_orders",
+        current_user=current_user, request=request, source="admin.returns",
+        metadata={"rows": _row_count, "status": (status or "")[:200], "payment": (payment or "")[:100],
+                  "has_search": bool(search), "start_date": start_date or "", "end_date": end_date or ""})
+    await emit_security_event("returns_export", current_user,
+                              {"export": "returns.rooftr_return_orders", "rows": _row_count})
     buf = BytesIO()
     wb.save(buf)
     buf.seek(0)
@@ -938,8 +1027,139 @@ async def export_rooftr_return_orders(
 # ============================================================================
 # BRIDGE — Ticimax iade siparişini zengin iade akışına (customer_returns) bağlar
 # ============================================================================
+def _pick_return_record(recs):
+    """MÜKERRER customer_returns kayıtlarında KANONİK kaydı seçer — liste, /open ve gider pusulası
+    AYNI kaydı görsün (W11262: 3 kayıt; liste 'son gelen', /open 'ilk bulunan' alıp çelişiyordu).
+      1) 'expired' olmayanlar (hepsi expired ise hepsi),
+      2) gerçek KARAR nesnesi (approval/rejection) olan varsa → en son kararlı olan,
+      3) yoksa → en son güncellenen/oluşturulan.
+    Hiç yoksa None. Kayıt SİLMEZ/BİRLEŞTİRMEZ — yalnız seçer (veri kaybı yok)."""
+    recs = [r for r in (recs or []) if r]
+    if not recs:
+        return None
+    live = [r for r in recs if str(r.get("status") or "") != "expired"] or recs
+
+    def _ts(r):
+        return str(r.get("updated_at") or r.get("created_at") or "")
+
+    decided = [r for r in live if (r.get("approval") or r.get("rejection"))]
+    if decided:
+        return max(decided, key=lambda r: str(((r.get("approval") or r.get("rejection") or {}).get("at")) or _ts(r)))
+    return max(live, key=_ts)
+
+
+def _decision_of(rec: dict):
+    """Bir customer_returns kaydının GERÇEKTEN karara bağlanıp bağlanmadığı.
+    Döner: (decided: bool, kind: 'approved'|'rejected'|'closed'|None, by, at).
+    Karar = approve_return/bulk-approve'un yazdığı `approval` nesnesi VEYA reject'in `rejection`
+    nesnesi VEYA kapanmış durum (refunded/partial_refunded/cancelled). Yalnız `status="approved"`
+    (karar nesnesi YOK — köprü kaydı sipariş durumundan türetilmiş ya da durum menüsünden yazılmış)
+    karar SAYILMAZ: kalem onayı yapılmamıştır, personel onaylayabilmelidir (W11262)."""
+    rec = rec or {}
+    _st = str(rec.get("status") or "")
+    _ap = rec.get("approval") or {}
+    _rj = rec.get("rejection") or {}
+    if _ap:
+        return True, "approved", _ap.get("by") or "", _ap.get("at") or ""
+    if _rj or _st in ("rejected", "return_rejected"):
+        return True, "rejected", _rj.get("by") or "", _rj.get("at") or ""
+    if _st in ("refunded", "partial_refunded", "cancelled"):
+        return True, "closed", "", (rec.get("refund_payment") or {}).get("at") or ""
+    return False, None, "", ""
+
+
+@router.get("/returns/diagnose")
+async def diagnose_rooftr_return(order_number: str, current_user: dict = Depends(require_permission("returns.view"))):
+    """TEŞHİS: bir siparişin iade durumunu tek bakışta — sipariş alanları + o siparişe ait TÜM
+    customer_returns kayıtları (mükerrer var mı, hangisi karara bağlı, kim/ne zaman). Panel
+    'zaten onaylanmış' derken kalem onayı yoksa nedeni buradan görülür."""
+    onum = (order_number or "").strip()
+    o = await db.orders.find_one({"order_number": onum}, {"_id": 0, "id": 1, "order_number": 1, "status": 1,
+                                                          "return_approved_at": 1, "return_request": 1,
+                                                          "refund_paid_at": 1, "platform": 1})
+    if not o:
+        raise HTTPException(status_code=404, detail=f"Sipariş bulunamadı: {onum}")
+    recs = []
+    async for cr in db.customer_returns.find({"order_id": o["id"]}, {"_id": 0}):
+        _dec, _kind, _by, _at = _decision_of(cr)
+        recs.append({
+            "id": cr.get("id"), "status": cr.get("status"), "source": cr.get("source"),
+            "created_at": cr.get("created_at"), "updated_at": cr.get("updated_at"),
+            "decided": _dec, "decision_kind": _kind, "decision_by": _by, "decision_at": _at,
+            "has_approval_obj": bool(cr.get("approval")), "has_rejection_obj": bool(cr.get("rejection")),
+            "approved_item_indexes": cr.get("approved_item_indexes"),
+            "approved_items": cr.get("approved_items"),
+            "items_count": len(cr.get("items") or []),
+            "has_gider_pusulasi": bool(cr.get("has_gider_pusulasi")), "gider_pusulasi_no": cr.get("gider_pusulasi_no"),
+            "refund_amount": cr.get("refund_amount"), "restocked": bool(cr.get("restocked_at") or cr.get("stock_restored")),
+        })
+    _open_pick = next((r for r in recs if r.get("status") != "expired"), None)
+    return {"order": o, "records": recs, "record_count": len(recs),
+            "duplicate": len([r for r in recs if r.get("status") != "expired"]) > 1,
+            "open_would_use": (_open_pick or {}).get("id"),
+            "verdict": ("MÜKERRER kayıt — liste ve pencere farklı kaydı görüyor olabilir" if len(recs) > 1
+                        else ("Karar nesnesi YOK ama status=approved → çıplak bayrak; artık onaylanabilir"
+                              if recs and recs[0]["status"] == "approved" and not recs[0]["has_approval_obj"]
+                              else ("Gerçek karar var" if recs and recs[0]["decided"] else "Kayıt karara bağlı değil / kayıt yok")))}
+
+
+def _cr_summary(r: dict) -> dict:
+    _dec, _kind, _by, _at = _decision_of(r)
+    return {"id": r.get("id"), "status": r.get("status"), "source": r.get("source"),
+            "created_at": r.get("created_at"), "updated_at": r.get("updated_at"),
+            "decided": _dec, "decision_kind": _kind, "decision_by": _by, "decision_at": _at,
+            "approved_item_indexes": r.get("approved_item_indexes"), "items_count": len(r.get("items") or []),
+            "has_gider_pusulasi": bool(r.get("has_gider_pusulasi")), "gider_pusulasi_no": r.get("gider_pusulasi_no"),
+            "refund_amount": r.get("refund_amount")}
+
+
+@router.post("/returns/dedupe")
+async def dedupe_rooftr_returns(
+    order_number: str = Query(..., description="Sipariş no (ör. W11262)"),
+    confirm: bool = Query(False, description="true → uygula; false → kuru çalıştırma (yalnız plan)"),
+    keep: str = Query("", description="Tutulacak return_id (boş → otomatik kanonik seçim)"),
+    current_user: dict = Depends(require_permission("returns.manage")),
+):
+    """MÜKERRER customer_returns TEMİZLİĞİ (soft): kanonik kayıt tutulur, diğerleri status='expired'
+    yapılır — SİLİNMEZ (tüm sorgular expired'ı dışlar → panelde kaybolur; geri alınabilir:
+    status_before_expire saklanır). Kanonik seçim: keep param > gider pusulası bağlı olan >
+    _pick_return_record (gerçek karar > en yeni). Sipariş köprüsü kanonik kayda sabitlenir."""
+    onum = (order_number or "").strip()
+    o = await db.orders.find_one({"order_number": onum}, {"_id": 0, "id": 1, "order_number": 1, "status": 1})
+    if not o:
+        raise HTTPException(status_code=404, detail=f"Sipariş bulunamadı: {onum}")
+    recs = [cr async for cr in db.customer_returns.find({"order_id": o["id"]}, {"_id": 0})]
+    live = [r for r in recs if str(r.get("status") or "") != "expired"]
+    if len(live) <= 1:
+        return {"success": True, "dry_run": not confirm, "message": "Mükerrer canlı kayıt yok",
+                "records": [_cr_summary(r) for r in recs]}
+    if keep:
+        canon = next((r for r in live if r.get("id") == keep), None)
+        if not canon:
+            raise HTTPException(status_code=400, detail=f"keep={keep} bu siparişin canlı kayıtları arasında yok")
+    else:
+        _gp = [r for r in live if r.get("has_gider_pusulasi") or r.get("gider_pusulasi_no")]
+        canon = _pick_return_record(_gp) if _gp else _pick_return_record(live)
+    to_expire = [r for r in live if r.get("id") != canon.get("id")]
+    plan = {"order": o, "keep": _cr_summary(canon), "expire": [_cr_summary(r) for r in to_expire]}
+    if not confirm:
+        return {"success": True, "dry_run": True, **plan,
+                "hint": "Uygulamak için confirm=true (isteğe bağlı keep=<return_id>)"}
+    from datetime import datetime, timezone
+    now_iso = datetime.now(timezone.utc).isoformat()
+    for r in to_expire:
+        await db.customer_returns.update_one({"id": r["id"]}, {"$set": {
+            "status": "expired", "status_before_expire": r.get("status"),
+            "expired_reason": f"dedupe→{canon.get('id')}",
+            "expired_by": current_user.get("email") or current_user.get("id"), "expired_at": now_iso,
+            "updated_at": now_iso}})
+    await db.orders.update_one({"id": o["id"]}, {"$set": {"return_request.return_id": canon.get("id")}})
+    logger.info(f"[dedupe-returns] {onum}: keep={canon.get('id')} expired={[r.get('id') for r in to_expire]} by={current_user.get('email')}")
+    return {"success": True, "dry_run": False, **plan}
+
+
 @router.post("/returns/{order_id}/open")
-async def open_rooftr_return(order_id: str, current_user: dict = Depends(require_admin)):
+async def open_rooftr_return(order_id: str, current_user: dict = Depends(require_permission("returns.manage"))):
     """Ticimax iade siparişinden, zengin iade akışı (onayla/reddet/gider/öde) için bir
     `customer_returns` köprü kaydı üretir. İDEMPOTENT: zaten varsa mevcut return_id'yi döndürür.
     PARA/İŞLEM YAPMAZ — sadece köprü kaydını oluşturur. Sonraki adımlar mevcut
@@ -953,10 +1173,19 @@ async def open_rooftr_return(order_id: str, current_user: dict = Depends(require
     # İdempotent: bu siparişe ait köprü kaydı zaten varsa onu döndür.
     # ONARIM: eski kayıtta items hiç yazılmamışsa (boş) sipariş kalemleriyle doldur —
     # gider pusulası/iade akışları kalemleri bu kayıttan okur, boş kayıt kısmi seçimi bozar.
-    existing = await db.customer_returns.find_one(
+    # MÜKERRER kayıt güvenliği: tüm canlı kayıtları al, kanonik olanı seç (liste ile AYNI kural).
+    _cands = []
+    async for _c in db.customer_returns.find(
         {"order_id": order_id, "status": {"$ne": "expired"}},
-        {"_id": 0, "id": 1, "status": 1, "items": 1})
+        {"_id": 0, "id": 1, "status": 1, "items": 1, "approval": 1, "rejection": 1, "refund_payment": 1,
+         "created_at": 1, "updated_at": 1}):
+        _cands.append(_c)
+    existing = _pick_return_record(_cands)
     if existing:
+        if len(_cands) > 1:
+            # Sipariş köprüsünü kanonik kayda sabitle → liste/pencere/gider pusulası aynı kaydı görür.
+            await db.orders.update_one({"id": order_id},
+                                       {"$set": {"return_request.return_id": existing.get("id")}})
         if not (existing.get("items") or []):
             _src = order.get("items") or []
             _fix = [{
@@ -967,12 +1196,16 @@ async def open_rooftr_return(order_id: str, current_user: dict = Depends(require
                 "price": float(it.get("price") or it.get("unit_price") or 0),
                 "unit_price": float(it.get("unit_price") or it.get("price") or 0),
                 "product_id": it.get("barcode") or it.get("product_id") or it.get("sku") or "",
+                "discount_amount": it.get("discount_amount"),  # donmuş per-ürün indirim (W11214)
             } for it in _src]
             if _fix:
                 await db.customer_returns.update_one(
                     {"id": existing.get("id")}, {"$set": {"items": _fix}})
+        # decided/decision: pencere kilidi bunu esas alır (çıplak "approved" bayrağı kilitlemez).
+        _dec, _kind, _by, _at = _decision_of(existing)
         return {"success": True, "return_id": existing.get("id"),
-                "status": existing.get("status"), "created": False}
+                "status": existing.get("status"), "created": False,
+                "decided": _dec, "decision": {"kind": _kind, "by": _by, "at": _at}}
 
     # Sipariş kalemlerini customer_returns şemasına eşle
     src = order.get("items") or []
@@ -984,6 +1217,7 @@ async def open_rooftr_return(order_id: str, current_user: dict = Depends(require
         "price": float(it.get("price") or it.get("unit_price") or 0),
         "unit_price": float(it.get("unit_price") or it.get("price") or 0),
         "product_id": it.get("barcode") or it.get("product_id") or it.get("sku") or "",
+        "discount_amount": it.get("discount_amount"),  # donmuş per-ürün indirim (W11214)
     } for it in src]
 
     # Sipariş durumu → customer_returns durumu
@@ -1008,4 +1242,5 @@ async def open_rooftr_return(order_id: str, current_user: dict = Depends(require
     await db.customer_returns.insert_one({**rec})
     await db.orders.update_one({"id": order_id},
                                {"$set": {"return_request.return_id": rid}})
-    return {"success": True, "return_id": rid, "status": cr_status, "created": True}
+    return {"success": True, "return_id": rid, "status": cr_status, "created": True,
+            "decided": False, "decision": {"kind": None, "by": "", "at": ""}}

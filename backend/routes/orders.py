@@ -7,12 +7,380 @@ from datetime import datetime, timezone, timedelta
 import time
 import uuid
 import re
+import os   # MNG kargo webhook'u MNG_WEBHOOK_SECRET okurken kullanıyor (ithal edilmemişti)
 
-from .deps import db, logger, get_current_user, require_admin, require_permission, generate_id, _search_tr_regex, tr_day_start_utc, tr_day_end_utc, verify_admin_token, limiter
+from .deps import db, logger, get_current_user, require_admin, require_permission, generate_id, _search_tr_regex, tr_day_start_utc, tr_day_end_utc, limiter, safe_str, global_rate_key
+from .deps import get_effective_permissions
+from .deps import security as _deps_security
+from activity_audit import record_admin_audit
+# KVKK: TCKN/VKN at-rest şifreli (security/pii.py). Düz değer DB'ye yazılmaz; gerçek değer yalnız
+# fatura/iyzico/admin-detay okuyucularında reveal_* ile çözülür, listeler maskeli döner.
+from security.pii import (
+    seal_doc_tax_ids as _pii_seal, reveal_doc_tax_ids as _pii_reveal_doc, reveal_tax_id as _pii_reveal,
+    mask_doc_tax_ids as _pii_mask, mask_docs_tax_ids as _pii_mask_many, carry_over_masked as _pii_carry,
+    drop_client_sealed_fields as _pii_drop_client, tax_id_search_clauses as _pii_search, scrub_tax_ids as _pii_scrub,
+)
+# KVKK (sahip talebi): müşteri telefonu / açık adresi personel LİSTELERİNDE maskeli; tam değer yalnız
+# tek siparişin "Göster" ucunda (orders.view) + açma sayacı (PRIV07) + denetim kaydı.
+from security.contact_pii import (
+    mask_order_contact as _contact_mask, mask_orders_contact as _contact_mask_many,
+    carry_over_masked_order_contact as _contact_carry, scrub_contact as _contact_scrub,
+)
+
+# Kart iadesi kayıtları (order.refunds[].status): 'done' = iyzico onayladı, 'pending' = istek
+# sürüyor (rezerve), 'unknown' = sonucu belirsiz (para gitmiş OLABİLİR). Üçü de "iade edilmiş /
+# edilmekte" sayılır; 'failed' kayıtlar sayılmaz. İade tavanı hesapları bunu kullanır.
+_REFUND_COUNTED_STATUSES = ("done", "pending", "unknown")
 from .attribution import resolve_attribution_for_order
 from pymongo import ReturnDocument
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
+
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════
+# ALAN ŞİFRELEME (BL-040) — iade IBAN'ı + havale dekontu at-rest şifreli.
+#   • refund_bank_info (orders.refund_bank_info, orders.return_request.refund_bank_info,
+#     customer_returns.refund_bank_info): IBAN + hesap sahibi adı Fernet ile şifrelenir
+#     ({enc:1, iban_enc, name_enc, bank, iban_last4}). Tam değer YALNIZ iade ödemesini yapan
+#     yetkili personelin ekranına (İptaller / İadeler listeleri) çözülerek verilir; başka her yerde
+#     maskelenir (TR** … 12 34). Eski düz kayıtlar ({iban, name, bank}) okunmaya devam eder.
+#   • payment_receipt (dekont): bayt verisi `data_enc` (Fernet, ham bayt) olarak yazılır; eski
+#     `data_b64` kayıtları okunmaya devam eder. Okuma TEK yerden: get_receipt_bytes().
+# ═══════════════════════════════════════════════════════════════════════════════════════════
+# Tam IBAN'ı görebilen yetkiler (para iadesini bankadan yapan personel). '*' (süper admin) geçer.
+_IBAN_FULL_PERMS = ("returns.refund_pay", "returns.iyzico_refund", "orders.cancelled_tab")
+_RECEIPT_ENC_FORMAT = "fernet-bytes-v1"
+# GÜVENLİK (istemci-XSS, 2026-10): dekont için YALNIZ bu raster görsel/PDF türleri kabul edilir ve
+# inline sunulur. Eskiden `image/*` olan her tür geçiyordu → müşteri `image/svg+xml` (ya da
+# Chrome'un XML belgesi saydığı `image/x+xml`) türünde script'li dosya yükleyebiliyordu; panel
+# dekontu BLOB olarak vitrin origin'inde açtığından script admin token'ını okuyabiliyordu.
+_RECEIPT_SAFE_TYPES = frozenset({
+    "application/pdf", "image/jpeg", "image/jpg", "image/pjpeg", "image/png", "image/x-png",
+    "image/gif", "image/webp", "image/heic", "image/heif", "image/bmp", "image/tiff", "image/avif",
+})
+
+
+def _receipt_base_type(ct) -> str:
+    """'image/png; charset=x' → 'image/png' (küçük harf, parametresiz)."""
+    return str(ct or "").split(";", 1)[0].strip().lower()
+
+
+def _receipt_looks_like_markup(data: bytes) -> bool:
+    """Gerçek görsel/PDF baytları '<' ile başlamaz; SVG/HTML/XML başlar (BOM/boşluk sonrası)."""
+    head = (data or b"")[:512].lstrip(b"\xef\xbb\xbf \t\r\n\x0c")
+    return head[:1] == b"<"
+
+
+def _clean_iban(v) -> str:
+    return "".join(str(v or "").split()).upper()
+
+
+def _mask_person_name(n) -> str:
+    parts = [p for p in str(n or "").split() if p]
+    return " ".join(p[:1] + "***" for p in parts)
+
+
+def seal_refund_bank_info(info):
+    """{iban, name, bank} → şifreli yapı. Zaten şifreliyse dokunmaz. Şifreleme hatası YUTULMAZ
+    (IBAN asla sessizce düz metin yazılmaz)."""
+    if not isinstance(info, dict) or not info:
+        return info
+    if info.get("enc"):
+        return info
+    from security.crypto import encrypt as _enc
+    iban = _clean_iban(info.get("iban"))
+    name = str(info.get("name") or "").strip()
+    return {
+        "enc": 1,
+        "iban_enc": _enc(iban) if iban else "",
+        "name_enc": _enc(name) if name else "",
+        "bank": str(info.get("bank") or "").strip()[:80],
+        "iban_last4": iban[-4:] if iban else "",
+    }
+
+
+def open_refund_bank_info(info):
+    """Şifreli/eski kaydı tam değerle döndürür (YALNIZ yetkili admin yanıtında kullan)."""
+    if not isinstance(info, dict) or not info:
+        return None
+    if not info.get("enc"):
+        iban = _clean_iban(info.get("iban"))
+        return {"iban": iban, "name": info.get("name") or "", "bank": info.get("bank") or "",
+                "iban_last4": iban[-4:] if iban else ""}
+    from security.crypto import decrypt as _dec
+    iban = _dec(info.get("iban_enc")) or ""
+    name = _dec(info.get("name_enc")) or ""
+    return {"iban": iban, "name": name, "bank": info.get("bank") or "",
+            "iban_last4": info.get("iban_last4") or (iban[-4:] if iban else "")}
+
+
+def mask_refund_bank_info(info):
+    """Maskeli görünüm (tam IBAN/ad yok). Panel kutusu `iban` alanını gösterdiği için maskeli metin
+    `iban` anahtarında döner; `masked: True` işaretlidir."""
+    if not isinstance(info, dict) or not info:
+        return None
+    if info.get("enc"):
+        last4 = str(info.get("iban_last4") or "")
+        name_masked = "***" if info.get("name_enc") else ""
+    else:
+        iban = _clean_iban(info.get("iban"))
+        last4 = iban[-4:] if iban else ""
+        name_masked = _mask_person_name(info.get("name"))
+    if not last4:
+        return None
+    return {"iban": f"TR** **** **** **** **** **{last4[:2]} {last4[2:]}", "name": name_masked,
+            "bank": info.get("bank") or "", "iban_last4": last4, "masked": True}
+
+
+async def refund_iban_full_allowed(user: dict) -> bool:
+    try:
+        perms = await get_effective_permissions(user or {})
+    except Exception:
+        return False
+    return "*" in perms or any(p in perms for p in _IBAN_FULL_PERMS)
+
+
+async def present_refund_bank_info_in(docs: list, current_user: dict, full=None, request=None) -> list:
+    """Listedeki her sipariş/iade belgesinde refund_bank_info'yu (üst düzey + return_request altı)
+    yetkiye göre TAM (çözülmüş) ya da MASKELİ hale getirir. Tam değer verildiyse denetim kaydı."""
+    if full is None:
+        full = await refund_iban_full_allowed(current_user)
+    n_full = 0
+    refs = []
+    for d in docs or []:
+        if not isinstance(d, dict):
+            continue
+        for holder in (d, d.get("return_request") if isinstance(d.get("return_request"), dict) else None):
+            if not holder or not holder.get("refund_bank_info"):
+                continue
+            raw = holder["refund_bank_info"]
+            holder["refund_bank_info"] = open_refund_bank_info(raw) if full else mask_refund_bank_info(raw)
+            if full and holder["refund_bank_info"]:
+                n_full += 1
+                refs.append(str(d.get("order_number") or d.get("return_number") or d.get("claim_id")
+                                or d.get("id") or "?")[:80])
+    if full and n_full:
+        # PRIV07: toplu/sıra dışı tam IBAN açma sayacı (eşik aşılırsa 429 yayılır → yanıt dönmez).
+        # refs: HANGİ siparişlerin IBAN'ı açıldı — eşik uyarısında ve denetim kaydında listelenir.
+        await _note_pii_reveal(current_user, "iban", n_full, refs=refs)
+        try:
+            from .deps import write_audit_log as _wal
+            await _wal("refund_iban_view", user_id=(current_user or {}).get("id"),
+                       email=(current_user or {}).get("email"), success=True,
+                       meta={"count": n_full, "orders": refs[:100]})
+        except Exception:
+            pass
+    return docs
+
+
+def _encrypt_receipt_bytes(raw: bytes) -> str:
+    from security import crypto as _c
+    return _c._fernet.encrypt(raw).decode("ascii")
+
+
+def get_receipt_bytes(receipt: dict):
+    """Dekont baytları (şifreli `data_enc` ya da eski `data_b64`). Yoksa/çözülemezse None.
+    Arşivlenmiş (archive_key) dekontlar için None döner — çağıran R2 arşivinden okur.
+    scheduler._run_private_archive ve get_payment_receipt bu tek yardımcıyı kullanmalıdır."""
+    if not isinstance(receipt, dict):
+        return None
+    enc = receipt.get("data_enc")
+    if enc:
+        try:
+            from security import crypto as _c
+            return _c._fernet_dec.decrypt(str(enc).encode("ascii"))
+        except Exception as e:
+            logger.error(f"[dekont] şifre çözülemedi: {type(e).__name__}")
+            return None
+    b64 = receipt.get("data_b64")
+    if b64:
+        import base64 as _b64
+        try:
+            return _b64.b64decode(b64)
+        except Exception:
+            return None
+    return None
+
+
+def seal_receipt(receipt: dict) -> dict:
+    """Dekont kaydındaki düz `data_b64`'ü şifreli `data_enc`'e çevirir (metadata korunur)."""
+    if not isinstance(receipt, dict) or not receipt.get("data_b64") or receipt.get("data_enc"):
+        return receipt
+    raw = get_receipt_bytes(receipt)
+    if raw is None:
+        return receipt
+    out = {k: v for k, v in receipt.items() if k != "data_b64"}
+    out["data_enc"] = _encrypt_receipt_bytes(raw)
+    out["enc_format"] = _RECEIPT_ENC_FORMAT
+    return out
+
+
+def _strip_receipt_payload(doc: dict) -> None:
+    """Yanıtlarda dekont baytı taşınmaz (görüntüleme /payment-receipt ucundan, yetkiyle)."""
+    r = (doc or {}).get("payment_receipt")
+    if isinstance(r, dict):
+        r.pop("data_b64", None)
+        r.pop("data_enc", None)
+
+
+async def _guard_restore_mode():
+    """Geri yükleme modunda dışarıya giden yazma (e-fatura, kargo etiketi) yapılmaz."""
+    try:
+        from security_switches import require_switch_off
+    except Exception:
+        return
+    await require_switch_off("restore_mode")
+
+
+async def _guard_switch(name: str):
+    try:
+        from security_switches import require_switch_off
+    except Exception:
+        return
+    await require_switch_off(name)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════
+# POLİTİKA REDDİ KAYDI (T01 / PAY-01): müşteri başka birinin siparişine (okuma/iptal/iade/iade-iptal/
+# imzalı fatura linki) erişmeye çalışıp reddedilince auth_audit_logs'a "policy_denial" yazılır.
+# HAFİF + HIZ SINIRLI: aynı (kullanıcı/IP, eylem) için 60 sn'de en çok 1 kayıt; süreç geneli
+# dakikada en çok 120 kayıt (tarama saldırısı denetim koleksiyonunu şişiremez). Yalnız iz kaydı —
+# yanıtı/akışı DEĞİŞTİRMEZ; hata yutulur.
+# ═══════════════════════════════════════════════════════════════════════════════════════════
+_POLICY_DENIAL_SEEN: dict = {}
+_POLICY_DENIAL_GLOBAL = {"window": 0, "n": 0}
+_POLICY_DENIAL_KEY_TTL = 60.0
+_POLICY_DENIAL_GLOBAL_MAX = 120
+
+
+async def note_policy_denial(current_user: Optional[dict], action: str, *, order: Optional[dict] = None,
+                             order_id: str = "", request: Optional[Request] = None,
+                             reason: str = "not_owner") -> bool:
+    """Döner: kayıt yazıldı mı (hız sınırına takıldıysa False). ASLA hata fırlatmaz."""
+    try:
+        now = time.time()
+        uid = str((current_user or {}).get("id") or "")
+        ip = ""
+        if request is not None:
+            try:
+                from .deps import client_ip_from_request
+                ip = client_ip_from_request(request) or ""
+            except Exception:
+                ip = ""
+        key = f"{uid or ip or 'anon'}|{action}"
+        last = _POLICY_DENIAL_SEEN.get(key)
+        if last is not None and now - last < _POLICY_DENIAL_KEY_TTL:
+            return False
+        win = int(now // 60)
+        if _POLICY_DENIAL_GLOBAL["window"] != win:
+            _POLICY_DENIAL_GLOBAL.update({"window": win, "n": 0})
+        if _POLICY_DENIAL_GLOBAL["n"] >= _POLICY_DENIAL_GLOBAL_MAX:
+            return False
+        _POLICY_DENIAL_GLOBAL["n"] += 1
+        if len(_POLICY_DENIAL_SEEN) > 5000:
+            for _k in [k for k, t in _POLICY_DENIAL_SEEN.items() if now - t >= _POLICY_DENIAL_KEY_TTL]:
+                _POLICY_DENIAL_SEEN.pop(_k, None)
+            if len(_POLICY_DENIAL_SEEN) > 5000:
+                _POLICY_DENIAL_SEEN.clear()
+        _POLICY_DENIAL_SEEN[key] = now
+        from .deps import write_audit_log as _wal
+        await _wal("policy_denial", user_id=uid or None, email=(current_user or {}).get("email"),
+                   ip=ip or None, success=False,
+                   meta={"resource": "order", "action": str(action)[:60], "reason": str(reason)[:40],
+                         "order_id": str((order or {}).get("id") or order_id or "")[:64]})
+        return True
+    except Exception:
+        return False
+
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════
+# PRIV07 — tam IBAN / TCKN-VKN açık gösterimi sayacı. security.events.note_pii_reveal (başka iş
+# paketinde) toplu/sıra dışı çözmede alarm üretir ve eşik aşılırsa HTTPException(429) fırlatır →
+# AYNEN yayılır (yanıt dönmez). Modül/işlev henüz yoksa ya da başka bir hata olursa sessiz geçilir.
+# ═══════════════════════════════════════════════════════════════════════════════════════════
+async def _note_pii_reveal(actor: Optional[dict], kind: str, n: int = 1, refs=None) -> None:
+    if not n or n < 1:
+        return
+    try:
+        from security.events import note_pii_reveal as _npr
+    except Exception:
+        return
+    try:
+        res = _npr(actor or {}, kind, n=int(n), refs=refs)
+        if hasattr(res, "__await__"):
+            await res
+    except HTTPException:
+        raise
+    except Exception as _e:
+        logger.warning(f"[pii-reveal] sayaç yazılamadı ({type(_e).__name__})")
+
+
+def _count_sealed_tax_ids(order: Optional[dict]) -> int:
+    """Siparişte açılacak (şifreli) TCKN/VKN değeri sayısı — aynı değer bir kez sayılır."""
+    if not isinstance(order, dict):
+        return 0
+    try:
+        from security.pii import _containers_of as _pc
+    except Exception:
+        return 0
+    seen = set()
+    try:
+        for cont, fields in _pc(order, "order"):
+            for f in fields:
+                enc = cont.get(f"{f}_enc")
+                if enc:
+                    seen.add(str(cont.get(f"{f}_hash") or enc))
+    except Exception:
+        return 0
+    return len(seen)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════
+# SİPARİŞ-BAŞI İŞLEM KİLİDİ (COM09 / COM10): kargo etiketi ve iade talebi gibi DIŞ YAN ETKİLİ
+# işlemler aynı sipariş için aynı anda iki kez yürümez. Atomik koşullu $set (kilit yok ya da süresi
+# dolmuş) → ikinci eşzamanlı istek 409 alır. Kilit süreli (çökmede kendiliğinden düşer).
+# Ödeme/statü/stok alanlarına DOKUNMAZ; yalnız `<name>_lock_until` / `<name>_lock_id` yazar.
+# ═══════════════════════════════════════════════════════════════════════════════════════════
+async def _acquire_order_op_lock(order_id: str, name: str, ttl_s: int = 120, extra_filter: dict = None):
+    now = datetime.now(timezone.utc)
+    token = uuid.uuid4().hex
+    f_until, f_id = f"{name}_lock_until", f"{name}_lock_id"
+    q = {"id": order_id, "$or": [{f_until: {"$exists": False}}, {f_until: None},
+                                 {f_until: {"$lt": now.isoformat()}}]}
+    if extra_filter:
+        q = {"$and": [q, extra_filter]}
+    res = await db.orders.update_one(q, {"$set": {
+        f_until: (now + timedelta(seconds=int(ttl_s))).isoformat(), f_id: token}})
+    return token if getattr(res, "modified_count", 0) == 1 else None
+
+
+async def _release_order_op_lock(order_id: str, name: str, token: Optional[str]) -> None:
+    if not token:
+        return
+    try:
+        await db.orders.update_one({"id": order_id, f"{name}_lock_id": token},
+                                   {"$unset": {f"{name}_lock_until": "", f"{name}_lock_id": ""}})
+    except Exception as _e:
+        logger.warning(f"[order-lock] {name} bırakılamadı order={order_id}: {type(_e).__name__}")
+
+
+# Pazaryeri / dış kanal platformları — bu sistemin ödeme akışından GEÇMEYEN siparişler.
+_MARKETPLACE_PLATFORMS = frozenset({
+    "trendyol", "hepsiburada", "amazon", "temu", "n11", "ticimax", "ciceksepeti", "pazarama",
+    "idefix", "koton", "modanisa", "marketplace",
+})
+
+
+def _is_site_order(order: Optional[dict]) -> bool:
+    """Site (vitrin) siparişi mi? create_order platform='meluni' yazar; eski kayıtlar 'site'/'web'/boş
+    olabilir. Tek doğruluk kaynağı: platform VE marketplace alanı pazaryeri DEĞİLSE site siparişidir.
+    (Ödeme kapıları — değişmez 1/2/3 — buna göre çalışır; 'platform == "site"' karşılaştırması
+    'meluni' yazılan gerçek site siparişlerini kaçırıyordu.)"""
+    if not isinstance(order, dict):
+        return False
+    plat = str(order.get("platform") or "").strip().lower()
+    mkt = str(order.get("marketplace") or "").strip().lower()
+    return plat not in _MARKETPLACE_PLATFORMS and mkt not in _MARKETPLACE_PLATFORMS
 
 
 def _order_search_or(search: str) -> list:
@@ -37,14 +405,16 @@ def _order_search_or(search: str) -> list:
         "shipping_address.email", "shipping_address.phone",
         "shipping_address.city", "shipping_address.district",
         "shipping_address.address",
-        "billing_info.company_name", "billing_info.tax_number",
-        "billing_info.tckn", "billing_info.tc_no",
+        # KVKK: TCKN/VKN artık şifreli — kısmi regex araması YOK; tam eşleşme aşağıda hash ile.
+        "billing_info.company_name",
         "coupon_code",
         "items.product_name", "items.name", "items.barcode",
         "items.stock_code", "items.sku",
         "lines.product_name", "lines.name", "lines.barcode",
     ]
     ors = [{f: rx} for f in fields]
+    # TCKN/VKN araması: <yol>_hash (HMAC, tüm anahtarlar) + backfill öncesi eski düz değer TAM eşleşmesi.
+    ors.extend(_pii_search(s))
     # Pazaryeri paket/no alanları INT saklanabilir → regex tutmaz. Arama tamamen rakamsa
     # bu alanlarda hem int hem string olarak TAM eşleşme ekle (TY paket no vb. bulunur).
     if s.isdigit():
@@ -92,6 +462,14 @@ async def _log_order_event(order_id: str, event_type: str, description: str,
     uyarı loglar. `stock_movements` deseninin birebir kardeşidir.
     """
     try:
+        # Sipariş üzerinde bir aksiyon oldu → satış raporu önbelleği anında düşsün,
+        # rapor 90 sn beklemeden yeni veriyi göstersin. (Bu fonksiyon tasarım gereği
+        # isteği bozmaz; temizlik de aynı try içinde, sessiz.)
+        try:
+            from .reports import invalidate_report_cache as _inv_rc
+            await _inv_rc()
+        except Exception:
+            pass
         if order_number is None:
             _o = await db.orders.find_one({"id": order_id}, {"_id": 0, "order_number": 1})
             order_number = (_o or {}).get("order_number", "")
@@ -102,7 +480,9 @@ async def _log_order_event(order_id: str, event_type: str, description: str,
             "event_type": event_type,
             "description": description,
             "actor": (current_user or {}).get("email", "") if current_user else "",
-            "meta": meta or {},
+            # KVKK: olay kaydında TCKN/VKN yalnız maskeli (şifreli/hash alanlar atılır); telefon/açık adres
+            # anahtarları da maskelenir (adres değişikliği izi → yalnız il/ilçe + son 2 hane).
+            "meta": _contact_scrub(_pii_scrub(meta or {}), text=False),
             "created_at": datetime.now(timezone.utc).isoformat(),
         })
     except Exception as _e:  # pragma: no cover - log asla isteği bozmaz
@@ -168,6 +548,29 @@ def _spawn(coro):
     return _t
 
 
+async def _send_admin_new_order_email(order: dict, ship: dict, kind_label: str = "") -> None:
+    """Admin'e (firma iletişim adresi → beyaz-etiket varsayılan info@meluni.com.tr) yeni sipariş
+    ÖZET maili. OLUŞTURMADA yalnız ödeme-onayı bekleyen ama gerçek aksiyon bekleyen site
+    siparişlerinde (havale/EFT, kapıda ödeme) gönderilir. KART siparişi HARİÇ — o, 3DS yarıda
+    kalabileceğinden ödeme onaylanınca payment._notify_paid_order_confirmed ile gider (invariant #3).
+    Best-effort: hata sipariş akışını ETKİLEMEZ."""
+    try:
+        import company as _company
+        from notification_service import _email_send
+        _ci = await _company.get_company(db)
+        _to = str(_ci.get("contact_email") or _ci.get("email") or "info@meluni.com.tr").strip()
+        if not _to:
+            return
+        # Gövde ORTAK üreteçten gelir (notification_service) → iki sipariş maili de
+        # aynı ve ORTALI. Müşteri-kontrollü alanların kaçırılması da orada yapılır.
+        from notification_service import build_admin_order_email_html as _bld
+        _html = _bld(order, ship, "Yeni Sipariş", kind_label)
+        await _email_send(db, _to, f"Yeni Sipariş · {order.get('order_number','')}", _html)
+        logger.info(f"admin yeni-sipariş maili → {_to} order={order.get('order_number')} ({kind_label})")
+    except Exception as _e:
+        logger.warning(f"admin yeni-sipariş maili atlandı: {_e}")
+
+
 async def _order_notify_vars(order: dict, **extra) -> dict:
     """Bir sipariş dokümanından TÜM bildirim değişkenlerini (email + SMS şablonlarının
     kullandığı her placeholder) tek elden üretir. Amaç: hiçbir ma/sms'te {order_date},
@@ -212,15 +615,26 @@ async def _order_notify_vars(order: dict, **extra) -> dict:
     items_html = ('<div style="padding:0 24px 16px;"><table cellpadding="0" cellspacing="0" border="0" '
                   f'style="width:100%;">{items_rows}</table></div>') if items_rows else ""
 
-    base_url = (_os.environ.get("FRONTEND_PUBLIC_URL") or _os.environ.get("REACT_APP_BACKEND_URL")
-                or _os.environ.get("SITE_URL") or "").rstrip("/")
+    # Mağaza (vitrin) adresi: panelde kayıtlı storefront_url → FRONTEND_PUBLIC_URL → SITE_URL.
+    # REACT_APP_BACKEND_URL (API alanı) KULLANILMAZ — sipariş/dekont linki API'ye gidip 404 veriyordu.
+    _sf = ""
+    try:
+        from tenant_config import get_tenant_config as _gtc
+        _sf = ((await _gtc(db)).get("domains") or {}).get("storefront_url") or ""
+    except Exception:
+        _sf = ""
+    base_url = (_sf or _os.environ.get("FRONTEND_PUBLIC_URL") or _os.environ.get("SITE_URL")
+                or _os.environ.get("REACT_APP_BACKEND_URL") or "").rstrip("/")
     onum = order.get("order_number") or order.get("id") or ""
     order_link = f"{base_url}/order-success/{onum}" if base_url else "#"
     order_date = str(order.get("created_at") or "")[:10]
 
     subtotal = float(order.get("subtotal") or 0)
     shipping_cost = float(order.get("shipping_cost") or 0)
-    discount = float(order.get("discount") or order.get("discount_amount") or 0)
+    # E-postadaki "İndirim" satırı havale/EFT ödeme indirimini de içerir — eskiden yalnız kupon +
+    # kampanya yazılıyordu; satırlar toplamı tutmuyor, müşteri "%5 uygulanmadı" sanıyordu.
+    payment_discount = float(order.get("payment_discount") or 0)
+    discount = float(order.get("discount") or order.get("discount_amount") or 0) + payment_discount
     total = float(order.get("total") or 0)
 
     cargo = order.get("cargo") or {}
@@ -387,6 +801,17 @@ def _server_variant_barcode(prod: dict, variant_id: str = None):
     return None
 
 
+async def _issue_pay_token(order_id: str) -> str:
+    """Denetim #4: yalnız siparişi oluşturan istemciye verilen ödeme yetkisi (payment.py).
+    Üretilemezse boş döner (sipariş akışı ASLA kırılmaz; istemci tekrar POST'ta yenisini alır)."""
+    try:
+        from .payment import issue_payment_capability
+        return await issue_payment_capability(order_id)
+    except Exception as _pc_err:
+        logger.warning(f"ödeme yetkisi üretilemedi order_id={order_id}: {type(_pc_err).__name__}")
+        return ""
+
+
 async def next_order_number() -> str:
     """Kısa, sıralı site sipariş numarası: W10001, W10002, ...
     Atomik sayaç (db.counters) ile çakışma imkânsız. Sayaç başarısız olursa
@@ -435,7 +860,7 @@ async def get_orders(
     payment_view: Optional[str] = "all",
     hide_closed: Optional[str] = None,
     show_hidden: Optional[str] = None,   # 1 → HİÇBİR şeyi gizleme (iptal/iade + ödenmemiş junk dahil)
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.view"))
 ):
     """Get orders with pagination (admin only)"""
     skip = (page - 1) * limit
@@ -469,33 +894,81 @@ async def get_orders(
         # Böylece iade TALEBİ oluşan sipariş de ana listede KALMAZ, İadeler sayfasına "gider".
         # (return_requested/in_transit/rejected/partial_refunded dahil — hepsi İadeler'de listelenir.)
         query["status"] = {"$nin": [
-            "cancelled", "returned", "refunded", "return_approved",
+            "cancelled", "cancel_refunded",  # iptal + "Ödemeli İptal Onaylandı" → ana listede DEĞİL, İptaller sekmesinde
+            "returned", "refunded", "return_approved",
             "return_requested", "return_in_transit", "return_rejected", "partial_refunded",
             "payment_failed",  # ödemesi hiç alınamamış (başarısız kart) sipariş → ana listede GÖRÜNMEZ
         ]}
         _default_hidden = True
     if phone:
-        query["shipping_address.phone"] = {"$regex": re.escape(str(phone)), "$options": "i"}  # ReDoS koruması
+        # Eskiden yalnız shipping_address.phone alanına ve kullanıcının YAZDIĞI ham metne
+        # bakılıyordu: "0532 123 45 67" yazan, DB'deki "+905321234567" ile eşleşmiyor ve filtre
+        # BOŞ liste veriyordu (genel arama kutusu ise buluyordu — "filtre bozuk" algısı).
+        # Artık genel aramayla aynı: rakamlar ayıklanır, son 10 hane tüm telefon alanlarında aranır.
+        _ph_digits = re.sub(r"\D", "", str(phone))[-10:]
+        if _ph_digits:
+            query.setdefault("$and", []).append({"$or": [
+                {f: {"$regex": re.escape(_ph_digits)}} for f in
+                ("shipping_address.phone", "billing_address.phone", "customer_phone",
+                 "user_phone", "phone")
+            ]})
     if email:
-        query["shipping_address.email"] = {"$regex": re.escape(str(email)), "$options": "i"}
+        # Aynı gerekçe: e-posta birden çok alanda saklanabiliyor.
+        _em = re.escape(str(email).strip())
+        if _em:
+            query.setdefault("$and", []).append({"$or": [
+                {f: {"$regex": _em, "$options": "i"}} for f in
+                ("shipping_address.email", "billing_address.email", "customer_email",
+                 "user_email", "email")
+            ]})
     if order_number:
-        query["order_number"] = {"$regex": re.escape(str(order_number)), "$options": "i"}
+        # NET FİLTRELEME (kullanıcı bildirimi): eskiden çıpasız regex kullanılıyordu →
+        # "W118" yazınca W11800…W11899 hepsi, "1180" yazınca içinde 1180 GEÇEN her sipariş
+        # geliyordu; tam numara yazıldığında bile daha uzun numaralar eşleşebiliyordu.
+        # Artık: tam sipariş numarası (W'li ya da W'siz, baştaki sıfırlar önemsiz) → YALNIZ o
+        # sipariş; kısmi yazımda ise BAŞTAN eşleşme (önek), ortadan eşleşme yok.
+        _on = str(order_number).strip()
+        _m = re.fullmatch(r"[Ww]?\s*0*(\d{3,})", _on)
+        _locked = False
+        if _m:
+            _cands = [f"W{_m.group(1)}", _m.group(1)]
+            try:
+                if await db.orders.find_one({"order_number": {"$in": _cands}}, {"_id": 0, "id": 1}):
+                    query["order_number"] = {"$in": _cands}   # TAM numara → yalnız o sipariş
+                    _locked = True
+            except Exception:
+                _locked = False
+        if not _locked:
+            # Kısmi yazım → BAŞTAN eşleşme (W'li/W'siz). Ortadan eşleşme yok.
+            _core = _m.group(1) if _m else _on
+            query["order_number"] = {"$regex": f"^W?0*{re.escape(_core)}", "$options": "i"}
     if cargo_tracking:
         query["cargo_tracking"] = {"$regex": re.escape(str(cargo_tracking)), "$options": "i"}
     if payment_method:
         _pm = [x.strip() for x in str(payment_method).split(",") if x.strip()]
-        query["payment_method"] = {"$in": _pm} if len(_pm) > 1 else (_pm[0] if _pm else payment_method)
+        if _pm:   # "," gibi boş seçimde filtre HİÇ uygulanmaz (eskiden $in:[] → hep boş liste)
+            query["payment_method"] = {"$in": _pm} if len(_pm) > 1 else _pm[0]
     if platform:
         _pf = [x.strip() for x in str(platform).split(",") if x.strip()]
-        query["platform"] = {"$in": _pf} if len(_pf) > 1 else (_pf[0] if _pf else platform)
+        if _pf:
+            # Pazaryeri siparişlerinin bir kısmında kanal 'platform' yerine 'marketplace'
+            # alanında duruyor → tek alana bakan filtre onları bulamıyordu.
+            query.setdefault("$and", []).append({"$or": [
+                {"platform": {"$in": _pf}}, {"marketplace": {"$in": _pf}}]})
     if invoice_number:
         query["invoice_number"] = {"$regex": re.escape(str(invoice_number)), "$options": "i"}
     if payment_status:
         _ps = [x.strip() for x in str(payment_status).split(",") if x.strip()]
-        query["payment_status"] = {"$in": _ps} if len(_ps) > 1 else (_ps[0] if _ps else payment_status)
+        if _ps:
+            query["payment_status"] = {"$in": _ps} if len(_ps) > 1 else _ps[0]
     if channel:
-        # Çoklu seçim: her parça ayrı ayrı escape edilip alternation kurulur (ReDoS koruması)
-        _ch = "|".join(re.escape(x) for x in str(channel).split(",") if x.strip())
+        # Çoklu seçim: her parça escape edilip alternation kurulur (ReDoS koruması).
+        # DÜZELTME: "Reklam (Tümü)" seçeneğinin değeri 'ads|paid' — yani tek başına bir
+        # alternation. Yalnız virgülle bölünüp escape edilince 'ads\|paid' literaline dönüşüyor
+        # ve HİÇBİR kayıtla eşleşmiyordu (filtre her zaman boş liste veriyordu). Boru işareti de
+        # ayırıcı sayılır.
+        _parts = [x.strip() for x in re.split(r"[,|]", str(channel)) if x.strip()]
+        _ch = "|".join(re.escape(x) for x in _parts)
         if _ch:
             query["attribution.channel"] = {"$regex": _ch, "$options": "i"}
     if source:
@@ -514,10 +987,38 @@ async def get_orders(
     if end_date:
         date_query["$lte"] = tr_day_end_utc(end_date)
     if date_query:
-        query["created_at"] = date_query
+        # created_at KARIŞIK TİPTE: çoğu kayıt ISO metin, eski/migrasyon kayıtları BSON Date.
+        # Sınırlar yalnız METİN olarak verilince BSON Date kayıtları HİÇ eşleşmiyor ve tarih
+        # filtresinde sessizce kayboluyorlardı. Her iki tip için de sınır uygulanır.
+        _dt_q = {}
+        for _k, _v in date_query.items():
+            try:
+                _dt_q[_k] = datetime.fromisoformat(str(_v))
+            except Exception:
+                pass
+        if _dt_q:
+            query.setdefault("$and", []).append(
+                {"$or": [{"created_at": date_query}, {"created_at": _dt_q}]})
+        else:
+            query["created_at"] = date_query
     
     if search:
-        _ors = _order_search_or(search)
+        # Kullanıcı genel arama kutusuna SİPARİŞ NUMARASI yazdıysa (W11805 / 11805) ve o numara
+        # gerçekten varsa, geniş alan taraması yerine TAM EŞLEŞMEYE kilitlenilir. Aksi halde
+        # numaranın rakamları adreste/telefonda/kalem kodunda geçen başka siparişler de listeye
+        # giriyor ve "filtre net değil, birden fazla sipariş çıkıyor" oluyordu.
+        _sq = str(search).strip()
+        _ms = re.fullmatch(r"[Ww]?\s*0*(\d{3,})", _sq)
+        _exact_locked = False
+        if _ms:
+            _cands = [f"W{_ms.group(1)}", _ms.group(1)]
+            try:
+                if await db.orders.find_one({"order_number": {"$in": _cands}}, {"_id": 0, "id": 1}):
+                    query["order_number"] = {"$in": _cands}
+                    _exact_locked = True
+            except Exception:
+                _exact_locked = False
+        _ors = [] if _exact_locked else _order_search_or(search)
         if _ors:
             if "$or" in query:
                 # Mevcut $or'u ezme: $and altında birleştir (ikisi de geçerli olmalı)
@@ -527,7 +1028,14 @@ async def get_orders(
                 query["$or"] = _ors
     
     # Ödeme kaydı bulunmayan (web kart denemesi, hiç ödenmemiş) ayrımı
-    _web_cond = {"$or": [{"platform": "meluni"}, {"platform": {"$in": [None, ""]}}, {"platform": {"$exists": False}}]}
+    # 'Web siparişi' = platform meluni/boş VE marketplace alanı da boş. Eskiden yalnız
+    # platform'a bakılıyordu; platform'u yazılmamış ama marketplace=trendyol olan pazaryeri
+    # siparişleri "web" sayılıp junk süzgecine takılabiliyordu.
+    _web_cond = {"$and": [
+        {"$or": [{"platform": "meluni"}, {"platform": {"$in": [None, ""]}},
+                 {"platform": {"$exists": False}}]},
+        {"$or": [{"marketplace": {"$in": [None, ""]}}, {"marketplace": {"$exists": False}}]},
+    ]}
     _settled_pay = ["paid", "completed", "success", "succeeded", "captured"]
     # Havale/EFT ve kapıda ödeme siparişleri ödenmemiş olsa da "junk" (kayıp web kart denemesi)
     # DEĞİLDİR — listede kalmalı. Bu yüzden TÜM alias'lar dahil (sadece kanonik iki string değil;
@@ -535,7 +1043,13 @@ async def get_orders(
     # NOT: KART (credit_card) burada YOK — ödenmemiş kart siparişi (yarıda kalan 3DS) gizli kalmalı.
     _offline_pm = ["bank_transfer", "havale", "eft", "havale_eft", "banka_havale", "transfer",
                    "cash_on_delivery", "kapida", "kapida_odeme", "cod"]
-    _fulfilled_status = ["confirmed", "processing", "preparing", "shipped", "delivered", "completed", "undelivered", "cancelled"]
+    # "cancel_requested" (İptal Talebi Alındı) BURADA OLMALI: müşteri o sipariş için AÇIKÇA
+    # işlem yapmıştır — yarıda kalmış bir kart denemesi değildir. Eksik olduğunda, ödemesi
+    # tamamlanmamış kart siparişinde müşteri iptal isteyince satır "junk" sayılıp ana listeden
+    # GİZLENİYORDU; yalnız isimle arayınca (süzgeç atlanır) mor satır görünüyordu (kullanıcı
+    # bildirimi, W11886). Personel talebi göremezse sipariş ne iptal edilir ne kapatılır.
+    _fulfilled_status = ["confirmed", "processing", "preparing", "shipped", "delivered",
+                         "completed", "undelivered", "cancelled", "cancel_requested"]
     _junk_cond = {"$and": [
         _web_cond,
         {"payment_status": {"$nin": _settled_pay}},
@@ -550,6 +1064,11 @@ async def get_orders(
         query.setdefault("$and", []).append(_junk_cond)
     elif _specific_search:
         # Belirli sipariş araması → ödeme başarısız/junk dahil BUL (no ile aranan sipariş kaybolmasın).
+        pass
+    elif status:
+        # KULLANICI AÇIKÇA BİR DURUM SEÇTİ → o durumdaki siparişler GİZLENMEZ. Eskiden
+        # "Ödeme Alınamadı" (payment_failed) gibi bir durum seçilince junk süzgeci devreye girip
+        # DAİMA boş liste dönüyordu: seçenek menüde var ama filtre hiçbir şey getirmiyordu.
         pass
     else:
         # VARSAYILAN ("all") + "valid": ödemesi hiç alınamamış (başarısız/bekleyen web kart
@@ -573,15 +1092,48 @@ async def get_orders(
         # kayıtlar (ör. Ticimax'tan taşınanlar) string tarihlerin üstüne çıkar ve liste
         # gerçek tarih sırasını kaybeder. Bu yüzden created_at'i $convert ile Date'e
         # normalize edip ona göre sıralarız (EN YENİ EN ÜSTTE), tip ne olursa olsun.
+        # TZ TUTARLILIĞI (sıralama = ekrandaki TR saati): Pazaryeri (Trendyol/HB/Temu/N11/Amazon)
+        # siparişlerinin created_at'i TR duvar-saatiyle "+00:00" etiketli saklanıyor; site
+        # siparişleri ise GERÇEK UTC. Ham UTC'ye göre sıralayınca site siparişi olduğundan eski
+        # sanılıp yanlış yere (aşağı) düşüyordu. Sıralamayı ekranla aynı TR çerçevesine getiririz:
+        # pazaryeri olduğu gibi, site siparişine +3 saat → liste görünen saate göre "en yeni en üstte".
+        _mkt_platforms = ["trendyol", "hepsiburada", "temu", "n11", "amazon"]
         _pipe = [
             {"$match": query},
-            {"$addFields": {"_sort_dt": {"$convert": {
-                "input": "$created_at", "to": "date", "onError": None, "onNull": None
+            {"$addFields": {"_sort_dt": {"$let": {
+                "vars": {
+                    "d": {"$convert": {"input": "$created_at", "to": "date", "onError": None, "onNull": None}},
+                    "mkt": {"$in": [
+                        {"$toLower": {"$ifNull": ["$platform", {"$ifNull": ["$marketplace", ""]}]}},
+                        _mkt_platforms,
+                    ]},
+                    # Trendyol API siparişi: marketplace_order_date artık GERÇEK UTC
+                    # (ty_date_utc_fix + _ms_to_iso). Site siparişi gibi +3 ile TR'ye
+                    # alınır; yoksa yeni Trendyol siparişleri 3 saat eski sanılıp
+                    # daha önce gelmiş web siparişlerinin ALTINA düşüyordu.
+                    "tyd": {"$cond": [
+                        {"$eq": [{"$toLower": {"$ifNull": ["$platform", ""]}}, "trendyol"]},
+                        {"$convert": {"input": {"$ifNull": ["$marketplace_order_date", None]},
+                                      "to": "date", "onError": None, "onNull": None}},
+                        None,
+                    ]},
+                },
+                "in": {"$cond": [
+                    {"$ne": ["$$tyd", None]},
+                    {"$add": ["$$tyd", 3 * 60 * 60 * 1000]},
+                    {"$cond": [
+                        {"$or": ["$$mkt", {"$eq": ["$$d", None]}]},
+                        "$$d",
+                        {"$add": ["$$d", 3 * 60 * 60 * 1000]},
+                    ]},
+                ]},
             }}}},
             {"$sort": {"_sort_dt": -1, "created_at": -1, "_id": -1}},
             {"$skip": skip},
             {"$limit": limit},
-            {"$project": {"_id": 0, "_sort_dt": 0}},
+            # Dekont BAYTI listeye taşınmaz (BL-040; görüntüleme /payment-receipt ucundan).
+            {"$project": {"_id": 0, "_sort_dt": 0,
+                          "payment_receipt.data_b64": 0, "payment_receipt.data_enc": 0}},
         ]
         return await db.orders.aggregate(_pipe, allowDiskUse=True).to_list(limit)
 
@@ -647,6 +1199,14 @@ async def get_orders(
     except Exception as _e:
         logger.warning(f"order image enrich skipped: {_e}")
 
+    # BL-040: iade IBAN'ı — iadeyi ödeyen yetkili personele (İptaller ekranı) tam, diğerlerine maskeli.
+    await present_refund_bank_info_in(orders, current_user)
+    # KVKK: listede TCKN/VKN yalnız son 2 hane (tam değer yalnız tek sipariş detayında).
+    _pii_mask_many(orders)
+    # KVKK: listede telefon "+90 *** *** ** 33", açık adres "••••••" (il/ilçe açık). Tam değer:
+    # GET /orders/{id}/contact (orders.view, sayaçlı + denetimli).
+    _contact_mask_many(orders)
+
     # Gizlenen sipariş özeti (kullanıcı isteği): kullanıcı 'Gizlenenleri göster'i açmak zorunda
     # kalmasın — aynı filtre aralığında İadeler/İptaller sayfalarına giden sipariş sayıları
     # yanıtla döner, panel bunları ilgili sayfalara linkleyerek gösterir.
@@ -679,18 +1239,83 @@ async def get_orders(
         "hidden_summary": hidden_summary,
     }
 
+_ALLOWED_PAYMENT_METHODS = {
+    "credit_card", "card", "kredi_karti", "kart", "iyzico", "creditcard",
+    "bank_transfer", "havale", "eft", "havale_eft", "banka_havale",
+    "cash_on_delivery", "kapida",
+}
+
+
+def _allowed_payment_method(v) -> str:
+    """Site siparişinde yalnız kart / havale-EFT / kapıda ödeme (denetim 2026-09-29): bilinmeyen bir
+    yöntem ('marketplace' vb.) siparişi 'Ödeme Bekleniyor' yerine 'pending' açıp admin bildirimi
+    tetikliyordu (CLAUDE.md değişmez 2). Bilinmeyen değer → 400."""
+    pm = str(v or "credit_card").strip().lower()
+    if pm not in _ALLOWED_PAYMENT_METHODS:
+        raise HTTPException(status_code=400, detail="Geçersiz ödeme yöntemi")
+    return pm
+
+
+def _order_public_summary(order: dict) -> dict:
+    """Kanıtsız (yalnız sipariş numarasıyla) erişimde dönen en küçük görünüm — içerik, tutar,
+    adres, tarih, kargo takip bilgisi YOK."""
+    return {"order_number": order.get("order_number"), "status": order.get("status"),
+            "payment_status": order.get("payment_status"), "payment_method": order.get("payment_method"),
+            "payment_notified": bool(order.get("payment_notified")), "verification_required": True}
+
+
+async def _order_view_authorized(request, order: dict) -> bool:
+    """Denetim #27: sipariş görünümü için sahiplik kanıtı.
+    1) X-Order-Token: siparişi oluşturan istemciye verilen yetki (payment.issue_payment_capability),
+    2) doğrulanmış oturum: siparişin sahibi ya da personel,
+    3) X-Order-Contact: siparişteki e-posta ya da telefonun tamamı (sipariş başına deneme kilidiyle)."""
+    tok = (request.headers.get("x-order-token") or "").strip()
+    if tok and order.get("pay_cap_hashes"):
+        import hmac as _hm
+        from .payment import _pay_cap_hash
+        _h = _pay_cap_hash(tok)
+        if any(_hm.compare_digest(_h, str(x)) for x in order.get("pay_cap_hashes") or []):
+            return True
+    auth = request.headers.get("authorization") or ""
+    if auth[:7].lower() == "bearer ":
+        try:
+            from .deps import _decode_jwt_strict, request_member_ok, optional_admin
+            _uid = str(_decode_jwt_strict(auth[7:].strip()).get("user_id") or "")
+            if _uid and request_member_ok(request) and str(order.get("user_id") or "") == _uid:
+                return True
+            if (await optional_admin(request)) is not None:
+                return True
+        except Exception:
+            pass
+    contact = (request.headers.get("x-order-contact") or "").strip()
+    if contact:
+        _em, _ph = (contact, "") if "@" in contact else ("", contact)
+        await _guest_verify_or_raise(order, _em, _ph)   # eşleşmezse 403, kilitliyse 429
+        return True
+    return False
+
+
 @router.get("/by-number/{order_number}")
-async def get_order_by_number(order_number: str):
+@(limiter.limit("30/minute") if limiter else (lambda f: f))
+@(limiter.limit("600/minute", key_func=global_rate_key) if limiter else (lambda f: f))
+async def get_order_by_number(order_number: str, request: Request):
     """Sipariş numarasıyla siparişi getir (public — ödeme sonrası başarı sayfası için).
     PII maskelenir (telefon/email son kısımları gizlenir, adres detayı sınırlanır)."""
     order = await db.orders.find_one(
         {"order_number": order_number},
-        {"_id": 0, "admin_notes": 0, "payment_id": 0, "user_id": 0, "customer_ip": 0, "user_agent": 0,
+        {"_id": 0, "admin_notes": 0, "payment_id": 0, "customer_ip": 0, "user_agent": 0,
          "billing_address": 0, "billing_info": 0, "attribution": 0, "payment_receipt": 0,
          "iyzico_retrieve_response": 0, "iyzico_init_response": 0, "iyzico_response": 0}
     )
     if not order:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    # Denetim #27: sıralı sipariş numarası TEK BAŞINA içerik/tutar/konum göstermez — sahiplik kanıtı
+    # (sahibin oturumu, siparişi açan istemcinin sipariş anahtarı ya da siparişteki e-posta/telefon)
+    # yoksa yalnız durum özeti döner.
+    if not await _order_view_authorized(request, order):
+        return _order_public_summary(order)
+    order.pop("user_id", None)
+    order.pop("pay_cap_hashes", None)
 
     def _mask_email(e: str) -> str:
         if not e or "@" not in e:
@@ -699,8 +1324,9 @@ async def get_order_by_number(order_number: str):
         return (local[:2] + "***@" + domain) if len(local) > 2 else "***@" + domain
 
     def _mask_phone(p: str) -> str:
-        digits = "".join(c for c in str(p or "") if c.isdigit())
-        return (digits[:3] + "****" + digits[-2:]) if len(digits) >= 6 else ""
+        # Denetim #17: herkese açık uçta telefonun HİÇBİR hanesi gösterilmez — son 2 hane,
+        # dekont yüklemedeki "son 4 hane" kanıtını 100 denemeye indiriyordu.
+        return "+90 *** *** ** **" if str(p or "").strip() else ""
 
     def _mask_name(n: str) -> str:
         # Sıra numarası tahmin edilebilir olduğundan (enumeration) ad-soyad da maskelenir.
@@ -714,7 +1340,9 @@ async def get_order_by_number(order_number: str):
             "last_name": _mask_name(ship.get("last_name", "")),
             "phone": _mask_phone(ship.get("phone", "")),
             "email": _mask_email(ship.get("email", "")),
-            "address": (ship.get("address") or "")[:40] + ("..." if len(ship.get("address") or "") > 40 else ""),
+            # KVKK: sipariş no ile (sahiplik kanıtı OLMADAN) erişilen uçta açık adres DÖNMEZ — yalnız
+            # il/ilçe. Eskiden ilk 40 karakter dönüyordu (çoğu adresin tamamı).
+            "address": "",
             "city": ship.get("city", ""),
             "district": ship.get("district", ""),
         }
@@ -727,6 +1355,37 @@ async def get_order_by_number(order_number: str):
     for _pk in ("customer_name", "user_email", "user_phone", "cargo_tracking",
                 "cargo_tracking_number", "tracking_number", "billing_info", "customer_ip"):
         order.pop(_pk, None)
+    # GÜVENLİK (denetim 2026-09-29, HIGH): numara sıralı → herkes tarayabilir. Kara listede olmayan
+    # hassas alanlar da sızıyordu: iade IBAN'ı, fatura linki (ad/adres/TCKN), Trendyol TCKN, ödeme
+    # token'ı, notlar. Anahtar adına göre temizlenir (sayfaların kullandığı alanlar korunur).
+    _SENS = ("iban", "refund_bank", "identity", "tckn", "vkn", "tax_number", "invoice_pdf", "invoice_link",
+             "invoice_url", "invoice_provider", "invoice_web_key", "iyzico", "token", "reconcile", "receipt",
+             "tracking_link", "gonderi", "barcode", "notes", "gift_note", "admin", "phone_raw", "email_raw",
+             # commerce-3: iade/çift-tahsilat kalemlerindeki iyzico ödeme kimlikleri sızmasın.
+             "payment_id", "paymentid")
+    # GÜVENLİK (commerce-3, HIGH): siparişte kullanılan HEDİYE ÇEKİ KODU hamiline yazılı bir
+    # değerdir (kalan bakiye kodu bilen herkesçe harcanır). Sıralı numarayla taranan bu public
+    # uçta kod ASLA dönmez; yalnız kullanılan tutar (sayfa gösterimi için) kalır.
+    _gc_pub = order.get("gift_card")
+    if isinstance(_gc_pub, dict):
+        order["gift_card"] = {"amount": _gc_pub.get("amount"), "refunded": bool(_gc_pub.get("refunded"))}
+    elif _gc_pub is not None:
+        order.pop("gift_card", None)
+    def _scrub(obj):
+        if isinstance(obj, dict):
+            for k in list(obj.keys()):
+                kl = str(k).lower()
+                if any(t in kl for t in _SENS):
+                    obj.pop(k, None)
+                else:
+                    _scrub(obj[k])
+        elif isinstance(obj, list):
+            for x in obj:
+                _scrub(x)
+    _scrub(order)
+    # KVKK: kalan üst-düzey / kapsayıcı telefon-adres alanları da (customer_phone, buyer.*, pazaryeri
+    # shipmentAddress …) maskelenir — sahiplik kanıtı olmadan tam telefon/adres DÖNMEZ.
+    _contact_mask(order)
     # İade uygunluğu delivered_at'e bağlı; kargo senkronu teslimatı raporlamadıysa (MNG status 0'da
     # takılı) müşteri iade açamıyordu → varsayılan-teslim fallback ile delivered_at'i doldur.
     try:
@@ -745,7 +1404,7 @@ async def list_deleted_orders(
     page: int = 1,
     limit: int = 50,
     search: str = "",
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("orders.view")),
 ):
     """Silinen (arşivlenen) siparişler — orders_deleted koleksiyonundan, en yeni üstte."""
     q = {}
@@ -762,15 +1421,87 @@ async def list_deleted_orders(
         limit, page = 50, 1
     skip = (page - 1) * limit
     total = await db.orders_deleted.count_documents(q)
-    items = await db.orders_deleted.find(q, {"_id": 0}).sort("deleted_at", -1).skip(skip).limit(limit).to_list(limit)
+    items = await db.orders_deleted.find(q, {"_id": 0, "payment_receipt.data_b64": 0, "payment_receipt.data_enc": 0}).sort("deleted_at", -1).skip(skip).limit(limit).to_list(limit)
+    await present_refund_bank_info_in(items, current_user, full=False)  # BL-040: maskeli
+    _pii_mask_many(items)  # KVKK: TCKN/VKN maskeli
+    _contact_mask_many(items)  # KVKK: telefon / açık adres maskeli
     return {"orders": items, "total": total, "page": page, "limit": limit}
+
+
+@router.get("/{order_id}/iyzico-verify")
+async def iyzico_verify_order_payment(order_id: str, current_user: dict = Depends(require_permission("orders.view"))):
+    """Siparişin ödemesini iyzico'ya CANLI sorar — SALT OKUNUR, siparişi DEĞİŞTİRMEZ.
+
+    Neden (W11805): müşteri kartla iki kez denemiş; ilk deneme 3DS'te yarıda kalmış (tahsilat
+    YOK), ikincisi başarılı olmuş. Personel iyzico'nun işlem listesinde YANLIŞ işlemi (yarıda
+    kalanı) siparişle eşleştirip "para çekilmemiş" sanmış, ürün iade alınmış ve iade elle
+    'ödendi' işaretlenmiş — oysa 1.899 TL tahsil edilmişti. Bu uç, siparişin KENDİ ödeme
+    numarasını iyzico'ya sorar; eşleştirme tahmine kalmaz."""
+    o = await db.orders.find_one(
+        {"id": order_id},
+        {"_id": 0, "id": 1, "order_number": 1, "total": 1, "status": 1, "payment_status": 1,
+         "payment_method": 1, "refunds": 1, "manual_return": 1, "iyzico_payment_id": 1,
+         "payment_id": 1, "iyzico_retrieve_response": 1})
+    if not o:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    pid = str(o.get("iyzico_payment_id") or o.get("payment_id")
+              or (o.get("iyzico_retrieve_response") or {}).get("paymentId") or "").strip()
+    if not pid:
+        return {"ok": False, "sorgulandi": False,
+                "mesaj": "Bu siparişte iyzico ödeme numarası yok (havale/kapıda/pazaryeri olabilir)."}
+    try:
+        import json as _json
+        import httpx as _httpx
+        from .payment import (_get_iyzico_settings as _gs, _v2_headers as _vh,
+                              PAYMENT_DETAIL_PATH as _pd)
+        st = await _gs()
+        body = {"locale": "tr", "conversationId": str(order_id), "paymentId": pid}
+        bs = _json.dumps(body, separators=(",", ":"), ensure_ascii=False)
+        async with _httpx.AsyncClient(timeout=25) as c:
+            r = await c.post(f"{st['base_url']}{_pd}", content=bs.encode("utf-8"),
+                             headers=_vh(st["api_key"], st["api_secret"], _pd, bs))
+        if not r.headers.get("content-type", "").startswith("application/json"):
+            return {"ok": False, "sorgulandi": False,
+                    "mesaj": f"iyzico beklenmeyen yanıt verdi (HTTP {r.status_code}). Tekrar deneyin."}
+        d = r.json()
+    except Exception as e:
+        logger.warning(f"[iyzico-verify] hata order={order_id}: {e}")
+        return {"ok": False, "sorgulandi": False, "mesaj": f"iyzico'ya ulaşılamadı: {str(e)[:120]}"}
+
+    _ps = str(d.get("paymentStatus") or "").upper()
+    tahsil = _ps == "SUCCESS" and bool(d.get("paymentId"))
+    _iade_kayitlari = [x for x in (o.get("refunds") or [])
+                       if str((x or {}).get("status") or "") == "done"]
+    _iade_tutari = round(sum(float(x.get("amount") or x.get("net_refund") or 0)
+                             for x in _iade_kayitlari), 2)
+    _iade_durumlari = ("refunded", "returned", "iade", "iade_edildi")
+    uyari = ""
+    if tahsil and (str(o.get("status") or "").lower() in _iade_durumlari
+                   or o.get("manual_return")) and not _iade_kayitlari:
+        uyari = ("Bu siparişte karttan TAHSİLAT VAR ama iyzico üzerinden iade kaydı YOK. "
+                 "İade elle işaretlenmişse müşteriye para iadesi yapılmamış olabilir.")
+    elif not tahsil and str(o.get("payment_status") or "") == "paid":
+        uyari = ("Sipariş 'ödendi' görünüyor ancak iyzico bu ödeme için başarı bildirmiyor. "
+                 "Muhasebeye bildirin.")
+    return {
+        "ok": True, "sorgulandi": True, "tahsil_edildi": tahsil,
+        "paymentId": pid,
+        "iyzico_durum": d.get("paymentStatus") or d.get("status"),
+        "tahsil_edilen": d.get("paidPrice"),
+        "siparis_tutari": o.get("total"),
+        "auth_code": d.get("authCode"), "host_reference": d.get("hostReference"),
+        "taksit": d.get("installment"), "fraud_durumu": d.get("fraudStatus"),
+        "hata_mesaji": str(d.get("errorMessage") or "")[:160],
+        "iyzico_iade_kaydi": len(_iade_kayitlari), "iade_edilen_tutar": _iade_tutari,
+        "uyari": uyari,
+    }
 
 
 @router.get("/payment-trace")
 async def payment_trace(
     phone: str = Query(..., description="Müşteri telefonu (herhangi bir biçimde)"),
     days: int = Query(10, ge=1, le=180),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("orders.view")),
 ):
     """Bir telefon numarasının son N gündeki TÜM sipariş + kart ödeme denemelerini döndürür.
     'Kartımdan çekildi ama teslim olmadı / hala çekiliyor' vakalarını numaradan tespit için.
@@ -834,9 +1565,125 @@ async def payment_trace(
     }
 
 
+@router.get("/admin/havale-sweep")
+async def havale_sweep_preview(current_user: dict = Depends(require_permission("orders.view"))):
+    """Havale/EFT 72 saat kuralı — ÖNİZLEME: kuralı aşmış, ödenmemiş/onaylanmamış (Ödeme Bildirimi
+    dahil) bekleyen havale siparişleri (1 Haziran 2026'dan itibaren) — iptal edilecekler."""
+    import business_rules as _BR
+    from scheduler import havale_unpaid_query, HAVALE_METHOD_RX
+    hrs = int(await _BR.get_rule(db, "order.havale_cancel_hours", 72) or 72)
+    cutoff_dt = datetime.now(timezone.utc) - timedelta(hours=hrs)
+    proj = {"_id": 0, "id": 1, "order_number": 1, "created_at": 1, "status": 1, "payment_status": 1,
+            "payment_method": 1, "total": 1, "shipping_address.first_name": 1, "shipping_address.last_name": 1}
+    due = [o async for o in db.orders.find(havale_unpaid_query(cutoff_dt), proj).sort("created_at", 1).limit(500)]
+    notified = [o for o in due if o.get("status") == "payment_notified"]
+    def _row(o):
+        sa = o.get("shipping_address") or {}
+        return {"order_number": o.get("order_number"), "created_at": str(o.get("created_at"))[:16],
+                "status": o.get("status"), "payment_status": o.get("payment_status"),
+                "payment_method": o.get("payment_method"), "total": o.get("total"),
+                "customer": f"{sa.get('first_name', '')} {sa.get('last_name', '')}".strip()}
+    health = await db.settings.find_one({"id": "havale_sweep_health"}, {"_id": 0}) or {}
+    return {"rule_hours": hrs, "cutoff": cutoff_dt.isoformat(), "sweep_health": health,
+            "will_cancel": [_row(o) for o in due], "will_cancel_count": len(due),
+            "payment_notified_included": [_row(o) for o in notified], "payment_notified_count": len(notified),
+            "since": "2026-06-01"}
+
+
+@router.post("/admin/havale-sweep")
+async def havale_sweep_run(current_user: dict = Depends(require_permission("orders.edit"))):
+    """Havale/EFT 72 saat kuralını ŞİMDİ uygula (geçmişe dönük): süresi dolmuş ödenmemiş
+    havale siparişleri iptal + stok iadesi + müşteriye iptal bildirimi (cron ile aynı iş)."""
+    from scheduler import auto_cancel_unpaid_havale_orders
+    n = await auto_cancel_unpaid_havale_orders()
+    logger.info(f"[havale-sweep] elle çalıştırıldı ({current_user.get('email', '')}): {n} sipariş iptal")
+    return {"success": True, "cancelled": n}
+
+
+@router.get("/{order_id}/customer-history")
+async def order_customer_history(order_id: str, current_user: dict = Depends(require_permission("orders.view"))):
+    """Sipariş detayı için: AYNI MÜŞTERİNİN diğer siparişleri (üye id / e-posta / telefon eşleşmesi)
+    ve hangilerini iptal ettiği/iade ettiği. Panelde eski 'Sipariş Kaynağı' + 'Müşteri Yolculuğu'
+    bloklarının yerini alır. En yeni 60 sipariş + özet sayaçlar."""
+    import re as _re
+    order = await db.orders.find_one({"id": order_id}, {"_id": 0})
+    if not order:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    ship = order.get("shipping_address") or {}
+    ors = []
+    if order.get("user_id"):
+        ors.append({"user_id": order["user_id"]})
+    emails = {str(x or "").strip().lower() for x in (
+        ship.get("email"), order.get("email"), order.get("customer_email"),
+        (order.get("billing_address") or {}).get("email"))}
+    emails.discard("")
+    for em in emails:
+        rx = {"$regex": f"^{_re.escape(em)}$", "$options": "i"}
+        ors += [{"shipping_address.email": rx}, {"email": rx}, {"customer_email": rx}]
+    phones = set()
+    for ph in (ship.get("phone"), order.get("phone"), order.get("customer_phone")):
+        d = _re.sub(r"\D", "", str(ph or ""))
+        if len(d) >= 10:
+            phones.add(d[-10:])
+    for d in phones:
+        rx = {"$regex": f"{d}$"}
+        ors += [{"shipping_address.phone": rx}, {"phone": rx}]
+    if not ors:
+        return {"orders": [], "summary": {"total": 0}, "match": "none"}
+    _cancel_like = {"cancelled", "cancel_refunded"}
+    _return_like = {"returned", "refunded", "partial_refunded", "return_requested", "return_approved", "return_in_transit"}
+    proj = {"_id": 0, "id": 1, "order_number": 1, "created_at": 1, "status": 1, "payment_status": 1,
+            "payment_method": 1, "total": 1, "platform": 1, "marketplace": 1, "items": 1,
+            "cancel_reason": 1, "cancelled_at": 1, "auto_cancelled": 1, "cancel_source": 1,
+            "cancelled_by": 1, "return_request": 1, "user_id": 1, "partial_cancelled": 1}
+    rows = []
+    async for o in db.orders.find({"$or": ors, "id": {"$ne": order_id}}, proj).sort("created_at", -1).limit(60):
+        st = str(o.get("status") or "")
+        rows.append({
+            "id": o.get("id"), "order_number": o.get("order_number"), "created_at": o.get("created_at"),
+            "status": st, "payment_status": o.get("payment_status"), "payment_method": o.get("payment_method"),
+            "total": _round2(o.get("total") or 0), "platform": o.get("platform") or o.get("marketplace") or "site",
+            "items_count": sum(int((it or {}).get("quantity") or 1) for it in (o.get("items") or [])),
+            "item_names": [str((it or {}).get("name") or (it or {}).get("product_name") or "") for it in (o.get("items") or [])][:4],
+            # TAM KALEM LİSTESİ (kullanıcı isteği): ürün adı + beden + renk + adet + birim fiyat + barkod.
+            "items": [{
+                "name": str((it or {}).get("name") or (it or {}).get("product_name") or ""),
+                # Eski/ithal siparişlerde beden farklı anahtarlarda olabilir → hepsine bak.
+                "size": str((it or {}).get("size") or (it or {}).get("variant_size") or (it or {}).get("beden")
+                            or ((it or {}).get("variant") or {}).get("size") if isinstance((it or {}).get("variant"), dict) else
+                            ((it or {}).get("size") or (it or {}).get("variant_size") or (it or {}).get("beden") or "")).strip(),
+                "color": str((it or {}).get("color") or (it or {}).get("variant_color") or (it or {}).get("renk") or "").strip(),
+                "quantity": int((it or {}).get("quantity") or 1),
+                "price": _round2((it or {}).get("price") or (it or {}).get("unit_price") or 0),
+                "barcode": str((it or {}).get("barcode") or ""),
+                "stock_code": str((it or {}).get("stock_code") or (it or {}).get("sku") or ""),
+            } for it in (o.get("items") or []) if isinstance(it, dict)][:40],
+            "cancelled": st in _cancel_like,
+            "cancel_reason": o.get("cancel_reason") or "",
+            "cancelled_at": o.get("cancelled_at") or "",
+            "auto_cancelled": bool(o.get("auto_cancelled")),
+            "cancel_source": o.get("cancel_source") or ("otomatik" if o.get("auto_cancelled") else ""),
+            "partial_cancelled": bool(o.get("partial_cancelled")),
+            "returned": st in _return_like,
+            "return_status": (o.get("return_request") or {}).get("status") or "",
+            "same_member": bool(order.get("user_id")) and o.get("user_id") == order.get("user_id"),
+        })
+    n_cancel = sum(1 for r in rows if r["cancelled"])
+    n_ret = sum(1 for r in rows if r["returned"])
+    n_ok = sum(1 for r in rows if not r["cancelled"] and not r["returned"] and r["status"] not in ("awaiting_payment", "payment_failed", "failed", "pending"))
+    return {
+        "orders": rows,
+        "summary": {"total": len(rows), "cancelled": n_cancel, "returned": n_ret, "completed": n_ok,
+                    "net_spent": _round2(sum(r["total"] for r in rows if not r["cancelled"] and not r["returned"]
+                                             and r["status"] not in ("awaiting_payment", "payment_failed", "failed", "pending")))},
+        "match": {"user_id": bool(order.get("user_id")), "emails": sorted(emails), "phones": len(phones)},
+    }
+
+
 @router.get("/{order_id}")
 async def get_order(
     order_id: str,
+    request: Request,
     current_user: dict = Depends(get_current_user)
 ):
     """Get single order"""
@@ -851,14 +1698,43 @@ async def get_order(
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
 
     # Admin tümünü görür; normal kullanıcı yalnızca kendi siparişini.
-    if not current_user.get("is_admin"):
+    # ID3-02: is_admin BAYRAĞI tek başına yetmez — liste/olaylar uçlarıyla AYNI yetki (orders.view)
+    # ve require_admin'in tüm kontrolleri (gerçek personel, aktif, rol, token_version, boşta kalma)
+    # şarttır. Aksi halde orders.view yetkisi olmayan (ör. yalnız ürün rolü) ya da rolü alınmış
+    # personel herhangi bir siparişin TAM (maskesiz, vergi no açık) kaydını okuyabiliyordu.
+    _staff_view = False
+    if current_user.get("is_admin"):
+        from .deps import optional_admin, get_effective_permissions
+        _staff = await optional_admin(request)
+        if _staff:
+            _sp = await get_effective_permissions(_staff)
+            _staff_view = "*" in _sp or "orders.view" in _sp
+    if not _staff_view:
         if order.get("user_id") != current_user.get("id"):
+            await note_policy_denial(current_user, "order.read", order=order, request=request)
             raise HTTPException(status_code=403, detail="Bu siparişi görüntüleme yetkiniz yok")
         # GÜVENLİK: sahibine bile personel-iç/pazarlama/ham-gateway alanlarını gösterme
         # (admin_notes = risk/dolandırıcılık notları). Public by-number ile tutarlı.
         for _k in ("admin_notes", "customer_ip", "user_agent", "attribution", "payment_id",
                    "iyzico_retrieve_response", "iyzico_init_response", "iyzico_response"):
             order.pop(_k, None)
+
+    # BL-040: dekont baytı yanıtta taşınmaz; iade IBAN'ı müşteriye/yetkisiz personele maskeli.
+    _strip_receipt_payload(order)
+    if _staff_view:
+        await present_refund_bank_info_in([order], current_user)
+        # KVKK: TCKN/VKN — personel sipariş DETAYINDA (fatura kontrolü/düzenleme) tam değer görür;
+        # şifreli alan/hash yanıta konmaz.
+        # PRIV07: açılan değer sayısı sayaca yazılır (eşik aşımında 429 yayılır → yanıt dönmez).
+        await _note_pii_reveal(current_user, "tax_id", _count_sealed_tax_ids(order),
+                               refs=[order.get("order_number") or order.get("id")])
+        order = _pii_reveal_doc(order)
+        # KVKK: personel detayında da telefon/açık adres MASKELİ; "Göster" → GET /orders/{id}/contact.
+        _contact_mask(order)
+        order["contact_masked"] = True
+    else:
+        await present_refund_bank_info_in([order], current_user, full=False)
+        _pii_mask(order)  # müşteri kendi siparişinde yalnız son 2 hane
 
     order["items"] = await _enrich_items_with_products(order.get("items") or [])
     # Kısmi/tam iade dökümü: hangi kalem iade edildi / müşteride kaldı (ayrı tutarlarla).
@@ -872,8 +1748,31 @@ async def get_order(
     return order
 
 
+@router.get("/{order_id}/contact")
+async def reveal_order_contact(order_id: str, request: Request,
+                               current_user: dict = Depends(require_permission("orders.view"))):
+    """Sipariş müşterisinin TAM telefon / adres bilgisi ("Göster"). Yalnız orders.view; her açma
+    PRIV07 toplu çözme sayacına işlenir (saatte eşik aşımında uyarı + 1 saat engel) ve denetlenir.
+    Kargo etiketi / fatura / pazaryeri senkronu bu uca ihtiyaç duymaz (sunucu tarafında okunur)."""
+    order = await db.orders.find_one({"id": order_id}, {"_id": 0, "id": 1, "order_number": 1,
+                                                        "shipping_address": 1, "billing_address": 1,
+                                                        "invoice_address": 1, "delivery_address": 1,
+                                                        "phone": 1, "customer_phone": 1, "user_phone": 1,
+                                                        "buyer_phone": 1, "email": 1, "customer_email": 1})
+    if not order:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    from security.contact_pii import note_contact_reveal, order_contact_view, count_order_contact
+    await note_contact_reveal(current_user, "order", order_id, count_order_contact(order),
+                              request=request, entity_type="order")
+    # Yalnız iletişim alanları; şifreli/hash'li alanlar (ör. VKN mühürü) yanıta konmaz.
+    view = order_contact_view(order)
+    view["id"] = order.get("id")
+    view["order_number"] = order.get("order_number")
+    return view
+
+
 @router.get("/{order_id}/journey")
-async def order_customer_journey(order_id: str, current_user: dict = Depends(require_admin)):
+async def order_customer_journey(order_id: str, current_user: dict = Depends(require_permission("orders.view"))):
     """Müşteri yolculuğu / attribution HUNİSİ: müşteri hangi kaynaktan (organik / reklam-kampanya /
     influencer / pazaryeri) gelmiş, hangi kampanya/kreatif, referrer, giriş sayfası, kaç ziyaret sonra
     hangi ürünü satın almış. Sipariş attribution snapshot + oturum touches (ziyaret sırası) + influencer."""
@@ -911,7 +1810,7 @@ async def order_customer_journey(order_id: str, current_user: dict = Depends(req
                           "via": order.get("influencer_via")}
 
     # Reklam mı? (gclid/fbc/ttclid tıklama kimliği VEYA ücretli medium)
-    _mkt = ["trendyol", "hepsiburada", "temu"]
+    _mkt = ["trendyol", "hepsiburada", "temu", "n11", "amazon"]
     is_marketplace = (order.get("platform") in _mkt) or (order.get("marketplace") in _mkt)
     medium = (attr.get("medium") or "").lower()
     is_ad = bool(clicks.get("gclid") or clicks.get("fbc") or clicks.get("ttclid") or clicks.get("fbclid")
@@ -973,13 +1872,57 @@ async def order_customer_journey(order_id: str, current_user: dict = Depends(req
 @router.get("/{order_id}/events")
 async def get_order_events(
     order_id: str,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("orders.view")),
 ):
     """Sipariş işlem geçmişi (Log) — en yeni en üstte."""
     events = await db.order_events.find(
         {"order_id": order_id}, {"_id": 0}
     ).sort("created_at", -1).to_list(500)
     return {"events": events, "count": len(events)}
+
+
+def _order_request_fingerprint(order_data: dict, current_user) -> str:
+    """İdempotency parmak izi (denetim 2026-10): aynı idempotency_key FARKLI bir sepet/adres/
+    ödeme yöntemi/kupon/tutar ile tekrar gelirse eski sipariş SESSİZCE döndürülmemeli (müşteri
+    değiştirdiği adresi/yöntemi kaybederdi). Yalnız istek girdisinden hesaplanır; sipariş
+    statüsü/ödeme mantığına dokunmaz."""
+    import hashlib as _hl
+    import json as _js
+    od = order_data if isinstance(order_data, dict) else {}
+    who = (str((current_user or {}).get("id") or "") if current_user else "") or \
+        str(((od.get("shipping_address") or {}) if isinstance(od.get("shipping_address"), dict) else {})
+            .get("email") or od.get("email") or "").strip().lower()
+    _items = []
+    for it in (od.get("items") or []):
+        if not isinstance(it, dict):
+            continue
+        _items.append("|".join(str(it.get(k) or "").strip() for k in
+                               ("product_id", "variant_id", "barcode", "size", "color")) +
+                      f"|{it.get('quantity') or 1}")
+    _sa = od.get("shipping_address") if isinstance(od.get("shipping_address"), dict) else {}
+    _addr = "|".join(str(_sa.get(k) or "").strip().lower() for k in
+                     ("first_name", "last_name", "phone", "email", "city", "district", "address", "zip_code"))
+    try:
+        _tot = f"{round(float(od.get('total') or 0), 2):.2f}"
+    except Exception:
+        _tot = str(od.get("total") or "")
+    raw = _js.dumps({
+        "who": who, "items": sorted(_items), "addr": _addr,
+        "pm": str(od.get("payment_method") or "").strip().lower(),
+        "coupon": str(od.get("coupon_code") or "").strip().upper(),
+        "gift": str(od.get("gift_card_code") or "").strip().upper(),
+        "total": _tot,
+    }, sort_keys=True, ensure_ascii=False)
+    return _hl.sha256(raw.encode("utf-8")).hexdigest()[:40]
+
+
+def _idempotency_conflict_response():
+    from fastapi.responses import JSONResponse as _JR
+    return _JR(status_code=409, content={
+        "code": "idempotency_conflict",
+        "detail": ("Sepetiniz veya sipariş bilgileriniz önceki denemeden farklı. "
+                   "Lütfen siparişi yeniden gönderin."),
+    })
 
 
 @router.post("")
@@ -990,6 +1933,17 @@ async def create_order(
     current_user: dict = Depends(get_current_user)
 ):
     """Create new order (rate-limited: bot/enumeration + kaynak tüketimi koruması)"""
+    # ACİL ANAHTAR (close_checkout): yeni sipariş ALINMAZ (503, dostça mesaj). Hiçbir yan etki
+    # (stok, kupon, sipariş kaydı) oluşmadan döner. BAŞLAMIŞ ödemelerin sonuçlandırılması
+    # (payment.py callback/non3ds, scheduler mutabakat) bu uçtan geçmez → ETKİLENMEZ (değişmez 4).
+    try:
+        from security_switches import switch_on as _sw_on, switch_message as _sw_msg
+        if await _sw_on("close_checkout"):
+            raise HTTPException(status_code=503, detail=_sw_msg("close_checkout"))
+    except HTTPException:
+        raise
+    except Exception:
+        pass
     # FAZ 6 — Kullanıcı IP'sini kayda al. cf-connecting-ip (spoof-korumalı) → XFF → peer
     # (ortak helper; CAPI Purchase eşleşmesi + blok kontrolü doğru IP kullansın).
     try:
@@ -998,6 +1952,25 @@ async def create_order(
     except Exception:
         forwarded = request.headers.get("x-forwarded-for", "")
         client_ip = forwarded.split(",")[0].strip() if forwarded else (request.client.host if request.client else "")
+
+    # GİRDİ DOĞRULAMA (2026-10): ürünsüz / adressiz istek sipariş AÇMAZ (eskiden {"items":[]}
+    # yalnız kargo bedelli boş bir sipariş oluşturuyordu). Stok/statü mantığından ÖNCE reddedilir.
+    _its = order_data.get("items") if isinstance(order_data, dict) else None
+    if not isinstance(_its, list) or not _its or len(_its) > 100:
+        raise HTTPException(status_code=400, detail="Sepetiniz boş. Lütfen ürün ekleyip tekrar deneyin.")
+    for _it in _its:
+        if not isinstance(_it, dict) or not str(_it.get("product_id") or "").strip():
+            raise HTTPException(status_code=400, detail="Sepette geçersiz bir ürün var. Lütfen sepeti yenileyin.")
+        try:
+            _q = int(_it.get("quantity") or 1)
+        except Exception:
+            _q = 0
+        if _q < 1 or _q > 100:
+            raise HTTPException(status_code=400, detail="Geçersiz ürün adedi.")
+    _sa0 = order_data.get("shipping_address")
+    if not isinstance(_sa0, dict) or not str(_sa0.get("address") or "").strip() \
+            or not str(_sa0.get("phone") or "").strip() or not str(_sa0.get("city") or "").strip():
+        raise HTTPException(status_code=400, detail="Teslimat adresi eksik. Lütfen adres, il ve telefon bilgilerini girin.")
 
     # FAZ 6 — Blok kontrolü: kullanıcı veya IP bloklu mu?
     uid = (current_user.get("id") if current_user else None)
@@ -1036,15 +2009,30 @@ async def create_order(
             logger.warning(f"Blocked order attempt: user={uid} ip={client_ip} reason={bl.get('reason')}")
             raise HTTPException(status_code=403, detail="Hesabınız sipariş veremez. Lütfen destek ile iletişime geçin.")
 
+    # BAKIM MODU (denetim 2026-10): bakım modu yalnız vitrinde (MaintenanceGate) uygulanıyordu;
+    # doğrudan API / eski mobil istemci sipariş açabiliyordu. Bakım modu AÇIKKEN yalnız
+    # panel personeli (MaintenanceGate'teki isAdmin istisnasıyla aynı) sipariş oluşturabilir.
+    try:
+        _mm = await db.settings.find_one({"id": "main"}, {"_id": 0, "maintenance_mode": 1}) or {}
+    except Exception:
+        _mm = {}
+    if _mm.get("maintenance_mode") is True and not (current_user and current_user.get("is_admin") is True):
+        raise HTTPException(status_code=503, detail=(
+            "Sitemiz şu anda bakımda; sipariş alınamıyor. Lütfen kısa süre sonra tekrar deneyin."))
+
     # ÇİFT SİPARİŞ KORUMASI (idempotency): müşteri ödeme onayını göremeyip formu TEKRAR
     # gönderirse (ya da çift tıklarsa) aynı idempotency_key ile YENİ sipariş açılmaz; mevcut
     # (iptal olmayan) sipariş döndürülür → çift sipariş + çift çekim önlenir. İstemci sepet/adres
     # değişince yeni anahtar üretir, dolayısıyla farklı sepet farklı sipariş olur.
-    _idem = str(order_data.get("idempotency_key") or "").strip()
+    _idem = str(order_data.get("idempotency_key") or "").strip()[:120]
+    _idem_fp = _order_request_fingerprint(order_data, current_user) if _idem else None
     if _idem:
         _ex = await db.orders.find_one(
             {"idempotency_key": _idem, "status": {"$ne": "cancelled"}},
-            {"_id": 0, "id": 1, "order_number": 1, "payment_status": 1})
+            {"_id": 0, "id": 1, "order_number": 1, "payment_status": 1, "idempotency_fingerprint": 1})
+        if _ex and _ex.get("idempotency_fingerprint") and _ex.get("idempotency_fingerprint") != _idem_fp:
+            logger.info(f"[idempotency] aynı anahtar FARKLI içerik → 409 key={_idem} no={_ex.get('order_number')}")
+            return _idempotency_conflict_response()
         if _ex:
             logger.info(f"[idempotency] tekrar POST /orders — mevcut siparis donduruldu "
                         f"key={_idem} no={_ex.get('order_number')}")
@@ -1052,16 +2040,63 @@ async def create_order(
                 "order_id": _ex["id"],
                 "order_number": _ex["order_number"],
                 "payment_status": _ex.get("payment_status"),
+                "pay_token": await _issue_pay_token(_ex["id"]),
                 "idempotent": True,
                 "message": "Mevcut sipariş kullanıldı",
             }
+
+    # STOK KİLİTLEME KORUMASI (2026-09-29): ödeme bekleyen sipariş stoğu düşer ve iptal/iade
+    # süresine kadar tutar. Aynı kişi (üye / e-posta / telefon) veya aynı IP çok sayıda ÖDENMEMİŞ
+    # sipariş açıp stoğu kilitleyemesin. Eşik İşletme Kuralları'ndan (0 = kapalı). IP eşiği
+    # ortak ağlar (mobil operatör/ofis) için 3 katıdır. Statü/ödeme mantığına DOKUNMAZ; yalnız
+    # yeni sipariş açılmadan önce reddeder.
+    try:
+        from business_rules import get_rule as _pend_rule
+        _pend_max = int(await _pend_rule(db, "order.max_unpaid_open_orders", 3) or 0)
+    except Exception:
+        _pend_max = 3
+    if _pend_max > 0:
+        _since = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+        # GÜVENLİK (commerce-3): müşterinin İPTAL TALEBİ açtığı (cancel_requested) ÖDENMEMİŞ
+        # sipariş stoğu hâlâ tutar (personel iptale alana kadar; otomatik süpürge yalnız
+        # pending/awaiting_payment'ı kapatır) ama sayılmıyordu → aç-iptal iste-aç döngüsüyle
+        # sınırsız stok kilitlenebiliyordu. Ödenmiş siparişin iptal talebi sayılmaz.
+        _base = {"$and": [
+            {"created_at": {"$gte": _since}},
+            {"$or": [{"status": "awaiting_payment"},
+                     {"status": "cancel_requested",
+                      "payment_status": {"$nin": ["paid", "refunded", "partially_refunded"]}}]},
+        ]}
+        _who = []
+        if uid:
+            _who.append({"user_id": uid})
+        for _e in _blk_emails:
+            if _e:
+                _who.append({"shipping_address.email": _e})
+        _ph = re.sub(r"\D", "", str(((order_data.get("shipping_address") or {}) if isinstance(order_data.get("shipping_address"), dict) else {}).get("phone") or ""))[-10:]
+        if len(_ph) == 10:
+            _who.append({"shipping_address.phone": {"$regex": re.escape(_ph) + "$"}})
+        _n_who = await db.orders.count_documents({**_base, "$or": _who}) if _who else 0
+        _n_ip = await db.orders.count_documents({**_base, "customer_ip": client_ip}) if client_ip else 0
+        if _n_who >= _pend_max or _n_ip >= _pend_max * 3:
+            logger.warning(f"[stok-kilit] ödenmemiş sipariş sınırı: user={uid} ip={client_ip} "
+                           f"kisi={_n_who} ip_say={_n_ip} esik={_pend_max}")
+            raise HTTPException(status_code=429, detail=(
+                "Ödemesi tamamlanmamış siparişleriniz var. Lütfen önce mevcut siparişinizin ödemesini "
+                "tamamlayın ya da bir süre sonra tekrar deneyin. Yardım için bizimle iletişime geçebilirsiniz."))
 
     order = {
         "id": generate_id(),
         "order_number": await next_order_number(),
         "idempotency_key": _idem or None,
+        "idempotency_fingerprint": _idem_fp,
         "user_id": current_user.get("id") if current_user else None,
-        "items": order_data.get("items", []),
+        # GÜVENLİK: kalem-başı indirim (discount_amount) YALNIZ sunucuda dondurulur
+        # (_order_item_discounts). İstemci bu alanı gönderirse dondurma onu AYNEN kabul ediyordu
+        # → iade/fatura/iyzico dağılımı manipüle edilebiliyordu (ör. [0,0,690] ile bedava ürünü
+        # tutup ücretli olanları tam iade almak). Frontend bu alanı hiç göndermez → atılır.
+        "items": [({k: v for k, v in _it.items() if k != "discount_amount"} if isinstance(_it, dict) else _it)
+                  for _it in (order_data.get("items") or [])],
         "shipping_address": order_data.get("shipping_address", {}),
         "billing_address": order_data.get("billing_address") or order_data.get("shipping_address", {}),
         # Kurumsal fatura bilgileri (B2B müşteriler için)
@@ -1076,17 +2111,22 @@ async def create_order(
         "shipping_cost": float(order_data.get("shipping_cost", 0)),
         "discount": float(order_data.get("discount", 0)),
         "total": float(order_data.get("total", 0)),
-        "payment_method": order_data.get("payment_method", "credit_card"),
+        "payment_method": _allowed_payment_method(order_data.get("payment_method", "credit_card")),
         "payment_status": "pending",
         "status": "pending",
-        "notes": order_data.get("notes", ""),
-        "platform": order_data.get("platform", "meluni"),
+        # Müşterinin checkout'ta bıraktığı GENEL sipariş notu (hediye notundan ayrı).
+        "notes": (order_data.get("notes") or "").strip()[:500],
+        # Site siparişi: platform İSTEMCİDEN alınmaz (pazaryeri siparişleri kendi içe aktarım yolundan gelir).
+        "platform": "meluni",
         # FAZ 4 — hediye seçenekleri
         "gift_note": (order_data.get("gift_note") or "")[:500],
         "gift_wrap": bool(order_data.get("gift_wrap", False)),
         "gift_wrap_price": float(order_data.get("gift_wrap_price", 0) or 0),
         "coupon_code": (order_data.get("coupon_code") or "").upper(),
-        "applied_promotions": order_data.get("applied_promotions") or [],
+        # COM03: uygulanan kampanyalar YALNIZ sunucu promo motorundan gelir (aşağıda). İstemcinin
+        # gönderdiği liste kullanılmaz — motor hata verirse istemci listesindeki kupon id'leri
+        # kullanım hakkı ayırıp/yakıp başka müşterinin kuponunu tüketebiliyordu.
+        "applied_promotions": [],
         # İYS — ticari ileti izni (ödeme adımında kutu işaretlenirse). SMS izni OTP ile doğrulanır.
         "marketing_consent": {
             "email": bool(((order_data.get("marketing_consent") or {}).get("email"))),
@@ -1141,6 +2181,21 @@ async def create_order(
         if (order.get("payment_status") or "").lower() != "paid":
             order["status"] = "awaiting_payment"
 
+    # GÜVENLİK (denetim 2026-10, ödeme kill-switch): admin panelinde (Ayarlar → Ödeme
+    # Yöntemleri) kart / havale-EFT AÇIKÇA kapatıldıysa (`False`), eski istemci ya da doğrudan
+    # API çağrısıyla gelen o yöntemli sipariş SUNUCUDA da reddedilir. Ayar YOKSA/boşsa yöntem
+    # AÇIK sayılır (Checkout.jsx ile aynı: `pm.credit_card !== false`) → bugünkü akış bozulmaz.
+    # Statü ataması (yukarıda, değişmez 2) DEĞİŞMEZ; yalnız oluşturma öncesi ret.
+    if _pm0 in _BANK_METHODS or _pm0 in _CARD_METHODS:
+        _pmcfg = ((await db.settings.find_one({"id": "main"}, {"_id": 0, "payment_methods": 1}) or {})
+                  .get("payment_methods") or {})
+        if _pm0 in _CARD_METHODS and _pmcfg.get("credit_card") is False:
+            raise HTTPException(status_code=400, detail=(
+                "Kredi kartı ile ödeme şu anda kullanılamıyor. Lütfen başka bir ödeme yöntemi seçin."))
+        if _pm0 in _BANK_METHODS and _pmcfg.get("bank_transfer") is False:
+            raise HTTPException(status_code=400, detail=(
+                "Havale/EFT ile ödeme şu anda kullanılamıyor. Lütfen başka bir ödeme yöntemi seçin."))
+
     # Guvenlik: kapida odeme admin tarafindan KAPALIYSA, eski istemci veya dogrudan
     # API cagrisi ile gelen kapida odeme siparislerini sunucu tarafinda da reddet.
     if _pm0 in ("cash_on_delivery", "kapida"):
@@ -1160,6 +2215,16 @@ async def create_order(
     if _pids:
         async for _p in db.products.find({"id": {"$in": _pids}}, {"_id": 0}):
             _pmap[_p["id"]] = _p
+    # ÜYELERE ÖZEL: giriş yapmamış (misafir) müşteri üyelere özel kategorideki ürünü sipariş
+    # EDEMEZ (id'yi bilerek doğrudan istek atsa bile). Sipariş/stok/ödeme mantığına dokunmaz;
+    # yalnız oluşturma öncesi reddeder.
+    if not current_user and _pmap:
+        from .products import _members_only_cat_ids, product_is_members_only
+        _mo_o = await _members_only_cat_ids()
+        if _mo_o and any(product_is_members_only(_p, _mo_o) for _p in _pmap.values()):
+            raise HTTPException(status_code=403, detail=(
+                "Sepetinizde üyelerimize özel bir ürün var. Siparişi tamamlamak için lütfen giriş yapın "
+                "veya üye olun."))
     _subtotal = 0.0
     try:
         from business_rules import get_rule as _get_rule_q
@@ -1168,6 +2233,9 @@ async def create_order(
         _max_qty_per_item = 50
     if _max_qty_per_item < 1:
         _max_qty_per_item = 50
+    # commerce-3: aynı ürün/varyant AYRI kalemlere bölünerek (ör. 2 × 50) kalem başı tavan
+    # aşılamasın — tavan ürün+varyant başına TOPLAM adede uygulanır (aşağıda).
+    _qty_by_line_key = {}
     for it in _items:
         pid = it.get("product_id")
         prod = _pmap.get(pid) if pid else None
@@ -1175,11 +2243,48 @@ async def create_order(
         # reddetme — aksi halde silinmiş/farklı-id'li tek bir kalem yüzünden müşteri hiç sipariş
         # veremiyordu. Bulunamayan (gerçek olmayan) kalem için istemci fiyatı korunur; loglanır.
         if prod:
-            it["price"] = _eff_unit_price(prod, it.get("variant_id"))
-            # GÜVENLİK: stok anahtarını sunucudan çöz (yanlış varyant stoğu düşülmesin)
-            _sv_bc = _server_variant_barcode(prod, it.get("variant_id"))
-            if _sv_bc:
-                it["barcode"] = _sv_bc
+            # DENETİM (2026-09-29, Y2): kalem barkodu/varyantı ÜRÜNE BAĞLANIR. Eskiden variant_id
+            # eşleşmezse istemcinin gönderdiği barkod korunuyordu → ucuz ürünün fiyatıyla pahalı
+            # ürünün (başka ürünün barkodu) stoğu düşülüp sevk edilebiliyordu; sahte variant_id ile
+            # varyant fiyat farkı da atlanabiliyordu. Artık: varyant id → bu ürünün barkodu →
+            # beden/renk ile BU ürünün varyantı çözülür; çözülemezse kalem reddedilir.
+            _vars = [v for v in (prod.get("variants") or []) if isinstance(v, dict)]
+            _vid = it.get("variant_id")
+            _vm = next((v for v in _vars if _vid and v.get("id") == _vid), None)
+            if not _vm and _vars:
+                _cb = str(it.get("barcode") or it.get("sku") or "").strip()
+                if _cb:
+                    _vm = next((v for v in _vars if _cb in (str(v.get("barcode") or "").strip(),
+                                                             str(v.get("sku") or "").strip())), None)
+                if not _vm and str(it.get("size") or "").strip():
+                    _sz = str(it.get("size")).strip().lower()
+                    _cl = str(it.get("color") or "").strip().lower()
+                    _c = [v for v in _vars if str(v.get("size") or "").strip().lower() == _sz and
+                          (not _cl or not v.get("color") or str(v.get("color")).strip().lower() == _cl)]
+                    if len(_c) == 1:
+                        _vm = _c[0]
+                if not _vm:
+                    logger.warning(f"[GUVENLIK] varyant çözülemedi pid={pid} vid={_vid} bc={_cb}")
+                    raise HTTPException(status_code=400, detail="Sepetteki bir ürünün bedeni bulunamadı. Lütfen sepeti yenileyin.")
+                it["variant_id"] = _vm.get("id")
+            # SHOP03: panelde PASİF yapılmış (is_active=False) ya da silinmiş varyant, vitrinde
+            # gösterilmese bile doğrudan API isteğiyle satın ALINAMAZ (rezervasyonlardan ÖNCE ret).
+            if _vm and (_vm.get("is_active") is False or _vm.get("is_deleted")):
+                logger.warning(f"[GUVENLIK] pasif varyant siparişi reddedildi pid={pid} vid={_vm.get('id')}")
+                raise HTTPException(status_code=409, detail=(
+                    f"Üzgünüz, '{prod.get('name') or 'ürün'}' ({_vm.get('size') or 'seçili beden'}) şu an "
+                    "satışta değil. Lütfen sepetten çıkarıp tekrar deneyin."))
+            it["price"] = _eff_unit_price(prod, it.get("variant_id") if _vm else None)
+            if _vm:
+                _vbc = _vm.get("barcode") or _vm.get("sku") or ""
+                it["barcode"] = _vbc  # boşsa stok düşümü product_id+variant_id ile çözülür
+                if _vm.get("size"):
+                    it["size"] = _vm.get("size")
+            else:
+                it["barcode"] = prod.get("barcode") or ""
+            it.pop("sku", None)
+            if prod.get("name"):
+                it["name"] = prod.get("name")
         else:
             # GÜVENLİK (fiyat manipülasyonu): Ürün DB'de yoksa istemci fiyatına GÜVENME.
             # Eskiden istemci fiyatı korunuyordu → saldırgan bilinmeyen product_id'ye
@@ -1192,6 +2297,15 @@ async def create_order(
                 it["price"] = 0.0
         except Exception:
             it["price"] = 0.0
+        # SIFIR FİYAT KORUMASI (denetim 2026-10): sunucu birim fiyatı ≤ 0 ise (ör. XML feed'in
+        # fiyatsız ürünü 0 TL yazması) kalem SATILMAZ. Belgelenmiş bir "bedava hediye ürün"
+        # mekanizması yok — kampanya bedavaları (X al Y öde vb.) birim fiyatı değil, promo motoru
+        # İNDİRİMİ ile sıfırlar; bu kontrol onları etkilemez (indirimden ÖNCEKİ fiyat).
+        if float(it.get("price", 0) or 0) <= 0:
+            logger.warning(f"[GUVENLIK] sıfır fiyatlı kalem reddedildi pid={pid} ad={it.get('name')}")
+            raise HTTPException(status_code=400, detail=(
+                f"'{it.get('name') or 'Ürün'}' şu an satışta değil (fiyat bilgisi eksik). "
+                "Lütfen sepetten çıkarıp tekrar deneyin."))
         # A2.5: güvenli int parse + kalem başı üst sınır (kötü niyetli dev miktarlı sipariş /
         # tamsayı taşması savunması). Geçersiz miktar → 400. Tavan ayardan (order.max_qty_per_item).
         try:
@@ -1200,7 +2314,9 @@ async def create_order(
             raise HTTPException(status_code=400, detail="Sepette geçersiz ürün adedi var. Lütfen sepeti yenileyin.")
         if qty < 1:
             qty = 1
-        if qty > _max_qty_per_item:
+        _lk = (str(pid or ""), str(it.get("variant_id") or ""))
+        _qty_by_line_key[_lk] = _qty_by_line_key.get(_lk, 0) + qty
+        if qty > _max_qty_per_item or _qty_by_line_key[_lk] > _max_qty_per_item:
             raise HTTPException(status_code=400,
                                 detail=f"Bir üründen en fazla {_max_qty_per_item} adet sipariş edilebilir. Lütfen adedi düşürün.")
         it["quantity"] = qty
@@ -1215,7 +2331,10 @@ async def create_order(
         from .coupons import evaluate_cart_promotions as _eval_promos
         _eng_items = [{
             "product_id": it.get("product_id"),
-            "category_id": it.get("category_id"),
+            # GÜVENLİK (commerce-3): kategori İSTEMCİDEN alınmaz. Motor ürünün category_ids'ini
+            # sunucudan zenginleştirir ama kategorisiz üründe kalemin category_id'sine düşüyordu →
+            # istemci istediği kategoriye özel kampanyayı (ör. Outlet %50) o ürüne uygulatabiliyordu.
+            "category_id": (_pmap.get(it.get("product_id")) or {}).get("category_id"),
             "qty": int(it.get("quantity", it.get("qty", 1)) or 1),
             "price": float(it.get("price", 0) or 0),
         } for it in _items]
@@ -1241,6 +2360,11 @@ async def create_order(
         _server_discount = round(float(_ev.get("total_discount", 0) or 0), 2)
         _free_shipping = bool(_ev.get("free_shipping"))
         order["applied_promotions"] = _ev.get("applied") or []
+        # Bulanık kupon çözümleme: müşteri 'hoş geldin %10' gibi bir varyant yazdıysa siparişe
+        # KANONİK kod (HOSGELDIN10) yazılır → record_order_redemptions kuponu birebir bulur.
+        _res_code = str(_ev.get("entered_resolved") or "").strip()
+        if _res_code and (order.get("coupon_code") or "").strip():
+            order["coupon_code"] = _res_code
     except Exception as _promo_err:
         logger.warning(f"Promo değerlendirme hatası (indirim 0 kabul edildi): {_promo_err}")
         _server_discount = 0.0
@@ -1281,13 +2405,13 @@ async def create_order(
         _thr = float(_thr) if _thr not in (None, "") else None
     except Exception:
         _ship_fee, _thr = 0.0, None
-    _shipping = 0.0 if _free_shipping else _ship_fee
-    if _thr is not None and (_subtotal - _server_discount) >= _thr:
-        _shipping = 0.0
+    from shipping_rules import shipping_quote
+    _ship_quote = shipping_quote(_subtotal, [_server_discount, _pm_disc], _thr, _ship_fee, _free_shipping)
+    _shipping = _ship_quote["cost"]
     order["shipping_cost"] = round(_shipping, 2)
     # #13/#14: Bedava kargo kampanyası (kupon free_shipping VEYA eşik) izini sakla —
     # iade sonrası "kampanya dışı kaldı" uyarısı ve faturada kargo-iskonto kalemi için.
-    _fs_applied = bool(_free_shipping) or (_thr is not None and (_subtotal - _server_discount) >= _thr)
+    _fs_applied = _ship_quote["free"]
     order["free_shipping_applied"] = _fs_applied
     order["free_shipping_waived_fee"] = round(_ship_fee, 2) if (_fs_applied and _shipping == 0 and _ship_fee > 0) else 0.0
     if _thr is not None:
@@ -1341,6 +2465,23 @@ async def create_order(
             else:
                 logger.info(f"[loyalty] puan kullanılamadı: {_sp.get('error')}")
 
+    # Final eligibility includes points actually spent (never trust requested points).
+    # Reconcile the fee BEFORE gift-card reservation and the approved-total check.
+    _ship_quote = shipping_quote(
+        _subtotal, [_server_discount, _pm_disc, order.get("points_used", 0)],
+        _thr, _ship_fee, _free_shipping)
+    order["total"] = round(order["total"] + _ship_quote["cost"] - _shipping, 2)
+    _shipping = _ship_quote["cost"]
+    order["shipping_cost"] = _shipping
+    order["shipping_eligibility_basis"] = _ship_quote["basis"]
+    order["free_shipping_applied"] = _ship_quote["free"]
+    order["free_shipping_waived_fee"] = round(_ship_fee, 2) if _ship_quote["free"] else 0.0
+    if not _ship_quote["free"]:
+        order["applied_promotions"] = [
+            {**p, "free_shipping": False} for p in order.get("applied_promotions", [])
+            if not p.get("free_shipping") or float(p.get("discount") or 0) > 0
+        ]
+
     # 💳 HEDİYE ÇEKİ / MAĞAZA KREDİSİ (C2) — tüm indirimlerden SONRA, toplamın üstünden.
     # Sunucu-otoriter: bakiye ATOMİK rezerve edilir (gift_cards.redeem_gift_card_for_order),
     # iptalde _restock_order_once kancası idempotent iade eder. Tutarın TAMAMI çekle
@@ -1355,10 +2496,16 @@ async def create_order(
         except Exception:
             _gc_enabled = True
         if not _gc_enabled:
+            if order.get("points_used"):  # Y1: rezerve puanı geri ver
+                from .loyalty import refund_points_once as _rpo
+                await _rpo(order, unpersisted=True)
             raise HTTPException(status_code=400, detail="Hediye çeki kullanımı şu an kapalı")
         from .gift_cards import redeem_gift_card_for_order
         _gc = await redeem_gift_card_for_order(_gc_code, order, float(order["total"]))
         if not _gc.get("ok"):
+            if order.get("points_used"):  # Y1: rezerve puanı geri ver
+                from .loyalty import refund_points_once as _rpo
+                await _rpo(order, unpersisted=True)
             raise HTTPException(status_code=400, detail=_gc.get("error") or "Hediye çeki uygulanamadı")
         order["gift_card"] = {"code": _gc["code"], "amount": _gc["amount"], "refunded": False}
         order["total"] = round(max(0.0, float(order["total"]) - _gc["amount"]), 2)
@@ -1402,12 +2549,13 @@ async def create_order(
         if _enforce_match:
             # Rezerve edilen bakiyeleri (puan / hediye çeki) geri ver — sipariş açılmıyor.
             try:
+                # Sipariş HENÜZ yazılmadı → unpersisted=True (aksi halde kilit bulunamayıp iade atlanıyordu)
                 if order.get("points_used"):
                     from .loyalty import refund_points_once
-                    await refund_points_once(order)
+                    await refund_points_once(order, unpersisted=True)
                 if order.get("gift_card"):
                     from .gift_cards import refund_gift_card_once
-                    await refund_gift_card_once(order)
+                    await refund_gift_card_once(order, unpersisted=True)
             except Exception as _rb_err:
                 logger.error(f"[TUTAR-UYUSMAZLIGI] bakiye geri alınamadı: {_rb_err}")
             # Sunucunun hesapladığı tutar mesaja YAZILIR: (a) müşteri neyi onaylayacağını görür,
@@ -1445,6 +2593,18 @@ async def create_order(
     order["discount_breakdown"] = _breakdown
     order["discount_total"] = round(_server_discount + _pm_disc, 2)
 
+    # 🎯 PER-ÜRÜN İNDİRİMİ DONDUR (W11214 kök çözümü): kampanya kapsamı O AN doğru olduğundan
+    # hangi üründen ne kadar indirim düşüldüğünü kalem üstüne (item.discount_amount) yaz. İptal/iade/
+    # gider-pusulası bu DONMUŞ değeri okur → ürün kategorisi sonradan değişse de sabit kalır, kapsam-
+    # dışı ürüne hayali (düz-oransal) indirim yazılmaz. Kapsamdaki her ürün kendi payını, kapsam-dışı 0.
+    try:
+        _pdisc = await _order_item_discounts(order)
+        for _i, _it in enumerate(order.get("items") or []):
+            if isinstance(_it, dict) and _i < len(_pdisc):
+                _it["discount_amount"] = _pdisc[_i]
+    except Exception as _e:
+        logger.warning(f"[create_order] per-ürün indirim dondurma atlandı: {_e}")
+
     # A2.5b — OVERSELL ENGELLE (kullanıcı kararı). Sipariş insert'inden ÖNCE stok koşullu
     # atomik düşülür: bir kalem bile yetmezse düşürülenler geri alınır ve 409 ile reddedilir
     # (karşılanamayacak sipariş HİÇ oluşmaz). Ayar block_oversell=false ise (backorder/ön-sipariş
@@ -1452,7 +2612,29 @@ async def create_order(
     # (trendyol/hepsiburada/temu) siparişi dışarıda satıldığından bu kapıya girse de engellenmez.
     _oversell_moves = None
     _plat_lc = str(order.get("platform") or "").lower()
-    _is_marketplace = _plat_lc in ("trendyol", "hepsiburada", "temu")
+    _is_marketplace = _plat_lc in ("trendyol", "hepsiburada", "temu", "n11", "amazon")
+
+    # DENETİM (2026-09-29, Y1): puan/hediye çeki bu noktada REZERVE edildi. Sipariş aşağıdaki
+    # herhangi bir nedenle AÇILMAZSA (pasif ürün, stok yetersiz, eşzamanlı çift istek, insert
+    # hatası) rezervasyon geri verilir — eskiden yalnız tutar-uyuşmazlığında veriliyordu ve
+    # müşterinin çek bakiyesi/puanı hiçbir siparişe bağlı olmadan kayboluyordu. İdempotent.
+    async def _release_reservations(_why: str) -> None:
+        try:
+            if order.get("points_used"):
+                from .loyalty import refund_points_once
+                await refund_points_once(order, unpersisted=True)
+            if order.get("gift_card"):
+                from .gift_cards import refund_gift_card_once
+                await refund_gift_card_once(order, unpersisted=True)
+        except Exception as _rr_err:
+            logger.error(f"[create_order:{_why}] bakiye geri alınamadı: {_rr_err}")
+        # COM03: bu siparişe ayrılmış kupon kullanım hakları da geri verilir (idempotent).
+        if order.get("coupon_reservations"):
+            try:
+                from .coupons import release_coupon_usage
+                await release_coupon_usage(order["id"])
+            except Exception as _cr_err:
+                logger.error(f"[create_order:{_why}] kupon hakkı geri verilemedi: {_cr_err}")
 
     # PASİF / SİLİNMİŞ ürün siparişini ENGELLE (site). Vitrin pasif ürünü gizlese de bayat
     # sepet / direkt istek ile pasif ürün sipariş edilebiliyordu → "ürünü pasif yaptım ama yine
@@ -1472,8 +2654,35 @@ async def create_order(
             if _pp and (_pp.get("is_deleted") or _pp.get("is_active") is False):
                 _nm = _it.get("name") or _pp.get("name") or "ürün"
                 logger.warning(f"[OVERSELL] pasif/silinmiş ürün siparişi reddedildi: {_nm}")
+                await _release_reservations("pasif_urun")
                 raise HTTPException(status_code=409,
                                     detail=f"Üzgünüz, '{_nm}' şu an satışta değil. Lütfen sepetten çıkarıp tekrar deneyin.")
+    # COM03 — KUPON KULLANIM LİMİTİ (atomik): kullanıcının girdiği, usage_limit'li kuponun hakkı
+    # insert'ten ÖNCE tek belgede koşullu $inc ile AYRILIR → son hak eşzamanlı checkout'larda bir
+    # kez verilir. Redemption kaydının ZAMANLAMASI değişmez (değişmez 5: kartta ödeme onayında).
+    # Sipariş açılamazsa _release_reservations hakkı geri verir; iptal/otomatik iptal
+    # release_order_redemptions kancasıyla bırakır.
+    try:
+        from .coupons import reserve_order_coupon_usage as _reserve_cu
+        _cu = await _reserve_cu(order)
+    except Exception as _cu_err:
+        logger.error(f"[create_order] kupon hakkı ayrılamadı: {_cu_err}")
+        await _release_reservations("kupon_rezervasyon_hata")
+        raise HTTPException(status_code=503, detail=(
+            "Kupon kullanım hakkı şu an doğrulanamadı. Lütfen birkaç saniye sonra tekrar deneyin."))
+    if not _cu.get("ok"):
+        logger.warning(f"[COM03] kupon kullanım limiti dolu — sipariş reddedildi kod={_cu.get('code')}")
+        await _release_reservations("kupon_limit_dolu")
+        raise HTTPException(status_code=409, detail=(
+            f"'{_cu.get('code') or 'Kupon'}' kodunun kullanım limiti doldu. Lütfen sepetinizi yenileyip "
+            "kuponsuz tekrar deneyin. Ödeme alınmadı."))
+    if _cu.get("reserved"):
+        order["coupon_reservations"] = list(_cu["reserved"])
+    # KVKK: TCKN/VKN (billing_info/billing_address/shipping_address) düz değer olarak YAZILMAZ —
+    # stok düşümünden ÖNCE mühürlenir (şifreleme hatası stok sızdırmasın). İstemcinin gönderdiği
+    # *_enc/*_hash alanları atılır (yalnız sunucu üretir).
+    _pii_drop_client(order)
+    _pii_seal(order)
     # OVERSELL: SİTE siparişinde 0/yetersiz stok HER ZAMAN engellenir — 'order.block_oversell'
     # ayarına BAKILMAZ. (Ayar yanlışlıkla kapatılınca stoğu biten üründen sipariş geçiyordu →
     # para/stok kaybı. Firma kararı: site oversell KESİNLİKLE yasak.) Yalnız pazaryeri
@@ -1483,12 +2692,21 @@ async def create_order(
         if not _dec.get("success"):
             _nm = _dec.get("name") or _dec.get("barcode") or "ürün"
             logger.warning(f"[OVERSELL] sipariş reddedildi — stok yetersiz/doğrulanamadı: {_dec.get('barcode')} ({_nm}) reason={_dec.get('reason')}")
+            await _release_reservations("stok_yetersiz")
             raise HTTPException(status_code=409,
                                 detail=f"Üzgünüz, '{_nm}' için yeterli stok kalmadı. Lütfen sepeti güncelleyip tekrar deneyin.")
         _oversell_moves = _dec.get("movements") or []
 
     try:
         await db.orders.insert_one(order)
+        # Yeni sipariş → satış raporu önbelleğini anında düşür (create_order
+        # _log_order_event çağırmadığı için burada ayrıca yapılır). Sessiz: rapor
+        # önbelleği yüzünden sipariş akışı ASLA bozulmaz.
+        try:
+            from .reports import invalidate_report_cache as _inv_rc
+            await _inv_rc()
+        except Exception:
+            pass
     except Exception as _ins_err:
         # Insert başarısız olduysa önceden düşülen stoğu geri al (sızıntı olmasın).
         if _oversell_moves:
@@ -1496,6 +2714,27 @@ async def create_order(
                 await _reverse_stock_moves(_oversell_moves)
             except Exception:
                 pass
+        await _release_reservations("insert_hata")
+        # DENETİM (race R1): iki EŞZAMANLI POST /orders aynı idempotency_key ile check-then-insert
+        # yarışını geçip ikisi de buraya gelebiliyordu (çift sipariş/çift stok/çift ödeme). Artık
+        # orders.idempotency_key ÜZERİNDE partial-unique indeks var → ikinci insert DuplicateKeyError
+        # verir; stoğu geri alıp MEVCUT siparişi idempotent döndürürüz (çift sipariş engellenir).
+        try:
+            from pymongo.errors import DuplicateKeyError as _DupKey
+        except Exception:
+            _DupKey = None
+        if _DupKey is not None and isinstance(_ins_err, _DupKey) and _idem:
+            _ex2 = await db.orders.find_one(
+                {"idempotency_key": _idem},
+                {"_id": 0, "id": 1, "order_number": 1, "payment_status": 1, "idempotency_fingerprint": 1})
+            if _ex2 and _ex2.get("idempotency_fingerprint") and _ex2.get("idempotency_fingerprint") != _idem_fp:
+                return _idempotency_conflict_response()
+            if _ex2:
+                logger.info(f"[idempotency-race] eşzamanlı çift POST — mevcut sipariş döndürüldü key={_idem}")
+                return {"order_id": _ex2["id"], "order_number": _ex2["order_number"],
+                        "payment_status": _ex2.get("payment_status"), "idempotent": True,
+                        "pay_token": await _issue_pay_token(_ex2["id"]),
+                        "message": "Mevcut sipariş kullanıldı"}
         raise
     logger.info(f"Order created: {order['order_number']}")
 
@@ -1526,12 +2765,23 @@ async def create_order(
                 ip=order.get("customer_ip", ""), order_id=order["id"],
                 user_id=order.get("user_id"),
             ))
-            # Üyeyse profildeki pazarlama tercihini de güncelle
+            # Üyeyse profildeki pazarlama tercihini de güncelle — YALNIZ işaretlenen kanal.
+            # Profil `accepts_marketing` e-posta ONAY'ı sayılır (consents._collect / kampanya kitlesi);
+            # eskiden yalnız SMS işaretlense de True yapılıyordu → e-postadan çıkmış üyeye kampanya
+            # e-postası yeniden gidiyordu.
             if order.get("user_id"):
-                await db.users.update_one(
-                    {"id": order["user_id"]},
-                    {"$set": {"accepts_marketing": True,
-                              "marketing_consent_at": datetime.now(timezone.utc).isoformat()}})
+                _u_prefs = ((await db.users.find_one({"id": order["user_id"]}, {"_id": 0, "marketing_prefs": 1}))
+                            or {}).get("marketing_prefs")
+                _u_prefs = dict(_u_prefs) if isinstance(_u_prefs, dict) else {}
+                _u_set = {}
+                if "EPOSTA" in _channels:
+                    _u_prefs["email"] = True
+                    _u_set.update({"accepts_marketing": True,
+                                   "marketing_consent_at": datetime.now(timezone.utc).isoformat()})
+                if "MESAJ" in _channels:
+                    _u_prefs["sms"] = True
+                _u_set["marketing_prefs"] = _u_prefs
+                await db.users.update_one({"id": order["user_id"]}, {"$set": _u_set})
     except Exception as _iys_err:
         logger.warning(f"İYS izin kaydı başarısız (sipariş etkilenmedi): {_iys_err}")
 
@@ -1546,16 +2796,17 @@ async def create_order(
         _line = (_sa.get("address") or "").strip()
         if _uid and _line:
             _ci = lambda s: {"$regex": f"^{_re.escape((s or '').strip())}$", "$options": "i"}
-            _dup = await db.addresses.find_one({
-                "user_id": _uid,
-                "address": _ci(_line),
-                "city": _ci(_sa.get("city")),
-                "district": _ci(_sa.get("district")),
-            }, {"_id": 1})
+            # KVKK: adres defteri şifreli → tekilleştirme address_hash ile (backfill öncesi düz kayıt
+            # için eski büyük/küçük harf duyarsız tam eşleşme de denenir).
+            from security.contact_pii import address_hashes as _addr_hashes, seal_doc as _contact_seal
+            _dup = await db.addresses.find_one({"user_id": _uid, "$or": [
+                {"address_hash": {"$in": _addr_hashes(_line, _sa.get("city"), _sa.get("district")) or ["\x00"]}},
+                {"address": _ci(_line), "city": _ci(_sa.get("city")), "district": _ci(_sa.get("district"))},
+            ]}, {"_id": 1})
             if not _dup:
                 _has_any = await db.addresses.find_one({"user_id": _uid}, {"_id": 1})
                 _binfo = order.get("billing_info") or {}
-                await db.addresses.insert_one({
+                await db.addresses.insert_one(_contact_seal(_pii_seal({  # KVKK: tax_no + telefon + adres mühürlü
                     "id": generate_id(),
                     "user_id": _uid,
                     "title": (_sa.get("title") or "Sipariş Adresi"),
@@ -1569,17 +2820,21 @@ async def create_order(
                     "is_default": (not _has_any),  # üyenin ilk adresi ise varsayılan yap
                     "is_corporate": bool(_binfo.get("is_corporate", False)),
                     "company_name": _binfo.get("company_name", ""),
-                    "tax_no": _binfo.get("tax_number", ""),
+                    "tax_no": _pii_reveal(_binfo, "tax_number"),
                     "tax_office": _binfo.get("tax_office", ""),
                     "source": "order",
                     "created_at": datetime.now(timezone.utc).isoformat(),
-                })
+                }, "address"), "address"))
                 logger.info(f"[adres defteri] sipariş adresi üyeye kaydedildi user={_uid} order={order.get('order_number')}")
-        # Profil telefonu boşsa sipariş telefonundan doldur (üye detay/iletişim için)
+        # Profil telefonu boşsa sipariş telefonundan doldur (üye detay/iletişim için) — şifreli yazılır.
         if _uid and (_sa.get("phone") or "").strip():
-            _u = await db.users.find_one({"id": _uid}, {"_id": 0, "phone": 1})
-            if _u is not None and not (_u.get("phone") or "").strip():
-                await db.users.update_one({"id": _uid}, {"$set": {"phone": _sa["phone"]}})
+            _u = await db.users.find_one({"id": _uid}, {"_id": 0, "phone": 1, "phone_enc": 1,
+                                                        "is_admin": 1, "is_super_admin": 1})
+            if _u is not None and not (_u.get("phone") or "").strip() and not _u.get("phone_enc"):
+                from security.contact_pii import sealed_set_update as _contact_set, is_staff_doc as _is_staff
+                _ph_set = {"phone": _sa["phone"]}
+                await db.users.update_one({"id": _uid}, {"$set": _ph_set} if _is_staff(_u)
+                                          else _contact_set(_ph_set, "user"))
     except Exception as _addr_err:
         logger.warning(f"Üye adres defteri kaydı başarısız (sipariş etkilenmedi): {_addr_err}")
 
@@ -1596,6 +2851,14 @@ async def create_order(
     )
     if _commit_now:
         await record_order_redemptions(order)
+    else:
+        # Denetim #21: aynı kişinin aynı kişi-başı-sınırlı kuponu taşıyan önceki ÖDENMEMİŞ denemeleri
+        # ödenemez işaretlenir (statü/stok değişmez; auto-cancel süpürür). Sipariş akışını bozmaz.
+        try:
+            from .coupons import supersede_prior_unpaid_coupon_orders
+            await supersede_prior_unpaid_coupon_orders(order)
+        except Exception as _sp_err:
+            logger.warning(f"[kupon-rezervasyon] önceki denemeler işaretlenemedi: {type(_sp_err).__name__}")
 
     # NOT: Sunucu-otoriter promosyon yeniden-hesabi artik INSERT'ten ONCE "guvenli kelepce"
     # blogunda yapiliyor (yukari bkz). Bu yuzden eski post-insert [PROMO SHADOW] gozlem blogu
@@ -1674,6 +2937,9 @@ async def create_order(
                     variables=variables,
                     channels=_channels,
                 )
+                # ADMIN E-POSTA: havale/EFT siparişi OLUŞTURMADA firma adresine (info@...) haber ver
+                # (kart HARİÇ — o ödeme onaylanınca gider). Müşteriye banka-detay maili zaten gitti.
+                await _send_admin_new_order_email(order, ship, "Havale/EFT bekleniyor")
             else:
                 # ÖNEMLİ: Online kart (iyzico) siparişinde "Siparişiniz Alındı" onay
                 # maili sipariş OLUŞTURMA anında DEĞİL, ödeme onaylandıktan SONRA
@@ -1691,6 +2957,18 @@ async def create_order(
                         to_email=ship.get("email") or order.get("email"),
                         variables=variables,
                     )
+                    # ADMIN E-POSTA: kapıda ödeme siparişinde OLUŞTURMADA haber ver.
+                    if _cod and not _already_paid:
+                        await _send_admin_new_order_email(order, ship, "Kapıda ödeme")
+                    elif _already_paid and order.get("paid_with_gift_card_only"):
+                        # C2 (tamamı hediye çekiyle ödenen sipariş) payment akışından GEÇMEZ →
+                        # _notify_paid_order_confirmed hiç çağrılmaz; admin "Yeni Sipariş" maili
+                        # burada BİR KEZ gönderilir (atomik bayrak → tekrar/yarışta çift mail yok).
+                        _gm = await db.orders.update_one(
+                            {"id": order["id"], "admin_new_order_mail_sent": {"$ne": True}},
+                            {"$set": {"admin_new_order_mail_sent": True}})
+                        if getattr(_gm, "modified_count", 0) == 1:
+                            await _send_admin_new_order_email(order, ship, "Hediye çeki ile ödendi")
                 else:
                     logger.info(
                         f"[order_confirmed ERTELENDİ] online kart, ödeme onayı bekleniyor "
@@ -1747,6 +3025,15 @@ async def create_order(
                 "items": moves,
                 "created_at": datetime.now(timezone.utc).isoformat(),
             })
+            # FAZ 2: "bu sipariş stoktan düşüldü" damgası siparişin KENDİSİNE yazılır.
+            # Böylece ileride iptal/iade ederken cevap ayrı koleksiyona, anahtar
+            # eşleşmesine veya tarihe bağlı kalmaz. Damga yazılamazsa akış bozulmaz
+            # (defter hareketi yine var, _order_was_deducted onu da okur).
+            try:
+                await db.orders.update_one({"id": order["id"]},
+                                           {"$set": {"stock_deducted": True}})
+            except Exception:
+                pass
     except Exception as stock_err:
         logger.error(f"Stock decrement on order create failed: {stock_err}")
 
@@ -1765,6 +3052,7 @@ async def create_order(
     return {
         "order_id": order["id"],
         "order_number": order["order_number"],
+        "pay_token": await _issue_pay_token(order["id"]),
         # C2: tutarın tamamı hediye çekiyle karşılandıysa frontend ödeme adımını atlar.
         "payment_status": order.get("payment_status") or "",
         "total": order.get("total"),
@@ -1776,7 +3064,7 @@ async def create_order(
 async def update_order(
     order_id: str,
     order_data: dict,
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.edit"))
 ):
     """Update order (admin only).
     GÜVENLİK: Genel güncelleme finansal/kimlik/iç alanları EZEMEZ (mass-assignment
@@ -1791,16 +3079,62 @@ async def update_order(
         "id", "_id", "order_number", "user_id", "created_at",
         "total", "total_amount", "subtotal", "discount", "discount_amount",
         "shipping_cost", "payment_status", "is_paid", "paid_at",
-        "invoice_number", "invoice_seq", "idempotency_key",
+        "invoice_number", "invoice_seq", "idempotency_key", "idempotency_fingerprint",
         "iyzico_retrieve_response", "iyzico_init_response", "iyzico_response",
         "iyzico_token", "iyzico_return_url", "payment_receipt",
         "capi_purchase_sent", "coupon_redemptions_recorded",
+        # DENETİM (payment redteam F3): mass-assignment savunmasını genişlet — ödeme/iade/çek/puan
+        # iç alanları genel uçtan EZİLEMEZ.
+        "payment_id", "iyzico_payment_id", "reconcile_payment_id", "needs_reconciliation",
+        "gift_card", "points_used", "points_refunded", "paid_with_gift_card_only",
+        "loyalty_awarded", "loyalty_points_earned", "gift_card_refunded",
+        "_restocked_by_autocancel", "_redecremented_after_reconcile", "stock_restored",
+        "_redecremented_after_cancel", "paid_after_cancel",
+        # COM03/COM09/COM10: kupon hakkı tutmaları ve sipariş-başı işlem kilitleri genel uçtan EZİLEMEZ.
+        "coupon_reservations", "cargo_label_lock_until", "cargo_label_lock_id",
+        "cargo_label_attempted_at", "return_req_lock_until", "return_req_lock_id",
+        # DENETİM K1: durum makinesi TEK kapıdan geçmeli. `status` bu genel uçtan
+        # değiştirilirse update_order_status'taki finans-yetki kapısı + stok iadesi +
+        # kupon/çek/puan iadesi + iptal SMS'i ATLANIR (Değişmez 1/5/6 delinir). Statü
+        # YALNIZ PUT /orders/{id}/status (update_order_status) üzerinden değişir.
+        "status",
+        # DENETİM 2026-10 (ödeme sertleştirme): iade kayıtları, çift tahsilat ve kilit/bildirim
+        # bayrakları genel uçtan EZİLEMEZ (iade tavanı / çift tahsilat izi atlatılamasın).
+        "refunds", "duplicate_payments", "needs_duplicate_refund", "refund_needs_verification",
+        "payment_init_lock_until", "payment_init_lock_id", "order_confirmed_notified",
+        "invoice_pending", "invoice_manual_file",
+        # DENETİM 2026-10: ödeme yöntemi ve kalemler genel uçtan DEĞİŞMEZ (kalem düzenleme
+        # stok defterini / iade tavanını / faturayı atlatır; ödeme yöntemi ödeme akışını değiştirir).
+        "payment_method", "items", "lines",
     }
+    if not isinstance(order_data, dict):
+        raise HTTPException(status_code=400, detail="Geçersiz istek gövdesi")
+    # COM09: etiket sonrası adres değişikliği için süper admin gerekçesi (alan siparişe YAZILMAZ).
+    _addr_override = str(order_data.pop("address_change_override_reason", "") or "").strip()[:300]
     removed = [k for k in list(order_data.keys()) if k in _PROTECTED]
     for k in removed:
         order_data.pop(k, None)
+    _perms_uo = await get_effective_permissions(current_user)
+    _super_uo = "*" in _perms_uo
+    # Fatura bilgisi (VKN/unvan/vergi dairesi) faturayı belirler → yalnız fatura yetkisiyle.
+    for _bk in ("billing_address", "billing_info"):
+        if _bk in order_data and not (_super_uo or "orders.invoice" in _perms_uo):
+            order_data.pop(_bk, None)
+            removed.append(_bk)
+    # Teslimat adresi (kargo yönlendirmesi) → yalnız sipariş durum yetkisiyle + iz kaydı.
+    _addr_change = None
+    if "shipping_address" in order_data:
+        if not (_super_uo or "orders.update_status" in _perms_uo):
+            order_data.pop("shipping_address", None)
+            removed.append("shipping_address")
+        elif not isinstance(order_data.get("shipping_address"), dict):
+            order_data.pop("shipping_address", None)
+            removed.append("shipping_address")
+        else:
+            # KVKK: karşılaştırma mühürleme SONRASI gerçek değerlerle yapılır (aşağıda).
+            _addr_change = True
     if removed:
-        logger.warning(f"[GUVENLIK] update_order korunan alan(lar) yok sayildi order={order_id} alanlar={removed} admin={current_user.get('email')}")
+        logger.warning(f"[GUVENLIK] update_order korunan/yetkisiz alan(lar) yok sayildi order={order_id} alanlar={removed} admin={current_user.get('email')}")
 
     order_data["updated_at"] = datetime.now(timezone.utc).isoformat()
 
@@ -1814,9 +3148,99 @@ async def update_order(
             order_data["partial_cancelled"] = True
             order_data["partial_cancel_at"] = datetime.now(timezone.utc).isoformat()
 
-    await db.orders.update_one({"id": order_id}, {"$set": order_data})
+    # KVKK: TCKN/VKN düz yazılmaz. Panel düzenleme formu değeri değiştirmeden (maskeli "*********12")
+    # gönderirse mevcut şifreli değer korunur; yeni değer yazıldıysa mühürlenir; boş → temizlenir.
+    from security.pii import sealed_set_update as _pii_set_update
+    _pii_drop_client(order_data)
+    # KVKK: liste/detay telefon ve açık adresi MASKELİ döner. Form maskeli değeri ("+90 *** *** ** 33",
+    # "••••••") geri gönderirse gerçek değer korunur — maske ASLA adresin/telefonun üstüne yazılmaz.
+    _contact_carry(order_data, existing)
+    _upd_doc = _pii_set_update(order_data, "order", existing)
+    order_data = _upd_doc["$set"]
+    # COM09 / FIN-E06 — ETİKET SONRASI ADRES KİLİDİ: kargo etiketi oluşmuşsa (ya da şu an oluşturuluyorsa)
+    # teslimat adresi DEĞİŞTİRİLEMEZ — eski adresli etiket sevke çıkar, yeni adres kayıtta kalırdı.
+    # Kilit atomik: güncelleme filtresi etiket kilidinin boş olmasını şart koşar (etiket işçisiyle yarış).
+    # Süper admin gerekçe (address_change_override_reason ≥10 karakter) ile istisna yapabilir;
+    # o zaman sipariş "etiket adresi eski" işaretlenir ve denetim kaydı yazılır.
+    _upd_filter = {"id": order_id}
+    _addr_override_used = False
+    if _addr_change is True:
+        def _sa_view(src):
+            # Anlamlı karşılaştırma: boş/eksik alan eşit sayılır, boşluk farkı yok sayılır (panel formu
+            # dokunulmamış adresi ek boş anahtarlarla geri gönderebilir → sahte "değişti" + 409 olmasın).
+            _v = (_pii_reveal_doc({"shipping_address": src.get("shipping_address")}) or {}).get("shipping_address")
+            if not isinstance(_v, dict):
+                return _v
+            return {k: str(v).strip() for k, v in _v.items()
+                    if v not in (None, "") and str(v).strip() != "" and not str(k).endswith(("_enc", "_hash", "_last2"))}
+        if _sa_view(order_data) != _sa_view(existing):
+            _cargo = existing.get("cargo") or {}
+            _has_label = bool(existing.get("cargo_barcode_created") or existing.get("cargo_barcode_number")
+                              or existing.get("cargo_tracking_number") or _cargo.get("mng_siparis_no")
+                              or _cargo.get("tracking_number"))
+            _now_l = datetime.now(timezone.utc).isoformat()
+            _lock_busy = bool(existing.get("cargo_label_lock_until")
+                              and str(existing.get("cargo_label_lock_until")) > _now_l)
+            if _has_label or _lock_busy:
+                if not (_super_uo and len(_addr_override) >= 10):
+                    raise HTTPException(status_code=409, detail=(
+                        "Bu siparişin kargo etiketi oluşturulmuş (ya da şu an oluşturuluyor); teslimat adresi "
+                        "değiştirilemez. Önce kargo kaydını iptal ettirin. (Süper admin gerekçe girerek "
+                        "istisna yapabilir.)"))
+                _addr_override_used = True
+                order_data["cargo_address_changed_after_label"] = True
+                order_data["cargo_address_changed_after_label_at"] = _now_l
+                order_data["cargo_address_changed_after_label_by"] = current_user.get("email", "")
+            else:
+                _upd_filter = {"$and": [
+                    {"id": order_id},
+                    {"$or": [{"cargo_label_lock_until": {"$exists": False}}, {"cargo_label_lock_until": None},
+                             {"cargo_label_lock_until": {"$lt": _now_l}}]},
+                    {"cargo_barcode_created": {"$ne": True}},
+                    {"$or": [{"cargo_barcode_number": {"$exists": False}}, {"cargo_barcode_number": {"$in": [None, ""]}}]},
+                ]}
+    _upd_res = await db.orders.update_one(_upd_filter, _upd_doc)
+    if getattr(_upd_res, "matched_count", 1) == 0:
+        raise HTTPException(status_code=409, detail=(
+            "Kargo etiketi bu arada oluşturuldu; teslimat adresi değiştirilemez. Sayfayı yenileyin."))
+    if _addr_override_used:
+        await _log_order_event(order_id, "address",
+                               "Etiket SONRASI adres değişikliği (süper admin istisnası) — etiket eski adresli!",
+                               current_user, {"reason": _addr_override},
+                               order_number=existing.get("order_number", ""))
+        try:
+            await record_admin_audit(db, action="orders.address_change_after_label", entity_type="order",
+                                     entity_id=order_id, current_user=current_user, source="admin.orders",
+                                     metadata={"reason": _addr_override,
+                                               "order_number": existing.get("order_number", "")})
+        except Exception as _aa:
+            logger.warning(f"[COM09] denetim kaydı yazılamadı: {_aa}")
 
-    return {"message": "Sipariş güncellendi"}
+    def _pii_view(k, src):  # karşılaştırma için gerçek değer; log için maskeli görünüm
+        return (_pii_reveal_doc({k: src.get(k)}) or {}).get(k)
+
+    def _pii_logview(k, src):
+        v = src.get(k)
+        return _pii_mask({k: dict(v)})[k] if isinstance(v, dict) else v
+    if _addr_change is True:
+        _addr_change = (None if _pii_view("shipping_address", order_data) == _pii_view("shipping_address", existing)
+                        else (_pii_logview("shipping_address", existing) or {},
+                              _pii_logview("shipping_address", order_data)))
+    _billing_changed = [k for k in ("billing_address", "billing_info")
+                        if k in order_data and _pii_view(k, order_data) != _pii_view(k, existing)]
+    if _addr_change:
+        await _log_order_event(order_id, "address", "Teslimat adresi değiştirildi", current_user,
+                               {"old_shipping_address": _addr_change[0],
+                                "new_shipping_address": _addr_change[1]},
+                               order_number=existing.get("order_number", ""))
+    if _billing_changed:
+        await _log_order_event(order_id, "invoice", "Fatura bilgisi değiştirildi", current_user,
+                               {"fields": _billing_changed,
+                                **{f"old_{k}": _pii_logview(k, existing) for k in _billing_changed},
+                                **{f"new_{k}": _pii_logview(k, order_data) for k in _billing_changed}},
+                               order_number=existing.get("order_number", ""))
+
+    return {"message": "Sipariş güncellendi", "ignored_fields": sorted(set(removed))}
 
 def _sanitize_click_ids(raw) -> dict:
     """Storefront'tan sipariş oluştururken gelen reklam tıklama kimliklerini
@@ -1922,8 +3346,10 @@ async def dispatch_purchase_capi(order_id: str, source: str = "") -> bool:
             city=addr.get("city"),
             state=addr.get("district") or addr.get("state"),
             country=addr.get("country") or "TR",
-            zipcode=addr.get("zipcode") or addr.get("postal_code"),
-            street=addr.get("address") or addr.get("address_line1"),
+            # KVKK: reklam platformlarına AÇIK ADRES / POSTA KODU gönderilmez (hash'li bile olsa); yalnız
+            # platform belgesindeki SHA-256 e-posta/telefon + il/ilçe (hash) eşleşmesi.
+            zipcode=None,
+            street=None,
             external_id=_ext_id,
             client_ip=order_doc.get("customer_ip"),
             user_agent=order_doc.get("user_agent"),
@@ -1970,9 +3396,17 @@ async def dispatch_purchase_capi(order_id: str, source: str = "") -> bool:
 async def update_order_status(
     order_id: str,
     status: str = Query(...),
+    expected_status: Optional[str] = Query(None, max_length=64),
     current_user: dict = Depends(require_permission("orders.update_status"))
 ):
-    """Update order status (RBAC: orders.update_status)"""
+    """Update order status (RBAC: orders.update_status)
+
+    COM08 — KARŞILAŞTIR-VE-YAZ: güncelleme, okunan GÜNCEL statü filtreye konarak yapılır; arada
+    başka bir işlem (eşzamanlı sevk/iptal/ödeme onayı) statüyü değiştirdiyse 409 döner — iki
+    personelin aynı anda "Kargoya verildi" ve "İptal" basması geçersiz birleşim üretmez.
+    İstemci ekranda gördüğü statüyü `expected_status` ile gönderirse o da doğrulanır."""
+    if not isinstance(expected_status, str):   # doğrudan Python çağrısı (bulk) → Query nesnesi
+        expected_status = None
     from order_statuses import get_status_config, valid_keys
     _cfg0 = await get_status_config(db)
     valid_statuses = valid_keys(_cfg0)
@@ -1999,8 +3433,21 @@ async def update_order_status(
 
     # DENETİM FIX: reaktivasyon (iptal/iade → aktif fulfillment) stok re-decrement'i için
     # ÖNCEKİ durumu güncellemeden ÖNCE yakala.
-    _prev_doc = await db.orders.find_one({"id": order_id}, {"_id": 0, "status": 1})
+    _prev_doc = await db.orders.find_one({"id": order_id}, {"_id": 0, "status": 1, "chargeback_open": 1})
+    if not _prev_doc:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
     _prev_status = (_prev_doc or {}).get("status")
+    if expected_status and expected_status != (_prev_status or ""):
+        raise HTTPException(status_code=409, detail=(
+            f"Sipariş durumu bu arada değişti (şu an: {_prev_status or '-'}). Sayfayı yenileyip tekrar deneyin."))
+    # COM11 / FIN-E03: açık ödeme itirazı (chargeback) varken sipariş iade-ödendi statülerine
+    # ÇEKİLEMEZ (ikinci para hareketi). Süper admin gerekçeli istisna yalnız iade uçlarında.
+    if status in ("refunded", "partial_refunded", "cancel_refunded"):
+        # ACİL ANAHTAR (CHAIN08): elle "iade ödendi" işaretlemesi de bir para-iadesi kaydıdır →
+        # freeze_refunds / restore_mode / geri yükleme sonrası iade kilidi açıkken 423.
+        await _guard_switch("freeze_refunds")
+        from .chargebacks import assert_refund_allowed
+        await assert_refund_allowed(order_id, current_user, None, action=f"order.status.{status}")
 
     _now = datetime.now(timezone.utc).isoformat()
     _set = {"status": status, "updated_at": _now}
@@ -2028,7 +3475,8 @@ async def update_order_status(
     if status == "confirmed":
         _od_pre = await db.orders.find_one(
             {"id": order_id},
-            {"_id": 0, "payment_method": 1, "payment_status": 1, "order_number": 1},
+            {"_id": 0, "payment_method": 1, "payment_status": 1, "order_number": 1,
+             "paid_with_gift_card_only": 1, "imported_from": 1, "platform": 1, "marketplace": 1},
         )
         if _od_pre:
             _pm = (_od_pre.get("payment_method") or "").lower()
@@ -2038,15 +3486,41 @@ async def update_order_status(
                 _set["paid_by"] = current_user.get("email", "")
                 _set["payment_approved_via"] = "status_confirm"
                 _confirm_paid = True
+            # DEĞİŞMEZ #1 KORUMASI (W11874): KART siparişi, ödeme GERÇEKTEN alınmadan listeden
+            # "Onaylandı"ya çekilemez. Kök sebep: kartla başlayıp ödemesi başarısız olan sipariş
+            # (payment_status=failed, iyzico kaydı YOK) personel tarafından dropdown'dan onaylanınca
+            # panelde ödenmiş gibi görünüyor ve ödeme yöntemi "Kredi Kartı" kalıyordu — oysa müşteri
+            # parayı HAVALE ile göndermişti. Havale/EFT ve kapıda ödeme bu kapıdan ETKİLENMEZ.
+            elif (_pm in _CARD_PMS
+                  and str(_od_pre.get("payment_status") or "").lower() not in _SETTLED_PAY
+                  and not _od_pre.get("paid_with_gift_card_only")
+                  # Aktarılmış geçmiş (Ticimax) / pazaryeri siparişleri bu sistemin ödeme akışından
+                  # geçmedi; onların statüsü serbestçe düzeltilebilir olmalı.
+                  and not _od_pre.get("imported_from")
+                  and _is_site_order(_od_pre)):
+                raise HTTPException(
+                    status_code=409,
+                    detail=("Bu kart siparişinin ödemesi alınmamış (durum: "
+                            f"{_od_pre.get('payment_status') or 'ödeme yok'}) — 'Onaylandı' yapılamaz. "
+                            "Müşteri parayı HAVALE/EFT ile gönderdiyse önce siparişi düzenleyip ödeme "
+                            "yöntemini Havale/EFT yapın; kartla tahsil edildiyse 'Ödemeyi Onayla' "
+                            "(mark-paid) işlemini kullanın — her ikisi de kayda geçer."))
 
-    result = await db.orders.update_one(
-        {"id": order_id},
-        {"$set": _set}
-    )
-    
+    # COM08: karşılaştır-ve-yaz — okunan statü değişmediyse yaz (eşzamanlı sevk/iptal yarışı).
+    _cas = {"id": order_id, "status": _prev_status} if _prev_status is not None else \
+        {"id": order_id, "status": {"$in": [None]}}
+    result = await db.orders.update_one(_cas, {"$set": _set})
+
     if result.matched_count == 0:
+        if await db.orders.count_documents({"id": order_id}, limit=1):
+            raise HTTPException(status_code=409, detail=(
+                "Sipariş durumu eşzamanlı başka bir işlemle değişti. Sayfayı yenileyip tekrar deneyin."))
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
 
+    # İPTAL TARİHİNİ DONDUR: rapor bu tarihi kullanıyor; yoksa updated_at'e düşüp
+    # her senkronda kayıyordu. Koşullu yazılır, mevcut tarihi ezmez.
+    if status in _CANCEL_ST_FOR_STAMP:
+        await stamp_cancelled_at(order_id=order_id, when=_now, source="admin_status")
     await _log_order_event(order_id, "status", f"Durum güncellendi: {status}", current_user, {"status": status})
     if _confirm_paid:
         await _log_order_event(
@@ -2077,8 +3551,9 @@ async def update_order_status(
                         _cancel = await _rtp(
                             _cli.cancel_earsiv_invoice,
                             invoice_uuid=_od.get("invoice_uuid", "") or "",
-                            invoice_id=_od.get("invoice_dogan_id", "") or "",
+                            invoice_id=(_od.get("invoice_number") or _od.get("invoice_dogan_id") or ""),
                             reason=f"Sipariş iptal edildi ({_od.get('order_number') or order_id})",
+                            total_amount=_od.get("total"),
                         )
                         try:
                             await _rtp(_cli.logout)
@@ -2179,6 +3654,15 @@ async def update_order_status(
                 value_multiplier = -1.0
             if not capi_event:
                 return
+            # KVKK: consent gate AÇIKSA reklam izni olmayan siparişin iade/iptal olayı da GÖNDERİLMEZ
+            # (Purchase yolundaki kapının aynısı; gate kapalıyken davranış değişmez).
+            try:
+                from business_rules import get_rule as _get_rule_cg
+                if bool(await _get_rule_cg(db, "marketing.capi_consent_gate", False)) \
+                        and order_doc.get("ad_tracking_consent") is not True:
+                    return
+            except Exception:
+                return
             from services.capi.orchestrator import dispatch_event
             addr = order_doc.get("shipping_address") or {}
             # CAPI event_source_url — marka alan adi (env/panel), sabit degil.
@@ -2194,8 +3678,9 @@ async def update_order_status(
                 "city": addr.get("city"),
                 "state": addr.get("district") or addr.get("state"),
                 "country": addr.get("country") or "TR",
-                "zipcode": addr.get("zipcode") or addr.get("postal_code"),
-                "street": addr.get("address") or addr.get("address_line1"),
+                # KVKK: açık adres / posta kodu reklam platformuna gönderilmez.
+                "zipcode": None,
+                "street": None,
                 "date_of_birth": (order_doc.get("customer") or {}).get("date_of_birth"),
                 "gender": (order_doc.get("customer") or {}).get("gender"),
                 "external_id": order_doc.get("customer_id") or order_doc.get("user_id"),
@@ -2274,8 +3759,9 @@ async def update_order_status(
                 if _restore_items:
                     # _reverse_stock_moves: back = -delta → delta>0 verildiğinden İADE EDİLENİ geri DÜŞER.
                     await _reverse_stock_moves(_restore_items)
-                    await db.stock_movements.delete_many(
-                        {"order_id": order_id, "type": {"$in": list(_RESTORE_MOVE_TYPES)}})
+                    # Bayat restore hareketini SİLME → 'tüketildi' işaretle (guard yine görmez ama
+                    # stok geçmişi KORUNUR). Öncesinde delete_many ile siliniyordu (log kaybı).
+                    await _consume_restore_moves(order_id, "reactivate_decrement")
                     await db.stock_movements.insert_one({
                         "id": str(uuid.uuid4()),
                         "type": "reactivate_decrement",
@@ -2300,7 +3786,7 @@ async def update_order_status(
 @router.put("/{order_id}/mark-paid")
 async def mark_order_paid(
     order_id: str,
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.update_status"))
 ):
     """Havale/EFT ödemesi manuel onaylama.
     payment_status='paid' yapar ve CAPI'ye offline 'purchase' event'i gönderir.
@@ -2308,6 +3794,14 @@ async def mark_order_paid(
     order_doc = await db.orders.find_one({"id": order_id}, {"_id": 0})
     if not order_doc:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    # CLAUDE.md değişmez #1 (denetim 2026-09-29): KART siparişi yalnız iyzico onayıyla 'paid' olur;
+    # elle işaretlenemez (yarıda kalan 3DS siparişi ödemesiz sevk edilmesin). Parası çekilmiş kart
+    # siparişini mutabakat cron'u (15 dk) iyzico'dan doğrulayıp kendisi 'paid' yapar.
+    _pm = str(order_doc.get("payment_method") or "").strip().lower()
+    if _pm in {"credit_card", "card", "kredi_karti", "kart", "iyzico", "creditcard"}:
+        raise HTTPException(status_code=400, detail=(
+            "Kart siparişi elle 'ödendi' yapılamaz — yalnız iyzico onayıyla ödenmiş olur. Para çekildiyse "
+            "sistem 15 dakika içinde iyzico'dan doğrulayıp siparişi otomatik onaylar."))
     if order_doc.get("payment_status") == "paid":
         return {"message": "Sipariş zaten ödenmiş olarak işaretli.",
                 "order_id": order_id, "already_paid": True}
@@ -2328,10 +3822,11 @@ async def mark_order_paid(
                            {"payment_status": "paid", "status_flipped": _flip_confirmed},
                            order_number=order_doc.get("order_number", ""))
 
-    # Havale onayinda "Onaylandi" bildirimi (Siparis Durumlari ayarina gore)
+    # Havale/EFT ONAYINDA "Ödemenizi Aldık" bildirimi (kullanıcı isteği): personel ödemeyi görüp
+    # onaylayınca müşteriye ödemenin alındığı + siparişin onaylandığı SMS'i gider. Kanal seçimi
+    # Sipariş Durumları'ndaki 'confirmed' ayarından; şablon = order_payment_approved.
     if _flip_confirmed:
-        import asyncio as _aio2
-        async def _notify_confirmed():
+        async def _notify_payment_approved():
             try:
                 import sys, os
                 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
@@ -2343,17 +3838,16 @@ async def mark_order_paid(
                 if not ch:
                     return
                 addr = order_doc.get("shipping_address") or {}
-                _base = os.environ.get("FRONTEND_PUBLIC_URL") or os.environ.get("REACT_APP_BACKEND_URL") or ""
                 await send_notification(
-                    db, "order_confirmed",
+                    db, "order_payment_approved",
                     to_phone=addr.get("phone") or order_doc.get("phone"),
                     to_email=addr.get("email") or order_doc.get("email"),
                     variables=await _order_notify_vars(order_doc, status_label=customer_label_for("confirmed")),
                     channels=ch,
                 )
             except Exception as e:
-                logger.warning(f"confirmed notif failed: {e}")
-        _spawn(_notify_confirmed())
+                logger.warning(f"payment_approved notif failed: {e}")
+        _spawn(_notify_payment_approved())
 
     # CAPI offline conversion (purchase) — merkezi helper (idempotent,
     # event_id = sipariş no; havale/EFT onayında da tek purchase çıkar)
@@ -2379,8 +3873,40 @@ async def delete_order(
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
     order["deleted_at"] = datetime.now(timezone.utc).isoformat()
     order["deleted_by"] = current_user.get("email", "")
+    # DENETİM (bizlogic Y3): stoğu DÜŞÜLMÜŞ aktif bir sipariş silinince stok geri eklenmiyordu →
+    # kalıcı stok sızıntısı. Aktif fulfillment durumundaysa stoğu geri ekle + arşive işaretle
+    # (restore'da tekrar düşülür → simetri). Terminal (iptal/iade) siparişte stok zaten iade edilmiş.
+    _ACTIVE_STOCK = {"awaiting_payment", "payment_notified", "pending", "confirmed",
+                     "processing", "preparing", "shipped", "undelivered"}
+    _returned_on_delete = False
     try:
-        await db.orders_deleted.replace_one({"id": order_id}, order, upsert=True)
+        if str(order.get("status") or "") in _ACTIVE_STOCK:
+            # Guard listesi _RESTORE_MOVE_TYPES'tan DAR idi (manual_increment,
+            # backfill_increment, order_returned eksikti) → iade ile geri stoklanmış
+            # bir sipariş silinince İKİNCİ kez stok ekleniyordu.
+            _already = await db.stock_movements.find_one(
+                {"order_id": order_id,
+                 "type": {"$in": list(_RESTORE_MOVE_TYPES) + ["order_deleted_restock"]}},
+                {"_id": 1})
+            # FAZ 2: hiç düşülmemiş siparişi silmek stok YARATMAMALI.
+            if not _already and not await _order_was_deducted(order):
+                logger.warning(f"[stok] silme: sipariş {order_id} stoktan hiç düşülmemiş "
+                               f"— stok eklenmedi")
+                await _log_restock_skip(order, "order_deleted_restock", "delete_order")
+                _already = True
+            if not _already:
+                _moves = await _stock_delta_for_order(order, +1)
+                await db.stock_movements.insert_one({
+                    "id": generate_id(), "type": "order_deleted_restock",
+                    "order_id": order_id, "order_number": order.get("order_number", ""),
+                    "items": _moves, "source": "delete_order",
+                    "created_at": datetime.now(timezone.utc).isoformat()})
+                _returned_on_delete = True
+    except Exception as _e:
+        logger.error(f"[delete restock {order_id}] {_e}")
+    order["_stock_returned_on_delete"] = _returned_on_delete
+    try:
+        await db.orders_deleted.replace_one({"id": order_id}, _pii_seal(order), upsert=True)  # KVKK: düz TCKN kopyalanmaz
     except Exception as _e:
         logger.warning(f"archive deleted order failed {order_id}: {_e}")
     await db.orders.delete_one({"id": order_id})
@@ -2392,7 +3918,7 @@ async def delete_order(
 @router.post("/{order_id}/restore")
 async def restore_deleted_order(
     order_id: str,
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.edit"))
 ):
     """Arşivlenen (silinen) siparişi orders'a geri taşır."""
     arch = await db.orders_deleted.find_one({"id": order_id}, {"_id": 0})
@@ -2400,11 +3926,35 @@ async def restore_deleted_order(
         raise HTTPException(status_code=404, detail="Silinen sipariş bulunamadı")
     arch.pop("deleted_at", None)
     arch.pop("deleted_by", None)
+    # Y3 simetri: silmede stok geri eklendiyse, geri alırken TEKRAR düş (aksi halde restore stok şişirir).
+    _re_decrement = bool(arch.pop("_stock_returned_on_delete", False))
     now_iso = datetime.now(timezone.utc).isoformat()
     arch["updated_at"] = now_iso
     arch["restored_at"] = now_iso
     arch["restored_by"] = current_user.get("email", "")
-    await db.orders.replace_one({"id": order_id}, arch, upsert=True)
+    if _re_decrement:
+        try:
+            _rd_moves = await _stock_delta_for_order(arch, -1)
+            # DEFTER (Faz 1): hareket SİLİNMEZ. Sistemin geri kalanı bayat restore kaydını
+            # silmek yerine '..._consumed' diye işaretliyor (bkz. _consume_restore_moves);
+            # burada delete_many ile geçmiş yok ediliyordu. Ayrıca yeniden-düşümün kendisi
+            # deftere yazılmıyordu → "defter = canlı stok" denkliği bozuluyordu.
+            await _consume_restore_moves(order_id, "restore_deleted_order")
+            try:
+                if _rd_moves:
+                    await db.stock_movements.insert_one({
+                        "id": str(uuid.uuid4()), "type": "restore_deleted_redecrement",
+                        "order_id": order_id,
+                        "order_number": arch.get("order_number", ""),
+                        "items": _rd_moves, "source": "order_restore",
+                        "created_by": current_user.get("email", ""),
+                        "created_at": now_iso,
+                    })
+            except Exception as _mv2:
+                logger.warning(f"[restore] hareket kaydı yazılamadı {order_id}: {_mv2}")
+        except Exception as _e:
+            logger.error(f"[restore re-decrement {order_id}] {_e}")
+    await db.orders.replace_one({"id": order_id}, _pii_seal(arch), upsert=True)  # KVKK: düz TCKN yazılmaz
     await db.orders_deleted.delete_one({"id": order_id})
     await _log_order_event(order_id, "status", "Sipariş geri alındı (arşivden)", current_user, {},
                            order_number=arch.get("order_number", ""))
@@ -2654,7 +4204,10 @@ async def _stock_delta_for_order(order: dict, delta: int) -> list:
         # NEGATİF STOK YASAK (kullanıcı kararı): düşüşte önce KOŞULLU dene (stok >= adet);
         # yetmiyorsa 0'a SABİTLE ve uyarı logla/push'la — pazaryeri satışı geri çevrilemez ama
         # stok eksiye sürüklenmez (eksi değer vitrine/rapora yanlış sinyal veriyordu).
-        prod = await db.products.find_one({"variants.barcode": barcode}, {"_id": 0, "id": 1, "name": 1})
+        # Aynı barkod hem aktif hem ÇÖP KUTUSUNDAKİ (kopya) üründe olabilir → stok değişimi
+        # her zaman silinmemiş ürüne uygulanır; yoksa (yalnız silinmişte varsa) ona.
+        prod = await db.products.find_one({"variants.barcode": barcode, "is_deleted": {"$ne": True}}, {"_id": 0, "id": 1, "name": 1}) \
+            or await db.products.find_one({"variants.barcode": barcode}, {"_id": 0, "id": 1, "name": 1})
         if prod:
             _now_iso = datetime.now(timezone.utc).isoformat()
             _applied = delta * qty
@@ -2744,6 +4297,28 @@ _RESTORE_MOVE_TYPES = ["order_cancelled", "auto_cancel_expired", "manual_increme
 _DEDUCT_MOVE_TYPES = ["order_created", "order_imported", "manual_decrement", "backfill_decrement"]
 
 
+async def _consume_restore_moves(order_id: str, reason: str) -> int:
+    """Bir siparişin restore (geri-stok) hareketlerini SİLMEK yerine 'tüketildi' işaretler.
+
+    Neden: reaktivasyon/reconcile'de stok yeniden düşülünce, bayat restore hareketi sonraki
+    GERÇEK iptalin restock guard'ını (_RESTORE_MOVE_TYPES) bloklamasın diye eskiden
+    `delete_many` ile SİLİNİYORDU (orders reactivate + payment reconcile). Bu, panelde ürün
+    STOK GEÇMİŞİNİ yok ediyordu ("loglar kayboldu"). Silmek yerine type'ı guard listesinin
+    DIŞINA taşıyoruz (type += '_consumed') → tüm guard'lar (hepsi `type $in _RESTORE_MOVE_TYPES`
+    tam-eşleşme) bunları ARTIK GÖRMEZ (silinmiş gibi davranır) AMA audit satırı KORUNUR.
+    İdempotent: ikinci çağrıda eşleşen kalmaz. Stok miktarına DOKUNMAZ (yalnız log tipi)."""
+    now = datetime.now(timezone.utc).isoformat()
+    res = await db.stock_movements.update_many(
+        {"order_id": order_id, "type": {"$in": list(_RESTORE_MOVE_TYPES)}},
+        [{"$set": {
+            "type": {"$concat": [{"$ifNull": ["$type", ""]}, "_consumed"]},
+            "consumed_at": now,
+            "consumed_reason": reason,
+        }}],
+    )
+    return int(getattr(res, "modified_count", 0) or 0)
+
+
 def _mv_key(it: dict):
     """Hareket kaleminin tekil stok anahtarı. barcode en tutarlı kaydedilen alan olduğundan
      önceliklidir (düşüm ve iade hareketleri arasında eşleşme maksimum olsun); yoksa
@@ -2776,6 +4351,125 @@ async def _resolve_move_level(it: dict) -> str:
     return "product"
 
 
+_CANCEL_ST_FOR_STAMP = ("cancelled", "cancel_refunded")
+
+
+async def stamp_cancelled_at(order_id: str = "", order_number: str = "",
+                             when: str = "", source: str = "") -> bool:
+    """İPTAL TARİHİNİ DONDUR — bir kez yazılır, bir daha DEĞİŞMEZ.
+
+    Neden: raporlar iptali "iptalin kesinleştiği ay"a yazıyor ve tarihi
+    `cancelled_at` yoksa `updated_at`'ten okuyor. Ama `updated_at` siparişe her
+    dokunulduğunda (pazaryeri senkronu 2 dk'da bir) ileri kayıyor → geçen ayın
+    iptal rakamı her gün kendiliğinden değişiyordu. Gider pusulasında bu sorun
+    yok çünkü kesim tarihi sabit; iptalde de aynı sabitliği kuruyoruz.
+
+    Koşullu yazar (`cancelled_at` YOKSA) → mevcut doğru tarihi ASLA ezmez.
+    Döner: bu çağrı damgayı yazdıysa True.
+    """
+    q = {"cancelled_at": {"$exists": False}}
+    if order_id:
+        q["id"] = order_id
+    elif order_number:
+        q["order_number"] = order_number
+    else:
+        return False
+    try:
+        res = await db.orders.update_one(q, {"$set": {
+            "cancelled_at": when or datetime.now(timezone.utc).isoformat(),
+            "cancelled_at_source": source or "live",
+        }})
+        return bool(res.modified_count)
+    except Exception as _e:
+        logger.warning(f"[iptal-tarihi] damga yazılamadı ({order_id or order_number}): {_e}")
+        return False
+
+
+async def _order_was_deducted(order: dict) -> bool:
+    """Bu sipariş stoktan GERÇEKTEN düşüldü mü? (FAZ 2 — hayalet stok koruması)
+
+    Düşüm kaydı olmayan bir siparişi iptal/iade edince sistem siparişin TAM ADEDİNİ
+    stoğa ekliyordu; yani hiç çıkmamış malı depoya geri koyuyordu. Bu, katalogda
+    binlerce adetlik hayalet stoğun kaynağıydı.
+
+    Sıra: (1) sipariş belgesindeki damga — yeni siparişlerde kesin cevap,
+          (2) defterdeki düşüm hareketi. Pazaryeri içe aktarımı hareketi bazen
+              sipariş NUMARASIYLA anahtarlamış olabilir (id yerine), o yüzden üç
+              anahtar da denenir — aksi halde gerçekten düşülmüş sipariş yanlışlıkla
+              "düşülmemiş" sayılıp iadesi engellenirdi.
+    """
+    if (order or {}).get("stock_deducted"):
+        return True
+    oid = str((order or {}).get("id") or "")
+    onum = str((order or {}).get("order_number") or "")
+    ors = []
+    if oid:
+        ors.append({"order_id": oid})
+    if onum:
+        ors.append({"order_id": onum})
+        ors.append({"order_number": onum})
+    if not ors:
+        return False
+    try:
+        return bool(await db.stock_movements.find_one(
+            {"$or": ors, "type": {"$in": _DEDUCT_MOVE_TYPES}}, {"_id": 1}))
+    except Exception as _e:
+        logger.warning(f"[stok] düşüm kontrolü okunamadı ({oid or onum}): {_e}")
+        return True   # okunamadıysa ESKİ davranış (iade et) — veri kaybı riski alma
+
+
+async def _log_restock_skip(order: dict, move_type: str, source: str = "") -> None:
+    """Hayalet iade ENGELLENDİĞİNDE görünür iz bırak (stok DEĞİŞMEZ).
+
+    SİPARİŞ BAŞINA BİR KEZ. Bu izi bırakan yolların bir kısmı cron'dur (Trendyol
+    iptal taraması her 5 dk, claim senkronu dakikalar) ve engelleme stoğa hareket
+    yazmadığı için guard'lara takılmaz; idempotent olmasaydı aynı sipariş için her
+    turda yeni bir kayıt yazılıp defter şişerdi.
+    """
+    try:
+        _oid = (order or {}).get("id")
+        _onum = (order or {}).get("order_number", "")
+        _q = []
+        if _oid:
+            _q.append({"order_id": _oid})
+        if _onum:
+            _q.append({"order_number": _onum})
+        if _q and await db.stock_movements.find_one(
+                {"$or": _q, "type": "restock_skipped_no_deduction"}, {"_id": 1}):
+            return      # bu sipariş için iz zaten var
+        # KALEMLER delta=0 ile yazılır. Boş bırakılırsa kayıt ÜRÜN SAYFASINDAKİ stok
+        # hareketlerinde GÖRÜNMEZ (o ekran items.product_id / items.barcode ile sorgular)
+        # ve "engellendi" bilgisi kimseye ulaşmaz. delta=0 olduğu için stoğa etkisi YOK;
+        # engellenen adet ayrı alanda (engellenen_adet) saklanır.
+        _items = []
+        try:
+            for _it in ((order or {}).get("items") or [])[:50]:
+                _bc = str((_it or {}).get("barcode") or (_it or {}).get("sku") or "").strip()
+                if not _bc:
+                    continue
+                try:
+                    _q2 = max(1, int((_it or {}).get("quantity") or 1))
+                except Exception:
+                    _q2 = 1
+                _p = await db.products.find_one(
+                    {"$or": [{"variants.barcode": _bc}, {"barcode": _bc}]},
+                    {"_id": 0, "id": 1})
+                _items.append({"barcode": _bc, "product_id": (_p or {}).get("id"),
+                               "delta": 0, "engellenen_adet": _q2})
+        except Exception:
+            _items = []
+        await db.stock_movements.insert_one({
+            "id": str(uuid.uuid4()), "type": "restock_skipped_no_deduction",
+            "order_id": (order or {}).get("id"),
+            "order_number": (order or {}).get("order_number", ""),
+            "items": _items, "source": source or move_type,
+            "reason": "siparişin stok düşüm kaydı yok — hayalet iade engellendi",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        })
+    except Exception:
+        pass
+
+
 async def _restock_authoritative(order: dict, move_type: str, want: dict = None):
     """TEK OTORİTER İADE YOLU (B1/B3/B5/B7/B8).
 
@@ -2795,8 +4489,12 @@ async def _restock_authoritative(order: dict, move_type: str, want: dict = None)
         return None
     deducted = {}
     async for mv in db.stock_movements.find(
-            {"order_id": oid, "type": {"$in": _DEDUCT_MOVE_TYPES}}, {"_id": 0, "items": 1}):
-        for it in (mv.get("items") or []):
+            {"order_id": oid, "type": {"$in": _DEDUCT_MOVE_TYPES}}, {"_id": 0, "items": 1, "moves": 1}):
+        # DENETİM (stok-sync #1 KRİTİK): pazaryeri düşümleri (order_imported) deltaları "moves"
+        # anahtarında yazıyor; buradaki reader yalnız "items"a bakıyordu → pazaryeri düşümleri
+        # otoriter restock'a GÖRÜNMEZ olup çağıran tam-adet iadeye düşüyordu (hayalet +stok →
+        # Amazon'a push → oversell). İki anahtarı da oku.
+        for it in (mv.get("items") or mv.get("moves") or []):
             d = int(it.get("delta") or 0)
             if d >= 0:
                 continue
@@ -2845,6 +4543,12 @@ async def release_order_redemptions(order_or_id) -> int:
     oid = order_or_id if isinstance(order_or_id, str) else (order_or_id or {}).get("id")
     if not oid:
         return 0
+    # COM03: atomik kullanım hakkı tutmaları (reserved/used) da serbest bırakılır (idempotent).
+    try:
+        from .coupons import release_coupon_usage
+        await release_coupon_usage(oid)
+    except Exception as _rcu:
+        logger.warning(f"[coupon] kullanım tutması bırakılamadı (sipariş {oid}): {_rcu}")
     res = await db.coupon_redemptions.delete_many({"order_id": oid})
     if res.deleted_count:
         logger.info(f"[coupon] iptal → {res.deleted_count} kupon hakkı serbest bırakıldı (sipariş {oid})")
@@ -2873,10 +4577,15 @@ async def release_cancelled_redemptions_backfill():
     logger.info(f"[coupon backfill] tarandı={scanned} serbest bırakıldı={released}")
 
 
-async def record_order_redemptions(order: dict) -> None:
+# Promosyon motorunun ürettiği ve GERÇEK kupon karşılığı olmayan kalemler.
+_SYNTHETIC_PROMO_IDS = {"edu_discount", "member_discount"}
+
+
+async def record_order_redemptions(order: dict) -> bool:
     """Siparişin kuponlarını coupon_redemptions'a yazar (usage_limit / per_user sayımı için).
     İdempotent: aynı (coupon_id, order_id) için ikinci kez yazmaz. FİYATA DOKUNMAZ.
-    Y6: Kart siparişlerinde ÖDEME ONAYINDAN sonra çağrılır; başarısız ödemede kupon yanmaz."""
+    Y6: Kart siparişlerinde ÖDEME ONAYINDAN sonra çağrılır; başarısız ödemede kupon yanmaz.
+    Döner: True = kayıt tamamlandı (ya da kaydedilecek kupon yok); False = hata (yeniden denenmeli)."""
     try:
         # GÜVENLİK: e-postayı lowercase normalize et — kupon per-user/first-order sayımı
         # eval tarafında lowercase sorgulandığından, mixed-case saklarsak limit ATLANABİLİYORDU.
@@ -2886,25 +4595,32 @@ async def record_order_redemptions(order: dict) -> None:
         if _applied:
             for _a in _applied:
                 _cid = _a.get("coupon_id")
-                if _cid:
+                # SENTETİK kalemler (gerçek kupon değil, ör. öğrenci indirimi) kullanım
+                # sayımına YAZILMAZ — coupon_redemptions yalnız gerçek kuponları taşır.
+                if _cid and _cid not in _SYNTHETIC_PROMO_IDS:
                     _redeem_ids.append((_cid, float(_a.get("discount", 0) or 0)))
-        elif order.get("coupon_code"):
+        elif order.get("coupon_code") and "applied_promotions" not in order:
+            # YALNIZ eski (promo motoru öncesi) siparişler: applied_promotions alanı hiç yoksa kod
+            # üzerinden kaydedilir. Alan VAR ama boşsa motor kuponu REDDETMİŞTİR (limit dolu, süre
+            # bitti…) → indirim uygulanmadı, kullanım hakkı YAKILMAZ (COM03).
             _c = await db.coupons.find_one({"code": order["coupon_code"]}, {"_id": 0, "id": 1})
             if _c:
                 _redeem_ids.append((_c["id"], float(order.get("discount", 0) or 0)))
+        from .coupons import record_coupon_redemption_once, mark_coupon_usage_used
         for _cid, _disc in _redeem_ids:
-            _exists = await db.coupon_redemptions.find_one({"coupon_id": _cid, "order_id": order["id"]})
-            if not _exists:
-                await db.coupon_redemptions.insert_one({
-                    "coupon_id": _cid,
-                    "order_id": order["id"],
-                    "user_id": order.get("user_id"),
-                    "customer_email": _email,
-                    "discount": _disc,
-                    "created_at": datetime.now(timezone.utc).isoformat(),
-                })
+            # İdempotent upsert (coupon_id, order_id) — eşzamanlı iki çağrı çift satır yazamaz.
+            await record_coupon_redemption_once(_cid, order["id"], {
+                "user_id": order.get("user_id"),
+                "customer_email": _email,
+                "discount": _disc,
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            })
+            # COM03: atomik kullanım tutması reserved → used (zamanlama redemption ile AYNI).
+            await mark_coupon_usage_used(_cid, order["id"])
+        return True
     except Exception as _redeem_err:
         logger.warning(f"Promosyon kullanım kaydı başarısız (sipariş etkilenmedi): {_redeem_err}")
+        return False
 
 
 async def _restock_return_items_once(rec: dict, order: dict = None) -> int:
@@ -2919,7 +4635,7 @@ async def _restock_return_items_once(rec: dict, order: dict = None) -> int:
     if not order:
         return 0
     _plat = str(order.get("platform") or order.get("marketplace") or "").lower()
-    if _plat in ("trendyol", "hepsiburada", "temu"):
+    if _plat in ("trendyol", "hepsiburada", "temu", "n11", "amazon"):
         return 0
     # Atomik guard: yalnız henüz restock edilmemişse ilerle (yarış/çift-çağrı koruması).
     _claim = await db.customer_returns.update_one(
@@ -3011,8 +4727,19 @@ async def _restock_order_once(order: dict, move_type: str) -> list:
     # kadar iade edilir). Kalem-bazlı idempotent.
     moves = await _restock_authoritative(order, move_type, want=None)
     if moves is None:
-        # Ledger yok (eski sipariş, order_created hareketi olmayan) → eski davranış: broad guard
-        # + tam qty (mevcut davranıştan daha kötü değil).
+        # FAZ 2 — HAYALET STOK KORUMASI. Buraya düşmek "siparişin düşüm kaydı yok"
+        # demektir. Eskiden siparişin TAM ADEDİ stoğa ekleniyordu: hiç çıkmamış mal
+        # depoya geri konuyordu. Artık düşülmemiş siparişe stok EKLENMEZ.
+        # NOT: bu kontrol, hediye çeki / sadakat puanı / kupon iade bloğunun ALTINDA
+        # durur — o iadeler müşteri parasıdır ve stoktan bağımsız olarak YAPILMALIDIR.
+        if not await _order_was_deducted(order):
+            logger.warning(f"[stok] hayalet iade engellendi: sipariş {oid} "
+                           f"({order.get('order_number','')}) stoktan hiç düşülmemiş "
+                           f"— {move_type} stok EKLEMEDİ")
+            await _log_restock_skip(order, move_type)
+            return []
+        # Düşüm var ama otoriter yol eşleştiremedi (ör. hareket sipariş NUMARASIYLA
+        # anahtarlanmış) → eski davranış: geniş guard + tam adet.
         if oid and await db.stock_movements.find_one(
                 {"order_id": oid, "type": {"$in": _RESTORE_MOVE_TYPES}}, {"_id": 1}):
             return []  # zaten iade edilmiş
@@ -3034,7 +4761,7 @@ async def _restock_order_once(order: dict, move_type: str) -> list:
 async def apply_stock_for_order(
     order_id: str,
     action: str = Query(..., description="'decrement' (new order) or 'increment' (cancel/refund)"),
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.edit"))
 ):
     """Manually trigger stock adjustment for an order (use for reconciliation)."""
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
@@ -3060,7 +4787,7 @@ async def reconcile_stock_backfill(
     start_date: str = Query(...),
     action: str = Query("decrement"),
     skip_status: str = Query("cancelled,returned,refunded"),
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.edit"))
 ):
     """İdempotent stok mutabakatı: platform + start_date sonrası siparişlerden HENÜZ
     stok-düşümü yapılmamış olanlara delta uygular. Daha önce düşüm hareketi olan siparişi
@@ -3122,7 +4849,7 @@ async def reconcile_stock_backfill(
 @router.post("/auto-cancel-expired")
 async def auto_cancel_expired_orders(
     hours: int = Query(48, ge=1),
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.edit"))
 ):
     """Cancel orders that have been unpaid for more than N hours and restock.
 
@@ -3195,7 +4922,7 @@ async def reclassify_auto_cancelled_unpaid_orders():
 @router.post("/recover-charged")
 async def recover_charged_orders(
     payload: dict = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("orders.edit")),
 ):
     """Parası çekilip siparişi ONAYLANMAYAN müşterileri kurtarır (admin, tarayıcıdan çağrılabilir).
 
@@ -3299,7 +5026,7 @@ async def recover_charged_orders(
 @router.post("/missing-size")
 async def find_missing_size_orders(
     payload: dict = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("orders.view")),
 ):
     """Bedeni OLAN üründe kalemi BEDENSİZ kalmış siparişleri bulur (tanı — sadece rapor).
 
@@ -3360,7 +5087,7 @@ async def find_missing_size_orders(
 async def add_order_note(
     order_id: str,
     payload: dict,
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.note"))
 ):
     """Add/update admin note on order (e.g. havale takip)."""
     note = (payload or {}).get("note", "").strip()
@@ -3395,10 +5122,12 @@ async def ship_order(
     order_id: str,
     cargo_company: str = Query(..., description="Kargo firması kodu"),
     tracking_number: str = Query(..., min_length=3, description="Kargo takip numarası"),
-    current_user: dict = Depends(require_admin)
+    expected_status: Optional[str] = Query(None, max_length=64),
+    current_user: dict = Depends(require_permission("orders.ship"))
 ):
     """Siparişi kargoya ver: status=shipped + cargo_company + cargo_tracking_number.
     Bildirim hook'u (order_shipped) otomatik tetiklenir.
+    COM08: `expected_status` (ekranda görülen statü) verilirse ve güncel statü farklıysa 409.
     """
     if cargo_company not in VALID_CARGO_COMPANIES:
         raise HTTPException(status_code=400, detail=f"Geçersiz kargo firması. Geçerli: {sorted(VALID_CARGO_COMPANIES)}")
@@ -3407,9 +5136,26 @@ async def ship_order(
     if not existing:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
 
+    # DENETİM (bizlogic F4): ödeme guard'ı yoktu → ÖDENMEMİŞ (awaiting_payment) veya İPTAL sipariş
+    # kargoya verilebiliyordu (CLAUDE.md Değişmez 2/4). Yalnız ödenmiş/onaylı sipariş sevk edilir.
+    _ps = str(existing.get("payment_status") or "")
+    _st = str(existing.get("status") or "")
+    if isinstance(expected_status, str) and expected_status and expected_status != _st:
+        raise HTTPException(status_code=409, detail=(
+            f"Sipariş durumu bu arada değişti (şu an: {_st or '-'}). Sayfayı yenileyip tekrar deneyin."))
+    if _ps != "paid" and _st not in ("confirmed", "processing", "shipped", "delivered", "undelivered"):
+        raise HTTPException(status_code=400,
+            detail=f"Ödemesi tamamlanmamış/uygun olmayan sipariş kargoya verilemez (durum: {_st or '?'}, ödeme: {_ps or '?'}).")
+    # COM08: iptal edilmiş / ödemesi iade edilmiş / ödeme süresi dolmuş sipariş (ödenmiş olsa bile)
+    # kargoya VERİLEMEZ — geçersiz birleşim (iptal + sevk) oluşmaz.
+    if _st in ("cancelled", "cancel_refunded", "refunded", "returned", "payment_failed"):
+        raise HTTPException(status_code=409,
+            detail=f"Bu sipariş '{_st}' durumunda; kargoya verilemez.")
+
     now_iso = datetime.now(timezone.utc).isoformat()
-    await db.orders.update_one(
-        {"id": order_id},
+    # COM08: karşılaştır-ve-yaz — okunan statü arada (eşzamanlı iptal vb.) değiştiyse 409.
+    _ship_res = await db.orders.update_one(
+        {"id": order_id, "status": existing.get("status")},
         {"$set": {
             "status": "shipped",
             "cargo_company": cargo_company,
@@ -3418,6 +5164,9 @@ async def ship_order(
             "updated_at": now_iso,
         }},
     )
+    if getattr(_ship_res, "matched_count", 1) == 0:
+        raise HTTPException(status_code=409, detail=(
+            "Sipariş durumu eşzamanlı başka bir işlemle değişti (ör. iptal). Sayfayı yenileyip tekrar deneyin."))
 
     await _log_order_event(order_id, "cargo", f"Kargoya verildi: {cargo_company} ({tracking_number.strip()})", current_user,
                            {"cargo_company": cargo_company, "tracking_number": tracking_number.strip()},
@@ -3453,7 +5202,7 @@ async def mark_order_undelivered(
     order_id: str,
     reason: str = Query("Kargo teslim edilemedi", description="Teslim edilememe nedeni"),
     branch_info: str = Query("", description="Şube bilgisi / nerede bekliyor"),
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.ship"))
 ):
     """Kargo teslim edilemedi (şubede bekliyor) durumunu işaretler ve müşteriye bildirim atar."""
     existing = await db.orders.find_one({"id": order_id}, {"_id": 0})
@@ -3496,11 +5245,13 @@ async def mark_order_undelivered(
 async def mark_order_invoiced(
     order_id: str,
     payload: dict,
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.edit"))
 ):
     """Mark order as invoiced – locks edits, flips status to 'confirmed' if pending."""
     invoice_number = (payload or {}).get("invoice_number", "")
-    existing = await db.orders.find_one({"id": order_id}, {"_id": 0, "status": 1})
+    existing = await db.orders.find_one({"id": order_id}, {"_id": 0, "status": 1, "payment_method": 1,
+                                                         "payment_status": 1, "platform": 1, "marketplace": 1,
+                                                         "paid_with_gift_card_only": 1, "imported_from": 1})
     if not existing:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
     update = {
@@ -3510,9 +5261,18 @@ async def mark_order_invoiced(
         "invoice_issued_by": current_user.get("email", ""),
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
-    if existing.get("status") == "pending":
+    # DEĞİŞMEZ #1: ödemesi ALINMAMIŞ site KART siparişi fatura işaretiyle 'confirmed' YAPILMAZ
+    # (update_order_status'taki kapıyla aynı kural); kapıda ödeme / pazaryeri eski davranışında kalır.
+    _unpaid_card = (str(existing.get("payment_method") or "").lower() in _CARD_PMS
+                    and str(existing.get("payment_status") or "").lower() not in _SETTLED_PAY
+                    and not existing.get("paid_with_gift_card_only") and not existing.get("imported_from")
+                    and _is_site_order(existing))
+    if existing.get("status") == "pending" and not _unpaid_card:
         update["status"] = "confirmed"
-    await db.orders.update_one({"id": order_id}, {"$set": update})
+    # BL-035: elle işlenen fatura → inceleme/bekleyen gönderim izi kapanır.
+    update["invoice_needs_review"] = False
+    update["invoice_in_progress"] = False
+    await db.orders.update_one({"id": order_id}, {"$set": update, "$unset": {"invoice_pending": ""}})
     await _log_order_event(order_id, "invoice", f"Fatura işlendi: {invoice_number}".strip(), current_user, {"invoice_number": invoice_number})
     return {"success": True, "invoice_issued": True}
 
@@ -3527,28 +5287,141 @@ async def mark_order_invoiced(
 # FRONTEND: Orders.jsx handleGenerateInvoice + handleBulkGenerateInvoice.
 # ---------------------------------------------------------------------------
 @router.post("/{order_id}/reset-invoice")
-async def reset_invoice_for_order(order_id: str, current_user: dict = Depends(require_admin)):
+async def reset_invoice_for_order(order_id: str, request: Request,
+                                  current_user: dict = Depends(require_permission("orders.invoice"))):
     """Sipariş fatura kaydını panelde sıfırlar (yeniden kesilebilsin diye).
     Doğan'daki gerçek faturayı İPTAL ETMEZ; yalnız paneldeki fatura işaretini/numarasını temizler."""
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
     prev = order.get("invoice_number") or ""
-    await db.orders.update_one(
-        {"id": order_id},
-        {"$set": {"invoice_issued": False},
-         "$unset": {
-             "invoice_number": "", "invoice_uuid": "", "invoice_type": "",
-             "invoice_provider": "", "invoice_provider_response": "",
-             "invoice_intl_txn_id": "", "invoice_dogan_id": "", "invoice_pdf_url": "",
-             "invoice_issued_at": "", "invoice_issued_by": "",
-         }},
+    # BL-035: bekleyen (Doğan'a gitmiş olabilecek) UUID/numara da temizlenir — bu, yöneticinin
+    # Doğan portalında kontrol ettikten sonraki BİLİNÇLİ kararıdır; iz kaybolmasın diye geçmişe yazılır.
+    _pend = order.get("invoice_pending") or {}
+    _upd = {"$set": {"invoice_issued": False},
+            "$unset": {
+                "invoice_number": "", "invoice_uuid": "", "invoice_type": "",
+                "invoice_provider": "", "invoice_provider_response": "",
+                "invoice_intl_txn_id": "", "invoice_dogan_id": "", "invoice_pdf_url": "",
+                "invoice_issued_at": "", "invoice_issued_by": "",
+                # Başarısız denemelerin izleri de temizlensin (hata + olası takılı kilit) →
+                # tam temiz sayfa, yeniden 'Fatura Kes' engelsiz çalışsın.
+                "invoice_last_error": "", "invoice_last_error_at": "",
+                "invoice_in_progress": "", "invoice_in_progress_at": "",
+                "invoice_pending": "", "invoice_needs_review": "",
+                "invoice_manual_file": "",
+            }}
+    if _pend:
+        _upd["$push"] = {"invoice_pending_history": {
+            **_pend, "cleared_at": datetime.now(timezone.utc).isoformat(),
+            "cleared_by": current_user.get("email", "")}}
+    await db.orders.update_one({"id": order_id}, _upd)
+    # GÜVENLİK (denetim 2026-10): fatura kaydı sıfırlama çift-fatura riski taşır → iz bırak.
+    await record_admin_audit(
+        db, action="orders.invoice_reset", entity_type="order", entity_id=order_id,
+        before={"invoice_number": prev, "invoice_issued": bool(order.get("invoice_issued")),
+                "invoice_pending_number": str(_pend.get("number") or "")},
+        after={"invoice_number": "", "invoice_issued": False, "invoice_pending_number": ""},
+        current_user=current_user, request=request, source="admin.orders")
+    _warn = (f" UYARI: bekleyen UUID {_pend.get('uuid')} / no {_pend.get('number')} temizlendi — Doğan'da "
+             f"bu UUID ile fatura VARSA yeniden kesim ÇİFT fatura oluşturur." if _pend else "")
+    return {"success": True, "message": f"Fatura kaydı sıfırlandı ({prev or 'kayıt/deneme izi'} silindi), yeniden kesebilirsiniz.{_warn}"}
+
+
+# NOT: 2-segmentli yol (/diagnose/invoice) — tek-segment `GET /{order_id}` (yukarıda kayıtlı)
+# statik tek-segment yolu yutacağından burada 2 segment kullanılır; hiçbir literal 2-seg rota
+# ("/{order_id}/journey" vb.) "diagnose/invoice" ile eşleşmez → gölgeleme yok.
+@router.get("/diagnose/invoice")
+async def invoice_diagnose(q: str, current_user: dict = Depends(require_permission("orders.invoice"))):
+    """TAHRİBATSIZ teşhis: bir siparişe faturanın neden kesilmediğini, Doğan'a YENİDEN
+    göndermeden söyler. `q` = sipariş no (W11663), pazaryeri paket no (Trendyol/HB) veya iç id.
+    Siparişte saklı `invoice_last_error` (son Doğan reddi) + tüm ön-engelleri (onay/ödeme/
+    entegratör/VKN/kilit) tek yanıtta döndürür."""
+    q = safe_str(q, 80)
+    if not q:
+        raise HTTPException(status_code=400, detail="q (sipariş/paket no) gerekli")
+    _qre = {"$regex": f"^{re.escape(q)}$", "$options": "i"}
+    order = await db.orders.find_one(
+        {"$or": [
+            {"id": q}, {"order_number": _qre}, {"trendyol_package_id": _qre},
+            {"package_number": _qre}, {"shipment_package_id": _qre},
+            {"marketplace_order_id": _qre}, {"hepsiburada_order_number": _qre},
+        ]},
+        {"_id": 0},
     )
-    return {"success": True, "message": f"Fatura kaydı sıfırlandı ({prev or 'kayıt'} silindi), yeniden kesebilirsiniz"}
+    if not order:
+        raise HTTPException(status_code=404, detail=f"Sipariş bulunamadı: {q}")
+
+    # Aktif e-fatura entegratörü durumu
+    dogan_settings = await db.settings.find_one({"id": "dogan_edonusum"}, {"_id": 0}) or {}
+    dogan_active = bool(dogan_settings.get("enabled") and dogan_settings.get("username"))
+    integrator_ok = dogan_active
+    if not dogan_active:
+        cfg = await db.providers_config.find_one({"kind": "einvoice"}, {"_id": 0}) or {}
+        integrator_ok = bool(cfg.get("active_provider") and (cfg.get("providers") or {}).get(cfg.get("active_provider")))
+
+    # VKN/TCKN varlığı (KVKK: şifreli alanlar yalnız bu hesap için çözülür; yanıtta yalnız uzunluk)
+    _pv = _pii_reveal_doc(order)
+    _bill = dict(_pv.get("billing_address") or {})
+    _binfo = _pv.get("billing_info") or {}
+    _vkn = (_bill.get("tax_number") or _bill.get("tax_no") or _bill.get("vkn")
+            or _binfo.get("tax_number") or str(_pv.get("trendyol_identity_number") or "")).strip().replace(" ", "")
+
+    # Engelleri sırayla değerlendir → ilk bloklayan sebebi "blocker" olarak döndür
+    blocker = None
+    st = (order.get("status") or "")
+    if order.get("invoice_issued"):
+        blocker = None  # zaten kesilmiş
+    elif st in _PRE_CONFIRM_STATUSES:
+        blocker = f"Sipariş ONAYLANMAMIŞ (durum: '{st}'). Önce 'Onaylandı'ya alın."
+    elif _havale_invoice_block(order):
+        blocker = _havale_invoice_block(order)
+    elif not integrator_ok and not dogan_active:
+        blocker = "Aktif e-fatura entegratörü yok. Ayarlar > E-Dönüşüm'den Doğan'ı 'Aktif' yapın."
+    elif dogan_active and not integrator_ok:
+        blocker = "Doğan pasif ve Doğan-dışı entegratör gerçek gönderim yapmıyor (400)."
+
+    # Kilit yaşı (çakışma teşhisi)
+    _lock = order.get("invoice_in_progress")
+    _lock_at = order.get("invoice_in_progress_at")
+
+    return {
+        "found": True,
+        "order_id": order.get("id"),
+        "order_number": order.get("order_number"),
+        "platform": order.get("platform") or order.get("marketplace") or "site",
+        "status": st,
+        "payment_method": order.get("payment_method"),
+        "payment_status": order.get("payment_status"),
+        "invoice_issued": bool(order.get("invoice_issued")),
+        "invoice_number": order.get("invoice_number") or "",
+        "invoice_in_progress": bool(_lock),
+        "invoice_in_progress_at": _lock_at,
+        # BL-035: Doğan'a gönderilmiş olabilecek bekleyen fatura + inceleme işareti
+        "invoice_pending": order.get("invoice_pending") or None,
+        "invoice_needs_review": bool(order.get("invoice_needs_review")),
+        "has_vkn_tckn": bool(_vkn and len(_vkn) in (10, 11)),
+        "vkn_tckn_len": len(_vkn),
+        "dogan_active": dogan_active,
+        "dogan_is_test": bool(dogan_settings.get("is_test", True)),
+        "integrator_ok": integrator_ok,
+        # EN ÖNEMLİSİ: son gerçek Doğan reddi (varsa) — asıl sebep genellikle burada
+        "invoice_last_error": order.get("invoice_last_error") or "",
+        "invoice_last_error_at": order.get("invoice_last_error_at") or "",
+        "blocker": blocker,
+        "verdict": ("Fatura zaten kesilmiş." if order.get("invoice_issued")
+                    else blocker or
+                    (f"Ön-engel yok. Son Doğan hatası: {order.get('invoice_last_error')}"
+                     if order.get("invoice_last_error")
+                     else "Ön-engel yok, kayıtlı hata yok — 'Fatura Kes'e basınca gelen gerçek mesajı (artık 400+detail) iletin.")),
+    }
 
 
 # Havale/EFT siparişlerinde fatura, ödeme (havale) onaylanmadan KESİLMEZ.
 _HAVALE_PMS = ("bank_transfer", "havale", "eft", "havale_eft", "banka_havale", "havale/eft")
+# Online KART ödeme yöntemleri (modül düzeyi — durum kapısı da kullanır; create_order içindeki
+# aynı isimli yerel liste yalnız o fonksiyonu ilgilendirir).
+_CARD_PMS = ("credit_card", "card", "kredi_karti", "kart", "iyzico", "creditcard")
 _SETTLED_PAY = ("paid", "completed", "success", "succeeded", "captured")
 
 
@@ -3562,6 +5435,251 @@ def _havale_invoice_block(order: dict):
                 "Önce siparişin ödemesini 'Ödendi' olarak işaretleyin (havale onayı), "
                 "sonra faturayı kesin.")
     return None
+
+
+def _dogan_error_detail(kind: str, message) -> str:
+    """Doğan gönderim hatasını kullanıcıya anlaşılır şekilde döndürür. GEÇİCİ altyapı hatası
+    (503/TR7 'No Available Server'/timeout — Doğan sunucusu o an ayakta değil) ise; bu bizim
+    kod/veri hatamız DEĞİL, Doğan tarafıdır ve otomatik retry zaten denendi. Net yönlendirme
+    ver. Diğer (iş) hatalarında ham Doğan mesajını göster (VKN/adres/şablon/kontör vb.)."""
+    _msg = str(message or "")
+    try:
+        from dogan_client import _is_transient_dogan_error as _trn
+        _is_transient = _trn(_msg)
+    except Exception:
+        _is_transient = ("no available server" in _msg.lower() or "tr7" in _msg.lower()
+                         or "503" in _msg or "timeout" in _msg.lower())
+    if _is_transient:
+        return (f"Doğan {kind} sunucusu şu anda yanıt vermiyor (geçici — 'TR7 No Available Server' / "
+                f"503). Bu bir Doğan altyapı kesintisidir, siparişinizde/ayarınızda sorun yok; sistem "
+                f"otomatik birkaç kez denedi. Lütfen birkaç dakika sonra tekrar 'Fatura Kes' deneyin. "
+                f"Sürerse Doğan'a canlı {kind} servisinizin (ve sunucu IP izninin) aktif olup "
+                f"olmadığını sorun. [ham: {_msg[:180]}]")
+    return f"Doğan {kind} hatası: {_msg}"
+
+
+# ─── BL-035: MÜKERRER (ÇİFT) e-ARŞİV / e-FATURA KORUMASI ─────────────────────────────
+# Sorun: Doğan'a gönderim zaman aşımına uğrayıp aslında KABUL edildiyse, sonraki deneme
+# "mükerrer/zaten kayıtlı" alıyordu; eski kod bunu numara çakışması sanıp YENİ numara + YENİ
+# UUID ile ikinci bir yasal fatura kesiyordu. Kurallar:
+#   1) Gönderimden ÖNCE seçilen UUID+numara siparişe `invoice_pending` olarak yazılır; aynı
+#      sipariş için her yeniden denemede AYNI UUID/numara kullanılır (yenisi üretilmez).
+#   2) Doğan "mükerrer" derse YENİ belge kesilmez: Doğan'da bu UUID sorgulanır; bulunursa
+#      siparişe kesilmiş fatura olarak kaydedilir. Doğrulanamazsa `invoice_needs_review=True`
+#      ile durulur — ASLA otomatik yeni numara verilmez.
+#   3) `invoice_pending` varken yeni gönderimden önce Doğan sorgusu yapılır (bayat kilit dahil).
+#   4) Yalnız UUID'mizin Doğan'da OLMADIĞI doğrulanırsa (numara başka belgede) numara ilerler;
+#      UUID yine AYNI kalır → Doğan aynı UUID'li ikinci belgeyi zaten reddeder.
+_DOGAN_DUP_MARKERS = ("zaten", "mükerrer", "mukerrer", "duplicate", "already", "10009",
+                      "kayıtlı", "kayitli", "mevcut", "daha önce gönder", "daha once gonder",
+                      "eşleş", "eslesme", "eslesmekte")
+# Doğan durum sorgusunda "bu UUID ile belge yok" anlamına gelen ifadeler (yalnız bunlar
+# 'bulunamadı' sayılır; başka her hata 'doğrulanamadı' → inceleme gerekir).
+_DOGAN_NOT_FOUND_MARKERS = ("bulunam", "bulunmam", "bulunmuyor", "kayıt yok", "kayit yok",
+                            "not found", "mevcut değil", "mevcut degil", "yoktur")
+
+
+def _dogan_is_dup(res) -> bool:
+    r = res or {}
+    if str(r.get("code") or "") == "10009":
+        return True
+    return any(t in str(r.get("message", "")).lower() for t in _DOGAN_DUP_MARKERS)
+
+
+def _dogan_definite_reject(res) -> bool:
+    """Doğan isteği İŞLEDİ ve faturayı KESİN reddetti mi (ERROR_CODE dolu, mükerrer değil) ya da
+    istek hiç gönderilmedi mi (giriş hatası)? Bu durumda fatura Doğan'da OLUŞMADI → numara geri
+    alınabilir, bekleyen UUID silinebilir. Kodsuz hatalar (timeout/bağlantı) BELİRSİZDİR: fatura
+    Doğan'a ulaşmış olabilir → bekleyen UUID/numara korunur."""
+    r = res or {}
+    if _dogan_is_dup(r):
+        return False
+    if str(r.get("code") or "").strip():
+        return True
+    _m = str(r.get("message") or "")
+    return _m.startswith("Doğan login") or "SESSION_ID alınamadı" in _m
+
+
+def _dogan_lookup_invoice_sync(cli, kind: str, invoice_uuid: str) -> dict:
+    """Doğan'da bu UUID ile giden fatura var mı? (senkron; threadpool'da çağrılır, SALT OKUNUR)
+    Döner: {state: 'found'|'not_found'|'unknown', invoice_number, web_key, status, cancelled, detail}
+      - found     : belge Doğan'da var (numarası invoice_number)
+      - not_found : sorgu başarılı ve bu UUID ile belge YOK
+      - unknown   : sorgu başarısız / yanıt beklenmedik → karar verilemez (inceleme gerekir)"""
+    out = {"state": "unknown", "invoice_number": "", "web_key": "", "status": "",
+           "cancelled": False, "detail": ""}
+    _u = str(invoice_uuid or "").strip().lower()
+    if not _u:
+        out["detail"] = "UUID boş"
+        return out
+
+    def _first(obj, keys):
+        if isinstance(obj, dict):
+            for k in keys:
+                v = obj.get(k)
+                if v not in (None, "", [], {}) and not isinstance(v, (dict, list)):
+                    return str(v)
+            for v in obj.values():
+                r = _first(v, keys)
+                if r:
+                    return r
+        elif isinstance(obj, (list, tuple)):
+            for v in obj:
+                r = _first(v, keys)
+                if r:
+                    return r
+        return ""
+
+    def _err(ser):
+        e = ser.get("ERROR_TYPE") if isinstance(ser, dict) else None
+        if isinstance(e, dict) and e.get("ERROR_CODE"):
+            return str(e.get("ERROR_CODE")), str(e.get("ERROR_SHORT_DES") or e.get("ERROR_LONG_DES") or "")
+        return "", ""
+
+    try:
+        from zeep.helpers import serialize_object
+        if kind == "e-arsiv":
+            c = cli._get_earsiv_client()
+            ser = serialize_object(c.service.GetEArchiveInvoiceStatus(
+                REQUEST_HEADER=cli._make_header(), UUID=invoice_uuid)) or {}
+            code, msg = _err(ser)
+            if code:
+                out["detail"] = f"{code}: {msg}"[:200]
+                if any(t in msg.lower() for t in _DOGAN_NOT_FOUND_MARKERS):
+                    out["state"] = "not_found"
+                return out
+            invs = [i for i in (ser.get("INVOICE") or []) if i]
+            hdrs = [((i or {}).get("HEADER") or {}) for i in invs]
+            if not invs or all(not (h.get("INVOICE_ID") or h.get("STATUS") or h.get("UUID")) for h in hdrs):
+                out["state"] = "not_found"
+                return out
+            hdr = hdrs[0]
+            _ru = str(hdr.get("UUID") or (invs[0] or {}).get("UUID") or "").strip().lower()
+            if _ru and _ru != _u:
+                out["detail"] = "Doğan yanıtındaki UUID bizimkiyle eşleşmiyor"
+                return out
+            _no = str(hdr.get("INVOICE_ID") or (invs[0] or {}).get("INVOICE_ID") or "").strip()
+            if not _no:
+                out["detail"] = f"durum var ama fatura no yok ({hdr.get('STATUS')} {hdr.get('STATUS_DESC')})"
+                # Doğan, bu UUID ile belge YOKKEN hata kodu yerine durum satırı döndürüyor:
+                # STATUS=200, STATUS_DESC="FATURA ID BULUNAMADI" (canlı, 2026-10-05). Fatura numarası
+                # da yoksa bu KESİN "yok"tur → aynı UUID/numara ile güvenle yeniden gönderilir
+                # (Doğan aynı UUID'yi ikinci kez kabul etmez; mükerrer yanıtı ayrıca yakalanıyor).
+                _sd = str(hdr.get("STATUS_DESC") or "").lower()
+                if any(t in _sd for t in _DOGAN_NOT_FOUND_MARKERS):
+                    out["state"] = "not_found"
+                return out
+            out.update({
+                "state": "found", "invoice_number": _no,
+                "web_key": _first(ser, ("WEB_KEY",)),
+                "status": f"{hdr.get('STATUS') or ''} {hdr.get('STATUS_DESC') or ''}".strip(),
+                "cancelled": (str(hdr.get("PROFILE") or "").upper() == "IPTAL"
+                              or str(hdr.get("STATUS") or "") == "201"
+                              or "İPTAL" in str(hdr.get("STATUS_DESC") or "").upper()),
+            })
+            return out
+        # e-Fatura: giden (OUT) belge, yalnız başlık
+        c = cli._get_efatura_client()
+        ser = serialize_object(c.service.GetInvoice(
+            REQUEST_HEADER=cli._make_header(),
+            INVOICE_SEARCH_KEY={"UUID": invoice_uuid, "DIRECTION": "OUT"},
+            HEADER_ONLY="Y")) or {}
+        code, msg = _err(ser)
+        if code:
+            out["detail"] = f"{code}: {msg}"[:200]
+            if any(t in msg.lower() for t in _DOGAN_NOT_FOUND_MARKERS):
+                out["state"] = "not_found"
+            return out
+        invs = [i for i in (ser.get("INVOICE") or []) if isinstance(i, dict)]
+        if not invs:
+            out["state"] = "not_found"
+            return out
+        match = [i for i in invs if str(i.get("UUID") or "").strip().lower() == _u]
+        if not match:
+            # Sonuç döndü ama hiçbiri bizim UUID değil → filtre uygulanmamış olabilir; karar verilemez.
+            out["detail"] = "Doğan sonuç döndürdü ama UUID eşleşmesi yok"
+            return out
+        _m0 = match[0]
+        _no = str(_m0.get("ID") or _first(_m0.get("HEADER") or {}, ("ID", "INVOICE_ID")) or "").strip()
+        if not _no:
+            out["detail"] = "UUID bulundu ama fatura no okunamadı"
+            _h0 = _m0.get("HEADER") or {}
+            _sd = str(_h0.get("STATUS_DESCRIPTION") or _h0.get("STATUS_DESC") or "").lower()
+            if any(t in _sd for t in _DOGAN_NOT_FOUND_MARKERS):
+                out["state"] = "not_found"
+            return out
+        _h = _m0.get("HEADER") or {}
+        out.update({"state": "found", "invoice_number": _no,
+                    "status": f"{_h.get('STATUS') or ''} {_h.get('STATUS_DESCRIPTION') or ''}".strip()})
+        return out
+    except Exception as e:  # noqa: BLE001
+        out["detail"] = f"sorgu hatası: {str(e)[:180]}"
+        return out
+
+
+def _dogan_recovered_result(lk: dict, invoice_uuid: str, prev: dict = None) -> dict:
+    """Doğan'da bulunan (zaman aşımında kabul edilmiş) faturayı başarı sonucu biçimine çevirir."""
+    return {
+        "success": True, "code": "0", "already_sent": True, "recovered": True,
+        "message": f"Doğan'da mevcut fatura kaydedildi (mükerrer gönderim engellendi) {lk.get('status') or ''}".strip(),
+        "invoice_id": lk.get("invoice_number") or "",
+        "web_key": lk.get("web_key") or "",
+        "intl_txn_id": str((prev or {}).get("intl_txn_id") or ""),
+        "uuid": invoice_uuid,
+        "previous_message": str((prev or {}).get("message") or "")[:300],
+    }
+
+
+async def _efatura_used_numbers(epref: str, order_id: str) -> set:
+    """e-Fatura boşluk-doldurma için DOLU sıra numaraları: kesilmiş faturalar + başka siparişlerde
+    BEKLEYEN (Doğan'a gitmiş olabilecek) numaralar (BL-035)."""
+    _rx = {"$regex": f"^{re.escape(epref)}"}
+    used = set()
+    async for _uo in db.orders.find(
+        {"$or": [{"invoice_issued": True, "invoice_number": _rx},
+                 {"invoice_pending.number": _rx, "id": {"$ne": order_id}}]},
+        {"_id": 0, "invoice_number": 1, "invoice_issued": 1, "invoice_pending": 1}):
+        for _v in ((_uo.get("invoice_number") if _uo.get("invoice_issued") else ""),
+                   (_uo.get("invoice_pending") or {}).get("number")):
+            _v = str(_v or "")
+            if _v.startswith(epref):
+                try:
+                    used.add(int(_v[len(epref):]))
+                except Exception:
+                    pass
+    return used
+
+
+async def _invoice_set_pending(order_id: str, invoice_uuid: str, invoice_number: str,
+                               invoice_type: str, prev_pending: dict = None):
+    """Gönderimden ÖNCE seçilen UUID/numarayı siparişe yazar (BL-035)."""
+    _now = datetime.now(timezone.utc).isoformat()
+    _pp = prev_pending or {}
+    await db.orders.update_one({"id": order_id}, {"$set": {"invoice_pending": {
+        "uuid": invoice_uuid, "number": invoice_number, "type": invoice_type,
+        "started_at": (_pp.get("started_at") if _pp.get("uuid") == invoice_uuid else None) or _now,
+        "last_attempt_at": _now,
+    }}})
+
+
+async def _invoice_needs_review_exit(order_id: str, kind: str, invoice_uuid: str,
+                                     invoice_number: str, reason: str):
+    """Mükerrer/belirsiz durumda Doğan'da faturanın varlığı DOĞRULANAMADI → yeni belge KESİLMEZ.
+    Sipariş incelemeye işaretlenir, kilit bırakılır (bekleyen UUID/numara korunur) ve 409 döner."""
+    _msg = (f"{kind}: Doğan bu sipariş için faturanın zaten var olduğunu bildirdi ya da yanıt "
+            f"belirsiz kaldı, ancak Doğan'da UUID {invoice_uuid} (no {invoice_number}) ile fatura "
+            f"DOĞRULANAMADI ({str(reason or '')[:200]}). Çift fatura riskine karşı YENİ fatura "
+            f"kesilmedi. Doğan portalında bu UUID/numarayı kontrol edin: fatura varsa 'Fatura "
+            f"işlendi' ile numarasını kaydedin; yoksa fatura kaydını sıfırlayıp yeniden kesin.")
+    await db.orders.update_one({"id": order_id}, {"$set": {
+        "invoice_in_progress": False,
+        "invoice_needs_review": True,
+        "invoice_last_error": _msg,
+        "invoice_last_error_at": datetime.now(timezone.utc).isoformat(),
+    }})
+    logger.error(f"[BL-035] fatura inceleme gerekli order={order_id} uuid={invoice_uuid} "
+                 f"no={invoice_number}: {str(reason or '')[:200]}")
+    raise HTTPException(status_code=409, detail=_msg)
 
 
 async def _ensure_payment_reminder_templates():
@@ -3590,7 +5708,7 @@ async def _ensure_payment_reminder_templates():
 
 
 @router.post("/{order_id}/send-payment-reminder")
-async def send_payment_reminder(order_id: str, current_user: dict = Depends(require_admin)):
+async def send_payment_reminder(order_id: str, current_user: dict = Depends(require_permission("orders.edit"))):
     """Havale/EFT ödemesi henüz alınmamış siparişe MÜŞTERİYE ödeme hatırlatma SMS'i (+e-posta)
     gönderir. 72 saatlik ödeme penceresinde elle tetiklenir. Şablon: 'order_payment_reminder'
     (Bildirim Şablonları'ndan düzenlenebilir)."""
@@ -3667,10 +5785,26 @@ async def create_invoice_for_order(
       - "e-arsiv": Zorla e-Arşiv (bireysel TCKN dolu/boş hepsi)
       - "e-fatura": Zorla e-Fatura (10 haneli VKN şart)
     """
+    await _guard_restore_mode()   # ACİL ANAHTAR: geri yükleme modunda Doğan'a fatura gönderilmez → 423
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
     _ensure_order_confirmed(order, "fatura kesme")  # #17
+    # GÜVENLİK AĞI (HB4153705034): Hepsiburada kalem fiyatları zaten NET'tir; sipariş toplamı
+    # kalem toplamından farklıysa fatura bu farkı "iskonto" sayıp EKSİK kesiyordu. Kayıt
+    # bozuksa fatura KESİLMEZ, net hata döner (önce sipariş toplamı düzeltilmeli).
+    if str(order.get("platform") or "").lower() == "hepsiburada" and not order.get("invoice_issued"):
+        try:
+            _hb_calc = round(sum(float(i.get("price") or 0) * int(i.get("quantity") or 1)
+                                 for i in (order.get("items") or [])), 2)
+            _hb_tot = round(float(order.get("total") or 0), 2)
+        except Exception:
+            _hb_calc = _hb_tot = 0.0
+        if _hb_calc > 0 and abs(_hb_calc - _hb_tot) > 0.5:
+            raise HTTPException(status_code=409, detail=(
+                f"Hepsiburada sipariş toplamı ({_hb_tot:.2f} TL) kalemlerin toplamıyla "
+                f"({_hb_calc:.2f} TL) uyuşmuyor — fatura eksik/fazla kesilmesin diye durduruldu. "
+                f"Siparişi Hepsiburada'dan yeniden çekin."))
     if order.get("invoice_issued"):
         return {"success": True, "message": "Fatura zaten kesilmiş",
                 "invoice_number": order.get("invoice_number", "")}
@@ -3714,8 +5848,11 @@ async def create_invoice_for_order(
         # ATLANIR → dogan_result None kalır AMA en sonda invoice_issued=True yazılıp SIRA NUMARASI
         # YAKILIYORDU (fatura gerçekte GÖNDERİLMEDEN 'faturalandı' görünüyordu). Bu yüzden Doğan-dışı
         # sağlayıcı canlıya alınana kadar burada reddedilir — numara boşa yakılmaz.
+        # 501 DEĞİL: 5xx'i ara katman (Cloudflare/Railway) jenerik hata sayfasıyla değiştirip
+        # bu yönlendirme mesajını siler → kullanıcı yalnız "Fatura oluşturulamadı" görür. Yapılandırma
+        # hatası 400 ile döndürülür ki mesaj gövdesiyle ekrana ulaşsın.
         raise HTTPException(
-            status_code=501,
+            status_code=400,
             detail=(f"Seçili e-fatura entegratörü ('{active}') için gerçek gönderim henüz "
                     "implemente değil. Lütfen Ayarlar > E-Dönüşüm ekranından Doğan e-Dönüşüm'ü "
                     "etkinleştirin (kullanıcı adı/şifre girip 'Aktif' yapın)."),
@@ -3724,20 +5861,23 @@ async def create_invoice_for_order(
     # ─── AKILLI HİBRİT MOD ─────────────────────────────────────────────
     # invoice_type="auto" (default): VKN/TCKN dolu ise Doğan CheckUser ile
     # mükellef sorgula → mükellef ise e-Fatura, değilse e-Arşiv. Boşsa e-Arşiv.
-    bill = dict(order.get("billing_address") or {})
+    # KVKK: TCKN/VKN at-rest şifreli → fatura (UBL) için GERÇEK değer yalnız bu yerel kopyada çözülür.
+    # _pv asla veritabanına yazılmaz; `order` mühürlü haliyle kalır.
+    _pv = _pii_reveal_doc(order)
+    bill = dict(_pv.get("billing_address") or {})
     ship_addr = order.get("shipping_address") or {}
     # Site (meluni) KURUMSAL fatura talebi bilgileri billing_address'te DEĞİL, billing_info'da
     # tutulur (is_corporate/company_name/tax_office/tax_number). Marketplace'te billing_address dolu gelir.
     # billing_address boşsa billing_info'dan tamamla → kurumsal site siparişinde VKN bulunup CheckUser
     # ile e-Fatura'ya yükseltilebilsin. (Aksi halde VKN boş kalıp yanlışlıkla e-Arşiv kesiliyordu.)
-    _binfo = order.get("billing_info") or {}
+    _binfo = _pv.get("billing_info") or {}
     for _bk in ("tax_number", "tax_office", "company_name"):
         if not bill.get(_bk) and _binfo.get(_bk):
             bill[_bk] = _binfo.get(_bk)
     customer_vkn_raw = (bill.get("tax_number") or bill.get("tax_no") or bill.get("vkn") or "").strip().replace(" ", "")
     if not customer_vkn_raw:
         # Bireysel müşteri: Trendyol TCKN'i identityNumber alanında gelir
-        customer_vkn_raw = (str(order.get("trendyol_identity_number") or "")).strip().replace(" ", "")
+        customer_vkn_raw = (str(_pv.get("trendyol_identity_number") or "")).strip().replace(" ", "")
     receiver_alias = ""
 
     # Alıcı e-fatura mükellefi ise e-arşiv DÜZENLENEMEZ (Doğan 10013). Bu nedenle
@@ -3801,70 +5941,111 @@ async def create_invoice_for_order(
         raise HTTPException(status_code=409,
             detail="Bu sipariş için fatura işlemi şu anda sürüyor. Lütfen birkaç saniye bekleyip tekrar deneyin.")
 
-    # Sıra numarası: atomik sayaç (db.counters) — başarısız denemede bile ilerler,
-    # aynı numara BİR DAHA üretilmez (Doğan 10009 "duplicate" önlenir).
-    # Taban: panelde en son kesilen no'nun DEVAMI — dogan_edonusum.earchive_start_number
-    # (yıl bazlı: earchive_start_year ilgili yıla eşitse uygulanır).
-    year_str = datetime.now(timezone.utc).strftime("%Y")
-    seq_key = f"invoice_seq_{prefix}{year_str}"
-    base_start = 0
-    try:
-        if invoice_type == "e-arsiv":
-            if str((dogan_settings or {}).get("earchive_start_year") or "") == year_str:
-                base_start = int((dogan_settings or {}).get("earchive_start_number") or 0)
-        else:
-            if str((dogan_settings or {}).get("einvoice_start_year") or "") == year_str:
-                base_start = int((dogan_settings or {}).get("einvoice_start_number") or 0)
-    except Exception:
-        base_start = 0
-    _existing_ctr = await db.counters.find_one({"_id": seq_key})
-    if _existing_ctr is None and base_start > 0:
-        await db.counters.update_one(
-            {"_id": seq_key}, {"$setOnInsert": {"seq": base_start - 1}}, upsert=True
+    # ─── BL-035: BEKLEYEN FATURA (önceki denemede Doğan'a gitmiş olabilir) ─────────
+    # Önceki deneme zaman aşımı/kesinti ile bittiyse siparişte `invoice_pending` (UUID+no+tip)
+    # kalır. Bu durumda (bayat kilit devralınsa bile) YENİ UUID/numara ÜRETİLMEZ: önce Doğan'da
+    # bu UUID sorgulanır → varsa kesilmiş fatura olarak kaydedilir; yoksa AYNI UUID/numara ile
+    # yeniden gönderilir; doğrulanamazsa inceleme işaretlenip durulur.
+    _pending = dict(((_claim or {}).get("invoice_pending")) or {})
+    _pnum = str(_pending.get("number") or "")
+    _reuse_pending = bool(dogan_active and _pending.get("uuid") and len(_pnum) > 13
+                          and _pnum[-13:].isdigit()
+                          and _pending.get("type") in ("e-arsiv", "e-fatura"))
+    _recovered_result = None
+    _used = set()
+    if _reuse_pending:
+        if _pending["type"] != invoice_type:
+            logger.warning(f"[BL-035] order {order_id}: bekleyen fatura tipi {_pending['type']} "
+                           f"korunuyor (istenen/çözülen: {invoice_type})")
+            invoice_type = _pending["type"]
+        invoice_uuid = str(_pending["uuid"])
+        invoice_number = _pnum
+        prefix = invoice_number[:-13]
+        year_str = invoice_number[-13:-9]
+        seq = int(invoice_number[-9:])
+        seq_key = f"invoice_seq_{prefix}{year_str}"
+        from dogan_client import DoganClient as _DCp
+        from fastapi.concurrency import run_in_threadpool as _rtp_p
+        _pcli = _DCp(
+            username=dogan_settings["username"],
+            password=dogan_settings["password"],
+            is_test=dogan_settings.get("is_test", True),
         )
-    # O2: Atomik artır-ve-oku. Önceki $inc + ayrı find_one, eşzamanlı iki fatura isteğinde aynı
-    # seq'i okuyup AYNI fatura numarasını üretebiliyordu. find_one_and_update tekilliği garanti eder.
-    _seq_doc = await db.counters.find_one_and_update(
-        {"_id": seq_key}, {"$inc": {"seq": 1}}, upsert=True, return_document=ReturnDocument.AFTER
-    ) or {}
-    seq = int(_seq_doc.get("seq", 1))
-    invoice_number = f"{prefix}{year_str}{seq:09d}"
-
-    # ── E-FATURA "BOŞLUK DOLDURMA" KURALI (SADECE e-Fatura) ─────────────────────
-    # Başlangıç no'sundan (einvoice_start_number, örn. 34) başlayıp KULLANILMAMIŞ ilk
-    # numarayı seç; kesilmiş (invoice_issued) FCE numaralarını atla. Böylece 034'ten
-    # başlar, aradaki boşlukları doldurur, 054/055/058 gibi kesilmişleri atlar, sonra
-    # 059+ sıradan devam eder — GİB ardışıklığı korunur, numara boşa gitmez.
-    # TABAN = einvoice_start_number (varsa); yoksa en düşük kesilmiş no. Böylece portalda
-    # kesilen son no'nun DEVAMINDAN (34) doldurmaya başlar, min(used)'e takılmaz.
-    # (e-Arşiv değişmez; atomik sayaç aynen çalışır. Eşzamanlılık: aynı no seçilirse
-    #  Doğan 10009 döner, aşağıdaki mükerrer-retry döngüsü bir sonrakine geçer.)
-    if invoice_type == "e-fatura":
+        _plk = await _rtp_p(_dogan_lookup_invoice_sync, _pcli, invoice_type, invoice_uuid)
+        _pkind = "e-Arşiv" if invoice_type == "e-arsiv" else "e-Fatura"
+        if _plk.get("state") == "found" and not _plk.get("cancelled"):
+            logger.warning(f"[BL-035] order {order_id}: bekleyen {_pkind} Doğan'da MEVCUT "
+                           f"({_plk.get('invoice_number')}) → yeni fatura kesilmeden kaydediliyor")
+            invoice_number = _plk.get("invoice_number") or invoice_number
+            _recovered_result = _dogan_recovered_result(_plk, invoice_uuid)
+        elif _plk.get("state") == "found":
+            await _invoice_needs_review_exit(order_id, _pkind, invoice_uuid, invoice_number,
+                                             f"Doğan'da bu UUID İPTAL durumda ({_plk.get('status')})")
+        elif _plk.get("state") != "not_found":
+            await _invoice_needs_review_exit(order_id, _pkind, invoice_uuid, invoice_number,
+                                             _plk.get("detail") or "Doğan sorgusu sonuçsuz")
+        else:
+            logger.warning(f"[BL-035] order {order_id}: bekleyen {_pkind} Doğan'da YOK → aynı "
+                           f"UUID/numara ({invoice_number}) ile yeniden gönderilecek")
+    else:
+        # Sıra numarası: atomik sayaç (db.counters) — başarısız denemede bile ilerler,
+        # aynı numara BİR DAHA üretilmez (Doğan 10009 "duplicate" önlenir).
+        # Taban: panelde en son kesilen no'nun DEVAMI — dogan_edonusum.earchive_start_number
+        # (yıl bazlı: earchive_start_year ilgili yıla eşitse uygulanır).
+        year_str = datetime.now(timezone.utc).strftime("%Y")
+        seq_key = f"invoice_seq_{prefix}{year_str}"
+        base_start = 0
         try:
-            _epref = f"{prefix}{year_str}"
-            _used = set()
-            async for _uo in db.orders.find(
-                {"invoice_issued": True, "invoice_number": {"$regex": f"^{re.escape(_epref)}"}},
-                {"_id": 0, "invoice_number": 1}):
-                try:
-                    _used.add(int(str(_uo.get("invoice_number") or "")[len(_epref):]))
-                except Exception:
-                    pass
-            # Taban: ayarlı başlangıç no (34) > 0 ise oradan; değilse en düşük kesilmiş no.
-            if base_start > 0:
-                _n = base_start
-            elif _used:
-                _n = min(_used)
+            if invoice_type == "e-arsiv":
+                if str((dogan_settings or {}).get("earchive_start_year") or "") == year_str:
+                    base_start = int((dogan_settings or {}).get("earchive_start_number") or 0)
             else:
-                _n = seq
-            while _n in _used:
-                _n += 1
-            seq = _n
-            invoice_number = f"{prefix}{year_str}{seq:09d}"
-        except Exception as _ge:
-            logger.warning(f"[e-fatura bosluk-doldur] {_ge}")
+                if str((dogan_settings or {}).get("einvoice_start_year") or "") == year_str:
+                    base_start = int((dogan_settings or {}).get("einvoice_start_number") or 0)
+        except Exception:
+            base_start = 0
+        _existing_ctr = await db.counters.find_one({"_id": seq_key})
+        if _existing_ctr is None and base_start > 0:
+            await db.counters.update_one(
+                {"_id": seq_key}, {"$setOnInsert": {"seq": base_start - 1}}, upsert=True
+            )
+        # O2: Atomik artır-ve-oku. Önceki $inc + ayrı find_one, eşzamanlı iki fatura isteğinde aynı
+        # seq'i okuyup AYNI fatura numarasını üretebiliyordu. find_one_and_update tekilliği garanti eder.
+        _seq_doc = await db.counters.find_one_and_update(
+            {"_id": seq_key}, {"$inc": {"seq": 1}}, upsert=True, return_document=ReturnDocument.AFTER
+        ) or {}
+        seq = int(_seq_doc.get("seq", 1))
+        invoice_number = f"{prefix}{year_str}{seq:09d}"
 
-    invoice_uuid = generate_id()  # UUID-like
+        # ── E-FATURA "BOŞLUK DOLDURMA" KURALI (SADECE e-Fatura) ─────────────────────
+        # Başlangıç no'sundan (einvoice_start_number, örn. 34) başlayıp KULLANILMAMIŞ ilk
+        # numarayı seç; kesilmiş (invoice_issued) FCE numaralarını atla. Böylece 034'ten
+        # başlar, aradaki boşlukları doldurur, 054/055/058 gibi kesilmişleri atlar, sonra
+        # 059+ sıradan devam eder — GİB ardışıklığı korunur, numara boşa gitmez.
+        # TABAN = einvoice_start_number (varsa); yoksa en düşük kesilmiş no. Böylece portalda
+        # kesilen son no'nun DEVAMINDAN (34) doldurmaya başlar, min(used)'e takılmaz.
+        # (e-Arşiv değişmez; atomik sayaç aynen çalışır. Eşzamanlılık: aynı no seçilirse
+        #  Doğan 10009 döner, aşağıdaki mükerrer-retry döngüsü bir sonrakine geçer.)
+        if invoice_type == "e-fatura":
+            try:
+                _epref = f"{prefix}{year_str}"
+                # BL-035: başka siparişte BEKLEYEN (gönderilmiş olabilecek) numaralar da dolu sayılır.
+                _used = await _efatura_used_numbers(_epref, order_id)
+                # Taban: ayarlı başlangıç no (34) > 0 ise oradan; değilse en düşük kesilmiş no.
+                if base_start > 0:
+                    _n = base_start
+                elif _used:
+                    _n = min(_used)
+                else:
+                    _n = seq
+                while _n in _used:
+                    _n += 1
+                seq = _n
+                invoice_number = f"{prefix}{year_str}{seq:09d}"
+            except Exception as _ge:
+                logger.warning(f"[e-fatura bosluk-doldur] {_ge}")
+
+        invoice_uuid = generate_id()  # UUID-like
 
     now = datetime.now(timezone.utc)
     issue_date = now.strftime("%Y-%m-%d")
@@ -3877,12 +6058,15 @@ async def create_invoice_for_order(
     # siparişinde) _fs_invoice_waived'ı gerekiyorsa yeniden hesaplar. Pazaryeri e-Fatura'da
     # zaten kargo kalemi/iskonto olmaz → _fs_invoice_waived=0.0 doğru.
     _is_mp = (str(order.get("platform") or order.get("marketplace") or "").lower()
-              in ("trendyol", "hepsiburada", "temu"))
+              in ("trendyol", "hepsiburada", "temu", "n11", "amazon"))
     _fs_invoice_waived = 0.0
 
     # Gerçek Doğan e-Arşiv kesimi
     dogan_result = None
-    if dogan_active and invoice_type == "e-arsiv":
+    # BL-035: bekleyen fatura Doğan'da bulunduysa HİÇBİR şey yeniden gönderilmez.
+    if _recovered_result is not None:
+        dogan_result = _recovered_result
+    if dogan_active and invoice_type == "e-arsiv" and _recovered_result is None:
         from dogan_client import DoganClient
         from fastapi.concurrency import run_in_threadpool
 
@@ -3971,19 +6155,6 @@ async def create_invoice_for_order(
                 ) if (it.get('color') or it.get('size') or _bc) else ""),
             })
 
-        # Kupon/indirim faturaya yansısın: fatura brütü (kalemler + kargo) ile müşterinin
-        # ödediği tutar (order.total) farkı = indirim. order.discount yedek olarak kullanılır.
-        # Marketplace siparişinde fiyatlar zaten net geldiği için fark ~0 → indirim uygulanmaz.
-        _items_gross = sum(float(i.get("price") or 0) * int(i.get("quantity") or 1)
-                           for i in (order.get("items") or []))
-        _inv_gross = _items_gross + float(order.get("shipping_cost") or 0)
-        _paid_total = float(order.get("total") or _inv_gross)
-        _inv_discount = round(_inv_gross - _paid_total, 2)
-        if _inv_discount < 0.01:
-            # Yedek: indirim = kupon + havale/EFT (payment_discount). (Birincil yol total'dan türetir.)
-            _inv_discount = round(float(order.get("discount") or 0) + float(order.get("payment_discount") or 0), 2)
-        if _inv_discount < 0:
-            _inv_discount = 0.0
 
         # #14: Bedava kargo kampanyası → e-Arşiv faturasında BİLGİ NOTU. GİB-GÜVENLİ: monetary
         # tutar/matrah/KDV'ye DOKUNMAZ. (Ayrı "kargo iskonto kalemi" = belge-seviyesi AllowanceCharge
@@ -4001,7 +6172,7 @@ async def create_invoice_for_order(
         # Pazaryeri (Trendyol/HB/Temu) siparişi mi? Faturada kargoya dair HİÇBİR kalem olmaz
         # (ne KARGO satırı ne iskonto) — kargo modeli pazaryerinde farklı.
         _is_mp = (str(order.get("platform") or order.get("marketplace") or "").lower()
-                  in ("trendyol", "hepsiburada", "temu"))
+                  in ("trendyol", "hepsiburada", "temu", "n11", "amazon"))
         _fs_invoice_waived = 0.0
         try:
             from business_rules import get_rule as _gr_fs
@@ -4022,25 +6193,14 @@ async def create_invoice_for_order(
             logger.warning(f"[kargo iskonto hesap {order_id}] {_fse}")
             _fs_invoice_waived = 0.0
 
-        # İndirimi ÜRÜN satırlarının birim fiyatına orantılı dağıt (kargo hariç).
-        # Böylece her satırın KDV matrahı indirimli tutardan hesaplanır; satır toplamları
-        # ve KDV tutarlı kalır → GİB/Doğan geçerli. (Builder'ın belge-seviyesi indirimi
-        # LineExtension/matrah uyuşmazlığı yarattığı için kullanılmıyor.) Son satır kalanı alır.
-        if _inv_discount > 0 and line_items:
-            _prod_gross = sum((li["unit_price"] or 0) * (li["qty"] or 1) for li in line_items)
-            if _prod_gross > 0:
-                _disc = min(_inv_discount, round(_prod_gross, 2))
-                _alloc = 0.0
-                for _k, li in enumerate(line_items):
-                    _g = (li["unit_price"] or 0) * (li["qty"] or 1)
-                    if _k < len(line_items) - 1:
-                        _d = round(_disc * _g / _prod_gross, 2)
-                    else:
-                        _d = round(_disc - _alloc, 2)  # yuvarlama kalanı son satıra
-                    _alloc += _d
-                    _new_gross = _g - _d
-                    _q = li["qty"] or 1
-                    li["unit_price"] = round(_new_gross / _q, 4) if _q else _new_gross
+        # İndirimi ÜRÜN satırlarının birim fiyatına dağıt + hizmet satırlarını ekle.
+        # Tek kaynak: _apply_invoice_discounts (hediye çeki/puan iskonto DEĞİL; hediye
+        # paketi/kapıda ödeme kendi %20 KDV'li satırında). Böylece her satırın KDV matrahı
+        # indirimli tutardan hesaplanır, satır toplamı = tahsilat → GİB/Doğan geçerli.
+        _inv_alloc = _apply_invoice_discounts(order, line_items)
+        _inv_discount = _inv_alloc["discount"]
+        for _xl in _inv_alloc["extra_lines"]:
+            line_items.append(dict(_xl))
 
         # Taşıyan (kargo firması) — siparişin Trendyol'da beyan edilen kargosundan DİNAMİK.
         # Bilinen firmalar için ad+VKN; bilinmeyende Trendyol'un beyan adı, VKN boş (UBL'de atlanır).
@@ -4070,7 +6230,7 @@ async def create_invoice_for_order(
         if _vf >= 0.01:
             line_items.append({
                 "name": f"Vade Farkı (Taksit x{_inst_n})",
-                "qty": 1, "unit_price": _vf, "kdv_rate": 20.0,
+                "qty": 1, "unit_price": _vf, "kdv_rate": _goods_kdv_rate(line_items, 10.0),
                 "sku": "VADEFARKI", "barcode": "", "note": "",
             })
             _vf_note = (f"Taksitli satış ({_inst_n} taksit). Vade farkı (₺{_vf:.2f}) "
@@ -4149,23 +6309,41 @@ async def create_invoice_for_order(
         # Müşteri e-postasına PDF gönder
         cust_email = (ship_addr.get("email") or order.get("user_email") or "").strip()
         archive_note = f"Sipariş No: {order.get('order_number') or order_id}"
+        # BL-035: UUID+numara gönderimden ÖNCE siparişe yazılır (zaman aşımında aynısı yeniden kullanılır).
+        await _invoice_set_pending(order_id, invoice_uuid, invoice_number, invoice_type, _pending)
         dogan_result = await run_in_threadpool(
             dogan_client.send_earsiv_invoice,
             ubl_xml, invoice_uuid, cust_email, archive_note,
         )
-        # Cift-numara korumasi: Dogan "zaten kayitli/mukerrer/10009" -> siradaki no
+        # BL-035 mükerrer koruması: Doğan "zaten kayıtlı/mükerrer/10009" derse YENİ UUID ile
+        # ikinci fatura KESİLMEZ. Önce Doğan'da bu UUID sorgulanır:
+        #   bulundu → kesilmiş fatura olarak kaydet | yok → numara başka belgede (gerçek çakışma):
+        #   yalnız NUMARA ilerler, UUID AYNI kalır | doğrulanamadı → inceleme, dur.
         _ex_tries = 0
-        while (not dogan_result.get("success")) and _ex_tries < 5 and any(_t in str(dogan_result.get("message","")).lower() for _t in ("zaten","mükerrer","mukerrer","duplicate","already","10009","kayıtlı","kayitli","mevcut")):
+        while (not dogan_result.get("success")) and _dogan_is_dup(dogan_result):
+            _lk = await run_in_threadpool(_dogan_lookup_invoice_sync, dogan_client, "e-arsiv", invoice_uuid)
+            if _lk.get("state") == "found" and not _lk.get("cancelled"):
+                logger.warning(f"[BL-035] e-Arşiv mükerrer → Doğan'da MEVCUT ({_lk.get('invoice_number')}), "
+                               f"kaydediliyor (order {order_id})")
+                invoice_number = _lk.get("invoice_number") or invoice_number
+                dogan_result = _dogan_recovered_result(_lk, invoice_uuid, dogan_result)
+                break
+            if _lk.get("state") != "not_found" or _lk.get("cancelled") or _ex_tries >= 5:
+                await _invoice_needs_review_exit(
+                    order_id, "e-Arşiv", invoice_uuid, invoice_number,
+                    (f"Doğan: {dogan_result.get('message')} | sorgu: "
+                     f"{'İPTAL ' + str(_lk.get('status')) if _lk.get('cancelled') else (_lk.get('detail') or _lk.get('state'))}"))
             _ex_tries += 1
-            await db.counters.update_one({"_id": seq_key}, {"$inc": {"seq": 1}}, upsert=True)
-            _sd = await db.counters.find_one({"_id": seq_key}) or {}
+            _sd = await db.counters.find_one_and_update(
+                {"_id": seq_key}, {"$inc": {"seq": 1}}, upsert=True,
+                return_document=ReturnDocument.AFTER) or {}
             seq = int(_sd.get("seq", 1))
             invoice_number = f"{prefix}{year_str}{seq:09d}"
-            invoice_uuid = generate_id()
-            _earsiv_kwargs["invoice_number"] = invoice_number
-            _earsiv_kwargs["invoice_uuid"] = invoice_uuid
-            logger.warning(f"e-Arsiv numara cakismasi -> siradaki: {invoice_number} (deneme {_ex_tries})")
+            _earsiv_kwargs["invoice_number"] = invoice_number   # UUID DEĞİŞMEZ (BL-035)
+            logger.warning(f"e-Arsiv numara cakismasi (UUID Doğan'da yok) -> siradaki: {invoice_number} "
+                           f"(deneme {_ex_tries})")
             ubl_xml = _earsiv_builder(**_earsiv_kwargs)
+            await _invoice_set_pending(order_id, invoice_uuid, invoice_number, invoice_type, _pending)
             dogan_result = await run_in_threadpool(
                 dogan_client.send_earsiv_invoice,
                 ubl_xml, invoice_uuid, cust_email, archive_note,
@@ -4173,30 +6351,41 @@ async def create_invoice_for_order(
 
         if not dogan_result.get("success"):
             logger.error(f"DOGAN_RET earsiv: {dogan_result}")
-            # NUMARA GERİ AL (e-Fatura ile aynı): mükerrer/kayıtlı DEĞİLSE Doğan faturayı kaydetmedi
-            # → FCT numarası boşa gitmesin, sıradaki denemede tekrar kullanılsın (ardışıklık).
-            _msg_l2 = str(dogan_result.get("message", "")).lower()
-            _is_dup2 = any(_t in _msg_l2 for _t in ("zaten", "mükerrer", "mukerrer", "duplicate",
-                                                    "already", "10009", "kayıtlı", "kayitli", "mevcut"))
-            if not _is_dup2:
+            # NUMARA GERİ AL: yalnız Doğan faturayı KESİN reddettiyse (ERROR_CODE dolu, mükerrer
+            # değil) ya da istek hiç gitmediyse → fatura Doğan'da YOK; numara boşa gitmesin,
+            # bekleyen UUID silinsin. Kodsuz hata (timeout/bağlantı) BELİRSİZ → fatura Doğan'a
+            # ulaşmış olabilir: numara GERİ ALINMAZ, bekleyen UUID/numara KORUNUR (BL-035).
+            _definite2 = _dogan_definite_reject(dogan_result)
+            if _definite2:
                 try:
                     await db.counters.find_one_and_update({"_id": seq_key, "seq": seq},
                                                           {"$inc": {"seq": -1}})
                 except Exception:
                     pass
             # Hatayı log'a yaz, mock fallback ile devam etme — gerçek hata bildir
-            await db.orders.update_one({"id": order_id}, {"$set": {
+            _err_upd2 = {"$set": {
                 "invoice_in_progress": False,
-                "invoice_last_error": f"e-Arşiv: {dogan_result.get('message')}",
+                "invoice_last_error": (f"e-Arşiv: {dogan_result.get('message')}" if _definite2 else
+                                       f"e-Arşiv: {dogan_result.get('message')} — Doğan yanıtı belirsiz; "
+                                       f"UUID {invoice_uuid} / no {invoice_number} saklandı, yeniden "
+                                       f"denemede önce Doğan'da sorgulanır (çift fatura kesilmez)."),
                 "invoice_last_error_at": datetime.now(timezone.utc).isoformat(),
-            }})
+            }}
+            if _definite2:
+                _err_upd2["$unset"] = {"invoice_pending": ""}
+            await db.orders.update_one({"id": order_id}, _err_upd2)
+            # NOT 502: bir "gateway" durum kodu; Cloudflare/Railway ara katmanı 5xx görünce
+            # KENDİ jenerik hata sayfasını koyup JSON gövdeyi (gerçek Doğan mesajını) SİLER →
+            # frontend'e `detail` ulaşmaz, kullanıcı yalnız "Fatura oluşturulamadı" görür. Bu bir
+            # İŞ hatası (Doğan faturayı reddetti; alıcı/VKN/adres/kontör vb.) → 400 ile döndür:
+            # 4xx gövdesiyle birlikte ara katmandan GEÇER, kullanıcı gerçek sebebi okur.
             raise HTTPException(
-                status_code=502,
-                detail=f"Doğan e-Arşiv hatası: {dogan_result.get('message')}"
+                status_code=400,
+                detail=_dogan_error_detail("e-Arşiv", dogan_result.get("message"))
             )
 
     # ─── Doğan e-Fatura (TEMELFATURA) kesimi ─────────────────────────
-    if dogan_active and invoice_type == "e-fatura":
+    if dogan_active and invoice_type == "e-fatura" and _recovered_result is None:
         from dogan_client import DoganClient
         from fastapi.concurrency import run_in_threadpool
 
@@ -4254,37 +6443,25 @@ async def create_invoice_for_order(
                 "barcode": (it.get("barcode") or "").strip(),
                 "color": (it.get("color") or "").strip(),
                 "size": (it.get("size") or "").strip(),
-                # Barkod/Renk/Beden/Stok Kodu satır notuna DEĞİL, builder'da header Note[0]'a
-                # yazılır (gerçek çalışan e-Faturadaki format FCE...016). Satır notu boş kalır.
-                "note": "",
+                # Barkod/Renk/Beden fatura SATIR SÜTUNLARI → Doğan şablonu satır notundan (cbc:Note)
+                # PARSE eder (e-Arşiv'de kanıtlanmış format). e-Fatura'da sütunlar boş çıkıyordu çünkü
+                # not boş bırakılıyordu; artık e-Arşiv ile AYNI formatta doldurulur.
+                "note": ((
+                    f"Renk:{(it.get('color') or '').strip()};"
+                    f"Beden:{(it.get('size') or '').strip()}:"
+                    f"Barcode:{(it.get('barcode') or '').strip()}"
+                ) if (it.get('color') or it.get('size') or (it.get('barcode') or '').strip()) else ""),
             })
 
-        # DENETİM FIX: e-Fatura'da da kupon/kampanya/havale indirimini UYGULA. Eskiden discount=0.0
-        # geçiliyordu → indirimli/havale ödeyen kurumsal müşteride fatura matrahı BRÜT kalıyor,
-        # PayableAmount müşterinin ödediğinden fazla düzenleniyordu. e-Arşiv'deki mantığın aynısı:
-        # fatura brütü (kalem+kargo) − ödenen (order.total) = indirim; ürün birim fiyatlarına
-        # oransal dağıt (kargo hariç), son satır yuvarlama kalanını alır → GİB-uyumlu satır matrahı.
-        _items_gross_ef = sum(float(i.get("price") or 0) * int(i.get("quantity") or 1)
-                              for i in (order.get("items") or []))
-        _inv_gross_ef = _items_gross_ef + float(order.get("shipping_cost") or 0)
-        _paid_ef = float(order.get("total") or _inv_gross_ef)
-        _inv_disc_ef = round(_inv_gross_ef - _paid_ef, 2)
-        if _inv_disc_ef < 0.01:
-            # Yedek: indirim = kupon + havale/EFT (payment_discount). (Birincil yol total'dan türetir.)
-            _inv_disc_ef = round(float(order.get("discount") or 0) + float(order.get("payment_discount") or 0), 2)
-        if _inv_disc_ef < 0:
-            _inv_disc_ef = 0.0
-        if _inv_disc_ef > 0 and line_items:
-            _pg = sum((li["unit_price"] or 0) * (li["qty"] or 1) for li in line_items)
-            if _pg > 0:
-                _dd = min(_inv_disc_ef, round(_pg, 2))
-                _al = 0.0
-                for _k, li in enumerate(line_items):
-                    _g = (li["unit_price"] or 0) * (li["qty"] or 1)
-                    _d = round(_dd * _g / _pg, 2) if _k < len(line_items) - 1 else round(_dd - _al, 2)
-                    _al += _d
-                    _q = li["qty"] or 1
-                    li["unit_price"] = round((_g - _d) / _q, 4) if _q else (_g - _d)
+        # e-Fatura'da da kupon/kampanya/havale indirimini UYGULA (eskiden discount=0.0
+        # geçiliyordu → indirimli/havale ödeyen kurumsal müşteride matrah BRÜT kalıyor,
+        # PayableAmount müşterinin ödediğinden fazla düzenleniyordu). e-Arşiv ile TEK
+        # KAYNAK: _apply_invoice_discounts — hediye paketi/kapıda ödeme kendi %20'lik
+        # satırında, indirim kampanya kapsamına göre dağıtılır, kalan son satıra biner.
+        _inv_alloc_ef = _apply_invoice_discounts(order, line_items)
+        _inv_disc_ef = _inv_alloc_ef["discount"]
+        for _xl in _inv_alloc_ef["extra_lines"]:
+            line_items.append(dict(_xl))
 
         # Taşıyan (kargo firması) — Trendyol'da beyan edilen kargodan DİNAMİK (e-Arşiv ile aynı eşleme)
         _cpn = (order.get("cargo_provider_name") or "")
@@ -4309,7 +6486,7 @@ async def create_invoice_for_order(
         if _vf >= 0.01:
             line_items.append({
                 "name": f"Vade Farkı (Taksit x{_inst_n})",
-                "qty": 1, "unit_price": _vf, "kdv_rate": 20.0,
+                "qty": 1, "unit_price": _vf, "kdv_rate": _goods_kdv_rate(line_items, 10.0),
                 "sku": "VADEFARKI", "barcode": "", "note": "",
             })
 
@@ -4385,23 +6562,64 @@ async def create_invoice_for_order(
             sender_alias = (dogan_settings.get("sender_unit_alias")
                             or "urn:mail:defaultgb@meluni.com.tr")
         logger.info(f"e-Fatura gönderim: receiver_alias={'dolu' if receiver_alias else 'BOŞ'}, sender_alias={'dolu' if sender_alias else 'BOŞ'}")
+        # BL-035: UUID+numara gönderimden ÖNCE siparişe yazılır (zaman aşımında aynısı yeniden kullanılır).
+        await _invoice_set_pending(order_id, invoice_uuid, invoice_number, invoice_type, _pending)
         dogan_result = await run_in_threadpool(
             dogan_client.send_efatura_invoice,
             ubl_xml, invoice_uuid, invoice_number,
             customer_vkn, receiver_alias, sender_alias, cust_email,
         )
+        # KRİTİK (W11242 + BL-035): "UUID/ID daha önce gönderilmiş bir faturayla eşleşmektedir" /
+        # mükerrer yanıtı, faturanın Doğan'da ZATEN OLUŞMUŞ olabileceğini gösterir (ilk deneme
+        # timeout). YENİ UUID ile ikinci fatura KESİLMEZ. Önce Doğan'da bu UUID sorgulanır:
+        #   bulundu → kesilmiş fatura olarak kaydet | yok → numara başka belgede (gerçek çakışma):
+        #   yalnız NUMARA ilerler, UUID AYNI kalır | doğrulanamadı → (mesaj BİZİM UUID'imizi ve
+        #   bir fatura no'sunu içeriyorsa onu kaydet, aksi halde) inceleme, dur.
         _ef_tries = 0
-        while (not dogan_result.get("success")) and _ef_tries < 5 and any(_t in str(dogan_result.get("message","")).lower() for _t in ("zaten","mükerrer","mukerrer","duplicate","already","10009","kayıtlı","kayitli","mevcut")):
+        while (not dogan_result.get("success")) and _dogan_is_dup(dogan_result):
+            _lk = await run_in_threadpool(_dogan_lookup_invoice_sync, dogan_client, "e-fatura", invoice_uuid)
+            if _lk.get("state") == "found":
+                logger.warning(f"[BL-035] e-Fatura mükerrer → Doğan'da MEVCUT ({_lk.get('invoice_number')}), "
+                               f"kaydediliyor (order {order_id})")
+                invoice_number = _lk.get("invoice_number") or invoice_number
+                dogan_result = _dogan_recovered_result(_lk, invoice_uuid, dogan_result)
+                break
+            if _lk.get("state") != "not_found":
+                import re as _re_inv
+                _m_txt = str((dogan_result or {}).get("message", "") or "")
+                _mm = _re_inv.search(r'((?:FCE|FCT|FCA|EAR|FAT)\w*\d{6,})', _m_txt)
+                if _mm and invoice_uuid.lower() in _m_txt.lower():
+                    _exist_no = _mm.group(1)
+                    logger.warning(f"e-Fatura zaten kayıtlı ({_exist_no}, mesajda bizim UUID) → başarı "
+                                   f"sayıldı, mevcut no kaydedildi (order {order_id})")
+                    invoice_number = _exist_no
+                    dogan_result = {**(dogan_result or {}), "success": True, "already_sent": True,
+                                    "existing_number": _exist_no, "message": _m_txt}
+                    break
+                await _invoice_needs_review_exit(
+                    order_id, "e-Fatura", invoice_uuid, invoice_number,
+                    f"Doğan: {dogan_result.get('message')} | sorgu: {_lk.get('detail') or _lk.get('state')}")
+            if _ef_tries >= 5:
+                await _invoice_needs_review_exit(
+                    order_id, "e-Fatura", invoice_uuid, invoice_number,
+                    f"5 numara denendi, Doğan hâlâ mükerrer diyor: {dogan_result.get('message')}")
             _ef_tries += 1
             # BOŞLUK-DOLDURMA ile uyumlu: mükerrer no'da atomik sayaca DEĞİL, yerel seq'e +1
-            # (bir sonraki boşluğa/serbest no'ya geç). Sayaç ileriye kaçmaz.
+            # (bir sonraki boşluğa/serbest no'ya geç). Sayaç ileriye kaçmaz. UUID DEĞİŞMEZ.
+            if not _used:
+                try:
+                    _used = await _efatura_used_numbers(f"{prefix}{year_str}", order_id)
+                except Exception:
+                    _used = set()
             seq += 1
+            while seq in _used:
+                seq += 1
             invoice_number = f"{prefix}{year_str}{seq:09d}"
-            invoice_uuid = generate_id()
             _efatura_kwargs["invoice_number"] = invoice_number
-            _efatura_kwargs["invoice_uuid"] = invoice_uuid
-            logger.warning(f"e-Fatura numara cakismasi -> siradaki: {invoice_number} (deneme {_ef_tries})")
+            logger.warning(f"e-Fatura numara cakismasi (UUID Doğan'da yok) -> siradaki: {invoice_number} "
+                           f"(deneme {_ef_tries})")
             ubl_xml = DoganClient.build_efatura_ubl_xml(**_efatura_kwargs)
+            await _invoice_set_pending(order_id, invoice_uuid, invoice_number, invoice_type, _pending)
             dogan_result = await run_in_threadpool(
                 dogan_client.send_efatura_invoice,
                 ubl_xml, invoice_uuid, invoice_number,
@@ -4410,27 +6628,34 @@ async def create_invoice_for_order(
 
         if not dogan_result.get("success"):
             logger.error(f"DOGAN_RET efatura: {dogan_result}")
-            # NUMARA GERİ AL: hata MÜKERRER/kayıtlı değilse (INVALID XML, validation, red) Doğan
-            # faturayı KAYDETMEDİ → bu FCE numarası boşa gitmesin, sıradaki denemede TEKRAR
-            # kullanılsın (GİB ardışıklığı; "4-5 no atlama" düzeltmesi). Compare-and-set: yalnız
-            # sayaç hâlâ bizim seq'imizdeyse azalt (eşzamanlı başka fatura ilerlettiyse dokunma).
-            _msg_l = str(dogan_result.get("message", "")).lower()
-            _is_dup = any(_t in _msg_l for _t in ("zaten", "mükerrer", "mukerrer", "duplicate",
-                                                  "already", "10009", "kayıtlı", "kayitli", "mevcut"))
-            if not _is_dup:
+            # NUMARA GERİ AL: yalnız Doğan faturayı KESİN reddettiyse (ERROR_CODE dolu, mükerrer
+            # değil: INVALID XML, validation, red) ya da istek hiç gitmediyse → fatura Doğan'da YOK;
+            # bu FCE numarası boşa gitmesin (GİB ardışıklığı), bekleyen UUID silinsin. Compare-and-set:
+            # yalnız sayaç hâlâ bizim seq'imizdeyse azalt. Kodsuz hata (timeout/bağlantı) BELİRSİZ →
+            # numara geri alınmaz, bekleyen UUID/numara KORUNUR (BL-035).
+            _definite = _dogan_definite_reject(dogan_result)
+            if _definite:
                 try:
                     await db.counters.find_one_and_update({"_id": seq_key, "seq": seq},
                                                           {"$inc": {"seq": -1}})
                 except Exception:
                     pass
-            await db.orders.update_one({"id": order_id}, {"$set": {
+            _err_upd = {"$set": {
                 "invoice_in_progress": False,
-                "invoice_last_error": f"e-Fatura: {dogan_result.get('message')}",
+                "invoice_last_error": (f"e-Fatura: {dogan_result.get('message')}" if _definite else
+                                       f"e-Fatura: {dogan_result.get('message')} — Doğan yanıtı belirsiz; "
+                                       f"UUID {invoice_uuid} / no {invoice_number} saklandı, yeniden "
+                                       f"denemede önce Doğan'da sorgulanır (çift fatura kesilmez)."),
                 "invoice_last_error_at": datetime.now(timezone.utc).isoformat(),
-            }})
+            }}
+            if _definite:
+                _err_upd["$unset"] = {"invoice_pending": ""}
+            await db.orders.update_one({"id": order_id}, _err_upd)
+            # 502 DEĞİL (bkz. e-Arşiv notu): 5xx'i ara katman jenerik gateway sayfasıyla
+            # değiştirip gerçek mesajı sildiği için iş-hatası 400 ile döndürülür → mesaj ekrana ulaşır.
             raise HTTPException(
-                status_code=502,
-                detail=f"Doğan e-Fatura hatası: {dogan_result.get('message')}"
+                status_code=400,
+                detail=_dogan_error_detail("e-Fatura", dogan_result.get("message"))
             )
 
     await db.orders.update_one(
@@ -4449,8 +6674,13 @@ async def create_invoice_for_order(
             "invoice_pdf_url": (dogan_result or {}).get("web_key", ""),
             "invoice_issued_at": now.isoformat(),
             "invoice_issued_by": current_user.get("email", ""),
+            "invoice_needs_review": False,
+            # BL-035: Doğan'da zaten var olan (zaman aşımında kabul edilmiş) fatura kaydedildiyse iz bırak.
+            "invoice_recovered_from_dogan": bool((dogan_result or {}).get("recovered")
+                                                 or (dogan_result or {}).get("already_sent")),
             "updated_at": now.isoformat(),
-        }}
+        },
+         "$unset": {"invoice_pending": ""}}
     )
 
     # Log — integration_logs'a ekle
@@ -4603,15 +6833,189 @@ async def create_invoice_for_order(
 
 
 # ---------------------------------------------------------------------------
+# MANUEL FATURA YÜKLEME — Doğan/otomatik entegratör kullanılMADAN, dışarıda
+# kesilmiş faturayı (PDF/görsel) siparişe ekler. Kullanım: Doğan geçici down
+# (503/TR7) veya elle kesim gereken durumlar. Orders.jsx handleUploadManualInvoice.
+# ---------------------------------------------------------------------------
+_MANUAL_INVOICE_TYPES = {"application/pdf", "image/jpeg", "image/png", "image/webp"}
+_MANUAL_INVOICE_EXT = {"application/pdf": "pdf", "image/jpeg": "jpg",
+                       "image/png": "png", "image/webp": "webp"}
+_MAX_INVOICE_BYTES = 15 * 1024 * 1024  # 15 MB
+
+
+@router.post("/{order_id}/upload-invoice")
+async def upload_manual_invoice(
+    order_id: str,
+    file: UploadFile = File(...),
+    invoice_number: str = Form(""),
+    invoice_type: str = Form("manual"),
+    current_user: dict = Depends(require_permission("orders.invoice")),
+):
+    """Manuel kesilmiş faturayı (PDF/görsel) siparişe yükler ve siparişi 'faturalandı'
+    işaretler. Otomatik entegratör (Doğan) kullanılMAZ. Ön-engeller create-invoice ile
+    AYNI (onaylı sipariş + havale onayı). Ödeme/statü/stok değişmezlerine DOKUNMAZ; yalnız
+    fatura kaydını (dosya URL + no) tutar, son fatura hatasını/kilidini temizler."""
+    order = await db.orders.find_one({"id": order_id}, {"_id": 0})
+    if not order:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    # create-invoice ile aynı ön-engeller: onaylanmamış / havale-onaysız siparişe fatura eklenmez.
+    _ensure_order_confirmed(order, "manuel fatura yükleme")
+    _hblk = _havale_invoice_block(order)
+    if _hblk:
+        raise HTTPException(status_code=400, detail=_hblk)
+
+    ct = (file.content_type or "").split(";")[0].strip().lower()
+    if ct not in _MANUAL_INVOICE_TYPES:
+        raise HTTPException(status_code=400,
+                            detail="Yalnız PDF veya görsel (JPEG/PNG/WebP) yüklenebilir.")
+    from security.uploads import read_upload_capped
+    data = await read_upload_capped(file, _MAX_INVOICE_BYTES, "Dosya çok büyük (maks 15MB).")
+    if not data:
+        raise HTTPException(status_code=400, detail="Boş dosya.")
+    if len(data) > _MAX_INVOICE_BYTES:
+        raise HTTPException(status_code=400, detail="Dosya çok büyük (maks 15MB).")
+
+    _fname = f"{uuid.uuid4()}.{_MANUAL_INVOICE_EXT.get(ct, 'pdf')}"
+    _url = ""
+    _manual_file = None
+    # 0) KVKK: GİZLİ ARŞİV (R2_ARCHIVE_BUCKET) tanımlıysa fatura dosyası YALNIZ oraya yazılır —
+    #    herkese açık depoya/CDN'e gitmez. Siparişe süreli imzalı backend linki yazılır (panel ve
+    #    pazaryeri linki çalışmaya devam eder); panel ayrıca oturumlu uçtan okuyabilir.
+    #    Arşive yazılamazsa herkese açık depoya DÜŞÜLMEZ → net hata (tekrar denenir).
+    try:
+        from services import r2_storage as _r2a
+        _arch_on = _r2a.archive_enabled()
+    except Exception:
+        _r2a, _arch_on = None, False
+    if _arch_on:
+        import asyncio as _aio_mi
+        _akey = f"faturalar/manuel/{order_id}/{_fname}"
+        try:
+            await _aio_mi.to_thread(_r2a.archive_put, _akey, data, ct)
+        except Exception as _ae:
+            logger.error(f"[manuel fatura arşiv {order_id}] {_ae}")
+            raise HTTPException(status_code=400,
+                                detail="Fatura dosyası gizli arşive yüklenemedi; lütfen tekrar deneyin.")
+        _manual_file = {"archive_key": _akey, "content_type": ct, "size": len(data),
+                        "uploaded_at": datetime.now(timezone.utc).isoformat()}
+        _url = _manual_invoice_signed_link(order_id, _MANUAL_INVOICE_LINK_DAYS_MARKETPLACE)
+    # 1) Cloudflare R2 (arşiv YOKSA, eski davranış) → invoices/{order_id}/{fname}
+    try:
+        from services import r2_storage as _r2
+        if (not _url) and _r2.is_enabled():
+            _key = f"invoices/{order_id}/{_fname}"
+            _url = _r2.put_object(_key, data, ct)
+            await db.files.insert_one({
+                "id": str(uuid.uuid4()), "storage_path": _fname, "r2_key": _key, "r2_url": _url,
+                "original_filename": file.filename, "content_type": ct, "size": len(data),
+                "is_deleted": False, "created_at": datetime.now(timezone.utc).isoformat(),
+            })
+    except Exception as _re:
+        logger.error(f"[manuel fatura R2 {order_id}] {_re}")
+        _url = ""
+    # 2) Fallback: MongoDB (base64) → /api/upload/files/{fname} ile servis
+    if not _url:
+        import base64 as _b64
+        await db.files.insert_one({
+            "id": str(uuid.uuid4()), "storage_path": _fname, "original_filename": file.filename,
+            "content_type": ct, "size": len(data), "data_b64": _b64.b64encode(data).decode("ascii"),
+            "is_deleted": False, "created_at": datetime.now(timezone.utc).isoformat(),
+        })
+        _url = f"/api/upload/files/{_fname}"
+
+    _now = datetime.now(timezone.utc).isoformat()
+    _invno = (safe_str(invoice_number, 40) or "").strip() or \
+             f"MANUEL-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+    _itype = ((safe_str(invoice_type, 20) or "").strip().lower()) or "manual"
+    _inv_set = {
+        "invoice_issued": True,
+        "invoice_manual": True,
+        "invoice_provider": "manual",
+        "invoice_number": _invno,
+        "invoice_type": _itype,
+        "invoice_pdf_url": _url,
+        "invoice_issued_at": _now,
+        "invoice_issued_by": current_user.get("email", ""),
+        "invoice_last_error": "",
+        "invoice_in_progress": False,
+        "invoice_needs_review": False,
+        "updated_at": _now,
+    }
+    # BL-035: manuel fatura → bekleyen otomatik gönderim izi kapanır.
+    _inv_unset = {"invoice_pending": ""}
+    if _manual_file:
+        _inv_set["invoice_manual_file"] = _manual_file
+    else:
+        _inv_unset["invoice_manual_file"] = ""
+    await db.orders.update_one({"id": order_id}, {"$set": _inv_set, "$unset": _inv_unset})
+    await _log_order_event(order_id, "invoice",
+                           f"Manuel fatura yüklendi: {_invno} ({file.filename or _fname})",
+                           current_user, {"invoice_number": _invno, "manual": True,
+                                          # imzalı link olay günlüğüne YAZILMAZ (süreli erişim anahtarı)
+                                          **({"archived": True} if _manual_file else {"url": _url})})
+    return {"success": True, "invoice_issued": True, "invoice_number": _invno,
+            "invoice_pdf_url": _url, "manual": True,
+            "message": f"Manuel fatura yüklendi: {_invno}"}
+
+
+async def _manual_invoice_file_response(order_id: str) -> Response:
+    """Gizli arşivdeki manuel fatura dosyasını backend üzerinden servis eder (önbelleğe alınmaz)."""
+    order = await db.orders.find_one({"id": order_id}, {"_id": 0, "invoice_manual_file": 1,
+                                                          "invoice_number": 1, "order_number": 1})
+    if not order:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    _mf = order.get("invoice_manual_file") or {}
+    _key = _mf.get("archive_key")
+    if not _key:
+        raise HTTPException(status_code=404, detail="Bu siparişte arşivlenmiş manuel fatura yok")
+    from services import r2_storage as _r2a
+    if not _r2a.archive_enabled():
+        raise HTTPException(status_code=404, detail="Gizli arşiv deposu yapılandırılmamış")
+    import asyncio as _aio_mf
+    data, _ct = await _aio_mf.to_thread(_r2a.archive_get, _key)
+    if data is None:
+        raise HTTPException(status_code=404, detail="Fatura dosyası arşivde bulunamadı")
+    ct = _mf.get("content_type") if _mf.get("content_type") in _MANUAL_INVOICE_TYPES else (
+        _ct if _ct in _MANUAL_INVOICE_TYPES else "application/pdf")
+    _base = re.sub(r"[^A-Za-z0-9_.-]", "_", str(order.get("invoice_number") or order.get("order_number") or "fatura"))[:60]
+    return Response(content=data, media_type=ct, headers={
+        "Content-Disposition": f'inline; filename="{_base}.{_MANUAL_INVOICE_EXT.get(ct, "pdf")}"',
+        "Cache-Control": "private, no-store",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "no-referrer",
+    })
+
+
+@router.get("/{order_id}/manual-invoice-file")
+async def get_manual_invoice_file(order_id: str,
+                                  current_user: dict = Depends(require_permission("orders.invoice"))):
+    """Panel: gizli arşivdeki manuel faturayı oturumlu (orders.invoice yetkili) personele sunar."""
+    return await _manual_invoice_file_response(order_id)
+
+
+@router.get("/{order_id}/manual-invoice-file/signed")
+async def get_manual_invoice_file_signed(order_id: str, request: Request, exp: int = 0, sig: str = ""):
+    """Pazaryeri / müşteri linki: HMAC imzalı + SÜRELİ (exp=unix saniye) link. Oturum gerektirmez;
+    imza sipariş+süreye bağlıdır, süresi dolan veya değiştirilen link 403 döner."""
+    import hmac as _hmac
+    if not sig or not exp or not _invoice_sig_ok(sig, lambda k: _manual_invoice_sig(order_id, exp, k)):
+        await note_policy_denial(None, "order.manual_invoice_link", order_id=order_id, request=request,
+                                 reason="bad_signature")
+        raise HTTPException(status_code=403, detail="Geçersiz imza")
+    if int(exp) < int(time.time()):
+        raise HTTPException(status_code=403, detail="Linkin süresi dolmuş")
+    return await _manual_invoice_file_response(order_id)
+
+
+# ---------------------------------------------------------------------------
 # FATURA YAZDIR (HTML) — Orders.jsx handleBulkPrintInvoices iframe src olarak
 # bu endpoint'i kullanır. Basit bir A4 fatura HTML'i döner; gerçek XSL-UBL
 # dönüşümü canlıda provider'dan gelen PDF URL'siyle değiştirilir.
 # ---------------------------------------------------------------------------
 @router.get("/{order_id}/invoice/print")
-async def print_invoice_html(order_id: str, token: str = None):
+async def print_invoice_html(order_id: str, current_user: dict = Depends(require_permission("orders.invoice"))):
     """Basit fatura HTML çıktısı (yazdırılabilir). Bulk print için iframe.
-    GÜVENLİK: token admin JWT olarak doğrulanır — kimliksiz PII sızıntısı kapatıldı."""
-    await verify_admin_token(token)
+    Yetki Authorization başlığından doğrulanır; URL'de oturum anahtarı kabul edilmez."""
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
@@ -4634,7 +7038,7 @@ async def print_invoice_html(order_id: str, token: str = None):
     from fastapi.responses import HTMLResponse
     html = f"""
 <!doctype html><html lang="tr"><head><meta charset="utf-8"/>
-<title>Fatura — {order.get('invoice_number') or order.get('order_number','')}</title>
+<title>Fatura — {_h(order.get('invoice_number') or order.get('order_number',''))}</title>
 <style>
   @page {{ size: A4; margin: 15mm; }}
   body {{ font-family: -apple-system, Arial, sans-serif; color:#111; margin:0; }}
@@ -4655,9 +7059,9 @@ async def print_invoice_html(order_id: str, token: str = None):
   </div>
   <div style="text-align:right">
     <h1>{'E-ARŞİV FATURA' if order.get('invoice_type')=='e-arsiv' else 'E-FATURA'}</h1>
-    <div class="meta">No: <strong>{order.get('invoice_number') or '-'}</strong></div>
-    <div class="meta">Tarih: {(order.get('invoice_issued_at') or order.get('created_at') or '')[:10]}</div>
-    <div class="meta">Sipariş: {order.get('order_number','')}</div>
+    <div class="meta">No: <strong>{_h(order.get('invoice_number') or '-')}</strong></div>
+    <div class="meta">Tarih: {_h((order.get('invoice_issued_at') or order.get('created_at') or '')[:10])}</div>
+    <div class="meta">Sipariş: {_h(order.get('order_number',''))}</div>
   </div>
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;">
@@ -4683,11 +7087,11 @@ async def print_invoice_html(order_id: str, token: str = None):
 </div>
 <p class="meta" style="margin-top:24px;border-top:1px solid #eee;padding-top:10px;">
   Bu belge e-Arşiv fatura olup, aktif entegratör
-  <strong>{order.get('invoice_provider') or '-'}</strong> üzerinden üretilmiştir.
+  <strong>{_h(order.get('invoice_provider') or '-')}</strong> üzerinden üretilmiştir.
 </p>
 </body></html>
 """
-    return HTMLResponse(content=html)
+    return HTMLResponse(content=html, headers={"Cache-Control": "no-store", "Referrer-Policy": "no-referrer"})
 
 
 # ─── e-Fatura PDF public link (e-Arşiv WEB_KEY karşılığı) ───────────────────────
@@ -4696,16 +7100,92 @@ async def print_invoice_html(order_id: str, token: str = None):
 # sunucumuzdan imzalı (order'a özel HMAC) bir link ile sunulur. Böylece e-Fatura da
 # e-Arşiv gibi OTOMATİK linke kavuşur; kullanıcıdan hiçbir şey istenmez.
 def _einvoice_pdf_sig(order_id: str) -> str:
+    """ESKİ (v1) imza — SÜRESİZ ve doğrudan JWT_SECRET ile. YENİ LİNK ÜRETİLMEZ; yalnız
+    pazaryerlerinde saklı eski linkler kırılmasın diye DOĞRULAMADA kabul edilir (kullanımı loglanır)."""
     import hmac as _hmac, hashlib as _hl
     from .deps import JWT_SECRET as _sec
     return _hmac.new(str(_sec).encode(), f"einv:{order_id}".encode(), _hl.sha256).hexdigest()[:32]
+
+
+_EINVOICE_LINK_DAYS = 365  # pazaryeri faturayı geç çekebilir (manuel fatura linkiyle aynı süre)
+
+
+def _einvoice_pdf_sig_v2(order_id: str, exp: int, key: bytes = None) -> str:
+    """YENİ (v2) imza (denetim 2026-10): SÜRELİ + alan-ayrımlı anahtar (_manual_invoice_link_key:
+    INVOICE_LINK_SECRET ya da JWT_SECRET'tan türetilmiş; JWT anahtarı doğrudan KULLANILMAZ)."""
+    import hmac as _hmac, hashlib as _hl
+    return _hmac.new(key or _manual_invoice_link_key(), f"einv:v2:{order_id}:{int(exp)}".encode(),
+                     _hl.sha256).hexdigest()[:40]
 
 
 def _einvoice_pdf_link(order_id: str) -> str:
     import os as _os
     base = (_os.environ.get("PUBLIC_API_URL") or _os.environ.get("BACKEND_URL")
             or "https://api.meluni.com.tr").rstrip("/")
-    return f"{base}/api/orders/{order_id}/einvoice-pdf?sig={_einvoice_pdf_sig(order_id)}"
+    exp = int(time.time()) + _EINVOICE_LINK_DAYS * 86400
+    return f"{base}/api/orders/{order_id}/einvoice-pdf?exp={exp}&sig={_einvoice_pdf_sig_v2(order_id, exp)}"
+
+
+# ─── MANUEL FATURA DOSYASI — GİZLİ ARŞİV + SÜRELİ İMZALI LİNK (KVKK) ─────────────────────
+# Manuel yüklenen fatura dosyaları artık herkese açık R2 deposuna DEĞİL, gizli arşiv deposuna
+# (R2_ARCHIVE_BUCKET) yazılır ve yalnız backend üzerinden sunulur:
+#   • Panel: GET /orders/{id}/manual-invoice-file  (oturum + orders.invoice yetkisi)
+#   • Pazaryeri/dış link: GET /orders/{id}/manual-invoice-file/signed?exp=..&sig=..
+#     (HMAC imzalı + SÜRELİ; pazaryeri geç çekebildiği için 365 gün, müşteri e-postası için 30 gün)
+# İmza anahtarı: INVOICE_LINK_SECRET (≥32 karakter) varsa o; yoksa JWT_SECRET'tan alan-ayrımlı
+# HMAC ile türetilir (JWT anahtarı doğrudan imza anahtarı olarak KULLANILMAZ).
+_MANUAL_INVOICE_LINK_DAYS_MARKETPLACE = 365
+_MANUAL_INVOICE_LINK_DAYS_CUSTOMER = 30
+
+
+def _derived_invoice_link_key() -> bytes:
+    import hmac as _hmac, hashlib as _hl
+    from .deps import JWT_SECRET as _sec
+    return _hmac.new(str(_sec).encode(), b"meluni:manual-invoice-link:v1", _hl.sha256).digest()
+
+
+def _manual_invoice_link_key() -> bytes:
+    _env = (os.environ.get("INVOICE_LINK_SECRET") or "").strip()
+    if len(_env) >= 32:
+        return _env.encode()
+    return _derived_invoice_link_key()
+
+
+def _invoice_link_verify_keys() -> list:
+    """İmza DOĞRULAMA anahtarları: güncel anahtar + (INVOICE_LINK_SECRET sonradan eklendiyse)
+    önceki JWT-türetilmiş anahtar — env eklenmeden önce pazaryerine/müşteriye gitmiş linkler
+    süreleri dolana dek açılmaya devam eder. Yeni linkler HER ZAMAN güncel anahtarla imzalanır."""
+    keys = [_manual_invoice_link_key()]
+    try:
+        _d = _derived_invoice_link_key()
+        if _d not in keys:
+            keys.append(_d)
+    except Exception:
+        pass
+    return keys
+
+
+def _manual_invoice_sig(order_id: str, exp: int, key: bytes = None) -> str:
+    import hmac as _hmac, hashlib as _hl
+    return _hmac.new(key or _manual_invoice_link_key(), f"minv:v1:{order_id}:{int(exp)}".encode(),
+                     _hl.sha256).hexdigest()[:40]
+
+
+def _invoice_sig_ok(sig: str, make) -> bool:
+    import hmac as _hmac
+    return any(_hmac.compare_digest(str(sig), make(k)) for k in _invoice_link_verify_keys())
+
+
+def _manual_invoice_signed_link(order_id: str, days: int = _MANUAL_INVOICE_LINK_DAYS_MARKETPLACE) -> str:
+    base = (os.environ.get("PUBLIC_API_URL") or os.environ.get("BACKEND_URL")
+            or "https://api.meluni.com.tr").rstrip("/")
+    exp = int(time.time()) + int(days) * 86400
+    return (f"{base}/api/orders/{order_id}/manual-invoice-file/signed"
+            f"?exp={exp}&sig={_manual_invoice_sig(order_id, exp)}")
+
+
+def _order_has_archived_manual_invoice(order: dict) -> bool:
+    return bool(((order or {}).get("invoice_manual_file") or {}).get("archive_key"))
 
 
 def _resolve_marketplace_invoice_link(order: dict, dogan_settings: dict, order_id: str,
@@ -4719,6 +7199,10 @@ def _resolve_marketplace_invoice_link(order: dict, dogan_settings: dict, order_i
          Doğan'dan PDF çeker). Böylece 'link üretilemedi' ile yükleme atlanması ORTADAN KALKAR.
     Not: e-Arşiv'de web_key/şablon yoksa çözülemez → dönen boş string config eksiğine işaret eder
     (earsiv_link_template ayarlanmalı)."""
+    # KVKK: gizli arşivdeki manuel fatura → her seferinde TAZE, süreli imzalı backend linki
+    # (siparişte saklı eski linkin süresi dolmuş olabilir).
+    if _order_has_archived_manual_invoice(order) and not web_key:
+        return _manual_invoice_signed_link(order_id or order.get("id"), _MANUAL_INVOICE_LINK_DAYS_MARKETPLACE)
     _it = (invoice_type or order.get("invoice_type") or "").strip()
     wk = (web_key or order.get("invoice_pdf_url") or "").strip()
     if wk.startswith("http"):
@@ -4816,11 +7300,13 @@ async def _hb_upload_invoice_all_packages(order: dict, link: str, hb_client) -> 
 
 
 @router.post("/repush-invoice-links")
-async def repush_invoice_links(payload: dict = None, current_user: dict = Depends(require_admin)):
+async def repush_invoice_links(payload: dict = None, current_user: dict = Depends(require_permission("orders.edit"))):
     """Faturası kesilmiş ama pazaryerine LİNKİ gitmemiş siparişlerin fatura linkini yeniden gönderir.
     (e-Fatura link düzeltmesinden ÖNCE kesilenler için — özellikle 'web_key url degil' hatası alanlar.)
     payload: {order_id?: str, hours?: int=72, platform?: 'trendyol'|'hepsiburada'}
     Belirli bir order_id verilirse yalnız onu; verilmezse son `hours` içindeki uploaded!=true olanları dener."""
+    await _guard_switch("restore_mode")
+    await _guard_switch("pause_marketplace_sync")   # pazaryerine fatura linki push'u durdurulmuş olabilir
     payload = payload or {}
     oid = (payload.get("order_id") or "").strip()
     hours = int(payload.get("hours") or 72)
@@ -5001,16 +7487,35 @@ async def stock_diag(q: str = Query(...), key: str = Query(""), days: int = Quer
 
 
 @router.get("/hepsiburada/invoice-diag")
-async def hb_invoice_diag(q: str = Query(...), key: str = Query(""),
-                          do_upload: bool = Query(False)):
-    """TEŞHİS + hedefli yükleme (gizli anahtar korumalı — admin login gerektirmez, PII döndürmez).
-    q: HB sipariş no / paket no / bizim order_number / id. key: env HB_DIAG_KEY ile eşleşmeli.
-    do_upload=true → bu siparişin faturasını HB'ye HEMEN (yeniden) gönderir ve sonucu döner."""
+async def hb_invoice_diag(request: Request, q: str = Query(...), key: str = Query(""),
+                          do_upload: bool = Query(False),
+                          credentials=Depends(_deps_security)):
+    """TEŞHİS + hedefli yükleme (PII döndürmez).
+    q: HB sipariş no / paket no / bizim order_number / id.
+
+    GÜVENLİK (denetim 2026-10): statik anahtar (env HB_DIAG_KEY) yalnız SALT-OKUR teşhisi açar.
+    do_upload=true (HB'ye fatura GÖNDERİR — dış sisteme yazma) artık statik anahtarla
+    ÇALIŞMAZ: geçerli SÜPER-ADMIN oturumu (Bearer JWT) şart + denetim kaydı yazılır.
+    Süper-admin oturumu ile anahtar gerekmez."""
     import os as _os, hmac as _hmac
-    # Teşhis anahtarı YALNIZ env HB_DIAG_KEY'den (gömülü fallback kaldırıldı). Env yoksa uç kapalı.
-    _sk = (_os.environ.get("HB_DIAG_KEY") or "").strip()
-    if not _sk or not _hmac.compare_digest(str(key or ""), _sk):
-        raise HTTPException(status_code=403, detail="forbidden")
+    _admin = None
+    if credentials is not None:
+        try:
+            _admin = await require_admin(credentials)
+            if "*" not in await get_effective_permissions(_admin):
+                _admin = None
+        except HTTPException:
+            _admin = None
+    if _admin is None:
+        if do_upload:
+            raise HTTPException(status_code=403, detail="do_upload yalnızca süper-admin oturumuyla kullanılabilir")
+        # Teşhis anahtarı YALNIZ env HB_DIAG_KEY'den (gömülü fallback kaldırıldı). Env yoksa uç kapalı.
+        _sk = (_os.environ.get("HB_DIAG_KEY") or "").strip()
+        if not _sk or not _hmac.compare_digest(str(key or ""), _sk):
+            raise HTTPException(status_code=403, detail="forbidden")
+        await record_admin_audit(
+            db, action="hepsiburada.invoice_diag_static_key", entity_type="order", entity_id=str(q)[:80],
+            current_user=None, request=request, source="diag.static_key", metadata={"do_upload": False})
     order = await db.orders.find_one({"$or": [
         {"hepsiburada_order_number": q}, {"order_number": q},
         {"hepsiburada_package_number": q}, {"marketplace_order_id": q},
@@ -5029,7 +7534,11 @@ async def hb_invoice_diag(q: str = Query(...), key: str = Query(""),
         "hepsiburada_invoice_uploaded": order.get("hepsiburada_invoice_uploaded"),
         "hepsiburada_invoice_error": str(order.get("hepsiburada_invoice_error") or "")[:300],
     }
-    if do_upload and order.get("platform") == "hepsiburada":
+    if do_upload and _admin is not None and order.get("platform") == "hepsiburada":
+        await record_admin_audit(
+            db, action="hepsiburada.invoice_diag_upload", entity_type="order", entity_id=order.get("id") or "",
+            current_user=_admin, request=request, source="admin.orders",
+            metadata={"order_number": order.get("order_number") or ""})
         ds = await db.settings.find_one({"id": "dogan_edonusum"}, {"_id": 0}) or {}
         from routes.category_mapping import _get_hb_client
         _hcli, _hcerr = await _get_hb_client()
@@ -5051,7 +7560,7 @@ async def hb_invoice_diag(q: str = Query(...), key: str = Query(""),
 
 
 @router.get("/{order_id}/einvoice-pdf-debug")
-async def debug_einvoice_pdf(order_id: str, current_user: dict = Depends(require_admin)):
+async def debug_einvoice_pdf(order_id: str, current_user: dict = Depends(require_permission("orders.view"))):
     """TEŞHİS (admin): Doğan e-Fatura PDF çekimini dener; PDF baytını DÖNDÜRMEZ, yalnızca
     başarı/hatayı, kullanılan operasyonu ve WSDL'deki mevcut operasyon adlarını verir.
     Böylece doğru Doğan metodu ağ erişimi olan ortamda netleşir. PII sızdırmaz."""
@@ -5090,12 +7599,38 @@ async def debug_einvoice_pdf(order_id: str, current_user: dict = Depends(require
 
 
 @router.get("/{order_id}/einvoice-pdf")
-async def serve_einvoice_pdf(order_id: str, sig: str = ""):
+async def serve_einvoice_pdf(order_id: str, request: Request, sig: str = "", exp: str = ""):
     """Sipariş e-Faturasının resmî PDF'ini Doğan'dan çekip servis eder (imzalı public link).
-    GÜVENLİK: order'a özel HMAC imzası doğrulanır — kimliksiz PII/fatura sızıntısı yok."""
+    GÜVENLİK: order'a özel HMAC imzası doğrulanır — kimliksiz PII/fatura sızıntısı yok.
+    v2 (exp+sig): süreli, alan-ayrımlı anahtar. v1 (yalnız sig): eski süresiz linkler
+    pazaryerlerinde saklı olduğundan geriye uyumluluk için KABUL edilir ve kullanımı loglanır."""
     import hmac as _hmac
-    if not sig or not _hmac.compare_digest(sig, _einvoice_pdf_sig(order_id)):
+
+    async def _deny():
+        await note_policy_denial(None, "order.einvoice_link", order_id=order_id, request=request,
+                                 reason="bad_signature")
         raise HTTPException(status_code=403, detail="Geçersiz imza")
+    if not sig:
+        await _deny()
+    if exp:
+        try:
+            _exp_i = int(exp)
+        except Exception:
+            await _deny()
+        if not _invoice_sig_ok(sig, lambda k: _einvoice_pdf_sig_v2(order_id, _exp_i, k)):
+            await _deny()
+        if _exp_i < int(time.time()):
+            raise HTTPException(status_code=410, detail="Bağlantının süresi dolmuş")
+    else:
+        if not _hmac.compare_digest(str(sig), _einvoice_pdf_sig(order_id)):
+            await _deny()
+        logger.warning(f"[einvoice-pdf] ESKİ süresiz (v1) imzalı link kullanıldı order={order_id}")
+        try:
+            await db.integration_logs.insert_one({
+                "id": generate_id(), "service": "einvoice_pdf", "event": "legacy_v1_link_used",
+                "order_id": order_id, "created_at": datetime.now(timezone.utc).isoformat()})
+        except Exception:
+            pass
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
@@ -5118,7 +7653,7 @@ async def serve_einvoice_pdf(order_id: str, sig: str = ""):
         res = await run_in_threadpool(_cli.get_efatura_pdf, _uuid, _iid)
     except Exception as e:
         logger.error(f"[einvoice-pdf {order_id}] {e}")
-        raise HTTPException(status_code=502, detail=f"e-Fatura PDF alınamadı: {e}")
+        raise HTTPException(status_code=502, detail="e-Fatura PDF alınamadı")  # ayrıntı yalnız logda (INFRA-03)
     if not res.get("success") or not res.get("pdf"):
         logger.warning(f"[einvoice-pdf {order_id}] başarısız: {res.get('error')} "
                        f"struct={res.get('structure')}")
@@ -5203,7 +7738,13 @@ async def _get_mng_settings() -> dict:
         "customer_code": _cust,
         "tax_no": _cargo.get("identity_no") or s.get("tax_no") or "6080712084",
         "env": _cargo.get("env") or s.get("env") or "",
-        "is_active": _cargo_active or s.get("is_active", True),
+        # DÜZELTME (denetim 2026-10): admin MNG'yi AÇIKÇA kapattıysa (is_active=False) kargo
+        # bilgisi dolu olsa bile pasif sayılır (eskiden `_cargo_active or ...` toggle'ı yok sayıyordu).
+        # Ayar yoksa eski davranış: kargo bilgisi dolu ya da varsayılan True.
+        # Yalnız GÜNCEL sağlayıcı ayarındaki (providers_config) açık kapatma dikkate alınır; eski
+        # settings.mng_kargo.is_active alanı panelden artık yazılmadığından bayat olabilir → yok sayılır.
+        "is_active": (False if _cargo.get("is_active") is False
+                      else (_cargo_active or s.get("is_active", True))),
     }
 
 
@@ -5225,11 +7766,32 @@ async def _get_sender_info() -> dict:
 async def create_cargo_barcode(
     order_id: str,
     cargo_company: str = Query("MNG"),
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.ship"))
 ):
     """Aktif kargo firmasında barkod / takip numarası oluşturur ve sipariş üzerine yazar.
     Şu an MNG Kargo entegrasyonu canlı; diğer firmalar için manuel takip no input'u gerekir.
-    """
+
+    COM09: aynı sipariş için etiket isteği ATOMİK kilitle (cargo_label_lock) tek seferde yürür —
+    çift tık / toplu + tekli eşzamanlı istek ikinci MNG kaydı açamaz (ikincisi 409). Kilit sürerken
+    teslimat adresi de değiştirilemez (update_order). Sipariş kilit ALINDIKTAN sonra okunur →
+    etikete yalnız güncel adres gider."""
+    await _guard_restore_mode()   # ACİL ANAHTAR: geri yükleme modunda kargo etiketi oluşturulmaz → 423
+    if not isinstance(cargo_company, str):   # doğrudan Python çağrısı (Query nesnesi gelmesin)
+        cargo_company = "MNG"
+    _tok = await _acquire_order_op_lock(order_id, "cargo_label", ttl_s=300)
+    if not _tok:
+        if not await db.orders.count_documents({"id": order_id}, limit=1):
+            raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+        raise HTTPException(status_code=409, detail=(
+            "Bu sipariş için kargo etiketi şu an oluşturuluyor. Birkaç saniye sonra sayfayı yenileyin."))
+    try:
+        return await _create_cargo_barcode_locked(order_id, cargo_company, current_user)
+    finally:
+        await _release_order_op_lock(order_id, "cargo_label", _tok)
+
+
+async def _create_cargo_barcode_locked(order_id: str, cargo_company: str, current_user: dict):
+    """create_cargo_barcode gövdesi — YALNIZ cargo_label kilidi tutulurken çağrılır."""
     company = (cargo_company or "MNG").upper()
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     if not order:
@@ -5300,12 +7862,15 @@ async def create_cargo_barcode(
     il = (ship.get("city") or "").strip()
     ilce = (ship.get("district") or "").strip()
     adres = (ship.get("address") or "").strip()
-    if not (il and adres):
-        raise HTTPException(status_code=400, detail="Alıcı il ve adresi eksik. MNG barkodu oluşturulamaz.")
+    # DENETİM A-2: ilçe de zorunlu — MNG pChIlce boşsa gönderiyi reddeder/yanlış şubeye
+    # yönlendirir (influencer yolu zaten dördünü şart koşuyor, sipariş yolu asimetrikti).
+    if not (il and ilce and adres):
+        raise HTTPException(status_code=400, detail="Alıcı il, ilçe ve adresi eksik. MNG barkodu oluşturulamaz.")
 
-    # İçerik: ürün isimleri (ilk 250 karakter)
+    # İçerik: ürün isimleri. DENETİM A-1: MNG pChIcerik gerçek limiti 200 karakter (E022);
+    # çok ürünlü siparişte 200-250 arası düşerse kargo reddedilir → "barkod oluşmuyor".
     items = order.get("items") or []
-    icerik = "; ".join([f"{it.get('quantity',1)}x {it.get('product_name','')}".strip() for it in items])[:250] or "Ürün"
+    icerik = "; ".join([f"{it.get('quantity',1)}x {it.get('product_name','')}".strip() for it in items])[:200] or "Ürün"
     kiymet = float(order.get("total") or order.get("subtotal") or 0)
 
     # Sipariş numarası (MNG için unique olmalı, varsa siparişin order_number'ı)
@@ -5319,8 +7884,33 @@ async def create_cargo_barcode(
     # Senkron SOAP çağrısı event loop'u BLOKE etmesin diye thread'e taşı (aksi halde
     # MNG WSDL yavaşlığı/erişilemezliği Railway worker'ını kilitleyip 503'e yol açar).
     import asyncio as _aio_cargo
+
+    # FIN-E06 — YEREL KAYIT KAYBI KURTARMA: önceki bir denemede MNG'ye istek GİTTİ (attempt damgası
+    # var) ama sonuç siparişe yazılamadıysa (timeout / süreç çöktü), YENİ kayıt açmadan önce MNG'de
+    # bu sipariş_no ile kayıt aranır; bulunursa ona BAĞLANILIR (çift gönderi/çift ücret yok).
+    # Damga da yoksa (commit tamamen kayıp) MNG zaten aynı sipariş_no'yu E005 ile reddeder →
+    # aşağıdaki E005 dalı aynı aramayla kurtarır.
+    res = None
+    if order.get("cargo_label_attempted_at"):
+        try:
+            from mng_kargo_client import get_mng_shipment_status as _gss_pre
+            _pre = await _aio_cargo.to_thread(
+                _gss_pre, username=settings["username"], password=settings["password"], siparis_no=siparis_no)
+            if _pre.get("ok") and (str(_pre.get("mng_siparis_no") or "").strip()
+                                   or str(_pre.get("gonderi_no") or "").strip()):
+                res = {"ok": True,
+                       "barkod": str(_pre.get("mng_siparis_no") or "").strip() or siparis_no,
+                       "gonderi_no": str(_pre.get("gonderi_no") or "").strip(),
+                       "raw": "recovered_from_lookup"}
+                logger.info(f"[FIN-E06] MNG'de mevcut kayıt bulundu, bağlanıyor (siparis_no={siparis_no})")
+        except Exception as _pre_e:
+            logger.warning(f"[FIN-E06] ön sorgu başarısız (siparis_no={siparis_no}): {_pre_e}")
+    if res is None:
+        # MNG'ye istek GİTMEDEN önce deneme damgası (yanıt kaybolursa sonraki deneme önce sorgular).
+        await db.orders.update_one({"id": order_id}, {"$set": {
+            "cargo_label_attempted_at": datetime.now(timezone.utc).isoformat()}})
     try:
-        res = await _aio_cargo.to_thread(
+        res = res or await _aio_cargo.to_thread(
             mng_create,
             username=settings["username"],
             password=settings["password"],
@@ -5342,7 +7932,10 @@ async def create_cargo_barcode(
             ilce=ilce,
             adres=adres,
             tel_cep=phone,
-            email=ship.get("email") or order.get("user_email") or "",
+            # KVKK/PRIV09 (denetim 2026-10): müşteri e-postası MNG'ye GÖNDERİLMEZ — pChEmail
+            # MNG SiparisGirisiDetayliV3'te opsiyoneldir (mng_kargo_client varsayılanı "");
+            # teslimat bildirimi için telefon (tel_cep) yeterli. İade gönderileri zaten "" yolluyor.
+            email="",
             kapida_odeme=kapida,
             platform_adi="",  # Pazaryeri değil — boş geç (N11/GG/TRND aksi takdirde)
             platform_kodu="",
@@ -5539,7 +8132,7 @@ async def create_cargo_barcode(
 
 
 @router.post("/{order_id}/cargo-refresh")
-async def refresh_cargo_tracking(order_id: str, current_user: dict = Depends(require_admin)):
+async def refresh_cargo_tracking(order_id: str, current_user: dict = Depends(require_permission("orders.ship"))):
     """Kargo takip durumunu yeniler — anlaşılır mesajla.
 
     - Pazaryeri (Trendyol/Hepsiburada) siparişi → takip no pazaryeri senkronundan gelir,
@@ -5579,7 +8172,9 @@ async def refresh_cargo_tracking(order_id: str, current_user: dict = Depends(req
     # ── Site siparişi: MNG'den durum çek (hata yutulmaz, kategorize edilir) ──
     settings = await _get_mng_settings()
     try:
-        info = get_mng_shipment_status(
+        import asyncio as _aio_mng
+        info = await _aio_mng.to_thread(  # SOAP (≤40 sn) → olay döngüsünü kilitlemesin
+            get_mng_shipment_status,
             username=settings["username"], password=settings["password"], siparis_no=siparis_no
         )
     except Exception as _e:
@@ -5666,7 +8261,7 @@ async def backfill_cargo_tracking(
     force: bool = False,
     all_statuses: bool = False,
     site_only: bool = False,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("settings.edit")),
 ):
     """Kargoya verilmiş siparişlerin MNG (DHL eCommerce) takip numaralarını TOPLU çeker.
 
@@ -5819,45 +8414,93 @@ async def backfill_cargo_tracking(
 
 
 @router.post("/returns/bulk-mark-refunded-silent")
-async def bulk_mark_refunded_silent(payload: dict, current_user: dict = Depends(require_admin)):
+async def bulk_mark_refunded_silent(payload: dict, request: Request,
+                                    current_user: dict = Depends(require_permission("returns.refund_pay"))):
     """Verilen sipariş ID'lerini 'İade Bedeli Ödendi' (refunded) durumuna alır.
 
     BİLDİRİMSİZ: db.orders doğrudan güncellenir, send_notification çağrılmaz →
     bu siparişler için müşteriye SMS/e-posta GİTMEZ. (Tek seferlik toplu işlem.)
+
+    GÜVENLİK (denetim 2026-10): para/uyum işlemi → `returns.refund_pay` YETKİSİ **VE**
+    süper-admin şart; işlemi yapan kayda geçer + denetim kaydı yazılır. Eski
+    `all_approved` toplu modu (tüm onaylı iadeleri tek tıkla 'ödendi' yapma) KAPATILDI —
+    yalnız açıkça listelenen sipariş id'leri işlenir; yalnız `return_approved` durumundaki
+    siparişler güncellenir (başka durumdaki bir sipariş yanlışlıkla 'refunded' olmaz).
     """
-    order_ids = payload.get("order_ids") or []
-    # all_approved=true → WEB SİTESİ tarafındaki ONAYLANAN (return_approved) tüm iadeleri seç.
-    # Pazaryeri (Trendyol/HB) siparişleri hariç tutulur; yalnız site siparişleri.
+    await _guard_switch("freeze_refunds")   # ACİL ANAHTAR: iadeler donduruldu → 423
+    _perms = await get_effective_permissions(current_user)
+    if "*" not in _perms:
+        raise HTTPException(status_code=403, detail="Bu işlem yalnızca süper-admin yetkisi gerektirir")
+    payload = payload if isinstance(payload, dict) else {}
     if payload.get("all_approved"):
-        _MP = ["trendyol", "hepsiburada", "temu", "n11", "ciceksepeti", "amazon", "pazarama", "trendyol-ihracat"]
-        _q = {"status": "return_approved",
-              "$and": [
-                  {"$or": [{"platform": "meluni"}, {"platform": {"$in": [None, ""]}}, {"platform": {"$exists": False}}]},
-                  {"$or": [{"marketplace": {"$in": [None, "", "meluni"]}}, {"marketplace": {"$exists": False}}]},
-                  {"$or": [{"platform": {"$nin": _MP}}, {"platform": {"$exists": False}}]},
-              ]}
-        order_ids = await db.orders.distinct("id", _q)
+        raise HTTPException(status_code=400, detail=(
+            "Toplu 'tüm onaylı iadeler' modu kapatıldı. İşlenecek sipariş id'lerini order_ids "
+            "listesinde açıkça gönderin."))
+    order_ids = payload.get("order_ids") or []
     if not isinstance(order_ids, list) or not order_ids:
-        raise HTTPException(status_code=400, detail="order_ids (liste) gerekli ya da all_approved ile onaylanan iade yok")
+        raise HTTPException(status_code=400, detail="order_ids (liste) gerekli")
+    order_ids = [str(x).strip()[:80] for x in order_ids if str(x or "").strip()]
+    order_ids = list(dict.fromkeys(order_ids))
+    if not order_ids or len(order_ids) > 500:
+        raise HTTPException(status_code=400, detail="order_ids 1-500 arası benzersiz id içermeli")
     now = datetime.now(timezone.utc).isoformat()
-    done, missing = [], []
-    for oid in order_ids:
-        res = await db.orders.update_one(
-            {"id": oid},
-            {"$set": {
-                "status": "refunded",
-                "refund_paid_at": now,
-                "return_approved_at": now,
-                "updated_at": now,
-                "refund_silent_bulk": True,
-            }},
-        )
-        (done if res.matched_count else missing).append(oid)
-    return {"requested": len(order_ids), "updated": len(done), "updatedIds": done, "missingIds": missing}
+    _actor = current_user.get("email", "") or current_user.get("id", "")
+    done, missing, skipped = [], [], []
+    # COM11 / FIN-E03: AÇIK ödeme itirazlı siparişler toplu "iade ödendi" yapılmaz (atlanır, listede
+    # döner). Süper admin gerekçe (chargeback_override_reason) verirse her biri ayrı denetimle geçer.
+    from .chargebacks import assert_refund_allowed, CHARGEBACK_OVERRIDE_FIELD
+    _cb_open = set(await db.chargebacks.distinct("order_id", {"order_id": {"$in": order_ids}, "status": "open"}))
+    _cb_blocked, _cb_overridden = [], set()
+    if _cb_open:
+        if str(payload.get(CHARGEBACK_OVERRIDE_FIELD) or "").strip():
+            for _oid in sorted(_cb_open):
+                await assert_refund_allowed(_oid, current_user, payload,
+                                            action="returns.bulk_mark_refunded_silent", request=request)
+                _cb_overridden.add(_oid)
+        else:
+            _cb_blocked = sorted(_cb_open)
+
+    async def _apply():
+        for oid in order_ids:
+            if oid in _cb_blocked:
+                continue
+            _flt_cb = {} if oid in _cb_overridden else {"chargeback_open": {"$ne": True}}
+            res = await db.orders.update_one(
+                {"id": oid, "status": "return_approved", **_flt_cb},
+                {"$set": {
+                    "status": "refunded",
+                    "refund_paid_at": now,
+                    "return_approved_at": now,
+                    "updated_at": now,
+                    "refund_silent_bulk": True,
+                    "refund_silent_bulk_by": _actor,
+                }},
+            )
+            if res.matched_count:
+                done.append(oid)
+            elif await db.orders.count_documents({"id": oid}, limit=1):
+                skipped.append(oid)  # var ama return_approved değil → dokunulmadı
+            else:
+                missing.append(oid)
+
+    # PARA/UYUM İŞLEMİ → FAIL-CLOSED denetim: intent yazılamazsa hiçbir sipariş güncellenmez (503).
+    from activity_audit import run_audited
+    await run_audited(
+        db, action="returns.bulk_mark_refunded_silent.apply", entity_type="order", entity_id="bulk",
+        perform=_apply, current_user=current_user, request=request, source="admin.orders",
+        metadata={"requested": len(order_ids), "order_ids": order_ids[:200]})
+    await record_admin_audit(
+        db, action="returns.bulk_mark_refunded_silent", entity_type="order", entity_id="bulk",
+        current_user=current_user, request=request, source="admin.orders",
+        metadata={"requested": len(order_ids), "updated_ids": done[:200],
+                  "skipped_ids": skipped[:200], "missing_ids": missing[:200]})
+    return {"requested": len(order_ids), "updated": len(done), "updatedIds": done,
+            "missingIds": missing, "skippedNotApprovedIds": skipped,
+            "blockedChargebackIds": _cb_blocked}
 
 
 @router.post("/cargo/relink-dhl")
-async def relink_cargo_dhl(current_user: dict = Depends(require_admin)):
+async def relink_cargo_dhl(current_user: dict = Depends(require_permission("orders.ship"))):
     """Eski/yanlis kargo takip linklerini DHL deep-link formatina cevirir:
     kargotakip.dhlecommerce.com.tr/?takipNo={no} (no ile direkt takip, form/CAPTCHA yok).
     Sadece MNG/DHL linki olan siparisleri etkiler (Trendyol/HB kendi linkine dokunulmaz).
@@ -5884,13 +8527,13 @@ async def relink_cargo_dhl(current_user: dict = Depends(require_admin)):
 
 
 @router.post("/{order_id}/create-mng-shipment")
-async def create_mng_shipment(order_id: str, current_user: dict = Depends(require_admin)):
+async def create_mng_shipment(order_id: str, current_user: dict = Depends(require_permission("orders.ship"))):
     """MNG Kargo'ya sipariş gönder ve barkod al (kısayol)."""
     return await create_cargo_barcode(order_id=order_id, cargo_company="MNG", current_user=current_user)
 
 
 @router.get("/cargo/mng-test")
-async def mng_connection_test(siparis_no: str = None, current_user: dict = Depends(require_admin)):
+async def mng_connection_test(siparis_no: str = None, current_user: dict = Depends(require_permission("settings.view"))):
     """TEŞHİS: MNG/DHL SOAP servisine (service.mngkargo.com.tr) sunucudan erişim testi.
     Barkod OLUŞTURMAZ — sadece Baglanti_Test() ping atar. 200 + JSON döner (CORS güvenli).
     ok=true → erişim var; ok=false → error alanında gerçek sebep (timeout/whitelist/DNS).
@@ -5934,7 +8577,7 @@ async def mng_connection_test(siparis_no: str = None, current_user: dict = Depen
 
 
 @router.get("/cargo/logs")
-async def get_cargo_logs_diag(limit: int = 10, current_user: dict = Depends(require_admin)):
+async def get_cargo_logs_diag(limit: int = 10, current_user: dict = Depends(require_permission("orders.view"))):
     """TEŞHİS: Son kargo işlem logları (create_shipment hataları/exception'ları dahil).
     create-mng-shipment 503/502 verdiğinde gerçek MNG hatası buraya yazılır."""
     try:
@@ -5949,7 +8592,7 @@ async def get_cargo_logs_diag(limit: int = 10, current_user: dict = Depends(requ
 async def bulk_create_cargo_barcode(
     order_ids: List[str],
     cargo_company: str = Query("MNG"),
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("orders.ship"))
 ):
     """Birden çok sipariş için topluca kargo barkodu oluştur.
 
@@ -5957,6 +8600,10 @@ async def bulk_create_cargo_barcode(
     idi ve '/{order_id}/cargo-barcode' route'u daha önce tanımlı olduğu için FastAPI bu
     isteği order_id='bulk' sanıp tekil route'a yönlendiriyor, toplu işlem ÇALIŞMIYORDU.
     """
+    await _guard_restore_mode()   # ACİL ANAHTAR: geri yükleme modu → 423
+    # DENETİM (cost-redteam #8): tek istekte MNG çağrı sayısını sınırla (burst-DoS/maliyet).
+    if order_ids and len(order_ids) > 200:
+        raise HTTPException(status_code=400, detail="Tek seferde en fazla 200 sipariş işlenebilir.")
     success = []
     errors = []
     for oid in order_ids or []:
@@ -5980,7 +8627,11 @@ async def bulk_create_cargo_barcode(
 async def bulk_update_status(
     order_ids: List[str],
     status: str = Query(...),
-    current_user: dict = Depends(require_admin)
+    # GÜVENLİK (denetim 2026-10): tekli uç require_permission("orders.update_status") ister;
+    # toplu uç yalnız require_admin'deydi → yetkisiz personel toplu durum değiştirebiliyordu
+    # (BFLA). Aynı yetkiye bağlandı. Finans kapıları (ödenmiş iptal / cancel_refunded)
+    # update_order_status İÇİNDE uygulandığından her sipariş için aynen geçerli.
+    current_user: dict = Depends(require_permission("orders.update_status"))
 ):
     """Birden çok siparişin durumunu TOPLUCA güncelle.
 
@@ -5988,10 +8639,13 @@ async def bulk_update_status(
     POST ediyordu; '/{order_id}/status' PUT route'u bu path'i yutup 405 döndürüyor, "Toplu
     Durum Güncelle" HİÇ çalışmıyordu (bulk-cargo-barcode ile aynı sorun/çözüm).
     """
+    if len(order_ids or []) > 500:
+        raise HTTPException(status_code=400, detail="Tek seferde en fazla 500 sipariş güncellenebilir")
     success, errors = [], []
     for oid in order_ids or []:
         try:
-            await update_order_status(order_id=oid, status=status, current_user=current_user)
+            await update_order_status(order_id=oid, status=status, expected_status=None,
+                                      current_user=current_user)
             success.append(oid)
         except HTTPException as he:
             errors.append({"order_id": oid, "error": he.detail})
@@ -6005,11 +8659,15 @@ async def bulk_update_status(
 async def bulk_create_invoice(
     order_ids: List[str],
     invoice_type: str = Query("auto"),
-    current_user: dict = Depends(require_admin)
+    # DENETİM H1: tekli fatura kesimi require_permission("orders.invoice") ister;
+    # toplu uç yalnız require_admin'deydi → izinsiz personel toplu GİB faturası
+    # kesebiliyordu (BFLA). Tekli uçla aynı yetkiye bağlandı.
+    current_user: dict = Depends(require_permission("orders.invoice"))
 ):
     """Toplu fatura kesimi — invoice_type=auto ile her sipariş için VKN/TC kontrolü
     yapılır, mükellefse e-Fatura, değilse e-Arşiv kesilir.
     """
+    await _guard_restore_mode()   # ACİL ANAHTAR: geri yükleme modu → 423
     success = []
     errors = []
     for oid in order_ids or []:
@@ -6104,7 +8762,10 @@ async def mng_cargo_webhook(payload: dict, request: Request):
     if referans_no:
         query_or.append({"order_number": referans_no})
 
-    order = await db.orders.find_one({"$or": query_or}, {"_id": 0, "id": 1, "order_number": 1, "cargo_status_history": 1})
+    # DÜZELTME (denetim 2026-10): `status` projeksiyonda YOKTU → aşağıdaki geri-geçiş koruması
+    # hep boş durumla çalışıyor, iptal/iade siparişi 'delivered'a çekilebiliyordu.
+    order = await db.orders.find_one({"$or": query_or},
+                                     {"_id": 0, "id": 1, "order_number": 1, "status": 1, "cargo_status_history": 1})
     if order:
         # A2.7: İDEMPOTENSİ — aynı (barkod, işlem kodu, tarih) olayı tekrar gelirse (MNG retry /
         # replay) yeniden işleme; teslim/iade gibi yan etkiler ikinci kez tetiklenmesin.
@@ -6122,18 +8783,20 @@ async def mng_cargo_webhook(payload: dict, request: Request):
             "event": "webhook_unknown_order",
             "barkod": barkod,
             "referans_no": referans_no,
-            "payload": payload,
+            "payload": _pii_scrub(payload),  # KVKK: olası alıcı TCKN/VKN alanları maskeli
             "created_at": datetime.now(timezone.utc).isoformat(),
         })
         return {"success": True, "matched": False}
 
-    # Sipariş durumu mapping
+    # Sipariş durumu mapping. DENETİM (bizlogic Y2/F6): "500" (kargo iadesi = teslim edilemeyip
+    # geri dönen paket) MÜŞTERİ İADESİ DEĞİL → order.status'u 'returned' YAPMA (stok/return kaydı
+    # olmadan sahte iade + ciro düşümü olurdu); yalnız cargo alanlarına yansır.
     status_map = {
         "100": ("preparing", "Şubeye Girdi"),
         "200": ("shipped", "Transfere Alındı"),
         "300": ("shipped", "Dağıtımda"),
         "400": ("delivered", "Teslim Edildi"),
-        "500": ("returned", "İade"),
+        "500": (None, "Kargo İadesi (şubede)"),
     }
     new_status, _ = status_map.get(islem_kodu, (None, None))
 
@@ -6143,23 +8806,53 @@ async def mng_cargo_webhook(payload: dict, request: Request):
         "cargo_last_event_at": tarih,
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
+    # DENETİM Y2: terminal/geri-geçiş koruması — geç gelen kargo event'i iptal/iade/teslim
+    # edilmiş siparişi EZMESİN, delivered'ı shipped'e geri DÜŞÜRMESİN.
+    # DENETİM 2026-10: iptal/iade edilmiş siparişler kargo olayıyla HİÇBİR yöne taşınmaz
+    # (400 'teslim edildi' dahil — eskiden iptal siparişi 'delivered' yapabiliyordu).
+    # Teslim edilmiş sipariş geri düşmez; aktif akışta yalnız İLERİ geçilir. (Ödeme durumuna
+    # hiç dokunulmaz — değişmez 1.)
+    _cur_st = str(order.get("status") or "")
+    _FROZEN = {"cancelled", "cancel_refunded", "refunded", "partial_refunded", "returned",
+               "return_requested", "return_approved", "return_rejected", "return_in_transit",
+               "delivered", "completed"}
+    _RANK = {"preparing": 1, "shipped": 2, "delivered": 3}
     if new_status:
-        update_set["status"] = new_status
-        if new_status == "delivered":
-            update_set["delivered_at"] = tarih
+        _allow = _cur_st not in _FROZEN
+        if _allow and _RANK.get(new_status, 0) <= _RANK.get(_cur_st, 0):
+            _allow = False
+        if _allow:
+            update_set["status"] = new_status
+            if new_status == "delivered":
+                update_set["delivered_at"] = tarih
 
     history_entry = {
         "code": islem_kodu, "text": islem_adi, "at": tarih,
         "barkod": barkod, "raw": payload,
     }
 
-    await db.orders.update_one(
-        {"id": order["id"]},
+    # Statü değişecekse filtre MEVCUT statüyü de içerir (okuma ile yazma arasında panelden
+    # iptal edilen sipariş ezilmesin). Eşleşmezse statüsüz yalnız kargo alanları yazılır.
+    _filt = {"id": order["id"]}
+    if "status" in update_set:
+        _filt["status"] = order.get("status")
+    _res = await db.orders.update_one(
+        _filt,
         {
             "$set": update_set,
             "$push": {"cargo_status_history": history_entry},
         },
     )
+    if "status" in update_set and not _res.matched_count:
+        update_set.pop("status", None)
+        update_set.pop("delivered_at", None)
+        new_status = None
+        await db.orders.update_one(
+            {"id": order["id"]},
+            {"$set": update_set, "$push": {"cargo_status_history": history_entry}},
+        )
+    elif "status" not in update_set:
+        new_status = None
 
     # Log'a yaz
     await db.integration_logs.insert_one({
@@ -6183,15 +8876,223 @@ async def mng_cargo_webhook(payload: dict, request: Request):
     }
 
 
+def _render_label_barcode_png_b64(code: str, *, max_width_mm: float = 88.0,
+                                  height_mm: float = 16.0) -> str:
+    """Kargo etiketi barkodunu SUNUCUDA Code128 PNG olarak üretir (base64).
+
+    NEDEN: Etiket eskiden barkodu Google Fonts'tan gelen 'Libre Barcode 39' WEB FONTU ile
+    çiziyordu. İki kırılma noktası vardı ve kurye terminali "bir okuyor bir okumuyor" oluyordu:
+      1) Font yazdırma anında indirilemezse çubuk YOK — düz yazı basılıyordu.
+      2) Code39 seyrek bir simgeleştirme; JS etikete sığdırmak için punto düşürüyordu. 6 karakterli
+         sipariş no (W11676) genişte kalırken 11 karakterli influencer referansı (INF07426343)
+         ~18pt'ye iniyor, çubuk kalınlığı (X boyutu) lazer okuyucunun altına düşüyordu.
+    ÇÖZÜM: Code128 (aynı veride Code39'un ~yarısı genişlik) + sunucuda PNG. Modül genişliği
+    etiket genişliğine göre hesaplanır; asla okunamayacak kadar incelmez (taban 0.33mm ≈ 13 mil).
+    """
+    code = (str(code or "").strip() or "-")[:40]
+    try:
+        import io as _io, base64 as _b64
+        import barcode as _bc
+        from barcode.writer import ImageWriter as _IW
+        # Code128 modül sayısı: başlangıç(11) + veri(11/karakter) + kontrol(11) + bitiş(13)
+        modules = 11 + 11 * len(code) + 11 + 13
+        quiet = 10  # her iki yanda 10 modül sessiz alan (standart minimum)
+        mw = (max_width_mm / (modules + 2 * quiet))
+        mw = max(0.33, min(0.60, round(mw, 3)))   # 0.33mm taban → tarayıcı toleransı içinde
+        buf = _io.BytesIO()
+        _bc.get("code128", code, writer=_IW()).write(
+            buf, options={"module_width": mw, "module_height": height_mm,
+                          "quiet_zone": quiet * mw, "write_text": False,
+                          "dpi": 300, "background": "white", "foreground": "black"})
+        return _b64.b64encode(buf.getvalue()).decode("ascii")
+    except Exception as e:
+        logger.warning(f"[kargo etiketi] Code128 PNG üretilemedi ({code}): {e}")
+        return ""
+
+
+def _render_cargo_label_html(*, siparis_no, main_barcode, sender_company, sender_phone,
+                             sender_addr_line, receiver_name, receiver_phone, receiver_full_addr,
+                             cargo_company_display, odeme_turu, kargo_tipi, tracking_line=""):
+    """100x120mm yazdırılabilir kargo etiketi (HTML + Code39). Hem SİPARİŞ hem INFLUENCER PR
+    gönderileri AYNI şablonu kullanır (tek kaynak). Telefon formatı, HTML-escape (stored-XSS) ve
+    logo gömme içeride yapılır → çağıran ham değer geçer."""
+    import base64, pathlib, html as _html_c
+    def _hc(v):
+        return _html_c.escape(str(v if v is not None else ""))
+    def _fmt_phone(p):
+        if not p:
+            return ""
+        digits = "".join(c for c in str(p) if c.isdigit())
+        if digits.startswith("90") and len(digits) == 12:
+            digits = digits[2:]
+        elif digits.startswith("0") and len(digits) == 11:
+            digits = digits[1:]
+        if len(digits) == 10:
+            return f"{digits[0:3]} {digits[3:6]} {digits[6:8]} {digits[8:10]}"
+        return str(p)
+    logo_b64 = ""
+    try:
+        logo_path = pathlib.Path(__file__).parent.parent / "static" / "brand" / "meluni-logo.png"
+        if logo_path.exists():
+            logo_b64 = base64.b64encode(logo_path.read_bytes()).decode()
+    except Exception:
+        logo_b64 = ""
+    logo_src = f"data:image/png;base64,{logo_b64}" if logo_b64 else ""
+    sender_company = _hc(sender_company)
+    sender_phone = _hc(_fmt_phone(sender_phone))
+    sender_addr_line = _hc(sender_addr_line)
+    receiver_name = _hc(receiver_name)
+    receiver_phone_fmt = _hc(_fmt_phone(receiver_phone))
+    receiver_full_addr = _hc(receiver_full_addr)
+    cargo_company_display = _hc(cargo_company_display)
+    odeme_turu = _hc(odeme_turu)
+    kargo_tipi = _hc(kargo_tipi)
+    siparis_no = _hc(siparis_no)
+    _bc_png = _render_label_barcode_png_b64(main_barcode)
+    main_barcode = _hc(main_barcode)
+    tracking_line = _hc(tracking_line)
+    # PNG üretilebildiyse GÖRSEL barkod (okunaklılık garantisi); üretilemezse eski web-font
+    # gösterimi yedek olarak kalır (etiket hiçbir koşulda barkodsuz basılmasın).
+    if _bc_png:
+        _barcode_el = (f'<img class="barcode-img" alt="{main_barcode}" '
+                       f'src="data:image/png;base64,{_bc_png}">')
+    else:
+        _barcode_el = f'<div class="barcode">*{main_barcode}*</div>'
+    return f"""<!DOCTYPE html>
+<html lang="tr"><head><meta charset="UTF-8"><title>Kargo Etiketi - {siparis_no}</title>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800;900&family=Libre+Barcode+39+Extended&display=swap" rel="stylesheet">
+<style>
+  @page {{ size: 100mm 120mm; margin: 0; }}
+  * {{ box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
+  body {{ margin: 0; font-family: 'Mulish','Helvetica Neue',Arial,sans-serif; width: 100mm; height: 120mm; color: #000; background:#fff; }}
+  .label {{ width: 100mm; height: 120mm; padding: 2mm; }}
+  /* TAŞMA KORUMASI: etiket sabit 120mm. Adres uzayınca içerik büyüyüp barkod bandını
+     kutunun DIŞINA itiyordu (sipariş no alt kenardan kesiliyordu). Artık .main taşmayı
+     kırpar, bilgi tabloları ESNER (.body-wrap flex:1, min-height:0), barkod bandı ise
+     ASLA küçülmez/itilmez (flex:0 0 auto) → barkod + sipariş no her koşulda tam basılır. */
+  .main {{ width: 100%; height: 100%; border: 1.8pt solid #000; border-radius: 1.5mm; padding: 2.2mm;
+           display:flex; flex-direction:column; overflow: hidden; }}
+  .body-wrap {{ flex: 0 1 auto; min-height: 0; overflow: hidden; }}
+  .logo-band {{ display:flex; align-items:center; justify-content:center; padding: 0.3mm 0 1.4mm 0; border-bottom: 1.4pt solid #000; flex: 0 0 auto; }}
+  .logo-band img {{ height: 6.2mm; width: auto; max-width: 78mm; }}
+  .logo-fallback {{ font-family:'Mulish',sans-serif; font-weight: 900; font-size: 17pt; letter-spacing: 4.5pt; }}
+  .section-title {{ text-align: center; font-family:'Mulish',sans-serif; font-weight: 800; font-size: 8.6pt; letter-spacing: 0.5pt; padding: 0.9mm 0; border-bottom: 1pt solid #000; background: #f0f0f0; }}
+  .info-table {{ border-bottom: 1pt solid #000; }}
+  .info-row {{ display:flex; border-bottom: 0.6pt solid #000; min-height: 4.6mm; }}
+  .info-row:last-child {{ border-bottom: 0; }}
+  .info-row .lbl {{ width: 22mm; padding: 0.8mm 1.5mm; font-family:'Mulish',sans-serif; font-weight: 700; font-size: 7.6pt; border-right: 0.6pt solid #000; display:flex; align-items:center; }}
+  .info-row .val {{ flex: 1; padding: 0.8mm 1.5mm; font-family:'Mulish',sans-serif; font-weight: 700; font-size: 8.2pt; display:flex; align-items:center; line-height: 1.22; word-break: break-word; }}
+  .info-row .val.addr {{ font-weight: 600; font-size: 7.4pt; line-height: 1.25; }}
+  /* flex: 1 0 auto → artan boşluğu BAND alır ve barkodu ortalar (tablo ile alt kenar
+     arasında tek yanlı kocaman boşluk kalmaz); shrink 0 olduğu için asla ezilmez. */
+  .barcode-band {{ flex: 1 0 auto; padding: 1.2mm 0 0.4mm; text-align:center;
+                   display:flex; flex-direction:column; align-items:center; justify-content:center; }}
+  .barcode-band > * {{ width: 100%; }}
+  .barcode {{ font-family: 'Libre Barcode 39 Extended', 'Libre Barcode 39', monospace; font-size: 30pt; letter-spacing: 0; line-height: 0.95; color:#000; white-space: nowrap; display: block; }}
+  /* Sunucuda üretilen Code128 PNG — web fontuna/JS küçültmeye bağımlı DEĞİL (kurye okuyucusu
+     için sabit çubuk kalınlığı). image-rendering: pixelated → yazdırmada çubuklar bulanmaz. */
+  .barcode-img {{ display:block; margin: 0 auto; max-width: 88mm; width: auto; height: 16mm;
+                  image-rendering: pixelated; image-rendering: crisp-edges; }}
+  .barcode-num {{ font-size: 9pt; letter-spacing: 1.4pt; font-family: 'Courier New', monospace; font-weight: 800;
+                  line-height: 1.05; margin-top: 0.6mm; }}
+</style></head><body>
+<div class="label">
+  <div class="main">
+    <div class="logo-band">
+      {('<img src="'+logo_src+'" alt="MELUNİ"/>') if logo_src else '<div class="logo-fallback">MELUNİ</div>'}
+    </div>
+    <div class="body-wrap">
+    <div class="section-title">Gönderici Bilgileri</div>
+    <div class="info-table">
+      <div class="info-row"><span class="lbl">Firma</span><span class="val">{sender_company}</span></div>
+      <div class="info-row"><span class="lbl">Telefon</span><span class="val">{sender_phone}</span></div>
+      <div class="info-row"><span class="lbl">Adres</span><span class="val addr">{sender_addr_line}</span></div>
+    </div>
+    <div class="section-title">Alıcı Bilgileri</div>
+    <div class="info-table">
+      <div class="info-row"><span class="lbl">İsim</span><span class="val">{receiver_name}</span></div>
+      <div class="info-row"><span class="lbl">Telefon</span><span class="val">{receiver_phone_fmt}</span></div>
+      <div class="info-row"><span class="lbl">Adres</span><span class="val addr">{receiver_full_addr}</span></div>
+    </div>
+    <div class="section-title">Kargo Bilgileri</div>
+    <div class="info-table">
+      <div class="info-row"><span class="lbl">Kargo Firması</span><span class="val">{cargo_company_display}</span></div>
+      <div class="info-row"><span class="lbl">Ödeme Türü</span><span class="val">{odeme_turu}</span></div>
+      <div class="info-row"><span class="lbl">Kargo Tipi</span><span class="val">{kargo_tipi}</span></div>
+    </div>
+    </div>
+    <div class="barcode-band">
+      {_barcode_el}
+      <div class="barcode-num">{siparis_no}</div>
+      {tracking_line}
+    </div>
+  </div>
+</div>
+<script>
+  async function fitBarcode() {{
+    if (document.fonts && document.fonts.ready) {{
+      try {{ await document.fonts.ready; }} catch(e) {{}}
+    }}
+    await new Promise(r => requestAnimationFrame(() => r()));
+    const el = document.querySelector('.barcode');
+    if (!el) return;   // PNG barkod kullanılıyorsa bu eleman YOK → küçültme çalışmaz
+    const main = document.querySelector('.main');
+    const maxW = (main ? main.clientWidth : 340) - 12;
+    let size = 36;
+    el.style.fontSize = size + 'pt';
+    let safety = 24;
+    while (el.scrollWidth > maxW && size > 18 && safety-- > 0) {{
+      size -= 1;
+      el.style.fontSize = size + 'pt';
+    }}
+  }}
+  // Çok uzun adreste bilgi tablosu .body-wrap'e sığmayabilir (CSS kırpar → adresin kuyruğu
+  // kaybolur). Burada kademeli küçültülerek TAMAMI sığdırılır: önce adres punto, sonra
+  // barkod yüksekliği (kurye okuyucusu için 11mm'den aşağı İNİLMEZ), en son diğer satırlar.
+  function fitLabel() {{
+    const wrap = document.querySelector('.body-wrap');
+    if (!wrap) return;
+    const over = () => wrap.scrollHeight > wrap.clientHeight + 1;
+    let guard = 60;
+    let addrPt = 7.4;
+    const addrs = document.querySelectorAll('.info-row .val.addr');
+    while (over() && addrPt > 5.8 && guard-- > 0) {{
+      addrPt -= 0.2;
+      addrs.forEach(el => {{ el.style.fontSize = addrPt.toFixed(1) + 'pt'; }});
+    }}
+    const img = document.querySelector('.barcode-img');
+    let bcH = 16;
+    while (over() && img && bcH > 11 && guard-- > 0) {{
+      bcH -= 0.5;
+      img.style.height = bcH + 'mm';
+    }}
+    let rowPt = 8.2;
+    const vals = document.querySelectorAll('.info-row .val:not(.addr), .info-row .lbl');
+    while (over() && rowPt > 6.6 && guard-- > 0) {{
+      rowPt -= 0.2;
+      vals.forEach(el => {{ el.style.fontSize = rowPt.toFixed(1) + 'pt'; }});
+    }}
+  }}
+  window.addEventListener('load', () => {{
+    fitBarcode().then(() => {{
+      fitLabel();
+      if (window.location.search.includes('print=1')) {{
+        setTimeout(() => window.print(), 250);
+      }}
+    }});
+  }});
+</script>
+</body></html>"""
+
+
 @router.get("/{order_id}/cargo-label")
-async def get_cargo_label(order_id: str, token: str = None):
+async def get_cargo_label(order_id: str, current_user: dict = Depends(require_permission("orders.cargo"))):
     """100x150mm yazdırılabilir kargo etiketi (HTML + Code39).
     Tek barkod: kargo takip no varsa onu, yoksa sipariş numarasını kullanır.
     Tasarım: LOGO + ORIGIN ID + FROM/TO/REF + ORDER/ITEM/SHIP DATE/DIMENSIONS/WEIGHT
     + REMARKS + tek barkod sağ altta + sağ kenarda handling icon'ları.
     """
     from fastapi.responses import HTMLResponse
-    await verify_admin_token(token)  # GÜVENLİK: kimliksiz kargo etiketi PII sızıntısı kapatıldı
     order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
@@ -6206,6 +9107,12 @@ async def get_cargo_label(order_id: str, token: str = None):
         )
     except Exception:
         pass  # damga başarısız olsa da etiket üretimi engellenmez
+    # YAZDIRMA SAYACI: her etiket çekiminde (tekli + toplu) +1. İlk-damga mantığından
+    # AYRI update — kaç defa yazdırıldığı panelde görünsün (ödeme/statü/stok'a DOKUNMAZ).
+    try:
+        await db.orders.update_one({"id": order_id}, {"$inc": {"cargo_label_print_count": 1}})
+    except Exception:
+        pass
 
     barkod = order.get("cargo_tracking_number") or ""
     cargo_obj = order.get("cargo") or {}
@@ -6224,7 +9131,7 @@ async def get_cargo_label(order_id: str, token: str = None):
     tracking_line = ""
     sender = await _get_sender_info()
     mng = await _get_mng_settings()
-    sender_company = mng.get("customer_code") or sender["name"] or "MELUNİ"
+    sender_company = mng.get("customer_code") or sender["name"] or "MELUNI"
     sender_addr_line = f"{sender['address']}, {sender['district']}/{sender['city']}".strip(" ,/")
 
     ship = order.get("shipping_address") or {}
@@ -6271,156 +9178,20 @@ async def get_cargo_label(order_id: str, token: str = None):
     kargo_tipi = f"{odeme_turu} Kargo"
 
     # Telefon formatı: 5435955290 → 543 595 52 90
-    def _fmt_phone(p: str) -> str:
-        if not p:
-            return ""
-        digits = "".join(c for c in str(p) if c.isdigit())
-        # Başında 90 ülke kodu varsa atla, 0 ile başlıyorsa atla
-        if digits.startswith("90") and len(digits) == 12:
-            digits = digits[2:]
-        elif digits.startswith("0") and len(digits) == 11:
-            digits = digits[1:]
-        if len(digits) == 10:
-            return f"{digits[0:3]} {digits[3:6]} {digits[6:8]} {digits[8:10]}"
-        return str(p)
-
-    # Brand logo (PNG → base64) — paylaşılan MELUNİ wordmark
-    import base64, pathlib
-    logo_b64 = ""
-    try:
-        logo_path = pathlib.Path(__file__).parent.parent / "static" / "brand" / "meluni-logo.png"
-        if logo_path.exists():
-            logo_b64 = base64.b64encode(logo_path.read_bytes()).decode()
-    except Exception:
-        logo_b64 = ""
-    logo_src = f"data:image/png;base64,{logo_b64}" if logo_b64 else ""
-
-    # Sender (gönderici) için telefon
-    sender_phone = _fmt_phone(sender.get("phone", "") or "")
-    receiver_phone_fmt = _fmt_phone(receiver_phone)
-
-    # GÜVENLİK: müşteri/pazaryeri kontrollü alanları HTML-escape et (stored-XSS →
-    # admin tarayıcısında çalışıp URL'deki token'ı çalabiliyordu).
-    import html as _html_c
-    def _hc(v):
-        return _html_c.escape(str(v if v is not None else ""))
-    receiver_name = _hc(receiver_name)
-    receiver_phone_fmt = _hc(receiver_phone_fmt)
-    receiver_full_addr = _hc(receiver_full_addr)
-    sender_company = _hc(sender_company)
-    sender_phone = _hc(sender_phone)
-    sender_addr_line = _hc(sender_addr_line)
-    try:
-        tracking_line = _hc(tracking_line)
-    except NameError:
-        pass
-
-    html = f"""<!DOCTYPE html>
-<html lang="tr"><head><meta charset="UTF-8"><title>Kargo Etiketi - {siparis_no}</title>
-<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800;900&family=Libre+Barcode+39+Extended&display=swap" rel="stylesheet">
-<style>
-  @page {{ size: 100mm 120mm; margin: 0; }}
-  * {{ box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
-  body {{ margin: 0; font-family: 'Mulish','Helvetica Neue',Arial,sans-serif; width: 100mm; height: 120mm; color: #000; background:#fff; }}
-  .label {{ width: 100mm; height: 120mm; padding: 2mm; }}
-  .main {{ width: 100%; height: 100%; border: 1.8pt solid #000; border-radius: 1.5mm; padding: 2.5mm; display:flex; flex-direction:column; }}
-
-  /* LOGO bandı */
-  .logo-band {{ display:flex; align-items:center; justify-content:center; padding: 0.5mm 0 1.8mm 0; border-bottom: 1.4pt solid #000; }}
-  .logo-band img {{ height: 7mm; width: auto; max-width: 78mm; }}
-  .logo-fallback {{ font-family:'Mulish',sans-serif; font-weight: 900; font-size: 18pt; letter-spacing: 5pt; }}
-
-  /* Bölüm başlığı (Gönderici / Alıcı / Kargo Bilgileri) */
-  .section-title {{ text-align: center; font-family:'Mulish',sans-serif; font-weight: 800; font-size: 9pt; letter-spacing: 0.5pt; padding: 1.2mm 0; border-bottom: 1pt solid #000; background: #f0f0f0; }}
-
-  /* Tablo satırları (label / value) */
-  .info-table {{ border-bottom: 1pt solid #000; }}
-  .info-row {{ display:flex; border-bottom: 0.6pt solid #000; min-height: 5mm; }}
-  .info-row:last-child {{ border-bottom: 0; }}
-  .info-row .lbl {{ width: 22mm; padding: 1mm 1.5mm; font-family:'Mulish',sans-serif; font-weight: 700; font-size: 7.8pt; border-right: 0.6pt solid #000; display:flex; align-items:center; }}
-  .info-row .val {{ flex: 1; padding: 1mm 1.5mm; font-family:'Mulish',sans-serif; font-weight: 700; font-size: 8.4pt; display:flex; align-items:center; line-height: 1.25; word-break: break-word; }}
-  .info-row .val.addr {{ font-weight: 600; font-size: 7.6pt; line-height: 1.3; }}
-
-  /* Barkod */
-  .barcode-band {{ margin-top: auto; padding-top: 1.5mm; text-align:center; }}
-  /* Libre Barcode 39 Extended → Code 39 (alfanumerik desteklenir). 30pt → her char ~5mm,
-     12 karakter ≈ 60mm < 88mm kullanılabilir alan. */
-  .barcode {{ font-family: 'Libre Barcode 39 Extended', 'Libre Barcode 39', monospace; font-size: 30pt; letter-spacing: 0; line-height: 0.95; color:#000; white-space: nowrap; display: block; }}
-  .barcode-num {{ font-size: 9pt; letter-spacing: 1.4pt; font-family: 'Courier New', monospace; font-weight: 800; margin-top: 0.3mm; }}
-</style></head><body>
-<div class="label">
-  <div class="main">
-
-    <!-- LOGO BANDI -->
-    <div class="logo-band">
-      {('<img src="'+logo_src+'" alt="MELUNİ"/>') if logo_src else '<div class="logo-fallback">MELUNİ</div>'}
-    </div>
-
-    <!-- GÖNDERİCİ BİLGİLERİ -->
-    <div class="section-title">Gönderici Bilgileri</div>
-    <div class="info-table">
-      <div class="info-row"><span class="lbl">Firma</span><span class="val">{sender_company}</span></div>
-      <div class="info-row"><span class="lbl">Telefon</span><span class="val">{sender_phone}</span></div>
-      <div class="info-row"><span class="lbl">Adres</span><span class="val addr">{sender_addr_line}</span></div>
-    </div>
-
-    <!-- ALICI BİLGİLERİ -->
-    <div class="section-title">Alıcı Bilgileri</div>
-    <div class="info-table">
-      <div class="info-row"><span class="lbl">İsim</span><span class="val">{receiver_name}</span></div>
-      <div class="info-row"><span class="lbl">Telefon</span><span class="val">{receiver_phone_fmt}</span></div>
-      <div class="info-row"><span class="lbl">Adres</span><span class="val addr">{receiver_full_addr}</span></div>
-    </div>
-
-    <!-- KARGO BİLGİLERİ -->
-    <div class="section-title">Kargo Bilgileri</div>
-    <div class="info-table">
-      <div class="info-row"><span class="lbl">Kargo Firması</span><span class="val">{cargo_company_display}</span></div>
-      <div class="info-row"><span class="lbl">Ödeme Türü</span><span class="val">{odeme_turu}</span></div>
-      <div class="info-row"><span class="lbl">Kargo Tipi</span><span class="val">{kargo_tipi}</span></div>
-    </div>
-
-    <!-- BARKOD (alt) -->
-    <div class="barcode-band">
-      <div class="barcode">*{main_barcode}*</div>
-      <div class="barcode-num">{siparis_no}</div>
-      {tracking_line}
-    </div>
-
-  </div>
-</div>
-<script>
-  // Barkodu çerçeveye sığdır — fontlar yüklendikten SONRA çalış
-  async function fitBarcode() {{
-    if (document.fonts && document.fonts.ready) {{
-      try {{ await document.fonts.ready; }} catch(e) {{}}
-    }}
-    // Ekstra güvenlik: fontların gerçekten render olması için bir frame bekle
-    await new Promise(r => requestAnimationFrame(() => r()));
-    const el = document.querySelector('.barcode');
-    if (!el) return;
-    // Container genişliği — .main padding'i çıkarılarak hesaplanır
-    const main = document.querySelector('.main');
-    const maxW = (main ? main.clientWidth : 340) - 12;
-    // 36pt'tan başla, sığana kadar küçült (min 18pt)
-    let size = 36;
-    el.style.fontSize = size + 'pt';
-    let safety = 24;
-    while (el.scrollWidth > maxW && size > 18 && safety-- > 0) {{
-      size -= 1;
-      el.style.fontSize = size + 'pt';
-    }}
-  }}
-  window.addEventListener('load', () => {{
-    fitBarcode().then(() => {{
-      if (window.location.search.includes('print=1')) {{
-        setTimeout(() => window.print(), 200);
-      }}
-    }});
-  }});
-</script>
-</body></html>"""
-    return HTMLResponse(content=html, headers={"Content-Type": "text/html; charset=utf-8"})
+    html = _render_cargo_label_html(
+        siparis_no=str(siparis_no),
+        main_barcode=str(main_barcode),
+        sender_company=sender_company,
+        sender_phone=sender.get("phone", "") or "",
+        sender_addr_line=sender_addr_line,
+        receiver_name=receiver_name,
+        receiver_phone=receiver_phone,
+        receiver_full_addr=receiver_full_addr,
+        cargo_company_display=cargo_company_display,
+        odeme_turu=odeme_turu,
+        kargo_tipi=kargo_tipi,
+    )
+    return HTMLResponse(content=html, headers={"Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", "Referrer-Policy": "no-referrer"})
 
 
 # ==================== MNG KARGO AYARLARI ====================
@@ -6428,7 +9199,7 @@ async def get_cargo_label(order_id: str, token: str = None):
 # ancak özelleştirilmiş alanlar için ayrı endpoint sağlıyoruz.
 
 @router.get("/cargo/mng-settings")
-async def get_mng_settings(current_user: dict = Depends(require_admin)):
+async def get_mng_settings(current_user: dict = Depends(require_permission("settings.view"))):
     """MNG Kargo ayarlarını döndür (şifre maskelenir)."""
     import os as _os
     s = await db.settings.find_one({"id": "mng_kargo"}, {"_id": 0}) or {}
@@ -6444,8 +9215,12 @@ async def get_mng_settings(current_user: dict = Depends(require_admin)):
 
 
 @router.post("/cargo/mng-settings")
-async def save_mng_settings(payload: dict, current_user: dict = Depends(require_admin)):
-    """MNG Kargo ayarlarını kaydet."""
+async def save_mng_settings(payload: dict, request: Request,
+                            current_user: dict = Depends(require_permission("integrations.mng"))):
+    """MNG Kargo ayarlarını kaydet. GÜVENLİK: 'integrations.mng' yetkisi (süper admin geçer) +
+    denetim kaydı (parola ASLA loglanmaz; yalnız 'değişti mi' bilgisi)."""
+    payload = payload if isinstance(payload, dict) else {}
+    _before = await db.settings.find_one({"id": "mng_kargo"}, {"_id": 0, "password": 0}) or {}
     update = {
         "customer_code": payload.get("customer_code", "MELUNİ DIŞ TİC.A.Ş."),
         "username": payload.get("username", ""),
@@ -6463,16 +9238,23 @@ async def save_mng_settings(payload: dict, current_user: dict = Depends(require_
         except Exception:
             update["password"] = payload.get("password")
     await db.settings.update_one({"id": "mng_kargo"}, {"$set": update}, upsert=True)
+    _keys = ("customer_code", "username", "tax_no", "is_active", "barkod_cikti_turu", "musteri_kodu_goster")
+    await record_admin_audit(
+        db, action="integrations.mng_settings_save", entity_type="settings", entity_id="mng_kargo",
+        before={k: _before.get(k) for k in _keys}, after={k: update.get(k) for k in _keys},
+        current_user=current_user, request=request, source="admin.cargo",
+        metadata={"password_changed": "password" in update})
     return {"success": True, "message": "MNG Kargo ayarları kaydedildi"}
 
 
 @router.post("/cargo/mng-test")
-async def test_mng_connection(current_user: dict = Depends(require_admin)):
+async def test_mng_connection(current_user: dict = Depends(require_permission("settings.view"))):
     """MNG Kargo bağlantı testi (Baglanti_Test)."""
     import sys, os
     sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
     from mng_kargo_client import baglanti_test
-    return baglanti_test()
+    import asyncio as _aio_mng
+    return await _aio_mng.to_thread(baglanti_test)
 
 
 # =============================================================================
@@ -6480,55 +9262,162 @@ async def test_mng_connection(current_user: dict = Depends(require_admin)):
 # =============================================================================
 @router.post("/by-number/{order_number}/payment-notification")
 @(limiter.limit("10/minute") if limiter else (lambda f: f))
+@(limiter.limit("60/minute", key_func=global_rate_key) if limiter else (lambda f: f))
 async def submit_payment_notification(
     request: Request,
     order_number: str,
     file: UploadFile = File(...),
     note: str = Form(""),
+    contact: str = Form(""),
+    current_user: dict = Depends(get_current_user),
 ):
     """Musteri: ilgili siparis icin dekont (PDF/gorsel) yukler (rate-limited).
-    Auth gerekmez; siparis numarasi yetkilendirme anahtaridir."""
+    Auth gerekmez. GÜVENLİK (denetim 2026-10): sipariş numarası tahmin edilebilir → ek kimlik
+    kanıtı ZORUNLU: `contact` = siparişteki e-posta adresinin TAMAMI ya da telefonun SON 4 hanesi.
+    Giriş yapmış müşteri KENDİ siparişine (order.user_id) yüklüyorsa oturum kanıt sayılır
+    ("Hesabım → Ödeme Bildirimi Yap" akışında ek bilgi istenmez)."""
     _ = request  # rate-limit için
     order = await db.orders.find_one({"order_number": order_number}, {"_id": 0})
-    if not order:
-        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    _contact = str(contact or "").strip().lower()
+    _owner = bool(order and current_user and current_user.get("id")
+                  and str(order.get("user_id") or "") == str(current_user.get("id")))
+    if not _contact and not _owner:
+        raise HTTPException(status_code=400, detail=(
+            "Lütfen siparişteki e-posta adresinizi veya telefon numaranızın son 4 hanesini girin."))
+    _id_ok = _owner
+    # Denetim #17: sipariş başına deneme kilidi (misafir iade uçlarıyla AYNI sayaç): 1 saatte 5 hatalı
+    # doğrulamada dekont yükleme de kilitlenir (kalan haneler denenemez).
+    _vkey = str((order or {}).get("id") or "")
+    _vnow = datetime.now(timezone.utc)
+    _vsince = (_vnow - timedelta(seconds=_GUEST_VERIFY_WINDOW_S)).isoformat()
+    _vrec = await db.guest_verify_attempts.find_one({"key": _vkey}, {"_id": 0}) if (order and not _id_ok) else None
+    if _vrec and str(_vrec.get("first_at") or "") >= _vsince and int(_vrec.get("fails") or 0) >= _GUEST_VERIFY_MAX_FAILS:
+        raise HTTPException(status_code=429, detail=(
+            "Çok fazla hatalı deneme. Lütfen 1 saat sonra tekrar deneyin veya bizimle iletişime geçin."))
+    if order and not _id_ok:
+        _addr_pn = order.get("shipping_address") or {}
+        _bill_pn = order.get("billing_address") or {}
+        _emails = {str(x or "").strip().lower() for x in (
+            _addr_pn.get("email"), _bill_pn.get("email"), order.get("email"), order.get("user_email"))}
+        _emails.discard("")
+        _phones = {"".join(ch for ch in str(x or "") if ch.isdigit()) for x in (
+            _addr_pn.get("phone"), _bill_pn.get("phone"), order.get("phone"))}
+        _phones.discard("")
+        if "@" in _contact:
+            _id_ok = _contact in _emails
+        else:
+            _digits = "".join(ch for ch in _contact if ch.isdigit())
+            if len(_digits) >= 10:   # numaranın tamamı girildiyse son 10 hane karşılaştırılır
+                _id_ok = any(len(p) >= 10 and p[-10:] == _digits[-10:] for p in _phones)
+            else:
+                _id_ok = len(_digits) == 4 and any(len(p) >= 4 and p[-4:] == _digits for p in _phones)
+        if not _id_ok:
+            if _vrec and str(_vrec.get("first_at") or "") >= _vsince:
+                await db.guest_verify_attempts.update_one(
+                    {"key": _vkey}, {"$inc": {"fails": 1}, "$set": {"last_at": _vnow.isoformat()}})
+            else:
+                await db.guest_verify_attempts.update_one(
+                    {"key": _vkey}, {"$set": {"fails": 1, "first_at": _vnow.isoformat(),
+                                             "last_at": _vnow.isoformat()}}, upsert=True)
+    if not order or not _id_ok:
+        # Sipariş var/yok ayrımı sızdırılmaz (numara tarama koruması).
+        raise HTTPException(status_code=404, detail=(
+            "Sipariş bilgileri eşleşmedi. Sipariş numaranızı ve siparişteki e-posta adresinizi "
+            "veya telefonunuzun son 4 hanesini kontrol edin."))
     # GÜVENLİK: Sipariş no tahmin edilebilir → dekont yükleme YALNIZCA gerçekten dekont
     # bekleyen (havale/EFT + ödeme bekliyor) siparişlerde. Böylece kart/ödenmiş/tamamlanmış
     # siparişlerin dekontu üzerine yazma (griefing) + durum forge yüzeyi daraltılır.
     _pm = str(order.get("payment_method") or "").lower()
     _is_bank = any(k in _pm for k in ("havale", "eft", "transfer", "banka"))
-    _pending = order.get("status") in ("awaiting_payment", "pending") and \
+    # payment_notified: müşteri yanlış/okunaksız dekontu YENİSİYLE değiştirebilir (eskiden 2. yükleme
+    # "dekont yüklenemez" ile reddediliyordu; sayfa ise "Yeni dekont yükle" sunuyordu).
+    _st = order.get("status")
+    _pending = _st in ("awaiting_payment", "pending", "payment_notified") and \
         order.get("payment_status") not in ("paid", "refunded")
     if not (_is_bank and _pending):
-        raise HTTPException(status_code=400, detail="Bu sipariş için dekont yüklenemez.")
-    data = await file.read()
-    if len(data) > 8 * 1024 * 1024:
-        raise HTTPException(status_code=400, detail="Dosya 8MB'tan büyük olamaz")
-    ctype = file.content_type or "application/octet-stream"
-    if not (ctype.startswith("image/") or ctype == "application/pdf"):
-        raise HTTPException(status_code=400, detail="Sadece PDF veya görsel yükleyebilirsiniz")
-    import base64 as _b64
+        if _st in ("cancelled", "canceled", "payment_failed") or order.get("auto_cancelled"):
+            raise HTTPException(status_code=400, detail="Bu sipariş ödeme süresi dolduğu için iptal edilmiş. "
+                                                        "Ödeme yaptıysanız lütfen bizimle iletişime geçin.")
+        if order.get("payment_status") == "paid" or _st in ("confirmed", "processing", "shipped", "delivered"):
+            raise HTTPException(status_code=400, detail="Bu siparişin ödemesi zaten onaylanmış; dekont yüklemenize gerek yok.")
+        raise HTTPException(status_code=400, detail="Bu sipariş için dekont yüklenemez (havale/EFT siparişi değil).")
+    from security.uploads import read_upload_capped
+    data = await read_upload_capped(file, 15 * 1024 * 1024, "Dosya 15MB'tan büyük olamaz")
+    ctype = _receipt_base_type(file.content_type)
+    if ctype not in _RECEIPT_SAFE_TYPES:
+        # Bazı telefon/bilgisayarlar türü boş ya da octet-stream gönderir → uzantıdan tanı.
+        _ext = (file.filename or "").rsplit(".", 1)[-1].lower() if "." in (file.filename or "") else ""
+        _by_ext = {"pdf": "application/pdf", "jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png",
+                   "heic": "image/heic", "heif": "image/heif", "webp": "image/webp"}
+        ctype = _by_ext.get(_ext, "")
+        if not ctype:
+            raise HTTPException(status_code=400, detail="Sadece PDF veya görsel (JPG, PNG, HEIC) yükleyebilirsiniz")
+    # Tür etiketi istemciden gelir (yalan olabilir): SVG/HTML/XML baytı hiçbir türde kabul edilmez.
+    if _receipt_looks_like_markup(data):
+        raise HTTPException(status_code=400, detail="Sadece PDF veya görsel (JPG, PNG, HEIC) yükleyebilirsiniz")
     now_iso = datetime.now(timezone.utc).isoformat()
     receipt = {
         "filename": (file.filename or "dekont")[:120],
         "content_type": ctype,
         "size": len(data),
-        "data_b64": _b64.b64encode(data).decode("ascii"),
+        # BL-040: dekont at-rest ŞİFRELİ (Fernet, ham bayt). Okuma: get_receipt_bytes().
+        "data_enc": _encrypt_receipt_bytes(data),
+        "enc_format": _RECEIPT_ENC_FORMAT,
         "note": (note or "")[:500],
         "uploaded_at": now_iso,
     }
     upd = {
         "payment_receipt": receipt,
+        "payment_receipt_count": int(order.get("payment_receipt_count") or (1 if order.get("payment_receipt") else 0)) + 1,
         "payment_notified": True,
         "payment_notified_at": now_iso,
         "updated_at": now_iso,
     }
     if order.get("status") in ("awaiting_payment", "pending"):
         upd["status"] = "payment_notified"
-    await db.orders.update_one({"id": order["id"]}, {"$set": upd})
+    # ÖNCEKİ DEKONT KAYBOLMASIN (denetim 2026-10): yeni dekont `payment_receipt`'e yazılır
+    # (gece arşiv işi + admin paneli bu yapıyı okur — DEĞİŞMEDİ); öncekinin BAYT verisi ayrı
+    # koleksiyona (payment_receipt_versions) taşınır (16MB belge sınırı), siparişte yalnız
+    # metadata listesi `payment_receipts_history` (en çok 10) tutulur.
+    _ops = {"$set": upd}
+    _prev_r = order.get("payment_receipt") or {}
+    if _prev_r:
+        _ver_id = str(uuid.uuid4())
+        _hist = {k: _prev_r.get(k) for k in ("filename", "content_type", "size", "note", "uploaded_at",
+                                             "archive_key", "archived_at") if _prev_r.get(k) is not None}
+        _hist["replaced_at"] = now_iso
+        if _prev_r.get("data_b64") or _prev_r.get("data_enc"):
+            try:
+                # Eski (düz data_b64) dekont da sürüm koleksiyonuna ŞİFRELENEREK taşınır.
+                await db.payment_receipt_versions.insert_one({
+                    "id": _ver_id, "order_id": order["id"], "order_number": order.get("order_number", ""),
+                    "receipt": seal_receipt(_prev_r), "created_at": now_iso})
+                _hist["version_id"] = _ver_id
+            except Exception as _ve:
+                logger.warning(f"[dekont] önceki dekont saklanamadı order={order.get('order_number')}: {_ve}")
+        _ops["$push"] = {"payment_receipts_history": {"$each": [_hist], "$slice": -10}}
+    await db.orders.update_one({"id": order["id"]}, _ops)
+    if _prev_r:
+        try:
+            _keep = [h.get("version_id") for h in ((await db.orders.find_one(
+                {"id": order["id"]}, {"_id": 0, "payment_receipts_history": 1}) or {})
+                .get("payment_receipts_history") or []) if h.get("version_id")]
+            await db.payment_receipt_versions.delete_many({"order_id": order["id"], "id": {"$nin": _keep}})
+        except Exception:
+            pass
+
+    # Müşteri bildirimi sipariş başına SAATTE EN ÇOK 1 (tekrar yüklemede SMS/e-posta seli olmasın).
+    _cut = (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()
+    _claim_n = await db.orders.find_one_and_update(
+        {"id": order["id"], "$or": [{"payment_notified_customer_at": {"$exists": False}},
+                                    {"payment_notified_customer_at": None},
+                                    {"payment_notified_customer_at": {"$lt": _cut}}]},
+        {"$set": {"payment_notified_customer_at": now_iso}}, projection={"_id": 1})
 
     import asyncio as _aio
     async def _notif():
+        if not _claim_n:
+            return
         try:
             import sys, os
             sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
@@ -6554,20 +9443,46 @@ async def submit_payment_notification(
 
 
 @router.get("/{order_id}/payment-receipt")
-async def get_payment_receipt(order_id: str, current_user: dict = Depends(require_admin)):
+async def get_payment_receipt(order_id: str, current_user: dict = Depends(require_permission("orders.view"))):
     """Admin: yuklenen dekontu goruntule/indir."""
     order = await db.orders.find_one({"id": order_id}, {"_id": 0, "payment_receipt": 1})
     r = (order or {}).get("payment_receipt")
     if not r:
         raise HTTPException(status_code=404, detail="Dekont bulunamadı")
-    import base64 as _b64
-    raw = _b64.b64decode(r["data_b64"])
-    _ct = str(r.get("content_type", "application/octet-stream") or "").lower()
+    raw = get_receipt_bytes(r)   # BL-040: şifreli data_enc ya da eski data_b64
+    if raw is not None:
+        pass
+    elif r.get("data_enc"):
+        raise HTTPException(status_code=500, detail="Dekont şifresi çözülemedi (anahtar yapılandırmasını kontrol edin)")
+    elif r.get("archive_key"):
+        # 30 günden eski dekontlar gizli R2 arşivine taşınır (veritabanında tutulmaz).
+        import asyncio as _aio_r
+        from services import r2_storage as _r2
+        if not _r2.archive_enabled():
+            raise HTTPException(status_code=503, detail="Dekont arşivde; arşiv deposu yapılandırılmamış")
+        raw, _ = await _aio_r.to_thread(_r2.archive_get, r["archive_key"])
+        if raw is None:
+            raise HTTPException(status_code=404, detail="Dekont arşivde bulunamadı")
+        if r.get("archive_enc_format") == _RECEIPT_ENC_FORMAT:
+            # Arşive şifreli (Fernet token) yazılmış dekont → çöz.
+            try:
+                from security import crypto as _c
+                raw = _c._fernet_dec.decrypt(raw)
+            except Exception:
+                raise HTTPException(status_code=500, detail="Arşivdeki dekontun şifresi çözülemedi")
+    else:
+        raise HTTPException(status_code=404, detail="Dekont bulunamadı")
+    _ct = _receipt_base_type(r.get("content_type") or "application/octet-stream")
     # GÜVENLİK: filename header injection'ı temizle
     _fn = str(r.get("filename", "dekont") or "dekont").replace('"', "").replace("\r", "").replace("\n", "")[:100]
     # SVG/HTML veya güvenli olmayan tür → inline RENDER etme (admin tarayıcısında XSS),
     # indir olarak sun + sandbox. Yalnız gerçek raster görsel / PDF inline gösterilir.
-    _safe_inline = (_ct.startswith("image/") and "svg" not in _ct) or _ct == "application/pdf"
+    # Kesin izin listesi: "svg içermiyor" kontrolü `image/x+xml` (Chrome'da XML belgesi) türünü
+    # kaçırıyordu. Panel dosyayı BLOB olarak açar ve blob, başlıkları (attachment/CSP) değil
+    # yalnız Content-Type'ı taşır → güvensiz türde gövde `application/octet-stream` gönderilir.
+    _safe_inline = _ct in _RECEIPT_SAFE_TYPES
+    if not _safe_inline:
+        _ct = "application/octet-stream"
     _disp = "inline" if _safe_inline else "attachment"
     _headers = {
         "Content-Disposition": f'{_disp}; filename="{_fn}"',
@@ -6579,7 +9494,7 @@ async def get_payment_receipt(order_id: str, current_user: dict = Depends(requir
 
 
 @router.post("/cargo/poll-now")
-async def cargo_poll_now(current_user: dict = Depends(require_admin)):
+async def cargo_poll_now(current_user: dict = Depends(require_permission("settings.edit"))):
     """Admin: DHL/MNG kargo durum taramasini hemen calistir (5 dk'lik job'in manuel tetigi)."""
     try:
         import sys, os
@@ -6592,7 +9507,7 @@ async def cargo_poll_now(current_user: dict = Depends(require_admin)):
 
 
 @router.get("/cargo/poll-health")
-async def cargo_poll_health(current_user: dict = Depends(require_admin)):
+async def cargo_poll_health(current_user: dict = Depends(require_permission("settings.view"))):
     """Admin: DHL/MNG kargo durum taraması sağlık/izleme bilgisi.
 
     Ayarlar > Kargo sayfasındaki izleme paneli bu veriyi gösterir: son çalışma
@@ -6814,7 +9729,77 @@ async def _effective_delivered_at(order: dict):
     return None, False
 
 
+# MÜKERRER İADE KORUMASI (denetim 2026-10): bir sipariş kalemi, adedinden FAZLA iade
+# edilemez. Ürünleri yola çıkmış / teslim alınmış / onaylanmış / bedeli ödenmiş iadeler
+# "iade edilmiş adet" sayılır (created = henüz kod üretildi → sayılmaz; reddedilen / iptal /
+# süresi dolan sayılmaz). Kalem kimliği: ürün id (yoksa ad) + beden + renk.
+_RETURN_COUNTED_STATUSES = ("approved", "in_transit", "received", "returned", "refunded", "partial_refunded")
+
+
+def _return_item_key(it: dict) -> tuple:
+    def _n(v):
+        return " ".join(str(v or "").strip().lower().split())
+    return (_n(it.get("product_id") or it.get("sku") or it.get("name") or it.get("product_name")),
+            _n(it.get("size")), _n(it.get("color")))
+
+
+def _return_record_items(rec: dict) -> list:
+    """İade kaydının GERÇEKTEN iade edilen kalemleri (kısmi onayda approved_items; adet rec.items'tan)."""
+    items = rec.get("items") or []
+    appr = rec.get("approved_items") or []
+    if not appr:
+        return items
+    try:
+        idx = _resolve_return_selection(items, appr, rec.get("approved_item_indexes"))
+    except ValueError:
+        return items
+    return [items[i] for i in idx if 0 <= i < len(items)] or items
+
+
+async def _already_returned_qty(order_id: str, exclude_return_id: str = None) -> dict:
+    out = {}
+    q = {"order_id": order_id, "status": {"$in": list(_RETURN_COUNTED_STATUSES)}}
+    if exclude_return_id:
+        q["id"] = {"$ne": exclude_return_id}
+    async for r in db.customer_returns.find(q, {"_id": 0, "items": 1, "approved_items": 1,
+                                                "approved_item_indexes": 1}):
+        for it in _return_record_items(r):
+            k = _return_item_key(it)
+            try:
+                out[k] = out.get(k, 0) + max(0, int(it.get("quantity") or 1))
+            except Exception:
+                out[k] = out.get(k, 0) + 1
+    return out
+
+
+def _order_qty_by_key(order: dict) -> dict:
+    out = {}
+    for it in (order.get("items") or []):
+        k = _return_item_key(it)
+        try:
+            out[k] = out.get(k, 0) + max(0, int(it.get("quantity") or 1))
+        except Exception:
+            out[k] = out.get(k, 0) + 1
+    return out
+
+
 async def _build_return_for_order(order: dict, payload: dict, actor: dict) -> dict:
+    """COM10: aynı sipariş için iade talebi (müşteri RMA + panel manuel iade) ATOMİK sipariş-başı
+    kilitle sırayla işlenir. Eşzamanlı ikinci talep 409 alır; kilit alındıktan SONRA sipariş ve
+    önceki iadeler yeniden okunur → iade edilebilir adet iki kez tüketilemez, MNG iade kaydı iki
+    kez açılmaz."""
+    _tok = await _acquire_order_op_lock(order["id"], "return_req", ttl_s=120)
+    if not _tok:
+        raise HTTPException(status_code=409, detail=(
+            "Bu sipariş için başka bir iade işlemi sürüyor. Lütfen birkaç saniye sonra tekrar deneyin."))
+    try:
+        fresh = await db.orders.find_one({"id": order["id"]}, {"_id": 0}) or order
+        return await _build_return_for_order_locked(fresh, payload, actor)
+    finally:
+        await _release_order_op_lock(order["id"], "return_req", _tok)
+
+
+async def _build_return_for_order_locked(order: dict, payload: dict, actor: dict) -> dict:
     """İade talebi ÇEKİRDEĞİ — üye ve misafir uçları aynı mantığı kullanır.
     14 gün penceresi (teslimden) + 3 gün kod geçerliliği + DHL/MNG iade kodu/barkod + kayıt + bildirim.
     actor: log için {email,id,...} (üye current_user ya da misafir için sentetik)."""
@@ -6860,12 +9845,21 @@ async def _build_return_for_order(order: dict, payload: dict, actor: dict) -> di
     sel = payload.get("items")
     chosen = []
     if isinstance(sel, list) and sel:
+        # GÜVENLİK (commerce-3, para kaçağı): her sipariş kalemi EN FAZLA BİR KEZ seçilebilir ve
+        # index aralık içinde olmalı. Eskiden [1,1] / [1,-1] gibi tekrarlanan ya da negatif
+        # (Python'da sondan sayan) index'ler aynı ucuz kalemi iade kaydında sipariş kalem sayısına
+        # şişiriyordu → onay/önizleme (_return_covers_whole_order: kalem+adet sayımı) talebi
+        # "tüm sipariş" sanıp SİPARİŞİN TAMAMINI iade ediyordu; stok da fazladan geri ekleniyordu.
+        _seen_idx = set()
         for idx in sel:
             try:
-                it = src_items[int(idx)]
+                _ix = int(idx)
             except Exception:
                 continue
-            chosen.append(it)
+            if _ix < 0 or _ix >= len(src_items) or _ix in _seen_idx:
+                continue
+            _seen_idx.add(_ix)
+            chosen.append(src_items[_ix])
     if not chosen:
         chosen = src_items
     items = [{
@@ -6875,11 +9869,48 @@ async def _build_return_for_order(order: dict, payload: dict, actor: dict) -> di
         "price": float(it.get("price") or it.get("unit_price") or 0),
         "product_id": it.get("product_id") or it.get("sku") or "",
     } for it in chosen]
+    # MÜKERRER İADE: önceki (yola çıkmış/onaylı/ödenmiş) iadelerde iade edilen adet düşülür;
+    # kalan adedi olmayan kalem talebe girmez. Hiç kalan yoksa talep açılmaz.
+    _ret_before = await _already_returned_qty(order["id"])
+    if _ret_before:
+        _left = {k: max(0, v - _ret_before.get(k, 0)) for k, v in _order_qty_by_key(order).items()}
+        _kept = []
+        for _it in items:
+            _k = _return_item_key(_it)
+            _q = min(int(_it.get("quantity") or 1), _left.get(_k, 0))
+            if _q > 0:
+                _left[_k] = _left.get(_k, 0) - _q
+                _kept.append({**_it, "quantity": _q})
+        if not _kept:
+            raise HTTPException(status_code=400, detail=(
+                "Bu siparişteki seçilen ürünler için daha önce iade talebi işlendi; iade edilecek ürün kalmadı."))
+        items = _kept
     # İade sebebi ZORUNLU — üye ve misafir tüm site iadelerinde. Panelde görünür.
     reason = (payload.get("reason") or "").strip()[:500]
     if not reason:
         raise HTTPException(status_code=400, detail="İade sebebi seçmek zorunludur.")
     reason_code = (payload.get("reason_code") or "").strip()[:60]
+
+    # Havale/EFT iadesinde iade tutarı BANKA HESABINA döner → müşterinin girdiği IBAN + ad soyad
+    # kaydedilir (admin iadeyi bu hesaba yapar). Kart ödemesinde saklanmaz (para karta döner).
+    _pm = str(order.get("payment_method") or "").lower()
+    refund_bank_info = None
+    if _pm in ("bank_transfer", "havale", "eft", "bank"):
+        _iban = "".join(str(payload.get("refund_iban") or "").split()).upper()[:34]
+        # ZORUNLU (kullanıcı kuralı): havale/EFT ile ödenmiş siparişin iadesinde IBAN + ad soyad
+        # olmadan talep AÇILAMAZ (form gizlense/atlansa bile sunucu reddeder).
+        from routes.customer import valid_tr_iban as _viban
+        if not _iban or not _viban(_iban):
+            raise HTTPException(status_code=400, detail="Havale/EFT ile ödenen siparişin iadesi için geçerli bir TR IBAN zorunludur (iade bu hesaba yapılır).")
+        if not str(payload.get("refund_name") or "").strip():
+            raise HTTPException(status_code=400, detail="IBAN sahibinin ad soyadı zorunludur.")
+        if True:
+            # BL-040: IBAN + hesap sahibi adı at-rest ŞİFRELİ yazılır (iban_last4 görüntüleme için).
+            refund_bank_info = seal_refund_bank_info({
+                "iban": _iban,
+                "name": str(payload.get("refund_name") or "").strip()[:120],
+                "bank": str(payload.get("refund_bank") or "").strip()[:80],
+            })
 
     rid = generate_id()
     iade_no = f"IW{order.get('order_number', '')}{rid[:6]}".replace(" ", "")
@@ -6904,6 +9935,7 @@ async def _build_return_for_order(order: dict, payload: dict, actor: dict) -> di
         "barcode_png_b64": png_b64, "status": "created",
         "created_at": now_iso, "valid_until": valid_until,
         "guest": bool(not (actor or {}).get("id")),
+        "refund_bank_info": refund_bank_info,  # havale iadesinde IBAN+ad soyad; kartta None
     }
     await db.customer_returns.insert_one({**rec})
     await _log_order_event(order["id"], "return", "İade talebi oluşturuldu", actor,
@@ -6915,6 +9947,9 @@ async def _build_return_for_order(order: dict, payload: dict, actor: dict) -> di
             "iade_no": iade_no, "gonderi_no": gonderi_no,
             "valid_until": valid_until, "reason": reason, "reason_code": reason_code,
             "created_at": now_iso, "status": "created", "items_count": len(items),
+            "refund_bank_info": refund_bank_info,  # havale iadesinde IBAN+ad soyad
+            # Talep iptal edilirse sipariş bu statüye geri döner (müşteri iade-iptal için).
+            "prev_status": order.get("status") or "delivered",
         },
         "status": "return_requested", "updated_at": now_iso,
     }})
@@ -6930,7 +9965,8 @@ async def _build_return_for_order(order: dict, payload: dict, actor: dict) -> di
 
 
 @router.post("/{order_id}/return-request")
-async def create_return_request(order_id: str, payload: dict, current_user: dict = Depends(get_current_user)):
+async def create_return_request(order_id: str, payload: dict, request: Request,
+                                current_user: dict = Depends(get_current_user)):
     """Müşteri (üye): teslimden itibaren 14 gün içinde iade talebi oluşturur."""
     if not current_user:
         raise HTTPException(status_code=401, detail="Giriş yapmanız gerekiyor")
@@ -6944,9 +9980,11 @@ async def create_return_request(order_id: str, payload: dict, current_user: dict
     # e-posta/telefonu siparişteki iletişimle eşleşmeli.
     if order.get("user_id"):
         if current_user.get("id") and order["user_id"] != current_user["id"]:
+            await note_policy_denial(current_user, "order.return_request", order=order, request=request)
             raise HTTPException(status_code=403, detail="Bu sipariş size ait değil")
     else:
-        if not _order_contact_matches(order, current_user.get("email", ""), current_user.get("phone", "")):
+        if not _member_owns_guest_order(order, current_user):
+            await note_policy_denial(current_user, "order.return_request", order=order, request=request)
             raise HTTPException(status_code=403, detail="Bu sipariş size ait değil")
     return await _build_return_for_order(order, payload, current_user)
 
@@ -6965,7 +10003,8 @@ def _order_is_efatura(order: dict) -> bool:
         if bool(_b.get("is_corporate")):
             return True
         # VKN (10 hane) dolu → kurumsal e-Fatura mükellefi
-        _vkn = str(_b.get("tax_number") or _b.get("vkn") or _b.get("tax_id") or "").strip()
+        # KVKK: değer şifreli saklanır → uzunluk/rakam kontrolü için çözülür (yanıta konmaz).
+        _vkn = str(_pii_reveal(_b, "tax_number") or _pii_reveal(_b, "vkn") or _pii_reveal(_b, "tax_id") or "").strip()
         if len(_vkn) == 10 and _vkn.isdigit():
             return True
     return False
@@ -7002,7 +10041,44 @@ def _order_contact_matches(order: dict, email: str, phone: str) -> bool:
     return False
 
 
+def _member_owns_guest_order(order: dict, current_user: dict) -> bool:
+    """Üye, MİSAFİR siparişin sahibi mi? GÜVENLİK (BL-010): yalnız DOĞRULANMIŞ e-posta
+    eşleşmesi kabul edilir. Telefon /users/me ile doğrulamasız yazılabildiği, e-posta da
+    kayıtta doğrulanmadığı için eskiden başkasının misafir siparişine iade (IBAN) açılabiliyordu.
+    customer.py::_owner_or_clauses ile aynı kural."""
+    if current_user.get("email_verified") is not True:
+        return False
+    return _order_contact_matches(order, current_user.get("email", ""), "")
+
+
+_GUEST_VERIFY_MAX_FAILS = 5
+_GUEST_VERIFY_WINDOW_S = 3600
+
+
+async def _guest_verify_or_raise(order: dict, email: str, phone: str) -> None:
+    """Misafir iade uçlarında iletişim doğrulaması + sipariş başına deneme kilidi (BL-010).
+    by-number ucu telefonun bir kısmını maskeli gösterdiğinden kalan haneler denenemesin:
+    1 saat içinde 5 hatalı denemede sipariş için doğrulama kilitlenir."""
+    key = str(order.get("id") or order.get("order_number") or "")
+    now = datetime.now(timezone.utc)
+    since = (now - timedelta(seconds=_GUEST_VERIFY_WINDOW_S)).isoformat()
+    rec = await db.guest_verify_attempts.find_one({"key": key}, {"_id": 0})
+    if rec and str(rec.get("first_at") or "") >= since and int(rec.get("fails") or 0) >= _GUEST_VERIFY_MAX_FAILS:
+        raise HTTPException(status_code=429,
+                            detail="Çok fazla hatalı deneme. Lütfen 1 saat sonra tekrar deneyin veya bizimle iletişime geçin.")
+    if _order_contact_matches(order, email, phone):
+        return
+    if rec and str(rec.get("first_at") or "") >= since:
+        await db.guest_verify_attempts.update_one({"key": key}, {"$inc": {"fails": 1}, "$set": {"last_at": now.isoformat()}})
+    else:
+        await db.guest_verify_attempts.update_one(
+            {"key": key}, {"$set": {"fails": 1, "first_at": now.isoformat(), "last_at": now.isoformat()}}, upsert=True)
+    raise HTTPException(status_code=403, detail="Girdiğiniz bilgiler sipariş kayıtları ile eşleşmiyor.")
+
+
 @router.post("/by-number/{order_number}/return-request")
+@(limiter.limit("5/minute") if limiter else (lambda f: f))
+@(limiter.limit("60/minute", key_func=global_rate_key) if limiter else (lambda f: f))
 async def create_guest_return_request(order_number: str, payload: dict, request: Request):
     """Misafir (üyeliksiz): sipariş no + e-posta/telefon doğrulaması ile iade talebi.
     14 gün penceresi + 3 gün kod geçerliliği kuralları üye uçla aynıdır."""
@@ -7016,18 +10092,107 @@ async def create_guest_return_request(order_number: str, payload: dict, request:
     phone = (payload.get("phone") or "").strip()
     if not email and not phone:
         raise HTTPException(status_code=400, detail="Doğrulama için e-posta veya telefon giriniz.")
-    if not _order_contact_matches(order, email, phone):
-        raise HTTPException(status_code=403,
-                            detail="Girdiğiniz bilgiler sipariş kayıtları ile eşleşmiyor.")
+    await _guest_verify_or_raise(order, email, phone)
 
     actor = {"id": order.get("user_id"), "email": email or order.get("email") or "",
              "name": "Misafir", "guest": True}
     return await _build_return_for_order(order, payload, actor)
 
 
+async def _cancel_return_for_order(order: dict, actor: dict) -> dict:
+    """Müşteri İADE TALEBİNİ İPTAL — YALNIZ hâlâ BEKLEMEDEYSE (talep oluşturuldu ama HENÜZ
+    onaylanmadı / kargo geri gelmedi / iade ödemesi YAPILMADI → customer_returns.status='created').
+    PARA/STOK/ÖDEME mantığına ASLA DOKUNMAZ (talep aşamasında iade yapılmadı). Yalnız talebi
+    'cancelled' yapar ve siparişi talep-öncesi statüsüne (prev_status) döndürür; payment_status
+    değişmez. Onaylanmış/işlenmiş/iade-ödemesi yapılmış talep iptal EDİLEMEZ (400)."""
+    rr = order.get("return_request") or {}
+    rid = rr.get("return_id")
+    rec = None
+    if rid:
+        rec = await db.customer_returns.find_one({"id": rid}, {"_id": 0})
+    if not rec:
+        rec = await db.customer_returns.find_one(
+            {"order_id": order["id"], "status": "created"}, {"_id": 0})
+    rec_st = str((rec or {}).get("status") or "")
+    rr_st = str(rr.get("status") or "")
+    order_st = str(order.get("status") or "")
+
+    # İptal EDİLEBİLİR mi? YALNIZ bekleyen (created) talep.
+    _cancelable = (rec_st == "created") or (
+        not rec and rr_st in ("created", "return_requested") and order_st == "return_requested")
+    if not _cancelable:
+        if rec_st == "cancelled" or rr_st == "cancelled":
+            raise HTTPException(status_code=400, detail="İade talebi zaten iptal edilmiş.")
+        if rec or order_st.startswith("return_") or order_st in ("returned", "refunded"):
+            raise HTTPException(status_code=400,
+                                detail="Bu iade talebi işlenmeye başlandı/onaylandı — iptal edilemez.")
+        raise HTTPException(status_code=400, detail="İptal edilebilecek bekleyen iade talebi yok.")
+
+    now_iso = datetime.now(timezone.utc).isoformat()
+    # 1) İade kaydını iptal et (PARA/STOK YOK).
+    if rec:
+        await db.customer_returns.update_one(
+            {"id": rec["id"]},
+            {"$set": {"status": "cancelled", "cancelled_at": now_iso,
+                      "cancelled_by": (actor or {}).get("email") or "customer"}})
+    # 2) Siparişi talep-öncesi statüsüne döndür — payment_status'e DOKUNMA.
+    prev = rr.get("prev_status") or "delivered"
+    await db.orders.update_one({"id": order["id"]}, {"$set": {
+        "return_request.status": "cancelled", "return_request.cancelled_at": now_iso,
+        "status": prev, "updated_at": now_iso,
+    }})
+    await _log_order_event(order["id"], "return", "İade talebi müşteri tarafından iptal edildi",
+                           actor, {"return_id": (rec or {}).get("id"),
+                                   "return_code": rr.get("return_code")},
+                           order_number=order.get("order_number", ""))
+    return {"success": True, "status": prev, "message": "İade talebi iptal edildi."}
+
+
+@router.post("/{order_id}/return-request/cancel")
+async def cancel_return_request(order_id: str, request: Request, current_user: dict = Depends(get_current_user)):
+    """Üye müşteri: KENDİ siparişinin BEKLEYEN iade talebini iptal eder."""
+    if not current_user:
+        raise HTTPException(status_code=401, detail="Giriş yapmanız gerekiyor")
+    order = await db.orders.find_one({"id": order_id}, {"_id": 0})
+    if not order:
+        order = await db.orders.find_one({"order_number": order_id}, {"_id": 0})
+    if not order:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    # SAHİPLİK (BOLA): üyeli siparişte user_id, misafir siparişte iletişim eşleşmeli.
+    if order.get("user_id"):
+        if current_user.get("id") and order["user_id"] != current_user["id"]:
+            await note_policy_denial(current_user, "order.return_cancel", order=order, request=request)
+            raise HTTPException(status_code=403, detail="Bu sipariş size ait değil")
+    else:
+        if not _member_owns_guest_order(order, current_user):
+            await note_policy_denial(current_user, "order.return_cancel", order=order, request=request)
+            raise HTTPException(status_code=403, detail="Bu sipariş size ait değil")
+    return await _cancel_return_for_order(order, current_user)
+
+
+@router.post("/by-number/{order_number}/return-request/cancel")
+@(limiter.limit("5/minute") if limiter else (lambda f: f))
+@(limiter.limit("60/minute", key_func=global_rate_key) if limiter else (lambda f: f))
+async def cancel_guest_return_request(order_number: str, request: Request, payload: dict = Body(default={})):
+    """Misafir müşteri: sipariş no + e-posta/telefon doğrulamasıyla bekleyen iade talebini iptal eder."""
+    order = await db.orders.find_one({"order_number": order_number}, {"_id": 0})
+    if not order:
+        order = await db.orders.find_one({"id": order_number}, {"_id": 0})
+    if not order:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    email = ((payload or {}).get("email") or "").strip()
+    phone = ((payload or {}).get("phone") or "").strip()
+    if not email and not phone:
+        raise HTTPException(status_code=400, detail="Doğrulama için e-posta veya telefon giriniz.")
+    await _guest_verify_or_raise(order, email, phone)
+    actor = {"id": order.get("user_id"), "email": email or order.get("email") or "",
+             "name": "Misafir", "guest": True}
+    return await _cancel_return_for_order(order, actor)
+
+
 @router.post("/{order_id}/admin-return")
 async def admin_manual_return(order_id: str, payload: dict = Body(default={}),
-                              current_user: dict = Depends(require_admin)):
+                              current_user: dict = Depends(require_permission("orders.edit"))):
     """Admin: sipariş panelinden MANUEL (kısmi) iade.
     - payload.item_indexes: iade edilecek kalem index'leri (boşsa TÜM sipariş).
     - Seçili kalemler customer_returns'e yazılır (gider pusulası bu kayıttan üretilir → kısmi olur).
@@ -7039,7 +10204,19 @@ async def admin_manual_return(order_id: str, payload: dict = Body(default={}),
         order = await db.orders.find_one({"order_number": order_id}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    # COM10: müşteri RMA'sı ile aynı sipariş-başı kilit (eşzamanlı panel + müşteri iadesi adet aşamaz).
+    _tok = await _acquire_order_op_lock(order["id"], "return_req", ttl_s=120)
+    if not _tok:
+        raise HTTPException(status_code=409, detail=(
+            "Bu sipariş için başka bir iade işlemi sürüyor. Lütfen birkaç saniye sonra tekrar deneyin."))
+    try:
+        order = await db.orders.find_one({"id": order["id"]}, {"_id": 0}) or order
+        return await _admin_manual_return_locked(order, payload, current_user)
+    finally:
+        await _release_order_op_lock(order["id"], "return_req", _tok)
 
+
+async def _admin_manual_return_locked(order: dict, payload: dict, current_user: dict) -> dict:
     src_items = order.get("items") or []
     sel = payload.get("item_indexes")
     target_status = (payload.get("target_status") or "returned").strip()
@@ -7068,6 +10245,35 @@ async def admin_manual_return(order_id: str, payload: dict = Body(default={}),
     } for it in chosen]
     reason = (payload.get("reason") or "").strip()[:500]
     is_full = (len(src_items) > 0 and len(chosen_idx) >= len(src_items))
+
+    # COM10: iade edilebilir adet tavanı — önceki işlenmiş iadeler (onaylı/yolda/teslim/ödenmiş) VE
+    # bekleyen müşteri talepleri (created) düşülür; kalan adedi olmayan kalem iade edilemez.
+    _cap_before = await _already_returned_qty(order["id"])
+    async for _cr in db.customer_returns.find({"order_id": order["id"], "status": "created"},
+                                              {"_id": 0, "items": 1, "approved_items": 1,
+                                               "approved_item_indexes": 1}):
+        for _ci in _return_record_items(_cr):
+            _ck = _return_item_key(_ci)
+            try:
+                _cap_before[_ck] = _cap_before.get(_ck, 0) + max(0, int(_ci.get("quantity") or 1))
+            except Exception:
+                _cap_before[_ck] = _cap_before.get(_ck, 0) + 1
+    if _cap_before:
+        _left = {k: max(0, v - _cap_before.get(k, 0)) for k, v in _order_qty_by_key(order).items()}
+        _kept, _kept_idx = [], []
+        for _it, _ix in zip(items, chosen_idx):
+            _k = _return_item_key(_it)
+            _q = min(int(_it.get("quantity") or 1), _left.get(_k, 0))
+            if _q > 0:
+                _left[_k] = _left.get(_k, 0) - _q
+                _kept.append({**_it, "quantity": _q})
+                _kept_idx.append(_ix)
+        if not _kept:
+            raise HTTPException(status_code=400, detail=(
+                "Seçilen kalemler için iade edilebilir adet kalmadı (daha önce iade edilmiş ya da bekleyen "
+                "bir müşteri iade talebi var)."))
+        items, chosen_idx = _kept, _kept_idx
+        is_full = is_full and all(_left.get(k, 0) == 0 for k in _left)
 
     rid = generate_id()
     now = datetime.now(timezone.utc); now_iso = now.isoformat()
@@ -7106,7 +10312,7 @@ async def admin_manual_return(order_id: str, payload: dict = Body(default={}),
 
 
 @router.get("/{order_id}/return")
-async def get_return_info(order_id: str, current_user: dict = Depends(get_current_user)):
+async def get_return_info(order_id: str, request: Request, current_user: dict = Depends(get_current_user)):
     """Müşteri: bir siparişin iade kaydını getir (ekranda barkod/kod göstermek için)."""
     if not current_user:
         raise HTTPException(status_code=401, detail="Giriş yapmanız gerekiyor")
@@ -7120,12 +10326,17 @@ async def get_return_info(order_id: str, current_user: dict = Depends(get_curren
         if o.get("user_id"):
             # Üyeye ait sipariş → sahiplik user_id ile.
             if current_user.get("id") and o["user_id"] != current_user["id"]:
+                await note_policy_denial(current_user, "order.return_info", order=o, request=request)
                 raise HTTPException(status_code=403, detail="Bu sipariş size ait değil")
         else:
             # A2.10: Misafir sipariş (user_id yok) → giriş yapan kullanıcının e-posta/telefonu
             # siparişteki iletişimle EŞLEŞMELİ (BOLA/IDOR koruması, create_return_request ile aynı).
-            if not _order_contact_matches(o, current_user.get("email", ""), current_user.get("phone", "")):
+            if not _member_owns_guest_order(o, current_user):
+                await note_policy_denial(current_user, "order.return_info", order=o, request=request)
                 raise HTTPException(status_code=403, detail="Bu sipariş size ait değil")
+    else:
+        # T01: sipariş kaydı yoksa sahiplik doğrulanamaz → iade kaydı (barkod/kod) da DÖNMEZ.
+        raise HTTPException(status_code=404, detail="İade kaydı bulunamadı")
     rec = await db.customer_returns.find_one({"order_id": oid}, {"_id": 0}, sort=[("created_at", -1)])
     if not rec:
         raise HTTPException(status_code=404, detail="İade kaydı bulunamadı")
@@ -7163,7 +10374,7 @@ _RETURN_STATUS_MAP = {
 async def list_returns_admin(
     status: str = Query(""),
     limit: int = Query(100, ge=1, le=500),
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("returns.view")),
 ):
     q = {}
     if status:
@@ -7201,38 +10412,81 @@ async def list_returns_admin(
             "is_efatura": _order_is_efatura(o),
             "barcode_url": f"/api/orders/returns/{r.get('id')}/barcode.png",
         })
+    await present_refund_bank_info_in(out, current_user)  # BL-040: yetkiye göre tam / maskeli
+    _contact_mask_many(out)  # KVKK: iade listesinde müşteri telefonu / açık adres maskeli
     return {"returns": out}
 
 
+# GÜVENLİK (denetim 2026-10): genel iade durum değiştirici yalnız require_admin'deydi →
+# her personel iadeyi 'refunded' (bedeli ödendi) yapabiliyordu. Hedef duruma göre yetki:
+_RETURN_STATUS_PERMS = {
+    "created": "returns.approve",
+    "approved": "returns.approve",
+    "in_transit": "returns.approve",
+    "received": "returns.approve",
+    "returned": "returns.approve",
+    "refunded": "returns.refund_pay",
+    "partial_refunded": "returns.refund_pay",
+    "rejected": "returns.reject",
+    "cancelled": "returns.reject",
+}
+
+
 @router.post("/returns/{return_id}/status")
-async def update_return_status(return_id: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def update_return_status(return_id: str, payload: dict, request: Request,
+                               # IAM-02: sayfa izni yeterli — durum başına asıl izin (returns.approve /
+                               # refund_pay …) aşağıda gövdede _RETURN_STATUS_PERMS ile zorunlu.
+                               current_user: dict = Depends(require_permission("returns.view"))):
     rec = await db.customer_returns.find_one({"id": return_id}, {"_id": 0})
     if not rec:
         raise HTTPException(status_code=404, detail="İade bulunamadı")
     new = (payload.get("status") or "").strip()
     if new not in _RETURN_STATUS_MAP:
         raise HTTPException(status_code=400, detail=f"Geçersiz durum. Geçerli: {list(_RETURN_STATUS_MAP)}")
+    _need_perm = _RETURN_STATUS_PERMS.get(new, "returns.approve")
+    _perms_rs = await get_effective_permissions(current_user)
+    if "*" not in _perms_rs and _need_perm not in _perms_rs:
+        raise HTTPException(status_code=403, detail=f"Bu işlem için yetkiniz yok ({_need_perm})")
     now_iso = datetime.now(timezone.utc).isoformat()
-    await db.customer_returns.update_one({"id": return_id}, {"$set": {"status": new, "updated_at": now_iso}})
     order_status, event = _RETURN_STATUS_MAP[new]
-    if order_status:
-        _oset = {"status": order_status, "return_request.status": new, "updated_at": now_iso}
-        if order_status == "return_approved":
-            _oset["return_approved_at"] = now_iso
-        if order_status in ("refunded", "partial_refunded"):
-            _oset["refund_paid_at"] = now_iso
-        await db.orders.update_one({"id": rec["order_id"]}, {"$set": _oset})
-        # OTOMATİK STOK GERİ (site iadesi): iade tamamlanınca/onaylanınca iade edilen kalemleri
-        # ADET kadar stoğa ekle (kısmi dahil). İade-başına idempotent. Eskiden site iadesinde stok
-        # HİÇ geri gelmiyordu (Trendyol'da GP kesiminde geliyordu — asimetri kapatıldı).
-        if order_status in ("returned", "refunded", "partial_refunded", "return_approved"):
-            try:
-                await _restock_return_items_once(rec)
-            except Exception as _e:
-                logger.warning(f"[iade] otomatik restock hata order={rec.get('order_id')}: {_e}")
+    if order_status in ("refunded", "partial_refunded"):
+        # ACİL ANAHTAR (CHAIN08): "iade ödendi" işaretlemesi → freeze_refunds / restore_mode /
+        # geri yükleme sonrası iade kilidi açıkken 423.
+        await _guard_switch("freeze_refunds")
+
+    async def _apply():
+        await db.customer_returns.update_one({"id": return_id}, {"$set": {"status": new, "updated_at": now_iso}})
+        if order_status:
+            _oset = {"status": order_status, "return_request.status": new, "updated_at": now_iso}
+            if order_status == "return_approved":
+                _oset["return_approved_at"] = now_iso
+            if order_status in ("refunded", "partial_refunded"):
+                _oset["refund_paid_at"] = now_iso
+            await db.orders.update_one({"id": rec["order_id"]}, {"$set": _oset})
+            # OTOMATİK STOK GERİ (site iadesi): iade tamamlanınca/onaylanınca iade edilen kalemleri
+            # ADET kadar stoğa ekle (kısmi dahil). İade-başına idempotent. Eskiden site iadesinde stok
+            # HİÇ geri gelmiyordu (Trendyol'da GP kesiminde geliyordu — asimetri kapatıldı).
+            if order_status in ("returned", "refunded", "partial_refunded", "return_approved"):
+                try:
+                    await _restock_return_items_once(rec)
+                except Exception as _e:
+                    logger.warning(f"[iade] otomatik restock hata order={rec.get('order_id')}: {_e}")
+        else:
+            await db.orders.update_one({"id": rec["order_id"]},
+                {"$set": {"return_request.status": new, "updated_at": now_iso}})
+
+    if order_status in ("refunded", "partial_refunded"):
+        # PARA ÇIKIŞI (iade ödendi): FAIL-CLOSED denetim — intent yazılamazsa işlem YAPILMAZ (503);
+        # intent → uygula → done/failed (tamper-evident audit zinciri).
+        from activity_audit import run_audited
+        await run_audited(
+            db, action="returns.status_refunded", entity_type="customer_return", entity_id=return_id,
+            perform=_apply, before={"status": rec.get("status")}, after={"status": new},
+            current_user=current_user, request=request, source="admin.returns",
+            metadata={"order_id": rec.get("order_id"), "order_number": rec.get("order_number", ""),
+                      "return_id": return_id, "new_status": new})
     else:
-        await db.orders.update_one({"id": rec["order_id"]},
-            {"$set": {"return_request.status": new, "updated_at": now_iso}})
+        await _apply()
 
     if event and order_status:
         import asyncio as _aio
@@ -7355,10 +10609,13 @@ async def _storefront_free_shipping():
     fee = _round2(fee or 0.0)
     threshold = None
     try:
+        from shipping_rules import campaign_live
         async for _c in db.coupons.find(
             {"is_active": True, "free_shipping": True, "auto_apply": True},
-            {"_id": 0, "min_cart_total": 1},
+            {"_id": 0, "min_cart_total": 1, "start_at": 1, "end_at": 1},
         ):
+            if not campaign_live(_c):   # süresi dolmuş kampanya eşiği düşürmez
+                continue
             mc = _c.get("min_cart_total")
             if mc in (None, ""):
                 continue
@@ -7368,6 +10625,261 @@ async def _storefront_free_shipping():
     except Exception:
         threshold = None
     return threshold, fee
+
+
+def _goods_kdv_rate(line_items: list, default_rate: float = 10.0) -> float:
+    """Vade farkı satırının KDV oranı = MALIN oranı (KDVK 24/c: matraha dahil unsur,
+    teslimin tabi olduğu oranla vergilendirilir). Eskiden sabit 20.0 yazılıyordu; %10
+    KDV'li tekstil siparişinde taksit başına fazla KDV beyan ediliyordu (169,98 TL vade
+    farkında 28,33 yerine 15,45 → 12,88 TL fazla). En yüksek tutarlı ÜRÜN satırının
+    oranı esas alınır; hizmet satırları (kargo/hediye paketi/kapıda ödeme) sayılmaz.
+    """
+    _best, _best_amt = None, -1.0
+    for li in (line_items or []):
+        if str(li.get("sku") or "") in ("VADEFARKI", "HEDIYEPAKETI", "KAPIDAODEME", "KARGO"):
+            continue
+        try:
+            _amt = float(li.get("unit_price") or 0) * int(li.get("qty") or 1)
+            _r = float(li.get("kdv_rate"))
+        except Exception:
+            continue
+        if _r > 0 and _amt > _best_amt:
+            _best, _best_amt = _r, _amt
+    return float(_best if _best is not None else default_rate)
+
+
+def _apply_invoice_discounts(order: dict, line_items: list) -> dict:
+    """FATURA SATIRLARI — TEK KAYNAK (muhasebe mutabakatı: panel = iyzico = fatura).
+
+    Eski formül: indirim = (ürün brüt + kargo) − order.total. order.total ise hem hediye
+    paketi/kapıda ödeme bedelini İÇERİYOR hem de hediye çeki/puanı DÜŞÜYOR. Üç sonuç:
+      1) HEDİYE PAKETİ ve KAPIDA ÖDEME bedeli faturada hiç yer almıyor, üstelik total'in
+         içinde oldukları için "indirim"i küçültüp ürün matrahını şişiriyor/aşındırıyordu.
+         Artık %20 KDV'li AYRI hizmet satırı olurlar (ürünün %10'uyla faturalanmazlar).
+      2) İndirim ürünlere DÜZ-ORANSAL dağıtılıyordu; panel/iyzico/iade ise kampanya
+         KAPSAMINA göre DONMUŞ kalem indirimini kullanıyor → aynı sipariş için fatura
+         satırı ile iade satırı farklı çıkıyordu. Artık donmuş kalem indirimi esas.
+
+    DEĞİŞMEZ: fatura satır toplamı (+kargo +vade farkı) = TAHSİL EDİLEN tutar = iyzico
+    paidPrice = paneldeki tutar. Hediye çeki ve puan, mağazanın BEDELSİZ verdiği araçlar
+    olduğundan iskonto sayılmaya DEVAM eder (avans/ön ödeme sayılsaydı tahsil edilmeyen
+    para üzerinden KDV beyan edilirdi). Bu bir vergi tercihidir; mali müşavir "avans"
+    isterse tek yer burasıdır: _billable'a + _gc + _pts eklemek yeter.
+    Pazaryeri siparişlerinde davranış birebir korunur (indirim total'dan türer; hediye
+    çeki/puan/hediye paketi alanları boştur → düzeltmeler 0'dır).
+
+    line_items YERİNDE güncellenir; eklenecek hizmet satırları döndürülür.
+    """
+    def _f(v):
+        try:
+            return round(float(v or 0), 2)
+        except Exception:
+            return 0.0
+
+    _gross = round(sum(_f(li.get("unit_price")) * int(li.get("qty") or 1) for li in line_items), 2)
+    _ship = _f(order.get("shipping_cost"))
+    _gw = _f(order.get("gift_wrap_price"))
+    _cod = _f(order.get("cod_fee"))
+    _gc = _f((order.get("gift_card") or {}).get("amount"))
+    _pts = _f(order.get("points_used"))
+
+    # Faturalanacak ürün+kargo bedeli: hizmet bedelleri ÇIKARILIR (kendi satırlarında
+    # faturalanırlar, ürünün KDV oranıyla değil %20 ile).
+    _total = _f(order.get("total"))
+    _billable = round((_total if _total > 0.005 else (_gross + _ship)) - _gw - _cod, 2)
+    _disc = round((_gross + _ship) - _billable, 2)
+    if _disc < 0.01:
+        # Yedek: indirim = kupon/kampanya + havale/EFT indirimi.
+        _disc = round(_f(order.get("discount")) + _f(order.get("payment_discount")), 2)
+    _disc = max(0.0, min(_disc, _gross))
+
+    # Dağıtım: donmuş kalem indirimi (kapsam-farkındalıklı) varsa onu kullan; kalem-dışı
+    # kalan (puan/havale payı gibi) oransal yayılır, yuvarlama kalanı SON satıra biner.
+    _items = order.get("items") or []
+    _line_gross = [round(_f(li.get("unit_price")) * int(li.get("qty") or 1), 2) for li in line_items]
+    _frozen = (bool(_items) and len(_items) == len(line_items)
+               and all(isinstance(it, dict) and it.get("discount_amount") is not None for it in _items))
+    _base = [0.0] * len(line_items)
+    if _frozen:
+        _base = [max(0.0, min(_line_gross[k], _f(_items[k].get("discount_amount"))))
+                 for k in range(len(line_items))]
+    _rest = max(0.0, round(_disc - round(sum(_base), 2), 2))
+    _alloc = 0.0
+    if _disc > 0.005 and _gross > 0.005:
+        for _k, li in enumerate(line_items):
+            _g = _line_gross[_k]
+            if _k < len(line_items) - 1:
+                _d = round(_base[_k] + (_rest * _g / _gross), 2)
+            else:
+                _d = round(_disc - _alloc, 2)          # yuvarlama kalanı son satıra
+            _d = max(0.0, min(_d, _g))
+            _alloc = round(_alloc + _d, 2)
+            _q = int(li.get("qty") or 1) or 1
+            li["unit_price"] = round((_g - _d) / _q, 4)
+
+    # Hizmet satırları (kargo HARİÇ — çağıran tarafta ayrıca ekleniyor). KDV %20.
+    _extra_lines = []
+    if _gw > 0.005:
+        _extra_lines.append({"name": "Hediye Paketi", "qty": 1, "unit_price": _gw,
+                             "kdv_rate": 20.0, "sku": "HEDIYEPAKETI", "barcode": "", "note": ""})
+    if _cod > 0.005:
+        _extra_lines.append({"name": "Kapıda Ödeme Hizmet Bedeli", "qty": 1, "unit_price": _cod,
+                             "kdv_rate": 20.0, "sku": "KAPIDAODEME", "barcode": "", "note": ""})
+    return {"discount": _disc, "allocated": _alloc, "gross": _gross, "billable": _billable,
+            "frozen": _frozen, "gift_card": _gc, "points": _pts, "extra_lines": _extra_lines}
+
+
+async def _order_item_discounts(order: dict) -> list:
+    """Sipariş kalemlerine indirimi KAMPANYA KAPSAMINA GÖRE dağıtır (düz-oransal DEĞİL).
+    Her applied_promotion'ın indirimi yalnız KAPSAMINDAKİ (kategori/ürün; indirimli-hariç, hariç-liste)
+    kalemlere, o kalemlerin brüt payına göre bölüştürülür → kapsam-DIŞI kalem 0 indirim alır.
+    W11214 hatası: 'Lansman %20' yalnız kategori 2867'ye uygulanmışken, iade motoru toplam indirimi
+    TÜM kalemlere düz-oransal dağıtıp kapsam-dışı ürüne (Kahverengi Etek) hayali indirim yazıyordu.
+    Dönüş: order['items'] ile hizalı kalem-başı indirim listesi. applied_promotions yoksa düz-oransal
+    (geriye uyum). Kapsam çözülemezse (kupon silinmiş) o promo düz-oransal dağıtılır (güvenli yedek)."""
+    items = order.get("items") or []
+    n = len(items)
+    gross = [_round2((it.get("price") or 0)) * int(it.get("quantity") or 1) for it in items]
+    # DONMUŞ per-ürün indirim (checkout'ta item.discount_amount yazıldıysa) → TEK doğru kaynak
+    # odur (kategori sonradan değişse de sabit kalır). Yeni siparişler bu daldan geçer.
+    if items and all(isinstance(it, dict) and ("discount_amount" in it) for it in items):
+        return [_round2((it.get("discount_amount") or 0)) for it in items]
+    order_disc = _round2((order.get("discount") or 0) + (order.get("payment_discount") or 0))
+    promos = order.get("applied_promotions") or []
+    _sub = _round2(order.get("subtotal") or sum(gross))
+
+    def _settle(vals: list, target: float) -> list:
+        """Kuruş mutabakatı: yuvarlanmış dağıtım toplamı hedefle BİREBİR eşitlenir; kalan
+        EN BÜYÜK paylı kaleme yazılır. Eskiden her kalem ayrı yuvarlanıp kalan hiçbir yere
+        yazılmıyordu → Σ item.discount_amount ≠ order.discount (3×33,33 TL / %10'da 9,99 vs
+        10,00). Fark iade tarafında fazla iade, iyzico tarafında son kaleme biniyordu; üstelik
+        set-item-discounts uyarı eşiği (0,02) 1 kuruşu hiç raporlamıyordu."""
+        out = [_round2(v) for v in vals]
+        _t = _round2(target)
+        _d = _round2(_t - _round2(sum(out)))
+        if abs(_d) >= 0.01 and out:
+            _k = max(range(len(out)), key=lambda i: (out[i], gross[i]))
+            out[_k] = _round2(max(0.0, out[_k] + _d))
+        return out
+
+    def _flat():
+        dr = min(1.0, order_disc / _sub) if _sub > 0.005 else 0.0
+        return _settle([g * dr for g in gross], min(order_disc, _round2(sum(gross) * dr)))
+
+    if order_disc <= 0.005 or n == 0:
+        return [0.0] * n
+    if not promos:
+        return _flat()
+
+    # Kalem kategori üyeliklerini (category_ids, atalar dahil) + indirimli-fiyat bayrağını çöz.
+    from .coupons import _item_in_scope
+    pids = [str(it.get("product_id") or "") for it in items if it.get("product_id")]
+    cat_map = {}
+    if pids:
+        async for p in db.products.find({"id": {"$in": pids}},
+                                        {"_id": 0, "id": 1, "category_ids": 1, "category_id": 1,
+                                         "price": 1, "sale_price": 1}):
+            cids = set(str(c) for c in (p.get("category_ids") or []) if c)
+            if p.get("category_id"):
+                cids.add(str(p["category_id"]))
+            _lp = float(p.get("price") or 0)
+            _sp = float(p.get("sale_price") or 0)
+            cat_map[p["id"]] = {"cids": cids, "manual_sale": bool(_sp > 0 and _sp < _lp)}
+    enr = []
+    for it in items:
+        info = cat_map.get(str(it.get("product_id") or ""), {})
+        enr.append({**it, "category_ids": list(info.get("cids", set())),
+                    "_has_manual_sale": info.get("manual_sale", False)})
+
+    disc = [0.0] * n
+    for pr in promos:
+        amt = _round2(pr.get("discount") or 0)
+        if amt <= 0.005:
+            continue
+        cid = pr.get("coupon_id")
+        cpn = await db.coupons.find_one({"id": cid}, {"_id": 0}) if cid else None
+        allowed_cats = set(str(x) for x in ((cpn or {}).get("categories") or []) if x)
+        allowed_pids = set(str(x) for x in ((cpn or {}).get("products") or []) if x)
+        excluded = set(str(x) for x in ((cpn or {}).get("excluded_products") or []) if x)
+        skip_disc = (cpn or {}).get("skip_discounted", True)
+        idxs = []
+        for i, it in enumerate(enr):
+            in_scope = ((not allowed_cats and not allowed_pids)
+                        or _item_in_scope(it, allowed_cats, allowed_pids, excluded))
+            if in_scope and not (skip_disc and it.get("_has_manual_sale")):
+                idxs.append(i)
+        base = sum(gross[i] for i in idxs)
+        if base <= 0.005:  # kapsam çözülemedi → bu promo'yu düz-oransal (güvenli yedek)
+            _tot = sum(gross) or 1.0
+            for i in range(n):
+                disc[i] += amt * (gross[i] / _tot)
+            continue
+        for i in idxs:
+            disc[i] += amt * (gross[i] / base)
+    # Ödeme (havale/EFT) indirimi sepet-geneli teşvik → tüm kalemlere brüt payıyla oransal.
+    pm = _round2(order.get("payment_discount") or 0)
+    if pm > 0.005:
+        _tot = sum(gross) or 1.0
+        for i in range(n):
+            disc[i] += pm * (gross[i] / _tot)
+    return _settle(disc, min(order_disc, _round2(sum(gross))))
+
+
+@router.post("/{order_id}/set-item-discounts")
+async def set_item_discounts(order_id: str, payload: dict,
+                             current_user: dict = Depends(require_permission("returns.expense_note"))):
+    """ESKİ sipariş düzeltme: kalem-başı indirimi (item.discount_amount) ELLE dondur. Kampanya kapsamı
+    sonradan değişen siparişlerde (W11214: Etek kapsam-dışıydı, 0 indirim almıştı ama iade motoru düz-
+    oransal 168,42 yazıyordu) doğru per-ürün indirim yazılır. payload: {discounts:[...]} order.items ile
+    hizalı (her kalem için indirim tutarı). customer_returns.items barkod/index ile senkronlanır; varsa
+    gider pusulası yeni tutarla yeniden hesaplanır. Toplam, siparişin discount+payment_discount'una eşit
+    olmalıdır (uyarı verilir, engellenmez)."""
+    order = (await db.orders.find_one({"id": order_id}, {"_id": 0})
+             or await db.orders.find_one({"order_number": order_id}, {"_id": 0}))
+    if not order:
+        raise HTTPException(status_code=404, detail="Sipariş bulunamadı")
+    ds = payload.get("discounts") or []
+    items = order.get("items") or []
+    if len(ds) != len(items):
+        raise HTTPException(status_code=400, detail=f"discounts uzunluğu ({len(ds)}) kalem sayısıyla ({len(items)}) eşleşmeli.")
+    for i, it in enumerate(items):
+        if isinstance(it, dict):
+            it["discount_amount"] = _round2(ds[i] or 0)
+    await db.orders.update_one({"id": order["id"]}, {"$set": {"items": items}})
+    _sum = _round2(sum(_round2(x or 0) for x in ds))
+    _exp = _round2((order.get("discount") or 0) + (order.get("payment_discount") or 0))
+    _warn = "" if abs(_sum - _exp) < 0.02 else f"UYARI: indirim toplamı {_sum} ≠ sipariş indirimi {_exp}"
+
+    # customer_returns senkron: barkod eşleşmesi (yoksa index) ile discount_amount kopyala.
+    _by_bc = {}
+    for it in items:
+        bc = str((it or {}).get("product_id") or "")
+        if bc:
+            _by_bc[bc] = _round2((it or {}).get("discount_amount") or 0)
+    _synced = 0
+    async for cr in db.customer_returns.find({"order_id": order["id"]}, {"_id": 0, "id": 1, "items": 1}):
+        _cri = cr.get("items") or []
+        for j, cit in enumerate(_cri):
+            if not isinstance(cit, dict):
+                continue
+            bc = str(cit.get("product_id") or cit.get("barcode") or "")
+            if bc and bc in _by_bc:
+                cit["discount_amount"] = _by_bc[bc]
+            elif j < len(items) and isinstance(items[j], dict):
+                cit["discount_amount"] = _round2(items[j].get("discount_amount") or 0)
+        await db.customer_returns.update_one({"id": cr["id"]}, {"$set": {"items": _cri}})
+        _synced += 1
+        # Gider pusulası varsa yeni per-ürün indirimle yeniden hesapla (idempotent).
+        try:
+            _gp = await db.gider_pusulasi.find_one({"return_id": cr["id"]}, {"_id": 0, "display_number": 1})
+            if _gp:
+                await site_return_gider_pusulasi(cr["id"], payload={"tracking_no": _gp.get("display_number") or ""},
+                                                 current_user=current_user)
+        except Exception:
+            pass
+    return {"success": True, "order": order.get("order_number"),
+            "discounts": [it.get("discount_amount") for it in items],
+            "returns_synced": _synced, "warning": _warn}
 
 
 async def _compute_refund_breakdown(rec: dict, order: dict, fault: str,
@@ -7392,7 +10904,24 @@ async def _compute_refund_breakdown(rec: dict, order: dict, fault: str,
         # KISMİ İADE → panelde seçili kalemlerin net toplamı (ürün tutarı).
         returned_net_products = _round2(returned_net_override)
         orig_cart = _round2(order.get("subtotal") or order.get("total") or 0)
-        kept_cart = _round2(max(0.0, orig_cart - returned_net_products))
+        # ÜCRETSİZ-KARGO EŞİĞİ TABANI (brüt/net karışıklığı düzeltmesi): vitrin eşiği NET
+        # sepete bakar (shipping_rules.shipping_quote basis = subtotal − indirim − ödeme
+        # indirimi − puan; sipariş anında order.shipping_eligibility_basis'e yazılır).
+        # Eskiden BRÜT subtotal ile NET iade tutarı karşılaştırılıyordu → "kalan" daima
+        # indirim kadar ŞİŞİK çıkıyor, 99 TL kargo mahsubu yanlış yönde tetikleniyordu:
+        #   • kalem kalem TAM iadede bile kalan>0 görünüp 99 TL kesiliyordu (müşteri aleyhine),
+        #   • gerçekte eşiğin altına düşen kısmi iadelerde ise kesilmiyordu (mağaza aleyhine).
+        _thr_orig = order.get("shipping_eligibility_basis")
+        try:
+            _thr_orig = _round2(_thr_orig) if _thr_orig not in (None, "") else 0.0
+        except Exception:
+            _thr_orig = 0.0
+        if _thr_orig <= 0.01:
+            _thr_orig = _round2(max(0.0, orig_cart
+                                    - _round2(order.get("discount") or 0)
+                                    - _round2(order.get("payment_discount") or 0)
+                                    - _round2(order.get("points_used") or 0)))
+        kept_cart = _round2(max(0.0, _thr_orig - returned_net_products))
         is_partial = kept_cart > 0.01
         # VADE FARKI (kullanıcı isteği): müşteri taksitli ödediyse iade edilen ürünlerin
         # vade farkı PAYINI da geri almalı (yalnız ürün tutarı değil). Toplam vade farkını
@@ -7408,11 +10937,17 @@ async def _compute_refund_breakdown(rec: dict, order: dict, fault: str,
             #   doğrusu: 169,98 × (1935,90 / 4600,80) = 71,52  ✓
             # Ayrıca payda = TÜM kalemlerin net toplamı olduğundan, sipariş kalem kalem tamamen
             # iade edilirse dağıtılan vade farkı toplamı _vf'ye BİREBİR eşitlenir (kayıp/fazla yok).
-            _net_base = _round2(max(0.0, _round2(order.get("subtotal") or 0)
-                                    - _round2(order.get("discount") or 0)
-                                    - _round2(order.get("payment_discount") or 0)))
-            if _net_base <= 0.005:      # eski/pazaryeri siparişi: indirim alanı yoksa brüte düş
-                _net_base = orig_cart
+            # iyzico İLE BİREBİR (W11676): iyzico vade farkını sepetteki TÜM kalemlere — kargo
+            # dahil — orantılı dağıtır (kalem paidPrice = kalem fiyatı × paidPrice/total). Taban bu
+            # yüzden order.total (ürün neti + kargo + hizmet bedelleri). Eskiden taban yalnız ürün
+            # netiydi → kargonun payı ürünlere biniyor, panel 1.008,72 derken iyzico'daki kalem
+            # 1.004,50 kalıyor ve o satırdan panel tutarı iade edilemiyordu. Kargo iadesinde kargonun
+            # kendi payı (_shipping_with_vade) ayrıca eklenir; kalem kalem tam iadede toplam yine _vf.
+            _net_base = base_total
+            if _net_base <= 0.005:      # eski/pazaryeri siparişi: total yoksa ürün netine düş
+                _net_base = _round2(max(0.0, _round2(order.get("subtotal") or 0)
+                                        - _round2(order.get("discount") or 0)
+                                        - _round2(order.get("payment_discount") or 0))) or orig_cart
             if _net_base > 0.005:
                 vade_farki_refunded = _round2(_vf * (returned_net_products / _net_base))
         returned_net = _round2(returned_net_products + vade_farki_refunded)
@@ -7422,6 +10957,7 @@ async def _compute_refund_breakdown(rec: dict, order: dict, fault: str,
         returned_net = paid_total if paid_total > 0 else _round2(
             sum(_round2(it.get("price", 0)) * int(it.get("quantity", 1) or 1) for it in items))
         orig_cart = returned_net
+        _thr_orig = orig_cart
         kept_cart = 0.0
         is_partial = False  # tam iadede kalan 0 → kampanya (ücretsiz-kargo) mahsubu uygulanmaz
         # Tam iadede vade farkının TAMAMI zaten returned_net (paidPrice) içinde iade edilir.
@@ -7433,9 +10969,10 @@ async def _compute_refund_breakdown(rec: dict, order: dict, fault: str,
     #     Eşik + ücret vitrinle aynı kaynaktan (settings) okunur, sabit değildir. ---
     campaign_deduction = 0.0
     campaign_note = ""
+    _thr_base = _thr_orig
     free_threshold, ship_fee = await _storefront_free_shipping()
     if (fault == "customer" and is_partial and free_threshold is not None
-            and ship_fee > 0 and orig_cart >= free_threshold and kept_cart < free_threshold):
+            and ship_fee > 0 and _thr_base >= free_threshold and kept_cart < free_threshold):
         campaign_deduction = _round2(ship_fee)
         campaign_note = (
             f"İade sonrası kalan tutar ({kept_cart:.2f} TL) ücretsiz kargo eşiğinin "
@@ -7459,12 +10996,52 @@ async def _compute_refund_breakdown(rec: dict, order: dict, fault: str,
     if campaign_deduction > 0 and return_cargo_fee > 0:
         return_cargo_fee = 0.0
 
+    # ── NAKİT TAVANI (para kaçağı düzeltmesi) ────────────────────────────────────
+    # Sipariş bedelinin bir kısmı PUAN veya HEDİYE ÇEKİ ile ödendiyse o kısım NAKİT
+    # iade edilemez: puan/çek iptalde zaten idempotent biçimde hesaba geri yüklenir
+    # (refund_points_once / refund_gift_card_once). Kısmi iade dalında bu dikkate
+    # alınmıyordu → kalem tutarının tamamı nakit iade ediliyor, müşteri hem nakdi hem
+    # puanı geri alıyordu. Ölçülen sapma: 2.900 TL ürün neti / 2.650 TL tahsilat olan
+    # siparişte 2.700 TL nakit iade (50 TL fazla).
+    # Yöntem: müşterinin ödediği toplam bedel = nakit (order.total) + nakit-dışı
+    # (puan + hediye çeki). İade edilen tutar bu orana göre nakit/nakit-dışı diye
+    # ayrılır; nakit kısım iade edilir, nakit-dışı kısım breakdown'da raporlanır.
+    _non_cash = 0.0
+    try:
+        _non_cash = _round2(float(order.get("points_used") or 0)
+                            + float((order.get("gift_card") or {}).get("amount") or 0))
+    except Exception:
+        _non_cash = 0.0
+    non_cash_refund = 0.0
+    if _non_cash > 0.005 and is_partial:
+        _consideration = _round2(base_total + _non_cash)
+        if _consideration > 0.005:
+            _cash_ratio = max(0.0, min(1.0, base_total / _consideration))
+            _before = returned_net
+            returned_net = _round2(returned_net * _cash_ratio)
+            non_cash_refund = _round2(max(0.0, _before - returned_net))
+
     auto_refund = _round2(max(0.0, returned_net - campaign_deduction - return_cargo_fee))
+
+    # SON EMNİYET: hiçbir iade, o sipariş için GERÇEKTEN tahsil edilen nakdi aşamaz
+    # (önceki kısmi iadeler düşülerek). Aşıyorsa tavana çekilir.
+    try:
+        # DÜZELTME (denetim 2026-10): yalnız 'done' sayılıyordu → sonucu BEKLENEN ('pending') ya da
+        # BELİRSİZ ('unknown' — para gitmiş olabilir) iadeler düşülmüyor, tavan şişiyordu.
+        _already = _round2(sum(float((x or {}).get("amount") or (x or {}).get("net_refund") or 0)
+                               for x in (order.get("refunds") or [])
+                               if str((x or {}).get("status") or "") in _REFUND_COUNTED_STATUSES))
+    except Exception:
+        _already = 0.0
+    _cash_cap = _round2(max(0.0, paid_total - _already))
+    if auto_refund > _cash_cap + 0.01:
+        auto_refund = _cash_cap
 
     return {
         "returned_net": returned_net,
         "orig_cart": orig_cart,
         "kept_cart": kept_cart,
+        "threshold_basis": _thr_base,
         "is_partial": is_partial,
         "fault": fault,
         "free_shipping_threshold": free_threshold,
@@ -7477,6 +11054,10 @@ async def _compute_refund_breakdown(rec: dict, order: dict, fault: str,
         "vade_farki_refunded": round(vade_farki_refunded, 2),  # bu iadede geri verilen vade farkı payı
         "installment": int(_inst or 1),
         "returned_products_net": _round2(returned_net_override) if returned_net_override not in (None, "") else returned_net,
+        # Puan/hediye çeki ile ödenmiş kısmın iadesi: NAKİT değil, bakiye olarak döner
+        # (iptal kancaları idempotent iade eder). Panelde bilgi amaçlı gösterilir.
+        "non_cash_refund": non_cash_refund,
+        "cash_cap": _cash_cap,
     }
 
 
@@ -7521,8 +11102,11 @@ async def _order_return_breakdown(order: dict):
         query["$or"].append({"order_number": order.get("order_number")})
     async for rec in db.customer_returns.find(query, {"_id": 0}):
         st = (rec.get("status") or "").lower()
-        # İPTAL/RED edilmiş iade talepleri gerçekleşmiş iade DEĞİLDİR — sayma.
-        if st in ("cancelled", "rejected", "return_rejected", "canceled"):
+        # İPTAL/RED/SÜRESİ DOLMUŞ iade talepleri gerçekleşmiş iade DEĞİLDİR — sayma.
+        # "expired" eklendi: süresi dolup normale döndürülen sipariş (scheduler'daki
+        # expire_stale_site_return_requests) teslim edilmiş görünürken detayda hayalet
+        # "İade Edilen" kalemleri listeleniyordu → personel ikinci kez para iade edebilirdi.
+        if st in ("cancelled", "rejected", "return_rejected", "canceled", "expired"):
             continue
         ret_items = rec.get("approved_items") or rec.get("items") or []
         if not ret_items:
@@ -7595,8 +11179,86 @@ async def refund_preview(return_id: str, fault: str = "store",
     if not rec:
         raise HTTPException(status_code=404, detail="İade bulunamadı")
     order = await db.orders.find_one({"id": rec.get("order_id")}, {"_id": 0}) or {}
+    # Panel tutar göndermediyse: iade talebi siparişin ALT KÜMESİ olabilir (müşteri tek
+    # kalem için talep açtıysa). O durumda tam iade dalına düşmesin — onay akışlarıyla
+    # AYNI ölçüt ve AYNI hesap kullanılır, böylece önizleme = onaylanacak tutar.
+    if returned_net is None:
+        _ri = rec.get("items") or []
+        if _ri and not _return_covers_whole_order(_ri, order):
+            returned_net = _selected_return_net(_ri, list(range(len(_ri))), order)
     bd = await _compute_refund_breakdown(rec, order, fault, returned_net_override=returned_net)
     return {"breakdown": bd}
+
+
+def _return_covers_whole_order(sel_items: list, order: dict) -> bool:
+    """Seçili iade kalemleri siparişin TAMAMINI kapsıyor mu?
+
+    PARA KAÇAĞI DÜZELTMESİ: iade talebi müşteri tarafından KALEM SEÇİLEREK açılabiliyor
+    (`create_return` → payload.items index listesi). O zaman customer_returns.items
+    siparişin ALT KÜMESİ olur. Onay akışları kısmiliği eskiden yalnız "seçim < KAYITTAKİ
+    kalem sayısı" ile ölçüyordu; alt kümenin tamamı seçilince kısmi sayılmıyor,
+    _compute_refund_breakdown TAM İADE dalına düşüp müşteriye SİPARİŞİN TAMAMINI
+    (order.total / paidPrice) iade ediyordu.
+      Örnek: 3.150,90 TL'lik 3 kalemlik siparişten 890 TL'lik TEK kalem iadesi →
+             3.150,90 TL iade (2.260,90 TL fazla ödeme).
+    Ölçüt kalem SAYISI + toplam ADET'tir; barkod/ad eşleşmesine bilerek bağlanmadı
+    (kimlik alanları orders.items ile customer_returns.items arasında farklı adlarla
+    saklanıyor — eşleştirme kırılgan olur, TAM iadeyi yanlışlıkla kısmi gösterebilirdi).
+    Sipariş kalemleri bilinmiyorsa eski davranış (tam iade) korunur.
+    """
+    ord_items = (order or {}).get("items") or []
+    if not ord_items or not sel_items:
+        return True
+
+    def _q(it):
+        try:
+            return max(1, int((it or {}).get("quantity", 1) or 1))
+        except Exception:
+            return 1
+
+    if len(sel_items) < len(ord_items):
+        return False
+    return sum(_q(i) for i in sel_items) >= sum(_q(i) for i in ord_items)
+
+
+def _selected_return_net(all_items: list, sel_idx: list, order: dict) -> float:
+    """Seçili iade kalemlerinin NET (indirim düşülmüş, KDV-dahil) toplamı.
+
+    İki onay akışı da bunu kullanır — hesabın YANLIŞLIKLA tam iadeye düşmesini önleyen
+    güvenlik ağı (Kadir: "hesap yalnız tiklediklerime göre"). KDV-dahil faktörü + sipariş
+    indirim oranı uygulanır ki tutar panel/gider pusulası ile BİREBİR aynı olsun
+    (item.price KDV-hariç 1159.09 saklıysa faktör 1.10 ile 1275'e ölçeklenir).
+    """
+    if not sel_idx:
+        return 0.0
+    _o_sub = _round2(order.get("subtotal") or 0)
+    _o_disc = _round2((order.get("discount") or 0) + (order.get("payment_discount") or 0))
+    _dr = min(1.0, _o_disc / _o_sub) if _o_sub > 0 and _o_disc > 0 else 0.0
+    # KDV-dahil faktör (rooftr_returns/GP ile AYNI mantık): KDV-dahil LİSTE (indirim öncesi
+    # subtotal) / KDV-hariç LİSTE. İndirim ÇIKARILMAZ (ayrı _dr ile uygulanır).
+    _oi = order.get("items") or []
+    _all_net_ord = _round2(sum(_round2((i or {}).get("price", 0)) * int((i or {}).get("quantity", 1) or 1)
+                               for i in _oi))
+    _pf = 1.0
+    if _all_net_ord > 0.5:
+        try:
+            _vf_g, _cg, _ig = _order_vade_farki(order)
+        except Exception:
+            _vf_g = 0.0
+        _tot_h = (_round2(order.get("total") or 0) - _round2(order.get("shipping_cost") or 0)
+                  - (round(_vf_g, 2) if _vf_g and _vf_g > 0 else 0.0) + _o_disc)
+        for _c in [(_o_sub / _all_net_ord) if _o_sub > 0.5 else None,
+                   (_tot_h / _all_net_ord) if _tot_h > 0.5 else None]:
+            if _c is not None and 1.06 <= _c <= 1.24:
+                _pf = _c
+                break
+    # DONMUŞ per-ürün indirim (checkout) varsa kapsam-farkındalıklı; yoksa düz-oransal (_dr).
+    _froz = all((all_items[i] or {}).get("discount_amount") is not None for i in sel_idx)
+    return _round2(sum(
+        _pf * ((_round2(all_items[i].get("price", 0)) * int(all_items[i].get("quantity", 1) or 1))
+               - (_round2(all_items[i].get("discount_amount") or 0) if _froz
+                  else _round2(all_items[i].get("price", 0)) * int(all_items[i].get("quantity", 1) or 1) * _dr))
+        for i in sel_idx))
 
 
 @router.post("/returns/{return_id}/approve")
@@ -7628,7 +11290,33 @@ async def approve_return(return_id: str, payload: dict,
         _ap_sel = _resolve_return_selection(_all_items, payload.get("selected_items"), payload.get("item_indexes"))
     except ValueError as _e:
         raise HTTPException(status_code=400, detail=str(_e))
-    _ap_partial = bool(_ap_sel) and len(_ap_sel) < len(_all_items)
+    _ap_partial_sel = bool(_ap_sel) and len(_ap_sel) < len(_all_items)
+    _sel_idx = _ap_sel or list(range(len(_all_items)))
+    # MÜKERRER İADE (denetim 2026-10): bu onay + diğer onaylı/yoldaki/ödenmiş iadeler, sipariş
+    # kalem adedini AŞAMAZ (aynı ürün iki ayrı iade kaydıyla iki kez iade edilip ödenmesin).
+    if order:
+        _ret_other = await _already_returned_qty(rec.get("order_id"), exclude_return_id=return_id)
+        if _ret_other:
+            _ord_q = _order_qty_by_key(order)
+            _want = {}
+            for _i in _sel_idx:
+                if 0 <= _i < len(_all_items):
+                    _k = _return_item_key(_all_items[_i])
+                    _want[_k] = _want.get(_k, 0) + max(0, int(_all_items[_i].get("quantity") or 1))
+            _over = [(k, q) for k, q in _want.items()
+                     if k in _ord_q and q + _ret_other.get(k, 0) > _ord_q[k]]
+            if _over:
+                _names = ", ".join(sorted({k[0] for k, _ in _over}))[:200]
+                raise HTTPException(status_code=400, detail=(
+                    f"Bu kalem(ler) bu siparişte daha önce iade edilmiş; sipariş adedini aşan iade "
+                    f"onaylanamaz ({_names}). Önceki iade kayıtlarını kontrol edin."))
+    # KISMİLİK **SİPARİŞE** GÖRE ÖLÇÜLÜR: iade kaydının kendisi siparişin alt kümesi
+    # olabilir (müşteri tek kalem iade talebi açtıysa) → bkz. _return_covers_whole_order.
+    _ap_partial = _ap_partial_sel or not _return_covers_whole_order(
+        [_all_items[i] for i in _sel_idx if i < len(_all_items)], order)
+    # Güvenlik ağı: kısmi ama tutar gönderilmediyse TAM İADE'ye düşme — seçili kalemlerden türet.
+    if _ap_partial and returned_net_in is None:
+        returned_net_in = _selected_return_net(_all_items, _sel_idx, order)
 
     bd = await _compute_refund_breakdown(rec, order, fault, return_cargo_fee_override=cargo_override,
                                          returned_net_override=returned_net_in)
@@ -7653,7 +11341,7 @@ async def approve_return(return_id: str, payload: dict,
         "manual_override": manual_override,
         "note": (payload.get("note") or "")[:500],
     }
-    if _ap_partial:
+    if _ap_partial_sel:
         approval["item_indexes"] = _ap_sel
     _set = {
         "status": "approved", "fault": fault,
@@ -7661,7 +11349,7 @@ async def approve_return(return_id: str, payload: dict,
         "approval": approval, "updated_at": now_iso,
     }
     _upd = {"$set": _set}
-    if _ap_partial:
+    if _ap_partial_sel:
         # Kimlik snapshot'ı da saklanır: GP anında items sırası değişse bile
         # barcode/ad+beden+renk ile eşlenir (index kaymasına dayanıklı).
         _set["approved_item_indexes"] = _ap_sel
@@ -7675,10 +11363,16 @@ async def approve_return(return_id: str, payload: dict,
         # Tam onay: eski kısmi onay artıkları kalmasın
         _upd["$unset"] = {"approved_item_indexes": "", "approved_items": ""}
     await db.customer_returns.update_one({"id": return_id}, _upd)
-    await db.orders.update_one({"id": rec.get("order_id")}, {"$set": {
-        "status": "return_approved", "return_request.status": "approved", "updated_at": now_iso,
-        "return_approved_at": now_iso,
-    }})
+    # Sipariş durumu: iade zaten daha İLERİ bir aşamadaysa (returned/refunded/partial_refunded —
+    # ör. sessiz durum düzeltmesiyle 'iade edildi/ödendi' yapılmış, kalem onayı sonradan
+    # yapılıyor; W11262) GERİ 'return_approved'a DÜŞÜRME — ödenmiş iade regrese olmasın.
+    # Aksi halde (talep/onay aşamasında) return_approved'a al.
+    _oset = {"return_request.status": "approved", "updated_at": now_iso}
+    if (order.get("status") or "") not in ("returned", "refunded", "partial_refunded"):
+        _oset["status"] = "return_approved"
+    if not order.get("return_approved_at"):
+        _oset["return_approved_at"] = now_iso
+    await db.orders.update_one({"id": rec.get("order_id")}, {"$set": _oset})
 
     # OTOMATİK STOK GERİ: iade ONAYLANDI → onaylanan kalemleri ADET kadar stoğa ekle (idempotent,
     # kısmi dahil). Güncel kaydı (yeni yazılan approved_items dahil) çekip helper'a ver.
@@ -7734,47 +11428,58 @@ async def update_return_approval(return_id: str, payload: dict,
     if not rec:
         raise HTTPException(status_code=404, detail="İade bulunamadı")
     order = await db.orders.find_one({"id": rec.get("order_id")}, {"_id": 0}) or {}
+    # OPERATÖR SİPARİŞTEN DAHA FAZLA ÜRÜN SEÇTİYSE (kök sebep — W11381): customer_returns kaydı
+    # siparişin ALT KÜMESİ olabilir (müşteri talebi 1 ürün) ama operatör panelde siparişin 2
+    # kalemini seçip onaylıyor. Panel seçimi SİPARİŞ kalemlerine göre indekslidir; kayıt yalnız 1
+    # kalemse seçim SIĞMAZ → 2. ürün yok sayılır, onay/pusula tek üründe kalır ("2 seçtim
+    # güncellenmiyor"). Bu durumda kaydın kalemlerini SİPARİŞ kalemleriyle GENİŞLETİRİZ ki
+    # operatörün seçtiği tüm ürünler onaya ve gider pusulasına girsin. Yalnız seçim mevcut kalem
+    # sayısını AŞTIĞINDA tetiklenir → normal (kayıt = sipariş) durumlar etkilenmez.
+    _rec_items = rec.get("items") or []
+    _ord_items = order.get("items") or []
+    def _idx_ok(v):
+        try:
+            return int(v)
+        except Exception:
+            return None
+    _sent_idx = payload.get("item_indexes") if isinstance(payload.get("item_indexes"), list) else []
+    _sent_sel = payload.get("selected_items") if isinstance(payload.get("selected_items"), list) else []
+    _needs_expand = bool(_ord_items) and (
+        any((_idx_ok(i) is not None and _idx_ok(i) >= len(_rec_items)) for i in _sent_idx)
+        or (len(_sent_sel) > len(_rec_items))
+    )
+    if _needs_expand:
+        _expanded = [{
+            "name": it.get("product_name") or it.get("name") or "Ürün",
+            "size": it.get("size", "") or "", "color": it.get("color", "") or "",
+            "quantity": int(it.get("quantity", 1) or 1),
+            "price": float(it.get("price") or it.get("unit_price") or 0),
+            "unit_price": float(it.get("unit_price") or it.get("price") or 0),
+            "product_id": it.get("barcode") or it.get("product_id") or it.get("sku") or "",
+        } for it in _ord_items]
+        await db.customer_returns.update_one({"id": return_id}, {"$set": {"items": _expanded}})
+        rec["items"] = _expanded
     _all_items = rec.get("items") or []
     try:
         _ap_sel = _resolve_return_selection(_all_items, payload.get("selected_items"), payload.get("item_indexes"))
     except ValueError as _e:
         raise HTTPException(status_code=400, detail=str(_e))
-    _ap_partial = bool(_ap_sel) and len(_ap_sel) < len(_all_items)
+    _ap_partial_sel = bool(_ap_sel) and len(_ap_sel) < len(_all_items)
+    _sel_idx = _ap_sel or list(range(len(_all_items)))
+    # KISMİLİK **SİPARİŞE** GÖRE (iade kaydı siparişin alt kümesi olabilir).
+    _ap_partial = _ap_partial_sel or not _return_covers_whole_order(
+        [_all_items[i] for i in _sel_idx if i < len(_all_items)], order)
     include_cargo = bool(payload.get("include_cargo"))
     fault = "customer" if include_cargo else "store"
     cargo_override = payload.get("return_cargo_fee")
     cargo_override = None if cargo_override in (None, "") else cargo_override
     returned_net_in = payload.get("returned_net")
     returned_net_in = None if returned_net_in in (None, "") else returned_net_in
-    # GÜVENLİK AĞI: kısmi seçim var ama returned_net gönderilmediyse, hesabın YANLIŞLIKLA
-    # TAM İADE'ye düşmesini önle — iade tutarını SEÇİLİ kalemlerin net toplamından türet
-    # (Kadir talebi: "hesap yalnız tiklediklerime göre"). KDV-dahil faktörü + sipariş indirim
-    # oranını uygula ki tutar panel/gider pusulası ile BİREBİR aynı olsun (Ali Al: item.price
-    # KDV-hariç 1159.09 saklı → faktör 1.10 ile 1275'e ölçeklenmeli, ham 1159.09 DEĞİL).
+    # GÜVENLİK AĞI: kısmi iadede returned_net gönderilmediyse, hesabın YANLIŞLIKLA
+    # TAM İADE'ye düşmesini önle — tutarı SEÇİLİ kalemlerin net toplamından türet
+    # (Kadir talebi: "hesap yalnız tiklediklerime göre").
     if _ap_partial and returned_net_in is None:
-        _o_sub = _round2(order.get("subtotal") or 0)
-        _o_disc = _round2((order.get("discount") or 0) + (order.get("payment_discount") or 0))
-        _dr = min(1.0, _o_disc / _o_sub) if _o_sub > 0 and _o_disc > 0 else 0.0
-        # KDV-dahil faktör (rooftr_returns/GP ile AYNI mantık): KDV-dahil LİSTE (indirim öncesi
-        # subtotal) / KDV-hariç LİSTE. İndirim ÇIKARILMAZ (ayrı _dr ile uygulanır) — indirimli
-        # siparişte faktörü bozmasın (Senem Birdal).
-        _oi = order.get("items") or []
-        _all_net_ord = _round2(sum(_round2((i or {}).get("price", 0)) * int((i or {}).get("quantity", 1) or 1) for i in _oi))
-        _pf = 1.0
-        if _all_net_ord > 0.5:
-            try:
-                _vf_g, _cg, _ig = _order_vade_farki(order)
-            except Exception:
-                _vf_g = 0.0
-            _tot_h = _round2(order.get("total") or 0) - _round2(order.get("shipping_cost") or 0) - (round(_vf_g, 2) if _vf_g and _vf_g > 0 else 0.0) + _o_disc
-            for _c in [(_o_sub / _all_net_ord) if _o_sub > 0.5 else None,
-                       (_tot_h / _all_net_ord) if _tot_h > 0.5 else None]:
-                if _c is not None and 1.06 <= _c <= 1.24:
-                    _pf = _c
-                    break
-        returned_net_in = _round2(sum(
-            _round2(_all_items[i].get("price", 0)) * _pf * int(_all_items[i].get("quantity", 1) or 1) * (1 - _dr)
-            for i in _ap_sel))
+        returned_net_in = _selected_return_net(_all_items, _sel_idx, order)
 
     bd = await _compute_refund_breakdown(rec, order, fault, return_cargo_fee_override=cargo_override,
                                          returned_net_override=returned_net_in)
@@ -7793,7 +11498,7 @@ async def update_return_approval(return_id: str, payload: dict,
             "approval_edited_by": current_user.get("email") or current_user.get("id"),
             "approval_edited_at": now_iso, "updated_at": now_iso}
     _upd = {"$set": _set}
-    if _ap_partial:
+    if _ap_partial_sel:
         _set["approved_item_indexes"] = _ap_sel
         _set["approved_items"] = [{
             "barcode": (_all_items[i].get("barcode") or _all_items[i].get("product_id") or ""),
@@ -7814,10 +11519,13 @@ async def update_return_approval(return_id: str, payload: dict,
                                            {"_id": 0, "display_number": 1})
     if _gp:
         try:
+            # preview=False AÇIKÇA geçilir: doğrudan çağrıda varsayılan Query(False) nesnesi
+            # truthy kaldığından pusula "önizleme" sayılıp KAYDEDİLMİYORDU (sessiz no-op).
             await site_return_gider_pusulasi(return_id, payload={
                 "include_cargo": include_cargo,
                 "tracking_no": _gp.get("display_number") or "",
-            }, current_user=current_user)
+                "refund_amount": final_amount,  # elle/edited tutarı pusulaya YANSIT (yeni tutara göre kes)
+            }, preview=False, current_user=current_user)
             gp_regenerated = True
         except HTTPException:
             # e-Fatura/kurumsal vb. → pusula düzenlenemez; sessiz geç (onay yine güncellendi).
@@ -7840,6 +11548,16 @@ async def _create_return_shipment(ref: str, kiymet: float, icerik: str, recipien
     üretilemezse "" döner (çağıran taraf iade no'ya / anlaşmalı no'ya düşmeye karar verir)."""
     gonderi_no = ""   # gerçek gönderi no/barkod; MNG üretemezse boş — sahte iç kod ASLA döndürülmez
     mng_ok = False
+    # ACİL ANAHTAR (restore_mode): geri yükleme modunda kargo firmasına gönderi YAZILMAZ. MNG hatasıyla
+    # AYNI sonuç döner (gonderi_no="", mng_ok=False) → iade kaydı iade no ile açılır, barkod sonra
+    # "Yeni Kargo Barkodu" ile üretilir.
+    try:
+        from security_switches import restore_mode_on as _rm_on
+        if await _rm_on():
+            logger.warning(f"[restore_mode] iade gönderisi MNG'ye yazılmadı ref={ref}")
+            return gonderi_no, mng_ok
+    except Exception:
+        pass
     try:
         import sys, os, asyncio as _aio
         sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
@@ -7891,6 +11609,7 @@ async def reissue_return_barcode(return_id: str,
                                  current_user: dict = Depends(require_permission("returns.cargo_rebook"))):
     """Karar #1: barkod 3 gün geçerli; 14 gün içinde YENİDEN üretilebilir.
     Depoya iade gönderisi için yeni 3 günlük barkod üretir, kayda yazar, müşteriye bildirir."""
+    await _guard_restore_mode()   # ACİL ANAHTAR: geri yükleme modu → 423
     rec = await db.customer_returns.find_one({"id": return_id}, {"_id": 0})
     if not rec:
         raise HTTPException(status_code=404, detail="İade bulunamadı")
@@ -7973,6 +11692,27 @@ async def reject_return(return_id: str, payload: dict,
     await db.orders.update_one({"id": rec.get("order_id")}, {"$set": {
         "status": "return_rejected", "return_request.status": "rejected", "updated_at": now_iso,
     }})
+
+    # DENETİM (bizlogic Y1b/F2): iade ONAYINDA stok geri ekleniyor; sonradan REDDEDİLİRSE (ürün
+    # müşteriye geri gönderiliyor) o +stok HAYALET kalıp oversell yaratıyordu. Restock'u geri al.
+    if rec.get("stock_restored"):
+        try:
+            # DENETİM (race R5): ATOMİK claim — iki eşzamanlı reject çift ters-çevirim yapmasın.
+            _claim = await db.customer_returns.update_one(
+                {"id": return_id, "stock_restored": True}, {"$unset": {"stock_restored": ""}})
+            if _claim.modified_count == 1:
+                _mv = await db.stock_movements.find_one(
+                    {"return_id": return_id, "type": "return_restock"}, {"_id": 0, "items": 1})
+                if _mv and _mv.get("items"):
+                    await _reverse_stock_moves(_mv["items"])
+                    await db.stock_movements.insert_one({
+                        "id": str(uuid.uuid4()), "type": "return_restock_reversed",
+                        "order_id": rec.get("order_id"), "order_number": rec.get("order_number", ""),
+                        "return_id": return_id, "items": _mv["items"], "source": "return_reject",
+                        "created_at": now_iso})
+                    logger.info(f"[iade-ret] restock geri alındı return={return_id}")
+        except Exception as _e:
+            logger.error(f"[iade-ret de-restock {return_id}] {_e}")
 
     # Bildirim: reddedildi + SEBEP (+ varsa geri-gönderim takip kodu)
     import asyncio as _aio
@@ -8171,9 +11911,20 @@ async def site_return_gider_pusulasi(return_id: str, payload: Optional[dict] = B
     if _disc_ratio > 1:
         _disc_ratio = 1.0
 
+    # DONMUŞ per-ürün indirim (checkout'ta kampanya kapsamına göre yazıldı) varsa onu kullan
+    # (kapsam-dışı ürün 0); yoksa sipariş toplam indirimini düz-oransal uygula. W11214 kök çözümü.
+    _frozen_disc = bool(all_items) and all(
+        isinstance(_i, dict) and (_i.get("discount_amount") is not None) for _i in all_items)
+
     def _eff_net_unit(it):
-        """Kalemin GERÇEK ödenen birim neti = item.price × KDV-dahil faktörü × (1 − indirim oranı)."""
-        return _round2(_round2(it.get("price", 0)) * _paid_factor * (1 - _disc_ratio))
+        """Kalemin GERÇEK ödenen birim neti. Donmuş per-ürün indirim varsa (kapsam-farkındalıklı) onu,
+        yoksa düz-oransal indirimi uygular; ikisi de KDV-dahil faktörüyle ölçeklenir."""
+        _lp = _round2(it.get("price", 0))
+        if _frozen_disc:
+            _q = int(it.get("quantity", 1) or 1) or 1
+            _du = _round2(it.get("discount_amount") or 0) / _q
+            return _round2((_lp - _du) * _paid_factor)
+        return _round2(_lp * _paid_factor * (1 - _disc_ratio))
 
     cargo_line = None
     cargo_mode = "none"
@@ -8206,7 +11957,12 @@ async def site_return_gider_pusulasi(return_id: str, payload: Optional[dict] = B
             vade_line = {"name": f"Vade Farkı (Taksit x{_inst_r})", "net_price": _vf_r, "qty": 1}
     else:
         # KISMİ İADE → seçili ürünler; sipariş-seviyesi (kupon) indirimi seçili kalemlere oransal dağıtılır.
-        alloc_disc = _round2(order_disc * (prod_net / _disc_base)) if (order_disc > 0 and _disc_base > 0) else 0.0
+        # Donmuş per-ürün indirim varsa: seçili kalemlerin GERÇEK indirim toplamı (kapsam-farkındalıklı,
+        # faktörle ölçekli). Yoksa düz-oransal. (W11214: kapsam-dışı Etek → 0 indirim.)
+        if _frozen_disc:
+            alloc_disc = _round2(sum(_round2(it.get("discount_amount") or 0) for it in items) * _paid_factor)
+        else:
+            alloc_disc = _round2(order_disc * (prod_net / _disc_base)) if (order_disc > 0 and _disc_base > 0) else 0.0
         base_net = _round2(max(0.0, prod_net - alloc_disc))
         # VADE FARKI (taksit) — kısmi iadede de faturayla örtüşsün diye ORANSAL eklenir: iade edilen
         # ürünlerin faiz-siz ödenen tabana (order.total) oranı kadar vade farkı iade edilir. Tam
@@ -8221,11 +11977,13 @@ async def site_return_gider_pusulasi(return_id: str, payload: Optional[dict] = B
             # Net taban = subtotal − (kupon + havale/EFT indirimi). _compute_refund_breakdown
             # (7398-7400) ile birebir; payment_discount de düşülür (havale+taksit birlikte nadir
             # ama tutarlılık için).
-            _vf_base = _round2(max(0.0, _round2(order.get("subtotal") or 0)
-                                   - _round2(order.get("discount") or 0)
-                                   - _round2(order.get("payment_discount") or 0)))
+            # iyzico İLE BİREBİR: vade farkı kargo DAHİL tüm kalemlere orantılı (taban order.total);
+            # _compute_refund_breakdown ile aynı taban. (W11676: kalem 1.004,50 = 890 × 3.147,82/2.789)
+            _vf_base = order_total
             if _vf_base <= 0.009:
-                _vf_base = order_total          # eski/pazaryeri kaydı → eski davranışa düş
+                _vf_base = _round2(max(0.0, _round2(order.get("subtotal") or 0)
+                                       - _round2(order.get("discount") or 0)
+                                       - _round2(order.get("payment_discount") or 0)))
             if _vf_base > 0.009:
                 _ret_share = base_net / _vf_base
                 if _ret_share > 1:
@@ -8239,6 +11997,23 @@ async def site_return_gider_pusulasi(return_id: str, payload: Optional[dict] = B
             vade_line = {"name": f"Vade Farkı (Taksit x{_inst_r})", "net_price": alloc_vade, "qty": 1}
         if deduct_cargo:
             cargo_mode = "deducted"
+
+    # MANUEL/EDİTLENMİŞ TOPLAM (opt-in): caller net iade tutarını AÇIKÇA geçtiyse (update-approval
+    # / elle düzenleme), pusula TOPLAMI otomatik hesap yerine BU tutara sabitlenir. Böylece operatör
+    # 'İade tutarı'nı elle değiştirince gider pusulası da yeni tutara göre kesilir (kullanıcı talebi:
+    # "gider pusulasını güncellediğimiz yeni tutara göre düzenlemiyor"). Ürün satırları aşağıdaki
+    # mutabakatla bu hedefe çekilir; kargo/vade satırları korunur. Yalnız açıkça geçilince aktif →
+    # diğer çağrılar (preview, toplu, satır-içi) davranışı DEĞİŞMEZ.
+    _manual_total = (payload or {}).get("refund_amount")
+    try:
+        _manual_total = None if _manual_total in (None, "") else _round2(float(_manual_total))
+    except Exception:
+        _manual_total = None
+    if _manual_total is not None and _manual_total >= 0 and abs(_manual_total - net_total) >= 0.01:
+        net_total = _manual_total
+        if total_gross < net_total:
+            total_gross = net_total          # gider pusulası: brüt < net olamaz
+        total_discount = _round2(max(0.0, total_gross - net_total))
 
     vat_rate = settings.get("default_vat_rate", 10) if settings else 10
     vat_amount = round(net_total * vat_rate / (100 + vat_rate), 2)
@@ -8287,7 +12062,7 @@ async def site_return_gider_pusulasi(return_id: str, payload: Optional[dict] = B
         if abs(_diff) >= 0.01:
             _last = gp_items[-1]
             _q = int(_last.get("quantity", 1) or 1)
-            _last["net_price"] = _round2(_last["net_price"] + _diff / _q)
+            _last["net_price"] = _round2(max(0.0, _last["net_price"] + _diff / _q))  # negatif net olamaz
             _last["discount"] = _round2(max(0.0, _last["unit_price"] - _last["net_price"]))
 
     if cargo_line:
@@ -8393,7 +12168,7 @@ async def site_return_gider_pusulasi(return_id: str, payload: Optional[dict] = B
 async def export_gider_pusulasi_excel(
     date_from: Optional[str] = None,
     date_to: Optional[str] = None,
-    source: Optional[str] = None,   # site | trendyol | hepsiburada | all(None) → TÜMÜ (varsayılan)
+    source: Optional[str] = None,   # site | trendyol | hepsiburada | amazon | all(None) → TÜMÜ (varsayılan)
     only_refunded: bool = False,    # False=TÜM iade durumları; True=yalnız iade bedeli ödenmiş
     only_with_gp: bool = False,     # True=YALNIZ pusulası kesilmiş (seri no'lu) satırlar (kullanıcı isteği)
     current_user: dict = Depends(require_permission("returns.expense_note")),
@@ -8405,6 +12180,7 @@ async def export_gider_pusulasi_excel(
     olur (kargo/vade farkı %20, ürünler %10 veya ürünün gerçek KDV'si). Tutarlar GİDER olduğundan
     NEGATİF yazılır. Tutar (VD)=KDV dahil, Vergi Hariç=net matrah, Kdv=KDV tutarı.
     """
+    await _guard_switch("freeze_exports")   # ACİL ANAHTAR: toplu dışa aktarım donduruldu → 423
     from openpyxl import Workbook
     from openpyxl.styles import Font, PatternFill, Alignment
     from io import BytesIO
@@ -8415,6 +12191,7 @@ async def export_gider_pusulasi_excel(
     want_site = _src in ("", "all", "site")
     want_ty = _src in ("", "all", "trendyol")
     want_hb = _src in ("", "all", "hepsiburada")
+    want_amz = _src in ("", "all", "amazon")
 
     # Tarih aralığı → UTC sınırları. Koleksiyonlar farklı tarih alanı/formatı kullandığından
     # (voucher.date, claim.created_date, return.created_at) Python'da parse edip karşılaştırırız.
@@ -8454,7 +12231,8 @@ async def export_gider_pusulasi_excel(
     claim_by_id = {str(c.get("claim_id")): c for c in all_claims if c.get("claim_id")}
 
     def _claim_platform(c):
-        return "hepsiburada" if str(c.get("platform") or "").lower() == "hepsiburada" else "trendyol"
+        _cp = str(c.get("platform") or "").lower()
+        return _cp if _cp in ("hepsiburada", "amazon") else "trendyol"
 
     # ── DURUM SÜZGECİ (kullanıcı talebi): Excel'e SADECE onaylanan/tamamlanan/ödenen iadeler girer.
     # DAHİL: iade onaylandı, iade tamamlandı, (kısmi) iade tamamlandı/ödendi, iade bedeli ödendi,
@@ -8524,6 +12302,8 @@ async def export_gider_pusulasi_excel(
         if cid:
             plat = _claim_platform(claim_by_id.get(cid, {}))
             if plat == "hepsiburada" and not want_hb:
+                continue
+            if plat == "amazon" and not want_amz:
                 continue
             if plat == "trendyol" and not want_ty:
                 continue
@@ -8780,6 +12560,19 @@ async def export_gider_pusulasi_excel(
             for _c in _row:
                 if isinstance(_c.value, str) and _c.value[:1] in ("=", "+", "-", "@", "\t", "\r"):
                     _c.value = "'" + _c.value
+    # KVKK: ad-soyad içeren toplu dışa aktarım → denetim izi + güvenlik olayı (alarm).
+    _gp_rows = sum(max(0, (_w.max_row or 1) - 1) for _w in wb.worksheets)
+    await record_admin_audit(
+        db, action="returns.gider_pusulasi_export", entity_type="export", entity_id="gider_pusulasi",
+        current_user=current_user, source="admin.returns",
+        metadata={"rows": _gp_rows, "date_from": date_from or "", "date_to": date_to or "",
+                  "source": source or "all", "only_refunded": bool(only_refunded),
+                  "only_with_gp": bool(only_with_gp)})
+    try:
+        from security_switches import emit_security_event as _sec_ev
+        await _sec_ev("returns_export", current_user, {"export": "returns.gider_pusulasi", "rows": _gp_rows})
+    except Exception:
+        pass
     buf = BytesIO()
     wb.save(buf)
     buf.seek(0)
@@ -8909,6 +12702,7 @@ async def gider_pusulasi_print_range(
     yazdırma için döndürür (Kadir: yazıcıda kağıt sıkıştı — 087312–087608 arasını tekrar
     yazdır). Aralık DAHİL; numaraya göre artan sıralı. Yeni pusula OLUŞTURMAZ, mevcutları
     getirir → istenen aralık baştan değil tam o aralıktan basılır."""
+    await _guard_switch("freeze_exports")   # ACİL ANAHTAR: toplu belge çıktısı donduruldu → 423
     _f = str(from_no or "").strip()
     _t = str(to_no or "").strip()
     if not _f or not _t:
@@ -8926,6 +12720,12 @@ async def gider_pusulasi_print_range(
             {"display_number": {"$gte": _f, "$lte": _t, "$nin": ["", None]}},
             {"_id": 0}).sort("display_number", 1):
         docs.append({**gp, "assigned_no": gp.get("display_number")})
+    try:  # Güvenlik olayı: toplu belge çıktısı (denetim izi + süper admin uyarısı; asla istisna fırlatmaz)
+        from security_switches import emit_security_event as _sec_emit
+        await _sec_emit("gider_pusulasi_print_export", current_user,
+                        {"export": "gider_pusulasi.print_range", "rows": len(docs)})
+    except Exception:
+        pass
     return {"success": True, "count": len(docs), "from_no": _f, "to_no": _t, "pusulalar": docs}
 
 
@@ -8934,10 +12734,11 @@ async def gider_pusulasi_print_range(
 # ============================================================================
 
 @router.post("/returns/{return_id}/refund-pay")
-async def refund_pay_return(return_id: str, payload: Optional[dict] = Body(default=None),
+async def refund_pay_return(return_id: str, request: Request, payload: Optional[dict] = Body(default=None),
                             current_user: dict = Depends(require_permission("returns.refund_pay"))):
     """İade bedelinin ödendiğini işaretler. Sadece 'returns.refund_pay' yetkisi (örn. merve).
     Durumu 'refunded' yapar, kim/ne zaman/yöntem loglanır, müşteriye bildirim gönderir."""
+    await _guard_switch("freeze_refunds")   # ACİL ANAHTAR: iadeler donduruldu → 423
     rec = await db.customer_returns.find_one({"id": return_id}, {"_id": 0})
     if not rec:
         raise HTTPException(status_code=404, detail="İade bulunamadı")
@@ -8946,6 +12747,10 @@ async def refund_pay_return(return_id: str, payload: Optional[dict] = Body(defau
     if rec.get("status") in ("cancelled", "rejected"):
         raise HTTPException(status_code=400, detail="Bu iade kapanmış; ödeme yapılamaz.")
     order = await db.orders.find_one({"id": rec.get("order_id")}, {"_id": 0}) or {}
+    # COM11 / FIN-E03: AÇIK ödeme itirazı varken iade ödemesi işaretlenmez (süper admin gerekçeli istisna).
+    from .chargebacks import assert_refund_allowed
+    _cb_gate = await assert_refund_allowed(rec.get("order_id"), current_user, payload,
+                                           action="returns.refund_pay", request=request)
     now_iso = datetime.now(timezone.utc).isoformat()
     method = (payload or {}).get("method") or ""  # havale | iyzico | nakit ...
     amount = rec.get("refund_amount")
@@ -8954,20 +12759,85 @@ async def refund_pay_return(return_id: str, payload: Optional[dict] = Body(defau
             amount = _round2((payload or {}).get("amount"))
         except Exception:
             raise HTTPException(status_code=400, detail="Geçersiz tutar.")
+    # İADE TAVANI (denetim 2026-10): işaretlenen iade ödemesi, siparişte GERÇEKTEN tahsil
+    # edilen nakdi (taksitte vade farkı dahil) — o sipariş için zaten kayıtlı iadeler düşülerek —
+    # AŞAMAZ. Kayıtlı iadeler: (a) kart iadeleri order.refunds[] status done/pending/unknown,
+    # (b) aynı siparişin DİĞER iade kayıtlarında elle işaretlenmiş (havale/nakit…) ödemeler.
+    # method='iyzico' ise bu işaret, zaten (a)'da kayıtlı kart iadesinin MUHASEBE kaydıdır →
+    # (a) tekrar düşülmez (çift sayım olmasın); iyzico iadesi kendi ucunda tahsilat tavanlıdır.
+    try:
+        _amt_f = float(amount) if amount not in (None, "") else None
+    except Exception:
+        raise HTTPException(status_code=400, detail="Geçersiz tutar.")
+    if _amt_f is not None and _amt_f < 0:
+        raise HTTPException(status_code=400, detail="İade tutarı negatif olamaz.")
+    if _amt_f is not None and order:
+        _vf_c, _charged_c, _inst_c = _order_vade_farki(order)
+        _base_c = _round2(order.get("total") or 0)
+        _captured = _charged_c if _charged_c > _base_c + 0.01 else _base_c
+        _card_refunded = 0.0
+        for _x in (order.get("refunds") or []):
+            if str((_x or {}).get("status") or "") in _REFUND_COUNTED_STATUSES:
+                try:
+                    _card_refunded += float(_x.get("amount") or _x.get("net_refund") or 0)
+                except Exception:
+                    pass
+        _other_manual = 0.0
+        async for _r in db.customer_returns.find(
+                {"order_id": rec.get("order_id"), "id": {"$ne": return_id},
+                 "status": {"$in": ["refunded", "partial_refunded"]}},
+                {"_id": 0, "refund_payment": 1, "refund_amount": 1}):
+            _rp = _r.get("refund_payment") or {}
+            if str(_rp.get("method") or "").lower() == "iyzico":
+                continue  # kart iadesi → zaten order.refunds'ta sayıldı
+            try:
+                _other_manual += float(_rp.get("amount") if _rp.get("amount") not in (None, "")
+                                       else (_r.get("refund_amount") or 0))
+            except Exception:
+                pass
+        _already_c = _round2(_other_manual + (0.0 if str(method).lower() == "iyzico" else _card_refunded))
+        _limit = _round2(max(0.0, _captured - _already_c))
+        if _amt_f > _limit + 0.01:
+            raise HTTPException(status_code=400, detail=(
+                f"İade tutarı izin verilen tavanı aşıyor: tahsil edilen ₺{_captured:.2f}, "
+                f"bu sipariş için kayıtlı iadeler ₺{_already_c:.2f}, en fazla ₺{_limit:.2f} işaretlenebilir "
+                f"(istenen ₺{_amt_f:.2f})."))
     payment = {
         "by": current_user.get("email") or current_user.get("id"),
         "at": now_iso, "method": method, "amount": amount,
         "reference": str((payload or {}).get("reference") or "").strip(),
     }
-    await db.customer_returns.update_one({"id": return_id}, {"$set": {
-        "status": "refunded", "refund_payment": payment,
-        "refund_amount": amount if amount is not None else rec.get("refund_amount"),
-        "updated_at": now_iso,
-    }})
-    await db.orders.update_one({"id": rec.get("order_id")}, {"$set": {
-        "status": "refunded", "return_request.status": "refunded", "updated_at": now_iso,
-        "refund_paid_at": now_iso,
-    }})
+    if _cb_gate.get("override"):
+        payment["chargeback_override_reason"] = _cb_gate.get("reason")
+    # KISMİ İADE (denetim 2026-10): onay kaydı kısmi ise (refund_breakdown.is_partial) sipariş
+    # 'partial_refunded' olur — tam 'refunded' değil (panel 'Kısmi İade Yapıldı' gösterir).
+    _is_partial_ret = bool((rec.get("refund_breakdown") or {}).get("is_partial"))
+    _ret_status = "partial_refunded" if _is_partial_ret else "refunded"
+
+    async def _apply():
+        await db.customer_returns.update_one({"id": return_id}, {"$set": {
+            "status": "refunded", "refund_payment": payment,
+            "refund_amount": amount if amount is not None else rec.get("refund_amount"),
+            "updated_at": now_iso,
+        }})
+        await db.orders.update_one({"id": rec.get("order_id")}, {"$set": {
+            "status": _ret_status, "return_request.status": _ret_status, "updated_at": now_iso,
+            "refund_paid_at": now_iso,
+        }})
+
+    # PARA ÇIKIŞI → FAIL-CLOSED denetim: intent yazılamazsa iade 'ödendi' işaretlenmez (503).
+    from activity_audit import run_audited
+    await run_audited(
+        db, action="returns.refund_pay", entity_type="customer_return", entity_id=return_id,
+        perform=_apply, before={"status": rec.get("status")}, after={"status": "refunded"},
+        current_user=current_user, request=request, source="admin.returns",
+        metadata={"order_id": rec.get("order_id"), "order_number": rec.get("order_number", ""),
+                  "return_id": return_id, "amount": amount, "method": method, "order_status": _ret_status})
+    await _log_order_event(rec.get("order_id"), "return",
+                           f"İade ödemesi işaretlendi (₺{(_amt_f or 0):.2f}, {method or 'yöntem yok'})",
+                           current_user, {"return_id": return_id, "amount": amount, "method": method,
+                                          "order_status": _ret_status},
+                           order_number=rec.get("order_number", ""))
 
     import asyncio as _aio
     async def _n():
@@ -8977,23 +12847,23 @@ async def refund_pay_return(return_id: str, payload: Optional[dict] = Body(defau
             from notification_service import send_notification
             from order_statuses import get_status_config, customer_label_for
             cfg = await get_status_config(db)
-            nz = (cfg.get("notify") or {}).get("refunded") or {}
+            nz = (cfg.get("notify") or {}).get(_ret_status) or {}
             ch = [c for c in ("sms", "email") if nz.get(c)]
             if not ch:
                 return
             addr = (order or {}).get("shipping_address") or {}
             await send_notification(
-                db, "order_refunded",
+                db, ("order_partial_refunded" if _is_partial_ret else "order_refunded"),
                 to_phone=addr.get("phone") or order.get("phone"),
                 to_email=addr.get("email") or order.get("email"),
-                variables=await _order_notify_vars(order, order_number=rec.get("order_number", ""), return_code=rec.get("return_code", ""), refund_amount=f"{(amount or 0):.2f}", status_label=customer_label_for("refunded")),
+                variables=await _order_notify_vars(order, order_number=rec.get("order_number", ""), return_code=rec.get("return_code", ""), refund_amount=f"{(amount or 0):.2f}", status_label=customer_label_for(_ret_status)),
                 channels=ch,
             )
         except Exception as e:
             logger.warning(f"refund-pay notif failed: {e}")
     _spawn(_n())
 
-    return {"success": True, "status": "refunded", "amount": amount}
+    return {"success": True, "status": "refunded", "order_status": _ret_status, "amount": amount}
 
 
 # ============================================================================
@@ -9005,6 +12875,7 @@ async def reship_return(return_id: str, payload: Optional[dict] = Body(default=N
                         current_user: dict = Depends(require_permission("returns.cargo_rebook"))):
     """Aşama 6: Reddedilen iadede ürünü müşteriye GERİ gönderir (yeni kargo barkodu, alıcı = müşteri).
     Reddetme anında reship yapılmadıysa ya da tekrar gönderim gerekiyorsa kullanılır."""
+    await _guard_restore_mode()   # ACİL ANAHTAR: geri yükleme modu → 423
     rec = await db.customer_returns.find_one({"id": return_id}, {"_id": 0})
     if not rec:
         raise HTTPException(status_code=404, detail="İade bulunamadı")

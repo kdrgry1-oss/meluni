@@ -24,6 +24,7 @@ TASARIM (WMS araştırmasına dayalı):
   NOT: available/satış stoğu bu modülün sorumluluğu değildir; burada "quantity"
   rafın fiziksel içeriğidir.
 """
+import re
 from fastapi import APIRouter, Depends, HTTPException, Query
 from datetime import datetime, timezone
 from typing import Optional
@@ -120,7 +121,7 @@ async def list_bins(wid: str, q: Optional[str] = None, current_user: dict = Depe
     """Depodaki raflar + her rafın içindeki adet/çeşit. q ile raf koduna göre süz."""
     query = {"warehouse_id": wid}
     if q:
-        query["code"] = {"$regex": _s(q, 60), "$options": "i"}
+        query["code"] = {"$regex": re.escape(_s(q, 60)), "$options": "i"}
     out = []
     async for b in db.warehouse_bins.find(query, {"_id": 0}).sort("code", 1).limit(2000):
         bid = b.get("id")
@@ -382,11 +383,11 @@ async def warehouse_search(q: str = Query(..., min_length=1), current_user: dict
     ql = _s(q, 80)
     rows = await db.bin_stock.find(
         {"quantity": {"$gt": 0},
-         "$or": [{"name": {"$regex": ql, "$options": "i"}},
-                 {"barcode": {"$regex": ql, "$options": "i"}}]},
+         "$or": [{"name": {"$regex": re.escape(ql), "$options": "i"}},
+                 {"barcode": {"$regex": re.escape(ql), "$options": "i"}}]},
         {"_id": 0}).limit(500).to_list(500)
     # raf koduyla da eşleşenler
-    bin_hits = await db.warehouse_bins.find({"code": {"$regex": ql, "$options": "i"}}, {"_id": 0, "id": 1}).to_list(200)
+    bin_hits = await db.warehouse_bins.find({"code": {"$regex": re.escape(ql), "$options": "i"}}, {"_id": 0, "id": 1}).to_list(200)
     if bin_hits:
         more = await db.bin_stock.find(
             {"quantity": {"$gt": 0}, "bin_id": {"$in": [b["id"] for b in bin_hits]}}, {"_id": 0}

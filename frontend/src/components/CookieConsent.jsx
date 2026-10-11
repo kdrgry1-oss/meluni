@@ -13,6 +13,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import { safeUrl } from "../lib/safeUrl";
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const LS_KEY = "meluni_cookie_consent";
 
@@ -131,7 +132,7 @@ export default function CookieConsent() {
               <p className="text-[10px] tracking-[0.32em] uppercase text-black/45 mb-2">{cfg.heading}</p>
               <p className="text-sm font-light text-black/75 leading-relaxed max-w-2xl">
                 {cfg.body}{" "}
-                <a href={cfg.policy_url} className="underline hover:no-underline">{cfg.policy_label}</a>
+                <a href={safeUrl(cfg.policy_url)} className="underline hover:no-underline">{cfg.policy_label}</a>
               </p>
 
               {settingsOpen && (

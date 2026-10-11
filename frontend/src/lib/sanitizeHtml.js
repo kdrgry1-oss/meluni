@@ -41,7 +41,7 @@ function _cleanUrl(val) {
   return v;
 }
 
-export function sanitizeHtml(dirty) {
+export function sanitizeHtml(dirty, options = {}) {
   if (dirty == null) return "";
   const str = String(dirty);
   if (typeof document === "undefined") return ""; // SSR/olmayan DOM: güvenli tarafta boş
@@ -70,7 +70,22 @@ export function sanitizeHtml(dirty) {
         const name = (attr.name || "").toLowerCase();
         const value = attr.value || "";
         if (name.startsWith("on")) { el.removeAttribute(attr.name); continue; } // tüm olay handler'ları
-        if (name === "style") { el.removeAttribute(attr.name); continue; }       // expression()/url() riski
+        if (name === "style") {
+          if (!options.allowStyle) { el.removeAttribute(attr.name); continue; }
+          // E-posta editöründe inline stil görsel bütünlük için gerekir. Ağ isteği
+          // veya eski CSS yürütme yüzeyleri içeren stillere yine izin verme.
+          const normalizedStyle = value.replace(/\s+/g, "").toLowerCase();
+          if (
+            normalizedStyle.includes("url(") ||
+            normalizedStyle.includes("expression(") ||
+            normalizedStyle.includes("@import") ||
+            normalizedStyle.includes("-moz-binding") ||
+            normalizedStyle.includes("behavior:")
+          ) {
+            el.removeAttribute(attr.name);
+          }
+          continue;
+        }
         if (!ALLOWED_ATTR.has(name)) { el.removeAttribute(attr.name); continue; }
         if (name === "href" || name === "src") {
           const safe = _cleanUrl(value);

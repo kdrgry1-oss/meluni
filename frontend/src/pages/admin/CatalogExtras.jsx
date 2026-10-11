@@ -1,12 +1,12 @@
 /**
- * Catalog extras — 7 sayfa tek dosyada: Brands, Tags, MemberGroups,
+ * Catalog extras — tek dosyada: Brands, Tags,
  * Announcements, Popups, StockAlerts, HavaleNotifications, SupportTickets,
- * ShippingRules+PaymentDiscounts, CurrencyRates, BulkMail, ExtraReports.
+ * ShippingRules+PaymentDiscounts, CurrencyRates, ExtraReports.
  */
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { Plus, Trash2, Edit, RefreshCw, Send, Tag, Store, Users, BellRing, MessageSquare, Mail, CreditCard, Truck, Banknote, DollarSign } from "lucide-react";
+import { Plus, Trash2, Edit, RefreshCw, Send, Tag, Store, BellRing, MessageSquare, CreditCard, Truck, Banknote, DollarSign } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line } from "recharts";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -144,16 +144,6 @@ export function ProductTags() {
       { key: "text_color", label: "Yazı", type: "color", hidden_in_list: true },
       { key: "icon", label: "Icon (lucide)", hidden_in_list: true },
       { key: "sort_order", label: "Sıra", type: "number", hidden_in_list: true },
-    ]} />;
-}
-
-export function MemberGroups() {
-  return <SimpleCrudPage title="Üye Grupları (B2B/VIP)" icon={Users} endpoint="/admin/member-groups"
-    fields={[
-      { key: "name", label: "Grup Adı", required: true },
-      { key: "discount_percent", label: "İndirim %", type: "number" },
-      { key: "is_b2b", label: "B2B Grubu", type: "checkbox", hidden_in_list: true },
-      { key: "description", label: "Açıklama", type: "textarea", hidden_in_list: true },
     ]} />;
 }
 
@@ -541,77 +531,6 @@ export function CurrencyRates() {
           </div>
         ))}
         {Object.keys(data?.rates || {}).length === 0 && <div className="col-span-4 text-center text-gray-400 py-8">Henüz kur yok, "Güncelle" butonuna basın.</div>}
-      </div>
-    </div>
-  );
-}
-
-// Bulk Mail
-export function BulkMail() {
-  const [segment, setSegment] = useState("all");
-  const [subject, setSubject] = useState("");
-  const [html, setHtml] = useState("<h1>Merhaba</h1><p>...</p>");
-  const [sending, setSending] = useState(false);
-  const [campaigns, setCampaigns] = useState([]);
-
-  const load = async () => {
-    const { data } = await axios.get(`${API}/admin/email/campaigns`, { headers: h() });
-    setCampaigns(data.items || []);
-  };
-  useEffect(() => { load(); }, []);
-  const send = async () => {
-    if (!subject.trim() || !html.trim()) return toast.warning("Konu ve içerik zorunlu");
-    setSending(true);
-    try {
-      const { data } = await axios.post(`${API}/admin/email/send-bulk`, { segment, subject, html }, { headers: h() });
-      toast.success(`${data.result.success} gönderildi / ${data.result.failed} başarısız`);
-      load();
-    } catch (e) { toast.error(e?.response?.data?.detail || "Hata"); }
-    finally { setSending(false); }
-  };
-
-  return (
-    <div className="space-y-5" data-testid="bulk-mail-page">
-      <h1 className="text-2xl font-bold flex items-center gap-2"><Mail /> Toplu Mail Gönder</h1>
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs text-blue-900">
-        Resend API üzerinden gönderim. <strong>.env dosyasında RESEND_API_KEY tanımlı olmalı.</strong> Tanımlı değilse gönderim başarısız olur ama kayıt tutulur. Gönderici: <code>RESEND_FROM</code> (varsayılan <code>onboarding@resend.dev</code>).
-      </div>
-      <div className="bg-white border rounded-xl p-5 space-y-3">
-        <div>
-          <label className="text-xs text-gray-600">Hedef Segment</label>
-          <select value={segment} onChange={(e) => setSegment(e.target.value)} className="w-full mt-1 px-3 py-2 border rounded text-sm">
-            <option value="all">Tüm Aktif Üyeler</option>
-            <option value="newsletter">Newsletter Onaylılar</option>
-            <option value="abandoned">Terkedilmiş Sepet Sahipleri</option>
-          </select>
-        </div>
-        <div><label className="text-xs">Konu</label><input value={subject} onChange={(e) => setSubject(e.target.value)} className="w-full mt-1 px-3 py-2 border rounded text-sm" placeholder="Yaz kampanyası %30 indirim" /></div>
-        <div><label className="text-xs">HTML İçerik (inline CSS)</label><textarea rows={10} value={html} onChange={(e) => setHtml(e.target.value)} className="w-full mt-1 px-3 py-2 border rounded text-sm font-mono text-xs" /></div>
-        <button onClick={send} disabled={sending} className="px-5 py-2.5 bg-black text-white rounded-lg inline-flex items-center gap-2 disabled:opacity-50">
-          <Send size={15} /> {sending ? "Gönderiliyor..." : "Gönder"}
-        </button>
-      </div>
-
-      <div className="bg-white border rounded-xl overflow-hidden">
-        <h3 className="font-semibold p-4 pb-2">Geçmiş Kampanyalar</h3>
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-xs uppercase text-gray-500">
-            <tr><th className="text-left p-3">Konu</th><th className="text-left p-3">Segment</th><th className="text-right p-3">Alıcı</th><th className="text-right p-3">Başarılı</th><th className="text-right p-3">Başarısız</th><th className="text-left p-3">Tarih</th></tr>
-          </thead>
-          <tbody>
-            {campaigns.length === 0 ? <tr><td colSpan={6} className="p-6 text-center text-gray-400">Henüz kampanya yok.</td></tr>
-              : campaigns.map((c) => (
-                <tr key={c.id} className="border-t">
-                  <td className="p-3 font-medium">{c.subject}</td>
-                  <td className="p-3 text-xs">{c.segment}</td>
-                  <td className="p-3 text-right">{c.recipient_count}</td>
-                  <td className="p-3 text-right text-green-700 font-semibold">{c.success}</td>
-                  <td className="p-3 text-right text-red-700">{c.failed}</td>
-                  <td className="p-3 text-xs text-gray-500">{new Date(c.sent_at).toLocaleString("tr-TR")}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
       </div>
     </div>
   );

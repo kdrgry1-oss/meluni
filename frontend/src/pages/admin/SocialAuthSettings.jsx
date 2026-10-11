@@ -1,5 +1,5 @@
 /**
- * SocialAuthSettings.jsx — Apple + Facebook credential yönetimi
+ * SocialAuthSettings.jsx — Google + Apple + Facebook credential yönetimi
  *   GET/POST /api/auth/social/settings (admin)
  */
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 export default function SocialAuthSettings() {
   const [cfg, setCfg] = useState({
+    google_enabled: false, google_client_id: "",
     apple_enabled: false, apple_client_id: "", apple_team_id: "", apple_key_id: "", apple_private_key: "",
     facebook_enabled: false, facebook_app_id: "", facebook_app_secret: "", facebook_redirect_uri: "",
   });
@@ -51,7 +52,7 @@ export default function SocialAuthSettings() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold flex items-center gap-2"><Lock size={20} /> Sosyal Giriş Ayarları</h1>
-          <p className="text-sm text-gray-500 mt-1">Apple Sign-In ve Facebook Login için developer credential'larınızı girin.</p>
+          <p className="text-sm text-gray-500 mt-1">Google, Apple ve Facebook giriş yapılandırmasını yönetin.</p>
         </div>
         <button onClick={save} disabled={saving}
           className="inline-flex items-center gap-1 bg-black text-white px-4 py-2 rounded text-sm disabled:opacity-60"
@@ -59,6 +60,24 @@ export default function SocialAuthSettings() {
           <Save size={14} /> {saving ? "Kaydediliyor..." : "Kaydet"}
         </button>
       </div>
+
+      {/* Google */}
+      <section className="bg-white rounded-lg border border-gray-200 p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="font-semibold">Google ile Giriş</h2>
+          <label className="flex items-center gap-2 text-sm cursor-pointer">
+            <input type="checkbox" checked={cfg.google_enabled}
+              onChange={(e) => setCfg({ ...cfg, google_enabled: e.target.checked })}
+              data-testid="sa-google-enabled" />
+            Aktif
+          </label>
+        </div>
+        <p className="text-xs text-gray-500">
+          Google Cloud'da mağaza adresini Yetkili JavaScript kaynaklarına, backend
+          <code className="mx-1">/api/auth/google/callback</code> adresini Yetkili yönlendirme URI'larına ekleyin.
+        </p>
+        {f("google_client_id", "OAuth Web Client ID")}
+      </section>
 
       {/* Apple */}
       <section className="bg-white rounded-lg border border-gray-200 p-5 space-y-3">

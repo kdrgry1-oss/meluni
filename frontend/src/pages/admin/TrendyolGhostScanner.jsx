@@ -1,7 +1,7 @@
 /**
  * TrendyolGhostScanner.jsx
  *
- * İki kritik temizlik aracı tek sayfada:
+ * Üç kritik Trendyol denetim aracı tek sayfada:
  *
  *  (1) DB Barkod Duplikatları:
  *     Aynı barkodun birden fazla varyanta atandığı kayıtları listeler.
@@ -14,17 +14,102 @@
  *     duplicate çakışmalara sebep olur. Tek tık ile arşivlenir.
  *     Endpoint: POST /api/integrations/trendyol/ghost-scanner
  *               POST /api/integrations/trendyol/archive-barcodes
+ *
+ *  (3) Sitede var, Trendyol'da yok:
+ *     (2)'nin tersi. Sitede AKTİF olan ürün/bedenlerden Trendyol'da CANLI
+ *     olmayanları (hiç yüklenmemiş / arşivli / onaysız / barkodsuz) listeler.
+ *     Salt-okunur; Trendyol'a hiçbir yazma yapmaz.
+ *     Endpoint: POST /api/integrations/trendyol/coverage-gaps
  */
 import { useState } from "react";
 import axios from "axios";
-import { AlertTriangle, Ghost, RefreshCw, Trash2, Search, Database, CheckCircle2 } from "lucide-react";
+import { AlertTriangle, Ghost, RefreshCw, Trash2, Search, Database, CheckCircle2, Package } from "lucide-react";
 import { toast } from "sonner";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const auth = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
+// coverage-gaps -> missing[].reason kodları
+const GAP_REASON_TR = {
+  yok: "Trendyol'da hiç yok",
+  arsivli: "Trendyol'da arşivli",
+  onaysiz: "Onay bekliyor / onaysız",
+  barkodsuz: "Varyantın barkodu yok",
+  barkod_uyusmuyor: "Barkod, Trendyol'da stok kodu olarak geçiyor",
+};
+const GAP_REASON_CLS = {
+  yok: "bg-red-50 text-red-700",
+  arsivli: "bg-gray-100 text-gray-700",
+  onaysiz: "bg-amber-50 text-amber-700",
+  barkodsuz: "bg-orange-50 text-orange-700",
+  barkod_uyusmuyor: "bg-blue-50 text-blue-700",
+};
+
+function GapTable({ rows, testId }) {
+  if (!rows || rows.length === 0) {
+    return <p className="text-sm text-gray-500 py-3">Bu grupta kayıt yok. 👍</p>;
+  }
+  return (
+    <div className="border rounded overflow-x-auto" data-testid={testId}>
+      <table className="w-full text-sm">
+        <thead className="bg-gray-50 text-left">
+          <tr>
+            <th className="p-2">Ürün</th>
+            <th className="p-2">Stok Kodu</th>
+            <th className="p-2">TY'de canlı beden</th>
+            <th className="p-2">Eksik beden</th>
+            <th className="p-2">Eksik varyantlar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((g) => (
+            <tr key={g.product_id} className="border-t align-top">
+              <td className="p-2">
+                <a
+                  href={`/admin/urunler/${g.product_id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-purple-700 hover:underline"
+                >
+                  {g.name || g.product_id}
+                </a>
+              </td>
+              <td className="p-2 font-mono text-xs">{g.stock_code || "—"}</td>
+              <td className="p-2">{g.variants_live_on_trendyol}</td>
+              <td className="p-2 font-semibold text-red-600">{g.missing_count}</td>
+              <td className="p-2">
+                <div className="flex flex-wrap gap-1">
+                  {(g.missing || []).map((m, i) => (
+                    <span
+                      key={`${g.product_id}-${m.barcode || m.stock_code || i}`}
+                      className={`px-2 py-0.5 rounded text-xs ${GAP_REASON_CLS[m.reason] || "bg-gray-100 text-gray-700"}`}
+                      title={`${GAP_REASON_TR[m.reason] || m.reason} · barkod: ${m.barcode || "yok"} · stok: ${m.stock}`}
+                    >
+                      {m.size || "—"}
+                      {m.color ? ` / ${m.color}` : ""} · {GAP_REASON_TR[m.reason] || m.reason} ({m.stock})
+                    </span>
+                  ))}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function TrendyolGhostScanner() {
-  const [tab, setTab] = useState("duplicates"); // "duplicates" | "ghosts"
+  // Derin bağlantı: /admin/trendyol-hayalet?tab=gaps → doğrudan ilgili sekme açılır.
+  const [tab, setTab] = useState(() => {
+    try {
+      const t = new URLSearchParams(window.location.search).get("tab");
+      if (t === "gaps" || t === "ghosts" || t === "duplicates") return t;
+    } catch {
+      /* URLSearchParams yoksa varsayılana düş */
+    }
+    return "duplicates";
+  }); // "duplicates" | "ghosts" | "gaps"
 
   // --- DB Duplicates ---
   const [dupes, setDupes] = useState([]);
@@ -99,6 +184,38 @@ export default function TrendyolGhostScanner() {
     }
   };
 
+  // --- Sitede var, Trendyol'da yok (coverage gaps) ---
+  const [gapRes, setGapRes] = useState(null);
+  const [gapLoading, setGapLoading] = useState(false);
+  const [gapOnlyStock, setGapOnlyStock] = useState(true);
+  const [gapPageLimit, setGapPageLimit] = useState(60);
+
+  const runCoverageScan = async () => {
+    setGapLoading(true);
+    try {
+      const r = await axios.post(
+        `${API}/integrations/trendyol/coverage-gaps`,
+        { only_in_stock: gapOnlyStock, page_limit: gapPageLimit },
+        auth()
+      );
+      if (r.data?.error) {
+        toast.error(r.data.error);
+        setGapRes(null);
+        return;
+      }
+      setGapRes(r.data || null);
+      toast.success(
+        `${r.data?.active_products_scanned || 0} aktif ürün tarandı — ` +
+          `${r.data?.fully_missing_products_count || 0} ürün hiç yok, ` +
+          `${r.data?.partial_products_count || 0} üründe eksik beden var.`
+      );
+    } catch (e) {
+      toast.error("Tarama hatası: " + (e.response?.data?.detail || e.message));
+    } finally {
+      setGapLoading(false);
+    }
+  };
+
   return (
     <div className="p-6 max-w-7xl mx-auto" data-testid="ghost-scanner-page">
       <div className="flex items-center gap-3 mb-6">
@@ -106,7 +223,7 @@ export default function TrendyolGhostScanner() {
         <div>
           <h1 className="text-2xl font-semibold">Trendyol Hayalet Ürün Tarayıcı</h1>
           <p className="text-sm text-gray-500">
-            Trendyol'daki yetim/eski kayıtları ve DB'deki barkod duplikatlarını tespit edip temizler.
+            Trendyol'daki yetim kayıtları, DB barkod duplikatlarını ve sitede olup Trendyol'da olmayan bedenleri tespit eder.
           </p>
         </div>
       </div>
@@ -126,6 +243,13 @@ export default function TrendyolGhostScanner() {
           className={`px-4 py-2 -mb-px border-b-2 text-sm flex items-center gap-2 ${tab === "ghosts" ? "border-purple-600 text-purple-700" : "border-transparent text-gray-500"}`}
         >
           <Ghost className="w-4 h-4" /> Trendyol Hayalet Ürünler
+        </button>
+        <button
+          onClick={() => setTab("gaps")}
+          data-testid="tab-gaps"
+          className={`px-4 py-2 -mb-px border-b-2 text-sm flex items-center gap-2 ${tab === "gaps" ? "border-purple-600 text-purple-700" : "border-transparent text-gray-500"}`}
+        >
+          <Package className="w-4 h-4" /> Sitede var, Trendyol'da yok
         </button>
       </div>
 
@@ -309,6 +433,96 @@ export default function TrendyolGhostScanner() {
                 </tbody>
               </table>
             </div>
+          )}
+        </div>
+      )}
+
+      {tab === "gaps" && (
+        <div data-testid="gaps-panel">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+            <p className="text-sm text-gray-600 max-w-3xl">
+              <Package className="w-4 h-4 inline text-purple-600 mr-1" />
+              Sitede <b>aktif</b> olan ürün/bedenlerden Trendyol'da <b>canlı olmayanları</b> listeler
+              (hiç yüklenmemiş, arşivli, onaysız veya barkodsuz). Salt-okunur tarama — Trendyol'a
+              hiçbir şey yazılmaz. Aktarmak için ürünü açıp <b>Trendyol'a Gönder</b>'i kullan.
+            </p>
+            <div className="flex items-center gap-3">
+              <label className="text-sm flex items-center gap-1">
+                <input
+                  type="checkbox"
+                  checked={gapOnlyStock}
+                  onChange={(e) => setGapOnlyStock(e.target.checked)}
+                  data-testid="gaps-only-stock"
+                />
+                Sadece stoğu olanlar
+              </label>
+              <label className="text-sm flex items-center gap-1">
+                Sayfa limiti
+                <input
+                  type="number"
+                  min={1}
+                  max={200}
+                  value={gapPageLimit}
+                  onChange={(e) => setGapPageLimit(Number(e.target.value) || 60)}
+                  className="w-16 border rounded px-2 py-1 text-sm"
+                />
+              </label>
+              <button
+                onClick={runCoverageScan}
+                disabled={gapLoading}
+                data-testid="btn-scan-gaps"
+                className="px-3 py-1.5 bg-purple-600 text-white rounded text-sm flex items-center gap-1 disabled:opacity-50"
+              >
+                <Search className={`w-4 h-4 ${gapLoading ? "animate-pulse" : ""}`} />
+                {gapLoading ? "Taranıyor…" : "Tara"}
+              </button>
+            </div>
+          </div>
+
+          {gapRes && (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4" data-testid="gaps-summary">
+                {[
+                  ["Taranan aktif ürün", gapRes.active_products_scanned, "text-gray-800"],
+                  ["Trendyol kaydı", gapRes.trendyol_products_scanned, "text-gray-800"],
+                  ["Hiç yok (ürün)", gapRes.fully_missing_products_count, "text-red-600"],
+                  ["Eksik bedenli ürün", gapRes.partial_products_count, "text-amber-600"],
+                  ["Toplam eksik varyant", gapRes.total_missing_variants, "text-red-600"],
+                ].map(([lbl, val, cls]) => (
+                  <div key={lbl} className="border rounded p-3 bg-white">
+                    <div className="text-xs text-gray-500">{lbl}</div>
+                    <div className={`text-xl font-semibold ${cls}`}>{val ?? 0}</div>
+                  </div>
+                ))}
+              </div>
+
+              <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-red-500" />
+                Trendyol'da hiç canlı bedeni olmayan ürünler ({gapRes.fully_missing_products_count || 0})
+              </h3>
+              <div className="mb-6">
+                <GapTable rows={gapRes.fully_missing} testId="gaps-fully-missing" />
+              </div>
+
+              <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-amber-500" />
+                Kısmen yüklü — bazı bedenleri eksik ({gapRes.partial_products_count || 0})
+              </h3>
+              <GapTable rows={gapRes.partial} testId="gaps-partial" />
+
+              {(gapRes.fully_missing_products_count > 300 || gapRes.partial_products_count > 300) && (
+                <p className="text-xs text-gray-500 mt-3">
+                  Not: Her liste en fazla 300 ürün gösterir (eksik beden sayısına göre sıralı).
+                </p>
+              )}
+            </>
+          )}
+
+          {!gapRes && !gapLoading && (
+            <p className="text-sm text-gray-500 py-6">
+              Taramayı başlatmak için <b>Tara</b>'ya bas. Trendyol'un tüm ürün kataloğu çekildiği için
+              işlem 10-60 saniye sürebilir.
+            </p>
           )}
         </div>
       )}

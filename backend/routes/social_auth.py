@@ -29,7 +29,8 @@ import jwt as pyjwt
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 
-from .deps import db, require_admin, generate_id, create_token
+from .deps import (db, require_admin, generate_id, create_token, secure_social_link, require_permission,
+                   public_self_user)
 try:
     from .auth import create_access_token
 except Exception:
@@ -44,6 +45,8 @@ router = APIRouter(prefix="/auth", tags=["social-auth"])
 # =============================================================================
 
 class SocialSettingsReq(BaseModel):
+    google_enabled: bool = False
+    google_client_id: Optional[str] = ""       # OAuth Web client ID; secret değildir
     apple_enabled: bool = False
     apple_client_id: Optional[str] = ""       # Services ID, ör. com.meluni.web
     apple_team_id: Optional[str] = ""
@@ -55,8 +58,20 @@ class SocialSettingsReq(BaseModel):
     facebook_redirect_uri: Optional[str] = ""
 
 
+_SOCIAL_SECRETS = {"apple_private_key", "facebook_app_secret"}
+
+
 async def _get_social_settings() -> Dict[str, Any]:
     doc = await db.settings.find_one({"id": "social_auth"}, {"_id": 0}) or {}
+    # DENETİM (kimlik B-2): Apple özel anahtarı + Facebook app secret at-rest şifreli;
+    # okurken çöz (legacy düz-metin olduğu gibi döner → migration güvenli).
+    try:
+        from security.crypto import decrypt as _dec
+        for f in _SOCIAL_SECRETS:
+            if doc.get(f):
+                doc[f] = _dec(doc[f])
+    except Exception:
+        pass
     return doc
 
 
@@ -64,8 +79,13 @@ async def _get_social_settings() -> Dict[str, Any]:
 async def get_providers():
     """Public — frontend hangi butonu gösterecek karar verir."""
     s = await _get_social_settings()
+    env_google_id = (os.environ.get("GOOGLE_CLIENT_ID") or "").strip()
+    google_id = (s.get("google_client_id") or env_google_id).strip()
+    google_on = bool(google_id and (s.get("google_enabled") if "google_enabled" in s else env_google_id))
     fb_on = bool(s.get("facebook_enabled") and s.get("facebook_app_id"))
     return {
+        "google": google_on,
+        "google_client_id": google_id if google_on else "",
         "apple": bool(s.get("apple_enabled") and s.get("apple_client_id")),
         "apple_client_id": s.get("apple_client_id", "") if s.get("apple_enabled") else "",
         "facebook": fb_on,
@@ -75,12 +95,15 @@ async def get_providers():
 
 
 @router.get("/social/settings")
-async def admin_get_settings(current_user: dict = Depends(require_admin)):
+async def admin_get_settings(current_user: dict = Depends(require_permission("settings.view"))):
     s = await _get_social_settings()
+    env_google_id = (os.environ.get("GOOGLE_CLIENT_ID") or "").strip()
     # Secret alanları tamamen maskele (yalnız bayrak döndür, ham değer asla dönmez)
     has_apple_key = bool(s.get("apple_private_key"))
     has_fb_secret = bool(s.get("facebook_app_secret"))
     return {
+        "google_enabled": bool(s.get("google_enabled") if "google_enabled" in s else env_google_id),
+        "google_client_id": s.get("google_client_id") or env_google_id,
         "apple_enabled": bool(s.get("apple_enabled")),
         "apple_client_id": s.get("apple_client_id", ""),
         "apple_team_id": s.get("apple_team_id", ""),
@@ -96,20 +119,30 @@ async def admin_get_settings(current_user: dict = Depends(require_admin)):
 
 
 @router.post("/social/settings")
-async def admin_save_settings(req: SocialSettingsReq, current_user: dict = Depends(require_admin)):
+async def admin_save_settings(req: SocialSettingsReq, current_user: dict = Depends(require_permission("settings.edit"))):
     existing = await _get_social_settings()
     data: Dict[str, Any] = {"id": "social_auth"}
     fields = [
+        "google_enabled", "google_client_id",
         "apple_enabled", "apple_client_id", "apple_team_id", "apple_key_id", "apple_private_key",
         "facebook_enabled", "facebook_app_id", "facebook_app_secret", "facebook_redirect_uri",
     ]
     payload = req.model_dump()
-    SECRETS = {"apple_private_key", "facebook_app_secret"}
+    SECRETS = _SOCIAL_SECRETS
     for f in fields:
         v = payload.get(f)
         if f in SECRETS and (not v or (isinstance(v, str) and "****" in v)):
-            v = existing.get(f, "")  # eski değeri koru
+            v = existing.get(f, "")  # eski değeri koru (çözülmüş düz metin)
         data[f] = v
+    # DENETİM B-2: sırları at-rest Fernet ile şifrele (idempotent, boş/şifreli atlanır).
+    try:
+        from security.crypto import encrypt as _enc2, is_encrypted as _isenc
+        for f in SECRETS:
+            v = data.get(f)
+            if isinstance(v, str) and v and not _isenc(v):
+                data[f] = _enc2(v)
+    except Exception:
+        pass
     data["updated_at"] = datetime.now(timezone.utc).isoformat()
     data["updated_by"] = current_user.get("email", "")
     await db.settings.update_one({"id": "social_auth"}, {"$set": data}, upsert=True)
@@ -133,11 +166,21 @@ async def _issue_jwt(user_id: str, email: str, extra: Optional[Dict] = None) -> 
     return create_token(user_id, is_admin=False, token_version=_tv)
 
 
+_SOCIAL_ADMIN_MSG = ("Yönetici hesapları sosyal girişle açılamaz. Lütfen e-posta ve şifrenizle "
+                     "(doğrulama koduyla) giriş yapın.")
+
+
+def _is_staff_account(user: dict) -> bool:
+    return bool(user) and (user.get("is_admin") is True or user.get("is_super_admin") is True)
+
+
 async def _upsert_social_user(provider: str, provider_id: str, email: str, name: str = "") -> dict:
     """Kullanıcıyı bul/oluştur ve JWT'de kullanılacak dict döndür."""
     # 1) provider_id ile bul
     q = {f"auth_providers.{provider}.id": provider_id}
     user = await db.users.find_one(q, {"_id": 0})
+    if user and _is_staff_account(user):
+        raise HTTPException(status_code=403, detail=_SOCIAL_ADMIN_MSG)
     if user:
         await db.users.update_one(
             {"id": user["id"]},
@@ -147,7 +190,23 @@ async def _upsert_social_user(provider: str, provider_id: str, email: str, name:
     # 2) email ile varolan hesaba bağla
     if email:
         u2 = await db.users.find_one({"email": email.lower()}, {"_id": 0})
+        if u2 and provider == "facebook":
+            # GÜVENLİK (denetim H2): Facebook Graph e-postası doğrulanmış sayılamaz → mevcut hesaba
+            # e-posta eşleşmesiyle OTOMATİK bağlanmaz (başkasının hesabına girişi engeller).
+            from fastapi import HTTPException as _HE
+            raise _HE(status_code=409, detail=(
+                "Bu e-posta adresiyle kayıtlı bir hesabınız var. Lütfen e-posta ve şifrenizle giriş yapın."))
+        if u2 and _is_staff_account(u2):
+            # GÜVENLİK (denetim 2026-10, #9): personel/admin hesabı sosyal girişle açılamaz
+            # (parola + MFA zorunlu).
+            raise HTTPException(status_code=403, detail=_SOCIAL_ADMIN_MSG)
         if u2:
+            _bound = str(((u2.get("auth_providers") or {}).get(provider) or {}).get("id") or "")
+            if _bound and _bound != str(provider_id):
+                # Hesap bu sağlayıcıda BAŞKA bir kimliğe bağlı → e-posta eşleşmesiyle üzerine yazma.
+                raise HTTPException(status_code=409, detail=(
+                    "Bu e-posta adresi farklı bir hesaba bağlı. Lütfen e-posta ve şifrenizle giriş yapın."))
+            u2 = await secure_social_link(u2, provider)
             await db.users.update_one(
                 {"id": u2["id"]},
                 {"$set": {
@@ -166,7 +225,12 @@ async def _upsert_social_user(provider: str, provider_id: str, email: str, name:
         "password": "",  # sosyal girişli
         "role": "customer",
         "is_active": True,
-        "email_verified": True,  # sağlayıcı (Google/Apple) e-postayı zaten doğruladı
+        # ID3-03: yalnız sağlayıcının İMZALI/doğrulanmış e-postası (Apple email_verified claim'i)
+        # doğrulanmış sayılır. Facebook Graph e-postası doğrulanmış SAYILMAZ (bkz. yukarıdaki H2 notu) —
+        # aksi halde başkasının e-postasıyla açılan FB hesabı o e-postanın misafir siparişlerini
+        # (adres/telefon, iade-IBAN) customer._owner_or_clauses üzerinden sahiplenebiliyordu.
+        # E-postası olmayan (sentetik adresli) hesap da doğrulanmış sayılmaz.
+        "email_verified": bool(email) and provider != "facebook",
         "auth_providers": {provider: {"id": provider_id, "linked_at": datetime.now(timezone.utc).isoformat()}},
         "created_at": datetime.now(timezone.utc).isoformat(),
         "source": f"social_{provider}",
@@ -194,8 +258,8 @@ async def apple_login(req: AppleLoginReq):
     # Apple public key ile verify
     try:
         header = pyjwt.get_unverified_header(req.identity_token)
-    except Exception as e:
-        raise HTTPException(status_code=401, detail=f"Geçersiz token formatı: {e}")
+    except Exception:
+        raise HTTPException(status_code=401, detail="Geçersiz token formatı")  # istisna metni sızdırılmaz (INFRA-03)
     kid = header.get("kid")
     if not kid:
         raise HTTPException(status_code=401, detail="Geçersiz token (kid eksik)")
@@ -209,8 +273,8 @@ async def apple_login(req: AppleLoginReq):
     try:
         payload = pyjwt.decode(req.identity_token, pub, algorithms=["RS256"],
                                audience=s["apple_client_id"])
-    except pyjwt.InvalidTokenError as e:
-        raise HTTPException(status_code=401, detail=f"Apple token geçersiz: {e}")
+    except pyjwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Apple token geçersiz")  # istisna metni sızdırılmaz (INFRA-03)
     if payload.get("iss") != "https://appleid.apple.com":
         raise HTTPException(status_code=401, detail="Apple token yayıncısı geçersiz")
 
@@ -227,7 +291,9 @@ async def apple_login(req: AppleLoginReq):
 
     user = await _upsert_social_user("apple", sub, verified_email or "", req.user_name or "")
     token = await _issue_jwt(user["id"], user["email"])
-    return {"token": token, "user": {k: v for k, v in user.items() if k != "password"}}
+    # ID3-01 + KVKK: şifreli telefon sahibine açık döner; kimlik materyali ve mühür alanları ayıklanır.
+    from .deps import open_user_phone as _open_phone
+    return {"token": token, "user": public_self_user(_open_phone(dict(user)))}
 
 
 # =============================================================================
@@ -280,4 +346,6 @@ async def facebook_login(req: FacebookLoginReq):
 
     user = await _upsert_social_user("facebook", fb_id, email or "", name)
     token = await _issue_jwt(user["id"], user["email"])
-    return {"token": token, "user": {k: v for k, v in user.items() if k != "password"}}
+    # ID3-01 + KVKK: şifreli telefon sahibine açık döner; kimlik materyali ve mühür alanları ayıklanır.
+    from .deps import open_user_phone as _open_phone
+    return {"token": token, "user": public_self_user(_open_phone(dict(user)))}

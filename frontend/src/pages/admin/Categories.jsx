@@ -34,6 +34,7 @@ export default function AdminCategories() {
     amazon_category_id: "",
     attribute_mapping: {},
     is_active: true,
+    members_only: false,
     sort_order: 0,
   });
 
@@ -204,6 +205,7 @@ export default function AdminCategories() {
       amazon_category_id: category.amazon_category_id || "",
       attribute_mapping: category.attribute_mapping || {},
       is_active: category.is_active,
+      members_only: !!category.members_only,
       sort_order: category.sort_order || 0,
     });
     // Trendyol kategori adını yansıt (varsa)
@@ -224,7 +226,7 @@ export default function AdminCategories() {
     setTrendyolCatSearch("");
     setFormData({
       name: "", slug: "", description: "", image_url: "", parent_id: "", trendyol_category_id: "",
-      hepsiburada_category_id: "", amazon_category_id: "", attribute_mapping: {}, is_active: true, sort_order: 0
+      hepsiburada_category_id: "", amazon_category_id: "", attribute_mapping: {}, is_active: true, members_only: false, sort_order: 0
     });
   };
 
@@ -550,6 +552,14 @@ export default function AdminCategories() {
                 onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
               />
               <span className="text-sm">Aktif</span>
+            </label>
+            <label className="flex items-center gap-2" data-testid="cat-members-only">
+              <input
+                type="checkbox"
+                checked={!!formData.members_only}
+                onChange={(e) => setFormData({ ...formData, members_only: e.target.checked })}
+              />
+              <span className="text-sm">Sadece üyelere özel <span className="text-gray-400">(giriş yapmayan göremez)</span></span>
             </label>
             <div className="flex justify-end gap-2 pt-4 border-t">
               <button type="button" onClick={() => setModalOpen(false)} className="px-4 py-2 border rounded hover:bg-gray-50">

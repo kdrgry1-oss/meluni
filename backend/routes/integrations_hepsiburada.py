@@ -15,7 +15,8 @@ import xml.etree.ElementTree as ET
 import httpx
 import hashlib
 
-from .deps import db, logger, get_current_user, require_admin, generate_id, generate_short_id
+from .deps import db, logger, get_current_user, require_admin, generate_id, generate_short_id, require_permission
+from .marketplace_order_mapping import canonical_hb_order_number, hb_internal_status
 from meluni_defaults import meluni_fixed_value_for  # tüm-pazaryeri sabit varsayılan (gap-fill)
 
 router = APIRouter(tags=["Integrations-Hepsiburada"])
@@ -27,8 +28,10 @@ from .integrations_common import (
     _meluni_match_for_codes,
     _meluni_product_image,
     _hb_norm,
+    _normalize_attr_key,
     _resolve_stock_code,
     _to_float_tr,
+    db_attr_default_map,
     log_integration_event,
 )
 
@@ -70,7 +73,7 @@ class HbProductSyncReq(BaseModel):
 
 
 @router.get("/hepsiburada/categories/{category_id}/attributes")
-async def get_hepsiburada_category_attributes(category_id: str, current_user: dict = Depends(require_admin)):
+async def get_hepsiburada_category_attributes(category_id: str, current_user: dict = Depends(require_permission("products.view", any_in_area=True))):
     """Bir HB kategorisinin (canli) ozelliklerini doner — urun editorunun HB bolumu icin.
     Once cache, yoksa canli cekip cache'ler."""
     key = int(category_id) if str(category_id).isdigit() else str(category_id)
@@ -111,7 +114,7 @@ async def _hb_common_attr_values(norm_name: str):
         pass
     return sorted(out)
 @router.get("/hepsiburada/base-field-mappings")
-async def hb_get_base_field_mappings(current_user: dict = Depends(require_admin)):
+async def hb_get_base_field_mappings(current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """HB temel/sistem alanlarının (Satıcı Stok Kodu / Ürün Adı / Barkod / Marka / KDV / Desi /
     Görsel ...) ürün-kartı kaynağına ya da sabit değere GLOBAL eşleştirmesi. Üst panel için
     alan listesi + kaynak seçenekleri + kayıtlı config döner."""
@@ -145,7 +148,7 @@ async def hb_get_base_field_mappings(current_user: dict = Depends(require_admin)
             "markup": markup, "price_source": price_source, "price_sources": HB_PRICE_SOURCES,
             "common_attrs": common_attrs, "global_attr_defaults": gad}
 @router.post("/hepsiburada/base-field-mappings")
-async def hb_save_base_field_mappings(request: Request, current_user: dict = Depends(require_admin)):
+async def hb_save_base_field_mappings(request: Request, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """{mappings: {key: {source, default}}} kaydeder (db.settings id=hepsiburada)."""
     from .category_mapping import _HB_BASE_BY_KEY
     payload = await request.json()
@@ -203,8 +206,9 @@ def _hb_group_orders(lines):
         no = str(_hb_g(ln, "orderNumber", "orderId", "id", default="?"))
         g = groups.get(no)
         if not g:
+            # "totalPrice" KOPYALANMAZ: düz listede o alan KALEM toplamıdır, sipariş toplamı değil.
             g = {k: ln.get(k) for k in ("orderNumber", "orderId", "orderDate", "status",
-                 "customerName", "email", "customerEmail", "totalPrice", "shippingAddress",
+                 "customerName", "email", "customerEmail", "shippingAddress",
                  "shippingAddressDetail", "invoiceAddress", "customer") if k in ln}
             g["orderNumber"] = no
             g["lines"] = []
@@ -275,7 +279,7 @@ def _hb_money(v, default=0.0):
 def map_hepsiburada_order(o: dict) -> dict:
     from datetime import datetime, timezone
     raw_no = str(_hb_g(o, "orderNumber", "orderId", "id"))
-    order_number = raw_no if raw_no.upper().startswith("HB") else f"HB{raw_no}"
+    order_number = canonical_hb_order_number(raw_no)
     lines = o.get("lines") or o.get("items") or []
     items, subtotal = [], 0.0
     for ln in lines:
@@ -319,7 +323,15 @@ def map_hepsiburada_order(o: dict) -> dict:
             "currency": "TRY",
         })
         subtotal += unit * qty
-    total = _hb_money(_hb_g(o, "totalPrice", "totalAmount", default=subtotal), subtotal)
+    # TOPLAM = KALEMLERİN TOPLAMI. HB düz kalem listesi döndürdüğünde _hb_group_orders
+    # grubun "totalPrice"ını İLK KALEMDEN kopyalıyordu (o alan KALEM toplamıdır) → çok
+    # kalemli siparişin toplamı ilk ürün fiyatı kalıyor, fatura farkı "iskonto" sayıp
+    # eksik kesiliyordu (HB4153705034: 8 kalem 17.488,12 → fatura 6.600). Kalem yoksa
+    # sipariş seviyesi totalPrice kullanılır.
+    if items:
+        total = round(subtotal, 2)
+    else:
+        total = _hb_money(_hb_g(o, "totalPrice", "totalAmount", default=subtotal), subtotal)
     ship = (o.get("shippingAddress") or o.get("shippingAddressDetail")
             or o.get("deliveryAddress") or {})
     inv = o.get("invoiceAddress") or o.get("invoice") or {}
@@ -349,7 +361,8 @@ def map_hepsiburada_order(o: dict) -> dict:
     cargo_name = _cg("cargoCompany", "cargoProviderName", "cargoCompanyName",
                      "shippingCompany", "cargoCompanyModelCode", "cargoCompanyShortName")
     cargo_link = _cg("cargoTrackingUrl", "cargoTrackingLink", "trackingUrl")
-    return {
+    _status, _payment_status = hb_internal_status(_hb_g(o, "status"))
+    _doc = {
         "order_number": order_number, "platform": "hepsiburada", "marketplace": "hepsiburada",
         "hepsiburada_order_number": raw_no, "user_id": None, "items": items,
         "shipping_address": {
@@ -372,7 +385,7 @@ def map_hepsiburada_order(o: dict) -> dict:
             "tax_number": _hb_g(inv, "taxNumber", "vkn"), "tax_office": _hb_g(inv, "taxOffice"),
         },
         "subtotal": subtotal, "shipping_cost": 0, "discount_amount": 0, "total": total,
-        "payment_method": "marketplace", "payment_status": "paid", "status": "confirmed",
+        "payment_method": "marketplace", "payment_status": _payment_status, "status": _status,
         "marketplace_status": _hb_g(o, "status"), "hb_order_date": _hb_g(o, "orderDate"),
         # Kargo (TY ile aynı alan adları — panel/liste/etiket bu alanları okur)
         "cargo_tracking_number": cargo_no,
@@ -380,6 +393,9 @@ def map_hepsiburada_order(o: dict) -> dict:
         "cargo_tracking_link": cargo_link,
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
+    # KVKK: fatura VKN/TCKN'si (billing_address.tax_number) DÜZ yazılmaz — tüm aktarım yolları mühürlü alır.
+    from security.pii import seal_doc_tax_ids as _pii_seal
+    return _pii_seal(_doc)
 def _hb_created_at(o):
     from datetime import datetime, timezone
     d = o.get("hb_order_date")
@@ -391,6 +407,256 @@ def _hb_created_at(o):
     if isinstance(d, str) and len(d) >= 10 and "-" in d:
         return d
     return datetime.now(timezone.utc).isoformat()
+
+
+_HB_CARGO_KEYS = frozenset({"ordernumber", "orderno", "ordernum", "orderid"})
+
+
+def _hb_deep_find_any(obj, norm_keys, depth=0):
+    """Nested dict/list içinde adı (küçük harf, ayraçsız) norm_keys'te olan ilk dolu değeri döner."""
+    if depth > 5 or obj is None:
+        return ""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if str(k).replace("_", "").replace("-", "").lower() in norm_keys and v not in (None, "", [], {}):
+                return v
+        for v in obj.values():
+            if isinstance(v, (dict, list)):
+                r = _hb_deep_find_any(v, norm_keys, depth + 1)
+                if r not in (None, ""):
+                    return r
+    elif isinstance(obj, list):
+        for it in obj[:50]:
+            r = _hb_deep_find_any(it, norm_keys, depth + 1)
+            if r not in (None, ""):
+                return r
+    return ""
+
+
+def _hb_package_row_cargo(r: dict) -> dict:
+    """Paket satırından (packages / shipped / delivered uçları) kargo bilgisini çıkarır:
+    {tracking, company, package_no, order_numbers:[...]}. HB bu uçlarda büyük/küçük harfli
+    farklı alan adları kullanır (Barcode/barcode, CargoCompany/cargoCompany, OrderNumbers/items[].orderNumber)."""
+    if not isinstance(r, dict):
+        return {}
+    tracking = str(_hb_g(r, "cargoTrackingNumber", "CargoTrackingNumber", "trackingNumber", "TrackingNumber",
+                         "Barcode", "barcode", "cargoBarcode") or "").strip()
+    company = _hb_g(r, "CargoCompany", "cargoCompany", "cargoProviderName", "cargoCompanyName", "CargoCompanyName")
+    if isinstance(company, dict):
+        company = _hb_g(company, "name", "Name", "shortName", "ShortName")
+    company = str(company or "").strip()
+    pkg = str(_hb_g(r, "PackageNumber", "packageNumber", "packageId") or "").strip()
+    link = str(_hb_g(r, "cargoTrackingUrl", "CargoTrackingUrl", "trackingUrl", "cargoTrackingLink") or "").strip()
+    nums = []
+    _ons = r.get("OrderNumbers") if isinstance(r.get("OrderNumbers"), list) else (
+        r.get("orderNumbers") if isinstance(r.get("orderNumbers"), list) else [])
+    nums.extend(str(x or "").strip() for x in _ons)
+    for k in ("items", "lineItems", "details", "orderItems", "Items"):
+        v = r.get(k)
+        if isinstance(v, list):
+            for it in v:
+                if isinstance(it, dict):
+                    n = _hb_g(it, "orderNumber", "OrderNumber", "orderNo", "orderId")
+                    if n:
+                        nums.append(str(n).strip())
+    n0 = _hb_g(r, "orderNumber", "OrderNumber", "orderNo")
+    if n0:
+        nums.append(str(n0).strip())
+    if not nums:
+        v = _hb_deep_find_any(r, _HB_CARGO_KEYS)
+        if v and not isinstance(v, (dict, list)):
+            nums.append(str(v).strip())
+    nums = [n for n in dict.fromkeys(nums) if n and n != "?"]
+    return {"tracking": tracking, "company": company, "package_no": pkg, "link": link, "order_numbers": nums}
+
+
+async def hb_sync_cargo_tracking(client, days: int = 3, log: bool = True,
+                                 detail_fallback_limit: int = 0, detail_days: int = 90) -> dict:
+    """Hepsiburada siparişlerine KARGO TAKİP NO'sunu OTOMATİK yazar.
+
+    Kök neden: 2 dk'lık sipariş cron'u yalnız AÇIK (Open/Unpacked) siparişleri çeker; sipariş
+    paketlenip kargoya verilince bu listeden DÜŞER ve takip barkodu yalnız paket uçlarında
+    (/packages, /packages/shipped) görünür — bu uçlar daha önce yalnız manuel backfill'de
+    taranıyordu. Bu fonksiyon o uçları son `days` günde tarar, eşleşen siparişlere
+    cargo_tracking_number / cargo_provider_name / hb_package_number yazar (dolu olanı EZMEZ,
+    yalnız boşsa ya da HB farklı bir barkod döndürdüyse günceller).
+    """
+    import asyncio as _aio
+    from datetime import datetime as _dt, timedelta as _td, timezone as _tz
+    now_ = _dt.now(_tz.utc)
+    stats = {"rows": 0, "with_tracking": 0, "orders_matched": 0, "orders_updated": 0, "errors": 0, "sources": []}
+    seen_pkgs = set()
+
+    async def _apply(cg: dict, source: str):
+        if not cg or not cg.get("order_numbers"):
+            return
+        if not (cg.get("tracking") or cg.get("package_no")):
+            return
+        stats["with_tracking"] += 1
+        key = (cg.get("package_no") or cg.get("tracking"), tuple(cg["order_numbers"]))
+        if key in seen_pkgs:
+            return
+        seen_pkgs.add(key)
+        nums = list({*cg["order_numbers"],
+                     *[(x if x.upper().startswith("HB") else f"HB{x}") for x in cg["order_numbers"]]})
+        cur = db.orders.find({"platform": "hepsiburada",
+                              "$or": [{"order_number": {"$in": nums}},
+                                      {"hepsiburada_order_number": {"$in": cg["order_numbers"]}}]},
+                             {"_id": 1, "cargo_tracking_number": 1, "cargo_provider_name": 1,
+                              "hb_package_number": 1, "cargo_tracking_link": 1})
+        async for o in cur:
+            stats["orders_matched"] += 1
+            _set = {}
+            tr = cg.get("tracking") or ""
+            if tr and (o.get("cargo_tracking_number") or "") != tr:
+                _set["cargo_tracking_number"] = tr
+            if cg.get("company") and not o.get("cargo_provider_name"):
+                _set["cargo_provider_name"] = cg["company"]
+            if cg.get("package_no") and (o.get("hb_package_number") or "") != cg["package_no"]:
+                _set["hb_package_number"] = cg["package_no"]
+            if cg.get("link") and not o.get("cargo_tracking_link"):
+                _set["cargo_tracking_link"] = cg["link"]
+            if _set:
+                _set["cargo_source"] = f"hepsiburada:{source}"
+                _set["cargo_synced_at"] = now_.isoformat()
+                _set["updated_at"] = now_.isoformat()
+                await db.orders.update_one({"_id": o["_id"]}, {"$set": _set})
+                stats["orders_updated"] += 1
+
+    _pb = (now_ - _td(days=days)).strftime("%Y-%m-%d %H:%M")
+    _pe = (now_ + _td(hours=1)).strftime("%Y-%m-%d %H:%M")
+    # (1) Güncel paket listesi (paketlenmiş — kargo barkodu paketleme anında oluşur)
+    # (2) Kargoya verilenler ve (3) TESLİM edilenler — eski siparişler /shipped listesinden
+    #     düşüp /delivered'a geçer; eskilerin takip no'su oradan gelir (HB ~1 aylık veri tutar).
+    for label, fn, dated in (("packages", client.get_packages, False),
+                             ("shipped", client.get_packages_shipped, True),
+                             ("delivered", client.get_packages_delivered, True)):
+        try:
+            off = 0
+            for _pg in range(6):
+                if dated:
+                    resp = await _aio.to_thread(fn, off, 50, _pb, _pe)
+                else:
+                    resp = await _aio.to_thread(fn, off, 100)
+                if isinstance(resp, dict) and str(resp.get("success", "")).lower() == "false":
+                    raise RuntimeError(str(resp.get("message") or "success=false"))
+                rows = _hb_normalize_lines(resp) or []
+                if not rows:
+                    break
+                for r in rows:
+                    stats["rows"] += 1
+                    await _apply(_hb_package_row_cargo(r), label)
+                page = 50 if dated else 100
+                if len(rows) < page:
+                    break
+                off += page
+            stats["sources"].append(label)
+        except Exception as e:
+            stats["errors"] += 1
+            if log:
+                try:
+                    await log_integration_event("hepsiburada", "cargo_sync", label, "", "error",
+                                                f"HB kargo takip taraması ({label}): {str(e)[:200]}")
+                except Exception:
+                    pass
+        await _aio.sleep(0.2)
+    # (4) SİPARİŞ DETAYI YEDEĞİ: hâlâ takip no'su olmayan HB siparişleri için tek tek sipariş
+    #     detayı çekilir (ordernumber ucu) — HB kargo bilgisini sipariş/kalem üstünde veriyorsa yazılır.
+    if detail_fallback_limit > 0:
+        stats["detail_checked"] = stats["detail_updated"] = 0
+        _dcut = (now_ - _td(days=detail_days)).isoformat()
+        cur = db.orders.find({"platform": "hepsiburada",
+                              "status": {"$nin": ["cancelled", "returned", "refunded"]},
+                              "created_at": {"$gt": _dcut},
+                              "$or": [{"cargo_tracking_number": {"$in": [None, ""]}},
+                                      {"cargo_tracking_number": {"$exists": False}}]},
+                             {"_id": 1, "order_number": 1, "hepsiburada_order_number": 1}).sort("created_at", -1).limit(detail_fallback_limit)
+        async for o in cur:
+            raw_no = str(o.get("hepsiburada_order_number") or "").strip() or str(o.get("order_number") or "")[2:]
+            if not raw_no:
+                continue
+            stats["detail_checked"] += 1
+            try:
+                resp = await _aio.to_thread(client.get_order_by_number, raw_no)
+                grouped = _hb_orders_from_response(resp)
+                for g in grouped:
+                    m = map_hepsiburada_order(g)
+                    _set = {}
+                    if m.get("cargo_tracking_number"):
+                        _set["cargo_tracking_number"] = m["cargo_tracking_number"]
+                    if m.get("cargo_provider_name"):
+                        _set["cargo_provider_name"] = m["cargo_provider_name"]
+                    if m.get("cargo_tracking_link"):
+                        _set["cargo_tracking_link"] = m["cargo_tracking_link"]
+                    if _set:
+                        _set["cargo_source"] = "hepsiburada:order_detail"
+                        _set["cargo_synced_at"] = now_.isoformat()
+                        await db.orders.update_one({"_id": o["_id"]}, {"$set": _set})
+                        stats["detail_updated"] += 1
+                        break
+            except Exception as e:
+                stats["errors"] += 1
+                if log:
+                    try:
+                        await log_integration_event("hepsiburada", "cargo_sync", "order_detail", raw_no, "error",
+                                                    f"Sipariş detayından kargo çekilemedi {raw_no}: {str(e)[:160]}")
+                    except Exception:
+                        pass
+            await _aio.sleep(0.15)
+    if log and (stats["orders_updated"] or stats.get("detail_updated")):
+        try:
+            await log_integration_event(
+                "hepsiburada", "cargo_sync", "job", "", "success",
+                f"HB kargo takip: {stats['orders_updated']} siparişe takip no yazıldı "
+                f"(paket satırı {stats['rows']}, takip nolu {stats['with_tracking']}, eşleşen {stats['orders_matched']}"
+                + (f", sipariş detayından {stats.get('detail_updated', 0)}/{stats.get('detail_checked', 0)}" if detail_fallback_limit else "")
+                + f", son {days} gün)")
+        except Exception:
+            pass
+    return stats
+
+
+@router.post("/hepsiburada/cargo-sync")
+async def hb_cargo_sync_now(payload: Optional[dict] = Body(default=None),
+                            current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
+    """Hepsiburada kargo takip numaralarını ŞİMDİ çek (cron her 10 dk'da bir aynı işi yapar).
+    body: {"days": 3}"""
+    import asyncio as _aio
+    from .category_mapping import _get_hb_client
+    client, err = await _get_hb_client()
+    if err:
+        raise HTTPException(status_code=400, detail=err)
+    days = max(1, min(int((payload or {}).get("days") or 3), 30))
+    deep = int((payload or {}).get("detail_fallback") or 0)
+    stats = await _aio.wait_for(hb_sync_cargo_tracking(client, days=days, detail_fallback_limit=min(deep, 300)), timeout=280)
+    return {"success": True, **stats}
+
+
+async def hb_cargo_backfill_once():
+    """TEK SEFERLİK (bayraklı): mevcut HB siparişlerinin kargo takip no'ları — son 30 günün
+    paket/kargolanan/teslim uçları + takip no'su olmayan son 90 günlük siparişler için sipariş
+    detayı yedeği. Sonrası cron (10 dk: 3 gün · günde 1: 30 gün) otomatik sürdürür."""
+    import asyncio as _aio
+    try:
+        flag = await db.settings.find_one({"id": "migrations"}, {"_id": 0, "hb_cargo_backfill_v1": 1}) or {}
+        if flag.get("hb_cargo_backfill_v1"):
+            return
+        from .category_mapping import _get_hb_client
+        client, err = await _get_hb_client()
+        if err:
+            return
+        stats = await _aio.wait_for(hb_sync_cargo_tracking(client, days=30, detail_fallback_limit=300), timeout=900)
+        await db.settings.update_one({"id": "migrations"},
+                                     {"$set": {"hb_cargo_backfill_v1": True,
+                                               "hb_cargo_backfill_v1_at": datetime.now(timezone.utc).isoformat(),
+                                               "hb_cargo_backfill_v1_stats": stats},
+                                      "$setOnInsert": {"id": "migrations"}}, upsert=True)
+        await log_integration_event("hepsiburada", "cargo_sync", "backfill", "", "success",
+                                    f"HB kargo takip geçmiş çekimi (tek seferlik): {stats}")
+    except Exception as e:
+        logger.warning(f"[hb] cargo backfill once hata: {e}")
+
+
 async def _hb_enrich_items(order_data):
     """HB kalemlerini MELUNİ ürünleriyle eşler: görsel + MELUNİ product_id + barkod (stok düşümü için) + ad/varyant.
     Eşleşmeyen kalem dokunulmadan kalır (matched=False işaretlenir)."""
@@ -425,7 +691,7 @@ async def _hb_enrich_items(order_data):
         it["match_method"] = how
     return order_data
 @router.post("/hepsiburada/orders/preview")
-async def preview_hepsiburada_orders(req: HbOrderPreviewReq, current_user: dict = Depends(require_admin)):
+async def preview_hepsiburada_orders(req: HbOrderPreviewReq, current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """Hepsiburada OMS'ten geçmiş siparişleri tarih aralığı veya sipariş no ile listeler (içe aktarmadan).
     Hata durumunda 200 + {success:False, error, attempted_url} döner ki proxy/timeout mesajı maskelemesin."""
     import asyncio
@@ -475,7 +741,7 @@ async def preview_hepsiburada_orders(req: HbOrderPreviewReq, current_user: dict 
             "attempted_url": attempted,
             "raw_sample": (grouped[:2] if isinstance(grouped, list) else grouped)}
 @router.get("/hepsiburada/oms-diag")
-async def hepsiburada_oms_diag(on: str = "", key: str = "", current_user: dict = Depends(require_admin)):
+async def hepsiburada_oms_diag(on: str = "", key: str = "", current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     # DENETİM FIX: require_admin eklendi — sabit gömülü anahtar (repo'da açık) tek başına
     # koruma değildi; teşhis ucu efektif olarak public'ti.
     """GEÇİCİ TEŞHİS UCU: Railway backend'inden HB OMS-SIT'e bağlantıyı ölçer. HER ZAMAN 200 döner.
@@ -520,7 +786,7 @@ async def hepsiburada_oms_diag(on: str = "", key: str = "", current_user: dict =
         results["by_number"] = await timed(lambda: client.get_order_by_number(on), 10)
     return {"ok": True, "info": info, "results": results}
 @router.get("/hepsiburada/claims/{claim_number}/media-probe")
-async def hb_claim_media_probe(claim_number: str, current_user: dict = Depends(require_admin)):
+async def hb_claim_media_probe(claim_number: str, current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """TANI: HB müşteri iade görselleri OMS'te hangi uçtan geliyor — adayları dener (yalnız GET)."""
     from .category_mapping import _get_hb_client
     client, err = await _get_hb_client()
@@ -549,7 +815,7 @@ async def hb_claim_media_probe(claim_number: str, current_user: dict = Depends(r
 
 
 @router.get("/hepsiburada/orders/import-by-number")
-async def hepsiburada_import_by_number(on: str = "", current_user: dict = Depends(require_admin)):
+async def hepsiburada_import_by_number(on: str = "", current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Siparişi numarayla OMS'ten çekip doğrudan panele (db.orders) aktarır.
     GÜVENLİK: Artık admin auth zorunlu (eskiden sabit ?key ile kimliksiz stok
     değiştirilebiliyordu — kaldırıldı)."""
@@ -573,7 +839,9 @@ async def hepsiburada_import_by_number(on: str = "", current_user: dict = Depend
             onum = order_data["order_number"]
             existing = await db.orders.find_one({"order_number": onum, "platform": "hepsiburada"})
             if existing:
-                _upd = {k: v for k, v in order_data.items() if k != "status"}
+                _upd = dict(order_data)
+                if existing.get("status") in ("cancelled", "returned", "refunded") and order_data.get("status") not in ("cancelled", "returned", "refunded"):
+                    _upd.pop("status", None)
                 # Kargo alanları BOŞ geldiyse mevcut değeri EZME (henüz kargolanmamış tekrar-senkron).
                 for _ck in ("cargo_tracking_number", "cargo_provider_name", "cargo_tracking_link"):
                     if not _upd.get(_ck):
@@ -607,7 +875,7 @@ async def hepsiburada_import_by_number(on: str = "", current_user: dict = Depend
         return {"ok": False, "stage": "import", "error": str(e)[:400],
                 "trace": traceback.format_exc()[-900:]}
 @router.post("/hepsiburada/orders/create-test")
-async def create_hepsiburada_test_order(payload: dict = None, current_user: dict = Depends(require_admin)):
+async def create_hepsiburada_test_order(payload: dict = None, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """SADECE TEST (SIT): oms-stub üzerinden bir test siparişi oluşturur; sonra 'Çek' ile panele alınır.
     SKU olarak senin gerçek SIT listing'lerinden bir HBSKU otomatik kullanılır (stub listing arar).
     Override: {sku:"HBV..."} / {skus:[...]} / {body:{...tam gövde...}}."""
@@ -671,7 +939,7 @@ async def create_hepsiburada_test_order(payload: dict = None, current_user: dict
     return {"success": True, "order_number": (resp or {}).get("_orderNumber"),
             "used_skus": skus, "attempted_url": attempted, "response": resp}
 @router.post("/hepsiburada/orders/import-selected")
-async def import_selected_hepsiburada_orders(req: HbOrderImportReq, current_user: dict = Depends(require_admin)):
+async def import_selected_hepsiburada_orders(req: HbOrderImportReq, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Önizlemeden seçilen Hepsiburada siparişlerini sisteme aktarır (Trendyol akışıyla aynı: stok düşümü + log)."""
     imported = updated = 0
     errors = []
@@ -681,7 +949,9 @@ async def import_selected_hepsiburada_orders(req: HbOrderImportReq, current_user
         try:
             existing = await db.orders.find_one({"order_number": on, "platform": "hepsiburada"})
             if existing:
-                _upd = {k: v for k, v in order_data.items() if k != "status"}
+                _upd = dict(order_data)
+                if existing.get("status") in ("cancelled", "returned", "refunded") and order_data.get("status") not in ("cancelled", "returned", "refunded"):
+                    _upd.pop("status", None)
                 for _ck in ("cargo_tracking_number", "cargo_provider_name", "cargo_tracking_link"):
                     if not _upd.get(_ck):
                         _upd.pop(_ck, None)
@@ -876,7 +1146,7 @@ async def _hb_push_stock_price(client, items, do_price=True, do_stock=True):
     return out
 @router.post("/hepsiburada/products/{product_id}/update-stock-price")
 async def hb_update_product_stock_price(product_id: str, body: HbBulkListingReq = None,
-                                        current_user: dict = Depends(require_admin)):
+                                        current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Tek ürünün stok ve fiyatını Hepsiburada listing'ine gönderir (price/stock-uploads)."""
     from .category_mapping import _get_hb_client
     client, err = await _get_hb_client()
@@ -905,7 +1175,7 @@ async def hb_update_product_stock_price(product_id: str, body: HbBulkListingReq 
     return {"success": not res["errors"], "items_count": len(items), **res}
 @router.post("/hepsiburada/categories/{category_id}/update-stock-price")
 async def hb_update_category_stock_price(category_id: str, body: HbBulkListingReq = None,
-                                         current_user: dict = Depends(require_admin)):
+                                         current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Bir kategorideki tüm ürünlerin stok/fiyatını Hepsiburada'ya gönderir."""
     from .category_mapping import _get_hb_client
     client, err = await _get_hb_client()
@@ -944,7 +1214,7 @@ async def hb_update_category_stock_price(category_id: str, body: HbBulkListingRe
                                 f"{category.get('name')}: {len(items)} kalem")
     return {"success": not all_res["errors"], "items_count": len(items), **all_res}
 @router.post("/hepsiburada/listings/update")
-async def hb_update_listings_bulk(req: HbBulkListingReq, current_user: dict = Depends(require_admin)):
+async def hb_update_listings_bulk(req: HbBulkListingReq, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Serbest kalem listesiyle toplu fiyat/stok güncelleme.
     items: [{merchantSku?, hepsiburadaSku?, price?, availableStock?}]"""
     from .category_mapping import _get_hb_client
@@ -958,7 +1228,7 @@ async def hb_update_listings_bulk(req: HbBulkListingReq, current_user: dict = De
                                 "success" if not res["errors"] else "error", f"{len(req.items)} kalem")
     return {"success": not res["errors"], "items_count": len(req.items), **res}
 @router.get("/hepsiburada/listings/status/{kind}/{upload_id}")
-async def hb_listing_upload_status(kind: str, upload_id: str, current_user: dict = Depends(require_admin)):
+async def hb_listing_upload_status(kind: str, upload_id: str, current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """Fiyat/stok güncelleme işlem kontrolü. kind: price | stock | inventory."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -973,7 +1243,7 @@ async def hb_listing_upload_status(kind: str, upload_id: str, current_user: dict
         raise HTTPException(status_code=502, detail=str(e))
 @router.get("/hepsiburada/listings")
 async def hb_get_listings(offset: int = 0, limit: int = 100, merchant_sku: Optional[str] = None,
-                          current_user: dict = Depends(require_admin)):
+                          current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """Satıcı listing bilgilerini çeker."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -988,7 +1258,7 @@ async def hb_get_listings(offset: int = 0, limit: int = 100, merchant_sku: Optio
     except HepsiburadaError as e:
         raise HTTPException(status_code=502, detail=str(e))
 @router.post("/hepsiburada/listings/{hbsku}/activate")
-async def hb_activate_listing(hbsku: str, current_user: dict = Depends(require_admin)):
+async def hb_activate_listing(hbsku: str, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Listingi satışa açar (stok ve fiyat > 0 olmalı)."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -1003,7 +1273,7 @@ async def hb_activate_listing(hbsku: str, current_user: dict = Depends(require_a
     except HepsiburadaError as e:
         raise HTTPException(status_code=502, detail=str(e))
 @router.post("/hepsiburada/listings/{hbsku}/deactivate")
-async def hb_deactivate_listing(hbsku: str, current_user: dict = Depends(require_admin)):
+async def hb_deactivate_listing(hbsku: str, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Listingi satışa kapatır."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -1337,7 +1607,18 @@ async def _build_hb_product_item(product: dict, merchant_id: str):
             {"marketplace": "hepsiburada", "category_name": product.get("category_name")}, {"_id": 0})
     hb_cat = (cm or {}).get("marketplace_category_id")
     if not hb_cat:
+        # OTOMATİK KATEGORİ (kullanıcı, 2026-09-30): ana kategori koleksiyon/kampanya kategorisi
+        # olabilir ("Feminora", "EN YENİLER" — HB karşılığı yok). Ürünün DİĞER kategorilerinden
+        # HB'ye eşlenmiş olanı, o da yoksa ürün ADINDAKİ ürün tipiyle ("…Bluz") eşlenmiş kategoriyi
+        # kullan. Yeni/uydurma eşleme YAZILMAZ; yalnız mevcut eşlemeler kullanılır.
+        cm = await _hb_fallback_category_mapping(product)
+        hb_cat = (cm or {}).get("marketplace_category_id")
+    if not hb_cat:
         return [], "HB kategori eşleşmesi yok (Kategori Eşleştirme ekranından eşleyin)"
+
+    # TEK OTORİTE DB VARSAYILANLARI: Özellik Ayar Kartı'ndan girilen attributes.default_value
+    # (Trendyol ile aynı kaynak). Kod sabiti (meluni_fixed_value_for) yalnız DB boşsa fallback.
+    _db_defs = await db_attr_default_map()
 
     hb_attrs_list, ferr = await _hb_category_attributes_for(hb_cat)
     if not hb_attrs_list:
@@ -1375,6 +1656,11 @@ async def _build_hb_product_item(product: dict, merchant_id: str):
     imgs = (imgs[:4] + _size_imgs[:1]) if _size_imgs else imgs[:5]
     if not imgs and product.get("image"):
         imgs.append(product["image"])
+    # HB GÖRSEL BİÇİMİ (kullanıcı, 2026-09-30: "görseller gitmemiş, satıcıdan aksiyon bekliyor"):
+    # HB yalnız JPG/PNG kabul eder; ürün görsellerimiz CDN'de WebP → HB görselleri düşürüp ürünü
+    # "satıcıdan aksiyon bekliyor"a alıyordu. WebP (ve uzantısız) görseller, Amazon için zaten
+    # kullanılan .jpg uzantılı JPEG vekilinden (/api/upload/jpeg/<b64>.jpg) gönderilir.
+    imgs = [await _hb_jpeg_image_url(u) for u in imgs]
 
     variants = product.get("variants") or []
     targets = variants if variants else [None]
@@ -1451,6 +1737,8 @@ async def _build_hb_product_item(product: dict, merchant_id: str):
     items, errors = [], set()
     used_skus: set = set()
     hb_attrs_for_product = dict(product.get("hepsiburada_attributes") or {})
+    _ty_cache: dict = {}      # Trendyol canlı ilan özellikleri (ürün başına bir kez, gerekirse)
+    _autofilled: dict = {}    # otomatik doldurulan zorunlu HB özellikleri → ürün kartına kaydedilir
 
     for vi, variant in enumerate(targets):
         local = _hb_collect_local(product, variant)
@@ -1491,6 +1779,7 @@ async def _build_hb_product_item(product: dict, merchant_id: str):
                        or local.get(anorm)
                        or defaults.get(aname) or defaults.get(aid) or defaults_norm.get(anorm)
                        or gad.get(anorm)
+                       or _db_defs.get(_normalize_attr_key(aname))
                        or meluni_fixed_value_for(aname))
                 if not raw:
                     m = map_by_attr_id.get(aid)
@@ -1555,7 +1844,12 @@ async def _build_hb_product_item(product: dict, merchant_id: str):
                                     + (1 if ("( " not in n and " )" not in n) else 0))
                         attrs[aname] = sorted(_tropts, key=lambda n: (-_tr_std_score(n), len(n or "")))[0]
             if a.get("required") and aname not in attrs:
-                missing_req.append(aname)
+                _fb = await _hb_required_fallback(a, aname, local, desc, product, _ty_cache)
+                if _fb not in (None, ""):
+                    attrs[aname] = _fb
+                    _autofilled[aname] = _fb
+                else:
+                    missing_req.append(aname)
 
 
         # Taban alanlar — global "Varsayılan Alan Eşleştirme" panelinden çözülür.
@@ -1637,9 +1931,172 @@ async def _build_hb_product_item(product: dict, merchant_id: str):
             continue
         items.append({"categoryId": cat_val, "merchant": merchant_id, "attributes": attrs})
 
+    if _autofilled and product.get("id"):
+        # Otomatik bulunan değerler ürün kartının HB özelliklerine YAZILIR (görünür + kalıcı).
+        # Kullanıcının girdiği değer VARSA ona dokunulmaz (yalnız boş anahtarlar).
+        _set = {f"hepsiburada_attributes.{k}": v for k, v in _autofilled.items()
+                if k not in hb_attrs_for_product and "." not in k and not k.startswith("$")}
+        if _set:
+            try:
+                await db.products.update_one({"id": product["id"]}, {"$set": _set})
+            except Exception:
+                pass
     if not items:
         return [], ("; ".join(sorted(errors)) if errors else "Gönderilebilir varyant yok")
     return items, None
+
+
+async def _hb_jpeg_image_url(u: str) -> str:
+    """WebP / uzantısız görsel → JPEG vekil URL'i; jpg/png aynen kalır."""
+    try:
+        from urllib.parse import urlparse
+        path = urlparse(str(u)).path.lower()
+        if path.endswith((".jpg", ".jpeg", ".png")):
+            return u
+        import base64 as _b64
+        from abandoned_cart_mail import api_base as _api_base
+        base = await _api_base(db)
+        if not base:
+            return u
+        tok = _b64.urlsafe_b64encode(str(u).encode("utf-8")).decode().rstrip("=")
+        return f"{base}/api/upload/jpeg/{tok}.jpg"   # sorgu eki YOK: HB uzantıyı yoldan okur
+    except Exception:
+        return u
+
+
+async def _hb_fallback_category_mapping(product: dict):
+    """Ana kategori HB'ye eşlenmemişse: (1) ürünün diğer kategorilerinden eşlenmiş olan,
+    (2) ürün adında geçen, HB'ye eşlenmiş site kategorisi adı (en uzun eşleşme)."""
+    ids = []
+    for x in list(product.get("categories") or []) + list(product.get("category_ids") or []):
+        x = str(x or "").strip()
+        if x and x not in ids and x != str(product.get("category_id") or ""):
+            ids.append(x)
+    if ids:
+        maps = await db.category_mappings.find(
+            {"marketplace": "hepsiburada", "category_id": {"$in": ids},
+             "marketplace_category_id": {"$nin": [None, ""]}}, {"_id": 0}).to_list(50)
+        by = {str(m.get("category_id")): m for m in maps}
+        for x in ids:
+            if x in by:
+                return by[x]
+    name_n = f" {_hb_norm(product.get('name'))} "
+    best = None
+    async for m in db.category_mappings.find(
+            {"marketplace": "hepsiburada", "marketplace_category_id": {"$nin": [None, ""]}},
+            {"_id": 0}):
+        cn = _hb_norm(m.get("category_name"))
+        if len(cn) >= 3 and f" {cn} " in name_n and (best is None or len(cn) > len(_hb_norm(best.get("category_name")))):
+            best = m
+    return best
+
+
+_HB_REQ_SYNONYMS = {
+    "yaka stili": ["yaka tipi", "yaka", "yaka modeli", "yaka sekli"],
+    "yaka tipi": ["yaka stili", "yaka", "yaka modeli"],
+    "etek tipi": ["etek modeli", "etek kesimi", "kesim", "model"],
+    "kol tipi": ["kol", "kol modeli"],
+    "materyal": ["materyal", "ana materyal", "kumas cinsi"],
+    "kumas tipi": ["kumas tipi", "materyal bileseni", "urun icerigi"],
+}
+_HB_COMP_KEYS = ["materyal bileseni", "kumas bilgisi", "urun icerik bilgisi", "kumas icerigi",
+                 "icerik", "materyal bilesimi", "urun icerigi"]
+
+
+def _hb_is_option(a: dict, val) -> bool:
+    vals = a.get("attributeValues") or []
+    if not vals:
+        return val not in (None, "")
+    nv = _hb_norm(val)
+    return any(_hb_norm(v.get("name")) == nv for v in vals)
+
+
+async def _hb_ty_live_attrs(product: dict, cache: dict) -> dict:
+    """Ürünün Trendyol'daki CANLI ilan özellikleri {norm(ad): değer} — barkodla, bir kez."""
+    if "map" in cache:
+        return cache["map"]
+    cache["map"] = {}
+    try:
+        from .integrations_trendyol import get_trendyol_config
+        from trendyol_client import TrendyolClient
+        import asyncio as _aio
+        cfg = await get_trendyol_config()
+        if not (cfg and cfg.get("api_key")):
+            return cache["map"]
+        cli = TrendyolClient(supplier_id=cfg["supplier_id"], api_key=cfg["api_key"],
+                             api_secret=cfg["api_secret"], mode=cfg.get("mode", "live"))
+        bcs = [str(v.get("barcode") or "").strip() for v in (product.get("variants") or []) if isinstance(v, dict)]
+        bcs = [b for b in bcs if b] or [str(product.get("barcode") or "").strip()]
+        for b in bcs[:3]:
+            if not b:
+                continue
+            res = await _aio.wait_for(cli.get_filtered_products(barcode=b, size=1), timeout=10)
+            rows = (res or {}).get("content") or []
+            if rows:
+                for at in (rows[0].get("attributes") or []):
+                    nm = at.get("attributeName") or at.get("name")
+                    vv = at.get("attributeValue") or at.get("value")
+                    if nm and vv not in (None, ""):
+                        cache["map"].setdefault(_hb_norm(nm), str(vv))
+                break
+    except Exception:
+        pass
+    return cache["map"]
+
+
+async def _hb_required_fallback(a: dict, aname: str, local: dict, desc: str, product: dict, ty_cache: dict):
+    """ZORUNLU HB özelliği boş kaldığında son kaynaklar (kullanıcı: "Trendyol özelliklerinden
+    doldur, sorunları otomatik çöz"). Yalnız HB'nin KABUL ETTİĞİ bir seçeneğe çözülen değer döner.
+      1) kompozisyon alanlarından Kumaş Tipi (yüzde+lif birebir) / Materyal (baskın lif)
+      2) eşanlamlı yerel özellik adları
+      3) Trendyol canlı ilan özellikleri (aynı ad → eşanlamlılar)"""
+    anorm = _hb_norm(aname)
+    comp = " ".join([str(local.get(k) or "") for k in _HB_COMP_KEYS] + [desc or ""])
+    if "kumas" in anorm or "icerik" in anorm:
+        m = _hb_match_fabric_from_desc(a, comp)
+        if m:
+            return m
+    if anorm == "materyal" or "materyal" in anorm:
+        import re as _re
+        pairs = [(int(x), f) for x, f in _re.findall(r"%\s*(\d{1,3})\s*([A-Za-zÇĞİÖŞÜçğıöşü]+)", comp)]
+        for _, fib in sorted(pairs, reverse=True):
+            rv = _hb_resolve_value(a, fib.capitalize())
+            if rv and _hb_is_option(a, rv):
+                return rv
+    names = [anorm] + _HB_REQ_SYNONYMS.get(anorm, [])
+    for nm in names[1:]:
+        raw = local.get(nm)
+        if raw:
+            rv = _hb_resolve_with_fallback(a, raw, raw)
+            if rv and _hb_is_option(a, rv):
+                return rv
+    ty = await _hb_ty_live_attrs(product, ty_cache)
+    for nm in names:
+        raw = ty.get(nm)
+        if raw:
+            rv = _hb_resolve_with_fallback(a, raw, raw)
+            if rv and _hb_is_option(a, rv):
+                return rv
+    if "kumas" in anorm:
+        tycomp = " ".join(str(ty.get(k) or "") for k in _HB_COMP_KEYS + ["materyal"])
+        m = _hb_match_fabric_from_desc(a, tycomp)
+        if m:
+            return m
+    # 4) Son adım: küçük (temiz) enum'da, HB seçeneğinin adı ÜRÜN ADINDA kelime olarak geçiyorsa
+    #    ("Dora Mini Etek" → Etek Tipi "Mini") o seçenek; birden çok aday varsa en uzun ad.
+    vals = a.get("attributeValues") or []
+    if vals and len(vals) <= _HB_DIRTY_POOL_MIN:
+        pname = f" {_hb_norm(product.get('name'))} "
+        best = None
+        for v in vals:
+            vn = _hb_norm(v.get("name"))
+            if len(vn) >= 3 and f" {vn} " in pname and (best is None or len(vn) > len(_hb_norm(best))):
+                best = v.get("name")
+        if best:
+            return best
+    return None
+
+
 def _hb_summarize_import_status(data):
     """HB içe-aktarım (import) durum yanıtını YAPI-BAĞIMSIZ özetler.
     HB sürüm/kategoriye göre farklı anahtarlar döndürebildiğinden sabit isme güvenmeyiz.
@@ -1800,7 +2257,7 @@ async def _hb_poll_ticket(client, tracking_id, attempts=8, delay=2.0):
         await asyncio.sleep(delay)
     return last or {"done": False, "items": [], "success": 0, "failed": 0, "processing": 0}
 @router.post("/hepsiburada/products/sync")
-async def hb_sync_products(request: Request, current_user: dict = Depends(require_admin)):
+async def hb_sync_products(request: Request, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Seçili ürünleri Hepsiburada kataloğuna gönderir (import). FilteredPushPanel sözleşmesi:
     body {stock_codes, barcodes, date_from, date_to, category_filters} → {successful, failed, ...}.
     NOT: Kategori-özellik eşleşmesi eksikse ilgili ürün atlanır; HB sandbox ile doğrulanmalıdır."""
@@ -1986,7 +2443,7 @@ async def hb_sync_products(request: Request, current_user: dict = Depends(requir
                        + (" — ⚠️ SANDBOX! Gerçek mağazada görünmez." if is_test else ""),
             "skipped": skipped, "raw": create_res, "update_raw": update_res}
 @router.post("/hepsiburada/products/validate")
-async def hb_validate_products(request: Request, current_user: dict = Depends(require_admin)):
+async def hb_validate_products(request: Request, current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """Aktarım öncesi DOĞRULAMA — ürünlerin HB kategori eşleşmesi + stok kodunu kontrol eder.
     Body sync ile aynı. Dönüş: {valid_count, invalid_count, results}."""
     payload = await request.json()
@@ -2089,7 +2546,7 @@ async def hb_validate_products(request: Request, current_user: dict = Depends(re
     return {"valid_count": valid_count, "invalid_count": invalid_count, "results": results}
 @router.post("/hepsiburada/products/{product_id}/set-category-default")
 async def hb_set_category_default(product_id: str, request: Request,
-                                  current_user: dict = Depends(require_admin)):
+                                  current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Validate kırmızı kutusundan TEK TIK: eksik bir zorunlu HB özelliğini, ürünün ait olduğu
     HB kategori eşleşmesine KATEGORİ SABİTİ (default_mappings) olarak kaydeder.
     Etki kategori geneli — o kategorideki TÜM ürünler bu değeri alır (bir kez gir, herkes alsın)."""
@@ -2118,7 +2575,7 @@ async def hb_set_category_default(product_id: str, request: Request,
             "message": f"'{attr} = {value}' → {cm.get('category_name')} kategorisine sabit eklendi"}
 @router.post("/hepsiburada/products/{product_id}/set-product-attribute")
 async def hb_set_product_attribute(product_id: str, request: Request,
-                                   current_user: dict = Depends(require_admin)):
+                                   current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Validate kırmızı kutusundan TEK TIK (yalnız bu ürün): bir zorunlu HB özelliğini
     SADECE bu ürünün `hepsiburada_attributes` alanına yazar. Kategoriye dokunmaz —
     üründen ürüne değişen alanlar (Yaka Stili vb.) için doğru yol budur."""
@@ -2137,7 +2594,7 @@ async def hb_set_product_attribute(product_id: str, request: Request,
                                  {"$set": {"hepsiburada_attributes": hb}})
     return {"success": True, "message": f"'{attr} = {value}' → bu ürüne uygulandı"}
 @router.get("/hepsiburada/products/{product_id}/category-attributes")
-async def hb_product_category_attributes(product_id: str, current_user: dict = Depends(require_admin)):
+async def hb_product_category_attributes(product_id: str, current_user: dict = Depends(require_permission("products.view", any_in_area=True))):
     """Ürün modalındaki 'Hepsiburada için Özellikler' bölümünü besler.
     HB kategorisi ÜRÜNDE durmaz; category_mappings'te (yerel kategori → HB kategori) durur.
     Burada onu çözüp HB'nin GERÇEK kategori özelliklerini (zorunlu + enum değerleri) döneriz →
@@ -2159,7 +2616,7 @@ async def hb_product_category_attributes(product_id: str, current_user: dict = D
 @router.get("/hepsiburada/category-attributes/by-local")
 async def hb_category_attributes_by_local(
     category_id: str = "", category_name: str = "",
-    current_user: dict = Depends(require_admin)):
+    current_user: dict = Depends(require_permission("products.view", any_in_area=True))):
     """Ürün modalının 'Hepsiburada için Özellikler' bölümünü KAYDEDİLMEMİŞ üründe de besler.
     HB kategorisi üründe durmaz (category_mappings'te durur); burada onu YEREL kategoriden
     (id veya ad) çözeriz — push çekirdeği (_build_hb_product_item) ile AYNI kaynak. Böylece
@@ -2264,7 +2721,7 @@ async def _hb_numeric_id_findings():
                 "clear": prod_clear})
     return findings
 @router.get("/hepsiburada/attributes/numeric-id-scan")
-async def hb_numeric_id_scan(current_user: dict = Depends(require_admin)):
+async def hb_numeric_id_scan(current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """SALT-OKUNUR. hepsiburada_attributes'ta değer adı yerine sızmış HB value-id'lerini
     raporlar — hem isme çevrilebilenler (fixes) hem de şemada karşılığı bulunamayıp
     temizlenmesi gerekenler (clear, ör. 'Renk: r' gibi anlamsız kalıntılar)."""
@@ -2274,7 +2731,7 @@ async def hb_numeric_id_scan(current_user: dict = Depends(require_admin)):
     return {"products_affected": len(f), "values_to_fix": total_fix,
             "values_to_clear": total_clear, "findings": f}
 @router.post("/hepsiburada/attributes/numeric-id-fix")
-async def hb_numeric_id_fix(current_user: dict = Depends(require_admin)):
+async def hb_numeric_id_fix(current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Sızmış HB value-id'lerini doğru değer ADINA çevirir; şemada karşılığı bulunamayan
     ID-görünümlü/anlamsız değerleri (ör. 'r', '0002ULK') TEMİZLER (None'a çeker — bir daha
     HB'ye çöp olarak gitmesinler). Scan ile AYNI tespit. Yazar."""
@@ -2303,7 +2760,7 @@ async def hb_numeric_id_fix(current_user: dict = Depends(require_admin)):
     return {"fixed_products": fixed_products, "fixed_values": fixed_values,
             "cleared_values": cleared_values}
 @router.get("/hepsiburada/category-mapping-audit")
-async def hb_category_mapping_audit(current_user: dict = Depends(require_admin)):
+async def hb_category_mapping_audit(current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """Hangi yerel kategori HB'ye eşli/eşsiz + her birinde kaç ürün. Eşsiz kategorideki
     ürünler HB'ye gidemez (kart 9 sabite düşer). Salt-okunur."""
     counts = {}
@@ -2339,7 +2796,7 @@ async def hb_category_mapping_audit(current_user: dict = Depends(require_admin))
         "mapped": mapped,
         "unmapped": unmapped}
 @router.get("/hepsiburada/products/{product_id}/debug-payload")
-async def hb_debug_payload(product_id: str, current_user: dict = Depends(require_admin)):
+async def hb_debug_payload(product_id: str, current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """SALT-OKUNUR teşhis. HB'ye HİÇBİR ŞEY göndermez. Bir ürün için:
       • import_items  : create_products'a gidecek TAM kalem(ler) {categoryId, merchant, attributes}
       • build_error   : kalem üretilemediyse sebebi (eksik zorunlu vb.)
@@ -2396,7 +2853,7 @@ async def hb_debug_payload(product_id: str, current_user: dict = Depends(require
                                for b in (base_attrs or []) if isinstance(b, dict)],
     }
 @router.post("/hepsiburada/products/inventory-sync")
-async def hb_inventory_sync(current_user: dict = Depends(require_admin)):
+async def hb_inventory_sync(current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Tüm aktif ürünlerin güncel stok+fiyatını Hepsiburada listing'ine gönderir (StockPriceUpdatePanel)."""
     from .category_mapping import _get_hb_client
     client, err = await _get_hb_client()
@@ -2419,7 +2876,7 @@ async def hb_inventory_sync(current_user: dict = Depends(require_admin)):
                        + (f" — uyarı: {'; '.join(res['errors'])}" if res["errors"] else ""),
             "items_count": len(items), **res}
 @router.post("/hepsiburada/products/autofill-attributes")
-async def hb_autofill_attributes(request: Request, current_user: dict = Depends(require_admin)):
+async def hb_autofill_attributes(request: Request, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Filtreye uyan (boş = tüm HB-eşleşmiş kategori) ürünlerin `hepsiburada_attributes`
     alanını, HB kategori özelliklerinden + ürün verisinden OTOMATİK türetip kalıcı doldurur.
     Renk/Beden varyant-bazlıdır → ürün-alanına yazılmaz (gönderimde varyanttan türetilir);
@@ -2491,7 +2948,7 @@ async def hb_autofill_attributes(request: Request, current_user: dict = Depends(
             "message": f"{updated} üründe {filled} HB özelliği otomatik dolduruldu"
                        + (" · Renk/Beden gönderimde varyanttan gelir" if updated else "")}
 @router.get("/hepsiburada/products/tracking/{tracking_id}")
-async def hb_product_tracking(tracking_id: str, current_user: dict = Depends(require_admin)):
+async def hb_product_tracking(tracking_id: str, current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """Ürün import (tracking) durumunu döner."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2507,7 +2964,7 @@ async def hb_product_tracking(tracking_id: str, current_user: dict = Depends(req
 @router.get("/hepsiburada/products/by-status")
 async def hb_products_by_status(product_status: str = "WAITING", task_status: bool = False,
                                 page: int = 0, size: int = 100,
-                                current_user: dict = Depends(require_admin)):
+                                current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """Statü bazlı ürün listesi (WAITING, MATCHED, REJECTED, CREATED ...)."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2521,7 +2978,7 @@ async def hb_products_by_status(product_status: str = "WAITING", task_status: bo
     except HepsiburadaError as e:
         raise HTTPException(status_code=502, detail=str(e))
 @router.get("/hepsiburada/env-status")
-async def hb_env_status(current_user: dict = Depends(require_admin)):
+async def hb_env_status(current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """HB ortamının NEREDEN çözüldüğünü gösterir (sandbox tuzağı teşhisi).
     Kural: marketplace_accounts veya db.settings kaynaklarından biri 'canlı/production'
     ise CANLI; ikisi de değilse sandbox."""
@@ -2553,7 +3010,7 @@ async def hb_env_status(current_user: dict = Depends(require_admin)):
 @router.get("/hepsiburada/reconcile/preview")
 async def hb_reconcile_preview(markup: float = 25.0, active_only: bool = True,
                                max_pages: int = 25, page_size: int = 1000,
-                               current_user: dict = Depends(require_admin)):
+                               current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """SALT-OKUNUR mutabakat önizlemesi — hiçbir şey yazmaz/silmez.
     Site ürünleri ile HB kataloğunu merchantSku + barkod üzerinden karşılaştırır:
       - missing_on_hb: sitede olup HB'de olmayan (→ aktarılacaklar; fiyat = taban × (1+markup/100))
@@ -2638,7 +3095,7 @@ async def hb_reconcile_preview(markup: float = 25.0, active_only: bool = True,
         "note": "SALT-OKUNUR önizleme. Hiçbir ürün gönderilmedi/güncellenmedi/silinmedi.",
     }
 @router.get("/hepsiburada/orders/{order_number}")
-async def hb_order_detail(order_number: str, current_user: dict = Depends(require_admin)):
+async def hb_order_detail(order_number: str, current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """Sipariş detayını OMS'ten getirir."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2653,7 +3110,7 @@ async def hb_order_detail(order_number: str, current_user: dict = Depends(requir
     except HepsiburadaError as e:
         raise HTTPException(status_code=502, detail=str(e))
 @router.get("/hepsiburada/packages")
-async def hb_packages(offset: int = 0, limit: int = 100, current_user: dict = Depends(require_admin)):
+async def hb_packages(offset: int = 0, limit: int = 100, current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """Paket listesini döner."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2667,7 +3124,7 @@ async def hb_packages(offset: int = 0, limit: int = 100, current_user: dict = De
     except HepsiburadaError as e:
         raise HTTPException(status_code=502, detail=str(e))
 @router.post("/hepsiburada/packages")
-async def hb_create_package(req: HbPackageReq, current_user: dict = Depends(require_admin)):
+async def hb_create_package(req: HbPackageReq, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Kalemleri paketler (kargoya hazırlar)."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2684,7 +3141,7 @@ async def hb_create_package(req: HbPackageReq, current_user: dict = Depends(requ
     except HepsiburadaError as e:
         raise HTTPException(status_code=502, detail=str(e))
 @router.put("/hepsiburada/packages/{package_number}/invoice")
-async def hb_send_invoice(package_number: str, req: HbInvoiceReq, current_user: dict = Depends(require_admin)):
+async def hb_send_invoice(package_number: str, req: HbInvoiceReq, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Pakete fatura linki iletir."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2703,7 +3160,7 @@ async def hb_send_invoice(package_number: str, req: HbInvoiceReq, current_user: 
         await log_integration_event("hepsiburada", "send_invoice", "package", package_number, "error", _err[:500])
         return {"success": False, "error": _err}
 @router.get("/hepsiburada/packages/{package_number}/label")
-async def hb_cargo_label(package_number: str, fmt: str = "base64zpl", current_user: dict = Depends(require_admin)):
+async def hb_cargo_label(package_number: str, fmt: str = "base64zpl", current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     """Hepsiburada kargo etiketini döner (zpl | base64zpl | png)."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2717,7 +3174,7 @@ async def hb_cargo_label(package_number: str, fmt: str = "base64zpl", current_us
     except HepsiburadaError as e:
         raise HTTPException(status_code=502, detail=str(e))
 @router.put("/hepsiburada/packages/{package_number}/cargo")
-async def hb_change_cargo(package_number: str, req: HbCargoReq, current_user: dict = Depends(require_admin)):
+async def hb_change_cargo(package_number: str, req: HbCargoReq, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Paketin kargo firmasını değiştirir."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2731,7 +3188,7 @@ async def hb_change_cargo(package_number: str, req: HbCargoReq, current_user: di
     except HepsiburadaError as e:
         raise HTTPException(status_code=502, detail=str(e))
 @router.post("/hepsiburada/lineitems/{line_item_id}/cancel")
-async def hb_cancel_line(line_item_id: str, req: HbCancelReq = None, current_user: dict = Depends(require_admin)):
+async def hb_cancel_line(line_item_id: str, req: HbCancelReq = None, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Sipariş kalemini iptal eder (para cezasına tabidir)."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2748,7 +3205,7 @@ async def hb_cancel_line(line_item_id: str, req: HbCancelReq = None, current_use
         raise HTTPException(status_code=502, detail=str(e))
 @router.post("/hepsiburada/packages/{package_number}/deliver")
 async def hb_mark_delivered(package_number: str, body: dict = Body(default={}),
-                            current_user: dict = Depends(require_admin)):
+                            current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Teslim edildi bilgisi gönderir."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2765,7 +3222,7 @@ async def hb_mark_delivered(package_number: str, body: dict = Body(default={}),
         raise HTTPException(status_code=502, detail=str(e))
 @router.get("/hepsiburada/claims")
 async def hb_claims(status: Optional[str] = None, offset: int = 0, limit: int = 100,
-                    current_user: dict = Depends(require_admin)):
+                    current_user: dict = Depends(require_permission("returns.view"))):
     """Talep (iade) listesini döner. status verilirse statü bazlı."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2782,7 +3239,7 @@ async def hb_claims(status: Optional[str] = None, offset: int = 0, limit: int = 
     except HepsiburadaError as e:
         raise HTTPException(status_code=502, detail=str(e))
 @router.post("/hepsiburada/claims/{claim_number}/accept")
-async def hb_accept_claim(claim_number: str, current_user: dict = Depends(require_admin)):
+async def hb_accept_claim(claim_number: str, current_user: dict = Depends(require_permission("returns.manage"))):
     """Talebi (iadeyi) kabul eder."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2792,12 +3249,24 @@ async def hb_accept_claim(claim_number: str, current_user: dict = Depends(requir
         raise HTTPException(status_code=400, detail=err)
     try:
         data = await asyncio.to_thread(client.accept_claim, claim_number)
+        # DENETİM (HB H1): Trendyol claim onayı stoğu geri ekliyor (integrations_trendyol:6708);
+        # HB iade kabulü de simetrik olarak eklemeliydi — eskiden yalnız GP üretiminde ekleniyordu.
+        # restock_claim_once idempotent (stock_restored guard) → GP de çağırsa çift olmaz.
+        try:
+            from .integrations_common import restock_claim_once
+            _rec = await db.trendyol_claims.find_one(
+                {"$or": [{"hb_claim_number": claim_number}, {"claim_id": claim_number}],
+                 "platform": "hepsiburada"}, {"_id": 0, "claim_id": 1})
+            if _rec and _rec.get("claim_id"):
+                await restock_claim_once(_rec["claim_id"], "hepsiburada_accept", current_user.get("email", ""))
+        except Exception as _re:
+            logger.warning(f"[hb accept restock] {_re}")
         await log_integration_event("hepsiburada", "accept_claim", "claim", claim_number, "success", "İade kabul")
         return {"success": True, "data": data}
     except HepsiburadaError as e:
         raise HTTPException(status_code=502, detail=str(e))
 @router.post("/hepsiburada/claims/{claim_number}/reject")
-async def hb_reject_claim(claim_number: str, req: HbClaimRejectReq, current_user: dict = Depends(require_admin)):
+async def hb_reject_claim(claim_number: str, req: HbClaimRejectReq, current_user: dict = Depends(require_permission("returns.manage"))):
     """Talebi (iadeyi) reddeder. reason: HB ret sebep kodu (int)."""
     import asyncio
     from hepsiburada_client import HepsiburadaError
@@ -2909,6 +3378,17 @@ async def _hb_claim_norm(claim: dict) -> dict | None:
         barcode = str(_hb_g(ci, "barcode", "productBarcode") or oi.get("barcode") or "")
         if not price:
             price = float(oi.get("price") or oi.get("unit_price") or 0)
+        # HB bazı iadelerde satır fiyatı alanına SİPARİŞ TOPLAMINI koyuyor (HB4029270518: 2 kalem ×
+        # 3.056,25 iken her satır 6.112,50 geldi → iade 12.225 görünüyordu). Bir kalemin birim iade
+        # tutarı, siparişte o kalem için ödenen birim fiyatı aşamaz: eşleşen yerel kalem varsa ona
+        # sınırlanır, HB'nin bildirdiği değer hb_reported_price'ta saklanır.
+        hb_reported_price = None
+        try:
+            _loc_unit = float(oi.get("unit_price") or oi.get("price") or 0) if oi else 0.0
+        except (TypeError, ValueError):
+            _loc_unit = 0.0
+        if _loc_unit > 0 and price > _loc_unit + 0.01:
+            hb_reported_price, price = price, _loc_unit
         if not name:
             name = str(oi.get("name") or "")
         # Sipariş yerelde yoksa: MerchantSku (varyant urun_id) üzerinden katalogdan çöz —
@@ -2940,6 +3420,7 @@ async def _hb_claim_norm(claim: dict) -> dict | None:
             "hb_sku": hb_sku, "size": v_size,
             "unit_price": price, "discount_amount": 0, "price": price,
             "quantity": qty, "reason": str(r or reason_txt or ""),
+            **({"hb_reported_price": hb_reported_price} if hb_reported_price is not None else {}),
         })
         refund += price * qty
     if not reason_txt and items:
@@ -2977,12 +3458,15 @@ async def _hb_claim_norm(claim: dict) -> dict | None:
                      or _hb_g(cc, "Name", "Alias") or "Hepsiburada Marketplace")
     # İade tutarı: HB gerçek refundAmount verirse onu kullan (kalem toplamı yedek)
     raw_refund = _hb_money(_hb_g(claim, "refundAmount", "refundedAmount", default=0))
+    # Satır fiyatı sınırlandıysa HB'nin kök iade tutarı da aynı hatayı taşır → kalem toplamı esas.
+    if raw_refund and any("hb_reported_price" in it for it in items) and raw_refund > refund + 0.01:
+        raw_refund = 0
 
     return {
         "claim_id": f"HB-{cid}",          # TY claim id'leriyle çakışmasın
         "hb_claim_number": cid,           # HB accept/reject uçları bu numarayı kullanır
         "platform": "hepsiburada",
-        "order_number": onum,
+        "order_number": canonical_hb_order_number(onum),
         "claim_type": ctype,
         "claim_reason": reason_txt,
         "claim_status": st,
@@ -3072,7 +3556,7 @@ async def _sync_hepsiburada_claims_core(days_back: int = 60) -> dict:
 
 
 @router.get("/hepsiburada/claims/sync")
-async def hb_claims_sync(days_back: int = 60, current_user: dict = Depends(require_admin)):
+async def hb_claims_sync(days_back: int = 60, current_user: dict = Depends(require_permission("returns.view"))):
     """HB iade taleplerini yerel iade ekranına (Trendyol ile ortak) senkronlar."""
     res = await _sync_hepsiburada_claims_core(days_back=days_back)
     if not res.get("success"):
@@ -3155,12 +3639,19 @@ async def _hb_backfill_run(days: int, decrement_stock: bool):
                     data["status"] = forced_status
                 existing = await db.orders.find_one({"order_number": number, "platform": "hepsiburada"})
                 if existing:
-                    upd = {k: v for k, v in data.items() if k != "status"}
+                    upd = dict(data)
+                    if (existing.get("status") in ("cancelled", "returned", "refunded")
+                            and data.get("status") not in ("cancelled", "returned", "refunded")):
+                        upd.pop("status", None)
                     if forced_status and existing.get("status") not in ("cancelled", "returned"):
                         upd["status"] = forced_status
                         if forced_status == "cancelled":
                             upd.setdefault("cancelled_at", datetime.now(timezone.utc).isoformat())
                             upd.setdefault("cancel_source", "hepsiburada_backfill")
+                    # Boş gelen kargo alanı, paket ucundan yazılmış takip no'yu ezmesin.
+                    for _ck in ("cargo_tracking_number", "cargo_provider_name", "cargo_tracking_link"):
+                        if not upd.get(_ck):
+                            upd.pop(_ck, None)
                     await db.orders.update_one({"_id": existing["_id"]}, {"$set": upd})
                     updated += 1
                 else:
@@ -3367,7 +3858,7 @@ async def _hb_backfill_run(days: int, decrement_stock: bool):
 
 @router.post("/hepsiburada/backfill")
 async def hb_backfill(payload: Optional[dict] = Body(default=None),
-                      current_user: dict = Depends(require_admin)):
+                      current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
     """Tek seferlik: son N günün HB siparişleri + iptalleri + iadelerini sisteme çeker.
     Arka planda çalışır; ilerleme/sonuç Entegrasyon Logları'na (hepsiburada/backfill) düşer.
     body: {"days": 30, "decrement_stock": false}
@@ -3390,3 +3881,498 @@ async def hb_backfill(payload: Optional[dict] = Body(default=None),
                                 f"HB {days} gün backfill başlatıldı (stok düşümü: {'açık' if dec else 'kapalı'})")
     return {"success": True, "started": True, "days": days, "decrement_stock": dec,
             "message": f"Son {days} günün HB siparişleri/iptalleri/iadeleri arka planda çekiliyor — sonuç Entegrasyon Logları'nda."}
+
+
+async def hb_yetim_ilanlar() -> dict:
+    """SALT OKUNUR: Hepsiburada ilanlarından, AKTİF ürünlerimizin ürettiği merchantSku
+    kümesinde OLMAYAN (pasif/silinmiş ya da hiç bizde olmayan) ve stoğu > 0 olanları listeler.
+    Hiçbir şey göndermez."""
+    import asyncio as _aio
+    from .category_mapping import _get_hb_client
+    client, err = await _get_hb_client()
+    if err:
+        return {"hata": err}
+    src = await _hb_sku_source()
+    beklenen, pasif_sku = set(), {}
+    async for p in db.products.find({}, {"_id": 0, "images": 0, "description": 0, "ticimax_fields": 0}):
+        try:
+            its = _hb_listing_items_from_product(p, 0.0, "auto", src)
+        except Exception:
+            continue
+        aktif = p.get("is_active") is not False and not p.get("is_deleted")
+        for it in its:
+            sku = str(it.get("merchantSku") or "").strip()
+            if not sku:
+                continue
+            if aktif:
+                beklenen.add(sku)
+            else:
+                pasif_sku[sku] = "silinmiş" if p.get("is_deleted") else "pasif"
+    ilanlar, off = [], 0
+    for _ in range(200):
+        d = await _aio.to_thread(client.get_listings, off, 100, None)
+        rows = (d or {}).get("listings") if isinstance(d, dict) else None
+        if rows is None and isinstance(d, dict):
+            for k in ("data", "items", "content"):
+                if isinstance(d.get(k), list):
+                    rows = d[k]; break
+        if rows is None and isinstance(d, list):
+            rows = d
+        rows = rows or []
+        ilanlar.extend(rows)
+        if len(rows) < 100:
+            break
+        off += 100
+    yetim = []
+    for r in ilanlar:
+        sku = str(r.get("merchantSku") or "").strip()
+        try:
+            st = int(float(r.get("availableStock") or 0))
+        except Exception:
+            st = 0
+        if sku and sku not in beklenen and st > 0:
+            yetim.append({"merchantSku": sku, "hbSku": r.get("hepsiburadaSku"), "stok": st,
+                          "_hepsiburadaSku": r.get("hepsiburadaSku"),
+                          "neden": pasif_sku.get(sku, "sistemde yok"),
+                          "satista": r.get("isSalable"), "fiyat": r.get("price")})
+    return {"sku_kaynagi": src, "hb_ilan": len(ilanlar), "beklenen_aktif_sku": len(beklenen),
+            "ilk_ilan_alanlari": list(ilanlar[0].keys())[:40] if ilanlar else [],
+            "yetim_stoklu": len(yetim), "yetim_toplam_stok": sum(y["stok"] for y in yetim),
+            "yetimler": yetim}
+
+
+@router.get("/hepsiburada/reconcile/active-listings")
+async def hb_reconcile_active_listings(current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
+    """SALT OKUNUR (kullanıcı, 2026-09-30): panelde AKTİF her ürünün (beden bazında merchantSku)
+    Hepsiburada ilan durumu. Döner: yalnız SORUNLU ürünler —
+      · "Listelenmemiş": SKU HB ilanlarında hiç yok
+      · "Satışta değil": ilan var ama isSalable=false (neden: HB stok 0 / fiyat yok / askıda …)
+    Hiçbir şey göndermez, açmaz/kapatmaz."""
+    import asyncio as _aio
+    from hepsiburada_client import HepsiburadaError
+    from .category_mapping import _get_hb_client
+    client, err = await _get_hb_client()
+    if err:
+        raise HTTPException(status_code=400, detail=err)
+    src = await _hb_sku_source()
+
+    # 1) HB ilanları (sayfalı)
+    ilanlar = []
+    try:
+        off = 0
+        for _ in range(300):
+            d = await _aio.to_thread(client.get_listings, off, 100, None)
+            rows = (d or {}).get("listings") if isinstance(d, dict) else None
+            if rows is None and isinstance(d, dict):
+                for k in ("data", "items", "content"):
+                    if isinstance(d.get(k), list):
+                        rows = d[k]
+                        break
+            if rows is None and isinstance(d, list):
+                rows = d
+            rows = rows or []
+            ilanlar.extend(r for r in rows if isinstance(r, dict))
+            if len(rows) < 100:
+                break
+            off += 100
+    except HepsiburadaError as e:
+        raise HTTPException(status_code=502, detail=f"HB ilanları alınamadı: {e}")
+    by_sku = {}
+    for r in ilanlar:
+        k = str(r.get("merchantSku") or "").strip()
+        if k:
+            by_sku[k] = r
+    try:
+        catalog = await _hb_catalog_status_map(client)
+    except Exception:
+        catalog = {}
+    imp = await _hb_recent_import_results(client)
+
+    def _neden(r) -> str:
+        out = []
+        try:
+            if int(float(r.get("availableStock") or 0)) <= 0:
+                out.append("HB stok 0")
+        except Exception:
+            pass
+        try:
+            if float(r.get("price") or 0) <= 0:
+                out.append("fiyat yok")
+        except Exception:
+            pass
+        for f, t in (("isSuspended", "askıda"), ("isLocked", "kilitli"), ("isFrozen", "dondurulmuş"),
+                     ("isBlocked", "engelli")):
+            if r.get(f) is True:
+                out.append(t)
+        dr = r.get("deactivationReasons") or r.get("deactivationReason")
+        if isinstance(dr, list):
+            out += [str(x.get("reason") if isinstance(x, dict) else x) for x in dr if x]
+        elif dr:
+            out.append(str(dr))
+        return ", ".join(out) or "HB satışa kapalı"
+
+    # 2) Panelde aktif ürünler
+    rows_out = []
+    n_aktif = n_ok = 0
+    async for p in db.products.find({"is_active": {"$ne": False}, "is_deleted": {"$ne": True}},
+                                    {"_id": 0, "images": 0, "description": 0, "ticimax_fields": 0}):
+        vs = [v for v in (p.get("variants") or []) if isinstance(v, dict)]
+        pairs = []   # (beden, merchantSku) — ürün gönderimiyle AYNI SKU kuralı (_hb_variant_sku)
+        try:
+            if vs:
+                _used: set = set()
+                for vi, v in enumerate(vs):
+                    _sk = _hb_variant_sku(p, v, vi, src, _used)
+                    if _sk:
+                        pairs.append((str(v.get("size") or _sk), str(_sk).strip()))
+            else:
+                _sk = _hb_variant_sku(p, None, 0, src)
+                if _sk:
+                    pairs.append(("Tek", str(_sk).strip()))
+        except Exception:
+            continue
+        if not pairs:
+            continue
+        its = pairs
+        n_aktif += 1
+        _vstock = {}
+        for v in vs:
+            _vstock[str(v.get("size") or "")] = int(_to_float_tr(v.get("stock", 0)))
+        missing, off_sale, reasons = [], [], set()
+        for size, sku in pairs:
+            r = by_sku.get(sku)
+            if r is None:
+                missing.append(size)
+                _ir = imp.get(sku.upper())
+                if _ir and not catalog.get(sku):
+                    reasons.add(f"{size}: son aktarım {_ir}")
+                else:
+                    reasons.add(f"{size}: {_hb_catalog_text(catalog.get(sku))}")
+            elif r.get("isSalable") is not True:
+                try:
+                    _hbst = int(float(r.get("availableStock") or 0))
+                except Exception:
+                    _hbst = 0
+                # Sitede de o bedenin stoğu yoksa HB'de satışa kapalı olması DOĞRU → sorun değil.
+                if _hbst <= 0 and _vstock.get(size, 0) <= 0 and vs:
+                    continue
+                off_sale.append(size)
+                reasons.add(_neden(r))
+        if not missing and not off_sale:
+            n_ok += 1
+            continue
+        total = len(its)
+        if len(missing) == total:
+            durum = "Listelenmemiş"
+        elif len(off_sale) == total:
+            durum = "Satışta değil"
+        elif missing and not off_sale:
+            durum = "Kısmen listelenmemiş"
+        elif off_sale and not missing:
+            durum = "Kısmen satışta değil"
+        else:
+            durum = "Karışık"
+        site_stok = sum(int(_to_float_tr(v.get("stock", 0))) for v in vs if isinstance(v, dict)) if vs \
+            else int(_to_float_tr(p.get("stock", 0)))
+        rows_out.append({
+            "id": p.get("id"), "kart_id": str(p.get("urun_karti_id") or ""), "urun": p.get("name") or "",
+            "stok_kodu": p.get("stock_code") or "", "renk": p.get("color") or "", "durum": durum,
+            "site_stok": site_stok, "beden_sayisi": total,
+            "listelenmemis_bedenler": ", ".join(missing), "satista_olmayan_bedenler": ", ".join(off_sale),
+            "neden": "; ".join(sorted(x for x in reasons if x)),
+        })
+    ozet = {}
+    for r in rows_out:
+        ozet[r["durum"]] = ozet.get(r["durum"], 0) + 1
+    return {
+        "environment": "sandbox" if getattr(client, "test", False) else "production",
+        "hb_ilan": len(ilanlar), "aktif_urun": n_aktif, "sorunsuz": n_ok, "sorunlu": len(rows_out),
+        "ozet": ozet, "items": rows_out,
+    }
+
+
+async def _hb_fetch_all_listings(client) -> dict:
+    """HB ilanlarını sayfalı çeker → {merchantSku: ilan}."""
+    import asyncio as _aio
+    out, off = {}, 0
+    for _ in range(300):
+        d = await _aio.to_thread(client.get_listings, off, 100, None)
+        rows = (d or {}).get("listings") if isinstance(d, dict) else None
+        if rows is None and isinstance(d, dict):
+            for k in ("data", "items", "content"):
+                if isinstance(d.get(k), list):
+                    rows = d[k]
+                    break
+        if rows is None and isinstance(d, list):
+            rows = d
+        rows = rows or []
+        for r in rows:
+            if isinstance(r, dict) and str(r.get("merchantSku") or "").strip():
+                out[str(r["merchantSku"]).strip()] = r
+        if len(rows) < 100:
+            break
+        off += 100
+    return out
+
+
+_HB_STATUS_TR = {"WAITING": "HB onayı bekliyor", "MATCHED": "HB eşleştirdi (ilan açılıyor)",
+                 "CREATED": "HB'de oluşturuldu (ilan açılıyor)", "REJECTED": "HB reddetti",
+                 "MISSING_INFO": "HB eksik bilgi istiyor", "PRE_MATCHED": "HB eşleştirme aşamasında",
+                 "WAITING_FOR_APPROVAL": "HB onayı bekliyor"}
+
+
+async def _hb_catalog_status_map(client, max_pages: int = 25) -> dict:
+    """HB kataloğu (ürün girişi) → {merchantSku: {status, reason}} — ilan açılmamış SKU'nun
+    NEDEN açılmadığını göstermek için (onay bekliyor / reddedildi + gerekçe)."""
+    import asyncio as _aio
+    out = {}
+    for page in range(max_pages):
+        try:
+            d = await _aio.to_thread(client.get_all_products, page, 1000)
+        except Exception:
+            break
+        rows = (d.get("data") if isinstance(d, dict) else d) or []
+        if not rows:
+            break
+        for r in rows:
+            if not isinstance(r, dict):
+                continue
+            sku = str(r.get("merchantSku") or r.get("merchantSKU") or r.get("sku") or "").strip()
+            if not sku:
+                continue
+            st = str(r.get("status") or r.get("productStatus") or "").strip()
+            reasons = []
+            for ek in ("rejectReasons", "rejectReason", "validationResults", "errors", "messages",
+                       "failureReasons", "taskDetails", "reason"):
+                ev = r.get(ek)
+                if isinstance(ev, list):
+                    for e in ev[:3]:
+                        m = (e.get("message") or e.get("description") or e.get("reason")) if isinstance(e, dict) else e
+                        if m:
+                            reasons.append(str(m))
+                elif isinstance(ev, str) and ev:
+                    reasons.append(ev)
+            out[sku] = {"status": st.upper(), "reason": "; ".join(dict.fromkeys(reasons))[:300]}
+        if isinstance(d, dict) and d.get("last") is True:
+            break
+    return out
+
+
+async def _hb_recent_import_results(client) -> dict:
+    """Son 'Sorunları Gider' aktarımlarının HB takip sonuçları → {MERCHANTSKU: 'reddedildi — gerekçe' |
+    'HB işliyor' | 'kabul edildi'} (en yeni sonuç geçerli)."""
+    import asyncio as _aio
+    doc = await db.settings.find_one({"id": "hb_import_trackings"}, {"_id": 0}) or {}
+    out = {}
+    for t in (doc.get("items") or [])[-4:]:
+        try:
+            data = await _aio.wait_for(_aio.to_thread(client.get_product_tracking, t["tracking_id"]), timeout=10)
+            summ = _hb_summarize_import_status(data)
+        except Exception:
+            continue
+        for it in summ.get("items") or []:
+            k = str(it.get("sku") or "").strip().upper()
+            if not k:
+                continue
+            if it.get("ok") is False:
+                out[k] = "reddedildi — " + (it.get("reason") or "gerekçe yok")
+            elif it.get("ok") is True:
+                out[k] = "kabul edildi (HB kataloğa işliyor)"
+            else:
+                out[k] = "HB işliyor"
+    return out
+
+
+def _hb_catalog_text(c) -> str:
+    if not c:
+        return "HB kataloğunda yok"
+    t = _HB_STATUS_TR.get(c.get("status") or "", c.get("status") or "katalogda")
+    return f"{t}: {c['reason']}" if c.get("reason") else t
+
+
+class _HbFixReq(BaseModel):
+    apply: bool = False          # False = ÖN İZLEME (hiçbir şey gönderilmez)
+    transfer_missing: bool = True  # listelenmemiş ürünleri HB kataloğuna aktar
+
+
+@router.post("/hepsiburada/reconcile/fix")
+async def hb_reconcile_fix(req: _HbFixReq, current_user: dict = Depends(require_permission("integrations.hepsiburada"))):
+    """Aktif Ürün ↔ HB Satış Mutabakatı'ndaki SORUNLARI GİDERİR (kullanıcı, 2026-09-30).
+    Beden (merchantSku) bazında:
+      · İlan var, satışa kapalı, sitede stok > 0:
+          – HB stoğu 0 / farklıysa → site stoğu gönderilir (stock-upload)
+          – HB fiyatı yoksa → HB fiyat kuralıyla (Entegrasyon ayarı: kaynak + marj) fiyat gönderilir
+            (fiyatı OLAN ilanın fiyatına DOKUNULMAZ)
+          – ardından ilan satışa açılır (activate)
+      · Sitede stok 0 → atlanır (satılacak ürün yok)
+      · Askıda / kilitli / dondurulmuş → HB panelinden çözülmeli (listelenir, dokunulmaz)
+      · Listelenmemiş → ürün HB kataloğuna aktarılır (mevcut "Ürün Aktar" akışı; kategori/özellik
+        eşleşmesi eksikse atlanır ve nedeni listelenir)
+    apply=False iken yalnız PLAN döner."""
+    import asyncio as _aio
+    from hepsiburada_client import HepsiburadaError
+    from .category_mapping import _get_hb_client
+    client, err = await _get_hb_client()
+    if err:
+        raise HTTPException(status_code=400, detail=err)
+    src = await _hb_sku_source()
+    markup = await _hb_markup()
+    price_source = await _hb_price_source()
+    try:
+        ilan = await _hb_fetch_all_listings(client)
+    except HepsiburadaError as e:
+        raise HTTPException(status_code=502, detail=f"HB ilanları alınamadı: {e}")
+    try:
+        catalog = await _hb_catalog_status_map(client)
+    except Exception:
+        catalog = {}
+    _WAIT = {"WAITING", "MATCHED", "CREATED", "PRE_MATCHED", "WAITING_FOR_APPROVAL"}
+    waiting = []   # HB'de işlemde → tekrar gönderilmez
+    missing_pids = []
+
+    stock_items, price_items, activate, manual, skipped, missing_codes, plan = [], [], [], [], [], [], []
+    missing_barcodes = []   # aktarım YALNIZ aktif ürünün barkoduyla seçilir (aynı stok kodlu pasif renk gitmesin)
+    async for p in db.products.find({"is_active": {"$ne": False}, "is_deleted": {"$ne": True}},
+                                    {"_id": 0, "images": 0, "description": 0, "ticimax_fields": 0}):
+        try:
+            its = {str(i.get("merchantSku") or "").strip(): i
+                   for i in _hb_listing_items_from_product(p, markup, price_source, src)}
+        except Exception:
+            continue
+        vs = [v for v in (p.get("variants") or []) if isinstance(v, dict)]
+        pairs = []
+        try:
+            if vs:
+                _used: set = set()
+                for vi, v in enumerate(vs):
+                    _sk = _hb_variant_sku(p, v, vi, src, _used)
+                    if _sk:
+                        pairs.append((str(v.get("size") or _sk), str(_sk).strip()))
+            else:
+                _sk = _hb_variant_sku(p, None, 0, src)
+                if _sk:
+                    pairs.append(("Tek", str(_sk).strip()))
+        except Exception:
+            continue
+        name = p.get("name") or ""
+        missing_here = False
+        for size, sku in pairs:
+            it = its.get(sku) or {}
+            site_stock = int(it.get("availableStock") or 0)
+            r = ilan.get(sku)
+            if r is None:
+                c = catalog.get(sku)
+                if c and c.get("status") in _WAIT:
+                    waiting.append({"urun": name, "beden": size, "sku": sku, "neden": _hb_catalog_text(c)})
+                else:
+                    missing_here = True
+                continue
+            if r.get("isSalable") is True:
+                continue
+            hbsku = str(r.get("hepsiburadaSku") or "").strip()
+            flags = [t for f, t in (("isSuspended", "askıda"), ("isLocked", "kilitli"), ("isFrozen", "dondurulmuş"),
+                                    ("isBlocked", "engelli")) if r.get(f) is True]
+            if flags:
+                manual.append({"urun": name, "beden": size, "sku": sku, "neden": ", ".join(flags)})
+                continue
+            if site_stock <= 0:
+                skipped.append({"urun": name, "beden": size, "sku": sku, "neden": "sitede stok yok"})
+                continue
+            acts = []
+            try:
+                hb_stock = int(float(r.get("availableStock") or 0))
+            except Exception:
+                hb_stock = 0
+            try:
+                hb_price = float(r.get("price") or 0)
+            except Exception:
+                hb_price = 0.0
+            if hb_stock != site_stock:
+                stock_items.append({"merchantSku": sku, "hepsiburadaSku": hbsku, "availableStock": site_stock})
+                acts.append(f"stok {hb_stock}→{site_stock}")
+            if hb_price <= 0:
+                np_ = it.get("price")
+                if not np_:
+                    skipped.append({"urun": name, "beden": size, "sku": sku, "neden": "panelde fiyat yok"})
+                    continue
+                price_items.append({"merchantSku": sku, "hepsiburadaSku": hbsku, "price": np_})
+                acts.append(f"fiyat → {np_}")
+            if hbsku:
+                activate.append(hbsku)
+                acts.append("satışa aç")
+            plan.append({"urun": name, "beden": size, "sku": sku, "islem": ", ".join(acts)})
+        if missing_here:
+            missing_pids.append(p.get("id"))
+            missing_codes.append(str(p.get("stock_code") or p.get("name") or "").strip())
+            for b in [p.get("barcode")] + [v.get("barcode") for v in vs]:
+                b = str(b or "").strip()
+                if b:
+                    missing_barcodes.append(b)
+
+    missing_codes = sorted(set(missing_codes))
+    result = {"uygulandi": bool(req.apply), "satisa_acilacak": len(activate), "stok_gonderilecek": len(stock_items),
+              "fiyat_gonderilecek": len(price_items), "aktarilacak_urun": len(missing_pids) if req.transfer_missing else 0,
+              "elle_cozulecek": manual, "atlanan": skipped, "hb_onayi_bekleyen": waiting[:500], "plan": plan[:1000],
+              "aktarilacak_stok_kodlari": missing_codes[:1000]}
+    if not req.apply:
+        return result
+
+    # 1) stok + fiyat (yalnız fiyatı olmayanlar) → 2) satışa aç → 3) listelenmemişleri aktar
+    errors = []
+    if stock_items:
+        r1 = await _hb_push_stock_price(client, stock_items, do_price=False, do_stock=True)
+        errors += r1.get("errors") or []
+        result["stock_upload_id"] = r1.get("stock_upload_id")
+    if price_items:
+        r2 = await _hb_push_stock_price(client, price_items, do_price=True, do_stock=False)
+        errors += r2.get("errors") or []
+        result["price_upload_id"] = r2.get("price_upload_id")
+    if stock_items or price_items:
+        await _aio.sleep(8)   # HB stok/fiyat yüklemesini işlesin; aktivasyon stok>0 ister
+    fail_act = []
+    _sem = _aio.Semaphore(5)   # 5'erli paralel (istek zaman aşımına düşmesin, HB'yi boğmasın)
+
+    async def _act(hbsku):
+        async with _sem:
+            try:
+                await _aio.to_thread(client.activate_listing, hbsku)
+                return True
+            except Exception as e:
+                fail_act.append({"hepsiburadaSku": hbsku, "hata": str(e)[:200]})
+                return False
+    ok_act = sum(1 for x in await _aio.gather(*[_act(h) for h in dict.fromkeys(activate)]) if x)
+    result.update({"satisa_acilan": ok_act, "acilamayan": fail_act})
+    if req.transfer_missing and missing_pids:
+        class _Req:  # hb_sync_products Request.json() bekler
+            def __init__(self, payload):
+                self._p = payload
+
+            async def json(self):
+                return self._p
+        try:
+            sync_res = await hb_sync_products(_Req({"product_ids": sorted(set(x for x in missing_pids if x))}), current_user)
+            result["aktarim"] = {k: sync_res.get(k) for k in ("successful", "failed", "created", "updated", "message",
+                                                               "skipped", "tracking_id", "update_tracking_id") if k in sync_res}
+            # HB'nin ürün girişi/güncelleme RET gerekçeleri (varsa) — ekranda gösterilir.
+            _rej = []
+            for _key in ("import_result", "update_result"):
+                for _it in ((sync_res.get(_key) or {}).get("items") or []):
+                    if _it.get("ok") is False:
+                        _rej.append({"sku": _it.get("sku"), "neden": _it.get("reason") or "reddedildi"})
+            result["aktarim"]["reddedilen"] = _rej[:200]
+            _tids = [t for t in (sync_res.get("tracking_id"),) if t]  # yalnız YENİ ürün import takibi
+            if _tids:
+                _now_i = datetime.now(timezone.utc).isoformat()
+                await db.settings.update_one(
+                    {"id": "hb_import_trackings"},
+                    {"$push": {"items": {"$each": [{"tracking_id": t, "at": _now_i} for t in _tids], "$slice": -8}}},
+                    upsert=True)
+        except HTTPException as e:
+            result["aktarim"] = {"hata": e.detail}
+        except Exception as e:
+            result["aktarim"] = {"hata": str(e)[:300]}
+    result["hatalar"] = errors
+    await log_integration_event("hepsiburada", "reconcile_fix", "bulk", str(len(activate)),
+                                "success" if not errors and not fail_act else "error",
+                                f"satışa açılan {ok_act}/{len(activate)}, stok {len(stock_items)}, fiyat {len(price_items)}, aktarılan kod {len(missing_codes)}")
+    return result

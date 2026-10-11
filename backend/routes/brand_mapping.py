@@ -36,9 +36,18 @@ KULLANAN FRONTEND:
 from fastapi import APIRouter, HTTPException, Depends
 from datetime import datetime, timezone
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_super_admin
 
-router = APIRouter(prefix="/brand-mapping", tags=["Brand Mapping"])
+# PAZARYERİ YÖNETİMİ — YALNIZ SÜPER-ADMIN (kullanıcı kararı).
+# Bu ekranlar pazaryeri hesaplarını, kategori/marka eşleştirmesini ve entegrasyon
+# günlüklerini yönetir; muhasebe/depo gibi rol atanmış personelin işi değildir ve
+# yanlış bir eşleştirme tüm katalog aktarımını bozabilir. Router düzeyinde kilit:
+# tek tek uçlara güvenmek yerine yeni eklenen uç da otomatik korunur.
+# DİKKAT: sipariş çekme ve iade (claims) uçları integrations_*.py içindedir ve
+# BİLEREK kilitlenmemiştir — muhasebe gider pusulası kesebilmeli, sipariş senkronu
+# çalışmaya devam etmeli.
+router = APIRouter(prefix="/brand-mapping", tags=["Brand Mapping"],
+                   dependencies=[Depends(require_super_admin)])
 
 
 MARKETPLACES = ["trendyol", "hepsiburada", "temu", "n11", "amazon-tr",

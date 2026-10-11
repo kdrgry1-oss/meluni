@@ -1,11 +1,11 @@
 """Stok bildirimi ("Gelince Haber Ver") — stokta olmayan beden için müşteri
 e-postası toplar. Ürün tekrar stoğa girince admin bu listeden bilgilendirme yapar.
 """
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from pydantic import BaseModel, Field
 from datetime import datetime, timezone
 
-from routes.deps import db, generate_id, is_safe_email, safe_str, require_admin
+from routes.deps import db, generate_id, is_safe_email, safe_str, require_admin, limiter, require_permission
 
 router = APIRouter(prefix="/stock-notify", tags=["stock-notify"])
 
@@ -17,8 +17,10 @@ class StockNotifyRequest(BaseModel):
 
 
 @router.post("")
-async def create_stock_notify(payload: StockNotifyRequest):
-    """Müşteri stok bildirimi talebi (public)."""
+@(limiter.limit("10/minute;100/day") if limiter else (lambda f: f))
+async def create_stock_notify(payload: StockNotifyRequest, request: Request):
+    """Müşteri stok bildirimi talebi (public). DENETİM (cost-redteam #11): hız-sınırı eklendi
+    (kayıt şişirme + gelecekte toplu-mail amplifikasyonu engeli)."""
     email = (payload.email or "").strip().lower()
     if not is_safe_email(email):
         raise HTTPException(status_code=400, detail="Geçerli bir e-posta adresi giriniz.")
@@ -55,7 +57,7 @@ async def create_stock_notify(payload: StockNotifyRequest):
 
 
 @router.get("")
-async def list_stock_notifications(notified: bool | None = None, _admin=Depends(require_admin)):
+async def list_stock_notifications(notified: bool | None = None, _admin=Depends(require_permission("products.view", any_in_area=True))):
     """Admin — stok bildirim taleplerini listeler."""
     query = {}
     if notified is not None:

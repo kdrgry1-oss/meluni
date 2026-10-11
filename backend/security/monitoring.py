@@ -70,11 +70,50 @@ async def record_event(kind: str, *, level: str = "info", message: str = "",
         logger.warning(f"record_event failed: {e}")
 
 
+# Süren HTTP istekleri (olay-döngüsü kilitlenme teşhisi: kilitlenme anında ne çalışıyordu?)
+INFLIGHT: dict = {}
+
+
+async def loop_lag_monitor(interval: float = 0.5, threshold: float = 1.5):
+    """Olay döngüsü gecikme izleyicisi. Tek süreçli uvicorn'da senkron/CPU-yoğun bir iş TÜM
+    siteyi + paneli bekletir ("sayfalar yükleniyor'da kalıyor"). Gecikme eşiği aşınca o an
+    çalışan zamanlayıcı işleri + süren istekler error_logs'a 'loop_block' olarak yazılır
+    (teşhis: destek_q=blokaj). En fazla 10 sn'de bir kayıt."""
+    import asyncio as _aio
+    last_rec = 0.0
+    while True:
+        t0 = time.monotonic()
+        await _aio.sleep(interval)
+        lag = time.monotonic() - t0 - interval
+        if lag < threshold or time.monotonic() - last_rec < 10:
+            continue
+        last_rec = time.monotonic()
+        now_m = time.monotonic()
+        try:
+            from scheduler import RUNNING_JOBS, _RUNNING_SYNCS
+            jobs = sorted(([k, round(now_m - v, 1)] for k, v in RUNNING_JOBS.items()), key=lambda x: -x[1])[:8]
+            syncs = sorted(_RUNNING_SYNCS)[:8]
+        except Exception:
+            jobs, syncs = [], []
+        reqs = sorted(([p, round(now_m - st, 1)] for p, st in list(INFLIGHT.values())), key=lambda x: -x[1])[:8]
+        await record_event(kind="loop_block", level="warning",
+                           message=f"Olay döngüsü {int(lag * 1000)} ms kilitlendi",
+                           meta={"lag_ms": int(lag * 1000), "jobs": jobs, "syncs": syncs, "requests": reqs})
+
+
 class ErrorTrackingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         start = time.time()
         path = request.url.path
         method = request.method
+        _key = id(request)
+        INFLIGHT[_key] = (f"{method} {path}", time.monotonic())
+        try:
+            return await self._dispatch(request, call_next, start, path, method)
+        finally:
+            INFLIGHT.pop(_key, None)
+
+    async def _dispatch(self, request, call_next, start, path, method):
         try:
             response = await call_next(request)
         except Exception as e:

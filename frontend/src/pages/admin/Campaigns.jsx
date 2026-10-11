@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../../components/ui/dialog";
+import SaleMenuEditor from "../../components/admin/SaleMenuEditor";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -65,19 +66,63 @@ const CAMPAIGN_TEMPLATES = [
   },
 ];
 
+// ── KAMPANYA ZAMAN PENCERESİ (tarih + SAAT) ─────────────────────────────────
+// Kampanya artık gün değil DAKİKA hassasiyetinde başlayıp bitebilir. Panelde
+// girilen saat MAĞAZA saatidir (İstanbul); sunucu UTC'ye çevirip saklar.
+const CAMP_TZ = "Europe/Istanbul";
+
+// Mağaza saat diliminde tarih/saat parçaları
+const _istParts = (d) => {
+  const p = new Intl.DateTimeFormat("en-CA", {
+    timeZone: CAMP_TZ, year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(d);
+  const g = (t) => (p.find((x) => x.type === t) || {}).value || "00";
+  return { date: `${g("year")}-${g("month")}-${g("day")}`, time: `${g("hour")}:${g("minute")}` };
+};
+
+// Kayıttaki değeri forma böler. ESKİ kayıtlar yalnız tarih ('2026-08-28') olabilir:
+// başlangıç 00:00, bitiş 23:59 sayılır (sunucunun eski davranışıyla aynı) — yoksa
+// mevcut bir kampanya düzenlenip kaydedilince bir gün erken biterdi.
+const splitDT = (v, isEnd) => {
+  const fb = isEnd ? "23:59" : "00:00";
+  if (!v) return { date: "", time: fb };
+  const str = String(v);
+  if (str.length === 10 && !str.includes("T")) return { date: str, time: fb };
+  try {
+    const d = new Date(str);
+    if (isNaN(d.getTime())) return { date: str.slice(0, 10), time: fb };
+    return _istParts(d);
+  } catch {
+    return { date: str.slice(0, 10), time: fb };
+  }
+};
+
+const fmtWhen = (v, isEnd) => {
+  const { date, time } = splitDT(v, isEnd);
+  if (!date) return "-";
+  const [y, m, d] = date.split("-");
+  return `${d}.${m}.${y} ${time}`;
+};
+
 const blankForm = () => ({
   name: "", type: "percentage", value: 0, min_order_amount: 0, code: "",
-  start_date: new Date().toISOString().split('T')[0],
-  end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+  start_date: _istParts(new Date()).date,
+  start_time: "00:00",
+  end_date: _istParts(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)).date,
+  end_time: "23:59",
   is_active: true, auto_apply: false, usage_limit: 0,
   first_order_only: false, usage_limit_per_user: 0, min_quantity: 0,
-  buy_quantity: 2, free_quantity: 1, get_discount: 50, bundle_price: 0,
-  priority: 0, combinable: false, stack_group: "", combinable_with: [],
+  buy_quantity: 2, free_quantity: 1, get_discount: 50, bundle_price: 0, badge_text: "",
+  priority: 0, combinable: true, stack_group: "", combinable_with: [], not_combinable_with: [],
   categories: [], products: [], payment_methods: [],
+  excluded_products_raw: "",
+  skip_discounted: true,
 });
 
 export default function AdminCampaigns() {
   const [campaigns, setCampaigns] = useState([]);
+  const [allPromos, setAllPromos] = useState([]); // engelleme seçicisi: kampanyalar + kod bazlı kuponlar
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -87,8 +132,13 @@ export default function AdminCampaigns() {
   const [prodQuery, setProdQuery] = useState("");
   const [prodResults, setProdResults] = useState([]);
   const [prodNames, setProdNames] = useState({}); // id -> ad (chip gösterimi)
+  const [exQuery, setExQuery] = useState("");      // HARİÇ-TUTMA ürün arama
+  const [exResults, setExResults] = useState([]);
 
   useEffect(() => { fetchCampaigns(); }, []);
+  useEffect(() => {
+    axios.get(`${API}/campaigns?include_coupons=1`).then((r) => setAllPromos(r.data || [])).catch(() => setAllPromos([]));
+  }, [campaigns.length]);
   useEffect(() => {
     axios.get(`${API}/categories`).then((r) => setAllCategories(r.data || [])).catch(() => setAllCategories([]));
   }, []);
@@ -112,9 +162,29 @@ export default function AdminCampaigns() {
     setProdQuery(""); setProdResults([]);
   };
   const removeProduct = (id) => setFormData({ ...formData, products: (formData.products || []).filter((x) => x !== id) });
-  const toggleCombinableWith = (id) => {
-    const cur = formData.combinable_with || [];
-    setFormData({ ...formData, combinable_with: cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id] });
+  // HARİÇ TUTULACAK ÜRÜNLER — arayıp tıklayarak ekleme (id yazmaya gerek yok).
+  // admin_view=1: pasif ürünler de bulunsun. Seçilen ürünün kart id'si (yoksa stok kodu/id)
+  // metin kutusuna eklenir; backend _resolve_excluded_pids bunu gerçek ürün id'sine çevirir.
+  const searchExcl = async (q) => {
+    setExQuery(q);
+    if (!q || q.trim().length < 2) { setExResults([]); return; }
+    try {
+      const r = await axios.get(`${API}/products?search=${encodeURIComponent(q.trim())}&admin_view=1&limit=8`);
+      setExResults(r.data?.products || []);
+    } catch { setExResults([]); }
+  };
+  const addExcl = (p) => {
+    const tok = String(p.urun_karti_id || p.stock_code || p.id || "").trim();
+    if (!tok) return;
+    const raw = String(formData.excluded_products_raw || "");
+    const toks = raw.split(/[\n,;]+/).map((t) => t.trim()).filter(Boolean);
+    if (!toks.includes(tok)) toks.push(tok);
+    setFormData({ ...formData, excluded_products_raw: toks.join(", ") });
+    setExQuery(""); setExResults([]);
+  };
+  const toggleNotCombinableWith = (id) => {
+    const cur = formData.not_combinable_with || [];
+    setFormData({ ...formData, not_combinable_with: cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id] });
   };
   const togglePaymentMethod = (key) => {
     const cur = formData.payment_methods || [];
@@ -141,10 +211,16 @@ export default function AdminCampaigns() {
       // bitiş olarak BUGÜN seçilince kampanya ANINDA "süresi dolmuş" sayılıyordu (rozet
       // %10 görünüp sepette indirim uygulanmaması bunun sonucuydu). Backend zaten
       // yalnız-tarih end_at'i o günün SONUNA (23:59:59) normalize eder (coupons L1).
+      // Tarih + SAAT birlikte gönderilir (start_at/end_at). Sunucu mağaza saatini
+      // UTC'ye çevirip saklar; bitişte seçilen dakika DAHİL sayılır.
+      const _join = (d, t, fb) => (d ? `${d}T${t || fb}` : null);
       const data = {
         ...formData,
         start_date: formData.start_date || null,
         end_date: formData.end_date || null,
+        start_at: _join(formData.start_date, formData.start_time, "00:00"),
+        end_at: _join(formData.end_date, formData.end_time, "23:59"),
+        tz: CAMP_TZ,
       };
       if (editingId) {
         await axios.put(`${API}/campaigns/${editingId}`, data);
@@ -171,8 +247,12 @@ export default function AdminCampaigns() {
       value: c.value || 0,
       min_order_amount: c.min_order_amount || 0,
       code: c.code || "",
-      start_date: c.start_date ? new Date(c.start_date).toISOString().split('T')[0] : blankForm().start_date,
-      end_date: c.end_date ? new Date(c.end_date).toISOString().split('T')[0] : blankForm().end_date,
+      start_date: c.start_date ? splitDT(c.start_date, false).date : blankForm().start_date,
+      start_time: c.start_date ? splitDT(c.start_date, false).time : "00:00",
+      // Bitişi OLMAYAN (süresiz) kampanya düzenlenirken +30 gün DOLDURULMAZ — aksi halde
+      // kaydedince süresiz kampanya sessizce 30 gün sonra bitiyordu. Boş = süresiz.
+      end_date: c.end_date ? splitDT(c.end_date, true).date : "",
+      end_time: c.end_date ? splitDT(c.end_date, true).time : "23:59",
       is_active: c.is_active !== false,
       auto_apply: !!c.auto_apply,
       usage_limit: c.usage_limit || 0,
@@ -182,14 +262,18 @@ export default function AdminCampaigns() {
       buy_quantity: c.buy_quantity || 2,
       free_quantity: c.free_quantity || 1,
       get_discount: c.get_discount || 50,
+      badge_text: c.badge_text || "",
       bundle_price: c.bundle_price || 0,
       priority: c.priority || 0,
-      combinable: !!c.combinable,
+      combinable: c.combinable !== false,
       stack_group: c.stack_group || "",
       combinable_with: c.combinable_with || [],
+      not_combinable_with: c.not_combinable_with || [],
       categories: c.categories || [],
       products: c.products || [],
       payment_methods: c.payment_methods || [],
+      excluded_products_raw: c.excluded_products_raw || "",
+      skip_discounted: c.skip_discounted !== false,
     });
     setModalOpen(true);
   };
@@ -278,6 +362,8 @@ export default function AdminCampaigns() {
         </button>
       </div>
 
+      <SaleMenuEditor />
+
       {/* Şablon galerisi */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-3">
@@ -345,12 +431,28 @@ export default function AdminCampaigns() {
                   </td>
                   <td className="text-sm">{c.redeemed_count || 0}{c.usage_limit ? ` / ${c.usage_limit}` : ""}</td>
                   <td className="text-sm">
-                    {c.start_date ? new Date(c.start_date).toLocaleDateString('tr-TR') : "-"} – {c.end_date ? new Date(c.end_date).toLocaleDateString('tr-TR') : "-"}
+                    {fmtWhen(c.start_date, false)} – {fmtWhen(c.end_date, true)}
                   </td>
                   <td>
-                    <span className={`px-2 py-1 text-xs rounded ${c.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
-                      {c.is_active ? "Aktif" : "Pasif"}
-                    </span>
+                    {(() => {
+                      // Durum = açık/kapalı düğmesi + TARİH. Eskiden yalnız düğmeye bakıyordu:
+                      // bitiş tarihi geçmiş kampanya "Aktif" görünüyor, sona ermemiş sanılıyordu
+                      // (sunucu süresi dolanı zaten uygulamaz — "Kupon süresi dolmuş").
+                      const _t = (v, end) => {
+                        if (!v) return null;
+                        const s = String(v);
+                        const iso = (s.length === 10 && !s.includes("T")) ? `${s}T${end ? "23:59:59" : "00:00:00"}+00:00` : s;
+                        const d = new Date(iso);
+                        return Number.isNaN(d.getTime()) ? null : d;
+                      };
+                      const now = new Date();
+                      const bas = _t(c.start_date, false), bit = _t(c.end_date, true);
+                      const [lbl, cls] = !c.is_active ? ["Pasif", "bg-gray-100 text-gray-500"]
+                        : (bit && bit < now) ? ["Süresi doldu", "bg-red-50 text-red-600"]
+                        : (bas && bas > now) ? ["Planlandı", "bg-blue-50 text-blue-700"]
+                        : ["Aktif", "bg-green-100 text-green-700"];
+                      return <span data-testid={`campaign-status-${c.id}`} className={`px-2 py-1 text-xs rounded whitespace-nowrap ${cls}`}>{lbl}</span>;
+                    })()}
                   </td>
                   <td>
                     <div className="flex items-center gap-1">
@@ -428,6 +530,17 @@ export default function AdminCampaigns() {
                 <p className="col-span-3 text-[11px] text-amber-700">
                   Örn: 2 al / 1 ürüne / %50 = ikinci üründe %50. İndirim her zaman <b>en ucuz ürün(ler)e</b> uygulanır. 3 al / 1 / %100 = "3 al 2 öde".
                 </p>
+                <div className="col-span-3">
+                  <label className={lblCls}>Ürün üzerindeki kırmızı ibare (boş = otomatik)</label>
+                  <input type="text" maxLength={40} value={formData.badge_text || ""}
+                    placeholder={Number(formData.get_discount) >= 100 && Number(formData.free_quantity) < Number(formData.buy_quantity)
+                      ? `${formData.buy_quantity} AL ${formData.buy_quantity - formData.free_quantity} ÖDE`
+                      : `${formData.buy_quantity}. ÜRÜNE %${formData.get_discount} İNDİRİM`}
+                    onChange={(e) => setFormData({ ...formData, badge_text: e.target.value })} className={inputCls} />
+                  <p className="text-[11px] text-amber-700 mt-1">
+                    <b>Otomatik uygula</b> açıkken, seçtiğin kategori/ürünlerin vitrin kartında ve ürün sayfasında bu yazı kırmızı görünür.
+                  </p>
+                </div>
               </div>
             )}
 
@@ -480,19 +593,19 @@ export default function AdminCampaigns() {
             </div>
 
             <label className="flex items-center gap-2 text-sm cursor-pointer">
-              <input type="checkbox" className="accent-black" checked={!!formData.combinable} onChange={(e) => setFormData({ ...formData, combinable: e.target.checked })} />
-              <span>Birleştirilebilir — diğer birleştirilebilir kampanyalarla üst üste uygulanır (kapalıysa tek başına/münhasır).</span>
+              <input type="checkbox" className="accent-black" checked={formData.combinable === false} onChange={(e) => setFormData({ ...formData, combinable: !e.target.checked })} />
+              <span><b>Hiçbir kampanya/kuponla birleşmesin</b> (münhasır). Kapalıysa varsayılan: aşağıda engellenenler HARİÇ hepsiyle birleşir.</span>
             </label>
 
-            {formData.combinable && (
+            {formData.combinable !== false && (
               <div className="border rounded-lg p-3 bg-gray-50/50">
-                <div className="text-[11px] font-semibold uppercase tracking-wide text-gray-600 mb-2">Hangi kampanyalarla birleşsin? <span className="font-normal normal-case text-gray-400">(boş = tüm birleştirilebilirlerle · seçim karşılıklı olmalı)</span></div>
-                <div className="max-h-32 overflow-y-auto space-y-1 border rounded bg-white p-2">
-                  {campaigns.filter((c) => c.id !== editingId).length === 0 && <div className="text-xs text-gray-400">Başka kampanya yok</div>}
-                  {campaigns.filter((c) => c.id !== editingId).map((c) => (
+                <div className="text-[11px] font-semibold uppercase tracking-wide text-gray-600 mb-2">Şu kampanya / kuponlarla KULLANILMASIN <span className="font-normal normal-case text-gray-400">(boş = hepsiyle birleşir · yalnız engellemek istediklerinizi işaretleyin)</span></div>
+                <div className="max-h-40 overflow-y-auto space-y-1 border rounded bg-white p-2">
+                  {allPromos.filter((c) => c.id !== editingId).length === 0 && <div className="text-xs text-gray-400">Başka kampanya/kupon yok</div>}
+                  {allPromos.filter((c) => c.id !== editingId).map((c) => (
                     <label key={c.id} className="flex items-center gap-2 text-xs cursor-pointer">
-                      <input type="checkbox" className="accent-black" checked={(formData.combinable_with || []).includes(c.id)} onChange={() => toggleCombinableWith(c.id)} />
-                      <span>{c.name || c.code}{c.combinable ? "" : <span className="text-amber-600"> (bu kampanya birleştirilemez işaretli)</span>}</span>
+                      <input type="checkbox" className="accent-red-600" checked={(formData.not_combinable_with || []).includes(c.id)} onChange={() => toggleNotCombinableWith(c.id)} />
+                      <span>{c.name || c.title || c.code}{c.auto_apply ? <span className="text-gray-400"> · kampanya</span> : <span className="text-gray-400"> · kupon {c.code}</span>}{c.combinable === false ? <span className="text-amber-600"> (zaten münhasır)</span> : null}</span>
                     </label>
                   ))}
                 </div>
@@ -519,6 +632,21 @@ export default function AdminCampaigns() {
             {/* Madde 4 — Kapsam (kategori/ürün). Boş = tüm sepete uygulanır. */}
             <div className="border rounded-lg p-3 space-y-3 bg-gray-50/50">
               <div className="text-[11px] font-semibold uppercase tracking-wide text-gray-600">Kapsam (opsiyonel — boşsa tüm sepete uygulanır)</div>
+              {/* İNDİRİMLİ FİYATLI ÜRÜNLERİ HARİÇ TUT: seçili kategoride ürün kartında "İndirimli Fiyat"
+                  girili ise o ürünlere bu kampanya UYGULANMAZ. Kapatılırsa kampanya indirimli ürünlere de uygulanır. */}
+              <label className="flex items-start gap-2 text-xs cursor-pointer bg-amber-50 border border-amber-200 rounded-lg p-2.5">
+                <input
+                  type="checkbox"
+                  className="accent-black mt-0.5"
+                  checked={formData.skip_discounted !== false}
+                  onChange={(e) => setFormData({ ...formData, skip_discounted: e.target.checked })}
+                />
+                <span>
+                  <b>İndirimli fiyatı olan ürünlere bu kampanyayı uygulama.</b> İşaretliyken, kapsamdaki
+                  bir üründe <b>İndirimli Fiyat</b> girili ise o ürüne kampanya (rozet + sepet indirimi) uygulanmaz —
+                  ürünün kendi indirimli fiyatı geçerli olur. Kapatırsan kampanya indirimli ürünlere de uygulanır.
+                </span>
+              </label>
               <div>
                 <label className={lblCls}>Kategoriler</label>
                 <div className="max-h-32 overflow-y-auto border rounded bg-white p-2 space-y-1">
@@ -554,6 +682,50 @@ export default function AdminCampaigns() {
                   </div>
                 )}
               </div>
+              {/* HARİÇ TUTULACAK ÜRÜNLER: kategori seçili olsa bile bu ürünlere kampanya UYGULANMAZ */}
+              <div>
+                <label className={lblCls}>Kategoriden hariç tutulacak ürünler (opsiyonel)</label>
+                {/* ÜRÜN SEÇİCİ: arayıp tıklayarak hariç-tutma listesine ekle (id yazmaya gerek yok). */}
+                <div className="relative mb-2">
+                  <input
+                    type="text"
+                    value={exQuery}
+                    onChange={(e) => searchExcl(e.target.value)}
+                    placeholder="Ürün ara ve tıkla → hariç tutulacaklar listesine eklenir…"
+                    className={inputCls}
+                  />
+                  {exResults.length > 0 && (
+                    <div className="absolute z-20 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-auto">
+                      {exResults.map((p) => (
+                        <button
+                          key={p.id}
+                          type="button"
+                          onClick={() => addExcl(p)}
+                          className="w-full text-left px-3 py-2 hover:bg-orange-50 flex items-center gap-2 border-b last:border-b-0 border-gray-100"
+                        >
+                          <span className="flex-1 text-sm text-gray-800 truncate">{p.name}</span>
+                          <span className="text-[11px] text-gray-400 whitespace-nowrap">
+                            {p.urun_karti_id ? `kart ${p.urun_karti_id}` : (p.stock_code || p.id)}
+                            {p.is_active === false ? " · pasif" : ""}
+                          </span>
+                          <Plus size={14} className="text-orange-500 shrink-0" />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <textarea
+                  rows={3}
+                  value={formData.excluded_products_raw || ""}
+                  onChange={(e) => setFormData({ ...formData, excluded_products_raw: e.target.value })}
+                  placeholder={"Ürün kart id'si, stok kodu veya ürün adı — alt alta VEYA virgülle ayırın.\nÖrn:\nW11003\nMotion Paraşüt Ceket Şort Takım Siyah"}
+                  className={inputCls + " font-mono text-[12px] leading-relaxed"}
+                />
+                <div className="text-[11px] text-gray-500 mt-1">
+                  Seçilen kategoride olsalar bile burada yazılan ürünlere kampanya indirimi uygulanmaz.
+                  Bir stok kodu / kart id yazarsanız o modelin tüm renkleri hariç tutulur.
+                </div>
+              </div>
             </div>
 
             {riskWarning && (
@@ -564,14 +736,32 @@ export default function AdminCampaigns() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className={lblCls}>Başlangıç Tarihi</label>
-                <input type="date" value={formData.start_date} onChange={(e) => setFormData({ ...formData, start_date: e.target.value })} className={inputCls} />
+                <label className={lblCls}>Başlangıç (tarih + saat)</label>
+                <div className="flex gap-2">
+                  <input type="date" value={formData.start_date}
+                    onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                    className={`${inputCls} flex-1`} />
+                  <input type="time" value={formData.start_time || "00:00"}
+                    onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
+                    className={`${inputCls} w-28`} />
+                </div>
               </div>
               <div>
-                <label className={lblCls}>Bitiş Tarihi</label>
-                <input type="date" value={formData.end_date} onChange={(e) => setFormData({ ...formData, end_date: e.target.value })} className={inputCls} />
+                <label className={lblCls}>Bitiş (tarih + saat) — boş bırakılırsa süresiz</label>
+                <div className="flex gap-2">
+                  <input type="date" value={formData.end_date}
+                    onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+                    className={`${inputCls} flex-1`} />
+                  <input type="time" value={formData.end_time || "23:59"}
+                    onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
+                    className={`${inputCls} w-28`} />
+                </div>
               </div>
             </div>
+            <p className="text-[11px] text-gray-500 -mt-2">
+              Saatler <b>Türkiye saatidir</b>. Kampanya başlangıç dakikasında açılır, bitiş
+              dakikasının sonunda kapanır (örn. 23:59 → o dakikanın sonuna kadar geçerli).
+            </p>
 
             <label className="flex items-center gap-2">
               <input type="checkbox" checked={formData.is_active} onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })} />

@@ -194,6 +194,26 @@ function FooterColumn({ col, defaultOpen = false }) {
   );
 }
 
+// Altyapı imzası: "Designed by roofcommerce" — logo görseli (public/roofcommerce-logo-white.png),
+// roofcommerce.com.tr'ye yeni sekmede yönlendirir. Telif satırıyla aynı yazı stili, tek eksende ortalı.
+function RoofCredit() {
+  return (
+    <div className="border-t border-white/10 mt-8 pt-6 flex justify-center" data-testid="footer-roof-credit">
+      <a
+        href="https://roofcommerce.com.tr/"
+        lang="en"
+        target="_blank"
+        rel="noopener"
+        className="inline-flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-white/40 hover:text-white/70 transition-colors"
+        aria-label="Designed by roofcommerce"
+      >
+        <span className="leading-none">Designed by</span>
+        <img src="/roofcommerce-logo-white.png" alt="roofcommerce" width="89" height="12" className="h-3 w-auto opacity-80" loading="lazy" />
+      </a>
+    </div>
+  );
+}
+
 export default function Footer() {
   const [tpl, setTpl] = useState(null);
 
@@ -214,6 +234,7 @@ export default function Footer() {
         <NewsletterBand nl={newsletter} />
         <footer className="bg-black text-white" data-testid="footer-html">
           <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(tpl.custom_html) }} />
+          <div className="container-main pb-8"><RoofCredit /></div>
         </footer>
       </>
     );
@@ -289,7 +310,7 @@ export default function Footer() {
         </div>
 
         {/* Columns */}
-        <div className="grid md:grid-cols-4 gap-x-10 md:border-t md:border-white/10 md:pt-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-x-10 md:border-t md:border-white/10 md:pt-12">
           {columns.map((col, i) => (
             <FooterColumn key={col.title || i} col={col} defaultOpen={i === 0} />
           ))}
@@ -324,6 +345,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
+        <RoofCredit />
       </div>
     </footer>
     </>

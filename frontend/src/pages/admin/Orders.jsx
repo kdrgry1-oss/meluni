@@ -28,8 +28,8 @@
  * =============================================================================
  */
 import { useState, useEffect, useRef } from "react";
-import { FolderOpen, RefreshCw, Printer, FileText, FileCheck, MessageSquare, Package, Truck, Tag, CheckSquare, Square, Trash2, Filter, Search, ExternalLink } from "lucide-react";
-import JourneyFunnel from "./JourneyFunnel";
+import { FolderOpen, RefreshCw, Printer, FileText, MessageSquare, Package, Truck, Tag, CheckSquare, Square, Trash2, Filter, Search, ExternalLink, Pin } from "lucide-react";
+import CustomerOrderHistory from "./CustomerOrderHistory";
 import axios from "axios";
 import OrderEventsLog from "../../components/admin/OrderEventsLog";
 import DropshipPanel from "../../components/admin/DropshipPanel";
@@ -37,6 +37,9 @@ import MultiSelect from "../../components/admin/MultiSelect";
 import OrderMarketplaceInfo from "../../components/admin/OrderMarketplaceInfo";
 import OrderPaymentDetail from "../../components/admin/OrderPaymentDetail";
 import { toast } from "sonner";
+import { sanitizeHtml } from "../../lib/sanitizeHtml";
+import { fetchAdminDocumentTexts, openAdminDocument } from "../../lib/adminDocuments";
+import InvoiceDocument from "../../components/admin/InvoiceDocument";
 import {
   Dialog,
   DialogContent,
@@ -51,6 +54,7 @@ import {
   SelectValue,
 } from "../../components/ui/select";
 import Pagination from "../../components/admin/Pagination";
+import { isMaskedTaxId, editTaxIdValue } from "../../lib/taxId";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -72,7 +76,7 @@ const statusOptions = [
   { value: "partial_refunded", label: "Kısmi İade", class: "status-undelivered" },
   { value: "returned", label: "İade Tamamlandı", class: "status-cancelled" },
   { value: "refunded", label: "İade Bedeli Ödendi", class: "status-cancelled" },
-  { value: "cancel_requested", label: "İptal Talebi Alındı (İade Bekliyor)", class: "status-pending" },
+  { value: "cancel_requested", label: "İptal Talebi Alındı", class: "status-pending" },
   { value: "cancelled", label: "İptal Edildi", class: "status-cancelled" },
   { value: "cancel_refunded", label: "Ödemeli İptal Onaylandı", class: "status-cancelled" },
   // Ödemesi HİÇ alınamamış (başarısız kart) sipariş — para alınmadığı için İADE GEREKMEZ.
@@ -115,23 +119,44 @@ export default function AdminOrders({ unpaidView = false }) {
   const [searchTick, setSearchTick] = useState(0);
   const applyFilters = () => { setPage(1); setSearchTick((t) => t + 1); };
   const onFilterKey = (e) => { if (e.key === "Enter") { e.preventDefault(); applyFilters(); } };
-  // Genel arama "debounce": kullanıcı yazmayı ~350ms bırakınca arama OTOMATİK
-  // uygulanır — "Ara" butonuna basmaya gerek kalmaz. İlk render'da tetiklenmez
-  // (mount'ta fetchOrders zaten çalışıyor; çift istek atılmasın).
-  const _searchInit = useRef(true);
+  const setDatePreset = (kind) => {
+    const ymd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const today = new Date();
+    let start_date, end_date;
+    if (kind === "today") { start_date = end_date = ymd(today); }
+    else if (kind === "yesterday") { const y = new Date(today.getTime() - 864e5); start_date = end_date = ymd(y); }
+    else if (kind === "7") { start_date = ymd(new Date(today.getTime() - 6 * 864e5)); end_date = ymd(today); }
+    else if (kind === "30") { start_date = ymd(new Date(today.getTime() - 29 * 864e5)); end_date = ymd(today); }
+    else if (kind === "month") { start_date = ymd(new Date(today.getFullYear(), today.getMonth(), 1)); end_date = ymd(today); }
+    setFilters((f) => ({ ...f, start_date, end_date }));
+    setPage(1); setSearchTick((t) => t + 1);
+  };
+  // FİLTRE UYGULAMA (kullanıcı bildirimi: "sipariş filtrelemede sorun var"):
+  // Eskiden YALNIZ genel arama kutusu otomatik uygulanıyordu; açılır menüler (durum,
+  // platform, ödeme tipi/durumu, kaynak), tarih alanları ve onay kutuları değiştirilince
+  // HİÇBİR istek atılmıyor, kullanıcı "Ara"ya basmadığı sürece liste aynı kalıyordu.
+  // Daha kötüsü: seçim state'te duruyor ve sonraki HERHANGİ bir yenilemede (sayfa
+  // değiştirme, durum güncelleme…) geriden uygulanıp listeyi beklenmedik şekilde
+  // daraltıyordu. Artık HER filtre değişikliği ~350 ms sonra kendiliğinden uygulanır ve
+  // sayfa 1'e döner. İlk render'da tetiklenmez (mount'ta fetchOrders zaten çalışıyor).
+  const _filtersInit = useRef(true);
+  const _filtersSig = JSON.stringify(filters);
   useEffect(() => {
-    if (_searchInit.current) { _searchInit.current = false; return; }
+    if (_filtersInit.current) { _filtersInit.current = false; return; }
     const _t = setTimeout(() => { setPage(1); setSearchTick((t) => t + 1); }, 350);
     return () => clearTimeout(_t);
-  }, [filters.search]);
+  }, [_filtersSig]);
   const _ordReqSeq = useRef(0); // yarış koruması: yalnız EN SON isteğin yanıtı uygulanır
   const [activeStatusKeys, setActiveStatusKeys] = useState([]); // Ayarlar > Siparis Durumlari "Gorunur"
   const [selectedOrder, setSelectedOrder] = useState(null);
+  // KVKK: liste/detay telefon ve açık adresi maskeli gelir; tam değer yalnız "Göster" ile (sayaçlı + denetimli).
+  const [contactRevealing, setContactRevealing] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editData, setEditData] = useState(null);
+  const [slipUploading, setSlipUploading] = useState(false);
   const [bulkAction, setBulkAction] = useState("");
   const [selectedCargo, setSelectedCargo] = useState("MNG");
   const [shipModalOpen, setShipModalOpen] = useState(false);
@@ -312,7 +337,16 @@ export default function AdminOrders({ unpaidView = false }) {
         toast.error(res.data.message || "Fatura oluşturulamadı");
       }
     } catch (err) {
-      toast.error(err.response?.data?.detail || "Fatura oluşturulamadı");
+      // Backend iş-hatalarını 400 + {detail} olarak döndürür (Doğan mesajı burada). Yine de
+      // detail boşsa (ör. ağ/gateway hatası) gerçek durum kodunu/mesajı göster — sessiz
+      // "Fatura oluşturulamadı" teşhisi imkânsız kılıyordu.
+      const _d = err.response?.data?.detail;
+      const _msg = _d
+        ? _d
+        : err.response
+          ? `Fatura oluşturulamadı (HTTP ${err.response.status})`
+          : `Sunucuya ulaşılamadı: ${err.message || 'ağ hatası'}`;
+      toast.error(_msg, { duration: 8000 });
     } finally {
       setInvoicingId(null);
     }
@@ -334,6 +368,51 @@ export default function AdminOrders({ unpaidView = false }) {
       }
     } catch (err) {
       toast.error(err.response?.data?.detail || "Sıfırlanamadı");
+    }
+  };
+
+  // İzi temizle + yeniden dene: başarısız fatura denemesinin izini (hata/kilit) siler ve
+  // hemen yeniden Doğan'a gönderir. Kesilmemiş siparişlerde (invoice_issued=false) "Fatura
+  // Sıfırla" butonu görünmediği için, hata banner'ından tek tıkla temiz-sayfa + yeniden gönderim
+  // sağlar. Not: başarısız denemede gerçek fatura/numara oluşmaz; silinen yalnız iz kaydıdır.
+  const handleClearAndRetryInvoice = async (orderId) => {
+    if (invoicingId) return;
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`${API}/orders/${orderId}/reset-invoice`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    } catch (e) { /* iz yoksa sorun değil — yine de yeniden göndermeyi dene */ }
+    await handleGenerateInvoice(orderId);   // taze gönderim (hata/başarı toast'ı burada gösterilir)
+  };
+
+  // Manuel fatura yükleme (Doğan down / dışarıda kesilen fatura) — PDF/görsel + opsiyonel no
+  const [manualInvNo, setManualInvNo] = useState("");
+  const [manualInvFile, setManualInvFile] = useState(null);
+  const [uploadingInv, setUploadingInv] = useState(false);
+  const handleUploadManualInvoice = async (orderId) => {
+    if (!manualInvFile) { toast.error("Önce dosya seçin (PDF/görsel)"); return; }
+    setUploadingInv(true);
+    const t = toast.loading("Fatura yükleniyor...");
+    try {
+      const token = localStorage.getItem('token');
+      const fd = new FormData();
+      fd.append('file', manualInvFile);
+      if (manualInvNo) fd.append('invoice_number', manualInvNo);
+      const res = await axios.post(`${API}/orders/${orderId}/upload-invoice`, fd, {
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
+      });
+      if (res.data.success) {
+        toast.success(res.data.message || "Manuel fatura yüklendi", { id: t });
+        setManualInvNo(""); setManualInvFile(null);
+        setSelectedOrder(null); fetchOrders();
+      } else {
+        toast.error(res.data.message || "Yüklenemedi", { id: t });
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "Fatura yüklenemedi", { id: t });
+    } finally {
+      setUploadingInv(false);
     }
   };
 
@@ -359,8 +438,8 @@ export default function AdminOrders({ unpaidView = false }) {
 
   // eslint-disable-next-line no-unused-vars -- per-row buton kaldırıldı (Toplu Fatura Yazdır kullanılır); detay/ileride kullanılabilir
   const handlePrintInvoice = async (orderId) => {
-    const token = localStorage.getItem('token');
-    window.open(`${API}/orders/${orderId}/invoice/print?token=${token}`, '_blank');
+    try { await openAdminDocument(`/orders/${orderId}/invoice/print`); }
+    catch (err) { toast.error(err.message || "Fatura açılamadı"); }
   };
 
   const handleGenerateCargoBarcode = async (orderId, company = selectedCargo) => {
@@ -426,17 +505,9 @@ export default function AdminOrders({ unpaidView = false }) {
   };
 
 
-  const handlePrintLabel = (orderId) => {
-    const token = localStorage.getItem('token');
-    const labelUrl = `${API}/orders/${orderId}/cargo-label?token=${token}`;
-    const printWindow = window.open(labelUrl, '_blank', 'width=400,height=600');
-    if (printWindow) {
-      printWindow.onload = () => {
-        setTimeout(() => {
-          printWindow.print();
-        }, 500);
-      };
-    }
+  const handlePrintLabel = async (orderId) => {
+    try { await openAdminDocument(`/orders/${orderId}/cargo-label`, 'width=400,height=600', true); }
+    catch (err) { toast.error(err.message || "Kargo etiketi açılamadı"); return; }
     // Etiket çekimi backend'de "yazdırıldı" damgası bırakır → listeyi tazele (kamyon sarı→yeşil).
     setTimeout(() => fetchOrders(), 1500);
   };
@@ -455,6 +526,37 @@ export default function AdminOrders({ unpaidView = false }) {
     }
   };
 
+
+  // Amazon sevk irsaliyesi (PDF) yükle → adres/isim/telefon otomatik doldur (PII rolü gerekmez).
+  const uploadPackingSlip = async (file) => {
+    if (!file) return;
+    setSlipUploading(true);
+    const t = toast.loading("İrsaliye çözümleniyor...");
+    try {
+      const token = localStorage.getItem('token');
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await axios.post(`${API}/amazon/spapi/orders/parse-packing-slip`, fd, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.data?.success) {
+        toast.success(res.data.message || "Adres dolduruldu", { id: t });
+        await fetchOrders();
+        // Açık detayda anında görünsün diye seçili siparişi güncelle
+        const p = res.data.parsed || {};
+        setSelectedOrder((o) => o ? { ...o, shipping_address: { ...(o.shipping_address || {}),
+          first_name: (p.name || "").split(" ").slice(0, -1).join(" ") || o.shipping_address?.first_name,
+          last_name: (p.name || "").split(" ").slice(-1).join(" ") || o.shipping_address?.last_name,
+          address: p.address, city: p.city, district: p.district, phone: p.phone } } : o);
+      } else {
+        toast.error(res.data?.error || "Çözümlenemedi", { id: t });
+      }
+    } catch (e) {
+      toast.error(e.response?.data?.detail || "İrsaliye yüklenemedi", { id: t });
+    } finally {
+      setSlipUploading(false);
+    }
+  };
 
   const handleSendConfirmationSMS = async (orderId) => {
     try {
@@ -562,34 +664,32 @@ export default function AdminOrders({ unpaidView = false }) {
       toast.error("Lütfen sipariş seçiniz");
       return;
     }
-    const token = localStorage.getItem('token');
+    // Open synchronously: blocked popups must not fetch/stamp labels as printed.
+    const w = window.open('', '_blank');
+    if (!w) { toast.error("Açılır pencere engellendi — tarayıcı pop-up iznini açın"); return; }
+    w.opener = null;
     toast.loading("Kargo etiketleri hazırlanıyor...", { id: "bulklbl" });
     try {
-      const htmls = await Promise.all(
-        selectedOrders.map(async (id) => {
-          try {
-            const r = await fetch(`${API}/orders/${id}/cargo-label?token=${token}`);
-            if (!r.ok) return "";
-            return await r.text();
-          } catch {
-            return "";
-          }
-        })
-      );
-      const valid = htmls.filter(Boolean);
+      const { htmls: valid, failures } = await fetchAdminDocumentTexts(selectedOrders, "cargo-label");
       toast.dismiss("bulklbl");
+      if (failures.length) {
+        toast.error(`${failures.length}/${selectedOrders.length} kargo etiketi alınamadı. ${failures[0].error}`, { duration: 10000 });
+      }
       if (!valid.length) {
-        toast.error("Yazdırılacak etiket bulunamadı");
+        w.close();
         return;
       }
-      // İlk etiketin <head> içeriği (Google Fonts link + stil + @page) bir kez kullanılır.
-      const headInner = (valid[0].match(/<head[^>]*>([\s\S]*?)<\/head>/i)?.[1] || "")
-        .replace(/<title[\s\S]*?<\/title>/i, "");
-      // Her etiketin body'si; içindeki tekil <script> çıkarılır.
-      const bodies = valid.map((html) => {
-        const m = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-        return (m ? m[1] : html).replace(/<script[\s\S]*?<\/script>/gi, "");
-      });
+      // HTML'i regex ile ayıklamak güvenli değildir. DOMParser ile parse et; yalnız
+      // sabit stil metnini ve allowlist temizleyiciden geçen body içeriğini taşı.
+      const parsed = valid.map((html) => new DOMParser().parseFromString(html, "text/html"));
+      const labelCss = Array.from(parsed[0].head.querySelectorAll("style"))
+        .map((style) => style.textContent || "")
+        .join("\n")
+        .replace(/@import[^;]+;?/gi, "")
+        .replace(/url\s*\([^)]*\)/gi, "")
+        .replace(/<\/?style/gi, "");
+      const headInner = `<style>${labelCss}</style>`;
+      const bodies = parsed.map((doc) => sanitizeHtml(doc.body.innerHTML, { allowStyle: true }));
       const doc =
         `<!doctype html><html lang="tr"><head>` + headInner +
         `<style>` +
@@ -612,18 +712,14 @@ export default function AdminOrders({ unpaidView = false }) {
         `});` +
         `})();` +
         `</script></body></html>`;
-      const w = window.open('', '_blank');
-      if (!w) {
-        toast.error("Açılır pencere engellendi — tarayıcı pop-up iznini açın");
-        return;
-      }
       w.document.write(doc);
       w.document.close();
       // Etiket çekimleri backend'de "yazdırıldı" damgası bıraktı → kamyonlar sarı→yeşil.
       fetchOrders();
     } catch (e) {
+      w.close();
       toast.dismiss("bulklbl");
-      toast.error("Etiket yazdırma başarısız");
+      toast.error(`Etiket yazdırma başarısız: ${e.message || "Belge hazırlanamadı"}`);
     }
   };
 
@@ -681,20 +777,9 @@ export default function AdminOrders({ unpaidView = false }) {
       toast.error("Lütfen sipariş seçiniz");
       return;
     }
-    const token = localStorage.getItem('token');
     toast.loading("Faturalar hazırlanıyor...", { id: "bulkinv" });
     try {
-      const htmls = await Promise.all(
-        selectedOrders.map(async (id) => {
-          try {
-            const r = await fetch(`${API}/orders/${id}/invoice/print?token=${token}`);
-            if (!r.ok) return "";
-            return await r.text();
-          } catch {
-            return "";
-          }
-        })
-      );
+      const { htmls, failures } = await fetchAdminDocumentTexts(selectedOrders, "invoice/print");
       const sections = htmls
         .filter(Boolean)
         .map((html) => {
@@ -702,8 +787,10 @@ export default function AdminOrders({ unpaidView = false }) {
           return `<div class="page">${m ? m[1] : html}</div>`;
         });
       toast.dismiss("bulkinv");
+      if (failures.length) {
+        toast.error(`${failures.length}/${selectedOrders.length} fatura alınamadı. ${failures[0].error}`, { duration: 10000 });
+      }
       if (!sections.length) {
-        toast.error("Yazdırılacak fatura bulunamadı");
         return;
       }
       const doc = `<!doctype html><html lang="tr"><head><meta charset="utf-8"/>` +
@@ -763,11 +850,16 @@ export default function AdminOrders({ unpaidView = false }) {
     );
   };
 
+  // Ekranda GÖRÜNEN satırlar = sunucudan gelen liste; SIRAYA DOKUNULMAZ.
+  // (Kullanıcı isteği: iptal talepleri en üste çekilmesin, kendi tarih/saat sırasında
+  // kalsın — yalnız MOR satır olarak ayırt edilsinler.)
+  const rowsRendered = orders;
+
   const toggleSelectAll = () => {
-    if (selectedOrders.length === orders.length) {
+    if (selectedOrders.length === rowsRendered.length) {
       setSelectedOrders([]);
     } else {
-      setSelectedOrders(orders.map(o => o.id));
+      setSelectedOrders(rowsRendered.map(o => o.id));
     }
   };
 
@@ -797,9 +889,41 @@ export default function AdminOrders({ unpaidView = false }) {
   const _nameKeyOf = (it) =>
     it.productName !== undefined ? "productName" : (it.product_name !== undefined ? "product_name" : "name");
 
-  const startEdit = () => {
-    const o = selectedOrder;
+  const revealContact = async (orderId) => {
+    setContactRevealing(true);
+    try {
+      const token = localStorage.getItem("token");
+      const r = await axios.get(`${API}/orders/${orderId}/contact`, { headers: { Authorization: `Bearer ${token}` } });
+      const c = r.data || {};
+      const merge = (o) => {
+        const next = { ...o, contact_masked: false };
+        ["shipping_address", "billing_address", "invoice_address", "delivery_address"].forEach((k) => {
+          if (c[k]) next[k] = { ...(o[k] || {}), ...c[k] };
+        });
+        ["phone", "customer_phone", "user_phone", "buyer_phone"].forEach((k) => {
+          if (c[k]) next[k] = c[k];
+        });
+        return next;
+      };
+      setSelectedOrder((o) => (o && o.id === orderId ? merge(o) : o));
+      return merge(selectedOrder && selectedOrder.id === orderId ? selectedOrder : {});
+    } catch (e) {
+      toast.error(e?.response?.data?.detail || "İletişim bilgisi açılamadı");
+      return null;
+    } finally {
+      setContactRevealing(false);
+    }
+  };
+
+  const startEdit = async () => {
+    let o = selectedOrder;
     if (!o) return;
+    // Düzenleme formu GERÇEK değerle açılır (maskeli değer kaydedilse de sunucu eskisini korur).
+    if (o.contact_masked) {
+      const opened = await revealContact(o.id);
+      if (!opened) return;
+      o = { ...o, ...opened };
+    }
     const itemsKey = _itemsKeyOf(o);
     setEditData({
       itemsKey,
@@ -843,8 +967,10 @@ export default function AdminOrders({ unpaidView = false }) {
       });
       const _bi = editData.billing_info || {};
       const _tn = String(_bi.tax_number || "").trim();
+      // KVKK: maskeli ("*********12") değer = değiştirilmedi → sunucu mevcut şifreli değeri korur.
+      const _tnMasked = isMaskedTaxId(_tn);
       const billing_info = {
-        is_corporate: !!_bi.is_corporate || _tn.length === 10 || !!String(_bi.company_name || "").trim(),
+        is_corporate: !!_bi.is_corporate || (!_tnMasked && _tn.length === 10) || !!String(_bi.company_name || "").trim(),
         company_name: String(_bi.company_name || "").trim(),
         tax_number: _tn,
         tax_office: String(_bi.tax_office || "").trim(),
@@ -878,13 +1004,31 @@ export default function AdminOrders({ unpaidView = false }) {
     }
   };
 
-  const formatDate = (dateStr) => {
-    return new Date(dateStr).toLocaleDateString('tr-TR', {
+  // Bir siparişin pazaryeri (Trendyol/HB/Temu/N11/Amazon) olup olmadığı.
+  const _isMarketplaceOrder = (o) => {
+    const s = String((o && (o.platform || o.marketplace)) || "").toLowerCase();
+    return ["trendyol", "hepsiburada", "temu", "n11", "amazon"].some((x) => s.includes(x));
+  };
+  // Trendyol API siparişinin marketplace_order_date'i artık GERÇEK UTC (sunucu 3 saat
+  // düzeltmesi) → TR saatine çevrilerek gösterilir. Eskiden "olduğu gibi" gösterilince
+  // Trendyol siparişleri 3 saat erken görünüyordu (00:12 sipariş "21:12").
+  const _tyGercekUtc = (o) =>
+    String((o && (o.platform || o.marketplace)) || "").toLowerCase().includes("trendyol") &&
+    !!(o && o.marketplace_order_date);
+  // asIs=true → değeri OLDUĞU GİBİ göster (kayma yok). Pazaryeri siparişlerinde orderDate
+  // TR duvar-saati olarak +00:00 etiketiyle saklanıyor (Trendyol orderDate quirk); +3 EKLENİRSE
+  // saat ileri kayar ("13:45 gibi gelecek saat"). Site siparişleri ise gerçek UTC → +3 (Istanbul).
+  const formatDate = (dateStr, asIs = false) => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleString('tr-TR', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      timeZone: asIs ? 'UTC' : 'Europe/Istanbul'
     });
   };
 
@@ -894,9 +1038,27 @@ export default function AdminOrders({ unpaidView = false }) {
       const res = await axios.get(`${API}/orders/${orderId}/payment-receipt`, {
         headers: { Authorization: `Bearer ${token}` }, responseType: 'blob'
       });
-      const url = URL.createObjectURL(res.data);
-      window.open(url, '_blank');
-      setTimeout(() => URL.revokeObjectURL(url), 60000);
+      // GÜVENLİK (stored-XSS müşteri → admin): dekontu MÜŞTERİ yükler. blob: adresi panelin
+      // origin'inde açılır ve sunucunun attachment/CSP başlıklarını taşımaz → image/svg+xml ya da
+      // HTML türündeki bir dekont script çalıştırıp admin token'ını okuyabilirdi. Yalnız raster
+      // görsel/PDF yeni sekmede gösterilir; diğer her tür türsüz (octet-stream) İNDİRİLİR.
+      const blob = res.data;
+      const type = String(blob?.type || "").split(";")[0].trim().toLowerCase();
+      const viewable = type === "application/pdf" || /^image\/(jpeg|jpg|pjpeg|png|x-png|gif|webp|heic|heif|bmp|tiff|avif)$/.test(type);
+      if (viewable) {
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+      } else {
+        const url = URL.createObjectURL(new Blob([blob], { type: "application/octet-stream" }));
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `dekont-${orderId}`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+      }
     } catch (e) {
       toast.error('Dekont görüntülenemedi');
     }
@@ -1033,6 +1195,11 @@ export default function AdminOrders({ unpaidView = false }) {
               <input type="date" title="Başlangıç Tarihi" className="border px-2 py-1.5 rounded flex-1" value={filters.start_date} onChange={e => setFilters({...filters, start_date: e.target.value})} />
               <span>-</span>
               <input type="date" title="Bitiş Tarihi" className="border px-2 py-1.5 rounded flex-1" value={filters.end_date} onChange={e => setFilters({...filters, end_date: e.target.value})} />
+            </div>
+            <div className="flex flex-wrap gap-1 items-center xl:col-span-2">
+              {[["today","Bugün"],["yesterday","Dün"],["7","Son 7"],["30","Son 30"],["month","Bu Ay"]].map(([k,l]) => (
+                <button key={k} type="button" onClick={() => setDatePreset(k)} className="px-2 py-1 border rounded text-xs bg-gray-50 hover:bg-white hover:border-gray-400 transition-colors">{l}</button>
+              ))}
             </div>
             <div className="flex gap-2 xl:col-span-2">
               <button onClick={applyFilters} type="button" className="w-1/2 bg-black text-white px-3 py-1.5 rounded text-sm hover:bg-gray-800 flex justify-center items-center gap-1">
@@ -1174,7 +1341,7 @@ export default function AdminOrders({ unpaidView = false }) {
             <tr>
               <th className="w-10">
                 <button onClick={toggleSelectAll} className="p-1">
-                  {selectedOrders.length === orders.length ? (
+                  {selectedOrders.length === rowsRendered.length && rowsRendered.length > 0 ? (
                     <CheckSquare size={18} />
                   ) : (
                     <Square size={18} />
@@ -1198,12 +1365,12 @@ export default function AdminOrders({ unpaidView = false }) {
               <tr>
                 <td colSpan={10} className="text-center py-8">Yükleniyor...</td>
               </tr>
-            ) : orders.length === 0 ? (
+            ) : rowsRendered.length === 0 ? (
               <tr>
                 <td colSpan={10} className="text-center py-8 text-gray-500">Sipariş bulunamadı</td>
               </tr>
             ) : (
-              orders.map((order) => {
+              rowsRendered.map((order) => {
                 const statusInfo = getStatusInfo(order.status);
                 // FAZ 1 B2/B3/B4 visual logic
                 const pmLower = (order.payment_method || '').toLowerCase();
@@ -1213,8 +1380,8 @@ export default function AdminOrders({ unpaidView = false }) {
                   ['confirmed', 'processing', 'shipped', 'delivered', 'undelivered'].includes(order.status);
                 const isUnpaidHavale = isHavale && !paymentConfirmed && order.status !== 'cancelled';
                 const isUnpaidPending = !paymentConfirmed && !isHavale && order.status === 'pending';
-                // İPTAL TALEBİ ALINDI: müşteri ödemesi alınmış siparişi iptal etti → PARA İADESİ BEKLİYOR.
-                // Havale-kırmızıdan farklı olsun diye MOR/menekşe vurgu. Personel iadeyi yapıp iptale çeker.
+                // İPTAL TALEBİ ALINDI: müşterinin HER iptal talebi (ödenmiş/ödenmemiş) bu duruma düşer;
+                // sipariş kendiliğinden iptal OLMAZ. MOR vurgu; personel (gerekirse iadeyi yapıp) iptale çeker.
                 const isCancelRequested = order.status === 'cancel_requested';
                 const isInvoiceIssued = !!order.invoice_issued;
                 // row-unpaid-* marker sınıfları: hover'da .admin-table tr:hover td kuralı
@@ -1238,7 +1405,7 @@ export default function AdminOrders({ unpaidView = false }) {
                         )}
                       </button>
                     </td>
-                    <td className="font-medium">{order.order_number}{order.has_partial_return ? <span className="ml-1.5 inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-700 align-middle" title="Bu siparişte bir veya daha fazla kalem iade edildi">kısmi iade</span> : null}{order.partial_cancelled ? <span className="relative inline-flex ml-1.5 align-middle" title="Bu siparişte iptal edilen ürün var"><span className="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-red-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span></span> : null}</td>
+                    <td className="font-medium">{order.order_number}{order.has_partial_return ? <span className="ml-1.5 inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-700 align-middle" title="Bu siparişte bir veya daha fazla kalem iade edildi">kısmi iade</span> : null}{(order.partial_cancelled && !["cancelled", "cancel_refunded"].includes(order.status)) ? <span className="relative inline-flex ml-1.5 align-middle" title="Bu siparişte iptal edilen ürün var"><span className="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-red-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span></span> : null}</td>
                     <td>
                       <div>
                         {(() => {
@@ -1287,7 +1454,7 @@ export default function AdminOrders({ unpaidView = false }) {
                                 <div className="w-6 h-6 bg-gray-100 rounded flex items-center justify-center text-[8px] text-gray-400">—</div>
                               )}
                               {qty > 1 && (
-                                <span className="absolute -top-1 -left-1 min-w-[14px] h-[14px] px-0.5 bg-black text-white text-[9px] leading-[14px] text-center rounded-full font-bold">{qty}</span>
+                                <span className="absolute -top-2 -left-2 min-w-[20px] h-[20px] px-1 bg-red-600 text-white text-[11px] leading-[20px] text-center rounded-full font-extrabold ring-2 ring-white shadow-md">{qty}</span>
                               )}
                             </div>
                             <span className="truncate max-w-[120px]">{item.productName || item.product_name || item.name || 'Ürün'}</span>
@@ -1369,6 +1536,8 @@ export default function AdminOrders({ unpaidView = false }) {
                           trendyol: { label: 'Trendyol', bg: 'bg-[#F27A1A]' },
                           hepsiburada: { label: 'Hepsiburada', bg: 'bg-[#FF6000]' },
                           temu: { label: 'Temu', bg: 'bg-[#FB7701]' },
+                          amazon: { label: 'Amazon', bg: 'bg-[#232F3E]' },
+                          n11: { label: 'n11', bg: 'bg-[#EA0029]' },
                         };
                         const m = map[p] || { label: 'Web', bg: 'bg-gray-800' };
                         return <span className={`inline-block px-2 py-0.5 ${m.bg} text-white text-[10px] uppercase font-bold tracking-wider rounded`}>{m.label}</span>;
@@ -1423,9 +1592,11 @@ export default function AdminOrders({ unpaidView = false }) {
                           // Barkod var ama etiket henüz YAZDIRILMADI → kamyon SARI (aksiyon gerek).
                           // Etiket yazdırıldıysa (cargo_label_printed_at) → YEŞİL, takip no beklenir.
                           const printed = !!order.cargo_label_printed_at;
+                          const pc = Number(order.cargo_label_print_count || 0);
                           return printed ? (
-                            <span className="inline-flex items-center gap-1.5" title={`Barkod yazdırıldı: ${barcodeNo} — kargo firması takip no'yu henüz üretmedi`}>
+                            <span className="inline-flex items-center gap-1.5" title={`Barkod yazdırıldı: ${barcodeNo}${pc > 0 ? ` · ${pc} defa` : ""} — kargo firması takip no'yu henüz üretmedi`}>
                               <Truck size={16} className="text-emerald-500" />
+                              {pc > 0 && <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 rounded-full px-1.5" title={`${pc} defa yazdırıldı`}>×{pc}</span>}
                               <span className="text-[10px] text-gray-400">takip bekleniyor</span>
                             </span>
                           ) : (
@@ -1438,7 +1609,9 @@ export default function AdminOrders({ unpaidView = false }) {
                         return <span className="text-gray-300">—</span>;
                       })()}
                     </td>
-                    <td className="text-sm text-gray-500">{formatDate(order.created_at)}</td>
+                    <td className="text-sm text-gray-500">{_tyGercekUtc(order)
+                      ? formatDate(order.marketplace_order_date)
+                      : formatDate(order.created_at, _isMarketplaceOrder(order))}</td>
                     <td>
                       {/* Ticimax benzeri işlem butonları - daha belirgin ve ayrık */}
                       <div className="flex items-center gap-1 flex-wrap">
@@ -1474,7 +1647,8 @@ export default function AdminOrders({ unpaidView = false }) {
                         {/* 5b. (kaldırıldı) Kargo Durum Yenile — kargo verisi artık otomatik
                             çekildiği için manuel yenile butonuna gerek kalmadı. */}
                         {/* 6. (kaldırıldı) SMS → sipariş detayından gönderilir */}
-                        {/* Not butonu — admin notu + müşteri sipariş notu göstergesi (en sağda) */}
+                        {/* 📌 Not butonu — hediye paketinin SOLUNDA. Not varsa pin kırmızı
+                            ve yanıp söner; tıklanınca müşteri notu + personel notları pop-up'ı açılır. */}
                         {(() => {
                           const adminCount = order.admin_notes?.length || 0;
                           const custNote = (order.notes || "").trim();
@@ -1485,11 +1659,16 @@ export default function AdminOrders({ unpaidView = false }) {
                               title={[
                                 custNote ? `Müşteri notu: ${custNote}` : "",
                                 adminCount ? `${adminCount} admin notu` : "",
-                              ].filter(Boolean).join("\n") || "Not Ekle"}
+                              ].filter(Boolean).join("\n") || "Not ekle (müşteri not girmemiş)"}
                               data-testid={`note-btn-${order.id}`}
                               className={`tci-btn ${hasNote ? 'tci-btn-yellow-active' : 'tci-btn-gray'}`}
+                              aria-label={hasNote ? "Sipariş notu var" : "Sipariş notu ekle"}
                             >
-                              <FileCheck size={15} />
+                              <Pin
+                                size={15}
+                                strokeWidth={hasNote ? 2.6 : 2}
+                                className={hasNote ? "text-red-600 animate-pulse" : ""}
+                              />
                               {adminCount > 0 ? (
                                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">{adminCount}</span>
                               ) : custNote ? (
@@ -1563,6 +1742,21 @@ export default function AdminOrders({ unpaidView = false }) {
                   ) : (
                     <button onClick={startEdit} className="px-3 py-1.5 border text-xs rounded hover:bg-gray-50">Düzenle</button>
                   )}
+                  {/* 📌 Notlar — detaydan da açılabilsin. İç içe dialog açmamak için
+                      detay kapatılıp not pop-up'ı açılır (odak tuzağı olmasın). */}
+                  {(() => {
+                    const _nc = (selectedOrder.admin_notes?.length || 0) + ((selectedOrder.notes || "").trim() ? 1 : 0);
+                    return (
+                      <button
+                        onClick={() => { setDetailOpen(false); openNoteModal(selectedOrder); }}
+                        data-testid="detail-note-btn"
+                        className="px-3 py-1.5 border text-xs rounded hover:bg-gray-50 inline-flex items-center gap-1"
+                      >
+                        <Pin size={13} className={_nc ? "text-red-600 animate-pulse" : ""} />
+                        Notlar{_nc ? ` (${_nc})` : ""}
+                      </button>
+                    );
+                  })()}
                 </span>
               )}
             </DialogTitle>
@@ -1570,7 +1764,7 @@ export default function AdminOrders({ unpaidView = false }) {
           
           {selectedOrder && (
             <div className="space-y-6">
-              {selectedOrder.partial_cancelled && (
+              {selectedOrder.partial_cancelled && !["cancelled", "cancel_refunded"].includes(selectedOrder.status) && (
                 <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-700">
                   <span className="relative inline-flex">
                     <span className="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-red-400 opacity-75"></span>
@@ -1580,10 +1774,48 @@ export default function AdminOrders({ unpaidView = false }) {
                   <span className="text-red-500">— müşteri kargoya verilmeden önce bir/birkaç kalemi iptal etti. Kalan kalemleri kontrol edin.</span>
                 </div>
               )}
+              {/* Manuel fatura yükleme — YALNIZ fatura kesilMEMİŞ siparişlerde görünür;
+                  fatura kesilince (otomatik ya da manuel) bu alan kaybolur. */}
+              {!(selectedOrder.invoice_issued || selectedOrder.invoice_number || selectedOrder.invoice?.invoice_number) && (
+                <div className="p-3 border rounded bg-slate-50 text-sm">
+                  <div className="font-medium mb-1 flex items-center gap-1">
+                    <FileText size={15} /> Faturayı Manuel Yükle
+                  </div>
+                  <p className="text-[11px] text-gray-500 mb-2">
+                    Doğan otomatik kesilemezse (ör. geçici kesinti), dışarıda kestiğiniz faturayı
+                    (PDF veya görsel) buraya yükleyin. Sipariş "faturalandı" işaretlenir ve dosya
+                    sipariş içinde görünür.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+                    <input
+                      type="text"
+                      value={manualInvNo}
+                      onChange={(e) => setManualInvNo(e.target.value)}
+                      placeholder="Fatura No (opsiyonel)"
+                      className="border rounded px-2 py-1.5 text-sm flex-1"
+                    />
+                    <input
+                      type="file"
+                      accept="application/pdf,image/*"
+                      onChange={(e) => setManualInvFile(e.target.files?.[0] || null)}
+                      className="text-xs flex-1"
+                    />
+                    <button
+                      onClick={() => handleUploadManualInvoice(selectedOrder.id)}
+                      disabled={!manualInvFile || uploadingInv}
+                      className="flex items-center justify-center gap-1 px-4 py-1.5 bg-slate-800 text-white text-sm rounded hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <FileText size={15} />
+                      {uploadingInv ? "Yükleniyor..." : "Yükle"}
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Action Buttons */}
               <div className="flex gap-2 flex-wrap">
                 {!(selectedOrder.invoice_issued || selectedOrder.invoice_number || selectedOrder.invoice?.invoice_number) && (
-                  <button 
+                  <button
                     onClick={() => handleGenerateInvoice(selectedOrder.id)}
                     disabled={invoicingId === selectedOrder.id}
                     className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -1614,13 +1846,20 @@ export default function AdminOrders({ unpaidView = false }) {
                         Trendyol Etiketi Yazdır
                       </button>
                     ) : (
-                      <button
-                        onClick={() => handlePrintLabel(selectedOrder.id)}
-                        className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700"
-                      >
-                        <Tag size={16} />
-                        Etiket Yazdır
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handlePrintLabel(selectedOrder.id)}
+                          className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700"
+                        >
+                          <Tag size={16} />
+                          Etiket Yazdır
+                        </button>
+                        {Number(selectedOrder.cargo_label_print_count || 0) > 0 && (
+                          <span className="text-xs font-medium text-gray-500" data-testid="label-print-count">
+                            {selectedOrder.cargo_label_print_count} defa yazdırıldı
+                          </span>
+                        )}
+                      </div>
                     )}
                     <button
                       onClick={() => handleSendShippingSMS(selectedOrder.id)}
@@ -1679,10 +1918,6 @@ export default function AdminOrders({ unpaidView = false }) {
               {(selectedOrder.invoice_issued || selectedOrder.invoice_number || selectedOrder.invoice?.invoice_number || selectedOrder.invoice_pdf_url || selectedOrder.invoice_link) && (() => {
                 const invNo = selectedOrder.invoice?.invoice_number || selectedOrder.invoice_number;
                 const rawUrl = selectedOrder.invoice_pdf_url || selectedOrder.invoice_link || "";
-                const tok = localStorage.getItem('token');
-                const pdfSrc = (typeof rawUrl === 'string' && rawUrl.startsWith('http'))
-                  ? rawUrl
-                  : `${API}/orders/${selectedOrder.id}/invoice/print?token=${tok}`;
                 return (
                   <div className="border border-green-200 bg-green-50 rounded p-4">
                     <div className="flex items-center justify-between mb-3 gap-3">
@@ -1690,9 +1925,8 @@ export default function AdminOrders({ unpaidView = false }) {
                         <h3 className="font-medium text-green-800">Fatura</h3>
                         {invNo && <p className="text-sm text-gray-700">No: <span className="font-medium">{invNo}</span></p>}
                       </div>
-                      <a href={pdfSrc} target="_blank" rel="noreferrer" className="text-sm text-blue-600 hover:underline shrink-0">Yeni sekmede aç ↗</a>
                     </div>
-                    <iframe src={pdfSrc} title="Fatura" className="w-full rounded border bg-white" style={{ height: 520 }} />
+                    <InvoiceDocument orderId={selectedOrder.id} externalUrl={rawUrl} />
                     {/* #20: Faturada kullanılan MATRAH bilgileri (birim fiyat · iskonto · KDV) */}
                     {(() => {
                       const items = selectedOrder.items || selectedOrder.lines || [];
@@ -1776,14 +2010,14 @@ export default function AdminOrders({ unpaidView = false }) {
                         </span>
                       </p>
                       {selectedOrder.payment_notified_at && (
-                        <p className="text-xs text-gray-500 mt-1">Dekont yüklendi: {new Date(selectedOrder.payment_notified_at).toLocaleString('tr-TR')}</p>
+                        <p className="text-xs text-gray-500 mt-1">Dekont yüklendi: {new Date(selectedOrder.payment_notified_at).toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' })}</p>
                       )}
                       {selectedOrder.payment_receipt?.note && (
                         <p className="text-xs text-gray-500 mt-0.5">Not: {selectedOrder.payment_receipt.note}</p>
                       )}
                       {selectedOrder.payment_status !== 'paid' && selectedOrder.payment_reminder_last_at && (
                         <p className="text-xs text-blue-600 mt-1">
-                          Son hatırlatma: {new Date(selectedOrder.payment_reminder_last_at).toLocaleString('tr-TR')}
+                          Son hatırlatma: {new Date(selectedOrder.payment_reminder_last_at).toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' })}
                           {selectedOrder.payment_reminder_count ? ` (${selectedOrder.payment_reminder_count} kez)` : ''}
                         </p>
                       )}
@@ -1808,7 +2042,16 @@ export default function AdminOrders({ unpaidView = false }) {
               {/* Customer Info */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="p-4 border rounded">
-                  <h3 className="font-medium mb-3">{editMode ? "Müşteri Bilgileri" : "Teslimat Adresi"}</h3>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <h3 className="font-medium">{editMode ? "Müşteri Bilgileri" : "Teslimat Adresi"}</h3>
+                    {!editMode && selectedOrder.contact_masked && (
+                      <button type="button" onClick={() => revealContact(selectedOrder.id)} disabled={contactRevealing}
+                        className="inline-flex items-center gap-1 px-2 py-0.5 text-xs border rounded hover:bg-gray-50 disabled:opacity-50"
+                        title="Tam telefon ve adres (KVKK: görüntüleme kayıt altına alınır)" data-testid="order-contact-reveal">
+                        {contactRevealing ? "Açılıyor…" : "Göster"}
+                      </button>
+                    )}
+                  </div>
                   {editMode ? (
                     <div className="space-y-2">
                       <div className="grid grid-cols-2 gap-2">
@@ -1836,6 +2079,18 @@ export default function AdminOrders({ unpaidView = false }) {
                       </div>
                     );
                   })()}
+                  {/* Amazon: PII rolü olmadan adres için sevk irsaliyesi (PDF) çözümle */}
+                  {!editMode && (selectedOrder.platform === "amazon") && (
+                    <div className="mt-3 pt-3 border-t">
+                      <label className="block text-[11px] text-gray-500 mb-1">
+                        📄 Sevk irsaliyesi (PDF) çözümle — adres/isim/telefon otomatik dolar
+                      </label>
+                      <input type="file" accept=".pdf,application/pdf" disabled={slipUploading}
+                        onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; uploadPackingSlip(f); }}
+                        className="text-xs" />
+                      {slipUploading && <span className="text-[11px] text-gray-400 ml-2">çözümleniyor…</span>}
+                    </div>
+                  )}
                 </div>
                 <div className="p-4 border rounded">
                   <h3 className="font-medium mb-3">{editMode ? "Teslimat Adresi" : "Fatura Adresi"}</h3>
@@ -1858,7 +2113,7 @@ export default function AdminOrders({ unpaidView = false }) {
                     const taxNumber = bi.tax_number || ba.tax_number || ba.tax_no || ba.vkn || "";
                     const isCorp = bi.is_corporate || ba.is_corporate || !!(company || taxNumber || taxOffice);
                     const invNo = selectedOrder.invoice?.invoice_number || selectedOrder.invoice_number || "";
-                    const eInv = bi.e_invoice_user === true ? "Evet" : (isCorp && String(taxNumber).length === 10 ? "Kesimde sorgulanır" : "Hayır");
+                    const eInv = bi.e_invoice_user === true ? "Evet" : (isCorp && !isMaskedTaxId(taxNumber) && String(taxNumber).length === 10 ? "Kesimde sorgulanır" : "Hayır");
                     const bAddr = [ba.address, [ba.district, ba.city].filter(Boolean).join(" / ")].filter(Boolean).join(" — ")
                       || [sa.address, [sa.district, sa.city].filter(Boolean).join(" / ")].filter(Boolean).join(" — ");
                     const bName = company || [ba.first_name || sa.first_name, ba.last_name || sa.last_name].filter(Boolean).join(" ");
@@ -1894,7 +2149,7 @@ export default function AdminOrders({ unpaidView = false }) {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                     <input className="border rounded px-2 py-1 text-sm w-full" placeholder="Ünvan (firma adı)" value={editData.billing_info?.company_name || ""} onChange={(e) => setBI("company_name", e.target.value)} />
-                    <input className="border rounded px-2 py-1 text-sm w-full" placeholder="VKN (10) / TCKN (11)" inputMode="numeric" value={editData.billing_info?.tax_number || ""} onChange={(e) => setBI("tax_number", e.target.value.replace(/\D/g, ""))} />
+                    <input className="border rounded px-2 py-1 text-sm w-full" placeholder="VKN (10) / TCKN (11)" inputMode="numeric" value={editData.billing_info?.tax_number || ""} onChange={(e) => setBI("tax_number", editTaxIdValue(editData.billing_info?.tax_number, e.target.value))} />
                     <input className="border rounded px-2 py-1 text-sm w-full" placeholder="Vergi Dairesi" value={editData.billing_info?.tax_office || ""} onChange={(e) => setBI("tax_office", e.target.value)} />
                   </div>
                   <p className="text-[11px] text-amber-800 mt-1">VKN 10 hane ise kesimde Doğan'a e-Fatura mükellefiyeti sorulur; mükellef değilse e-Arşiv kesilir. (Bu siparişte VKN'yi girip Kaydet → sonra Fatura Kes.)</p>
@@ -1909,45 +2164,16 @@ export default function AdminOrders({ unpaidView = false }) {
                   {selectedOrder.invoice_last_error_at && (
                     <span className="text-xs text-red-500"> ({formatDate(selectedOrder.invoice_last_error_at)})</span>
                   )}
-                </div>
-              )}
-
-              {/* Attribution / Order Source */}
-              {selectedOrder.attribution && (
-                <div className="p-4 border rounded bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
-                  <h3 className="font-medium mb-2 flex items-center gap-1 text-indigo-900">
-                    📡 Sipariş Kaynağı
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                    <div>
-                      <div className="text-xs text-gray-500 uppercase">Kanal</div>
-                      <div className="font-semibold text-indigo-900">{selectedOrder.attribution.channel || "direct"}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-gray-500 uppercase">Kaynak (utm_source)</div>
-                      <div className="font-medium">{selectedOrder.attribution.source || "—"}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-gray-500 uppercase">Medium</div>
-                      <div className="font-medium">{selectedOrder.attribution.medium || "—"}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-gray-500 uppercase">Kampanya</div>
-                      <div className="font-medium">{selectedOrder.attribution.campaign || "—"}</div>
-                    </div>
-                    {selectedOrder.attribution.referrer && (
-                      <div className="col-span-2 md:col-span-4 text-xs text-gray-500 break-all">
-                        Referrer: <span className="text-gray-700">{selectedOrder.attribution.referrer}</span>
-                      </div>
-                    )}
-                    {selectedOrder.attribution.landing_page && (
-                      <div className="col-span-2 md:col-span-4 text-xs text-gray-500 break-all">
-                        İniş Sayfası: <span className="text-gray-700">{selectedOrder.attribution.landing_page}</span>
-                      </div>
-                    )}
-                    {selectedOrder.attribution.device && (
-                      <div className="text-xs text-gray-500">Cihaz: <span className="text-gray-700 font-medium">{selectedOrder.attribution.device}</span></div>
-                    )}
+                  <div className="mt-2">
+                    <button
+                      onClick={() => handleClearAndRetryInvoice(selectedOrder.id)}
+                      disabled={invoicingId === selectedOrder.id}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-600 text-white text-xs rounded hover:bg-red-700 disabled:opacity-50"
+                      title="Başarısız denemenin izini siler ve yeniden Doğan'a gönderir"
+                    >
+                      <FileText size={14} />
+                      {invoicingId === selectedOrder.id ? "Deneniyor..." : "İzi temizle ve yeniden dene"}
+                    </button>
                   </div>
                 </div>
               )}
@@ -2098,9 +2324,9 @@ export default function AdminOrders({ unpaidView = false }) {
                 </div>
               )}
 
-              {/* Müşteri Yolculuğu / Attribution Hunisi — düzenleme modunda gizle */}
+              {/* Müşterinin diğer siparişleri + iptal/iade geçmişi (eski Sipariş Kaynağı / Müşteri Yolculuğu yerine) */}
               {!editMode && selectedOrder?.id && (
-                <JourneyFunnel orderId={selectedOrder.id} />
+                <CustomerOrderHistory orderId={selectedOrder.id} />
               )}
 
               {/* Totals */}
@@ -2260,7 +2486,7 @@ export default function AdminOrders({ unpaidView = false }) {
                 {noteTargetOrder.admin_notes.map(n => (
                   <div key={n.id || n.at} className="bg-yellow-50 border-l-4 border-yellow-400 p-2 rounded text-sm">
                     <p className="text-gray-800">{n.text}</p>
-                    <p className="text-[10px] text-gray-500 mt-1">{n.by || "Personel"} · {new Date(n.at).toLocaleString('tr-TR')}</p>
+                    <p className="text-[10px] text-gray-500 mt-1">{n.by || "Personel"} · {new Date(n.at).toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' })}</p>
                   </div>
                 ))}
               </div>

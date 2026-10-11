@@ -24,9 +24,34 @@ import {
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-export default function CategoryMapping() {
+export default function CategoryMapping({ lockedMarketplace = "", embedded = false }) {
   const [marketplaces, setMarketplaces] = useState([]);
-  const [active, setActive] = useState("trendyol");
+  // Aktif pazaryeri URL'de ?mp=<slug> olarak tutulur → her pazaryeri ayrı (paylaşılabilir) link.
+  const [active, setActive] = useState(() => {
+    if (lockedMarketplace) return lockedMarketplace;
+    try { return new URLSearchParams(window.location.search).get("mp") || "trendyol"; }
+    catch { return "trendyol"; }
+  });
+  // Sekmeye tıklayınca URL'i güncelle (ayrı geçmiş kaydı → geri/ileri ve link paylaşımı çalışır).
+  const selectMarketplace = (key) => {
+    if (lockedMarketplace) return;
+    setActive(key);
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set("mp", key);
+      window.history.pushState({}, "", url);
+    } catch { /* no-op */ }
+  };
+  // Tarayıcı geri/ileri → aktif sekmeyi URL'den senkronla.
+  useEffect(() => {
+    if (lockedMarketplace) return undefined;
+    const onPop = () => {
+      try { setActive(new URLSearchParams(window.location.search).get("mp") || "trendyol"); }
+      catch { /* no-op */ }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [lockedMarketplace]);
   const [data, setData] = useState({ items: [], total: 0, matched: 0, unmatched: 0 });
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -44,11 +69,12 @@ export default function CategoryMapping() {
   const auth = { headers: { Authorization: `Bearer ${token}` } };
 
   useEffect(() => {
+    if (lockedMarketplace) return undefined;
     axios.get(`${API}/marketplace-hub/marketplaces`, auth)
       .then((r) => setMarketplaces(r.data?.marketplaces || []))
       .catch(() => {});
     // eslint-disable-next-line
-  }, []);
+  }, [lockedMarketplace]);
 
   const load = async () => {
     setLoading(true);
@@ -203,9 +229,13 @@ export default function CategoryMapping() {
     <div data-testid="category-mapping-page">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h1 className="text-2xl font-bold">Kategori Eşleştirme</h1>
+          <h1 className={`${embedded ? "text-lg" : "text-2xl"} font-bold`}>
+            {lockedMarketplace === "amazon-tr" ? "Amazon Aktarım & Eşleştirme" : "Kategori Eşleştirme"}
+          </h1>
           <p className="text-sm text-gray-500 mt-1">
-            Sistem kategorilerinizi pazaryerlerinin kategori ağacıyla eşleştirin. Her pazaryeri için ayrı sekme.
+            {lockedMarketplace === "amazon-tr"
+              ? "Amazon kategorilerini, zorunlu özellikleri, renk/beden değerlerini ve hedefli ürün aktarımını yönetin."
+              : "Sistem kategorilerinizi pazaryerlerinin kategori ağacıyla eşleştirin. Her pazaryeri için ayrı sekme."}
           </p>
         </div>
         <div className="flex gap-2">
@@ -244,11 +274,11 @@ export default function CategoryMapping() {
         </div>
       </div>
 
-      <div className="flex items-center gap-1 border-b border-gray-200 mb-4 overflow-x-auto">
+      {!lockedMarketplace && <div className="flex items-center gap-1 border-b border-gray-200 mb-4 overflow-x-auto">
         {marketplaces.map((m) => {
           const isActive = m.key === active;
           return (
-            <button key={m.key} onClick={() => setActive(m.key)}
+            <button key={m.key} onClick={() => selectMarketplace(m.key)}
               className={`px-4 py-2 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
                 isActive ? "border-stone-900 text-stone-900" : "border-transparent text-stone-500 hover:text-stone-900"
               }`} data-testid={`cat-mp-tab-${m.key}`}>
@@ -262,7 +292,7 @@ export default function CategoryMapping() {
             </button>
           );
         })}
-      </div>
+      </div>}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
         <div className="bg-white border border-stone-200 rounded-xl p-4">
@@ -588,10 +618,16 @@ function FilteredPushPanel({ marketplace, auth, categories = [] }) {
   const [hbTrackingLoading, setHbTrackingLoading] = useState(false);
   const [recon, setRecon] = useState(null);
   const [reconLoading, setReconLoading] = useState(false);
+  // Aktif ürün ↔ HB satış mutabakatı (listelenmemiş / satışta olmayan)
+  const [actRecon, setActRecon] = useState(null);
+  const [actLoading, setActLoading] = useState(false);
+  const [actFilter, setActFilter] = useState("");
+  const [fixRes, setFixRes] = useState(null);
+  const [fixLoading, setFixLoading] = useState(false);
   const [selectedCatIds, setSelectedCatIds] = useState([]);
   const [catFilterOpen, setCatFilterOpen] = useState(false);
 
-  const supportedMarketplaces = ["trendyol", "hepsiburada"]; // Trendyol + Hepsiburada
+  const supportedMarketplaces = ["trendyol", "hepsiburada", "amazon-tr"]; // + Amazon TR
   if (!supportedMarketplaces.includes(marketplace)) return null;
 
   // Sadece matched kategoriler — boş bırakırsa Tümü demektir
@@ -721,6 +757,60 @@ function FilteredPushPanel({ marketplace, auth, categories = [] }) {
     }
   };
 
+  const loadActiveRecon = async () => {
+    setActLoading(true);
+    try {
+      const r = await axios.get(`${API}/integrations/hepsiburada/reconcile/active-listings`, { ...auth, timeout: 300000 });
+      setActRecon(r.data || {});
+    } catch (e) {
+      toast.error("HB satış mutabakatı alınamadı: " + (e.response?.data?.detail || e.message));
+    } finally {
+      setActLoading(false);
+    }
+  };
+  // Sorunları gider: apply=false → ön izleme (hiçbir şey gönderilmez); apply=true → uygula.
+  const runFix = async (apply) => {
+    if (apply && !window.confirm("Hepsiburada'ya stok/fiyat gönderilecek, ilanlar satışa açılacak ve listelenmemiş ürünler aktarılacak. Onaylıyor musunuz?")) return;
+    setFixLoading(true);
+    try {
+      const r = await axios.post(`${API}/integrations/hepsiburada/reconcile/fix`,
+        { apply, transfer_missing: true }, { ...auth, timeout: 600000 });
+      setFixRes(r.data || {});
+      if (apply) {
+        const d = r.data || {};
+        const ak = d.aktarim || {};
+        toast.success(`Satışa açılan: ${d.satisa_acilan ?? 0} · Aktarılan: ${ak.successful ?? 0} · `
+          + `Aktarılamayan: ${(ak.failed ?? 0) + (ak.reddedilen?.length ?? 0)} · HB onayında: ${d.hb_onayi_bekleyen?.length ?? 0}`,
+          { duration: 12000 });
+        loadActiveRecon();
+      }
+    } catch (e) {
+      toast.error("İşlem yapılamadı: " + (e.response?.data?.detail || e.message));
+    } finally {
+      setFixLoading(false);
+    }
+  };
+  const exportActiveRecon = async (rows) => {
+    const cols = [
+      { k: "kart_id", l: "Kart ID" }, { k: "urun", l: "Ürün" }, { k: "stok_kodu", l: "Stok Kodu" },
+      { k: "renk", l: "Renk" }, { k: "durum", l: "Durum" }, { k: "site_stok", l: "Site Stok", type: "num" },
+      { k: "listelenmemis_bedenler", l: "Listelenmemiş Bedenler" },
+      { k: "satista_olmayan_bedenler", l: "Satışta Olmayan Bedenler" }, { k: "neden", l: "HB Nedeni" },
+    ];
+    try {
+      const res = await axios.post(`${API}/admin/reports2/export-xlsx`,
+        { title: "HB Satış Mutabakatı", columns: cols, rows }, { ...auth, responseType: "blob" });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `hb_satis_mutabakati_${new Date().toISOString().substring(0, 10)}.xlsx`;
+      document.body.appendChild(a); a.click(); a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (_) {
+      toast.error("Excel indirilemedi");
+    }
+  };
+
   const loadReconcile = async () => {
     setReconLoading(true);
     setRecon(null);
@@ -816,6 +906,15 @@ function FilteredPushPanel({ marketplace, auth, categories = [] }) {
                 data-testid="open-ghost-scanner-btn"
               >
                 👻 Hayalet Tarayıcı
+              </a>
+              <a
+                href="/admin/trendyol-hayalet?tab=gaps"
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs bg-white border border-stone-300 text-stone-700 hover:bg-stone-50 px-3 py-1.5 rounded font-semibold whitespace-nowrap"
+                data-testid="open-coverage-gaps-btn"
+              >
+                📦 Sitede var, TY'de yok
               </a>
               <a
                 href="/admin/trendyol-loglar"
@@ -1051,7 +1150,7 @@ function FilteredPushPanel({ marketplace, auth, categories = [] }) {
                             {(r.missing_required_attrs || []).length > 0 && (
                               <div className="mt-1 bg-red-50 border border-red-300 rounded-md px-2 py-1.5">
                                 <div className="text-[10px] font-bold text-red-700 uppercase mb-1">
-                                  Hepsiburada zorunlu — eksik ({r.missing_required_attrs.length})
+                                  {marketplace === "hepsiburada" ? "Hepsiburada" : marketplace === "amazon-tr" ? "Amazon" : marketplace} zorunlu — eksik ({r.missing_required_attrs.length})
                                 </div>
                                 <div className="space-y-1">
                                   {r.missing_required_attrs.map((m, mi) => (
@@ -1151,6 +1250,35 @@ function FilteredPushPanel({ marketplace, auth, categories = [] }) {
           </div>
           {lastResult.message && (
             <div className="px-3 py-2 text-xs text-gray-700 border-b">{lastResult.message}</div>
+          )}
+          {marketplace === "amazon-tr" && (lastResult.results || []).length > 0 && (
+            <div className="px-3 py-2 border-b bg-stone-50">
+              <div className="text-[11px] font-bold text-stone-700 uppercase mb-1">Amazon SKU Sonuçları</div>
+              <div className="space-y-1 max-h-72 overflow-auto">
+                {lastResult.results.slice(0, 50).map((it, i) => {
+                  const issues = (it.issues || []).map((x) =>
+                    [x.code, x.message].filter(Boolean).join(": ")
+                  ).filter(Boolean);
+                  const raw = Array.isArray(it.raw_errors)
+                    ? it.raw_errors.map((x) => x?.message || JSON.stringify(x)).filter(Boolean)
+                    : [];
+                  const details = issues.length ? issues : raw;
+                  return (
+                    <div key={`${it.sku || "sku"}-${i}`} className={`text-[10px] border rounded px-2 py-1 ${it.ok ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}>
+                      <div className="flex justify-between gap-2">
+                        <span className="font-mono break-all">{it.sku || "-"}</span>
+                        <span className={`font-bold shrink-0 ${it.ok ? "text-green-700" : "text-red-700"}`}>
+                          {it.ok ? "✓ KABUL" : `✗ HATA${it.http ? ` (${it.http})` : ""}`}
+                        </span>
+                      </div>
+                      {it.product && <div className="text-stone-600 mt-0.5">{it.product}</div>}
+                      {details.map((msg, j) => <div key={j} className="text-red-800 mt-0.5 break-words">{msg}</div>)}
+                      {!it.ok && details.length === 0 && it.error && <div className="text-red-800 mt-0.5 break-words">{it.error}</div>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           )}
           {lastResult.environment && marketplace === "hepsiburada" && (
             <div className={`px-3 py-2 text-xs border-b ${lastResult.is_test ? "bg-red-100 border-red-300 text-red-900" : "bg-emerald-50 border-emerald-200 text-emerald-800"}`}>
@@ -1396,6 +1524,116 @@ function FilteredPushPanel({ marketplace, auth, categories = [] }) {
                   </table>
                 </div>
                 {recon.orphan_on_hb?.count > 250 && <div className="text-[10px] text-gray-400 mt-0.5">İlk 250 gösterildi; tamamı CSV'de.</div>}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+      {marketplace === "hepsiburada" && (
+        <div className="mt-3 bg-white border rounded-lg overflow-hidden" data-testid="hb-active-recon">
+          <div className="px-3 py-2 bg-orange-50 border-b flex items-center justify-between gap-2">
+            <div className="text-xs text-orange-900"><b>Aktif Ürün ↔ HB Satış Mutabakatı</b></div>
+            <div className="flex items-center gap-2">
+              {actRecon?.items?.length > 0 && (
+                <button onClick={() => exportActiveRecon((actRecon.items || []).filter((r) => !actFilter || r.durum === actFilter))}
+                  className="text-xs bg-white border border-gray-300 hover:border-gray-900 px-3 py-1 rounded font-semibold"
+                  data-testid="hb-active-recon-excel">Excel</button>
+              )}
+              <button onClick={loadActiveRecon} disabled={actLoading}
+                className="text-xs bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded font-semibold disabled:opacity-50"
+                data-testid="hb-active-recon-btn">
+                {actLoading ? "Hesaplanıyor..." : "Mutabakatı Çalıştır"}
+              </button>
+              {actRecon?.sorunlu > 0 && (
+                <button onClick={() => runFix(false)} disabled={fixLoading}
+                  className="text-xs bg-white border border-gray-300 hover:border-gray-900 px-3 py-1 rounded font-semibold disabled:opacity-50"
+                  data-testid="hb-fix-preview">{fixLoading ? "Hazırlanıyor..." : "Sorunları Gider (Ön İzleme)"}</button>
+              )}
+            </div>
+          </div>
+          {fixRes && (
+            <div className="px-3 pt-3 text-xs">
+                  <div className="mb-3 border rounded p-2 bg-gray-50" data-testid="hb-fix-result">
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <b>{fixRes.uygulandi ? "Uygulama sonucu" : "Ön izleme — henüz hiçbir şey gönderilmedi"}</b>
+                      {!fixRes.uygulandi && (
+                        <button onClick={() => runFix(true)} disabled={fixLoading}
+                          className="text-xs bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded font-semibold disabled:opacity-50"
+                          data-testid="hb-fix-apply">{fixLoading ? "Uygulanıyor..." : "Uygula"}</button>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+                      {[["Satışa açılacak", fixRes.satisa_acilacak], ["Stok gönderilecek", fixRes.stok_gonderilecek],
+                        ["Fiyat gönderilecek", fixRes.fiyat_gonderilecek], ["Aktarılacak ürün", fixRes.aktarilacak_urun]].map(([l, v]) => (
+                        <div key={l} className="bg-white border rounded p-2 text-center"><div className="text-[9px] text-gray-500 uppercase">{l}</div><div className="text-sm font-bold">{v ?? 0}</div></div>
+                      ))}
+                    </div>
+                    {fixRes.uygulandi && (
+                      <div className="mb-2 space-y-1">
+                        <div>Satışa açılan: <b>{fixRes.satisa_acilan ?? 0}</b>{fixRes.acilamayan?.length ? ` · açılamayan: ${fixRes.acilamayan.length}` : ""}
+                        {" · "}Aktarılan: <b>{fixRes.aktarim?.successful ?? 0}</b>
+                        {fixRes.aktarim?.created != null ? ` (yeni ${fixRes.aktarim.created}, güncelleme ${fixRes.aktarim.updated ?? 0})` : ""}
+                        {" · "}Aktarılamayan: <b>{(fixRes.aktarim?.failed ?? 0) + (fixRes.aktarim?.reddedilen?.length ?? 0)}</b>
+                        {" · "}HB onayında: <b>{fixRes.hb_onayi_bekleyen?.length ?? 0}</b></div>
+                        {fixRes.aktarim && <div>Aktarım: {fixRes.aktarim.message || fixRes.aktarim.hata || "—"}</div>}
+                        {(fixRes.acilamayan || []).slice(0, 20).map((a) => <div key={a.hepsiburadaSku} className="text-red-700">{a.hepsiburadaSku}: {a.hata}</div>)}
+                        {(fixRes.aktarim?.skipped || []).slice(0, 30).map((x, i) => <div key={i} className="text-amber-800">Aktarılamadı · {x.name}: {x.reason}</div>)}
+                        {(fixRes.aktarim?.reddedilen || []).slice(0, 30).map((x, i) => <div key={`r${i}`} className="text-red-700">HB reddetti · {x.sku}: {x.neden}</div>)}
+                      </div>
+                    )}
+                    {(fixRes.elle_cozulecek || []).length > 0 && (
+                      <div className="mb-1"><b className="text-red-800">HB panelinden çözülmeli ({fixRes.elle_cozulecek.length}):</b> {fixRes.elle_cozulecek.slice(0, 30).map((x) => `${x.urun} ${x.beden} (${x.neden})`).join(" · ")}</div>
+                    )}
+                    {(fixRes.hb_onayi_bekleyen || []).length > 0 && (
+                      <div className="mb-1"><b className="text-blue-800">HB onayında — tekrar gönderilmedi ({fixRes.hb_onayi_bekleyen.length}):</b> {fixRes.hb_onayi_bekleyen.slice(0, 30).map((x) => `${x.urun} ${x.beden} (${x.neden})`).join(" · ")}</div>
+                    )}
+                    {(fixRes.atlanan || []).length > 0 && (
+                      <div><b className="text-gray-700">Atlanan ({fixRes.atlanan.length}):</b> {fixRes.atlanan.slice(0, 30).map((x) => `${x.urun} ${x.beden} (${x.neden})`).join(" · ")}</div>
+                    )}
+                  </div>
+            </div>
+          )}
+          {actRecon && (
+            <div className="p-3 text-xs">
+              {actRecon.environment === "sandbox" && (
+                <div className="mb-2 bg-red-100 border border-red-300 text-red-900 rounded px-2 py-1">⚠️ SANDBOX okunuyor — gerçek mağaza değil.</div>
+              )}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+                <div className="bg-gray-50 border rounded p-2 text-center"><div className="text-[9px] text-gray-500 uppercase">Aktif Ürün</div><div className="text-sm font-bold">{actRecon.aktif_urun ?? 0}</div></div>
+                <div className="bg-gray-50 border rounded p-2 text-center"><div className="text-[9px] text-gray-500 uppercase">HB İlan</div><div className="text-sm font-bold">{actRecon.hb_ilan ?? 0}</div></div>
+                <div className="bg-green-50 border border-green-200 rounded p-2 text-center"><div className="text-[9px] text-green-700 uppercase">Sorunsuz</div><div className="text-sm font-bold text-green-700">{actRecon.sorunsuz ?? 0}</div></div>
+                <div className="bg-orange-50 border border-orange-200 rounded p-2 text-center"><div className="text-[9px] text-orange-700 uppercase">Sorunlu</div><div className="text-sm font-bold text-orange-700">{actRecon.sorunlu ?? 0}</div></div>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 mb-2">
+                {[["", `Tümü (${actRecon.sorunlu ?? 0})`], ...Object.entries(actRecon.ozet || {}).map(([k, v]) => [k, `${k} (${v})`])].map(([k, l]) => (
+                  <button key={k || "all"} type="button" onClick={() => setActFilter(k)}
+                    className={`h-7 px-2.5 rounded border text-[11px] font-semibold ${actFilter === k ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-700 border-gray-300 hover:border-gray-900"}`}>{l}</button>
+                ))}
+              </div>
+              <div className="max-h-[420px] overflow-auto border rounded">
+                <table className="w-full text-[11px]">
+                  <thead className="bg-gray-50 sticky top-0">
+                    <tr>
+                      <th className="text-left px-2 py-1.5">Kart ID</th><th className="text-left px-2 py-1.5">Ürün</th>
+                      <th className="text-left px-2 py-1.5">Durum</th><th className="text-right px-2 py-1.5">Site Stok</th>
+                      <th className="text-left px-2 py-1.5">Listelenmemiş</th><th className="text-left px-2 py-1.5">Satışta Değil</th>
+                      <th className="text-left px-2 py-1.5">HB Nedeni</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(actRecon.items || []).filter((r) => !actFilter || r.durum === actFilter).map((r) => (
+                      <tr key={r.id} className="border-t">
+                        <td className="px-2 py-1 font-mono">{r.kart_id || "—"}</td>
+                        <td className="px-2 py-1"><a href={`/admin/urunler/${r.id}`} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{r.urun}</a></td>
+                        <td className="px-2 py-1 whitespace-nowrap">{r.durum}</td>
+                        <td className="px-2 py-1 text-right tabular-nums">{r.site_stok}</td>
+                        <td className="px-2 py-1">{r.listelenmemis_bedenler || "—"}</td>
+                        <td className="px-2 py-1">{r.satista_olmayan_bedenler || "—"}</td>
+                        <td className="px-2 py-1 text-gray-600">{r.neden || "—"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           )}

@@ -128,7 +128,12 @@ export default function StockAlerts() {
                 ) : (
                   critical.items.map((i, idx) => (
                     <tr key={idx}>
-                      <td>{i.image ? <img src={i.image} alt="" className="w-10 h-14 object-cover rounded border" /> : <span className="text-gray-300">—</span>}</td>
+                      <td>{i.image ? (
+                        <a href={`/urun/${encodeURIComponent(i.slug || i.product_id)}`} target="_blank" rel="noopener noreferrer"
+                           title="Müşteri gözüyle ürün sayfasını aç">
+                          <img src={i.image} alt="" className="w-10 h-14 object-cover rounded border cursor-pointer hover:opacity-80 transition-opacity" />
+                        </a>
+                      ) : <span className="text-gray-300">—</span>}</td>
                       <td className="font-semibold text-sm">{i.product_name}</td>
                       <td className="text-xs">{i.variant}</td>
                       <td className="text-xs font-mono">{i.stock_code || "-"}</td>
@@ -162,7 +167,12 @@ export default function StockAlerts() {
               ) : (
                 reorder.items.map((i, idx) => (
                   <tr key={idx}>
-                    <td>{i.image ? <img src={i.image} alt="" className="w-10 h-14 object-cover rounded border" /> : "—"}</td>
+                    <td>{i.image ? (
+                      <a href={`/urun/${encodeURIComponent(i.slug || i.product_id)}`} target="_blank" rel="noopener noreferrer"
+                         title="Müşteri gözüyle ürün sayfasını aç">
+                        <img src={i.image} alt="" className="w-10 h-14 object-cover rounded border cursor-pointer hover:opacity-80 transition-opacity" />
+                      </a>
+                    ) : "—"}</td>
                     <td className="font-semibold text-sm">{i.product_name}</td>
                     <td className="text-xs font-mono">{i.stock_code || "-"}</td>
                     <td><span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">{i.sold_60_days}</span></td>

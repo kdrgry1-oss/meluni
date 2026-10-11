@@ -137,17 +137,39 @@ async def handle_order_status_change(payload: dict):
     new_status = payload.get("status")
     
     if order_number and new_status:
-        # Trendyol status mapping
+        # Trendyol status mapping.
+        # DENETİM (TY-webhook): "UnDelivered" MÜŞTERİ İADESİ DEĞİL — kargo teslim edilemedi,
+        # çoğu yeniden denenir. Eskiden "returned"a eşleniyordu → sahte iadeler + ciro düşümü
+        # (cron yolunda düzeltilmişti, webhook yolunda kalmıştı). "undelivered" operasyonel
+        # statüsüne eşlenir (terminal değil); gerçek iade YALNIZ claim senkronunda işlenir.
         status_map = {
             "Shipped": "shipped",
             "Delivered": "delivered",
             "Cancelled": "cancelled",
-            "UnDelivered": "returned"
+            "UnDelivered": "undelivered",
         }
         mapped_status = status_map.get(new_status)
         if mapped_status:
+            # Terminal/iade durumlarını webhook EZMESİN (geç gelen event geriye/ileriye zıplatmasın).
+            # cancelled/refunded/returned bir siparişi Shipped/Delivered'a geri çekme; delivered'ı
+            # shipped'e düşürme. Yalnız ileri-yönlü, güvenli geçişlere izin ver.
+            _TERMINAL = {"cancelled", "cancel_refunded", "refunded", "returned", "return_approved"}
+            _RANK = {"undelivered": 1, "shipped": 2, "delivered": 3}
+            cur = await db.orders.find_one(
+                {"order_number": str(order_number), "platform": "trendyol"},
+                {"_id": 0, "status": 1})
+            if cur is None:
+                return
+            cur_status = cur.get("status") or ""
+            if cur_status in _TERMINAL:
+                logger.info(f"Trendyol Webhook: Order {order_number} terminal ({cur_status}) — {new_status} yok sayıldı")
+                return
+            # Cancelled dışındaki geçişlerde geriye düşmeyi engelle.
+            if mapped_status != "cancelled" and _RANK.get(mapped_status, 0) < _RANK.get(cur_status, 0):
+                logger.info(f"Trendyol Webhook: Order {order_number} {cur_status}→{mapped_status} geriye geçiş yok sayıldı")
+                return
             await db.orders.update_one(
                 {"order_number": str(order_number), "platform": "trendyol"},
-                {"$set": {"status": mapped_status}}
+                {"$set": {"status": mapped_status, "updated_at": datetime.now(timezone.utc).isoformat()}}
             )
             logger.info(f"Trendyol Webhook: Order {order_number} status updated to {mapped_status}")

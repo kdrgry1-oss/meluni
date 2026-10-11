@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import {
-  Users, Shield, Plus, Trash2, Edit, Save, X, ChevronDown, ChevronRight, UserPlus, Key
+  Users, Shield, Plus, Trash2, Edit, Save, ChevronDown, ChevronRight, UserPlus,
+  CheckCircle2, XCircle, Send, Mail, ShieldCheck,
 } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle,
 } from "../../components/ui/dialog";
+import { useAuth } from "../../context/AuthContext";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -99,7 +101,43 @@ function PermissionTree({ tree, selected, onChange, disabled }) {
   return <div className="space-y-1">{tree.map(n => renderNode(n))}</div>;
 }
 
+// Telefon karşılaştırması: biçim farkı (boşluk, +90, 0) değişiklik sayılmaz — backend ile aynı kural.
+const phoneKey = (v) => String(v || "").replace(/\D/g, "").slice(-10);
+
+const hdr = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+const fmtDate = (iso) => {
+  if (!iso) return "—";
+  try {
+    return new Date(iso).toLocaleString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  } catch { return iso; }
+};
+
+// Durum rozetleri — aynı boyut/boşluk her tabloda (CLAUDE.md simetri kuralı).
+const BADGE = "inline-flex items-center px-2 py-0.5 rounded text-xs font-bold";
+const APPROVAL_STATUS = {
+  pending: { label: "Onay Bekliyor", cls: "bg-amber-100 text-amber-800" },
+  executing: { label: "Uygulanıyor", cls: "bg-blue-100 text-blue-700" },
+  executed: { label: "Onaylandı", cls: "bg-green-100 text-green-700" },
+  rejected: { label: "Reddedildi", cls: "bg-red-100 text-red-700" },
+  cancelled: { label: "İptal Edildi", cls: "bg-gray-200 text-gray-700" },
+  expired: { label: "Süresi Doldu", cls: "bg-gray-200 text-gray-700" },
+  failed: { label: "Başarısız", cls: "bg-red-100 text-red-700" },
+};
+const INVITE_STATUS = {
+  pending: { label: "Bekliyor", cls: "bg-amber-100 text-amber-800" },
+  accepted: { label: "Kabul Edildi", cls: "bg-green-100 text-green-700" },
+  accepting: { label: "İşleniyor", cls: "bg-blue-100 text-blue-700" },
+  revoked: { label: "İptal", cls: "bg-gray-200 text-gray-700" },
+  expired: { label: "Süresi Doldu", cls: "bg-gray-200 text-gray-700" },
+  locked: { label: "Kilitlendi", cls: "bg-red-100 text-red-700" },
+};
+
+// 202 = işlem ikinci süper admin onayına gönderildi (iki kişi kuralı).
+const isPendingApproval = (res) => res?.status === 202 || res?.data?.pending_approval === true;
+
 export default function AdminUsersRoles() {
+  const { user: me } = useAuth();
   const [tab, setTab] = useState("roles"); // 'roles' | 'users'
   const [permTree, setPermTree] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -120,17 +158,28 @@ export default function AdminUsersRoles() {
   const [userForm, setUserForm] = useState({ email: "", password: "", first_name: "", last_name: "", phone: "", role_id: "", is_active: true });
   const [savingUser, setSavingUser] = useState(false);
 
+  // Davet (ADM-01) + iki kişi onayı (BL-027) — yalnız süper admin görür (diğerlerine 403 → gizli).
+  const [invites, setInvites] = useState([]);
+  const [canManage, setCanManage] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [inviteForm, setInviteForm] = useState({ email: "", first_name: "", last_name: "", phone: "", role_id: "" });
+  const [sendingInvite, setSendingInvite] = useState(false);
+  const [approvals, setApprovals] = useState([]);
+  const [approvalMeta, setApprovalMeta] = useState({ pending: 0, me: "", active_super_admins: 0, two_person_disabled: false });
+  const [busyApproval, setBusyApproval] = useState("");
+  // Denetim #3: geçişin otomatik eklediği hassas izinler — süper admin kaldırır ya da korur.
+  const [grantReview, setGrantReview] = useState([]);
+  const [busyReview, setBusyReview] = useState("");
+
   useEffect(() => { fetchAll(); }, []);
 
   const fetchAll = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const hdr = { headers: { Authorization: `Bearer ${token}` } };
       const [permRes, rolesRes, usersRes] = await Promise.all([
-        axios.get(`${API}/admin/permissions`, hdr),
-        axios.get(`${API}/admin/roles`, hdr),
-        axios.get(`${API}/admin/users`, hdr),
+        axios.get(`${API}/admin/permissions`, hdr()),
+        axios.get(`${API}/admin/roles`, hdr()),
+        axios.get(`${API}/admin/users`, hdr()),
       ]);
       setPermTree(permRes.data.tree || []);
       setRoles(rolesRes.data.roles || []);
@@ -139,6 +188,118 @@ export default function AdminUsersRoles() {
       toast.error("Veriler yüklenemedi");
     } finally {
       setLoading(false);
+    }
+    const [invRes, apRes, revRes] = await Promise.allSettled([
+      axios.get(`${API}/admin/users/invites`, hdr()),
+      axios.get(`${API}/admin/approvals`, hdr()),
+      axios.get(`${API}/admin/roles/autogrant-review`, hdr()),
+    ]);
+    setGrantReview(revRes.status === "fulfilled" ? (revRes.value.data?.items || []) : []);
+    if (invRes.status === "fulfilled") {
+      setInvites(invRes.value.data?.invites || []);
+      setCanManage(true);
+    } else {
+      setCanManage(false);
+    }
+    if (apRes.status === "fulfilled") {
+      const d = apRes.value.data || {};
+      setApprovals(d.items || []);
+      setApprovalMeta({ pending: d.pending || 0, me: d.me || "", active_super_admins: d.active_super_admins || 0,
+                        two_person_disabled: !!d.two_person_disabled });
+    }
+  };
+
+  const permLabel = (key) => {
+    for (const g of permTree) {
+      const c = (g.children || []).find((x) => x.key === key);
+      if (c) return `${g.label} › ${c.label}`;
+    }
+    return key;
+  };
+
+  const resolveGrant = async (item, action) => {
+    if (action === "revoke" && !window.confirm(`${item.role_name} rolünden ${item.permissions.length} izin kaldırılsın mı?`)) return;
+    setBusyReview(item.role_id);
+    try {
+      const res = await axios.post(`${API}/admin/roles/autogrant-review`,
+        { role_id: item.role_id, action, permissions: item.permissions }, hdr());
+      if (isPendingApproval(res)) notifyPending(res);
+      else toast.success(action === "revoke" ? "İzinler kaldırıldı" : "İzinler korunacak");
+      fetchAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "İşlem yapılamadı");
+    } finally {
+      setBusyReview("");
+    }
+  };
+
+  const notifyPending = (res) => {
+    toast.info(res?.data?.message || "İşlem ikinci bir süper admin onayına gönderildi.");
+  };
+
+  const openInvite = () => {
+    setInviteForm({ email: "", first_name: "", last_name: "", phone: "", role_id: roles.find((r) => r.id !== "super_admin")?.id || "" });
+    setInviteOpen(true);
+  };
+
+  const sendInvite = async (e) => {
+    e?.preventDefault?.();
+    if (!inviteForm.email || !inviteForm.role_id) { toast.error("E-posta ve rol gerekli"); return; }
+    setSendingInvite(true);
+    try {
+      const res = await axios.post(`${API}/admin/users/invite`, inviteForm, hdr());
+      if (isPendingApproval(res)) {
+        notifyPending(res);
+      } else if (res.data?.invite?.email_sent === false) {
+        toast.warning("Davet oluşturuldu ancak e-posta gönderilemedi — e-posta ayarlarını kontrol edip yeniden gönderin.");
+      } else {
+        toast.success("Davet e-postası gönderildi (48 saat geçerli)");
+      }
+      setInviteOpen(false);
+      fetchAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "Davet gönderilemedi");
+    } finally {
+      setSendingInvite(false);
+    }
+  };
+
+  const resendInvite = async (inv) => {
+    try {
+      const res = await axios.post(`${API}/admin/users/invites/${inv.id}/resend`, {}, hdr());
+      if (isPendingApproval(res)) notifyPending(res);
+      else toast.success("Davet yeniden gönderildi");
+      fetchAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "Gönderilemedi");
+    }
+  };
+
+  const revokeInvite = async (inv) => {
+    if (!await window.appConfirm(`"${inv.email}" davetini iptal etmek istiyor musunuz?`)) return;
+    try {
+      await axios.delete(`${API}/admin/users/invites/${inv.id}`, hdr());
+      toast.success("Davet iptal edildi");
+      fetchAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "İptal edilemedi");
+    }
+  };
+
+  const decideApproval = async (ap, decision) => {
+    if (decision === "approve"
+      && !await window.appConfirm(`Bu işlemi onaylıyor musunuz?\n\n${ap.summary}`)) return;
+    if (decision !== "approve"
+      && !await window.appConfirm(ap.requested_by?.id === approvalMeta.me ? "Talebi geri çekmek istiyor musunuz?" : "Talebi reddetmek istiyor musunuz?")) return;
+    setBusyApproval(ap.id);
+    try {
+      await axios.post(`${API}/admin/approvals/${ap.id}/${decision}`, {}, hdr());
+      toast.success(decision === "approve" ? "Onaylandı ve uygulandı" : "Talep kapatıldı");
+      fetchAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "İşlem yapılamadı");
+    } finally {
+      setBusyApproval("");
     }
   };
 
@@ -166,13 +327,11 @@ export default function AdminUsersRoles() {
       const token = localStorage.getItem("token");
       const hdr = { headers: { Authorization: `Bearer ${token}` } };
       const body = { name: roleName.trim(), description: roleDesc.trim(), permissions: rolePerms };
-      if (editingRole) {
-        await axios.put(`${API}/admin/roles/${editingRole.id}`, body, hdr);
-        toast.success("Rol güncellendi");
-      } else {
-        await axios.post(`${API}/admin/roles`, body, hdr);
-        toast.success("Rol oluşturuldu");
-      }
+      const res = editingRole
+        ? await axios.put(`${API}/admin/roles/${editingRole.id}`, body, hdr)
+        : await axios.post(`${API}/admin/roles`, body, hdr);
+      if (isPendingApproval(res)) notifyPending(res);
+      else toast.success(editingRole ? "Rol güncellendi" : "Rol oluşturuldu");
       setRoleModalOpen(false);
       fetchAll();
     } catch (err) {
@@ -187,8 +346,9 @@ export default function AdminUsersRoles() {
     if (!await window.appConfirm(`"${role.name}" rolünü silmek istiyor musunuz?`)) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`${API}/admin/roles/${role.id}`, { headers: { Authorization: `Bearer ${token}` } });
-      toast.success("Rol silindi");
+      const res = await axios.delete(`${API}/admin/roles/${role.id}`, { headers: { Authorization: `Bearer ${token}` } });
+      if (isPendingApproval(res)) notifyPending(res);
+      else toast.success("Rol silindi");
       fetchAll();
     } catch (err) {
       toast.error(err.response?.data?.detail || "Silinemedi");
@@ -208,9 +368,13 @@ export default function AdminUsersRoles() {
       first_name: user.first_name || "", last_name: user.last_name || "",
       phone: user.phone || "",
       role_id: user.role_id || "", is_active: !!user.is_active,
+      current_password: "",
     });
     setUserModalOpen(true);
   };
+
+  const selfPhoneChanged = !!(editingUser && me && editingUser.id === me.id
+    && phoneKey(userForm.phone) !== phoneKey(editingUser.phone));
 
   const saveUser = async (e) => {
     e?.preventDefault?.();
@@ -221,12 +385,15 @@ export default function AdminUsersRoles() {
       if (editingUser) {
         const payload = { ...userForm };
         if (!payload.password) delete payload.password;
-        await axios.put(`${API}/admin/users/${editingUser.id}`, payload, hdr);
-        toast.success("Kullanıcı güncellendi");
+        if (!payload.current_password) delete payload.current_password;
+        const res = await axios.put(`${API}/admin/users/${editingUser.id}`, payload, hdr);
+        if (isPendingApproval(res)) notifyPending(res);
+        else toast.success("Kullanıcı güncellendi");
       } else {
         if (!userForm.email || !userForm.password) { toast.error("E-posta ve parola gerekli"); setSavingUser(false); return; }
-        await axios.post(`${API}/admin/users`, userForm, hdr);
-        toast.success("Kullanıcı oluşturuldu");
+        const res = await axios.post(`${API}/admin/users`, userForm, hdr);
+        if (isPendingApproval(res)) notifyPending(res);
+        else toast.success("Kullanıcı oluşturuldu");
       }
       setUserModalOpen(false);
       fetchAll();
@@ -241,8 +408,9 @@ export default function AdminUsersRoles() {
     if (!await window.appConfirm(`"${user.email}" kullanıcısını silmek istiyor musunuz?`)) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`${API}/admin/users/${user.id}`, { headers: { Authorization: `Bearer ${token}` } });
-      toast.success("Kullanıcı silindi");
+      const res = await axios.delete(`${API}/admin/users/${user.id}`, { headers: { Authorization: `Bearer ${token}` } });
+      if (isPendingApproval(res)) notifyPending(res);
+      else toast.success("Kullanıcı silindi");
       fetchAll();
     } catch (err) {
       toast.error(err.response?.data?.detail || "Silinemedi");
@@ -277,12 +445,51 @@ export default function AdminUsersRoles() {
         >
           <Users size={14} className="inline mr-2" /> Kullanıcılar ({users.length})
         </button>
+        {canManage && (
+          <button
+            onClick={() => setTab("approvals")}
+            data-testid="tab-approvals"
+            className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${tab === "approvals" ? "border-indigo-600 text-indigo-600" : "border-transparent text-gray-500 hover:text-gray-700"}`}
+          >
+            <ShieldCheck size={14} className="inline mr-2" /> Onay Bekleyenler ({approvalMeta.pending})
+          </button>
+        )}
       </div>
 
       {loading ? (
         <div className="text-center py-20 text-gray-500">Yükleniyor...</div>
       ) : tab === "roles" ? (
         <div className="space-y-4">
+          {grantReview.length > 0 && (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4" data-testid="autogrant-review">
+              <div className="flex items-center gap-2 text-sm font-bold text-amber-900">
+                <ShieldCheck size={16} /> Gözden geçirilmesi gereken izinler
+              </div>
+              <p className="text-xs text-amber-800 mt-1">
+                Bir sistem güncellemesi bu hassas izinleri rollere otomatik eklemişti. Rolün gerçekten ihtiyacı yoksa kaldırın; varsa koruyun (bir daha sorulmaz).
+              </p>
+              <div className="mt-3 space-y-3">
+                {grantReview.map((item) => (
+                  <div key={item.role_id} className="bg-white border border-amber-200 rounded-lg p-3" data-testid={`autogrant-${item.role_id}`}>
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-sm font-bold text-gray-900">{item.role_name}</span>
+                      <div className="flex items-center gap-2">
+                        <button disabled={busyReview === item.role_id} onClick={() => resolveGrant(item, "revoke")}
+                          className="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-600 text-white hover:bg-red-700 disabled:opacity-50">Kaldır</button>
+                        <button disabled={busyReview === item.role_id} onClick={() => resolveGrant(item, "keep")}
+                          className="px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50">Koru</button>
+                      </div>
+                    </div>
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      {item.permissions.map((k) => (
+                        <span key={k} className="inline-flex items-center px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-xs">{permLabel(k)}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="flex justify-end">
             <button onClick={openCreateRole} data-testid="create-role-btn"
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold hover:bg-indigo-700">
@@ -335,12 +542,76 @@ export default function AdminUsersRoles() {
             </table>
           </div>
         </div>
+      ) : tab === "approvals" ? (
+        <div className="space-y-4" data-testid="approvals-panel">
+          <div className="bg-white rounded-xl border shadow-sm p-4 text-sm text-gray-600">
+            Tüm yetkili ('*') rol/kullanıcı değişiklikleri ve banka hesabı (IBAN) değişiklikleri, birden fazla aktif
+            süper admin varsa <b>başka bir süper admin</b> onaylayana kadar uygulanmaz. Talepler 24 saat geçerlidir.
+            Onaylamak için son 5 dakika içinde giriş yapmış olmanız gerekir.
+            {approvalMeta.two_person_disabled && (
+              <span className="block mt-2 text-red-600 font-medium">Acil kapatma (TWO_PERSON_RULE=off) aktif: işlemler onaysız uygulanıyor.</span>
+            )}
+          </div>
+          <div className="bg-white rounded-xl border shadow-sm overflow-x-auto">
+            <table className="w-full">
+              <thead className="border-b bg-gray-50">
+                <tr>
+                  <th className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase">İşlem</th>
+                  <th className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase">Talep Eden</th>
+                  <th className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase">Tarih</th>
+                  <th className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase">Durum</th>
+                  <th className="px-4 py-3"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {approvals.length === 0 ? (
+                  <tr><td colSpan={5} className="px-4 py-10 text-center text-sm text-gray-400">Onay bekleyen işlem yok</td></tr>
+                ) : approvals.map((ap) => {
+                  const st = APPROVAL_STATUS[ap.status] || APPROVAL_STATUS.pending;
+                  const mine = ap.requested_by?.id === approvalMeta.me;
+                  const decidedBy = ap.approved_by?.email || ap.rejected_by?.email || "";
+                  return (
+                    <tr key={ap.id} className="border-b hover:bg-gray-50 align-middle" data-testid={`approval-row-${ap.id}`}>
+                      <td className="px-4 py-3">
+                        <div className="text-sm font-medium text-gray-900">{ap.label || ap.action}</div>
+                        <div className="text-xs text-gray-500 mt-0.5">{ap.summary}</div>
+                      </td>
+                      <td className="px-4 py-3 text-sm">{ap.requested_by?.email || "—"}</td>
+                      <td className="px-4 py-3 text-sm tabular-nums whitespace-nowrap">{fmtDate(ap.created_at)}</td>
+                      <td className="px-4 py-3">
+                        <span className={`${BADGE} ${st.cls}`}>{st.label}</span>
+                        {decidedBy && <div className="text-xs text-gray-500 mt-1">{decidedBy}</div>}
+                        {ap.error && <div className="text-xs text-red-600 mt-1">{ap.error}</div>}
+                      </td>
+                      <td className="px-4 py-3 text-right whitespace-nowrap">
+                        {ap.status === "pending" && !mine && (
+                          <button onClick={() => decideApproval(ap, "approve")} disabled={busyApproval === ap.id}
+                            data-testid={`approve-${ap.id}`}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-green-700 hover:bg-green-50 rounded text-xs font-medium disabled:opacity-50">
+                            <CheckCircle2 size={13} /> Onayla
+                          </button>
+                        )}
+                        {ap.status === "pending" && (
+                          <button onClick={() => decideApproval(ap, "reject")} disabled={busyApproval === ap.id}
+                            data-testid={`reject-${ap.id}`}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-red-600 hover:bg-red-50 rounded text-xs font-medium disabled:opacity-50">
+                            <XCircle size={13} /> {mine ? "Geri Çek" : "Reddet"}
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       ) : (
         <div className="space-y-4">
           <div className="flex justify-end">
-            <button onClick={openCreateUser} data-testid="create-user-btn"
+            <button onClick={canManage ? openInvite : openCreateUser} data-testid="create-user-btn"
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold hover:bg-indigo-700">
-              <UserPlus size={16} /> Yeni Kullanıcı
+              <UserPlus size={16} /> {canManage ? "Personel Davet Et" : "Yeni Kullanıcı"}
             </button>
           </div>
           <div className="bg-white rounded-xl border shadow-sm">
@@ -380,8 +651,119 @@ export default function AdminUsersRoles() {
               </tbody>
             </table>
           </div>
+
+          {canManage && invites.length > 0 && (
+            <div className="bg-white rounded-xl border shadow-sm overflow-x-auto" data-testid="invites-table">
+              <div className="px-4 py-3 border-b bg-gray-50 text-xs font-bold text-gray-500 uppercase flex items-center gap-2">
+                <Mail size={13} /> Davetler
+              </div>
+              <table className="w-full">
+                <thead className="border-b">
+                  <tr>
+                    <th className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase">E-posta</th>
+                    <th className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase">Rol</th>
+                    <th className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase">Doğrulama</th>
+                    <th className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase">Durum</th>
+                    <th className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase">Son Geçerlilik</th>
+                    <th className="px-4 py-3"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {invites.map((inv) => {
+                    const st = INVITE_STATUS[inv.status] || INVITE_STATUS.pending;
+                    const open = ["pending", "expired", "locked"].includes(inv.status);
+                    return (
+                      <tr key={inv.id} className="border-b hover:bg-gray-50" data-testid={`invite-row-${inv.id}`}>
+                        <td className="px-4 py-3 font-medium text-sm">{inv.email}</td>
+                        <td className="px-4 py-3 text-sm">{inv.role_name || roleLabel(inv.role_id)}</td>
+                        <td className="px-4 py-3 text-sm">{inv.mfa_method === "sms" ? `SMS (***${inv.phone_tail || ""})` : "Authenticator"}</td>
+                        <td className="px-4 py-3"><span className={`${BADGE} ${st.cls}`}>{st.label}</span></td>
+                        <td className="px-4 py-3 text-sm tabular-nums whitespace-nowrap">{fmtDate(inv.expires_at)}</td>
+                        <td className="px-4 py-3 text-right whitespace-nowrap">
+                          {open && (
+                            <button onClick={() => resendInvite(inv)}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 text-indigo-600 hover:bg-indigo-50 rounded text-xs font-medium">
+                              <Send size={13} /> Yeniden Gönder
+                            </button>
+                          )}
+                          {open && (
+                            <button onClick={() => revokeInvite(inv)}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 text-red-600 hover:bg-red-50 rounded text-xs font-medium">
+                              <Trash2 size={13} /> İptal
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
+
+      {/* Invite Modal (ADM-01) */}
+      <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
+        <DialogContent data-testid="invite-modal">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <UserPlus size={18} className="text-indigo-600" /> Personel Davet Et
+            </DialogTitle>
+          </DialogHeader>
+          <form onSubmit={sendInvite} className="space-y-3">
+            <p className="text-xs text-gray-500">
+              Davetli e-postadaki bağlantıyla kendi şifresini belirler ve iki adımlı doğrulamayı (MFA) kurar; ancak
+              ondan sonra panele girebilir. Bağlantı 48 saat geçerli ve tek kullanımlıktır.
+            </p>
+            <div>
+              <label className="block text-sm font-medium mb-1">E-posta <span className="text-red-500">*</span></label>
+              <input type="email" required value={inviteForm.email}
+                onChange={(e) => setInviteForm({ ...inviteForm, email: e.target.value })}
+                data-testid="invite-email-input" className="w-full border px-3 py-2 rounded text-sm" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium mb-1">Ad</label>
+                <input value={inviteForm.first_name}
+                  onChange={(e) => setInviteForm({ ...inviteForm, first_name: e.target.value })}
+                  className="w-full border px-3 py-2 rounded text-sm" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Soyad</label>
+                <input value={inviteForm.last_name}
+                  onChange={(e) => setInviteForm({ ...inviteForm, last_name: e.target.value })}
+                  className="w-full border px-3 py-2 rounded text-sm" />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Giriş Doğrulama Telefonu (SMS — isteğe bağlı)</label>
+              <input type="tel" placeholder="05xx xxx xx xx" value={inviteForm.phone}
+                onChange={(e) => setInviteForm({ ...inviteForm, phone: e.target.value })}
+                className="w-full border px-3 py-2 rounded text-sm" />
+              <p className="text-xs text-gray-500 mt-1">Girilirse doğrulama kodu bu numaraya SMS ile gider (kullanıcı değiştiremez). Boş bırakılırsa davetli Authenticator uygulaması kurar.</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Rol <span className="text-red-500">*</span></label>
+              <select value={inviteForm.role_id} onChange={(e) => setInviteForm({ ...inviteForm, role_id: e.target.value })}
+                data-testid="invite-role-select" className="w-full border px-3 py-2 rounded text-sm bg-white">
+                <option value="">— Rol Seç —</option>
+                {roles.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
+              </select>
+              {roles.find((r) => r.id === inviteForm.role_id)?.permissions?.includes("*") && (
+                <p className="text-xs text-amber-700 mt-1">Tüm yetkili rol: başka bir süper admin onaylayana kadar davet gönderilmez.</p>
+              )}
+            </div>
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              <button type="button" onClick={() => setInviteOpen(false)} className="px-4 py-2 border rounded hover:bg-gray-50 text-sm">İptal</button>
+              <button type="submit" disabled={sendingInvite} data-testid="send-invite-btn"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50 text-sm font-bold">
+                <Send size={14} /> {sendingInvite ? "Gönderiliyor..." : "Davet Gönder"}
+              </button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       {/* Role Edit Modal */}
       <Dialog open={roleModalOpen} onOpenChange={setRoleModalOpen}>
@@ -506,6 +888,16 @@ export default function AdminUsersRoles() {
                 className="w-full border px-3 py-2 rounded text-sm" />
               <p className="text-xs text-gray-500 mt-1">Giriş doğrulama kodu (SMS) bu numaraya gider. Yalnız yönetici belirler; kullanıcı kendisi değiştiremez. Boş bırakılırsa yönetici-kilidi kalkar.</p>
             </div>
+            {selfPhoneChanged && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Mevcut Parolanız <span className="text-red-500">*</span></label>
+                <input type="password" required autoComplete="current-password" value={userForm.current_password || ""}
+                  onChange={e => setUserForm({ ...userForm, current_password: e.target.value })}
+                  data-testid="user-current-password-input"
+                  className="w-full border px-3 py-2 rounded text-sm" />
+                <p className="text-xs text-gray-500 mt-1">Kendi giriş doğrulama telefonunuzu değiştirmek için mevcut parolanızı girin.</p>
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium mb-1">Rol <span className="text-red-500">*</span></label>
               <select value={userForm.role_id}

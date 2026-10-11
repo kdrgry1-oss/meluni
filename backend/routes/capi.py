@@ -12,7 +12,8 @@ from typing import Optional, List
 from fastapi import APIRouter, Request, BackgroundTasks
 from pydantic import BaseModel, Field
 
-from .deps import db
+from .deps import db, limiter
+from datetime import datetime, timezone, timedelta
 from services.capi.orchestrator import dispatch_event
 from services.capi.hash_utils import build_user_data
 
@@ -115,6 +116,7 @@ class CapiEventReq(BaseModel):
 
 
 @router.post("/event")
+@(limiter.limit("120/minute") if limiter else (lambda f: f))
 async def capi_event(req: CapiEventReq, request: Request,
                      background_tasks: BackgroundTasks):
     """Track event from React. Returns immediately; dispatch runs in background.
@@ -122,6 +124,22 @@ async def capi_event(req: CapiEventReq, request: Request,
     For checkout/purchase flows we want the response to be NON-BLOCKING so the
     user UX is unaffected. We schedule the dispatch via BackgroundTasks.
     """
+    # GÜVENLİK (denetim 2026-09-29): herkese açık uçtan SAHTE satın alma/iade gönderilip reklam
+    # optimizasyonu/ROAS bozulabiliyordu. İade yalnız sunucudan gider; satın alma yalnız GERÇEK
+    # (son 2 gün) bir siparişe aitse kabul edilir ve tutar siparişten alınır (istemciden değil).
+    _en = str(req.event_name or "").strip().lower()
+    if _en in ("refund", "refunded"):
+        return {"success": True, "skipped": "server_only"}
+    if _en in ("purchase", "completepayment", "complete_payment"):
+        _on = str(req.order_id or req.event_id or "").strip()[:40]
+        _ord = await db.orders.find_one({"order_number": _on}, {"_id": 0, "total": 1, "created_at": 1}) if _on else None
+        _since = (datetime.now(timezone.utc) - timedelta(days=2)).isoformat()
+        if not _ord or str(_ord.get("created_at") or "") < _since:
+            return {"success": True, "skipped": "unknown_order"}
+        try:
+            req.value = float(_ord.get("total") or 0)
+        except Exception:
+            pass
     # Gerçek son-kullanıcı IP'si — cf-connecting-ip (spoof-korumalı, edge doğrulanırsa) → XFF → peer.
     # Ham XFF[0] yerine ortak güvenli helper (deps.client_ip_from_request) kullanılır.
     try:
@@ -138,7 +156,9 @@ async def capi_event(req: CapiEventReq, request: Request,
         email=req.email, phone=req.phone,
         first_name=req.first_name, last_name=req.last_name,
         city=req.city, state=req.state, country=req.country,
-        zipcode=req.zipcode, street=req.street,
+        # KVKK: açık adres / posta kodu reklam platformlarına gönderilmez (yalnız SHA-256 e-posta/telefon
+        # + il/ilçe hash'i; istemci gönderse bile atılır).
+        zipcode=None, street=None,
         date_of_birth=req.date_of_birth, gender=req.gender,
         external_id=req.external_id,
         subscription_id=req.subscription_id, fb_login_id=req.fb_login_id,

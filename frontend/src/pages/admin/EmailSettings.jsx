@@ -102,7 +102,7 @@ export default function EmailSettings() {
           <Mail size={22} className="text-gray-600" />
           <div>
             <h1 className="text-2xl font-bold text-gray-900">E-posta (Zoho ZeptoMail)</h1>
-            <p className="text-sm text-gray-500 mt-1">Tüm bildirim ve toplu e-postalar ZeptoMail API ile bu adresten gönderilir.</p>
+            <p className="text-sm text-gray-500 mt-1">Sipariş, üyelik ve şifre gibi işlemsel bildirimler ZeptoMail API ile bu adresten gönderilir. Pazarlama kampanyaları Pazarlama → E-posta Pazarlama bölümündeki Brevo ayarlarını kullanır.</p>
           </div>
         </div>
         <button onClick={save} disabled={saving}

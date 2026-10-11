@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 
 export default function GizlilikPolitikasi() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="sf-page min-h-screen bg-white">
       <Header />
       <main className="max-w-3xl mx-auto px-5 py-16" data-testid="privacy-policy-page">
         <h1 className="text-3xl font-light tracking-wide mb-2">Gizlilik ve Veri Koruma Politikası</h1>

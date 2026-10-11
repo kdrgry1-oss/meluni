@@ -65,7 +65,7 @@ HISTORY_DOMAIN_DEFAULT = "meluni.ticimaxeticaret.com"
 
 async def _api_key() -> str:
     s = await db.settings.find_one({"id": "ticimax"}) or {}
-    return s.get("api_key") or "AKG0M8DTRSEBAIA898JA6HW22EDIU3"
+    return s.get("api_key") or (os.environ.get("TICIMAX_API_KEY") or "").strip()
 
 
 async def _ensure_domain():
@@ -258,7 +258,8 @@ async def ticimax_orders_backfill(payload: dict = Body(...), current_user: dict 
                             continue
                         doc["id"] = generate_id()
                         doc["user_id"] = None
-                        await db.orders.insert_one(doc)
+                        from security.pii import seal_doc_tax_ids as _pii_seal  # KVKK: TCKN/VKN düz yazılmaz
+                        await db.orders.insert_one(_pii_seal(doc))
                         imported += 1
                     except Exception as e:
                         errors += 1

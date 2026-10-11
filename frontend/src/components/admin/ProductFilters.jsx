@@ -105,7 +105,35 @@ function DateRange({ label, kFrom, kTo, filters, update }) {
   );
 }
 
-export const ProductFilters = ({ filters, update, onApply, onClear, categories = [], filterOptions = {} }) => {
+// Beden filtresi — kayıtlı bedenlerden çoklu seçim (seçilenlerden HERHANGİ biri olan ürünler).
+// Değer virgüllü metin olarak tutulur ("S,M") → backend `sizes` parametresi.
+function SizeChips({ value, update, options }) {
+  const sel = String(value || "").split(",").map((x) => x.trim()).filter(Boolean);
+  const toggle = (sz) => {
+    const next = sel.includes(sz) ? sel.filter((x) => x !== sz) : [...sel, sz];
+    update("sizes", next.join(","));
+  };
+  return (
+    <div>
+      <label className={labelCls}>Beden</label>
+      <div className="flex flex-wrap gap-1.5" data-testid="pf-sizes">
+        {options.length === 0 && <span className="text-xs text-gray-400">Beden tanımlı değil</span>}
+        {options.map((sz) => {
+          const on = sel.includes(sz);
+          return (
+            <button key={sz} type="button" onClick={() => toggle(sz)} data-testid={`pf-size-${sz}`}
+              className={`h-8 min-w-[40px] px-2.5 rounded border text-xs font-semibold transition
+                ${on ? "bg-black text-white border-black" : "bg-white text-gray-700 border-gray-300 hover:border-black"}`}>
+              {sz}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export const ProductFilters = ({ filters, update, onApply, onClear, categories = [], filterOptions = {}, sizeOptions = [] }) => {
   const { suppliers = [], currencies = [], attribute_groups = [] } = filterOptions;
 
   const currencyOpts = [{ v: "", l: "Seçiniz" }, ...currencies.map((c) => ({ v: c, l: c }))];
@@ -160,6 +188,15 @@ export const ProductFilters = ({ filters, update, onApply, onClear, categories =
             />
           </div>
           <Text label="Breadcrumb Kategori" k="breadcrumb" value={filters.breadcrumb} update={update} />
+          {/* Sezon filtresi — yalnız MEVCUT sezonlar (ürün kartındaki zorunlu Sezon alanıyla aynı liste). */}
+          <Sel label="Sezon" k="season" value={filters.season} update={update} options={[
+            { v: "", l: "Tümü" },
+            { v: "İlkbahar/Sonbahar", l: "İlkbahar/Sonbahar" },
+            { v: "Tüm Sezonlar", l: "Tüm Sezonlar" },
+            { v: "Yaz", l: "Yaz" },
+            { v: "Kış", l: "Kış" },
+          ]} />
+          <SizeChips value={filters.sizes} update={update} options={sizeOptions} />
           <Text label="Marka" k="brand" value={filters.brand} update={update} />
           <div>
             <label className={labelCls}>Tedarikçi Firma</label>

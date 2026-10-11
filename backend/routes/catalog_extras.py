@@ -12,25 +12,29 @@ import uuid
 import os
 import httpx
 
-from .deps import db, require_admin, require_auth, get_current_user, generate_id, logger, tr_day_start_utc, tr_day_end_utc
+from .deps import db, require_admin, require_auth, get_current_user, generate_id, logger, tr_day_start_utc, tr_day_end_utc, safe_str, limiter, require_permission
 
 
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def _simple_crud(collection_name: str, prefix: str, tags: str, required_field: str = "name", extra_allowed: tuple = ()):
-    """Create a tiny CRUD router for a flat admin-managed collection."""
+def _simple_crud(collection_name: str, prefix: str, tags: str, required_field: str = "name", extra_allowed: tuple = (),
+                 *, view_perm: str, edit_perm: str):
+    """Create a tiny CRUD router for a flat admin-managed collection.
+
+    IAM-02 (en az yetki): okuma `view_perm`, yazma `edit_perm` ister (koleksiyonun ait olduğu ekran).
+    """
     r = APIRouter(prefix=prefix, tags=[tags])
 
     @r.get("")
-    async def list_all(current_user: dict = Depends(require_admin)):
+    async def list_all(current_user: dict = Depends(require_permission(view_perm))):
         col = getattr(db, collection_name)
         items = await col.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
         return {"items": items, "total": len(items)}
 
     @r.post("")
-    async def create(payload: dict, current_user: dict = Depends(require_admin)):
+    async def create(payload: dict, current_user: dict = Depends(require_permission(edit_perm))):
         val = (payload.get(required_field) or "").strip()
         if not val:
             raise HTTPException(status_code=400, detail=f"{required_field} zorunlu")
@@ -45,7 +49,7 @@ def _simple_crud(collection_name: str, prefix: str, tags: str, required_field: s
         return {"success": True, "item": doc}
 
     @r.put("/{item_id}")
-    async def update(item_id: str, payload: dict, current_user: dict = Depends(require_admin)):
+    async def update(item_id: str, payload: dict, current_user: dict = Depends(require_permission(edit_perm))):
         col = getattr(db, collection_name)
         allowed = (required_field, "slug", "description", "is_active", "sort_order", "image", "color", *extra_allowed)
         update = {k: v for k, v in payload.items() if k in allowed}
@@ -56,7 +60,7 @@ def _simple_crud(collection_name: str, prefix: str, tags: str, required_field: s
         return {"success": True}
 
     @r.delete("/{item_id}")
-    async def delete(item_id: str, current_user: dict = Depends(require_admin)):
+    async def delete(item_id: str, current_user: dict = Depends(require_permission(edit_perm))):
         col = getattr(db, collection_name)
         res = await col.delete_one({"id": item_id})
         if res.deleted_count == 0:
@@ -67,19 +71,24 @@ def _simple_crud(collection_name: str, prefix: str, tags: str, required_field: s
 
 
 # ---------- Brands / Tags / Member Groups / Announcements / Popups ----------
-brands_router = _simple_crud("brands", "/brands", "brands")
+brands_router = _simple_crud("brands", "/brands", "brands",
+                             view_perm="products.view", edit_perm="products.edit")
 tags_router = _simple_crud("product_tags", "/product-tags", "product-tags",
-                           extra_allowed=("bg_color", "text_color", "icon"))
+                           extra_allowed=("bg_color", "text_color", "icon"),
+                           view_perm="products.view", edit_perm="products.edit")
 member_groups_router = _simple_crud("member_groups", "/admin/member-groups", "admin-member-groups",
-                                    extra_allowed=("discount_percent", "price_list", "is_b2b"))
+                                    extra_allowed=("discount_percent", "price_list", "is_b2b"),
+                                    view_perm="customers.view", edit_perm="customers.edit")
 announcements_router = _simple_crud("announcements", "/admin/announcements", "admin-announcements",
-                                    extra_allowed=("content", "link", "start_at", "end_at", "position", "bg_color"))
+                                    extra_allowed=("content", "link", "start_at", "end_at", "position", "bg_color"),
+                                    view_perm="tasarim.view", edit_perm="tasarim.popups")
 popups_router = _simple_crud("popups", "/admin/popups", "admin-popups",
                              extra_allowed=("content", "image", "link", "delay_seconds", "trigger", "show_once",
                                             "start_at", "end_at",
                                             # Bülten kayıt formu modu (ekran görüntüsündeki gibi): e-posta +
                                             # KVKK onayı + buton. newsletter=True ise storefront modalı form gösterir.
-                                            "newsletter", "subtitle", "button_text"))
+                                            "newsletter", "subtitle", "button_text"),
+                             view_perm="tasarim.view", edit_perm="tasarim.popups")
 
 
 # DENETİM FIX (#35): Popup ve Duyuru için PUBLIC endpoint yoktu → storefront hiç okuyamıyor,
@@ -142,13 +151,21 @@ alerts_admin_router = APIRouter(prefix="/admin/alerts", tags=["admin-alerts"])
 
 
 @alerts_public_router.post("")
+@(limiter.limit("10/minute") if limiter else (lambda f: f))
 async def register_alert(payload: dict, request: Request):
     t = (payload.get("type") or "stock").lower()  # stock | price
     if t not in {"stock", "price"}:
         raise HTTPException(status_code=400, detail="Geçersiz tip")
     if not payload.get("product_id") or not payload.get("email"):
         raise HTTPException(status_code=400, detail="product_id ve email gerekli")
-    _email = payload["email"].lower().strip()
+    # Tip/uzunluk zorlaması (operatör enjeksiyonu + DB şişirme engeli — denetim 2026-09-29)
+    payload["product_id"] = safe_str(payload.get("product_id"), 64)
+    payload["variant_id"] = safe_str(payload.get("variant_id"), 64) or None
+    payload["phone"] = safe_str(payload.get("phone"), 32)
+    _email = safe_str(payload.get("email"), 200).lower().strip()
+    if "@" not in _email:
+        raise HTTPException(status_code=400, detail="Geçerli bir e-posta girin")
+    payload["email"] = _email
     # A3: user_id istemciden ALINMAZ — varsa Bearer token'dan türet (sahte sahiplik yazılmasın).
     _uid = None
     try:
@@ -187,20 +204,22 @@ async def register_alert(payload: dict, request: Request):
 async def list_alerts(
     type_: Optional[str] = Query(None, alias="type"),
     notified: Optional[bool] = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("products.view", any_in_area=True)),
 ):
     q = {}
     if type_: q["type"] = type_
     if notified is not None: q["notified"] = notified
     rows = await db.stock_alerts.find(q, {"_id": 0}).sort("created_at", -1).to_list(500)
+    from security.contact_pii import mask_order_contact as _contact_mask
     for r in rows:
         p = await db.products.find_one({"id": r["product_id"]}, {"_id": 0, "name": 1, "price": 1, "stock": 1, "stock_code": 1})
         r["product"] = p or {}
+        _contact_mask(r)  # KVKK: ürün sayfasından bırakılan müşteri telefonu listede maskeli
     return {"items": rows, "total": len(rows)}
 
 
 @alerts_admin_router.delete("/{aid}")
-async def delete_alert(aid: str, current_user: dict = Depends(require_admin)):
+async def delete_alert(aid: str, current_user: dict = Depends(require_permission("products.edit"))):
     res = await db.stock_alerts.delete_one({"id": aid})
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Kayıt bulunamadı")
@@ -213,9 +232,13 @@ havale_admin_router = APIRouter(prefix="/admin/havale-notifications", tags=["adm
 
 
 @havale_public_router.post("")
-async def customer_havale_notify(payload: dict):
-    """Customer tells us they paid via bank transfer."""
-    order_id = payload.get("order_id")
+@(limiter.limit("10/minute") if limiter else (lambda f: f))
+async def customer_havale_notify(payload: dict, request: Request):
+    """Customer tells us they paid via bank transfer.
+    GÜVENLİK (DENETİM SEC-4 F2): order_id safe_str ile string'e zorlanır ({"$regex":…} gibi
+    NoSQL operatör enjeksiyonu ile rastgele siparişe sahte 'ödedim' bildirimi iliştirme +
+    varlık taraması engellenir; IP hız-sınırı ile spam durdurulur."""
+    order_id = safe_str(payload.get("order_id") or "", 64)
     if not order_id:
         raise HTTPException(status_code=400, detail="order_id gerekli")
     # A3: Siparişin varlığını doğrula (rastgele order_id ile sahte bildirim/çöp engellenir).
@@ -230,11 +253,11 @@ async def customer_havale_notify(payload: dict):
     doc = {
         "id": str(uuid.uuid4()),
         "order_id": order_id,
-        "bank": payload.get("bank", ""),
-        "sender_name": payload.get("sender_name", ""),
+        "bank": safe_str(payload.get("bank") or "", 80),
+        "sender_name": safe_str(payload.get("sender_name") or "", 120),
         "amount": float(payload.get("amount") or 0),
-        "transfer_date": payload.get("transfer_date", ""),
-        "note": payload.get("note", ""),
+        "transfer_date": safe_str(payload.get("transfer_date") or "", 40),
+        "note": safe_str(payload.get("note") or "", 500),
         "status": "pending",  # pending | confirmed | rejected
         "created_at": _now(),
     }
@@ -245,7 +268,7 @@ async def customer_havale_notify(payload: dict):
 @havale_admin_router.get("")
 async def list_havale(
     status: Optional[str] = None,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_permission("orders.view")),
 ):
     q = {}
     if status: q["status"] = status
@@ -257,7 +280,7 @@ async def list_havale(
 
 
 @havale_admin_router.put("/{nid}")
-async def update_havale_status(nid: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def update_havale_status(nid: str, payload: dict, current_user: dict = Depends(require_permission("orders.edit"))):
     status = payload.get("status")
     if status not in {"pending", "confirmed", "rejected"}:
         raise HTTPException(status_code=400, detail="Geçersiz durum")
@@ -267,11 +290,24 @@ async def update_havale_status(nid: str, payload: dict, current_user: dict = Dep
     update = {"status": status, "reviewed_at": _now(), "reviewed_by": current_user.get("email", "")}
     await db.havale_notifications.update_one({"id": nid}, {"$set": update})
     if status == "confirmed" and n.get("order_id"):
-        # Mark order paid
-        await db.orders.update_one(
-            {"id": n["order_id"]},
-            {"$set": {"payment_status": "paid", "status": "processing", "havale_confirmed_at": _now()}},
-        )
+        # DENETİM K2: eskiden KOŞULSUZ payment_status=paid + status=processing yazıyordu.
+        # (1) İptal/expired (scheduler'ın süpürüp STOĞU GERİ EKLEDİĞİ) bir siparişi diriltip
+        #     oversell yaratıyordu; (2) "processing" statüsü kanonik "confirmed"dan farklıydı.
+        # Artık YALNIZ ödeme bekleyen statülerde onaylar; terminal siparişi diriltmez.
+        _o = await db.orders.find_one({"id": n["order_id"]}, {"_id": 0, "status": 1, "payment_status": 1})
+        _cur = (_o or {}).get("status")
+        if (_o or {}).get("payment_status") == "paid":
+            pass  # zaten ödenmiş — idempotent, tekrar yazma
+        elif _cur in ("awaiting_payment", "payment_notified", "pending"):
+            await db.orders.update_one(
+                {"id": n["order_id"], "status": {"$in": ["awaiting_payment", "payment_notified", "pending"]}},
+                {"$set": {"payment_status": "paid", "status": "confirmed", "havale_confirmed_at": _now()}},
+            )
+        else:
+            # cancelled/expired/returned … → diriltme; personele bildir.
+            logger.warning(f"[havale] onay reddedildi: sipariş {n['order_id']} durumu '{_cur}' (diriltme engellendi)")
+            raise HTTPException(status_code=409,
+                detail=f"Sipariş '{_cur}' durumunda — havale onayıyla diriltilemez. Önce siparişi kontrol edin.")
     return {"success": True}
 
 
@@ -280,7 +316,7 @@ admin_orders_router = APIRouter(prefix="/admin/orders", tags=["admin-orders"])
 
 
 @admin_orders_router.post("/create-manual")
-async def create_manual_order(payload: dict, current_user: dict = Depends(require_admin)):
+async def create_manual_order(payload: dict, current_user: dict = Depends(require_permission("orders.create"))):
     """Admin-created order (phone/in-store sales). Applies stock deduction."""
     items = payload.get("items") or []
     if not items:
@@ -311,6 +347,9 @@ async def create_manual_order(payload: dict, current_user: dict = Depends(requir
         "created_at": _now(),
         "updated_at": _now(),
     }
+    # KVKK: elle girilen adreste olası vergi/kimlik no düz yazılmaz.
+    from security.pii import seal_doc_tax_ids as _pii_seal, drop_client_sealed_fields as _pii_drop
+    _pii_seal(_pii_drop(doc))
     await db.orders.insert_one(doc)
 
     # Y17: Stok düşümü VARYANT-farkında olmalı. Önceden yalnızca parent `stock` düşürülüyordu →
@@ -413,19 +452,24 @@ async def create_manual_order(payload: dict, current_user: dict = Depends(requir
 
 
 @admin_orders_router.get("/deleted")
-async def list_deleted_orders(current_user: dict = Depends(require_admin)):
+async def list_deleted_orders(current_user: dict = Depends(require_permission("orders.view"))):
     rows = await db.orders_deleted.find({}, {"_id": 0}).sort("deleted_at", -1).to_list(500)
+    from security.pii import mask_docs_tax_ids as _pii_mask_many
+    _pii_mask_many(rows)  # KVKK: TCKN/VKN maskeli
+    from security.contact_pii import mask_orders_contact as _contact_mask_many
+    _contact_mask_many(rows)  # KVKK: telefon / açık adres maskeli
     return {"items": rows, "total": len(rows)}
 
 
 @admin_orders_router.post("/{oid}/restore")
-async def restore_order(oid: str, current_user: dict = Depends(require_admin)):
+async def restore_order(oid: str, current_user: dict = Depends(require_permission("orders.edit"))):
     doc = await db.orders_deleted.find_one({"id": oid})
     if not doc:
         raise HTTPException(status_code=404, detail="Silinmiş sipariş bulunamadı")
     doc.pop("_id", None)
     doc.pop("deleted_at", None)
-    await db.orders.insert_one(doc)
+    from security.pii import seal_doc_tax_ids as _pii_seal
+    await db.orders.insert_one(_pii_seal(doc))  # KVKK: eski düz TCKN/VKN geri yazılmaz
     await db.orders_deleted.delete_one({"id": oid})
     return {"success": True}
 
@@ -435,13 +479,13 @@ rules_router = APIRouter(prefix="/admin/rules", tags=["admin-rules"])
 
 
 @rules_router.get("/shipping")
-async def list_shipping(current_user: dict = Depends(require_admin)):
+async def list_shipping(current_user: dict = Depends(require_permission("campaigns.view", any_in_area=True))):
     items = await db.shipping_rules.find({}, {"_id": 0}).sort("min_cart", 1).to_list(100)
     return {"items": items}
 
 
 @rules_router.post("/shipping")
-async def upsert_shipping(payload: dict, current_user: dict = Depends(require_admin)):
+async def upsert_shipping(payload: dict, current_user: dict = Depends(require_permission("campaigns.manage"))):
     rid = payload.get("id") or str(uuid.uuid4())
     doc = {
         "id": rid,
@@ -459,7 +503,7 @@ async def upsert_shipping(payload: dict, current_user: dict = Depends(require_ad
 
 
 @rules_router.delete("/shipping/{rid}")
-async def delete_shipping(rid: str, current_user: dict = Depends(require_admin)):
+async def delete_shipping(rid: str, current_user: dict = Depends(require_permission("campaigns.manage"))):
     res = await db.shipping_rules.delete_one({"id": rid})
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Kural bulunamadı")
@@ -467,13 +511,13 @@ async def delete_shipping(rid: str, current_user: dict = Depends(require_admin))
 
 
 @rules_router.get("/payment-discounts")
-async def list_pay(current_user: dict = Depends(require_admin)):
+async def list_pay(current_user: dict = Depends(require_permission("campaigns.view", any_in_area=True))):
     items = await db.payment_discounts.find({}, {"_id": 0}).to_list(100)
     return {"items": items}
 
 
 @rules_router.post("/payment-discounts")
-async def upsert_pay(payload: dict, current_user: dict = Depends(require_admin)):
+async def upsert_pay(payload: dict, current_user: dict = Depends(require_permission("campaigns.manage"))):
     rid = payload.get("id") or str(uuid.uuid4())
     doc = {
         "id": rid,
@@ -490,7 +534,7 @@ async def upsert_pay(payload: dict, current_user: dict = Depends(require_admin))
 
 
 @rules_router.delete("/payment-discounts/{rid}")
-async def delete_pay(rid: str, current_user: dict = Depends(require_admin)):
+async def delete_pay(rid: str, current_user: dict = Depends(require_permission("campaigns.manage"))):
     await db.payment_discounts.delete_one({"id": rid})
     return {"success": True}
 
@@ -542,7 +586,7 @@ def _src_match_ex(source):
 
 
 @extra_reports_router.get("/hourly")
-async def hourly_sales(days: int = Query(7, ge=1, le=90), source: Optional[str] = None, current_user: dict = Depends(require_admin)):
+async def hourly_sales(days: int = Query(7, ge=1, le=90), source: Optional[str] = None, current_user: dict = Depends(require_permission("reports.sales"))):
     cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
     pipeline = [
         {"$match": {"created_at": {"$gte": cutoff}, "status": {"$ne": "cancelled"}, **_src_match_ex(source)}},
@@ -559,7 +603,7 @@ async def hourly_sales(days: int = Query(7, ge=1, le=90), source: Optional[str] 
 
 
 @extra_reports_router.get("/by-city")
-async def by_city(start_date: Optional[str] = None, end_date: Optional[str] = None, source: Optional[str] = None, current_user: dict = Depends(require_admin)):
+async def by_city(start_date: Optional[str] = None, end_date: Optional[str] = None, source: Optional[str] = None, current_user: dict = Depends(require_permission("reports.sales"))):
     now = datetime.now(timezone.utc)
     # TR yerel günü → UTC sınırı (bitiş günü tam dahil, saat-dilimi kayması yok).
     s = tr_day_start_utc(start_date) if start_date else (now - timedelta(days=30)).isoformat()
@@ -576,7 +620,7 @@ async def by_city(start_date: Optional[str] = None, end_date: Optional[str] = No
 
 
 @extra_reports_router.get("/profit")
-async def profit(current_user: dict = Depends(require_admin)):
+async def profit(current_user: dict = Depends(require_permission("reports.financial"))):
     """Rough profit calc: sum over orders' items — price*qty - cost*qty where product.cost exists."""
     pipeline = [
         {"$match": {"status": {"$ne": "cancelled"}}},
@@ -603,7 +647,7 @@ async def profit(current_user: dict = Depends(require_admin)):
 
 
 @extra_reports_router.get("/stock-movements")
-async def stock_movements(days: int = Query(30, ge=1, le=365), current_user: dict = Depends(require_admin)):
+async def stock_movements(days: int = Query(30, ge=1, le=365), current_user: dict = Depends(require_permission("reports.stock"))):
     cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
     # Stock-out from orders
     pipeline = [
@@ -626,19 +670,20 @@ tickets_admin_router = APIRouter(prefix="/admin/tickets", tags=["admin-tickets"]
 
 
 @tickets_public_router.post("")
-async def create_ticket(payload: dict, current_user: Optional[dict] = Depends(get_current_user)):
+@(limiter.limit("5/minute") if limiter else (lambda f: f))
+async def create_ticket(payload: dict, request: Request, current_user: Optional[dict] = Depends(get_current_user)):
     # O18: Önceden require_auth (401) yüzünden misafirler talep AÇAMIYORDU; guest fallback'ları
     # ölü koddu. get_current_user anonimde None döner → misafir de destek talebi açabilir.
     doc = {
         "id": str(uuid.uuid4()),
         "ticket_number": f"TKT-{str(uuid.uuid4())[:8].upper()}",
         "user_id": current_user.get("id") if current_user else None,
-        "email": payload.get("email") or (current_user.get("email") if current_user else ""),
-        "subject": (payload.get("subject") or "")[:200],
-        "message": (payload.get("message") or "")[:5000],
-        "priority": payload.get("priority", "normal"),
+        "email": safe_str(payload.get("email"), 200) or (current_user.get("email") if current_user else ""),
+        "subject": safe_str(payload.get("subject"), 200),
+        "message": safe_str(payload.get("message"), 5000),
+        "priority": payload.get("priority") if payload.get("priority") in ("low", "normal", "high", "urgent") else "normal",
         "status": "open",  # open | in_progress | resolved | closed
-        "order_id": payload.get("order_id"),
+        "order_id": safe_str(payload.get("order_id"), 64) or None,
         "replies": [],
         "created_at": _now(),
     }
@@ -652,7 +697,7 @@ async def create_ticket(payload: dict, current_user: Optional[dict] = Depends(ge
 
 
 @tickets_admin_router.get("")
-async def list_tickets(status: Optional[str] = None, current_user: dict = Depends(require_admin)):
+async def list_tickets(status: Optional[str] = None, current_user: dict = Depends(require_permission("customers.view", any_in_area=True))):
     q = {}
     if status: q["status"] = status
     rows = await db.tickets.find(q, {"_id": 0}).sort("created_at", -1).to_list(200)
@@ -660,7 +705,7 @@ async def list_tickets(status: Optional[str] = None, current_user: dict = Depend
 
 
 @tickets_admin_router.put("/{tid}")
-async def update_ticket(tid: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def update_ticket(tid: str, payload: dict, current_user: dict = Depends(require_permission("customers.edit"))):
     update = {}
     if payload.get("status") in {"open", "in_progress", "resolved", "closed"}:
         update["status"] = payload["status"]
@@ -682,7 +727,7 @@ async def update_ticket(tid: str, payload: dict, current_user: dict = Depends(re
 
 
 @tickets_admin_router.delete("/{tid}")
-async def delete_ticket(tid: str, current_user: dict = Depends(require_admin)):
+async def delete_ticket(tid: str, current_user: dict = Depends(require_permission("customers.edit"))):
     res = await db.tickets.delete_one({"id": tid})
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Bildirim bulunamadı")
@@ -715,7 +760,7 @@ async def _send_email_via_resend(to_list, subject: str, html: str, from_addr: Op
 
 
 @email_admin_router.post("/send-bulk")
-async def send_bulk(payload: dict, current_user: dict = Depends(require_admin)):
+async def send_bulk(payload: dict, current_user: dict = Depends(require_permission("customers.message"))):
     segment = payload.get("segment", "all")  # all | newsletter | vip | abandoned
     subject = (payload.get("subject") or "").strip()
     html = (payload.get("html") or "").strip()
@@ -766,13 +811,13 @@ async def send_bulk(payload: dict, current_user: dict = Depends(require_admin)):
 
 
 @email_admin_router.get("/campaigns")
-async def list_campaigns(current_user: dict = Depends(require_admin)):
+async def list_campaigns(current_user: dict = Depends(require_permission("customers.message"))):
     items = await db.email_campaigns.find({}, {"_id": 0}).sort("sent_at", -1).to_list(100)
     return {"items": items}
 
 
 @email_admin_router.post("/send-to-emails")
-async def send_to_emails(payload: dict, current_user: dict = Depends(require_admin)):
+async def send_to_emails(payload: dict, current_user: dict = Depends(require_permission("customers.message"))):
     """RFM segment vb. dinamik liste için gönderim.
 
     Body:
@@ -819,13 +864,13 @@ currency_router = APIRouter(prefix="/admin/currency", tags=["admin-currency"])
 
 
 @currency_router.get("/rates")
-async def get_rates(current_user: dict = Depends(require_admin)):
+async def get_rates(current_user: dict = Depends(require_permission("settings.view"))):
     doc = await db.currency_rates.find_one({"id": "latest"}, {"_id": 0})
     return doc or {"rates": {}, "updated_at": None}
 
 
 @currency_router.post("/refresh")
-async def refresh_rates(current_user: dict = Depends(require_admin)):
+async def refresh_rates(current_user: dict = Depends(require_permission("settings.edit"))):
     """Fetch TCMB or exchangerate.host — free API, no key needed."""
     try:
         async with httpx.AsyncClient(timeout=10) as c:

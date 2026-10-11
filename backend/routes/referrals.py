@@ -7,8 +7,8 @@ tek-kullanımlık kupon dokümanları olarak yazılır → checkout'taki kupon d
 markasıyla (company.py) gider. Tüm eşik/değerler business_rules'tan (admin-düzenlenebilir).
 
 Ödül tetikleme ödeme akışına DOKUNMAZ: scheduler (tek-lider guard'lı) periyodik olarak
-"davet edilenin ilk ödenmiş siparişi var mı" kontrol eder → varsa iki tarafı ödüllendirir
-(idempotent). Böylece checkout'a sıfır risk.
+"davet edilenin (e-postası doğrulanmış) TESLİM EDİLMİŞ ve iade süresi sorunsuz dolmuş siparişi
+var mı" kontrol eder → varsa iki tarafı ödüllendirir (idempotent). Böylece checkout'a sıfır risk.
 """
 import secrets
 import string
@@ -17,12 +17,11 @@ from datetime import datetime, timezone, timedelta
 
 from fastapi import APIRouter, HTTPException, Request, Depends
 
-from .deps import db, logger, require_auth
+from .deps import db, logger, require_auth, require_admin, require_permission
 
 public_router = APIRouter(prefix="/referrals", tags=["referrals"])
 admin_router = APIRouter(prefix="/admin/referrals", tags=["admin-referrals"])
 
-_PAID_STATUSES = {"paid", "confirmed", "processing", "preparing", "shipped", "delivered"}
 _ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"  # okunması kolay (0/O, 1/I yok)
 
 
@@ -116,7 +115,7 @@ async def _send_reward_email(email: str, subject: str, heading: str, body_html: 
         html = email_shell(title=heading, intro_html=inner, preheader=subject)
         await send_smtp_email(db, email, subject, html, wrap=False)
     except Exception as e:
-        logger.warning(f"[referral] ödül maili gönderilemedi ({email[-6:] if email else ''}): {e}")
+        logger.warning("[referral] ödül maili gönderilemedi (%s)", type(e).__name__)
 
 
 # ============================ REFERANS KODU / KAYIT ============================
@@ -165,30 +164,99 @@ async def record_referral_on_register(referee_user: dict, referral_code: str) ->
 
 # ============================ ÖDÜLLENDİRME (scheduler) ============================
 
+_REF_RETURN_CLEAN = {"", "rejected", "return_rejected", "cancelled", "canceled"}
+
+
+def _ref_parse_dt(v):
+    try:
+        dt = datetime.fromisoformat(str(v).strip().replace("Z", "+00:00").replace(" ", "T"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
+    except Exception:
+        return None
+
+
+def _order_qualifies_for_referral(o: dict, *, window_days: int, min_total: float, not_before) -> bool:
+    """Denetim 2026-10 (referans istismarı): ödül yalnız sipariş TESLİM EDİLMİŞ, iade süresi
+    (teslimden itibaren window_days) iade/iptal/geri ödeme OLMADAN dolmuş, ödemesi onaylı ve asgari
+    tutarı geçen bir sipariş için verilir. Referans kaydından ÖNCE verilmiş siparişler sayılmaz."""
+    if str(o.get("status") or "").lower() != "delivered":
+        return False
+    _ps = str(o.get("payment_status") or "").lower()
+    if _ps and _ps != "paid":
+        return False
+    if o.get("is_deleted") or o.get("refunds") or o.get("refund_paid_at"):
+        return False
+    try:
+        if float(o.get("refund_amount") or 0) > 0:
+            return False
+    except Exception:
+        return False
+    _rr = str(((o.get("return_request") or {}).get("status")) or "").lower()
+    if _rr not in _REF_RETURN_CLEAN:
+        return False
+    try:
+        if min_total > 0 and float(o.get("total") or 0) < min_total:
+            return False
+    except Exception:
+        return False
+    delivered = _ref_parse_dt(o.get("delivered_at"))
+    if not delivered:
+        return False
+    if (datetime.now(timezone.utc) - delivered) < timedelta(days=max(0, window_days)):
+        return False
+    created = _ref_parse_dt(o.get("created_at"))
+    if not_before is not None and created is not None and created < not_before:
+        return False
+    return True
+
+
 async def award_pending_referrals(db_=None) -> int:
-    """Davet edilenin ilk ödenmiş siparişi oluştuysa iki tarafı ödüllendirir (idempotent).
-    Scheduler'dan çağrılır. Döner: ödüllendirilen referans sayısı."""
-    _db = db_ or db
+    """Davet edilenin ilk siparişi TESLİM EDİLİP iade süresi sorunsuz dolduysa iki tarafı ödüllendirir
+    (idempotent). Scheduler'dan çağrılır. Döner: ödüllendirilen referans sayısı.
+    GÜVENLİK (denetim 2026-10): (1) davet edilenin e-postası doğrulanmış olmalı (sahte/atılabilir
+    hesaplarla ödül toplama), (2) sipariş teslim + iade süresi (İşletme Kuralı return.window_days)
+    iade/iptal/geri ödeme olmadan dolmuş olmalı (sipariş verip iade ederek kupon toplama),
+    (3) asgari sipariş tutarı (referral.min_order_total). Ödül kuponları alıcıya bağlıdır
+    (reward_user_id + reward_email → coupons.py kişiye-özel kupon kontrolü)."""
+    _db = db_ if db_ is not None else db  # Motor Database bool() desteklemez
     if not await _get_rule("referral.enabled", True):
         return 0
     r_type = await _get_rule("referral.reward_type", "fixed")
     r_val = float(await _get_rule("referral.referrer_reward_value", 100) or 0)
     e_val = float(await _get_rule("referral.referee_reward_value", 100) or 0)
     min_total = float(await _get_rule("referral.min_order_total", 0) or 0)
+    try:
+        window_days = int(await _get_rule("return.window_days", 14) or 14)
+    except Exception:
+        window_days = 14
+    _proj = {"_id": 0, "total": 1, "status": 1, "payment_status": 1, "delivered_at": 1,
+             "created_at": 1, "return_request": 1, "refunds": 1, "refund_amount": 1,
+             "refund_paid_at": 1, "is_deleted": 1}
     awarded = 0
     async for ref in _db.referrals.find({"status": "pending"}, {"_id": 0}):
-        # Davet edilenin ödenmiş (asgari tutarı geçen) ilk siparişi var mı?
-        q = {"user_id": ref["referee_user_id"], "status": {"$in": list(_PAID_STATUSES)}}
-        order = await _db.orders.find_one(q, {"_id": 0, "total": 1})
-        if not order:
-            # e-posta ile de dene (bazı siparişler user_id taşımayabilir)
-            order = await _db.orders.find_one(
-                {"$or": [{"shipping_address.email": ref["referee_email"]},
-                         {"email": ref["referee_email"]}],
-                 "status": {"$in": list(_PAID_STATUSES)}}, {"_id": 0, "total": 1})
-        if not order:
+        referee = await _db.users.find_one(
+            {"id": ref["referee_user_id"]},
+            {"_id": 0, "email_verified": 1, "is_active": 1, "auth_providers": 1})
+        if not referee or referee.get("is_active") is False:
             continue
-        if min_total > 0 and float(order.get("total") or 0) < min_total:
+        _google_sub = (((referee.get("auth_providers") or {}).get("google") or {}).get("sub"))
+        if referee.get("email_verified") is not True and not _google_sub:
+            continue  # e-posta doğrulanana kadar beklemede kalır
+        _nb = _ref_parse_dt(ref.get("created_at"))
+        order = None
+        for _q in ({"user_id": ref["referee_user_id"], "status": "delivered"},
+                   {"$or": [{"shipping_address.email": ref["referee_email"]},
+                            {"email": ref["referee_email"]}], "status": "delivered"}):
+            async for _o in _db.orders.find(_q, _proj).sort("created_at", 1).limit(20):
+                if _order_qualifies_for_referral(_o, window_days=window_days,
+                                                 min_total=min_total, not_before=_nb):
+                    order = _o
+                    break
+            if order:
+                break
+        if not order:
             continue
         # Atomik guard: yalnız hâlâ pending ise ödüllendir (çift ödül önlenir).
         claim = await _db.referrals.update_one(
@@ -234,7 +302,7 @@ async def award_pending_referrals(db_=None) -> int:
 async def send_birthday_coupons(db_=None) -> int:
     """Bugün doğum günü olan (birth_date kayıtlı) müşterilere doğum günü kuponu gönderir.
     Yıl-başına idempotent (users.birthday_reward_year). Döner: gönderilen sayısı."""
-    _db = db_ or db
+    _db = db_ if db_ is not None else db  # Motor Database bool() desteklemez
     if not await _get_rule("birthday.enabled", True):
         return 0
     now = datetime.now(timezone.utc)
@@ -332,10 +400,9 @@ async def my_referral(current_user: dict = Depends(require_auth)):
 
 
 @admin_router.get("")
-async def admin_referral_stats(current_user: dict = Depends(require_auth)):
-    """Admin: referans programı özet + son kayıtlar (require_auth + admin kontrolü)."""
-    if not current_user.get("is_admin"):
-        raise HTTPException(status_code=403, detail="Yetki yok")
+async def admin_referral_stats(current_user: dict = Depends(require_permission("campaigns.view", any_in_area=True))):
+    """Admin: referans programı özet + son kayıtlar. GÜVENLİK (denetim 2026-10): require_admin —
+    aktif hesap + token_version + personel rolü DB'den doğrulanır (yalnız is_admin bayrağı yetmez)."""
     total = await db.referrals.count_documents({})
     rewarded = await db.referrals.count_documents({"status": "rewarded"})
     pending = await db.referrals.count_documents({"status": "pending"})

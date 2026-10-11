@@ -6,9 +6,10 @@ import { useAuth } from "../context/AuthContext";
 import { useFavorites } from "../context/FavoritesContext";
 import CartDrawer from "./CartDrawer";
 import CountdownBar from "./CountdownBar";
-import { optimizeImg } from "../lib/img";
+import { optimizeImg, firstImage } from "../lib/img";
 import { slugify } from "../lib/slug";
-import { fetchHeaderMenu, slugFromLink, DEFAULT_MENU_TABS } from "../lib/headerMenu";
+import { fetchHeaderMenu, fetchTopBars, fetchSaleMenu, getCachedMenu, getCachedBars, slugFromLink, DEFAULT_MENU_TABS } from "../lib/headerMenu";
+import RotatingText from "./RotatingText";
 import { priceView } from "../lib/price";
 import axios from "axios";
 
@@ -89,6 +90,11 @@ const MENU_IMAGES = {
 // düzenini ve görsel kartını BURADAN alır — bölümler arası fark oluşmaz.
 const MEGA_LINK_GRID = "grid gap-x-14 gap-y-1";
 const megaCols = (n) => ({ gridTemplateColumns: `repeat(${n}, 180px)` });
+// Kullanıcının açık isteği: KOLEKSİYONLAR'daki "Downtown Code…" öğesi İTALİK görünsün.
+// İsim-tabanlı, Türkçe-duyarsız eşleşme (ileride admin "italik" toggle'ı ayrı iş).
+const _isDowntownCode = (s) => (s || "").toLocaleLowerCase("tr").trim().includes("downtown code");
+// Koleksiyonlar menüsünde "Full Look": kalın ve diğer başlıklardan ayrı (daha aşağıda) — kullanıcı isteği
+const _isFullLook = (s) => (s || "").toLocaleLowerCase("tr").replace(/\s+/g, " ").trim() === "full look";
 const MEGA_IMG_BOX = "w-52 aspect-[2/3] overflow-hidden";
 const MEGA_IMG = "w-full h-full object-cover object-top group-hover:scale-[1.04] transition-transform duration-500";
 
@@ -112,7 +118,7 @@ function MegaProductsPanel({ products, loading, fallback, fallbackLink, onNaviga
       >
         <div className={MEGA_IMG_BOX}>
           <img
-            src={optimizeImg((p.images && p.images[0]) || p.image || "", 500)}
+            src={optimizeImg(firstImage(p), 500)}
             alt={p.name}
             className={MEGA_IMG}
             loading="lazy"
@@ -131,19 +137,46 @@ function MegaProductsPanel({ products, loading, fallback, fallbackLink, onNaviga
   ));
 }
 
-export default function Header({ hideMenu = false }) {
+export default function Header({ hideMenu = false, announcement, announcementFirst = false }) {
+  // Duyuru barı: Home kendi bloklarından geçirir. Prop HİÇ verilmediyse (diğer tüm sayfalar)
+  // Header aynı ana-sayfa bloğunu kendisi çeker → üst şerit her sayfada ana sayfadaki gibi.
+  const selfBars = announcement === undefined;
+  const [bars, setBars] = useState(() => (selfBars ? getCachedBars() : null));   // ilk karede önbellekten (titreme yok)
+  useEffect(() => {
+    if (!selfBars) return undefined;
+    let alive = true;
+    fetchTopBars(API).then((b) => { if (alive) setBars(b); }).catch(() => {});
+    return () => { alive = false; };
+  }, [selfBars]);
+  const topAnnouncement = selfBars
+    ? (bars?.rotating ? <RotatingText block={bars.rotating} /> : null)
+    : announcement;
+  const topAnnouncementFirst = selfBars ? !!bars?.announcementFirst : announcementFirst;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // Üst menü: Admin > Tasarım > Menü Yönetimi'nden (page-blocks/header-menu) beslenir.
   // Sekmeler dahil TÜM yapı panelden gelir; fetch gelene kadar varsayılan kullanılır.
-  const [menuTabs, setMenuTabs] = useState(DEFAULT_MENU_TABS);
+  // İlk karede SON bilinen menü (önbellek); hiç yoksa (ilk ziyaret) menü, gerçek menü gelene
+  // kadar GÖRÜNMEZ tutulur (yer kaplar, kayma olmaz) → yanlış/varsayılan menü hiç görünmez.
+  const [menuTabs, setMenuTabs] = useState(() => getCachedMenu() || DEFAULT_MENU_TABS);
+  const [menuReady, setMenuReady] = useState(() => !!getCachedMenu());
   useEffect(() => {
     let alive = true;
     fetchHeaderMenu(API).then((tabs) => {
       if (alive && Array.isArray(tabs) && tabs.length) setMenuTabs(tabs);
-    }).catch(() => { /* varsayılan kalır */ });
-    return () => { alive = false; };
+    }).catch(() => { /* varsayılan kalır */ })
+      .finally(() => { if (alive) setMenuReady(true); });
+    const t = setTimeout(() => { if (alive) setMenuReady(true); }, 2500);   // API çok yavaşsa yine göster
+    return () => { alive = false; clearTimeout(t); };
   }, []);
   const visibleTabs = menuTabs.filter((t) => t && t.active !== false && t.label);
+  // SALE sekmesinin açılır listesi (aktif kampanyalar) — Admin › Kampanyalar › SALE Menüsü.
+  const [saleMenu, setSaleMenu] = useState([]);
+  useEffect(() => {
+    let alive = true;
+    fetchSaleMenu(API).then((items) => { if (alive) setSaleMenu(items || []); }).catch(() => {});
+    return () => { alive = false; };
+  }, []);
+  const hasSaleMenu = (tab) => tab && tab.style === "sale" && tab.type !== "mega" && saleMenu.length > 0;
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -172,40 +205,22 @@ export default function Header({ hideMenu = false }) {
   // arası overlay AÇIK kalır; ancak gerçek sayfa kaydırması başlayınca kapanır.)
   const [heroOverlay, setHeroOverlay] = useState(false);
   const [heroPage, setHeroPage] = useState(false);   // ana sayfa + editorial hero var mı (kaydırmadan bağımsız)
+  const barsRef = useRef(null);                       // sayaç + duyuru barı sarmalayıcısı
+  // ŞEFFAF-OVERLAY KALDIRILDI (kullanıcı kesin kararı — Option A): home dahil header HER ZAMAN
+  // SOLID + normal akış/sticky. Üstte [duyuru barı][sayaç][beyaz menü/logo header] solid şerit;
+  // hero doğal akışta bunların TAM ALTINDA başlar (fixed-overlay + marginTop offset YOK → örtme
+  // yok, üstü kesilmez, zıplama yok). heroPage/heroOverlay artık hiçbir yerde AÇILMAZ → tüm
+  // sayfalar (home + klasik) aynı sticky-solid davranışta. Kalıntı bayrak/değişkenler temizlenir.
   useEffect(() => {
-    let rafId = 0;
-    const compute = () => {
-      if (typeof document === "undefined" || location.pathname !== "/") { setHeroOverlay(false); setHeroPage(false); return false; }
-      const hero = document.querySelector('[data-testid="hero-editorial"]');
-      if (!hero) { setHeroOverlay(false); setHeroPage(false); return false; }
-      setHeroPage(true);
-      const scrolled = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
-      setHeroOverlay(scrolled < 6);   // yalnız sayfa en üstünde → floating; kaydırınca → sticky
-      return true;                    // hero bulundu
-    };
-    // Hero, sayfa blokları async yüklendiği için header'dan GEÇ mount olabilir → hero DOM'a gelene
-    // kadar (max ~2.5 sn) requestAnimationFrame ile POLL et. Bulununca değerlendirme zaten yapıldı,
-    // poll'u sonlandır (sonrasında scroll/resize dinleyicileri yeterli).
-    let tries = 0;
-    const poll = () => {
-      const found = compute();
-      if (!found && tries < 150) { tries++; rafId = requestAnimationFrame(poll); }
-    };
-    poll();
-    window.addEventListener("scroll", compute, { passive: true });
-    window.addEventListener("resize", compute);
-    let mo = null;
-    try { mo = new MutationObserver(compute); mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-hero-overlay"] }); } catch (_) { /* noop */ }
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      window.removeEventListener("scroll", compute); window.removeEventListener("resize", compute);
-      if (mo) mo.disconnect();
-    };
+    setHeroOverlay(false);
+    setHeroPage(false);
+    try { document.documentElement.removeAttribute("data-hero-overlay"); } catch (_) { /* noop */ }
+    try { document.documentElement.style.removeProperty("--fct-hero-offset"); } catch (_) { /* noop */ }
   }, [location.pathname]);
 
   // Mega menü: hoveredCategory veya activeMenu için en çok satan ürünleri lazy fetch (3 ürün).
   // Kategori boş dönerse statik banner yerine genel popüler ürünlere düşülür → sağ panel her zaman dinamik.
-  const _activeTab = menuTabs.find((t) => t && t.id === activeMenu) || null;
+  const _activeTab = menuTabs.find((t) => t && t.id === activeMenu && (t.type === "mega" || hasSaleMenu(t))) || null;
   const _tabSlug = (t) => (t ? (slugFromLink(t.link) || t.id) : null);
   useEffect(() => {
     const slug = hoveredCategory || _tabSlug(_activeTab);
@@ -326,8 +341,18 @@ export default function Header({ hideMenu = false }) {
           şeffaf/beyaz görselin üzerinde. Kaydırınca (overlay off): bar gizlenir, header beyaz sticky.
           Diğer sayfalarda: bar akışta + header sticky (klasik). */}
       <div className={heroPage ? "fixed inset-x-0 top-0 z-40" : ""}>
-        {/* Duyuru barı: ana-sayfa-hero'da yalnız EN ÜSTTE (overlay) görünür; diğer sayfalarda hep. */}
-        {(heroPage ? heroOverlay : true) && !isCheckout && <CountdownBar />}
+        {/* Sayaç + Üst Duyuru Barı: SIRA, Sayfa Tasarımı'ndaki blok sırasına (sort_order) göre
+            gelir — koda gömülü DEĞİL. `announcementFirst` Home'dan sort_order karşılaştırmasıyla
+            geçer. Aralarında margin/boşluk YOK (bitişik). Ana-sayfa-hero'da yalnız EN ÜSTTE
+            (overlay) görünür; diğer sayfalarda sayaç hep görünür. Duyuru barı Home'dan prop ile, diğer sayfalarda
+            Header'ın kendi çektiği ana-sayfa bloğundan gelir (her sayfada aynı). */}
+        {(heroPage ? heroOverlay : true) && !isCheckout && (
+          <div ref={barsRef}>
+            {topAnnouncementFirst
+              ? <>{topAnnouncement}<CountdownBar /></>
+              : <><CountdownBar />{topAnnouncement}</>}
+          </div>
+        )}
 
         <header
           className={`z-40 transition-colors duration-300 ${
@@ -373,7 +398,7 @@ export default function Header({ hideMenu = false }) {
 
                   {/* iPad (lg, ~1024-1280px) sıkışması: sekmeler lg'de daha kompakt (küçük punto,
                       dar tracking, dar gap), xl'de tam boy — logoya binme/overlap engellenir. */}
-                  <nav className="hidden lg:flex items-center gap-4 xl:gap-8 min-w-0 pr-3">
+                  <nav className="hidden lg:flex items-center gap-4 xl:gap-8 min-w-0 pr-3" style={menuReady ? undefined : { visibility: "hidden" }}>
                     {/* Sekmeler TAMAMEN panelden (Tasarım > Menü Yönetimi): ad, sıra, tip (link/mega), stil.
                         style=accent → elmas işaretli premium stil; style=sale → kırmızı. */}
                     {visibleTabs.map((tab) => {
@@ -390,6 +415,18 @@ export default function Header({ hideMenu = false }) {
                         </>
                       );
                       if (tab.type === "mega") {
+                        return (
+                          <div
+                            key={tab.id}
+                            className="relative"
+                            onMouseEnter={() => openMenu(tab.id)}
+                            onMouseLeave={scheduleClose}
+                          >
+                            <Link to={tab.link || "#"} className={cls} data-testid={`nav-tab-${tab.id}`}>{inner}</Link>
+                          </div>
+                        );
+                      }
+                      if (hasSaleMenu(tab)) {
                         return (
                           <div
                             key={tab.id}
@@ -455,6 +492,51 @@ export default function Header({ hideMenu = false }) {
 
         {/* Full Width Mega Menu Dropdown — aktif mega sekme panelden gelir (tüm sekmeler için TEK şablon) */}
         {(() => {
+          // SALE menüsü: diğer menülerle AYNI tam genişlik panel — liste solda, sağda SALE ürünleri.
+          const saleTab = visibleTabs.find((t) => t.id === activeMenu && hasSaleMenu(t));
+          if (!saleTab) return null;
+          return (
+            <div
+              className="absolute left-0 right-0 top-full bg-white shadow-lg border-t z-50"
+              onMouseEnter={cancelClose}
+              onMouseLeave={scheduleClose}
+              data-testid="sale-menu"
+            >
+              <div className="max-w-[1800px] mx-auto px-8 py-6">
+                <div className="flex gap-12">
+                  <ul className="space-y-1">
+                    {saleMenu.map((it) => (
+                      <li key={`${it.url}-${it.label}`}>
+                        <Link
+                          to={it.url}
+                          className="block py-1 text-sm text-gray-700 hover:text-black transition-colors"
+                          onClick={() => setActiveMenu(null)}
+                        >
+                          {it.label}
+                        </Link>
+                      </li>
+                    ))}
+                    <li className="pt-1.5">
+                      <Link to={saleTab.link || "/sale"} className="text-xs font-medium underline hover:no-underline" onClick={() => setActiveMenu(null)}>
+                        Tümünü Gör
+                      </Link>
+                    </li>
+                  </ul>
+                  <div className="flex-shrink-0 flex gap-3 min-w-[564px] ml-auto">
+                    <MegaProductsPanel
+                      products={activeMegaProducts}
+                      loading={megaLoading}
+                      fallback={MENU_IMAGES[saleTab.id] || MENU_IMAGES.giyim}
+                      fallbackLink={saleTab.link || "/sale"}
+                      onNavigate={() => setActiveMenu(null)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+        {(() => {
           const tab = visibleTabs.find((t) => t.id === activeMenu && t.type === "mega");
           if (!tab) return null;
           const cols = megaColumnsOf(tab);
@@ -472,10 +554,13 @@ export default function Header({ hideMenu = false }) {
                 {cols.every((c) => !c.items.length) ? (
                 <ul className="space-y-1">
                   {cols.map((col) => (
-                    <li key={col.title}>
+                    <li key={col.title} className={_isFullLook(col.title) ? "mt-8 pt-1" : ""}>
+                      {/* Full Look: diğer başlıklardan belirgin aşağıda, üstünde KISA ayraç çizgi, kalın yazı
+                          (index.css .font-bold'u 600'e çekiyor → inline 700). */}
+                      {_isFullLook(col.title) && <span aria-hidden="true" className="block w-7 h-px bg-black/25 mb-3" />}
                       <Link
                         to={col.link}
-                        className="block py-1 text-sm text-gray-700 hover:text-black transition-colors"
+                        className={`block py-1 text-sm text-gray-700 hover:text-black transition-colors${_isDowntownCode(col.title) ? " italic" : ""}${_isFullLook(col.title) ? " nav-full-look text-black tracking-[0.08em]" : ""}`}
                         onClick={() => setActiveMenu(null)}
                         onMouseEnter={() => setHoveredCategory(col.slug)}
                       >
@@ -492,7 +577,7 @@ export default function Header({ hideMenu = false }) {
                     <div key={col.title} onMouseEnter={() => setHoveredCategory(col.slug)}>
                       <Link
                         to={col.link}
-                        className="block text-xs font-bold tracking-wider mb-3 text-gray-900 hover:underline cursor-pointer"
+                        className={`block text-xs font-bold tracking-wider mb-3 text-gray-900 hover:underline cursor-pointer${_isDowntownCode(col.title) ? " italic" : ""}`}
                         onClick={() => setActiveMenu(null)}
                         onMouseEnter={() => setHoveredCategory(col.slug)}
                       >
@@ -503,7 +588,7 @@ export default function Header({ hideMenu = false }) {
                           <li key={item.slug}>
                             <Link
                               to={item.link}
-                              className="block py-1 text-sm text-gray-600 hover:text-black transition-colors"
+                              className={`block py-1 text-sm text-gray-600 hover:text-black transition-colors${_isDowntownCode(item.name) ? " italic" : ""}`}
                               onClick={() => setActiveMenu(null)}
                               onMouseEnter={() => setHoveredCategory(item.slug)}
                             >
@@ -573,13 +658,16 @@ export default function Header({ hideMenu = false }) {
                       </summary>
                       <div className="pb-3 pl-1 space-y-3">
                         {cols.map((col) => (
-                          <div key={col.title}>
+                          <div key={col.title} className={_isFullLook(col.title) ? "mt-6 pt-1" : ""}>
+                            {_isFullLook(col.title) && <span aria-hidden="true" className="block w-7 h-px bg-black/25 mb-2.5" />}
                             {/* Alt kategorisi olmayan kolon (ör. koleksiyon) normal satır linki olarak ALT ALTA */}
                             <Link
                               to={col.link}
-                              className={col.items.length
-                                ? "block text-[10px] tracking-[0.25em] uppercase text-black/40 mb-1.5 hover:underline"
-                                : "block py-1.5 text-[13px] font-light text-black/75"}
+                              className={_isFullLook(col.title)
+                                ? "nav-full-look block py-1.5 text-[13px] text-black tracking-[0.08em]"
+                                : `${col.items.length
+                                  ? "block text-[10px] tracking-[0.25em] uppercase text-black/40 mb-1.5 hover:underline"
+                                  : "block py-1.5 text-[13px] font-light text-black/75"}${_isDowntownCode(col.title) ? " italic" : ""}`}
                               onClick={() => setMobileMenuOpen(false)}
                             >
                               {col.title}
@@ -588,13 +676,42 @@ export default function Header({ hideMenu = false }) {
                               <Link
                                 key={item.slug}
                                 to={item.link}
-                                className="block py-1.5 text-[13px] font-light text-black/75"
+                                className={`block py-1.5 text-[13px] font-light text-black/75${_isDowntownCode(item.name) ? " italic" : ""}`}
                                 onClick={() => setMobileMenuOpen(false)}
                               >
                                 {item.name}
                               </Link>
                             ))}
                           </div>
+                        ))}
+                        <Link
+                          to={tab.link || "/"}
+                          className="block py-1.5 mt-1 text-[13px] font-medium underline text-black/80"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Tümünü Gör
+                        </Link>
+                      </div>
+                    </details>
+                  );
+                }
+                if (hasSaleMenu(tab)) {
+                  return (
+                    <details key={tab.id} className={`group ${borderCls}`} data-testid="sale-menu-mobile">
+                      <summary className="flex items-center justify-between py-3 cursor-pointer list-none">
+                        <span className="text-sm tracking-[0.15em] uppercase font-light text-red-700">{tab.label}</span>
+                        <span className="text-base font-thin transition-transform group-open:rotate-45">+</span>
+                      </summary>
+                      <div className="pb-3 pl-1">
+                        {saleMenu.map((it) => (
+                          <Link
+                            key={`${it.url}-${it.label}`}
+                            to={it.url}
+                            className="block py-1.5 text-[13px] font-light text-black/75"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {it.label}
+                          </Link>
                         ))}
                         <Link
                           to={tab.link || "/"}
@@ -710,12 +827,12 @@ export default function Header({ hideMenu = false }) {
               suggestedProducts.length > 0 && (
                 <div>
                   <h3 className="text-[10px] tracking-widest uppercase text-gray-400 mb-5">İlginizi çekebilecek diğer ürünler</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8">
                     {suggestedProducts.map((p) => (
                       <button key={p.id} onClick={() => { navigate(`/${p.slug}`); closeSearch(); }} className="text-left group">
                         <div className="relative aspect-[2/3] bg-gray-50 mb-2.5 overflow-hidden">
                           <MegaDiscountBadge p={p} />
-                          <img src={optimizeImg(p.images?.[0], 500)} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+                          <img src={optimizeImg(firstImage(p), 500)} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
                         </div>
                         <p className="text-xs font-light line-clamp-1 mb-0.5">{p.name}</p>
                         <MegaPrice p={p} />
@@ -727,12 +844,12 @@ export default function Header({ hideMenu = false }) {
             ) : searchResults.length > 0 ? (
               <div>
                 <h3 className="text-[10px] tracking-widest uppercase text-gray-400 mb-5">Ürünler</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8">
                   {searchResults.map((p) => (
                     <button key={p.id} onClick={() => { navigate(`/${p.slug}`); closeSearch(); }} className="text-left group">
                       <div className="relative aspect-[2/3] bg-gray-50 mb-2.5 overflow-hidden">
                         <MegaDiscountBadge p={p} />
-                        <img src={optimizeImg(p.images?.[0], 500)} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+                        <img src={optimizeImg(firstImage(p), 500)} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
                       </div>
                       <p className="text-xs font-light line-clamp-1 mb-0.5">{p.name}</p>
                       <MegaPrice p={p} />

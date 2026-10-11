@@ -62,24 +62,28 @@ export default function SearchableMapSelect({
   const wrapRef = useRef(null);
   const inputRef = useRef(null);
   const timer = useRef(null);
+  const requestSeq = useRef(0);
 
   useEffect(() => {
     setQ(value?.name || "");
   }, [value?.name]);
 
   const fetchFlat = async (query) => {
+    const seq = ++requestSeq.current;
     setLoading(true);
     try {
       const r = await axios.get(
         `${API}${optionsUrl}?q=${encodeURIComponent(query || "")}&limit=300`,
         auth()
       );
+      if (seq !== requestSeq.current) return;
       setOptions(r.data?.items || []);
       setNoCache(!!r.data?.hint && (r.data?.items || []).length === 0);
     } catch {
+      if (seq !== requestSeq.current) return;
       setOptions([]);
     } finally {
-      setLoading(false);
+      if (seq === requestSeq.current) setLoading(false);
     }
   };
 

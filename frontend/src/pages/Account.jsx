@@ -32,6 +32,8 @@ import ProvinceDistrictSelect from "../components/ProvinceDistrictSelect";
 import ProductCard from "../components/ProductCard";
 import { useAuth } from "../context/AuthContext";
 import { useFavorites } from "../context/FavoritesContext";
+import AccountPrivacyPane from "../components/account/AccountPrivacyPane";
+import { editTaxIdValue } from "../lib/taxId";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -41,7 +43,7 @@ const MENU_ITEMS = [
   { id: "addresses", label: "Adreslerim",   icon: MapPin },
   { id: "favorites", label: "Kaydedilenler", icon: Bookmark },
   { id: "referral",  label: "Davet Et",     icon: Gift },
-  { id: "security",  label: "Şifre",        icon: Lock },
+  { id: "security",  label: "Güvenlik",     icon: Lock },
 ];
 
 const ORDER_STATUS = {
@@ -108,7 +110,6 @@ export default function Account() {
     is_corporate: false, company_name: "", tax_no: "", tax_office: "",
   });
 
-  const [mkt, setMkt] = useState({ email: false, sms: false });
   const [refData, setRefData] = useState(null);
   const [refCopied, setRefCopied] = useState(false);
   useEffect(() => {
@@ -120,23 +121,13 @@ export default function Account() {
         height_cm:  user.height_cm  ?? "",
         weight_kg:  user.weight_kg  ?? "",
       });
-      const mp = user.marketing_prefs || {};
-      setMkt({ email: !!mp.email, sms: !!mp.sms });
     }
   }, [user]);
 
-  // İYS pazarlama izni aç/kapa → backend hem kaydeder hem İYS'ye ONAY/RET bildirir.
-  const saveMkt = async (next) => {
-    setMkt(next);
-    try {
-      const token = localStorage.getItem("token");
-      await axios.post(`${API}/iys/consent/update`, next, { headers: { Authorization: `Bearer ${token}` } });
-      setUser?.((u) => ({ ...(u || {}), marketing_prefs: next, accepts_marketing: next.email || next.sms }));
-      toast.success("Tercihiniz güncellendi");
-    } catch {
-      toast.error("Güncellenemedi");
-    }
-  };
+  // NOT: pazarlama izni aç/kapa fonksiyonu (saveMkt) KALDIRILDI — üyelik sayfasında
+  // artık izin kutucuğu yok. İzinden çıkış: ticari e-postadaki "abonelikten çık"
+  // bağlantısı, iys.org.tr merkezî iptal ve SMS'teki RET yönergesi ile yapılır.
+  // Sunucudaki /api/iys/consent/update ucu DURUYOR (sipariş akışı ve panel kullanıyor).
 
   useEffect(() => {
     if (activeTab === "orders") fetchOrders();
@@ -201,14 +192,23 @@ export default function Account() {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
+    // AD SOYAD ZORUNLU: profil düzenlemeden isim silinip kaydedilebiliyordu; sipariş,
+    // fatura ve kargo etiketinde isim boş kalıyordu. Sunucu da ayrıca reddediyor.
+    const _ad = (profileForm.first_name || "").trim();
+    const _soyad = (profileForm.last_name || "").trim();
+    if (!_ad || !_soyad) {
+      toast.error("Ad ve soyad zorunludur.");
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`${API}/users/me`, profileForm, {
+      const _payload = { ...profileForm, first_name: _ad, last_name: _soyad };
+      await axios.put(`${API}/users/me`, _payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Profil güncellendi");
       // Context'i güncelle → beden önerisi anında yeni boy/kiloyla çalışır (yeniden yükleme gerekmez)
-      setUser?.((u) => ({ ...(u || {}), ...profileForm }));
+      setUser?.((u) => ({ ...(u || {}), ..._payload }));
       setEditingProfile(false);
     } catch {
       toast.error("Güncelleme başarısız");
@@ -217,6 +217,11 @@ export default function Account() {
 
   const handleSaveAddress = async (e) => {
     e.preventDefault();
+    // Alıcı ADI kargo etiketine ve faturaya gidiyor — boş adres kaydedilemez.
+    if (!(addressForm.first_name || "").trim() || !(addressForm.last_name || "").trim()) {
+      toast.error("Adreste ad ve soyad zorunludur.");
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
       const headers = { Authorization: `Bearer ${token}` };
@@ -240,7 +245,7 @@ export default function Account() {
   };
 
   const handleDeleteAddress = async (id) => {
-    if (!await window.appConfirm("Adresi silmek istediğinize emin misiniz?")) return;
+    if (!(window.appConfirm ? await window.appConfirm("Adresi silmek istediğinize emin misiniz?") : window.confirm("Adresi silmek istediğinize emin misiniz?"))) return;
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${API}/addresses/${id}`, {
@@ -260,7 +265,7 @@ export default function Account() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="sf-page min-h-screen flex items-center justify-center bg-white">
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-black border-t-transparent" />
       </div>
     );
@@ -268,7 +273,7 @@ export default function Account() {
   if (!user) return <Navigate to="/giris" />;
 
   return (
-    <div className="min-h-screen bg-[#fafafa]" data-testid="account-page">
+    <div className="sf-page min-h-screen bg-[#fafafa]" data-testid="account-page">
       <Header />
 
       {/* ───────────────────── Hero / Welcome ───────────────────── */}
@@ -339,7 +344,7 @@ export default function Account() {
 
       {/* ───────────────────── Content ───────────────────── */}
       <main className="max-w-screen-xl mx-auto px-4 py-8 md:py-10">
-        {activeTab === "profile"   && <ProfilePane user={user} editing={editingProfile} setEditing={setEditingProfile} form={profileForm} setForm={setProfileForm} onSubmit={handleUpdateProfile} mkt={mkt} saveMkt={saveMkt} />}
+        {activeTab === "profile"   && <ProfilePane user={user} editing={editingProfile} setEditing={setEditingProfile} form={profileForm} setForm={setProfileForm} onSubmit={handleUpdateProfile} />}
         {activeTab === "orders"    && <OrdersPane loading={loading} orders={orders} expandedOrder={expandedOrder} setExpandedOrder={setExpandedOrder} onChanged={fetchOrders} />}
         {activeTab === "addresses" && <AddressesPane loading={loading} addresses={addresses} editing={editingAddress} setEditing={setEditingAddress} form={addressForm} setForm={setAddressForm} onSubmit={handleSaveAddress} onDelete={handleDeleteAddress} />}
         {activeTab === "favorites" && <FavoritesPane />}
@@ -413,7 +418,12 @@ export default function Account() {
             )}
           </div>
         )}
-        {activeTab === "security"  && <SecurityPane />}
+        {activeTab === "security"  && (
+          <div className="max-w-xl space-y-6">
+            <SecurityPane />
+            <AccountPrivacyPane />
+          </div>
+        )}
       </main>
 
       <Footer />
@@ -423,7 +433,7 @@ export default function Account() {
 
 /* ═══════════════════════════════ PROFILE ═══════════════════════════════ */
 
-function ProfilePane({ user, editing, setEditing, form, setForm, onSubmit, mkt = {}, saveMkt = () => {} }) {
+function ProfilePane({ user, editing, setEditing, form, setForm, onSubmit }) {
   return (
     <div className="grid lg:grid-cols-3 gap-6 max-w-4xl">
       <div className="lg:col-span-2 bg-white border border-gray-100 p-6 md:p-8">
@@ -440,8 +450,8 @@ function ProfilePane({ user, editing, setEditing, form, setForm, onSubmit, mkt =
         {editing ? (
           <form onSubmit={onSubmit} className="space-y-5">
             <div className="grid md:grid-cols-2 gap-5">
-              <Field label="Ad" value={form.first_name} onChange={(v) => setForm({ ...form, first_name: v })} />
-              <Field label="Soyad" value={form.last_name} onChange={(v) => setForm({ ...form, last_name: v })} />
+              <Field label="Ad" value={form.first_name} onChange={(v) => setForm({ ...form, first_name: v })} required maxLength={100} />
+              <Field label="Soyad" value={form.last_name} onChange={(v) => setForm({ ...form, last_name: v })} required maxLength={100} />
               <Field label="E-posta" value={user.email} disabled />
               <Field label="Telefon" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} type="tel" />
               <Field label="Boy (cm)" value={form.height_cm} onChange={(v) => setForm({ ...form, height_cm: v })} type="number" />
@@ -468,23 +478,15 @@ function ProfilePane({ user, editing, setEditing, form, setForm, onSubmit, mkt =
           </dl>
         )}
 
-        {/* Pazarlama İzinleri (İYS) — aç/kapa; kapatınca İYS'ye RED bildirilir */}
-        <div className="mt-6 pt-6 border-t border-gray-100">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-3">Pazarlama İzinleri</p>
-          <div className="space-y-2.5">
-            <label className="flex items-center justify-between text-sm cursor-pointer">
-              <span className="text-gray-700">E-posta ile kampanya/fırsat</span>
-              <input type="checkbox" checked={mkt.email} onChange={(e) => saveMkt({ ...mkt, email: e.target.checked })} className="accent-black w-4 h-4" data-testid="mkt-email" />
-            </label>
-            <label className="flex items-center justify-between text-sm cursor-pointer">
-              <span className="text-gray-700">SMS ile kampanya/fırsat</span>
-              <input type="checkbox" checked={mkt.sms} onChange={(e) => saveMkt({ ...mkt, sms: e.target.checked })} className="accent-black w-4 h-4" data-testid="mkt-sms" />
-            </label>
-          </div>
-          <p className="text-[11px] text-gray-400 mt-2 leading-relaxed">
-            İzinleriniz İYS'ye işlenir. Kapattığınızda ticari ileti gönderimi durur.
-          </p>
-        </div>
+        {/* PAZARLAMA İZNİ KUTUCUKLARI KALDIRILDI (işletme kararı): üyeler sipariş
+            sırasında verdikleri SMS/e-posta iznini buradan tek tıkla kapatıyordu.
+            İzinden çıkma hakkı ORTADAN KALKMIYOR — kanunen zorunlu olan yollar duruyor:
+              • her ticari e-postadaki "abonelikten çık" bağlantısı
+                (routes/email_marketing.py: her gönderime {{ unsubscribe }} eklenir,
+                 public /api/email-marketing/unsubscribe ucu),
+              • https://iys.org.tr "Vatandaş Girişi" ile tüm izinleri merkezî iptal,
+              • ticari SMS'lerdeki operatör/İYS düzeyindeki RET yönergesi.
+            İzin VERİLERİ değişmedi; yalnız bu ekrandaki aç/kapa kaldırıldı. */}
       </div>
 
       <aside className="bg-black text-white p-6 md:p-8 flex flex-col justify-between">
@@ -506,14 +508,19 @@ function ProfilePane({ user, editing, setEditing, form, setForm, onSubmit, mkt =
   );
 }
 
-function Field({ label, value, onChange, type = "text", disabled = false }) {
+function Field({ label, value, onChange, type = "text", disabled = false, required = false, maxLength }) {
   return (
     <div>
-      <label className="block text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-2">{label}</label>
+      <label className="block text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-2">
+        {label}{required && <span className="text-red-500 ml-0.5">*</span>}
+      </label>
       <input
         type={type}
         value={value || ""}
         disabled={disabled}
+        required={required}
+        maxLength={maxLength}
+        title={required ? "Bu alan zorunludur" : undefined}
         autoComplete={type === "password" ? "off" : undefined}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
         className={`w-full border-0 border-b ${disabled ? "border-gray-200 text-gray-400" : "border-gray-300 focus:border-black"} bg-transparent py-2 text-sm focus:outline-none transition-colors`}
@@ -592,16 +599,61 @@ function OrderCard({ order, expanded, onToggle, onChanged }) {
   // Müşteri iptali: yalnızca "Hazırlanıyor" durumuna geçmeden. Backend guard ile birebir aynı set.
   const CANCELLABLE = ["pending", "awaiting_payment", "payment_notified", "confirmed"];
   const canCancel = CANCELLABLE.includes(order.status);
+  // İade talebi hâlâ AKTİF mi (iptal edilmemiş)? İptal edilince re-request mümkün.
+  const _rrStatus = order.return_request?.status || "";
+  // "expired" eklendi: iade süresi dolup sipariş normale döndürüldüyse (sunucudaki
+  // expire_stale_site_return_requests) müşteriye artık "iade talebiniz var" kutusu
+  // GÖSTERİLMEZ — kod da geçersiz. Müşteri yeni talep açabilir (süre uygunsa).
+  const hasActiveReturn = !!order.return_request
+    && _rrStatus !== "cancelled" && _rrStatus !== "expired";
+  // Bekleyen (henüz onaylanmamış/işlenmemiş) iade talebi → müşteri iptal edebilir.
+  const _rrBlocked = ["approved", "return_approved", "rejected", "return_rejected",
+    "in_transit", "return_in_transit", "returned", "refunded", "partial_refunded", "cancelled", "expired"];
+  const canCancelReturn = hasActiveReturn && order.status === "return_requested" && !_rrBlocked.includes(_rrStatus);
+  const [cancellingReturn, setCancellingReturn] = useState(false);
+  const handleCancelReturn = async () => {
+    if (!window.confirm("İade talebinizi iptal etmek istediğinize emin misiniz? (İade işlemi henüz başlamadı — para/stok hareketi olmaz.)")) return;
+    setCancellingReturn(true);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(`${API}/orders/${order.id || order.order_number}/return-request/cancel`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success("İade talebiniz iptal edildi");
+      onChanged && onChanged();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "İade talebi iptal edilemedi");
+    } finally {
+      setCancellingReturn(false);
+    }
+  };
   const [cancelling, setCancelling] = useState(false);
+  // Havale/EFT ile ÖDENMİŞ sipariş iptalinde para banka hesabına iade edilir → IBAN + ad soyad ZORUNLU.
+  const _isHavale = ["bank_transfer", "havale", "eft", "bank"].includes(String(order.payment_method || "").toLowerCase());
+  const needBank = _isHavale && (String(order.payment_status || "").toLowerCase() === "paid" || order.status === "confirmed");
+  const [bankOpen, setBankOpen] = useState(false);
+  const [cIban, setCIban] = useState("");
+  const [cName, setCName] = useState("");
+  const [cBank, setCBank] = useState("");
+  const cIbanClean = cIban.replace(/\s/g, "").toUpperCase();
+  const cIbanValid = /^TR\d{24}$/.test(cIbanClean);
   const handleCancel = async () => {
-    if (!window.confirm("Siparişinizi iptal etmek istediğinize emin misiniz?")) return;
+    // Havale-ödenmişte önce IBAN panelini aç (onay + IBAN tek adımda).
+    if (needBank && !bankOpen) { setBankOpen(true); return; }
+    if (needBank) {
+      if (!cIbanValid) { toast.error("Geçerli bir IBAN girin (TR ile başlayan 26 haneli)"); return; }
+      if (!cName.trim()) { toast.error("IBAN sahibinin ad soyadını girin"); return; }
+    } else if (!window.confirm("Siparişinizi iptal etmek istediğinize emin misiniz?")) {
+      return;
+    }
     setCancelling(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.post(`${API}/my-orders/${order.id || order.order_number}/cancel`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      toast.success("Siparişiniz iptal edildi");
+      const r = await axios.post(`${API}/my-orders/${order.id || order.order_number}/cancel`,
+        needBank ? { refund_iban: cIbanClean, refund_name: cName.trim(), refund_bank: cBank.trim() } : {},
+        { headers: { Authorization: `Bearer ${token}` } });
+      // Sipariş kendiliğinden iptal olmaz; talep alınır ve personel iptale alır (sunucu mesajı).
+      toast.success(r.data?.message || "İptal talebiniz alındı");
       onChanged && onChanged();
     } catch (err) {
       toast.error(err.response?.data?.detail || "Sipariş iptal edilemedi");
@@ -634,7 +686,7 @@ function OrderCard({ order, expanded, onToggle, onChanged }) {
               {it.image ? (
                 <img src={it.image} alt={it.name || it.product_name || ""} className="w-full h-full object-contain" />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-200" />
+                <div className="w-full h-full bg-neutral-100" />
               )}
             </div>
           )) : (
@@ -689,10 +741,19 @@ function OrderCard({ order, expanded, onToggle, onChanged }) {
           {order.status === "payment_notified" && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-900">Ödeme bildiriminiz alındı, en kısa sürede kontrol edilecek.</div>
           )}
-          {order.return_request ? (
+          {hasActiveReturn ? (
             <div className="bg-rose-50 border border-rose-200 rounded-lg p-3 flex items-center justify-between gap-3 flex-wrap">
               <span className="text-sm text-rose-900">İade talebiniz oluşturuldu · Kod: <b className="font-mono">{order.return_request.return_code}</b></span>
-              <a href={`/iade/${order.order_number}`} className="inline-block bg-rose-600 text-white px-4 py-2 rounded-md text-xs uppercase tracking-[0.15em] hover:bg-rose-700 shrink-0">Barkodu Gör</a>
+              <div className="flex items-center gap-2 shrink-0">
+                <a href={`/iade/${order.order_number}`} className="inline-block bg-rose-600 text-white px-4 py-2 rounded-md text-xs uppercase tracking-[0.15em] hover:bg-rose-700">Barkodu Gör</a>
+                {canCancelReturn && (
+                  <button onClick={handleCancelReturn} disabled={cancellingReturn}
+                    data-testid="cancel-return-btn"
+                    className="inline-block border border-rose-300 text-rose-700 px-4 py-2 rounded-md text-xs uppercase tracking-[0.15em] hover:bg-rose-100 disabled:opacity-50">
+                    {cancellingReturn ? "İptal ediliyor…" : "İade talebini iptal et"}
+                  </button>
+                )}
+              </div>
             </div>
           ) : canReturn ? (
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-3 flex-wrap">
@@ -701,16 +762,47 @@ function OrderCard({ order, expanded, onToggle, onChanged }) {
             </div>
           ) : null}
           {canCancel && (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-3 flex-wrap">
-              <span className="text-sm text-gray-700">Siparişiniz henüz hazırlanmaya başlamadı. Dilerseniz iptal edebilirsiniz.</span>
-              <button
-                onClick={handleCancel}
-                disabled={cancelling}
-                data-testid={`cancel-order-${order.id}`}
-                className="inline-block bg-red-600 text-white px-4 py-2 rounded-md text-xs uppercase tracking-[0.15em] hover:bg-red-700 disabled:opacity-50 shrink-0"
-              >
-                {cancelling ? "İptal ediliyor..." : "Siparişi İptal Et"}
-              </button>
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-3">
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <span className="text-sm text-gray-700">
+                  {needBank
+                    ? "Havale/EFT ödemeniz iade edileceği için iptalde IBAN bilgisi gerekir."
+                    : "Siparişiniz henüz hazırlanmaya başlamadı. Dilerseniz iptal edebilirsiniz."}
+                </span>
+                {!(needBank && bankOpen) && (
+                  <button
+                    onClick={handleCancel}
+                    disabled={cancelling}
+                    data-testid={`cancel-order-${order.id}`}
+                    className="inline-block bg-red-600 text-white px-4 py-2 rounded-md text-xs uppercase tracking-[0.15em] hover:bg-red-700 disabled:opacity-50 shrink-0"
+                  >
+                    {cancelling ? "İptal ediliyor..." : "Siparişi İptal Et"}
+                  </button>
+                )}
+              </div>
+              {needBank && bankOpen && (
+                <div className="space-y-2 border-t border-gray-200 pt-3" data-testid="cancel-refund-bank">
+                  <p className="text-[12px] text-gray-600">İade tutarı aşağıdaki banka hesabına gönderilecektir. Lütfen bilgileri eksiksiz girin.</p>
+                  <input value={cIban} onChange={(e) => setCIban(e.target.value.toUpperCase())} placeholder="IBAN — TR00 0000 …"
+                    data-testid="cancel-iban"
+                    className={`w-full border p-2.5 text-sm bg-white font-mono tracking-wide focus:outline-none ${cIban && !cIbanValid ? "border-red-400" : "border-gray-300 focus:border-gray-600"}`} />
+                  {cIban && !cIbanValid && <p className="text-[11px] text-red-600">IBAN TR ile başlamalı ve 26 haneli olmalı.</p>}
+                  <input value={cName} onChange={(e) => setCName(e.target.value)} placeholder="IBAN Sahibi Ad Soyad"
+                    data-testid="cancel-iban-name"
+                    className="w-full border border-gray-300 p-2.5 text-sm bg-white focus:outline-none focus:border-gray-600" />
+                  <input value={cBank} onChange={(e) => setCBank(e.target.value)} placeholder="Banka (opsiyonel)"
+                    className="w-full border border-gray-300 p-2.5 text-sm bg-white focus:outline-none focus:border-gray-600" />
+                  <div className="flex gap-2 pt-1">
+                    <button onClick={handleCancel} disabled={cancelling || !cIbanValid || !cName.trim()}
+                      className="bg-red-600 text-white px-4 py-2 rounded-md text-xs uppercase tracking-[0.15em] hover:bg-red-700 disabled:opacity-40">
+                      {cancelling ? "İptal ediliyor..." : "İptali Onayla"}
+                    </button>
+                    <button onClick={() => setBankOpen(false)} className="px-4 py-2 rounded-md text-xs uppercase tracking-[0.15em] border border-gray-300 text-gray-600 hover:bg-gray-100">
+                      Vazgeç
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
           {/* Items */}
@@ -723,7 +815,7 @@ function OrderCard({ order, expanded, onToggle, onChanged }) {
                 <div className="w-14 h-16 bg-white border border-gray-100 overflow-hidden shrink-0">
                   {it.image
                     ? <img src={it.image} alt={it.name || it.product_name || ""} className="w-full h-full object-contain" />
-                    : <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-200" />}
+                    : <div className="w-full h-full bg-neutral-100" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm leading-snug">{it.name || it.product_name || "Ürün"}</p>
@@ -834,8 +926,8 @@ function AddressesPane({ loading, addresses, editing, setEditing, form, setForm,
           <form onSubmit={onSubmit} className="space-y-5">
             <Field label="Adres Başlığı (Ev / İş / vb.)" value={form.title} onChange={(v) => setForm({ ...form, title: v })} />
             <div className="grid md:grid-cols-2 gap-5">
-              <Field label="Ad" value={form.first_name} onChange={(v) => setForm({ ...form, first_name: v })} />
-              <Field label="Soyad" value={form.last_name} onChange={(v) => setForm({ ...form, last_name: v })} />
+              <Field label="Ad" value={form.first_name} onChange={(v) => setForm({ ...form, first_name: v })} required maxLength={100} />
+              <Field label="Soyad" value={form.last_name} onChange={(v) => setForm({ ...form, last_name: v })} required maxLength={100} />
               <Field label="Telefon" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} type="tel" />
               <Field label="Posta Kodu" value={form.postal_code} onChange={(v) => setForm({ ...form, postal_code: v })} />
               <div className="md:col-span-2">
@@ -877,7 +969,7 @@ function AddressesPane({ loading, addresses, editing, setEditing, form, setForm,
               {form.is_corporate && (
                 <div className="grid md:grid-cols-2 gap-5 bg-gray-50 p-4 -mx-1 rounded">
                   <Field label="Şirket Adı / Ünvan" value={form.company_name} onChange={(v) => setForm({ ...form, company_name: v })} />
-                  <Field label="Vergi No (10 hane)" value={form.tax_no} onChange={(v) => setForm({ ...form, tax_no: v })} />
+                  <Field label="Vergi No (10 hane)" value={form.tax_no} onChange={(v) => setForm({ ...form, tax_no: editTaxIdValue(form.tax_no, v) })} />
                   <div className="md:col-span-2">
                     <Field label="Vergi Dairesi" value={form.tax_office} onChange={(v) => setForm({ ...form, tax_office: v })} />
                   </div>
@@ -1039,9 +1131,10 @@ function SecurityPane() {
   };
 
   return (
-    <div className="bg-white border border-gray-100 p-6 md:p-8 max-w-xl" data-testid="security-pane">
-      <h2 className="text-sm uppercase tracking-[0.2em] text-gray-700 mb-2 flex items-center gap-2">
-        <Lock size={14} /> Şifre Değiştir
+    <div className="bg-white border border-gray-100 p-6 md:p-8" data-testid="security-pane">
+      <h2 className="text-sm uppercase tracking-[0.2em] text-gray-700 mb-2 inline-flex items-center gap-2">
+        <Lock size={14} className="shrink-0" />
+        <span>Şifre Değiştir</span>
       </h2>
       <p className="text-xs text-gray-500 mb-6">Mevcut şifrenizi girip yeni bir şifre belirleyin. En az 6 karakter olmalı.</p>
       <form onSubmit={submit} className="space-y-5">

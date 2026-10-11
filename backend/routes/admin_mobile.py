@@ -8,20 +8,21 @@ admin_mobile.py — Admin tarafında mobil uygulama yönetimi
 - Cihazları listele
 =============================================================================
 """
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from datetime import datetime, timezone
 from typing import Optional
 from pydantic import BaseModel, Field
 import os
 import httpx
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_permission
+from activity_audit import record_admin_audit
 
 router = APIRouter(prefix="/admin/mobile", tags=["admin-mobile"])
 
 
 @router.get("/versions")
-async def get_versions(current_user: dict = Depends(require_admin)):
+async def get_versions(current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     cfg = await db.settings.find_one({"id": "app_versions"}, {"_id": 0})
     return cfg or {"id": "app_versions", "versions": {
         "ios": {"min_version": "1.0.0", "latest_version": "1.0.0", "force_update": False, "store_url": "", "release_notes": ""},
@@ -34,7 +35,7 @@ class VersionUpdateReq(BaseModel):
 
 
 @router.post("/versions")
-async def update_versions(req: VersionUpdateReq, current_user: dict = Depends(require_admin)):
+async def update_versions(req: VersionUpdateReq, current_user: dict = Depends(require_permission("integrations.edit"))):
     await db.settings.update_one(
         {"id": "app_versions"},
         {"$set": {"versions": req.versions, "updated_at": datetime.now(timezone.utc).isoformat(),
@@ -45,16 +46,30 @@ async def update_versions(req: VersionUpdateReq, current_user: dict = Depends(re
 
 
 @router.get("/config")
-async def get_app_config(current_user: dict = Depends(require_admin)):
+async def get_app_config(current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     cfg = await db.settings.find_one({"id": "app_config"}, {"_id": 0})
     return cfg or {"id": "app_config"}
 
 
+# GÜVENLİK (INJ-01, mass assignment): gövde eskiden OLDUĞU GİBİ $set ediliyordu → `id` alanı
+# app_config belgesini başka bir ayar belgesine (ör. "iyzico") yeniden anahtarlıyor, rastgele
+# alanlar (api_key/api_secret…) yazılabiliyordu. Yalnız panelin düzenlediği bölümler yazılır.
+_APP_CONFIG_SECTIONS = ("feature_flags", "branding", "support")
+
+
 @router.post("/config")
-async def update_app_config(payload: dict, current_user: dict = Depends(require_admin)):
+async def update_app_config(payload: dict, current_user: dict = Depends(require_permission("integrations.edit"))):
+    upd = {}
+    for _k in _APP_CONFIG_SECTIONS:
+        if _k not in (payload or {}):
+            continue
+        _v = payload.get(_k)
+        if not isinstance(_v, dict):
+            raise HTTPException(status_code=400, detail=f"'{_k}' bir nesne olmalı")
+        upd[_k] = _v
     await db.settings.update_one(
         {"id": "app_config"},
-        {"$set": {**(payload or {}), "updated_at": datetime.now(timezone.utc).isoformat(),
+        {"$set": {**upd, "updated_at": datetime.now(timezone.utc).isoformat(),
                   "updated_by": current_user.get("email")}},
         upsert=True,
     )
@@ -63,7 +78,7 @@ async def update_app_config(payload: dict, current_user: dict = Depends(require_
 
 @router.get("/devices")
 async def list_devices(platform: Optional[str] = None, limit: int = 100,
-                       current_user: dict = Depends(require_admin)):
+                       current_user: dict = Depends(require_permission("integrations.view", any_in_area=True))):
     q = {"is_active": True}
     if platform:
         q["platform"] = platform
@@ -93,10 +108,23 @@ class PushSendReq(BaseModel):
 
 
 @router.post("/push/send")
-async def send_push(req: PushSendReq, current_user: dict = Depends(require_admin)):
+async def send_push(req: PushSendReq, request: Request,
+                    current_user: dict = Depends(require_permission("campaigns.push_send"))):
     """Push notification gönder. FCM_SERVER_KEY env'de yoksa mock mode'da
     kuyruklamayı simüle eder (gönderim logu integration_logs koleksiyonunda).
+
+    GÜVENLİK (denetim 2026-10): tüm müşterilere toplu bildirim → ayrı yetki
+    (campaigns.push_send) + denetim kaydı. Süper admin ('*') geçer.
     """
+    if not (req.title or "").strip() or not (req.body or "").strip():
+        raise HTTPException(status_code=400, detail="Başlık ve metin zorunlu")
+    if len(req.title) > 120 or len(req.body) > 1000:
+        raise HTTPException(status_code=400, detail="Başlık en çok 120, metin en çok 1000 karakter olabilir")
+    await record_admin_audit(
+        db, action="mobile.push_send", entity_type="push", entity_id=req.target,
+        current_user=current_user, request=request, source="admin.mobile",
+        metadata={"target": req.target, "has_target_value": bool(req.target_value),
+                  "title_len": len(req.title), "body_len": len(req.body)})
     fcm_key = os.environ.get("FCM_SERVER_KEY", "").strip()
 
     # Hedef cihazları topla

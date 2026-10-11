@@ -8,7 +8,7 @@ from pathlib import Path
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import FileResponse
 
-from .deps import require_admin
+from .deps import require_admin, require_permission
 
 router = APIRouter(tags=["Docs"])
 
@@ -29,7 +29,7 @@ AVAILABLE_DOCS = {
 
 
 @router.get("/docs")
-async def list_docs(current_user: dict = Depends(require_admin)):
+async def list_docs(current_user: dict = Depends(require_permission("admin.logs"))):
     """Mevcut dokümanları listele (admin)."""
     return {
         "docs": [
@@ -41,7 +41,7 @@ async def list_docs(current_user: dict = Depends(require_admin)):
 
 
 @router.get("/docs/{doc_id}/download")
-async def download_doc(doc_id: str, current_user: dict = Depends(require_admin)):
+async def download_doc(doc_id: str, current_user: dict = Depends(require_permission("admin.logs"))):
     """Markdown dokümantasyon dosyasını indir (admin)."""
     meta = AVAILABLE_DOCS.get(doc_id)
     if not meta:

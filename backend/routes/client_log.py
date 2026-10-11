@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import PlainTextResponse
 
-from .deps import db, logger, require_admin
+from .deps import db, logger, require_admin, limiter, require_permission
 
 try:
     from .deps import client_ip_from_request
@@ -71,6 +71,7 @@ def _classify_ua(ua: str) -> dict:
 
 
 @router.post("/client-log")
+@(limiter.limit("30/minute") if limiter else (lambda f: f))  # GÜVENLİK: kimliksiz yazma ucu → IP başı sınır
 async def client_log(request: Request):
     """Herkese açık beacon ucu — istemci yüklenme/hata olayı kaydeder (IP+UA sunucudan)."""
     try:
@@ -109,7 +110,7 @@ async def client_log(request: Request):
 @router.get("/admin/client-load-events")
 async def list_client_load_events(limit: int = 200, status: str = "",
                                   only_fail: bool = False,
-                                  current_user: dict = Depends(require_admin)):
+                                  current_user: dict = Depends(require_permission("admin.logs"))):
     """Admin: son istemci yüklenme/hata olayları + özet. only_fail=başarısızlar."""
     q = {}
     if status:
@@ -137,16 +138,15 @@ async def list_client_load_events(limit: int = 200, status: str = "",
 
 
 @router.get("/client-load-events/peek")
-async def peek_client_load_events(key: str = "", limit: int = 120, only_fail: bool = True):
-    """Uygulama MOUNT olmasa da (admin panel açılmasa da) olayları görebilmek için token-gated
-    okuma. Anahtar = WhatsApp verify_token (ayrı sır tutmadan hızlı teşhis)."""
-    try:
-        s = await db.settings.find_one({"id": "notification_providers"}, {"_id": 0}) or {}
-        vt = ((s.get("providers") or {}).get("whatsapp_meta") or {}).get("verify_token") or ""
-    except Exception:
-        vt = ""
-    if not vt or not hmac.compare_digest(str(key), str(vt)):
-        return PlainTextResponse("forbidden", status_code=403)
+async def peek_client_load_events(key: str = "", limit: int = 120, only_fail: bool = True,
+                                  current_user: dict = Depends(require_permission("admin.logs"))):
+    """Uygulama MOUNT olmasa da (admin panel açılmasa da) olayları görebilmek için okuma.
+
+    GÜVENLİK (denetim 2026-10): eskiden anahtar = WhatsApp verify_token idi (Meta'ya düz metin
+    giden, admin anahtarı olmayan bir değer). Artık panel personeli Bearer oturumu
+    (require_admin) şart; panel açılmasa da token ile (ör. curl) çağrılabilir.
+    `key` geriye uyumluluk için kabul edilir ama YOK SAYILIR."""
+    _ = key
     q = {}
     if only_fail:
         q["status"] = {"$in": ["mount_fail", "error", "unhandledrejection"]}

@@ -16,6 +16,7 @@ import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Tag, Gift, Mail, Lock, Check, X } from "lucide-react";
 
+import { safeUrl } from "../lib/safeUrl";
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const CONSENT_TEXT =
@@ -28,12 +29,22 @@ const DEFAULT_BENEFITS = [
 ];
 const BENEFIT_ICONS = [Tag, Gift, Mail];
 
+// İşlem sayfaları: ödeme, dekont yükleme, hesap/giriş, sipariş sonucu, iade. Burada pazarlama
+// popup'ı GÖSTERİLMEZ — mobilde bülten penceresi ekranın alt yarısını kaplayıp "Ödeme Bildirimini
+// Gönder" butonunu örtüyordu ("müşteriler dekont yükleyemiyor", 2026-10-06).
+const POPUP_BLOCKED_PATHS = [
+  "/odeme", "/odeme-bildirimi", "/sepet", "/hesabim", "/giris", "/uye-ol", "/sifremi-unuttum", "/sifre-sifirla",
+  "/order-success", "/siparis-tamamlandi", "/iade", "/iade-islemleri",
+];
+const isPopupBlockedPath = (p) => POPUP_BLOCKED_PATHS.some((x) => p === x || p.startsWith(`${x}/`));
+
 export default function SitePopup() {
   const [popup, setPopup] = useState(null);
   const [visible, setVisible] = useState(false);
   const location = useLocation();
   // Popup YALNIZ vitrinde (storefront) gösterilir — admin panelinde ASLA.
   const isAdmin = (location?.pathname || "").startsWith("/admin");
+  const blockedHere = isPopupBlockedPath(location?.pathname || "");
 
   useEffect(() => {
     if (isAdmin) return;   // admin panelinde popup çekme/gösterme
@@ -69,7 +80,7 @@ export default function SitePopup() {
     return () => { alive = false; if (timer) clearTimeout(timer); cleanupExit(); };
   }, [isAdmin]);
 
-  if (isAdmin || !popup || !visible) return null;
+  if (isAdmin || blockedHere || !popup || !visible) return null;
 
   const close = () => {
     setVisible(false);
@@ -92,7 +103,7 @@ export default function SitePopup() {
         <div className="p-6">
           {(popup.name || popup.title) && <h3 className="text-xl font-semibold mb-2 tracking-tight">{popup.name || popup.title}</h3>}
           {(popup.subtitle || popup.content) && <div className="text-sm text-gray-600 whitespace-pre-line mb-4">{popup.subtitle || popup.content}</div>}
-          {popup.link && <a href={popup.link} onClick={close} className="mt-2 inline-block bg-black text-white px-5 py-2 rounded-lg text-sm hover:bg-gray-800">{popup.button_text || "İncele"}</a>}
+          {popup.link && <a href={safeUrl(popup.link)} onClick={close} className="mt-2 inline-block bg-black text-white px-5 py-2 rounded-lg text-sm hover:bg-gray-800">{popup.button_text || "İncele"}</a>}
         </div>
       </div>
     </div>

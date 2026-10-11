@@ -68,6 +68,8 @@ html, body {
 .font-light { font-weight: 300 !important; }
 .font-thin { font-weight: 300 !important; }
 .font-extralight { font-weight: 300 !important; }
+/* Menü "Full Look" başlığı: global hafif ağırlık kurallarından muaf, gerçek kalın (mobil dahil) */
+.nav-full-look { font-weight: 700 !important; }
 strong, b { font-weight: 500; }
 button { font-weight: 400; }
 

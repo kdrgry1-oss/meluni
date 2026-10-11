@@ -5,13 +5,43 @@ import { Tags, Plus, Trash2, Edit, Copy, Calendar, Percent, DollarSign, X } from
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const authHeaders = () => ({ Authorization: `Bearer ${localStorage.getItem("token")}` });
-const empty = { code: "", title: "", type: "percent", value: 0, min_cart_total: 0, max_discount: 0, usage_limit: 0, usage_limit_per_user: 0, start_at: "", end_at: "", is_active: true, first_order_only: false, free_shipping: false };
+// Kuponun başlangıç/bitişi sunucuda UTC ISO olarak saklanır; datetime-local girdisi
+// MAĞAZA saatini (İstanbul) gösterir. Ham değeri kırpmak 10:00'ı 07:00 gösterirdi.
+const CPN_TZ = "Europe/Istanbul";
+const toLocalInput = (v) => {
+  if (!v) return "";
+  const str = String(v);
+  if (str.length === 10 && !str.includes("T")) return `${str}T00:00`;
+  if (!/[Z+]/.test(str.slice(10))) return str.slice(0, 16);   // eski kayıt: zaten yerel
+  try {
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: CPN_TZ, year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(new Date(str));
+    const g = (t) => (parts.find((x) => x.type === t) || {}).value || "00";
+    return `${g("year")}-${g("month")}-${g("day")}T${g("hour")}:${g("minute")}`;
+  } catch {
+    return str.slice(0, 16);
+  }
+};
+
+const empty = { code: "", title: "", type: "percent", value: 0, min_cart_total: 0, max_discount: 0, usage_limit: 0, usage_limit_per_user: 0, start_at: "", end_at: "", is_active: true, first_order_only: false, free_shipping: false, combinable: true, not_combinable_with: [] };
 
 export default function Coupons() {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
   const [modal, setModal] = useState(null); // null | {} | coupon
   const [form, setForm] = useState(empty);
+  // Engelleme seçicisi: otomatik kampanyalar (+ diğer kuponlar). Kupon VARSAYILAN hepsiyle birleşir;
+  // yalnız burada işaretlenenlerle kullanılamaz (kullanıcı isteği).
+  const [promos, setPromos] = useState([]);
+  useEffect(() => {
+    axios.get(`${API}/campaigns?include_coupons=1`, { headers: authHeaders() }).then((r) => setPromos(r.data || [])).catch(() => setPromos([]));
+  }, []);
+  const toggleBlock = (id) => {
+    const cur = form.not_combinable_with || [];
+    setForm({ ...form, not_combinable_with: cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id] });
+  };
 
   const load = async () => {
     try {
@@ -169,12 +199,12 @@ export default function Coupons() {
               </div>
               <div>
                 <label className="text-xs text-gray-600">Başlangıç Tarihi</label>
-                <input type="datetime-local" value={form.start_at ? form.start_at.slice(0, 16) : ""} onChange={(e) => setForm({ ...form, start_at: e.target.value })}
+                <input type="datetime-local" value={toLocalInput(form.start_at)} onChange={(e) => setForm({ ...form, start_at: e.target.value })}
                   className="w-full mt-1 px-3 py-2 border rounded-lg text-sm" />
               </div>
               <div>
                 <label className="text-xs text-gray-600">Bitiş Tarihi</label>
-                <input type="datetime-local" value={form.end_at ? form.end_at.slice(0, 16) : ""} onChange={(e) => setForm({ ...form, end_at: e.target.value })}
+                <input type="datetime-local" value={toLocalInput(form.end_at)} onChange={(e) => setForm({ ...form, end_at: e.target.value })}
                   className="w-full mt-1 px-3 py-2 border rounded-lg text-sm" />
               </div>
             </div>
@@ -183,6 +213,28 @@ export default function Coupons() {
               <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} /> Aktif</label>
               <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.first_order_only} onChange={(e) => setForm({ ...form, first_order_only: e.target.checked })} /> Sadece ilk siparişe özel</label>
               <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.free_shipping} onChange={(e) => setForm({ ...form, free_shipping: e.target.checked })} /> Kargo bedava</label>
+            </div>
+
+            {/* Birleşme: varsayılan TÜM kampanyalarla çalışır; yalnız engellenecekler seçilir */}
+            <div className="mt-4 border rounded-lg p-3 bg-gray-50/50">
+              <label className="flex items-center gap-2 text-sm mb-2">
+                <input type="checkbox" checked={form.combinable === false} onChange={(e) => setForm({ ...form, combinable: !e.target.checked })} />
+                <span><b>Hiçbir kampanyayla birleşmesin</b> (münhasır)</span>
+              </label>
+              {form.combinable !== false && (
+                <>
+                  <div className="text-[11px] font-semibold uppercase tracking-wide text-gray-600 mb-2">Şu kampanyalarla KULLANILMASIN <span className="font-normal normal-case text-gray-400">(boş = tüm kampanyalarla birlikte çalışır)</span></div>
+                  <div className="max-h-40 overflow-y-auto space-y-1 border rounded bg-white p-2">
+                    {promos.filter((c) => c.id !== modal?.id).length === 0 && <div className="text-xs text-gray-400">Kampanya yok</div>}
+                    {promos.filter((c) => c.id !== modal?.id).map((c) => (
+                      <label key={c.id} className="flex items-center gap-2 text-xs cursor-pointer">
+                        <input type="checkbox" className="accent-red-600" checked={(form.not_combinable_with || []).includes(c.id)} onChange={() => toggleBlock(c.id)} />
+                        <span>{c.name || c.title || c.code}{c.auto_apply ? <span className="text-gray-400"> · kampanya</span> : <span className="text-gray-400"> · kupon {c.code}</span>}</span>
+                      </label>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="flex justify-end gap-2 mt-5 pt-4 border-t">

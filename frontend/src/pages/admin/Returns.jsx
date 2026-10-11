@@ -15,7 +15,15 @@ const PLATFORMS = [
   { key: "meluni", label: "Web Sitesi", badge: "W", color: "bg-gray-800" },
   { key: "trendyol", label: "Trendyol", badge: "T", color: "bg-orange-500" },
   { key: "hepsiburada", label: "Hepsiburada", badge: "H", color: "bg-amber-600" },
+  { key: "amazon", label: "Amazon", badge: "A", color: "bg-yellow-600" },
 ];
+// Ortak iade/GP ekranını (db.trendyol_claims) kullanan pazaryerleri
+const MARKET_PLATFORMS = ["trendyol", "hepsiburada", "amazon"];
+const CLAIMS_SYNC_URL = {
+  trendyol: `${API}/integrations/trendyol/claims/sync`,
+  hepsiburada: `${API}/integrations/hepsiburada/claims/sync`,
+  amazon: `${API}/integrations/amazon/claims/sync`,
+};
 
 const STATUS_TABS = [
   { key: "all", label: "Tüm İadeler" },
@@ -124,7 +132,7 @@ export default function Returns() {
   const [itemSel, setItemSel] = useState({}); // {claim_id: Set(claim_item_id)} - manuel adet onayı
   const toggleItem = (claimId, itemId, allIds) => {
     setItemSel(prev => {
-      const cur = new Set(prev[claimId] || allIds);
+      const cur = new Set(prev[claimId] || allIds);  // allIds: çağıran varsayılan seçimi verir
       if (cur.has(itemId)) cur.delete(itemId); else cur.add(itemId);
       return { ...prev, [claimId]: cur };
     });
@@ -157,6 +165,12 @@ export default function Returns() {
     return () => clearTimeout(t);
   }, [search]);
 
+  // ÜSTTEKİ TARİH FİLTRESİ (liste + toplu gider pusulası + Excel ortak). fetchClaims'in
+  // bağımlılık listesi bunları render sırasında OKUDUĞU için tanım ondan ÖNCE olmalı;
+  // aşağıda tanımlıyken "Cannot access 'gpFrom' before initialization" ile İadeler
+  // sayfası açılırken tamamen çöküyordu.
+  const [gpFrom, setGpFrom] = useState("");
+  const [gpTo, setGpTo] = useState("");
   const fetchClaims = useCallback(async () => {
     // Web Sitesi sekmesi kendi verisini gömülü <SiteReturns/> ile customer_returns'ten
     // ceker; bu yuzden Trendyol claims endpoint'ini cagirmaya gerek yok.
@@ -170,6 +184,10 @@ export default function Returns() {
       // platform = 'trendyol' (pazaryeri). Backend tum claim'leri dondurur (mikro ihracat dahil).
       const params = new URLSearchParams({ page, limit, search: debouncedSearch, platform });
       if (statusTab && statusTab !== "all") params.append("status", statusTab);
+      // ÜSTTEKİ TARİH FİLTRESİ listeye de işlesin — eskiden yalnız toplu gider
+      // pusulası bölümünü besliyordu, alttaki liste dönemden bağımsız kalıyordu.
+      if (gpFrom) params.append("start_date", gpFrom);
+      if (gpTo) params.append("end_date", gpTo);
       const res = await axios.get(`${API}/integrations/trendyol/claims?${params}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -182,7 +200,7 @@ export default function Returns() {
     } finally {
       setLoading(false);
     }
-  }, [page, debouncedSearch, statusTab, platform]);
+  }, [page, debouncedSearch, statusTab, platform, gpFrom, gpTo]);
 
   useEffect(() => { fetchClaims(); }, [fetchClaims]);
 
@@ -198,12 +216,10 @@ export default function Returns() {
   // (Eskiden açılışta senkron YOKTU — sayılar 5 dk'ya kadar bayat kalıyordu.)
   useEffect(() => {
     const syncAndRefresh = async () => {
-      if (platform !== "trendyol" && platform !== "hepsiburada") return;
+      if (!MARKET_PLATFORMS.includes(platform)) return;
       try {
         const token = localStorage.getItem("token");
-        const syncUrl = platform === "hepsiburada"
-          ? `${API}/integrations/hepsiburada/claims/sync?days_back=30`
-          : `${API}/integrations/trendyol/claims/sync?days_back=30`;
+        const syncUrl = `${CLAIMS_SYNC_URL[platform]}?days_back=30`;
         await axios.get(syncUrl, {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -220,9 +236,7 @@ export default function Returns() {
     setSyncing(true);
     try {
       const token = localStorage.getItem("token");
-      const syncUrl = platform === "hepsiburada"
-        ? `${API}/integrations/hepsiburada/claims/sync`
-        : `${API}/integrations/trendyol/claims/sync`;
+      const syncUrl = CLAIMS_SYNC_URL[platform] || CLAIMS_SYNC_URL.trendyol;
       const res = await axios.get(syncUrl, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -243,6 +257,8 @@ export default function Returns() {
       if (statusTab && statusTab !== "all") params.append("status", statusTab);
       if (debouncedSearch) params.append("search", debouncedSearch);
       params.append("platform", platform);
+      if (gpFrom) params.append("start_date", gpFrom);
+      if (gpTo) params.append("end_date", gpTo);
       const res = await fetch(`${API}/integrations/trendyol/claims/export?${params.toString()}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -251,7 +267,11 @@ export default function Returns() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${platform === "hepsiburada" ? "hepsiburada" : "trendyol"}-iadeleri-${statusTab || "tum"}.xlsx`;
+      // Dosya adı: hangi pazaryeri, hangi sekme, hangi tarih aralığı — indirilenler
+      // klasöründe birbirine karışmasın.
+      a.download = `${MARKET_PLATFORMS.includes(platform) ? platform : "trendyol"}`
+        + `-iadeleri-${statusTab || "tum"}`
+        + ((gpFrom || gpTo) ? `_${gpFrom || "bas"}_${gpTo || "bitis"}` : "") + ".xlsx";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -269,8 +289,7 @@ export default function Returns() {
   // gruplanmış, negatif tutarlarla. Site + Trendyol + Hepsiburada TÜM pusulalar tek dosyada,
   // seçili tarih aralığında. (Sekme-başına ayrı Excel butonları KALDIRILDI — tek kaynak burası.)
   const [gpExporting, setGpExporting] = useState(false);
-  const [gpFrom, setGpFrom] = useState("");
-  const [gpTo, setGpTo] = useState("");
+  // gpFrom / gpTo aşağıda değil, fetchClaims'ten ÖNCE tanımlı (TDZ — bkz. yukarı).
   const [prFrom, setPrFrom] = useState(""); // koçan no aralığı yazdırma — başlangıç
   const [prTo, setPrTo] = useState("");     // koçan no aralığı yazdırma — bitiş
   const [prBusy, setPrBusy] = useState(false);
@@ -294,6 +313,7 @@ export default function Returns() {
     const now = new Date();
     let from = new Date(now), to = new Date(now);
     if (key === "today") { /* from=to=bugün */ }
+    else if (key === "yesterday") { from.setDate(now.getDate() - 1); to.setDate(now.getDate() - 1); }
     else if (key === "7") { from.setDate(now.getDate() - 6); }
     else if (key === "30") { from.setDate(now.getDate() - 29); }
     else if (key === "month") { from = new Date(now.getFullYear(), now.getMonth(), 1); }
@@ -346,7 +366,7 @@ export default function Returns() {
     setGpBulkBusy(true);
     try {
       const token = localStorage.getItem("token");
-      const sources = gpSource === "all" ? ["site", "trendyol", "hepsiburada"] : [gpSource];
+      const sources = gpSource === "all" ? ["site", "trendyol", "hepsiburada", "amazon"] : [gpSource];
       const res = await axios.post(`${API}/integrations/trendyol/claims/gp-bulk-range`,
         { date_from: gpFrom, date_to: gpTo, sources, start_no: pad6(gpStart),
           limit: gpBulkCount, dry_run: !!dry },
@@ -439,7 +459,8 @@ export default function Returns() {
       // pusula tümünü basıyordu). Seçili kalem index'lerini backend'e gönder (item_indexes).
       if (_claimObj && Array.isArray(_claimObj.items)) {
         const allIds = _claimObj.items.map(i => i.claim_item_id).filter(Boolean);
-        const selIds = itemSel[claimId] || new Set(allIds);
+        // Varsayılan: sunucunun KABUL edilen kalemleri (reddedilen hariç); yoksa tümü.
+        const selIds = itemSel[claimId] || new Set(_claimObj.gp_item_ids || allIds);
         const idxs = _claimObj.items
           .map((it, idx) => (selIds.has(it.claim_item_id) ? idx : -1))
           .filter(idx => idx >= 0);
@@ -679,6 +700,7 @@ export default function Returns() {
                   <option value="site">Web Sitesi</option>
                   <option value="trendyol">Trendyol</option>
                   <option value="hepsiburada">Hepsiburada</option>
+                  <option value="amazon">Amazon</option>
                 </select>
               </div>
               <label className="flex items-center gap-1.5 text-xs text-gray-600 cursor-pointer pb-2"
@@ -697,7 +719,7 @@ export default function Returns() {
               </button>
               {/* Hazır aralık: elle tarih yazmadan tek tık. "Son 30 gün" İADE ONAY tarihine göre. */}
               <div className="flex items-center gap-1 flex-wrap">
-                {[["today", "Bugün"], ["7", "Son 7 gün"], ["30", "Son 30 gün"], ["month", "Bu ay"], ["prevmonth", "Geçen ay"]].map(([k, lbl]) => (
+                {[["today", "Bugün"], ["yesterday", "Dün"], ["7", "Son 7 gün"], ["30", "Son 30 gün"], ["month", "Bu ay"], ["prevmonth", "Geçen ay"]].map(([k, lbl]) => (
                   <button key={k} type="button" onClick={() => applyGpPreset(k)}
                     className="px-2.5 py-1.5 border border-gray-300 rounded-lg text-xs text-gray-600 hover:bg-gray-100 hover:text-black transition-colors">
                     {lbl}
@@ -787,7 +809,7 @@ export default function Returns() {
               <p className="text-[11px] font-bold text-emerald-800 uppercase mb-1">Toplu Gider Pusulası — Onaylanan İadeler</p>
               <p className="text-[11px] text-emerald-700 max-w-md">
                 Yukarıda seçili tarih aralığı ({gpFrom || "—"} → {gpTo || "—"}) ve kaynak
-                ({gpSource === "all" ? "site + Trendyol + Hepsiburada" : gpSource}) içindeki
+                ({gpSource === "all" ? "site + Trendyol + Hepsiburada + Amazon" : gpSource}) içindeki
                 <b> yalnız iadesi ONAYLANMIŞ ve pusulası henüz olmayan</b> iadeler, İADE ONAY
                 tarihine göre sıralanır; {pad6(gpStart)} numarasından itibaren sıralı koçanla kesilir.
               </p>
@@ -825,7 +847,7 @@ export default function Returns() {
               </p>
               {gpBulkPreview.kaynak_dagilim && (
                 <p className="text-[11px] text-gray-600 mb-1.5">
-                  Kaynak dağılımı — Site: <b>{gpBulkPreview.kaynak_dagilim.site}</b> · Trendyol: <b>{gpBulkPreview.kaynak_dagilim.trendyol}</b> · Hepsiburada: <b>{gpBulkPreview.kaynak_dagilim.hepsiburada}</b>
+                  Kaynak dağılımı — Site: <b>{gpBulkPreview.kaynak_dagilim.site}</b> · Trendyol: <b>{gpBulkPreview.kaynak_dagilim.trendyol}</b> · Hepsiburada: <b>{gpBulkPreview.kaynak_dagilim.hepsiburada}</b> · Amazon: <b>{gpBulkPreview.kaynak_dagilim.amazon ?? 0}</b>
                 </p>
               )}
               <div className="max-h-56 overflow-y-auto">
@@ -874,12 +896,12 @@ export default function Returns() {
         </div>
 
         {/* Web Sitesi sekmesi: doğrudan sipariş bazlı iade akışı (alt-sekme yok — üstte zaten "Web Sitesi" yazıyor) */}
-        {platform === "meluni" && <RooftrReturns embedded gpStart={gpStart}
+        {platform === "meluni" && <RooftrReturns embedded gpStart={gpStart} dateFrom={gpFrom} dateTo={gpTo}
           onGiderCreated={(gp) => { setGpData(gp); setGpModalOpen(true); /* önizleme: numara YAZDIR'da atanır, burada advance YOK */ }}
           onBulkGider={(gps, nextNo) => { setBulkPrintData(gps); const nn = pad6(nextNo); setGpStart(nn); localStorage.setItem("gp_next_no", nn); setTimeout(() => window.print(), 500); }} />}
 
         {/* Trendyol (pazaryeri) sekmesi gövdesi */}
-        {(platform === "trendyol" || platform === "hepsiburada") && (<>
+        {MARKET_PLATFORMS.includes(platform) && (<>
         {/* Durum sekmeleri */}
         <div className="flex items-center gap-2 overflow-x-auto mb-4">
           {STATUS_TABS.map((t) => (
@@ -1010,7 +1032,8 @@ export default function Returns() {
                           </p>
                           {(() => {
                             const allIds = (claim.items || []).map(i => i.claim_item_id).filter(Boolean);
-                            const selIds = itemSel[claim.claim_id] || new Set(allIds);
+                            // Varsayılan: KABUL edilen kalemler (onaylanan / reddedilmeyen); yoksa tümü.
+                            const selIds = itemSel[claim.claim_id] || new Set(claim.gp_item_ids || allIds);
                             // Onaylanmış iadede kalemler KİLİTLİ (yalnız muhasebe/admin "Düzenle" ile açar).
                             const locked = isApproved && !editRows[claim.claim_id];
                             return (
@@ -1021,7 +1044,7 @@ export default function Returns() {
                                       {!claim.manual && (
                                         <input type="checkbox" className="rounded" disabled={locked}
                                           checked={selIds.has(item.claim_item_id)}
-                                          onChange={() => !locked && toggleItem(claim.claim_id, item.claim_item_id, allIds)} />
+                                          onChange={() => !locked && toggleItem(claim.claim_id, item.claim_item_id, claim.gp_item_ids || allIds)} />
                                       )}
                                       {isApproved && selIds.has(item.claim_item_id) && (
                                         <span className="text-green-600 text-[10px] font-bold" title="Bu kalem onaylandı">✓</span>

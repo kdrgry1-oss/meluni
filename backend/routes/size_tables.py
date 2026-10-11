@@ -16,21 +16,21 @@ import os
 
 from PIL import Image, ImageDraw, ImageFont
 
-from .deps import db, require_admin, logger
+from .deps import db, require_admin, logger, require_permission
 
 router = APIRouter(prefix="/size-tables", tags=["size-tables"])
 
 
 @router.get("/_diag/state")
-async def _size_tables_diag(key: str, q: str = ""):
-    """GEÇİCİ TANI (gizli anahtarlı): ölçü tablosu veri kaybını teşhis. Kaç kayıt dolu/boş,
+async def _size_tables_diag(q: str = "", key: str = "", current_user: dict = Depends(require_permission("products.view", any_in_area=True))):
+    """GEÇİCİ TANI: ölçü tablosu veri kaybını teşhis. Kaç kayıt dolu/boş,
     ne zaman ezilmiş (updated_at günü), kaç tanesi kardeş-senkron (synced_from) ile yazılmış,
-    ürünlerde kaç adet render edilmiş 'is_size_table' görsel duruyor (görsel-kurtarma kaynağı)."""
-    # Teşhis anahtarı YALNIZ env SIZE_DIAG_KEY'den (gömülü fallback kaldırıldı). Env yoksa uç kapalı.
-    import hmac as _hmac
-    _sk = (os.environ.get("SIZE_DIAG_KEY") or "").strip()
-    if not _sk or not _hmac.compare_digest(str(key or ""), _sk):
-        raise HTTPException(status_code=403, detail="forbidden")
+    ürünlerde kaç adet render edilmiş 'is_size_table' görsel duruyor (görsel-kurtarma kaynağı).
+
+    GÜVENLİK (denetim 2026-10): statik URL anahtarı (SIZE_DIAG_KEY) kaldırıldı — anahtar
+    log/geçmişte sızabiliyordu. Artık panel personeli oturumu (require_admin) şart.
+    `key` parametresi geriye uyumluluk için kabul edilir ama YOK SAYILIR."""
+    _ = key
     # İSİMLE TEK ÜRÜN DÖKÜMÜ: kullanıcının "boş" dediği ürünü doğrulamak için.
     if q:
         out = []
@@ -265,6 +265,24 @@ def render_size_table_image(
     return out.getvalue()
 
 
+async def _snapshot_history(product_id: str, reason: str = "overwrite"):
+    """YAZMADAN ÖNCE YEDEK: Bir ölçü tablosu üzerine yazılmadan/senkronlanmadan önce,
+    mevcut DOLU kaydı `db.size_tables_history`'ye kopyalar. Böylece yanlış/boş bir kayıt
+    mevcut tabloyu ezerse bile eski içerik history'den geri yüklenebilir (asla kalıcı kayıp).
+    Yalnız DOLU (sizes+values) kayıtlar yedeklenir; boş kayıt yedeklenmez (gürültü olmasın)."""
+    try:
+        cur = await db.size_tables.find_one({"product_id": product_id}, {"_id": 0})
+        if not cur or not (cur.get("sizes") and cur.get("values")):
+            return
+        snap = dict(cur)
+        snap["_hist_product_id"] = product_id
+        snap["_hist_reason"] = reason
+        snap["_hist_at"] = datetime.now(timezone.utc).isoformat()
+        await db.size_tables_history.insert_one(snap)
+    except Exception as e:
+        logger.warning(f"[size-table history] snapshot başarısız {product_id}: {e}")
+
+
 async def _inherited_size_table(product_id: str):
     """Kendi ölçü tablosu olmayan ürün için, AYNI stok kodlu başka bir üründe
     kayıtlı (dolu) ölçü tablosunu döndürür. Stok kodu boşsa / kardeş yoksa None.
@@ -289,7 +307,7 @@ async def _inherited_size_table(product_id: str):
 
 
 @router.get("/{product_id}")
-async def get_size_table(product_id: str, current_user: dict = Depends(require_admin)):
+async def get_size_table(product_id: str, current_user: dict = Depends(require_permission("products.view", any_in_area=True))):
     st = await db.size_tables.find_one({"product_id": product_id}, {"_id": 0})
     if not st:
         # Kalıtım: aynı stok kodlu başka üründe tablo varsa otomatik getir (oto-doldurma).
@@ -311,7 +329,7 @@ async def get_size_table(product_id: str, current_user: dict = Depends(require_a
 
 
 @router.get("/{product_id}/sibling-model-info")
-async def sibling_model_info(product_id: str, current_user: dict = Depends(require_admin)):
+async def sibling_model_info(product_id: str, current_user: dict = Depends(require_permission("products.view", any_in_area=True))):
     """'Diğer renkten getir' butonu: aynı stok kodlu renk kardeşlerinden DOLU manken (model_info)
     + ürün bedenini döndürür (en son güncellenen). Bu ürüne HİÇBİR ŞEY YAZMAZ — sadece döndürür;
     admin editörde uygulayıp kaydeder. Böylece her rengin kendi mankeni korunur, otomatik ezme olmaz."""
@@ -341,7 +359,7 @@ async def sibling_model_info(product_id: str, current_user: dict = Depends(requi
 
 
 @router.post("/maintenance/fix-labels")
-async def fix_size_table_labels(current_user: dict = Depends(require_admin)):
+async def fix_size_table_labels(current_user: dict = Depends(require_permission("products.size_table"))):
     """Tüm ölçü tablolarında kolon etiketlerini düzeltir (boyuu→boyu + Türkçe
     baş-harf büyütme) ve values anahtarlarını yeni ada taşır. İdempotent."""
     fixed = scanned = 0
@@ -359,13 +377,136 @@ async def fix_size_table_labels(current_user: dict = Depends(require_admin)):
     return {"scanned": scanned, "fixed": fixed}
 
 
+@router.post("/maintenance/recover-lost")
+async def recover_lost_size_tables(payload: dict = None, current_user: dict = Depends(require_permission("products.size_table"))):
+    """KAYIP ÖLÇÜ TABLOSU KURTARMA (yeni). Boş/silinmiş numerik tabloları şu SIRAYLA geri yükler:
+      1) `size_tables_history` — yazmadan-önce alınan en son DOLU yedek (en güvenilir),
+      2) hayatta kalan RENK KARDEŞİ — aynı stok kodlu başka renkte hâlâ dolu tablo.
+    Hiçbirinden gelmeyen ama render'lı GÖRSELİ olan ürünler `still_lost_with_image` altında
+    raporlanır (müşteri görselden görmeye devam eder; tam numerik veri için Atlas yedeği gerekir).
+    payload: {"dry_run": true|false}. Varsayılan dry_run=True (önce gör, sonra uygula)."""
+    dry = True if not payload else bool(payload.get("dry_run", True))
+    from_history = from_sibling = still_lost = scanned = 0
+    still_lost_samples = []
+    # Boş/eksik numerik satırı olan (ama tablo girilmiş olması muhtemel) ürünleri tara:
+    # önce boş size_tables kayıtları, sonra render'lı görseli olup kaydı hiç olmayanlar.
+    candidate_ids = set()
+    async for st in db.size_tables.find(
+            {"$or": [{"sizes": {"$exists": False}}, {"sizes": []}, {"values": {}}]},
+            {"_id": 0, "product_id": 1}):
+        if st.get("product_id"):
+            candidate_ids.add(st["product_id"])
+    async for p in db.products.find(
+            {"images": {"$elemMatch": {"is_size_table": True}}, "is_deleted": {"$ne": True}},
+            {"_id": 0, "id": 1}):
+        if p.get("id"):
+            candidate_ids.add(p["id"])
+
+    for pid in candidate_ids:
+        scanned += 1
+        own = await db.size_tables.find_one({"product_id": pid}, {"_id": 0})
+        if own and own.get("sizes") and own.get("values"):
+            continue  # zaten dolu
+        # 1) HISTORY: en son dolu yedek
+        hist = await db.size_tables_history.find_one(
+            {"_hist_product_id": pid, "sizes": {"$exists": True, "$ne": []}, "values": {"$nin": [{}, None]}},
+            {"_id": 0}, sort=[("_hist_at", -1)])
+        src, src_kind = None, None
+        if hist:
+            src, src_kind = hist, "history"
+        else:
+            # 2) SIBLING: hayatta kalan kardeş tablo
+            sib = await _inherited_size_table(pid)
+            if sib and sib.get("sizes") and sib.get("values"):
+                src, src_kind = sib, "sibling"
+        if not src:
+            # Kurtarılamadı — ama render'lı görsel var mı? (müşteri hâlâ görüyor)
+            has_img = await db.products.find_one(
+                {"id": pid, "images": {"$elemMatch": {"is_size_table": True}}}, {"_id": 1})
+            if has_img:
+                still_lost += 1
+                if len(still_lost_samples) < 25:
+                    pr = await db.products.find_one({"id": pid}, {"_id": 0, "name": 1, "stock_code": 1})
+                    still_lost_samples.append({"id": pid, "name": (pr or {}).get("name", "")[:40],
+                                               "stock_code": (pr or {}).get("stock_code", "")})
+            continue
+        if not dry:
+            restore_doc = {
+                "product_id": pid,
+                "sizes": src.get("sizes") or [],
+                "columns": src.get("columns") or [],
+                "values": src.get("values") or {},
+                "restored_from": src_kind,
+                "restored_at": datetime.now(timezone.utc).isoformat(),
+                "restored_by": current_user.get("email", ""),
+            }
+            # Manken/ürün-bedeni RENK ÖZELDİR: history kendi ürününün ise koru, kardeşten ise yazma
+            if src_kind == "history":
+                if src.get("model_info"):
+                    restore_doc["model_info"] = src.get("model_info")
+                if src.get("product_size"):
+                    restore_doc["product_size"] = src.get("product_size")
+            await db.size_tables.update_one({"product_id": pid}, {"$set": restore_doc}, upsert=True)
+        if src_kind == "history":
+            from_history += 1
+        else:
+            from_sibling += 1
+    logger.warning(f"[size-table recover] dry={dry} taranan={scanned} history={from_history} "
+                   f"kardeş={from_sibling} kurtarılamayan(görselli)={still_lost}")
+    return {
+        "dry_run": dry,
+        "scanned": scanned,
+        "restored_from_history": from_history,
+        "restored_from_sibling": from_sibling,
+        "still_lost_with_image": still_lost,
+        "still_lost_samples": still_lost_samples,
+        "note": ("DRY-RUN — hiçbir şey yazılmadı. Uygulamak için {\"dry_run\": false} gönderin."
+                 if dry else "Uygulandı. still_lost_with_image için Atlas yedeği gerekir "
+                 "(müşteri görselden görmeye devam eder)."),
+    }
+
+
+@router.post("/maintenance/remark-images")
+async def remark_size_table_images(current_user: dict = Depends(require_permission("products.size_table"))):
+    """Görsel-işaret onarımını (repair_size_table_markers) ZORLA yeniden çalıştırır: üründe DURAN
+    1200×1800 render'lı tablo görsellerinin kayıp `is_size_table` işaretini geri koyar → 'Beden
+    Tablosu' butonu + mağaza görsel fallback'i geri gelir. Startup bayrağını sıfırlar (yeniden koşar)."""
+    await db.settings.update_one({"id": "size_table_marker_repair"}, {"$set": {"done": False}}, upsert=True)
+    await repair_size_table_markers()
+    flag = await db.settings.find_one({"id": "size_table_marker_repair"}, {"_id": 0})
+    return {"success": True, "result": {k: flag.get(k) for k in ("scanned", "marked", "products", "at")}}
+
+
 @router.post("/{product_id}")
-async def save_size_table(product_id: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def save_size_table(product_id: str, payload: dict, current_user: dict = Depends(require_permission("products.size_table"))):
     sizes = payload.get("sizes", [])
     columns = payload.get("columns", [])
     values = payload.get("values", {})
     if not isinstance(sizes, list) or not isinstance(columns, list):
         raise HTTPException(status_code=400, detail="sizes ve columns liste olmalı")
+
+    # ══ KRİTİK VERİ KORUMASI (ölçü tablosu SİLİNME kök nedeni) ══════════════════════════════
+    # BOŞ tablo (`sizes`/`columns` boş) kaydını YAZMA. Eskiden boş payload ile gelen kayıt, hem bu
+    # ürünün hem de AYNI STOK KODLU renk-kardeşlerinin mevcut ölçü tablosunu (beden×ölçü) senkronla
+    # EZİP YOK EDİYORDU (SizeTablePanel yüklenmeden/boşken save → tüm kardeşler silinir). Artık
+    # `sizes` boşsa beden×ölçü tablosuna DOKUNULMAZ; yalnız manken (model_info) / ürün bedeni
+    # (product_size) varsa onlar güncellenir — mevcut tablo ve kardeşler KORUNUR.
+    _has_table = bool(sizes) and bool(columns)
+    if not _has_table:
+        _mset = {}
+        _ps = str(payload.get("product_size") or "").strip()
+        if _ps:
+            _mset["product_size"] = _ps
+        if isinstance(payload.get("model_info"), dict) and payload.get("model_info"):
+            _mset["model_info"] = payload.get("model_info")
+        if _mset:
+            _mset["updated_at"] = datetime.now(timezone.utc).isoformat()
+            _mset["updated_by"] = current_user.get("email", "")
+            await db.size_tables.update_one({"product_id": product_id}, {"$set": _mset}, upsert=True)
+        logger.warning(f"[size-table] BOŞ tablo kaydı ATLANDI (koruma) product_id={product_id} "
+                       f"(mevcut tablo/kardeşler silinmedi)")
+        return {"success": True, "skipped_empty_table": True,
+                "note": "Boş ölçü tablosu kaydı atlandı — mevcut tablo ve renk kardeşleri korundu."}
 
     # Etiketleri kayıtta normalize et (baş harfler büyük + yazım düzeltmesi) —
     # storefront tablosu ve görsel aynı temiz etiketi kullansın.
@@ -382,6 +523,8 @@ async def save_size_table(product_id: str, payload: dict, current_user: dict = D
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "updated_by": current_user.get("email", ""),
     }
+    # YAZMADAN ÖNCE mevcut dolu tabloyu yedekle (yanlış üzerine-yazma geri alınabilsin)
+    await _snapshot_history(product_id, reason="save")
     await db.size_tables.update_one({"product_id": product_id}, {"$set": doc}, upsert=True)
 
     # RENK KARDEŞİ SENKRONU: ÖLÇÜ TABLOSU (beden×ölçü) ürün düzeyindedir → aynı stok kodlu diğer
@@ -408,6 +551,8 @@ async def save_size_table(product_id: str, payload: dict, current_user: dict = D
                     "updated_at": doc["updated_at"],
                     "updated_by": doc["updated_by"],
                 }
+                # Kardeşin mevcut dolu tablosunu da yazmadan önce yedekle
+                await _snapshot_history(s["id"], reason="sibling-sync")
                 await db.size_tables.update_one({"product_id": s["id"]}, {"$set": sib_set}, upsert=True)
                 synced += 1
     except Exception as e:
@@ -416,7 +561,7 @@ async def save_size_table(product_id: str, payload: dict, current_user: dict = D
 
 
 @router.post("/{product_id}/generate-image")
-async def generate_size_table_image(product_id: str, current_user: dict = Depends(require_admin)):
+async def generate_size_table_image(product_id: str, current_user: dict = Depends(require_permission("products.size_table"))):
     """Render a 1200x1800 PNG, store as base64 in the product's images array
     marked `is_size_table=true`, and return the data URL."""
     st = await db.size_tables.find_one({"product_id": product_id}, {"_id": 0})
@@ -443,23 +588,39 @@ async def generate_size_table_image(product_id: str, current_user: dict = Depend
             _u = "https://api.meluni.com.tr" + (_u if _u.startswith("/") else "/" + _u)
         _tries += 1
         try:
-            import httpx as _httpx
-            async with _httpx.AsyncClient(timeout=25, follow_redirects=True) as _c:
-                _r = await _c.get(_u)
+            # GÜVENLİK (T11 SSRF): saklanan görsel URL'si → public IP'ye pinli, yönlendirme hop'ları
+            # yeniden denetlenen, 20 MB sınırlı indirme (security_fetch).
+            from security_fetch import safe_fetch as _safe_fetch
+            _r = await _safe_fetch(_u, max_bytes=20 * 1024 * 1024, timeout=25, allow_redirects=3)
             if _r.status_code == 200 and _r.content:
                 _img_bytes = _r.content
         except Exception as _e:
             logger.warning(f"size-table: ürün görseli indirilemedi ({_u}): {_e}")
 
-    png = render_size_table_image(
-        product_name=product.get("name", ""),
-        sizes=st.get("sizes") or [],
-        columns=st.get("columns") or [],
-        values=st.get("values") or {},
-        product_size=st.get("product_size") or "",
-        model_info=st.get("model_info") or {},
-        product_image=_img_bytes,
-    )
+    # ADM-07: indirilen (güvenilmeyen) ürün görseli AYRI SÜREÇTE çözülüp küçük, kendi ürettiğimiz
+    # bir JPEG'e çevrilir — Pillow'da yerel çökme/bellek taşması API sürecini düşürmez. Şablon
+    # çizimi (yalnız kendi ürettiğimiz baytlar) sınırlı iş parçacığı havuzunda yapılır.
+    from image_worker import (run_image_job, run_image_job_isolated, normalize_rgb_jpeg,
+                              ImageTaskTimeout, ImageWorkerCrashed)
+    if _img_bytes:
+        try:
+            _img_bytes = await run_image_job_isolated(normalize_rgb_jpeg, _img_bytes, 1200, 1800)
+        except (ImageTaskTimeout, ImageWorkerCrashed) as _e:
+            logger.warning(f"size-table: ürün görseli işlenemedi ({type(_e).__name__}); görselsiz çizilecek")
+            _img_bytes = None
+    try:
+        png = await run_image_job(
+            render_size_table_image,
+            product_name=product.get("name", ""),
+            sizes=st.get("sizes") or [],
+            columns=st.get("columns") or [],
+            values=st.get("values") or {},
+            product_size=st.get("product_size") or "",
+            model_info=st.get("model_info") or {},
+            product_image=_img_bytes,
+        )
+    except ImageTaskTimeout:
+        raise HTTPException(status_code=503, detail="Ölçü tablosu görseli zamanında üretilemedi; tekrar deneyin")
     data_url = "data:image/jpeg;base64," + base64.b64encode(png).decode("ascii")
 
     # Görseli CDN'e (R2) yükle — pazaryerlerine SON görsel olarak gönderilebilmesi için
@@ -503,21 +664,22 @@ async def generate_size_table_image(product_id: str, current_user: dict = Depend
 # Yalnız /uploads/ string URL'leri taranır; kapak (index 0) asla işaretlenmez.
 # ---------------------------------------------------------------------------
 
-def _is_chart_image_sync(url: str) -> bool:
-    import requests as _req
-    from PIL import ImageStat
-    r = _req.get(url, timeout=25)
-    r.raise_for_status()
-    im = Image.open(BytesIO(r.content))
-    if im.size != (1200, 1800):
+async def _is_chart_image(url: str) -> bool:
+    """GÜVENLİK (T11 SSRF): görsel SSRF-güvenli indirilir (public IP'ye pinli, 20 MB sınırı),
+    piksel analizi AYRI SÜREÇTE yapılır (ADM-07: yerel çökme API'yi düşürmez; olay döngüsü
+    bloklanmaz)."""
+    from security_fetch import safe_fetch as _safe_fetch
+    r = await _safe_fetch(url, max_bytes=20 * 1024 * 1024, timeout=25, allow_redirects=3)
+    if r.status_code != 200 or not r.content:
         return False
-    g = im.convert("L")
-    w, h = g.size
-    b = 25
-    for box in [(0, 0, w, b), (0, h - b, w, h), (0, 0, b, h), (w - b, 0, w, h)]:
-        if ImageStat.Stat(g.crop(box)).mean[0] < 254.0:
-            return False
-    return True
+    from image_worker import run_image_job_isolated, chart_like
+    return await run_image_job_isolated(chart_like, r.content)
+
+
+def _is_chart_image_bytes(content: bytes) -> bool:
+    """Geriye dönük ad (aynı süreçte): ölçü tablosu görseli mi? Gövde image_worker.chart_like."""
+    from image_worker import chart_like
+    return chart_like(content)
 
 
 async def repair_size_table_markers():
@@ -538,7 +700,7 @@ async def repair_size_table_markers():
             if i > 0 and isinstance(im, str) and "/uploads/" in im:
                 scanned += 1
                 try:
-                    is_chart = await asyncio.to_thread(_is_chart_image_sync, im)
+                    is_chart = await _is_chart_image(im)
                 except Exception:
                     is_chart = False
                 if is_chart:

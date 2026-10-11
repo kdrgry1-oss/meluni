@@ -11,11 +11,10 @@ ENDPOINTS:
   GET  /api/admin/newsletter/subscribers  — Admin (abone listesi)
 =============================================================================
 """
-import re
 from fastapi import APIRouter, Depends, Request, HTTPException
 from datetime import datetime, timezone
 
-from .deps import db, require_admin, generate_id
+from .deps import db, require_admin, generate_id, limiter, require_permission
 
 
 async def _brand() -> str:
@@ -36,19 +35,24 @@ def _club(brand: str) -> str:
 public_router = APIRouter(prefix="/newsletter", tags=["newsletter-public"])
 admin_router = APIRouter(prefix="/admin/newsletter", tags=["newsletter-admin"])
 
-_EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+def _valid_email(value: str) -> bool:
+    if not value or len(value) > 254 or any(ch.isspace() for ch in value):
+        return False
+    local, separator, domain = value.rpartition("@")
+    return bool(separator and local and "." in domain and not domain.startswith(".") and not domain.endswith("."))
 
 
 @public_router.post("/subscribe")
+@(limiter.limit("10/minute;100/day") if limiter else (lambda f: f))
 async def subscribe(payload: dict, request: Request):
     """Bülten aboneliği. E-postayı tekilleştirerek kaydeder; İYS iznini
-    NetGSM üzerinden bildirir (best-effort — hata aboneliği engellemez)."""
+    NetGSM üzerinden bildirir (best-effort — hata aboneliği engellemez).
+    DENETİM (cost-redteam #10): hız-sınırı yoktu → her benzersiz e-posta bir İYS API çağrısı;
+    sınırsız İYS çağrısı/rıza sahteciliği. IP limiti eklendi."""
     email = (payload or {}).get("email", "")
     email = email.strip().lower() if isinstance(email, str) else ""
-    if not email or not _EMAIL_RE.match(email):
+    if not _valid_email(email):
         raise HTTPException(status_code=400, detail="Geçerli bir e-posta adresi girin.")
-    if len(email) > 254:
-        raise HTTPException(status_code=400, detail="E-posta adresi çok uzun.")
 
     # KVKK / ticari-ileti onayı ZORUNLU — açık rıza olmadan İYS'ye ONAY işlenmez (yasal).
     consent = bool((payload or {}).get("consent"))
@@ -61,11 +65,18 @@ async def subscribe(payload: dict, request: Request):
     ua = request.headers.get("user-agent", "")[:400] if request else ""
     source = (payload or {}).get("source") or "footer"
 
+    # Popup "Üye Ol ve Kazan %10" vaat ediyor → kodu hem ekranda göster hem e-postayla gönder
+    # (eskiden bu yol HİÇ kod/mail üretmiyordu). Kod panelde aktif ilk-sipariş kampanyasından.
+    from welcome_mail import welcome_coupon_vars, send_welcome_email
+    _cv = await welcome_coupon_vars(db)
+    _kod_msg = (f" İlk siparişine özel {_cv['coupon_discount']} indirim kodun: {_cv['coupon_code']}"
+                if _cv.get("coupon_code") else "")
+
     existing = await db.newsletter_subscribers.find_one({"email": email})
     if existing:
-        # Zaten kayıtlı — sessizce başarı döndür (kullanıcıya "zaten abonesiniz").
-        return {"success": True, "already": True,
-                "message": f"Zaten {_club(await _brand())} üyesisiniz."}
+        # Zaten kayıtlı — başarı döndür; kodu yine göster (mail kaybolmuş olabilir).
+        return {"success": True, "already": True, "coupon_code": _cv.get("coupon_code") or None,
+                "message": "Zaten Meluni Kulübü üyesisiniz." + _kod_msg}
 
     await db.newsletter_subscribers.insert_one({
         "id": generate_id(),
@@ -93,12 +104,19 @@ async def subscribe(payload: dict, request: Request):
     except Exception:
         pass
 
-    return {"success": True, "already": False,
-            "message": f"{_club(await _brand())}'ne hoş geldiniz!"}
+    if _cv.get("coupon_code"):
+        _r = await send_welcome_email(db, email)
+        if _r.get("ok"):
+            await db.newsletter_subscribers.update_one(
+                {"email": email}, {"$set": {"welcome_sent_at": datetime.now(timezone.utc).isoformat()}})
+
+    return {"success": True, "already": False, "coupon_code": _cv.get("coupon_code") or None,
+            "message": "Meluni Kulübü'ne hoş geldiniz!" + _kod_msg
+                       + (" (e-postana da gönderdik)" if _kod_msg else "")}
 
 
 @admin_router.get("/subscribers")
-async def list_subscribers(limit: int = 500, current_user: dict = Depends(require_admin)):
+async def list_subscribers(limit: int = 500, current_user: dict = Depends(require_permission("customers.view", any_in_area=True))):
     """Bülten abonelerini listeler (en yeni önce)."""
     limit = max(1, min(limit, 5000))
     rows = await db.newsletter_subscribers.find(

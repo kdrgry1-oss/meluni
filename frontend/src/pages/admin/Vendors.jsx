@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { Plus, Search, Edit2, Trash2, Building2, User, Phone, Mail, MapPin, CreditCard, X, Check } from 'lucide-react';
+import { editTaxIdValue } from '../../lib/taxId';
 
 const API = process.env.REACT_APP_BACKEND_URL + '/api';
 
@@ -362,7 +363,7 @@ export default function Vendors() {
                     <input
                       type="text"
                       value={formData.tax_number}
-                      onChange={(e) => setFormData({ ...formData, tax_number: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, tax_number: editTaxIdValue(formData.tax_number, e.target.value) })}
                       className="w-full border px-3 py-2 rounded-lg outline-none focus:border-black font-mono"
                     />
                   </div>
@@ -371,7 +372,7 @@ export default function Vendors() {
                     <input
                       type="text"
                       value={formData.identity_number}
-                      onChange={(e) => setFormData({ ...formData, identity_number: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, identity_number: editTaxIdValue(formData.identity_number, e.target.value) })}
                       className="w-full border px-3 py-2 rounded-lg outline-none focus:border-black font-mono"
                     />
                   </div>

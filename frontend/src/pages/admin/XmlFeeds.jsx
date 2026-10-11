@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { Plus, Copy, ExternalLink, Trash2, Rss } from "lucide-react";
+import { Plus, Copy, ExternalLink, Trash2, Rss, Tag, X } from "lucide-react";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const h = () => ({ Authorization: `Bearer ${localStorage.getItem("token")}` });
@@ -27,6 +27,119 @@ const TARGETS = [
 
 const targetMeta = (v) => TARGETS.find((t) => t.value === v) || TARGETS[0];
 
+const LABEL_SLOTS = [0, 1, 2, 3, 4];
+
+// Feed başına custom_label_0..4 kuralları. Google Ads / Meta reklamlarında ürün gruplarını
+// (sezon, kampanya, marj vb.) ayırt edip raporlamak için kullanılır.
+function CustomLabelRules({ feed, categories, onSave }) {
+  const [rules, setRules] = useState(Array.isArray(feed.custom_labels) ? feed.custom_labels : []);
+  const [dirty, setDirty] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setRules(Array.isArray(feed.custom_labels) ? feed.custom_labels : []);
+    setDirty(false);
+  }, [feed.custom_labels]);
+
+  const upd = (i, patch) => {
+    setRules((rs) => rs.map((r, k) => (k === i ? { ...r, ...patch } : r)));
+    setDirty(true);
+  };
+  const add = () => {
+    setRules((rs) => [...rs, { label: 0, value: "", all: false, category_ids: [] }]);
+    setDirty(true);
+  };
+  const del = (i) => {
+    setRules((rs) => rs.filter((_, k) => k !== i));
+    setDirty(true);
+  };
+  const save = async () => {
+    setSaving(true);
+    try {
+      await onSave(rules);
+      setDirty(false);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="mt-3 border-t pt-3">
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <div className="text-xs font-semibold text-gray-700 inline-flex items-center gap-1">
+          <Tag className="w-3.5 h-3.5" /> Özel etiketler (custom_label_0–4)
+        </div>
+        <div className="flex items-center gap-2">
+          <button type="button" onClick={add} className="text-xs px-2 py-1 border rounded inline-flex items-center gap-1">
+            <Plus className="w-3 h-3" /> Kural ekle
+          </button>
+          {dirty && (
+            <button
+              type="button"
+              onClick={save}
+              disabled={saving}
+              className="text-xs px-3 py-1 bg-black text-white rounded disabled:opacity-50"
+              data-testid={`feed-labels-save-${feed.id}`}
+            >
+              {saving ? "Kaydediliyor…" : "Kaydet"}
+            </button>
+          )}
+        </div>
+      </div>
+      <p className="text-[11px] text-gray-500 mt-1">
+        Seçilen kategorideki (alt kategoriler dâhil) ürünlere feed'de <code>g:custom_label_N</code> değeri yazılır. Google
+        Ads'te ürün grubunu bu etiketle ayırıp performansı ayrı raporlayabilirsiniz. Aynı etiket için ilk eşleşen kural geçerlidir.
+      </p>
+      {rules.length === 0 ? (
+        <div className="text-[11px] text-gray-400 mt-2">Kural yok.</div>
+      ) : (
+        <div className="space-y-1.5 mt-2">
+          {rules.map((r, i) => (
+            <div key={i} className="flex items-center gap-2 flex-wrap">
+              <select
+                value={Number(r.label) || 0}
+                onChange={(e) => upd(i, { label: Number(e.target.value) })}
+                className="border px-2 py-1 rounded text-xs bg-white"
+              >
+                {LABEL_SLOTS.map((n) => (
+                  <option key={n} value={n}>custom_label_{n}</option>
+                ))}
+              </select>
+              <span className="text-xs text-gray-400">=</span>
+              <input
+                type="text"
+                value={r.value || ""}
+                onChange={(e) => upd(i, { value: e.target.value })}
+                placeholder="örn. AW26"
+                className="border px-2 py-1 rounded text-xs w-32"
+              />
+              <span className="text-xs text-gray-400">kapsam:</span>
+              <select
+                value={r.all ? "__all__" : (r.category_ids && r.category_ids[0]) || ""}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === "__all__") upd(i, { all: true, category_ids: [] });
+                  else upd(i, { all: false, category_ids: v ? [v] : [] });
+                }}
+                className="border px-2 py-1 rounded text-xs bg-white max-w-[220px]"
+              >
+                <option value="">Kategori seçin…</option>
+                <option value="__all__">Tüm ürünler</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={String(c.id)}>{c.name}</option>
+                ))}
+              </select>
+              <button type="button" onClick={() => del(i)} className="p-1 text-red-600 hover:bg-red-50 rounded" title="Kuralı sil">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function XmlFeeds() {
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,6 +147,7 @@ export default function XmlFeeds() {
   const [target, setTarget] = useState("google");
   const [inStockOnly, setInStockOnly] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const load = async () => {
     setLoading(true);
@@ -49,6 +163,33 @@ export default function XmlFeeds() {
 
   useEffect(() => {
     load();
+    axios
+      .get(`${API}/categories`)
+      .then(({ data }) => {
+        const list = Array.isArray(data) ? data : [];
+        const byParent = {};
+        list.forEach((c) => {
+          const pk = c.parent_id || "";
+          (byParent[pk] = byParent[pk] || []).push(c);
+        });
+        // Üst → alt sırası (girintili ad) — kapsam açılır listesi için.
+        const out = [];
+        const walk = (pk, depth) => {
+          (byParent[pk] || [])
+            .slice()
+            .sort((a, b) => String(a.name).localeCompare(String(b.name), "tr"))
+            .forEach((c) => {
+              out.push({ id: c.id, name: `${"— ".repeat(depth)}${c.name}` });
+              walk(c.id, depth + 1);
+            });
+        };
+        walk("", 0);
+        list.forEach((c) => {
+          if (!out.find((o) => o.id === c.id)) out.push({ id: c.id, name: c.name });
+        });
+        setCategories(out);
+      })
+      .catch(() => {});
   }, []);
 
   const create = async () => {
@@ -244,6 +385,21 @@ export default function XmlFeeds() {
                   </select>
                   <span className="text-xs text-gray-400 ml-2">{meta.desc}</span>
                 </div>
+
+                <CustomLabelRules
+                  feed={f}
+                  categories={categories}
+                  onSave={async (rules) => {
+                    try {
+                      await axios.put(`${API}/products/feeds/${f.id}`, { custom_labels: rules }, { headers: h() });
+                      toast.success("Etiket kuralları kaydedildi");
+                      load();
+                    } catch (e) {
+                      toast.error("Kaydedilemedi");
+                      throw e;
+                    }
+                  }}
+                />
               </div>
             );
           })}

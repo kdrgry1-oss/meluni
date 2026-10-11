@@ -381,7 +381,7 @@ export default function MarketplaceHub() {
                 <div className="mt-4 pt-4 border-t flex flex-wrap gap-2">
                   {!["trendyol", "hepsiburada"].includes(active) && (
                   <Link
-                    to="/admin/entegrasyonlar"
+                    to={active.startsWith("amazon") ? "/admin/amazon?tab=mapping" : "/admin/entegrasyonlar"}
                     data-testid="quick-link-integrations"
                     className="inline-flex items-center gap-1.5 text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1.5 rounded-lg font-medium"
                   >
@@ -403,7 +403,7 @@ export default function MarketplaceHub() {
                     <SlidersHorizontal size={13} /> Marka Eşleştirme
                   </Link>
                   <Link
-                    to="/admin/kategori-eslestir"
+                    to={active.startsWith("amazon") ? "/admin/amazon?tab=mapping" : "/admin/kategori-eslestir"}
                     data-testid="quick-link-category-map"
                     className="inline-flex items-center gap-1.5 text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1.5 rounded-lg font-medium"
                   >

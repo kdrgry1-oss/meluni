@@ -24,7 +24,7 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_permission
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/admin/iys", tags=["iys"])
@@ -80,7 +80,9 @@ async def _get_token() -> Optional[str]:
 # Local cache helpers ---------------------------------------------------------
 async def _cache_get(rec: str, rtype: str, mtype: str) -> Optional[dict]:
     doc = await db.iys_permissions.find_one(
-        {"recipient": rec, "recipient_type": rtype, "message_type": mtype, "_id": 0},
+        # Not: "_id": 0 eskiden FİLTREDEYDİ (projeksiyon sanılmış) → hiçbir kayıt eşleşmiyor, önbellek
+        # hiç isabet etmiyordu.
+        {"recipient": rec, "recipient_type": rtype, "message_type": mtype},
         {"_id": 0},
     )
     if doc and doc.get("expires_at", "") > datetime.now(timezone.utc).isoformat():
@@ -119,7 +121,8 @@ class IYSRegister(IYSQuery):
 async def _netgsm_prov() -> dict:
     """providers.netgsm bloğu (İYS + SMS kimlikleri burada; iys.py._iys_config ile aynı kaynak)."""
     doc = await db.settings.find_one({"id": "notification_providers"}, {"_id": 0}) or {}
-    return (doc.get("providers", {}) or {}).get("netgsm", {}) or {}
+    from notification_service import decrypt_provider_block  # B-1: sırlar at-rest şifreli
+    return decrypt_provider_block((doc.get("providers", {}) or {}).get("netgsm", {}) or {})
 
 
 def _iys_fields(prov: dict) -> dict:
@@ -142,7 +145,7 @@ class IYSSettings(BaseModel):
 
 # Endpoints ------------------------------------------------------------------
 @router.get("/status")
-async def iys_status(_=Depends(require_admin)):
+async def iys_status(_=Depends(require_permission("integrations.view", any_in_area=True))):
     """NetGSM İYS bağlantı durumu — checkout bildiriminin okuduğu providers.netgsm'den."""
     prov = await _netgsm_prov()
     f = _iys_fields(prov)
@@ -168,28 +171,34 @@ async def iys_status(_=Depends(require_admin)):
 
 
 @router.get("/settings")
-async def iys_settings_get(_=Depends(require_admin)):
+async def iys_settings_get(_=Depends(require_permission("integrations.view", any_in_area=True))):
     """Kayıtlı İYS marka kodu + appkey (providers.netgsm)."""
     prov = await _netgsm_prov()
+    # Denetim #6: appkey bir kimlik bilgisidir — ASLA düz dönmez (yalnız "tanımlı mı" + maske).
+    _ak = str(prov.get("iys_appkey") or prov.get("appkey") or "")
     return {
         "brand_code": prov.get("iys_brand_code") or prov.get("brand_code") or "",
-        "appkey": prov.get("iys_appkey") or prov.get("appkey") or "",
+        "appkey": ((_ak[:2] + "****" + _ak[-2:]) if len(_ak) > 6 else "****") if _ak else "",
+        "appkey_set": bool(_ak),
     }
 
 
 @router.post("/settings")
-async def iys_settings_post(p: IYSSettings, _=Depends(require_admin)):
+async def iys_settings_post(p: IYSSettings, _=Depends(require_permission("integrations.netgsm"))):
     """İYS marka kodu + appkey'i providers.netgsm bloğuna yazar (checkout bildirimi buradan okur)."""
     upd = {"providers.netgsm.iys_brand_code": (p.brand_code or "").strip()}
     # appkey boş gönderilirse mevcut değeri ezme; doluysa İYS alt-kullanıcı appkey'ine yaz.
-    if (p.appkey or "").strip():
-        upd["providers.netgsm.iys_appkey"] = p.appkey.strip()
+    # Maskeli değer ("xx****yy") geri geldiyse dokunulmadı sayılır. Yeni değer şifreli yazılır (#6).
+    _new_ak = (p.appkey or "").strip()
+    if _new_ak and "****" not in _new_ak:
+        from security.crypto import encrypt as _enc
+        upd["providers.netgsm.iys_appkey"] = _enc(_new_ak)
     await db.settings.update_one({"id": "notification_providers"}, {"$set": upd}, upsert=True)
     return {"ok": True}
 
 
 @router.post("/test-connection")
-async def iys_test_connection(_=Depends(require_admin)):
+async def iys_test_connection(_=Depends(require_permission("integrations.view", any_in_area=True))):
     """NetGSM İYS bağlantısını YAN-ETKİSİZ doğrular: gerçek İYS ucuna (/iys/add) BOŞ data ile
     POST atar — hiçbir izin gönderilmez, yalnızca kimlik + marka + İYS modülü erişimi test edilir
     (checkout bildiriminin kullandığı AYNI uç ve Basic-Auth yöntemi)."""
@@ -238,7 +247,7 @@ async def iys_test_connection(_=Depends(require_admin)):
 
 
 @router.post("/query")
-async def iys_query(q: IYSQuery, _=Depends(require_admin)):
+async def iys_query(q: IYSQuery, _=Depends(require_permission("integrations.view", any_in_area=True))):
     """Tek izin sorgula — önce cache, sonra IYS API."""
     cached = await _cache_get(q.recipient, q.recipient_type, q.message_type)
     if cached:
@@ -270,7 +279,7 @@ async def iys_query(q: IYSQuery, _=Depends(require_admin)):
 
 
 @router.post("/register")
-async def iys_register(p: IYSRegister, _=Depends(require_admin)):
+async def iys_register(p: IYSRegister, _=Depends(require_permission("integrations.netgsm"))):
     """İzin ekle — ARACI NETGSM üzerinden. DOĞRUDAN devlet İYS'sine (api.iys.org.tr) GİTMEZ.
 
     Meluni'in İYS aracı hizmet sağlayıcısı NetGSM'dir; admin panelinden elle eklenen izin de
@@ -288,7 +297,7 @@ async def iys_register(p: IYSRegister, _=Depends(require_admin)):
 
 
 @router.post("/query-batch")
-async def iys_query_batch(queries: List[IYSQuery], _=Depends(require_admin)):
+async def iys_query_batch(queries: List[IYSQuery], _=Depends(require_permission("integrations.view", any_in_area=True))):
     """Toplu sorgulama (max 50). Pazarlama kampanyaları öncesi izin doğrulama."""
     if len(queries) > 50:
         raise HTTPException(status_code=400, detail="Max 50 sorgu")

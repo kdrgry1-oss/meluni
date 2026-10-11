@@ -20,7 +20,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
-from .deps import db, require_admin
+from .deps import db, require_admin, require_permission
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/admin/decision-board", tags=["admin-decision-board"])
@@ -282,13 +282,15 @@ class VerdictBody(BaseModel):
 
 
 @router.post("/generate")
-async def generate_report(body: GenerateBody, current_user: dict = Depends(require_admin)):
+async def generate_report(body: GenerateBody, current_user: dict = Depends(require_permission("reports.sales"))):
     period = body.period_days if body.period_days in (30, 60, 90) else 30
     # Aynı anda tek üretim: 15 dk'dan taze "running" varsa reddet
     cutoff = (datetime.now(timezone.utc) - timedelta(minutes=15)).isoformat()
     running = await db.decision_reports.find_one({"status": "running", "created_at": {"$gte": cutoff}})
     if running:
         raise HTTPException(409, "Zaten üretilen bir rapor var — bitmesini bekleyin")
+    from security.ai_budget import charge as _ai_charge
+    await _ai_charge(current_user, "decision_board", 8)   # denetim #25: 6 persona + eleştirmen + sentez
     rid = str(uuid.uuid4())
     await db.decision_reports.insert_one({
         "id": rid, "status": "running", "progress": "Başlatıldı…",
@@ -302,7 +304,7 @@ async def generate_report(body: GenerateBody, current_user: dict = Depends(requi
 
 
 @router.post("/import")
-async def import_report(payload: dict, current_user: dict = Depends(require_admin)):
+async def import_report(payload: dict, current_user: dict = Depends(require_permission("reports.sales"))):
     """Dışarıda üretilmiş (ör. derin analiz oturumu) hazır kurul raporunu panele ekler."""
     rid = str(uuid.uuid4())
     decisions = []
@@ -333,7 +335,7 @@ async def import_report(payload: dict, current_user: dict = Depends(require_admi
 
 
 @router.get("")
-async def list_reports(current_user: dict = Depends(require_admin)):
+async def list_reports(current_user: dict = Depends(require_permission("reports.sales"))):
     rows = await db.decision_reports.find(
         {}, {"_id": 0, "id": 1, "status": 1, "progress": 1, "period_days": 1,
              "created_at": 1, "finished_at": 1, "summary": 1,
@@ -345,7 +347,7 @@ async def list_reports(current_user: dict = Depends(require_admin)):
 
 
 @router.get("/{rid}")
-async def get_report(rid: str, current_user: dict = Depends(require_admin)):
+async def get_report(rid: str, current_user: dict = Depends(require_permission("reports.sales"))):
     doc = await db.decision_reports.find_one({"id": rid}, {"_id": 0, "raw_analyses": 0, "raw_skeptic": 0})
     if not doc:
         raise HTTPException(404, "Rapor bulunamadı")
@@ -353,7 +355,7 @@ async def get_report(rid: str, current_user: dict = Depends(require_admin)):
 
 
 @router.get("/{rid}/detay")
-async def get_report_raw(rid: str, current_user: dict = Depends(require_admin)):
+async def get_report_raw(rid: str, current_user: dict = Depends(require_permission("reports.sales"))):
     """Uzman ham analizleri + şüpheci raporu (isteyen patron kurulun mutfağını görebilsin)."""
     doc = await db.decision_reports.find_one({"id": rid}, {"_id": 0, "raw_analyses": 1, "raw_skeptic": 1})
     if not doc:
@@ -362,7 +364,7 @@ async def get_report_raw(rid: str, current_user: dict = Depends(require_admin)):
 
 
 @router.put("/{rid}/decisions/{did}")
-async def save_verdict(rid: str, did: str, body: VerdictBody, current_user: dict = Depends(require_admin)):
+async def save_verdict(rid: str, did: str, body: VerdictBody, current_user: dict = Depends(require_permission("reports.sales"))):
     verdict = body.user_verdict if body.user_verdict in ("", "katiliyorum", "reddediyorum", "duzenle") else ""
     res = await db.decision_reports.update_one(
         {"id": rid, "decisions.id": did},

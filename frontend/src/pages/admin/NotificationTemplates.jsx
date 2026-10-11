@@ -13,7 +13,8 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { Save, RefreshCw, Mail, MessageSquare, Phone, Send } from "lucide-react";
+import { Save, RefreshCw, Mail, MessageSquare, Phone, Send, FileText } from "lucide-react";
+import { openAdminDocument } from "../../lib/adminDocuments";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -142,6 +143,15 @@ export default function NotificationTemplates() {
     } catch (e) { toast.error("Düzeltme hatası: " + (e?.response?.data?.detail || e.message)); }
   };
 
+  const applySmsDefaults = async () => {
+    if (!window.confirm("Sipariş SMS şablonları GÜNCEL metinlere sıfırlanacak (isim + sipariş no + kargo LİNKİ). Elle yaptığınız SMS düzenlemeleri de üzerine yazılır. Devam edilsin mi?")) return;
+    try {
+      const r = await axios.post(`${API}/notifications/templates/apply-sms-defaults`, {}, auth);
+      toast.success(`${r.data.applied || 0} SMS şablonu güncellendi`);
+      await load();
+    } catch (e) { toast.error("Güncelleme hatası: " + (e?.response?.data?.detail || e.message)); }
+  };
+
   const sendTest = async (channel) => {
     if (!testTo.trim()) { toast.error("Önce telefon numarası veya e-posta girin"); return; }
     setTestSending(channel);
@@ -186,6 +196,14 @@ export default function NotificationTemplates() {
           <p className="text-sm text-gray-500 mt-1">Her event × kanal için metni özelleştirin.</p>
         </div>
         <div className="flex items-center gap-2">
+          <button onClick={() => { openAdminDocument("/notifications/coverage-report?days=90", "", true).catch((err) => toast.error(err.message)); }}
+            title="Hangi bildirim tipi nereden tetikleniyor, son 90 günde gitti mi, eksik/mükerrer ne var — yazdırılabilir (PDF) rapor"
+            className="inline-flex items-center gap-2 border border-gray-300 hover:bg-gray-50 px-3 py-2 rounded text-sm" data-testid="notif-coverage-report">
+            <FileText size={14} /> Kapsam Raporu (PDF)
+          </button>
+          <button onClick={applySmsDefaults} className="inline-flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700 px-3 py-2 rounded text-sm" data-testid="notif-apply-sms">
+            <RefreshCw size={14} /> Sipariş SMS'lerini Güncelle (isim+no+link)
+          </button>
           <button onClick={fixNames} className="inline-flex items-center gap-2 bg-emerald-600 text-white hover:bg-emerald-700 px-3 py-2 rounded text-sm" data-testid="notif-fix-names">
             <RefreshCw size={14} /> Ad → Ad Soyad Düzelt
           </button>

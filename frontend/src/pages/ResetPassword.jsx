@@ -14,7 +14,12 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 export default function ResetPassword() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const token = params.get("token") || "";
+  // Jeton index.html'de adres çubuğundan silinip sessionStorage'a alınır (analitiğe sızmasın).
+  const [token] = useState(() => {
+    let t = params.get("token") || "";
+    try { if (!t) t = sessionStorage.getItem("pw_reset_token") || ""; } catch (_) { /* noop */ }
+    return t;
+  });
 
   const [pw, setPw] = useState("");
   const [pw2, setPw2] = useState("");
@@ -39,6 +44,7 @@ export default function ResetPassword() {
         reset_token: token,
         new_password: pw,
       });
+      try { sessionStorage.removeItem("pw_reset_token"); } catch (_) { /* noop */ }
       toast.success("Şifreniz güncellendi. Şimdi giriş yapabilirsiniz.");
       navigate("/giris");
     } catch (err) {

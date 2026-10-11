@@ -27,10 +27,10 @@ import json
 from datetime import datetime, timezone, timedelta
 from typing import Optional, List
 
-from fastapi import APIRouter, Request, BackgroundTasks
+from fastapi import APIRouter, Request, BackgroundTasks, Depends
 from fastapi.responses import PlainTextResponse
 
-from .deps import db, logger
+from .deps import db, logger, require_admin, require_permission
 from .ai_chatbot import (
     get_ai_settings, _api_key_for, llm_chat, DEFAULT_PERSONA,
     _gather_kb_context, _gather_product_context,
@@ -44,7 +44,8 @@ _OPT_IN = {"başla", "basla", "devam", "aç", "ac"}
 
 async def _wa_cfg() -> dict:
     s = await db.settings.find_one({"id": "notification_providers"}, {"_id": 0}) or {}
-    return ((s.get("providers") or {}).get("whatsapp_meta") or {})
+    from notification_service import decrypt_provider_block  # B-1: page_access_token/app_secret şifreli
+    return decrypt_provider_block((s.get("providers") or {}).get("whatsapp_meta") or {})
 
 
 # ── Webhook doğrulama (Meta panel: Callback URL kaydı) ──────────────────────
@@ -62,14 +63,17 @@ async def verify_webhook(request: Request):
 
 
 @router.get("/diag")
-async def wa_diag(key: str = "", q: str = ""):
-    """PII'siz teşhis — verify_token ile korunur. Webhook geldi mi, AI anahtarı/config
+async def wa_diag(key: str = "", q: str = "", current_user: dict = Depends(require_permission("questions.view"))):
+    """PII'siz teşhis. Webhook geldi mi, AI anahtarı/config
     tam mı, gönderim başarılı mı görülür. Mesaj metni DÖNMEZ (yalnız not/durum).
-    q verilirse ürün-bulma + beden tablosu probu çalışır (satış/beden teşhisi)."""
+    q verilirse ürün-bulma + beden tablosu probu çalışır (satış/beden teşhisi).
+
+    GÜVENLİK (denetim 2026-10): verify_token (Meta'ya düz metin giden webhook el sıkışma
+    değeri) artık admin anahtarı olarak KULLANILMAZ → panel personeli oturumu (require_admin)
+    şart. `key` geriye uyumluluk için kabul edilir ama yok sayılır. Webhook doğrulama
+    (GET /webhook, hub.verify_token) DEĞİŞMEDİ."""
+    _ = key
     cfg = await _wa_cfg()
-    expected = cfg.get("verify_token") or os.environ.get("WHATSAPP_VERIFY_TOKEN", "")
-    if not expected or not hmac.compare_digest(key, expected):
-        return PlainTextResponse("forbidden", status_code=403)
     probe = {}
     if q:
         try:
@@ -161,14 +165,13 @@ async def wa_diag(key: str = "", q: str = ""):
 
 
 @router.post("/visual-index/build")
-async def visual_index_build(key: str = "", force: bool = False, limit: int = 0):
+async def visual_index_build(key: str = "", force: bool = False, limit: int = 0,
+                             current_user: dict = Depends(require_permission("questions.answer"))):
     """Ürün KAPAK görsellerini parmak-izine çevirip hafızaya alır (görselden ürün tanıma için).
-    verify_token ile korunur. Arka planda çalışır; ilerleme /diag.visual_index'te görünür.
+    Panel personeli oturumu (require_admin) ile korunur (verify_token artık anahtar DEĞİL).
+    Arka planda çalışır; ilerleme /diag.visual_index'te görünür.
     force=true tümünü yeniden indeksler; limit>0 yalnız o kadarını işler (test)."""
-    cfg = await _wa_cfg()
-    expected = cfg.get("verify_token") or os.environ.get("WHATSAPP_VERIFY_TOKEN", "")
-    if not expected or not hmac.compare_digest(key, expected):
-        return PlainTextResponse("forbidden", status_code=403)
+    _ = key
     import asyncio
     asyncio.create_task(_run_visual_index_build(force=bool(force), limit=int(limit or 0)))
     already = await db.product_visual_index.count_documents({})
@@ -178,13 +181,12 @@ async def visual_index_build(key: str = "", force: bool = False, limit: int = 0)
 
 
 @router.post("/backfill-questions")
-async def backfill_questions(key: str = "", limit: int = 5000):
+async def backfill_questions(key: str = "", limit: int = 5000,
+                             current_user: dict = Depends(require_permission("questions.sync"))):
     """Mevcut WhatsApp konuşma geçmişini admin 'Müşteri Soruları' paneline (whatsapp_messages)
-    aktarır — geçmiş sohbetler de görünsün/eğitilebilsin. verify_token ile korunur, idempotent."""
-    cfg = await _wa_cfg()
-    expected = cfg.get("verify_token") or os.environ.get("WHATSAPP_VERIFY_TOKEN", "")
-    if not expected or not hmac.compare_digest(key, expected):
-        return PlainTextResponse("forbidden", status_code=403)
+    aktarır — geçmiş sohbetler de görünsün/eğitilebilsin. Panel personeli oturumu
+    (require_admin) ile korunur (verify_token artık anahtar DEĞİL), idempotent."""
+    _ = key
     from .deps import generate_id
     n, skip = 0, 0
     try:
@@ -223,8 +225,11 @@ async def backfill_questions(key: str = "", limit: int = 5000):
 
 
 def _verify_signature(app_secret: str, raw: bytes, header: str) -> bool:
+    # DENETİM (cost-redteam #4): app_secret yoksa eskiden True dönüyordu (FAIL-OPEN) → sahte
+    # payload'lar LLM/görsel/ses harcaması tetikleyebiliyordu. Artık FAIL-CLOSED: app_secret
+    # yapılandırılmamışsa webhook REDDEDİLİR (Meta panelinde app_secret zorunlu tutulmalı).
     if not app_secret:
-        return True  # app_secret ayarlı değilse imza kontrolü atlanır (Meta panelinden zorunlu kılınabilir)
+        return False
     if not header or not header.startswith("sha256="):
         return False
     mac = hmac.new(app_secret.encode(), raw, hashlib.sha256).hexdigest()
@@ -235,9 +240,13 @@ def _verify_signature(app_secret: str, raw: bytes, header: str) -> bool:
 @router.post("/webhook")
 async def receive_webhook(request: Request, background: BackgroundTasks):
     raw = await request.body()
-    # API taban URL'sini yakala (kart ödeme linki callback'i için; white-label — host'tan türer).
+    # DENETİM (injection-redteam F3): api_base eskiden request.base_url'den (Host başlığı —
+    # istemci-kontrollü, uvicorn --proxy-headers yok) İMZA KONTROLÜNDEN ÖNCE yazılıyordu;
+    # bu değer iyzico callbackUrl'i oluyordu → Host:evil ile ödeme callback'i çalınabiliyordu.
+    # Artık YALNIZ güvenilir env'den (PUBLIC_BASE_URL) sabitlenir; Host'a güvenilmez.
     try:
-        base = str(request.base_url).rstrip("/")
+        base = (os.environ.get("PUBLIC_BASE_URL") or os.environ.get("REACT_APP_BACKEND_URL")
+                or "https://api.meluni.com.tr").rstrip("/")
         if base:
             await db.whatsapp_meta_state.update_one(
                 {"_id": "api_base"}, {"$set": {"url": base, "at": _now()}}, upsert=True)
@@ -474,6 +483,17 @@ def _keywords(text: str):
     return [t for t in toks if t not in _KW_STOP]
 
 
+async def _public_product_q(extra: dict) -> dict:
+    """Bot sorguları için herkese açık ürün koşulu: aktif, silinmemiş, üyelere özel DEĞİL
+    (WhatsApp/Instagram müşterisinin üyeliği doğrulanamaz → üyelere özel ürün hiç önerilmez)."""
+    from .products import _members_only_cat_ids, members_only_exclusion
+    q = {**(extra or {}), "is_active": True, "is_deleted": {"$ne": True}}
+    mo = await _members_only_cat_ids()
+    if mo:
+        q["$and"] = members_only_exclusion(mo)
+    return q
+
+
 async def _find_product(text: str):
     """Konuşma metninden ürünü bulur. 'mini/elbise' gibi kelimeler yüzlerce ürüne
     uyduğundan, aday havuzunu EN AYIRT EDİCİ (en az eşleşen) kelimeyle kurar; böylece
@@ -495,7 +515,7 @@ async def _find_product(text: str):
     rare = min(counts, key=counts.get)  # en ayırt edici kelime (en az eşleşen)
     try:
         cands = await db.products.find(
-            {"name": {"$regex": _r.escape(rare), "$options": "i"}},
+            await _public_product_q({"name": {"$regex": _r.escape(rare), "$options": "i"}}),
             {"_id": 0, "id": 1, "name": 1, "slug": 1}).limit(60).to_list(60)
     except Exception:
         return None
@@ -544,7 +564,7 @@ async def _get_active_product(phone: str, max_age_hours: int = 8):
     except Exception:
         pass
     try:
-        p = await db.products.find_one({"id": rec["product_id"]},
+        p = await db.products.find_one(await _public_product_q({"id": rec["product_id"]}),
                                        {"_id": 0, "id": 1, "name": 1, "slug": 1})
         if p:
             return p
@@ -569,7 +589,7 @@ async def _quoted_context(quoted_id: str):
     pid = row.get("product_id")
     if pid:
         try:
-            prod = await db.products.find_one({"id": pid}, {"_id": 0, "id": 1, "name": 1, "slug": 1})
+            prod = await db.products.find_one(await _public_product_q({"id": pid}), {"_id": 0, "id": 1, "name": 1, "slug": 1})
         except Exception:
             prod = None
     return prod, qtext
@@ -840,14 +860,25 @@ async def _match_product_by_fingerprint(qa: dict):
     # Renk vision'da yanlış adlandırılabildiğinden aday havuzunu GENİŞ tutuyoruz;
     # nihai renk/model kararını _vision_pick_match (görselden görsele) verir.
     cands = [d for s, d in scored[:8] if s > 0] or [d for _, d in scored[:8]]
+    # Görsel dizinde kalmış üyelere özel/pasif ürünler aday olarak da önerilmez.
+    try:
+        _ids = [str(d.get("product_id")) for d in cands if d.get("product_id")]
+        if _ids:
+            _ok = {str(x.get("id")) async for x in db.products.find(
+                await _public_product_q({"id": {"$in": _ids}}), {"_id": 0, "id": 1})}
+            cands = [d for d in cands if str(d.get("product_id")) in _ok]
+            if top_d and str(top_d.get("product_id")) not in _ok:
+                top_s = 0.0
+    except Exception:
+        pass
     prod = None
     if top_s >= 3.0:
         try:
-            prod = await db.products.find_one({"id": top_d["product_id"]},
+            prod = await db.products.find_one(await _public_product_q({"id": top_d["product_id"]}),
                                               {"_id": 0, "id": 1, "name": 1, "slug": 1})
         except Exception:
             prod = None
-        prod = prod or {"id": top_d.get("product_id"), "name": top_d.get("name"), "slug": top_d.get("slug")}
+        # Görsel dizindeki eski kayıt artık üyelere özel/pasifse ÖNERİLMEZ (eski kopyaya düşme).
     return prod, cands, top_s
 
 
@@ -974,7 +1005,7 @@ async def _run_visual_index_build(force: bool = False, limit: int = 0):
     model = settings.get("fast_model") or settings.get("model")
     provider = settings.get("provider", "openai")
     prods = await db.products.find(
-        {"is_active": True, "is_deleted": {"$ne": True}},
+        await _public_product_q({}),
         {"_id": 0, "id": 1, "name": 1, "slug": 1, "category_id": 1, "images": 1, "thumbnail": 1}
     ).to_list(2000)
     done, skipped, failed = 0, 0, 0
@@ -1905,15 +1936,18 @@ async def _wa_upsert_member(email: str, name: str, phone: str):
     email = (email or "").strip().lower()
     phone_norm = normalize_phone_tr(phone or "")
     tail = phone_norm[-10:]
+    from security.contact_pii import phone_lookup as _ph_lookup, seal_doc as _contact_seal
+    from .deps import open_user_phone as _open_user_phone
     try:
         if email:
             ex = await db.users.find_one({"email": email}, {"_id": 0})
             if ex:
-                return ex
+                return _open_user_phone(ex)
         if len(tail) == 10 and tail.isdigit():
-            ex = await db.users.find_one({"phone": {"$regex": tail + "$"}}, {"_id": 0})
+            # KVKK: telefon şifreli → hash eşitliği (regex yok)
+            ex = await db.users.find_one(_ph_lookup("phone", tail), {"_id": 0})
             if ex:
-                return ex
+                return _open_user_phone(ex)
     except Exception:
         pass
     if not email:
@@ -1934,7 +1968,7 @@ async def _wa_upsert_member(email: str, name: str, phone: str):
         "created_at": _now(),
     }
     try:
-        await db.users.insert_one(user)
+        await db.users.insert_one(_contact_seal(dict(user), "user"))  # KVKK: telefon şifreli
     except Exception:
         logger.exception("WA member create failed")
         return None
@@ -1950,7 +1984,7 @@ async def _execute_wa_order(sender: str, name: Optional[str], info: dict,
         return ("Hangi ürün için sipariş oluşturacağımı netleştirebilir miyiz? Ürünün linkini "
                 "paylaşırsanız hemen ilerleyelim 🌸")
     try:
-        prod = await db.products.find_one({"id": product.get("id")}, {"_id": 0})
+        prod = await db.products.find_one(await _public_product_q({"id": product.get("id")}), {"_id": 0})
     except Exception:
         prod = None
     if not prod:

@@ -59,7 +59,7 @@ const CARGO_COMPANIES = [
 
 export default function AdminSettings() {
   const [settings, setSettings] = useState({
-    site_name: "MELUNİ",
+    site_name: "",
     logo_url: "",
     shipping_fee: 0,
     cargo_fees: {},
@@ -73,6 +73,8 @@ export default function AdminSettings() {
       bank_transfer: true,
       cash_on_delivery: false,
     },
+    bank_transfer_discount_pct: 5,
+    edu_discount_pct: 5,
     barcode_range_start: "",
     barcode_range_end: "",
     default_vat_rate: 10,
@@ -81,13 +83,27 @@ export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const tenant = settings.tenant_config || {};
+  const setTenantField = (section, key, value) => setSettings((prev) => ({
+    ...prev,
+    tenant_config: {
+      ...(prev.tenant_config || {}),
+      [section]: { ...((prev.tenant_config || {})[section] || {}), [key]: value },
+    },
+  }));
+
   useEffect(() => {
     fetchSettings();
   }, []);
 
   const fetchSettings = async () => {
     try {
-      const res = await axios.get(`${API}/settings`);
+      // Tam ayar belgesi yalnız yetkili panel ucundan (settings.view) okunur; herkese açık
+      // GET /settings artık yalnız vitrinin kullandığı alanları döner.
+      const token = localStorage.getItem('token');
+      const res = await axios.get(`${API}/settings/admin`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setSettings(res.data);
     } catch (err) {
       console.error(err);
@@ -187,8 +203,8 @@ export default function AdminSettings() {
               <label className="block text-sm font-medium mb-1">Site Adı</label>
               <input
                 type="text"
-                value={settings.site_name}
-                onChange={(e) => setSettings({ ...settings, site_name: e.target.value })}
+                value={tenant.brand?.store_name || ""}
+                onChange={(e) => setTenantField("brand", "store_name", e.target.value)}
                 className="w-full border px-3 py-2 rounded text-sm"
               />
             </div>
@@ -196,8 +212,8 @@ export default function AdminSettings() {
               <label className="block text-sm font-medium mb-1">Logo URL</label>
               <input
                 type="url"
-                value={settings.logo_url}
-                onChange={(e) => setSettings({ ...settings, logo_url: e.target.value })}
+                value={tenant.brand?.logo_url || ""}
+                onChange={(e) => setTenantField("brand", "logo_url", e.target.value)}
                 className="w-full border px-3 py-2 rounded text-sm"
               />
             </div>
@@ -211,8 +227,8 @@ export default function AdminSettings() {
                     <input
                       type="number"
                       step="0.01"
-                      value={(settings.cargo_fees || {})[cc.key] ?? ""}
-                      onChange={(e) => setSettings({ ...settings, cargo_fees: { ...(settings.cargo_fees || {}), [cc.key]: e.target.value === "" ? "" : parseFloat(e.target.value) } })}
+                      value={(tenant.shipping?.carrier_fees || {})[cc.key] ?? ""}
+                      onChange={(e) => setTenantField("shipping", "carrier_fees", { ...(tenant.shipping?.carrier_fees || {}), [cc.key]: e.target.value === "" ? 0 : parseFloat(e.target.value) })}
                       className="w-full border px-2 py-1.5 rounded text-sm"
                     />
                   </div>
@@ -221,8 +237,8 @@ export default function AdminSettings() {
               <div className="mt-3">
                 <label className="block text-xs text-gray-600 mb-1">Varsayılan Kargo Firması (müşteriye yansıyan ücret)</label>
                 <select
-                  value={settings.default_cargo_company || ""}
-                  onChange={(e) => setSettings({ ...settings, default_cargo_company: e.target.value })}
+                  value={tenant.shipping?.default_carrier || ""}
+                  onChange={(e) => setTenantField("shipping", "default_carrier", e.target.value)}
                   className="w-full border px-2 py-1.5 rounded text-sm"
                 >
                   <option value="">Seçiniz</option>
@@ -236,9 +252,9 @@ export default function AdminSettings() {
                 <label className="block text-xs text-gray-600 mb-1">Mağaza Adresi (feed linklerinde kullanılır)</label>
                 <input
                   type="text"
-                  placeholder="https://meluni.com.tr"
-                  value={settings.site_url || ""}
-                  onChange={(e) => setSettings({ ...settings, site_url: e.target.value })}
+                  placeholder="https://magazaniz.com"
+                  value={tenant.domains?.storefront_url || ""}
+                  onChange={(e) => setTenantField("domains", "storefront_url", e.target.value)}
                   className="w-full border px-2 py-1.5 rounded text-sm"
                 />
               </div>
@@ -250,17 +266,17 @@ export default function AdminSettings() {
               <div className="flex gap-2">
                 <input
                   type="number"
-                  value={settings.default_vat_rate || 10}
-                  onChange={(e) => setSettings({ ...settings, default_vat_rate: parseInt(e.target.value) || 0 })}
+                  value={tenant.commerce?.default_vat_rate ?? 10}
+                  onChange={(e) => setTenantField("commerce", "default_vat_rate", parseFloat(e.target.value) || 0)}
                   className="flex-1 border px-3 py-2 rounded text-sm"
                 />
                 <button
                   type="button"
                   onClick={async () => {
-                    if (await window.appConfirm(`Tüm ürünlerin KDV oranını %${settings.default_vat_rate} olarak güncellemek istediğinize emin misiniz?`)) {
+                    if (await window.appConfirm(`Tüm ürünlerin KDV oranını %${tenant.commerce?.default_vat_rate ?? 10} olarak güncellemek istediğinize emin misiniz?`)) {
                       try {
                         const token = localStorage.getItem('token');
-                        const res = await axios.post(`${API}/products/bulk-update-vat`, { vat_rate: settings.default_vat_rate }, {
+                        const res = await axios.post(`${API}/products/bulk-update-vat`, { vat_rate: tenant.commerce?.default_vat_rate ?? 10 }, {
                           headers: { Authorization: `Bearer ${token}` }
                         });
                         toast.success(res.data.message);
@@ -274,6 +290,38 @@ export default function AdminSettings() {
                   Tüm Ürünlere Uygula
                 </button>
               </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Para Birimi</label>
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  type="text"
+                  maxLength={3}
+                  value={tenant.commerce?.currency_code || "TRY"}
+                  onChange={(e) => setTenantField("commerce", "currency_code", e.target.value.toUpperCase())}
+                  className="border px-3 py-2 rounded text-sm uppercase"
+                  placeholder="TRY"
+                />
+                <input
+                  type="text"
+                  value={tenant.commerce?.currency_symbol || "₺"}
+                  onChange={(e) => setTenantField("commerce", "currency_symbol", e.target.value)}
+                  className="border px-3 py-2 rounded text-sm"
+                  placeholder="₺"
+                />
+              </div>
+              <p className="text-xs text-gray-500 mt-1">ISO kodu ve müşteriye gösterilen sembol. Mevcut siparişlerin para birimini değiştirmez.</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Varsayılan Ürün Markası</label>
+              <input
+                type="text"
+                value={tenant.catalog_defaults?.product_brand || ""}
+                onChange={(e) => setTenantField("catalog_defaults", "product_brand", e.target.value)}
+                className="w-full border px-3 py-2 rounded text-sm"
+                placeholder="Yeni ürünlere uygulanacak marka"
+              />
+              <p className="text-xs text-gray-500 mt-1">Yalnız yeni ürünlerin varsayılanıdır; mevcut ürünleri topluca değiştirmez.</p>
             </div>
           </div>
         </div>
@@ -311,8 +359,8 @@ export default function AdminSettings() {
               <label className="block text-sm font-medium mb-1">E-posta</label>
               <input
                 type="email"
-                value={settings.contact_email}
-                onChange={(e) => setSettings({ ...settings, contact_email: e.target.value })}
+                value={tenant.contact?.email || ""}
+                onChange={(e) => setTenantField("contact", "email", e.target.value)}
                 className="w-full border px-3 py-2 rounded text-sm"
               />
             </div>
@@ -320,16 +368,16 @@ export default function AdminSettings() {
               <label className="block text-sm font-medium mb-1">Telefon</label>
               <input
                 type="tel"
-                value={settings.contact_phone}
-                onChange={(e) => setSettings({ ...settings, contact_phone: e.target.value })}
+                value={tenant.contact?.phone || ""}
+                onChange={(e) => setTenantField("contact", "phone", e.target.value)}
                 className="w-full border px-3 py-2 rounded text-sm"
               />
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium mb-1">Adres</label>
               <textarea
-                value={settings.address}
-                onChange={(e) => setSettings({ ...settings, address: e.target.value })}
+                value={tenant.company?.address || ""}
+                onChange={(e) => setTenantField("company", "address", e.target.value)}
                 rows={2}
                 className="w-full border px-3 py-2 rounded text-sm"
               />
@@ -423,6 +471,29 @@ export default function AdminSettings() {
               <span className="text-sm">Kapıda Ödeme</span>
             </label>
           </div>
+
+          {/* Yüzde indirimler — sunucu bu değerleri otoriter uygular (kasa ekranı aynısını gösterir) */}
+          <div className="grid md:grid-cols-2 gap-4 mt-5 pt-4 border-t">
+            <div>
+              <label className="block text-sm font-medium mb-1">Havale/EFT İndirimi (%)</label>
+              <input type="number" min="0" max="90" step="0.5"
+                value={settings.bank_transfer_discount_pct ?? 5}
+                onChange={(e) => setSettings({ ...settings, bank_transfer_discount_pct: e.target.value === "" ? "" : Number(e.target.value) })}
+                className="w-full border rounded px-3 py-2" data-testid="set-bank-disc" />
+              <p className="text-xs text-gray-400 mt-1">Havale/EFT seçildiğinde kupon indiriminden sonraki tutara uygulanır. 0 = kapalı.</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Öğrenci İndirimi — .edu.tr (%)</label>
+              <input type="number" min="0" max="90" step="0.5"
+                value={settings.edu_discount_pct ?? 5}
+                onChange={(e) => setSettings({ ...settings, edu_discount_pct: e.target.value === "" ? "" : Number(e.target.value) })}
+                className="w-full border rounded px-3 py-2" data-testid="set-edu-disc" />
+              <p className="text-xs text-gray-400 mt-1">
+                E-postası <b>.edu.tr</b> ile biten müşterilere tüm siparişlerde uygulanır. Kupon/kampanya
+                indiriminden sonraki tutar üzerinden hesaplanır. 0 = kapalı.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Company Info */}
@@ -434,62 +505,62 @@ export default function AdminSettings() {
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">Firma Ünvanı</label>
-              <input type="text" value={settings.company_info?.company_name || ""}
-                onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), company_name: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="MELUNİ DIŞ. TİC.A.Ş" />
+              <input type="text" value={tenant.company?.legal_name || ""}
+                onChange={(e) => setTenantField("company", "legal_name", e.target.value)}
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="Firma ticari ünvanı" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Vergi Kimlik No (VKN)</label>
-              <input type="text" value={settings.company_info?.tax_number || ""}
-                onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), tax_number: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm font-mono" placeholder="10 haneli VKN ya da 11 haneli TCKN" />
+              <input type="text" value={tenant.company?.tax_number || ""}
+                onChange={(e) => setTenantField("company", "tax_number", e.target.value)}
+                className="w-full border px-3 py-2 rounded text-sm font-mono" placeholder="Vergi kimlik numarası" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Vergi Dairesi</label>
-              <input type="text" value={settings.company_info?.tax_office || ""}
-                onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), tax_office: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="BEYLİKDÜZÜ" />
+              <input type="text" value={tenant.company?.tax_office || ""}
+                onChange={(e) => setTenantField("company", "tax_office", e.target.value)}
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="Vergi dairesi" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Web Sitesi</label>
-              <input type="text" value={settings.company_info?.website || ""}
-                onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), website: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="meluni.com.tr" />
+              <input type="text" value={tenant.domains?.storefront_url || ""}
+                onChange={(e) => setTenantField("domains", "storefront_url", e.target.value)}
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="https://magazaniz.com" />
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium mb-1">Adres</label>
-              <input type="text" value={settings.company_info?.address || ""}
-                onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), address: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="Kavaklı Mah. Meclis Sok. No:4/9 Referans Beylikdüzü D Blok D:19 Beylikdüzü/İstanbul" />
+              <input type="text" value={tenant.company?.address || ""}
+                onChange={(e) => setTenantField("company", "address", e.target.value)}
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="Firma açık adresi" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">İl / İlçe</label>
-              <input type="text" value={settings.company_info?.city || ""}
-                onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), city: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="KÜÇÜKÇEKMECE/ İstanbul" />
+              <input type="text" value={tenant.company?.city || ""}
+                onChange={(e) => setTenantField("company", "city", e.target.value)}
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="İl / İlçe" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Firma E-postası</label>
-              <input type="email" value={settings.company_info?.email || ""}
-                onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), email: e.target.value}})}
-                className="w-full border px-3 py-2 rounded text-sm" placeholder="info@meluni.com.tr" />
+              <input type="email" value={tenant.contact?.email || ""}
+                onChange={(e) => setTenantField("contact", "email", e.target.value)}
+                className="w-full border px-3 py-2 rounded text-sm" placeholder="info@magazaniz.com" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Firma Telefonu</label>
-              <input type="text" value={settings.company_info?.phone || ""}
-                onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), phone: e.target.value}})}
+              <input type="text" value={tenant.contact?.phone || ""}
+                onChange={(e) => setTenantField("contact", "phone", e.target.value)}
                 className="w-full border px-3 py-2 rounded text-sm" placeholder="0212 000 00 00" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">IBAN</label>
-              <input type="text" value={settings.company_info?.iban || ""}
-                onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), iban: e.target.value}})}
+              <input type="text" value={tenant.company?.iban || ""}
+                onChange={(e) => setTenantField("company", "iban", e.target.value)}
                 className="w-full border px-3 py-2 rounded text-sm font-mono" placeholder="TR00 0000 0000 0000 0000 0000 00" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">WhatsApp (destek numarası)</label>
-              <input type="text" value={settings.company_info?.whatsapp || ""}
-                onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), whatsapp: e.target.value}})}
+              <input type="text" value={tenant.contact?.whatsapp || ""}
+                onChange={(e) => setTenantField("contact", "whatsapp", e.target.value)}
                 className="w-full border px-3 py-2 rounded text-sm" placeholder="905000000000" />
             </div>
           </div>
@@ -498,26 +569,26 @@ export default function AdminSettings() {
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Instagram</label>
-                <input type="text" value={settings.company_info?.instagram || ""}
-                  onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), instagram: e.target.value}})}
+                <input type="text" value={tenant.contact?.instagram || ""}
+                  onChange={(e) => setTenantField("contact", "instagram", e.target.value)}
                   className="w-full border px-3 py-2 rounded text-sm" placeholder="https://instagram.com/markaniz" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">TikTok</label>
-                <input type="text" value={settings.company_info?.tiktok || ""}
-                  onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), tiktok: e.target.value}})}
+                <input type="text" value={tenant.contact?.tiktok || ""}
+                  onChange={(e) => setTenantField("contact", "tiktok", e.target.value)}
                   className="w-full border px-3 py-2 rounded text-sm" placeholder="https://tiktok.com/@markaniz" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Facebook</label>
-                <input type="text" value={settings.company_info?.facebook || ""}
-                  onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), facebook: e.target.value}})}
+                <input type="text" value={tenant.contact?.facebook || ""}
+                  onChange={(e) => setTenantField("contact", "facebook", e.target.value)}
                   className="w-full border px-3 py-2 rounded text-sm" placeholder="https://facebook.com/markaniz" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">X (Twitter)</label>
-                <input type="text" value={settings.company_info?.x || ""}
-                  onChange={(e) => setSettings({...settings, company_info: {...(settings.company_info || {}), x: e.target.value}})}
+                <input type="text" value={tenant.contact?.x || ""}
+                  onChange={(e) => setTenantField("contact", "x", e.target.value)}
                   className="w-full border px-3 py-2 rounded text-sm" placeholder="https://x.com/markaniz" />
               </div>
             </div>

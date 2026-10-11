@@ -22,7 +22,35 @@ from .deps import db, logger, require_auth
 router = APIRouter(prefix="/loyalty", tags=["loyalty"])
 
 _SUCCESS_STATUSES = ["confirmed", "processing", "preparing", "shipped", "delivered", "completed"]
-_REVOKE_STATUSES = ["cancelled", "returned", "refunded"]
+# GÜVENLİK (commerce-3): "Ödemeli İptal Onaylandı" (cancel_refunded) = ödenmiş sipariş iptal
+# edilip para İADE edildi. Listede yoktu → öde → puan kazan → iptal talebi → iade döngüsüyle
+# (1 puan = 1 TL) bedava puan basılabiliyordu. Kısmi iade (partial_refunded) sipariş kısmen
+# müşteride kaldığı için burada tam geri alınmaz; iade edilen kısım _adjust_partial_refunds ile
+# ORANSAL geri alınır (denetim #13).
+_REVOKE_STATUSES = ["cancelled", "cancel_refunded", "returned", "refunded"]
+# Denetim #13: kısmi iade olmuş sipariş de (kalan NET tutar üzerinden) puan kazanır; puanı yazılmış
+# siparişe sonradan kısmi iade gelirse iade edilen kısmın puanı ORANSAL geri alınır.
+_PARTIAL_STATUSES = ["partial_refunded", "partially_refunded"]
+# Onaylanmış iade kaydı durumları (members/analytics net ciro kuralıyla aynı).
+_RETURN_COUNTED_STATUSES = ["approved", "return_approved", "refunded", "partial_refunded", "completed"]
+
+
+async def _refunded_amount(_db, order: dict) -> float:
+    """Siparişte müşteriye İADE edilmiş tutar: onaylı iade kayıtları (customer_returns.refund_amount)
+    ile siparişteki refunded_amount alanından büyük olanı (çift sayım yok)."""
+    tot = 0.0
+    try:
+        async for r in _db.customer_returns.find(
+                {"order_id": order.get("id"), "status": {"$in": _RETURN_COUNTED_STATUSES}},
+                {"_id": 0, "refund_amount": 1}):
+            tot += float(r.get("refund_amount") or 0)
+    except Exception:
+        pass
+    try:
+        tot = max(tot, float(order.get("refunded_amount") or 0))
+    except (TypeError, ValueError):
+        pass
+    return round(max(0.0, tot), 2)
 
 
 def _now_iso() -> str:
@@ -98,17 +126,23 @@ async def spend_points_for_order(user_id: str, order: dict, payable_total: float
     return {"ok": False, "points": 0.0, "error": "Puan şu an kullanılamadı, tekrar deneyin"}
 
 
-async def refund_points_once(order: dict) -> float:
-    """Sipariş iptalinde kullanılan puanın idempotent iadesi (atomik bayrak kilidi)."""
+async def refund_points_once(order: dict, unpersisted: bool = False) -> float:
+    """Sipariş iptalinde kullanılan puanın idempotent iadesi (atomik bayrak kilidi).
+    unpersisted=True: sipariş henüz DB'de yok (create_order 409 geri alması) → kilit aranmaz."""
     used = round(float(order.get("points_used") or 0), 2)
     uid = order.get("user_id")
     if used <= 0 or not uid:
         return 0.0
-    lock = await db.orders.update_one(
-        {"id": order.get("id"), "points_used": {"$gt": 0}, "points_refunded": {"$ne": True}},
-        {"$set": {"points_refunded": True}})
-    if not lock.modified_count:
-        return 0.0
+    if unpersisted:
+        if order.get("points_refunded"):
+            return 0.0
+        order["points_refunded"] = True
+    else:
+        lock = await db.orders.update_one(
+            {"id": order.get("id"), "points_used": {"$gt": 0}, "points_refunded": {"$ne": True}},
+            {"$set": {"points_refunded": True}})
+        if not lock.modified_count:
+            return 0.0
     await db.users.update_one({"id": uid}, {"$inc": {"loyalty_points": used}})
     await db.loyalty_transactions.insert_one({
         "user_id": uid, "type": "refund", "points": used,
@@ -121,7 +155,7 @@ async def refund_points_once(order: dict) -> float:
 async def award_loyalty_points(db_=None) -> int:
     """Scheduler: ödemesi onaylanmış üye siparişlerine puan yazar; iptal/iadede geri alır.
     İdempotent (atomik bayraklar). Açılıştan önceki siparişlere geriye dönük yazmaz."""
-    _db = db_ or db
+    _db = db_ if db_ is not None else db  # Motor Database bool() desteklemez
     if await _rule("loyalty.enabled", True) is False:
         return 0
     # Açılış tarihi (ilk çalıştırmada damgalanır) — geriye dönük ödül kapısı.
@@ -135,10 +169,11 @@ async def award_loyalty_points(db_=None) -> int:
     awarded = 0
     if earn_pct > 0:
         cursor = _db.orders.find(
-            {"payment_status": "paid", "status": {"$in": _SUCCESS_STATUSES},
+            {"payment_status": {"$in": ["paid", "partially_refunded", "partial_refunded"]},
+             "status": {"$in": _SUCCESS_STATUSES + _PARTIAL_STATUSES},
              "user_id": {"$nin": [None, ""]}, "created_at": {"$gte": launched},
              "loyalty_awarded": {"$ne": True}},
-            {"_id": 0, "id": 1, "user_id": 1, "total": 1, "order_number": 1}).limit(300)
+            {"_id": 0, "id": 1, "user_id": 1, "total": 1, "order_number": 1, "refunded_amount": 1}).limit(300)
         async for o in cursor:
             claim = await _db.orders.update_one(
                 {"id": o["id"], "loyalty_awarded": {"$ne": True}},
@@ -146,7 +181,11 @@ async def award_loyalty_points(db_=None) -> int:
             if not claim.modified_count:
                 continue
             tier = await _tier_for(o["user_id"])
-            pts = round(float(o.get("total") or 0) * earn_pct / 100.0 * tier["multiplier"], 2)
+            rate = earn_pct * float(tier["multiplier"])
+            # Denetim #13: puan, iade düşüldükten sonra müşteride KALAN net tutar üzerinden.
+            net = max(0.0, float(o.get("total") or 0) - await _refunded_amount(_db, o))
+            pts = round(net * rate / 100.0, 2)
+            await _db.orders.update_one({"id": o["id"]}, {"$set": {"loyalty_rate_pct": rate}})
             if pts <= 0:
                 continue
             await _db.orders.update_one({"id": o["id"]}, {"$set": {"loyalty_points_earned": pts}})
@@ -178,9 +217,64 @@ async def award_loyalty_points(db_=None) -> int:
         await _db.loyalty_transactions.insert_one({
             "user_id": o["user_id"], "type": "revoke", "points": pts,
             "order_id": o["id"], "order_number": o.get("order_number"), "at": _now_iso()})
+    await _adjust_partial_refunds(_db)
     if awarded:
         logger.info(f"[loyalty] {awarded} siparişe puan yazıldı")
     return awarded
+
+
+async def _adjust_partial_refunds(_db) -> int:
+    """Denetim #13: puanı yazılmış ve sonradan KISMİ iade almış siparişte, iade edilen kısmın puanı
+    oransal geri alınır (hedef = kalan net × uygulanan oran). İdempotent: siparişteki
+    loyalty_points_earned karşılaştır-ve-değiştir ile güncellenir; puan yalnız AZALIR."""
+    since = (datetime.now(timezone.utc) - timedelta(days=120)).isoformat()
+    oids = set()
+    try:
+        async for r in _db.customer_returns.find(
+                {"status": {"$in": _RETURN_COUNTED_STATUSES}, "order_id": {"$nin": [None, ""]},
+                 "$or": [{"updated_at": {"$gte": since}}, {"created_at": {"$gte": since}}]},
+                {"_id": 0, "order_id": 1}).limit(1000):
+            oids.add(r["order_id"])
+    except Exception:
+        return 0
+    async for o in _db.orders.find(
+            {"status": {"$in": _PARTIAL_STATUSES}, "refunded_amount": {"$gt": 0},
+             "loyalty_awarded": True, "loyalty_revoked": {"$ne": True}},
+            {"_id": 0, "id": 1}).limit(500):
+        oids.add(o["id"])
+    if not oids:
+        return 0
+    changed = 0
+    async for o in _db.orders.find(
+            {"id": {"$in": list(oids)}, "loyalty_awarded": True, "loyalty_revoked": {"$ne": True},
+             "status": {"$nin": _REVOKE_STATUSES}, "loyalty_points_earned": {"$gt": 0}},
+            {"_id": 0, "id": 1, "user_id": 1, "total": 1, "order_number": 1, "refunded_amount": 1,
+             "loyalty_points_earned": 1, "loyalty_rate_pct": 1}):
+        earned = round(float(o.get("loyalty_points_earned") or 0), 2)
+        total = float(o.get("total") or 0)
+        rate = o.get("loyalty_rate_pct")
+        if rate is None:
+            rate = (earned / total * 100.0) if total > 0 else 0.0
+        net = max(0.0, total - await _refunded_amount(_db, o))
+        target = round(net * float(rate) / 100.0, 2)
+        delta = round(earned - target, 2)
+        if delta <= 0:
+            continue
+        res = await _db.orders.update_one(
+            {"id": o["id"], "loyalty_points_earned": o.get("loyalty_points_earned")},
+            {"$set": {"loyalty_points_earned": target, "loyalty_partial_adjusted_at": _now_iso()}})
+        if not res.modified_count:
+            continue
+        await _db.users.update_one({"id": o["user_id"]}, {"$inc": {"loyalty_points": -delta}})
+        await _db.users.update_one({"id": o["user_id"], "loyalty_points": {"$lt": 0}},
+                                   {"$set": {"loyalty_points": 0}})
+        await _db.loyalty_transactions.insert_one({
+            "user_id": o["user_id"], "type": "partial_revoke", "points": delta,
+            "order_id": o["id"], "order_number": o.get("order_number"), "at": _now_iso()})
+        changed += 1
+    if changed:
+        logger.info(f"[loyalty] {changed} kısmi iadeli siparişte puan oransal geri alındı")
+    return changed
 
 
 @router.get("/me")

@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { X, Check } from "lucide-react";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import { trackViewItemList } from "../lib/dataLayer";
 import { slugify } from "../lib/slug";
+import { applyRuntimeSeo, setCategorySeo } from "../lib/seo";
 import { dedupeColorGroups } from "../lib/colorGroups";
 import { sortLikeSize } from "../utils/sizeSort";
 import { resolveColor, needsBorder, MULTI_GRADIENT } from "../lib/colorMap";
@@ -27,7 +29,26 @@ function pColor(p) {
 
 export default function Category() {
   const { slug } = useParams();
+  const navigate = useNavigate();
+  const { token } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // ÜYELERE ÖZEL kategori route guard: MİSAFİR (giriş yok) members_only kategoriye
+  // doğrudan URL ile giderse GİRİŞ sayfasına yönlendir (girişten sonra geri döner).
+  // (Backend zaten ürünleri gizler; bu, boş sayfa yerine net bir yönlendirme sağlar.)
+  useEffect(() => {
+    if (!slug || slug === "all" || token) return;   // üye/token varsa serbest
+    let cancel = false;
+    (async () => {
+      try {
+        const r = await axios.get(`${API}/categories/${encodeURIComponent(slug)}`);
+        if (!cancel && (r.data?.members_only || r.data?.members_only_effective)) {
+          navigate(`/giris?redirect=${encodeURIComponent("/" + slug)}`, { replace: true });
+        }
+      } catch { /* kategori yoksa normal akış (404/boş) */ }
+    })();
+    return () => { cancel = true; };
+  }, [slug, token, navigate]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -74,7 +95,7 @@ export default function Category() {
   // --- Facet (mevcut beden/renk seçenekleri) ---
   const [facetSizes, setFacetSizes] = useState([]);
   const [facetColors, setFacetColors] = useState([]);
-  const facetCacheRef = useRef({}); // slug -> { sizes, colors }
+  const facetCacheRef = useRef(new Map()); // slug -> { sizes, colors }
 
   // O15: Kategori (slug) değişince sayfayı 1'e sıfırla — aksi halde başka kategoriye geçince
   // yeni kategori ESKİ sayfa numarasında açılıp boş/eksik liste (stok yokmuş gibi) gösteriyordu.
@@ -151,9 +172,10 @@ export default function Category() {
 
   const loadFacets = async () => {
     const key = slug || "all";
-    if (facetCacheRef.current[key]) {
-      setFacetSizes(facetCacheRef.current[key].sizes);
-      setFacetColors(facetCacheRef.current[key].colors);
+    if (facetCacheRef.current.has(key)) {
+      const cached = facetCacheRef.current.get(key);
+      setFacetSizes(cached.sizes);
+      setFacetColors(cached.colors);
       return;
     }
     try {
@@ -178,7 +200,7 @@ export default function Category() {
         if (c && !colorMap.has(c.toLowerCase())) colorMap.set(c.toLowerCase(), c);
       }
       const colors = [...colorMap.values()];
-      facetCacheRef.current[key] = { sizes, colors };
+      facetCacheRef.current.set(key, { sizes, colors });
       setFacetSizes(sizes);
       setFacetColors(colors);
     } catch (err) {
@@ -222,6 +244,22 @@ export default function Category() {
     ? categories.find((c) => String(c.id) === String(currentCategory.parent_id)) || null
     : null;
 
+  // Per-sayfa SEO meta (title/description/canonical) — kategori sayfası artık ana sayfaya
+  // canonical'lanmıyor. slug "all" (tüm ürünler) hariç.
+  useEffect(() => {
+    if (slug && slug !== "all") {
+      const controller = new AbortController();
+      applyRuntimeSeo(`/kategori/${slug}`, () => {
+        try { setCategorySeo(categoryName, slug, "", currentCategory?.description); } catch (_) {}
+      }, { signal: controller.signal });
+      return () => {
+        controller.abort();
+        document.querySelectorAll('script[data-seo="runtime"]').forEach((el) => el.remove());
+      };
+    }
+    return undefined;
+  }, [slug, categoryName, currentCategory?.description]);
+
   // Sıralama menüsü (toolbar ortası) — seçim URL'e yazılır, liste yenilenir
   const [sortOpen, setSortOpen] = useState(false);
   const applySort = (value) => {
@@ -240,10 +278,12 @@ export default function Category() {
     { label: "İsim: A-Z", value: "name:asc" },
   ];
 
+  // Kullanıcının seçtiği sütun sayısı ÜST SINIR gibi davranır: dar ekranda (iPad dikey/telefon)
+  // kartlar okunaklı kalsın diye kademeli düşer. 4 → telefon/dikey 2, iPad yatay 3, masaüstü 4.
   const gridClass = {
     1: "grid-cols-1",
     2: "grid-cols-2",
-    4: "grid-cols-4",
+    4: "grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
   };
 
   // Aktif (uygulanmış) filtre sayısı — toolbar rozetinde gösterilir.
@@ -257,7 +297,7 @@ export default function Category() {
   }, [minPrice, maxPrice, sizesParam, colorsParam, sort, order]);
 
   return (
-    <div className="min-h-screen bg-white" data-testid="category-page">
+    <div className="sf-page min-h-screen bg-white" data-testid="category-page">
       <Header />
 
       <div className="w-full px-2 md:px-4 relative">
@@ -555,7 +595,7 @@ export default function Category() {
                   let style, fb = false;
                   if (col?.type === "solid") style = { backgroundColor: col.value };
                   else if (col?.type === "multi") style = { background: MULTI_GRADIENT };
-                  else { fb = true; style = { background: "linear-gradient(135deg,#f3f4f6,#d1d5db)" }; }
+                  else { fb = true; style = { background: "#e5e5e5" }; }
                   const light = col?.type === "solid" && needsBorder(col.value);
                   return (
                     <button

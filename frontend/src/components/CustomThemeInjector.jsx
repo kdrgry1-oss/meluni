@@ -4,7 +4,11 @@
  * - CSS ve JS YALNIZCA mağaza (storefront) sayfalarında yüklenir.
  * - /admin altında HİÇBİR ŞEY enjekte edilmez → tenant kodu admin panelini,
  *   JWT token'ını veya oturumunu ASLA etkileyemez (en kritik güvenlik sınırı).
- * - JS yalnız admin panelinde 'js_enabled' açıksa sunucudan gelir.
+ * - Özel JS ödeme / hesap / giriş-şifre / sipariş-sonucu sayfalarında ÇALIŞTIRILMAZ
+ *   (kart, parola ve kişisel veri girilen ekranlar). CSS bu sayfalarda da uygulanır.
+ * - SPA'da bir kez çalışmış JS kaldırılamaz: JS bu belgede çalıştıktan sonra hassas
+ *   bir sayfaya (veya /admin'e) geçilirse sayfa temiz bir belgeyle yeniden yüklenir.
+ * - JS yalnız admin panelinde 'js_enabled' açıksa sunucudan gelir (varsayılan KAPALI).
  * - Savunmacı: hata / boş → hiçbir şey yapmaz.
  */
 import { useEffect, useRef } from "react";
@@ -13,43 +17,64 @@ import axios from "axios";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
+// Özel JS'in ÇALIŞMAYACAĞI vitrin yolları (tam eşleşme veya alt yol).
+const JS_BLOCKED_PATHS = [
+  "/odeme", "/odeme-bildirimi", "/hesabim", "/giris", "/sifremi-unuttum", "/sifre-sifirla",
+  "/order-success", "/siparis-tamamlandi", "/iade", "/iade-islemleri",
+];
+
+const isJsBlockedPath = (p) => JS_BLOCKED_PATHS.some((x) => p === x || p.startsWith(`${x}/`));
+
+const jsHasRun = () => {
+  try { return window.__MELUNI_CUSTOM_JS_RAN__ === true; } catch (_) { return false; }
+};
+
 export default function CustomThemeInjector() {
   const location = useLocation();
-  const injected = useRef(false);
-  const isAdmin = (location.pathname || "").startsWith("/admin");
+  const themeReq = useRef(null);
+  const path = location.pathname || "";
+  const isAdmin = path.startsWith("/admin");
+  const jsBlocked = isAdmin || isJsBlockedPath(path);
 
   useEffect(() => {
+    if (jsBlocked && jsHasRun()) {
+      // Özel JS bu belgede zaten çalıştı; hassas sayfaya temiz belgeyle gir.
+      window.location.reload();
+      return undefined;
+    }
     if (isAdmin) {
       // Admin'e girildiyse enjekte edilmiş tema kodunu KALDIR (güvenlik + admin UI bozulmasın).
       document.getElementById("meluni-custom-css")?.remove();
       document.getElementById("meluni-custom-js")?.remove();
-      injected.current = false;
-      return;
+      themeReq.current = null; // vitrine dönüşte güncel temayı yeniden çek
+      return undefined;
     }
-    if (injected.current) return;
-    injected.current = true;
     let alive = true;
-    axios.get(`${API}/custom-theme`).then((r) => {
+    if (!themeReq.current) {
+      themeReq.current = axios.get(`${API}/custom-theme`).then((r) => r.data || {}).catch(() => ({}));
+    }
+    themeReq.current.then((data) => {
       if (!alive) return;
-      const css = r.data?.custom_css || "";
-      const js = r.data?.custom_js || "";
+      const css = data.custom_css || "";
+      const js = data.custom_js || "";
       if (css && !document.getElementById("meluni-custom-css")) {
         const st = document.createElement("style");
         st.id = "meluni-custom-css";
         st.textContent = css;
         document.head.appendChild(st);
       }
-      if (js && !document.getElementById("meluni-custom-js")) {
+      if (js && !jsBlocked && !jsHasRun() && !document.getElementById("meluni-custom-js")) {
         try {
+          window.__MELUNI_CUSTOM_JS_RAN__ = true;
           const sc = document.createElement("script");
           sc.id = "meluni-custom-js";
           sc.textContent = js;
           document.body.appendChild(sc);
-        } catch (e) { /* tema JS hatası mağazayı kırmasın */ }
+        } catch (_) { /* tema JS hatası mağazayı kırmasın */ }
       }
-    }).catch(() => {});
+    });
     return () => { alive = false; };
-  }, [isAdmin]);
+  }, [isAdmin, jsBlocked]);
 
   // ---- AKTİF TEMANIN RENK/TİPOGRAFİSİ ----
   // Tema seçimi bugüne dek yalnız /tema önizlemesini etkiliyordu; gerçek mağaza

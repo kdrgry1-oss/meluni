@@ -21,14 +21,14 @@ import logging
 import os
 from urllib.parse import urlencode
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import RedirectResponse
 from datetime import datetime, timezone
 
 import httpx
 
-from .deps import db, require_admin, generate_id
+from .deps import db, require_admin, generate_id, require_permission
 
 try:
     from security.crypto import encrypt, decrypt
@@ -206,14 +206,49 @@ async def _do_sync(token: str, ig_user_id: str, max_each: int = 100) -> tuple:
 # Public
 # --------------------------------------------------------------------------- #
 @public_router.get("/feed")
-async def instagram_feed(limit: int = 12):
-    """Anasayfa InstaShop için: kayıtlı gönderiler (en yeni önce)."""
+async def instagram_feed(request: Request, limit: int = 12):
+    """Anasayfa InstaShop için: kayıtlı gönderiler (en yeni önce).
+    ÜYELERE ÖZEL: misafire gönderideki üyelere özel ürün kartları gösterilmez."""
     limit = max(1, min(limit, 60))
     rows = await db.instagram_posts.find(
         {"active": {"$ne": False}},
         {"_id": 0, "id": 1, "image": 1, "permalink": 1, "caption": 1,
          "product_link": 1, "products": 1, "kind": 1, "timestamp": 1},
     ).sort("timestamp", -1).to_list(length=limit)
+    try:
+        from .products import request_is_member, _members_only_cat_ids, _mo_forms
+        if not request_is_member(request):
+            _mo = await _members_only_cat_ids()
+            if _mo:
+                def _slug(u):
+                    return str(u or "").split("?")[0].rstrip("/").split("/")[-1]
+                ids, slugs = set(), set()
+                for r in rows:
+                    for pr in (r.get("products") or []):
+                        if pr.get("id"):
+                            ids.add(str(pr["id"]))
+                        if pr.get("url"):
+                            slugs.add(_slug(pr["url"]))
+                    if r.get("product_link"):
+                        slugs.add(_slug(r["product_link"]))
+                blocked_ids, blocked_slugs = set(), set()
+                if ids or slugs:
+                    forms = _mo_forms(_mo)
+                    async for b in db.products.find(
+                            {"$or": [{"id": {"$in": list(ids)}}, {"slug": {"$in": list(slugs)}}],
+                             "$and": [{"$or": [{"category_id": {"$in": forms}}, {"category_ids": {"$in": forms}},
+                                               {"categories": {"$in": forms}}]}]},
+                            {"_id": 0, "id": 1, "slug": 1}):
+                        blocked_ids.add(str(b.get("id")))
+                        blocked_slugs.add(str(b.get("slug") or ""))
+                for r in rows:
+                    r["products"] = [pr for pr in (r.get("products") or [])
+                                     if str(pr.get("id") or "") not in blocked_ids
+                                     and _slug(pr.get("url")) not in blocked_slugs]
+                    if r.get("product_link") and _slug(r["product_link"]) in blocked_slugs:
+                        r["product_link"] = ""
+    except Exception as _e:
+        logger.warning(f"[instagram feed] üyelere özel süzgeç: {_e}")
     return {"posts": rows}
 
 
@@ -221,7 +256,7 @@ async def instagram_feed(limit: int = 12):
 # Admin
 # --------------------------------------------------------------------------- #
 @admin_router.get("/settings")
-async def get_settings(current_user: dict = Depends(require_admin)):
+async def get_settings(current_user: dict = Depends(require_permission("tasarim.view"))):
     s = await _get_settings()
     count = await db.instagram_posts.count_documents({})
     return {
@@ -241,7 +276,7 @@ async def get_settings(current_user: dict = Depends(require_admin)):
 
 
 @admin_router.put("/settings")
-async def update_settings(payload: dict, current_user: dict = Depends(require_admin)):
+async def update_settings(payload: dict, current_user: dict = Depends(require_permission("tasarim.instagram"))):
     upd = {"updated_at": _now().isoformat()}
     # Token yalnızca doluysa güncellenir (boş gönderim mevcut token'ı silmez).
     tok = (payload or {}).get("access_token")
@@ -276,7 +311,7 @@ async def update_settings(payload: dict, current_user: dict = Depends(require_ad
 
 
 @admin_router.post("/auto-setup")
-async def auto_setup(payload: dict, current_user: dict = Depends(require_admin)):
+async def auto_setup(payload: dict, current_user: dict = Depends(require_permission("tasarim.instagram"))):
     """OTOMATİK KURULUM: Graph Explorer'dan alınan KISA ömürlü token + App ID/Secret ile
     her şeyi backend halleder — uzun ömürlü token'a çevirir, bağlı sayfayı ve Instagram
     Business hesabını bulur, ayarları kaydeder, ilk senkronu çalıştırır.
@@ -390,7 +425,7 @@ async def _finalize_connect(app_id: str, app_secret: str, user_token: str, ig_us
 
 
 @admin_router.post("/oauth-start")
-async def oauth_start(payload: dict, current_user: dict = Depends(require_admin)):
+async def oauth_start(payload: dict, current_user: dict = Depends(require_permission("tasarim.instagram"))):
     """TEK TIK BAĞLANTI (adım 1): App ID+Secret'ı kaydeder, Facebook onay ekranı URL'ini döner.
     Panel bu URL'e yönlendirir; kullanıcı KENDİ tarayıcısında Facebook'a girip onay verir —
     şifre/token hiçbir zaman panele girilmez. Dönüş /instagram/oauth/callback'e olur."""
@@ -474,7 +509,7 @@ async def oauth_callback(code: str = "", state: str = "", error: str = "", error
 
 
 @admin_router.post("/disconnect")
-async def disconnect(current_user: dict = Depends(require_admin)):
+async def disconnect(current_user: dict = Depends(require_permission("tasarim.instagram"))):
     """Token'ı temizle (bağlantıyı kes). Gönderiler silinmez."""
     await db.settings.update_one(
         {"id": "instagram"}, {"$unset": {"access_token": ""}, "$set": {"auto_sync": False}})
@@ -482,7 +517,7 @@ async def disconnect(current_user: dict = Depends(require_admin)):
 
 
 @admin_router.post("/sync")
-async def sync_now(current_user: dict = Depends(require_admin)):
+async def sync_now(current_user: dict = Depends(require_permission("tasarim.instagram"))):
     s = await _get_settings()
     token = decrypt(s.get("access_token")) if s.get("access_token") else ""
     ig_user_id = s.get("ig_user_id", "")
@@ -503,14 +538,14 @@ async def sync_now(current_user: dict = Depends(require_admin)):
 
 
 @admin_router.get("/posts")
-async def list_posts(limit: int = 60, current_user: dict = Depends(require_admin)):
+async def list_posts(limit: int = 60, current_user: dict = Depends(require_permission("tasarim.view"))):
     limit = max(1, min(limit, 200))
     rows = await db.instagram_posts.find({}, {"_id": 0}).sort("timestamp", -1).to_list(length=limit)
     return {"posts": rows}
 
 
 @admin_router.post("/posts")
-async def add_post(payload: dict, current_user: dict = Depends(require_admin)):
+async def add_post(payload: dict, current_user: dict = Depends(require_permission("tasarim.instagram"))):
     """Elle gönderi ekle (token yokken). image zorunlu."""
     image = (payload or {}).get("image", "").strip()
     if not image:
@@ -532,7 +567,7 @@ async def add_post(payload: dict, current_user: dict = Depends(require_admin)):
 
 
 @admin_router.put("/posts/{post_id}")
-async def update_post(post_id: str, payload: dict, current_user: dict = Depends(require_admin)):
+async def update_post(post_id: str, payload: dict, current_user: dict = Depends(require_permission("tasarim.instagram"))):
     allowed = {"image", "permalink", "product_link", "caption", "active", "products"}
     upd = {k: v for k, v in (payload or {}).items() if k in allowed}
     if "products" in upd:
@@ -546,7 +581,7 @@ async def update_post(post_id: str, payload: dict, current_user: dict = Depends(
 
 
 @admin_router.delete("/posts/{post_id}")
-async def delete_post(post_id: str, current_user: dict = Depends(require_admin)):
+async def delete_post(post_id: str, current_user: dict = Depends(require_permission("tasarim.instagram"))):
     await db.instagram_posts.delete_one({"id": post_id})
     return {"success": True}
 
@@ -558,7 +593,9 @@ async def auto_sync_instagram():
     """Scheduler: auto_sync açık + token varsa gönderileri tazeler."""
     try:
         s = await _get_settings()
-        if not s.get("auto_sync") or not s.get("access_token") or not s.get("ig_user_id"):
+        # Kadir: 2 günlük arka plan tarama VARSAYILAN AÇIK — yalnız admin auto_sync'i AÇIKÇA
+        # kapatırsa (False) durur. token+ig_user_id yoksa yine atlanır.
+        if s.get("auto_sync") is False or not s.get("access_token") or not s.get("ig_user_id"):
             return
         token = decrypt(s.get("access_token"))
         total, per, _tags_err = await _do_sync(token, s.get("ig_user_id"), 100)

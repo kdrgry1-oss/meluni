@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import axios from "axios";
 import { Outlet, Link, NavLink, useLocation, Navigate } from "react-router-dom";
 import { LogOut, Menu, X, ChevronDown } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { AppConfirmRoot } from "../../components/admin/AppConfirm";
 import FastTooltip from "../../components/admin/FastTooltip";
 import { getNavigationFor } from "../../lib/adminNav";
+import ReportAssistant from "../../components/admin/ReportAssistant";
 
 function NavItem({ item, closeMobile }) {
   const [open, setOpen] = useState(false);
@@ -70,7 +72,7 @@ function NavItem({ item, closeMobile }) {
 
       {/* Desktop dropdown */}
       {open && (
-        <div className="hidden lg:block absolute left-0 mt-1 w-56 bg-gray-900 border border-gray-700 rounded-lg shadow-xl z-[60] overflow-hidden">
+        <div className="hidden xl:block absolute left-0 mt-1 w-56 bg-gray-900 border border-gray-700 rounded-lg shadow-xl z-[60] overflow-hidden">
           {item.children.map((child) => {
             const isActive = location.pathname === child.path || (child.path && location.pathname.startsWith(child.path + "/"));
             // Dış bağlantı (ör. Zoho Webmail) → yeni sekmede aç.
@@ -108,7 +110,7 @@ function NavItem({ item, closeMobile }) {
 
       {/* Mobile inline expansion */}
       {open && (
-        <div className="lg:hidden ml-4 mt-1 space-y-1">
+        <div className="xl:hidden ml-4 mt-1 space-y-1">
           {item.children.map((child) => {
             const isActive = location.pathname === child.path || (child.path && location.pathname.startsWith(child.path + "/"));
             if (child.external) {
@@ -147,11 +149,32 @@ function NavItem({ item, closeMobile }) {
 }
 
 export default function AdminLayout() {
-  const { user, isAdmin, logout, loading } = useAuth();
+  const { user, isAdmin, logout, loading, replaceToken } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
   // Menü tercihleri SUNUCUDAN eşitlenir (cihaz/tarayıcı bağımsız — "Görevler geri
   // geliyor" bumerang sorunu localStorage'ın cihaz bazlı olmasındandı).
   const [navBump, setNavBump] = useState(0);
+  // YETKİLER: pazaryeri yönetim sayfaları yalnız süper-admin'e açık (arka uç
+  // require_super_admin ile kilitli). Menüden de gizlenir ki kimse 403 alan bir
+  // bağlantıya tıklamasın. undefined = henüz yüklenmedi → menü değiştirilmez.
+  const [myPerms, setMyPerms] = useState(undefined);
+  // Boşta kalma süresi (dk) — İşletme Kuralı panel.auto_logout_minutes (0 = kapalı). Sunucu da
+  // aynı süreyi uygular (süre dolunca 401 → giriş sayfası).
+  const [idleMinutes, setIdleMinutes] = useState(1440);
+  useEffect(() => {
+    const t = localStorage.getItem("token");
+    if (!t) return;
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/me/permissions`,
+          { headers: { Authorization: `Bearer ${t}` } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        setMyPerms(Array.isArray(d?.permissions) ? d.permissions : []);
+        const m = Number(d?.auto_logout_minutes);
+        if (Number.isFinite(m) && m >= 0) setIdleMinutes(m);
+      })
+      .catch(() => setMyPerms(undefined));
+  }, [user?.id, user?.email]);
   useEffect(() => {
     const uid = user?.id || user?.email;
     if (!uid) return;
@@ -168,28 +191,59 @@ export default function AdminLayout() {
       .catch(() => {});
   }, [user?.id, user?.email]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const navigation = useMemo(() => getNavigationFor(user?.id || user?.email), [user?.id, user?.email, navBump]);
+  const navigation = useMemo(() => getNavigationFor(user?.id || user?.email, myPerms),
+                             [user?.id, user?.email, navBump, myPerms]);
 
-  // Panel 1 saat işlemsiz kalınca otomatik çıkış + filtre sıfırlama (güvenlik).
+  // Panel işlemsiz kalınca (İşletme Kuralı; varsayılan 60 dk) otomatik çıkış + filtre sıfırlama.
   // Aktivite (fare/klavye/tık/scroll) olunca süre sıfırlanır. Hook'lar erken return'den ÖNCE.
+  // Etkin kullanımda oturum sessizce yenilenir (en çok 5 dk'da bir): form doldururken/gezinirken sunucu
+  // boşta-kalma sayacı ve 12 saatlik token süresi yüzünden çıkış olmaz (ilk girişten en çok 7 gün).
+  const lastRefreshRef = useRef(Date.now());
+  const refreshSession = useCallback(() => {
+    if (Date.now() - lastRefreshRef.current < 5 * 60 * 1000) return;
+    lastRefreshRef.current = Date.now();
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/staff/refresh`, {})
+      .then((r) => { if (r?.data?.token) replaceToken(r.data.token); })
+      .catch(() => { /* 401 ise genel yakalayıcı çıkışa yönlendirir */ });
+  }, [replaceToken]);
+
+  // ÇOK SEKME: son etkinlik localStorage'da ORTAK tutulur. Eskiden her sekmenin kendi sayacı vardı;
+  // personel başka sekmede çalışırken boşta duran sekme süresi dolunca logout() çağırıyor ve token
+  // tüm sekmelerden siliniyordu ("panelden çok çabuk atılıyorum"). Artık süre dolduğunda ortak son
+  // etkinliğe bakılır; herhangi bir sekmede yakın zamanda işlem varsa çıkış yapılmaz, sayaç yeniden kurulur.
   useEffect(() => {
-    if (!user) return undefined;
+    if (!user || !idleMinutes) return undefined;
+    const KEY = "panelLastActivity";
+    const windowMs = idleMinutes * 60 * 1000;
+    const readShared = () => { try { return Number(localStorage.getItem(KEY)) || 0; } catch (_) { return 0; } };
     let timer;
-    const reset = () => {
+    let lastWrite = 0;
+    const schedule = (ms) => {
       clearTimeout(timer);
       timer = setTimeout(() => {
+        const idleFor = Date.now() - Math.max(readShared(), lastWrite);
+        if (idleFor < windowMs) { schedule(windowMs - idleFor); return; }
         try {
           // Sayfa filtreleri genelde bileşen state'i; çıkışta sıfırlanır. Kalıcı filtre anahtarlarını temizle.
           Object.keys(localStorage).forEach((k) => { if (/filter|filtre/i.test(k)) localStorage.removeItem(k); });
         } catch (_) { /* yoksay */ }
         logout();
-      }, 60 * 60 * 1000); // 1 saat
+      }, Math.max(1000, ms));
+    };
+    const reset = () => {
+      refreshSession();
+      const now = Date.now();
+      if (now - lastWrite > 15000) {   // her fare hareketinde yazma — 15 sn'de bir yeter
+        lastWrite = now;
+        try { localStorage.setItem(KEY, String(now)); } catch (_) { /* storage kapalı */ }
+      }
+      schedule(windowMs);
     };
     const events = ["mousemove", "keydown", "click", "scroll", "touchstart"];
     events.forEach((e) => window.addEventListener(e, reset, { passive: true }));
     reset();
     return () => { clearTimeout(timer); events.forEach((e) => window.removeEventListener(e, reset)); };
-  }, [user, logout]);
+  }, [user, logout, idleMinutes, refreshSession]);
 
   if (loading) {
     return (
@@ -216,15 +270,16 @@ export default function AdminLayout() {
           {(process.env.REACT_APP_SITE_NAME || "YÖNETİM").toUpperCase()}
         </Link>
 
-        {/* Desktop Nav — overflow yok; sekmeler kompakt */}
-        <nav className="hidden lg:flex items-center gap-0.5 flex-1 min-w-0">
+        {/* Desktop Nav — tam yatay menü ancak ~1280px'e sığar; altında (iPad yatay/dikey dahil)
+            hamburger kullanılır (dropdown'lar satır-içi açılır, kırpılmaz). */}
+        <nav className="hidden xl:flex items-center gap-0.5 flex-1 min-w-0">
           {navigation.map((item) => (
             <NavItem key={item.key} item={item} />
           ))}
         </nav>
 
         {/* User area */}
-        <div className="hidden lg:flex items-center gap-2 ml-auto shrink-0 border-l border-gray-800 pl-3">
+        <div className="hidden xl:flex items-center gap-2 ml-auto shrink-0 border-l border-gray-800 pl-3">
           <div className="text-right">
             <p className="text-xs text-white font-medium leading-tight">{user.email}</p>
             <p className="text-xs text-gray-300">Admin</p>
@@ -239,19 +294,21 @@ export default function AdminLayout() {
           </button>
         </div>
 
-        {/* Mobile menu toggle */}
+        {/* Mobile/Tablet menu toggle (iPad dahil <1280) */}
         <button
-          className="lg:hidden ml-auto text-white hover:text-gray-300"
+          className="xl:hidden ml-auto text-white hover:text-gray-300"
           onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label={mobileOpen ? "Menüyü kapat" : "Menüyü aç"}
+          aria-expanded={mobileOpen}
           data-testid="admin-mobile-toggle"
         >
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </header>
 
-      {/* Mobile Menu */}
+      {/* Mobile/Tablet Menu (iPad dahil <1280) */}
       {mobileOpen && (
-        <div className="lg:hidden fixed top-14 left-0 right-0 z-40 bg-gray-900 border-b border-gray-800 px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto shadow-2xl">
+        <div className="xl:hidden fixed top-14 left-0 right-0 z-40 bg-gray-900 border-b border-gray-800 px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto shadow-2xl">
           {navigation.map((item) => (
             <NavItem key={item.key} item={item} closeMobile={() => setMobileOpen(false)} />
           ))}
@@ -275,6 +332,8 @@ export default function AdminLayout() {
       </main>
       <AppConfirmRoot />
       <FastTooltip />
+      {/* "Bana Sor" rapor asistanı — yalnız rapor sayfalarında. */}
+      {location.pathname.startsWith("/admin/raporlar") && <ReportAssistant />}
     </div>
   );
 }

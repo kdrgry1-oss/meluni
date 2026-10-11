@@ -3,7 +3,11 @@ Vendors (Cari Kartları) Routes - Tedarikçi ve Üretici yönetimi
 """
 from fastapi import APIRouter, HTTPException, Depends
 from datetime import datetime, timezone
-from routes.deps import db, require_admin, generate_short_id
+from routes.deps import db, require_admin, generate_short_id, require_permission
+# KVKK: cari kartlarındaki T.C. kimlik no / vergi no at-rest şifreli (security/pii.py).
+from security.pii import (seal_doc_tax_ids as _pii_seal, mask_docs_tax_ids as _pii_mask_many,
+                          sealed_set_update as _pii_set_update, drop_client_sealed_fields as _pii_drop,
+                          tax_id_search_clauses as _pii_search)
 import logging
 
 logger = logging.getLogger(__name__)
@@ -17,7 +21,7 @@ async def get_vendors(
     search: str = None,
     page: int = 1,
     limit: int = 50,
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("settings.view"))
 ):
     """Get all vendors (suppliers and manufacturers)"""
     query = {}
@@ -31,7 +35,8 @@ async def get_vendors(
         query["$or"] = [
             {"name": {"$regex": _s, "$options": "i"}},
             {"company_name": {"$regex": _s, "$options": "i"}},
-            {"tax_number": {"$regex": _s, "$options": "i"}}
+            # Vergi/kimlik no: şifreli → yalnız TAM eşleşme (hash), kısmi arama yok.
+            *_pii_search(str(search), "vendor"),
         ]
     
     skip = (page - 1) * limit
@@ -42,6 +47,7 @@ async def get_vendors(
     # Remove MongoDB _id from results
     for v in vendors:
         v.pop("_id", None)
+    _pii_mask_many(vendors, "vendor")  # listede yalnız son 2 hane
     
     return {
         "vendors": vendors,
@@ -56,7 +62,7 @@ async def search_vendors(
     q: str = "",
     vendor_type: str = None,
     limit: int = 20,
-    current_user: dict = Depends(require_admin)
+    current_user: dict = Depends(require_permission("settings.view"))
 ):
     """Search vendors for autocomplete"""
     query = {"is_active": True}
@@ -78,16 +84,17 @@ async def search_vendors(
 
 
 @router.get("/{vendor_id}")
-async def get_vendor(vendor_id: str, current_user: dict = Depends(require_admin)):
+async def get_vendor(vendor_id: str, current_user: dict = Depends(require_permission("settings.view"))):
     """Get single vendor"""
     vendor = await db.vendors.find_one({"id": vendor_id}, {"_id": 0})
     if not vendor:
         raise HTTPException(status_code=404, detail="Cari bulunamadı")
+    _pii_mask_many([vendor], "vendor")  # düzenleme maskeli değeri geri gönderirse mevcut değer korunur
     return vendor
 
 
 @router.post("")
-async def create_vendor(vendor_data: dict, current_user: dict = Depends(require_admin)):
+async def create_vendor(vendor_data: dict, current_user: dict = Depends(require_permission("settings.edit"))):
     """Create new vendor"""
     
     vendor = {
@@ -116,14 +123,14 @@ async def create_vendor(vendor_data: dict, current_user: dict = Depends(require_
         "updated_at": datetime.now(timezone.utc).isoformat()
     }
     
-    await db.vendors.insert_one(vendor)
+    await db.vendors.insert_one(_pii_seal(vendor, "vendor"))
     logger.info(f"Vendor created: {vendor['id']} - {vendor['name']}")
     
     return {"id": vendor["id"], "message": "Cari oluşturuldu"}
 
 
 @router.put("/{vendor_id}")
-async def update_vendor(vendor_id: str, vendor_data: dict, current_user: dict = Depends(require_admin)):
+async def update_vendor(vendor_id: str, vendor_data: dict, current_user: dict = Depends(require_permission("settings.edit"))):
     """Update vendor"""
     existing = await db.vendors.find_one({"id": vendor_id})
     if not existing:
@@ -135,14 +142,15 @@ async def update_vendor(vendor_id: str, vendor_data: dict, current_user: dict = 
     vendor_data.pop("id", None)
     vendor_data.pop("created_at", None)
     vendor_data.pop("_id", None)
-    
-    await db.vendors.update_one({"id": vendor_id}, {"$set": vendor_data})
+    # KVKK: vergi/kimlik no mühürlenir; maskeli (değiştirilmemiş) değer → mevcut şifreli değer korunur.
+    _pii_drop(vendor_data, "vendor")
+    await db.vendors.update_one({"id": vendor_id}, _pii_set_update(vendor_data, "vendor", existing))
     
     return {"message": "Cari güncellendi"}
 
 
 @router.delete("/{vendor_id}")
-async def delete_vendor(vendor_id: str, current_user: dict = Depends(require_admin)):
+async def delete_vendor(vendor_id: str, current_user: dict = Depends(require_permission("settings.edit"))):
     """Delete vendor"""
     result = await db.vendors.delete_one({"id": vendor_id})
     if result.deleted_count == 0:
@@ -152,8 +160,8 @@ async def delete_vendor(vendor_id: str, current_user: dict = Depends(require_adm
 
 
 @router.post("/seed-default")
-async def seed_default_vendor(current_user: dict = Depends(require_admin)):
-    """Seed default MELUNİ manufacturer"""
+async def seed_default_vendor(current_user: dict = Depends(require_permission("settings.edit"))):
+    """Seed default MELUNI manufacturer"""
     
     existing = await db.vendors.find_one({"name": "MELUNİ", "vendor_type": "manufacturer"})
     if existing:

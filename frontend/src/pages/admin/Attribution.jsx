@@ -35,20 +35,33 @@ const meta = (c) => CHANNEL_META[c] || { label: c, color: "bg-gray-400" };
 
 export default function Attribution() {
   const today = new Date();
-  const [from, setFrom] = useState(new Date(today.getTime() - 30 * 864e5).toISOString().slice(0, 10));
+  // Bugün dahil tam 30 takvim günü: bugün - 29 gün.
+  const [from, setFrom] = useState(new Date(today.getTime() - 29 * 864e5).toISOString().slice(0, 10));
   const [to, setTo] = useState(today.toISOString().slice(0, 10));
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const load = async () => {
+  const load = async (f = from, t = to) => {
     setLoading(true);
     try {
       const { data } = await axios.get(`${API}/attribution/stats`, {
         headers: authHeaders(),
-        params: { start_date: from, end_date: to + "T23:59:59" },
+        params: { start_date: f, end_date: t + "T23:59:59" },
       });
       setData(data);
     } finally { setLoading(false); }
+  };
+
+  const setDatePreset = (kind) => {
+    const ymd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const t = new Date();
+    let f, tt;
+    if (kind === "today") { f = tt = ymd(t); }
+    else if (kind === "yesterday") { const y = new Date(t.getTime() - 864e5); f = tt = ymd(y); }
+    else if (kind === "7") { f = ymd(new Date(t.getTime() - 6 * 864e5)); tt = ymd(t); }
+    else if (kind === "30") { f = ymd(new Date(t.getTime() - 29 * 864e5)); tt = ymd(t); }
+    else if (kind === "month") { f = ymd(new Date(t.getFullYear(), t.getMonth(), 1)); tt = ymd(t); }
+    setFrom(f); setTo(tt); load(f, tt);
   };
 
   useEffect(() => { load(); /* eslint-disable-next-line */ }, []);
@@ -74,10 +87,15 @@ export default function Attribution() {
           <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="text-sm px-2 py-1 rounded border-0" />
           <span className="text-gray-400">→</span>
           <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="text-sm px-2 py-1 rounded border-0" />
-          <button onClick={load} data-testid="attribution-refresh" className="px-3 py-1 bg-black text-white text-xs rounded hover:bg-gray-800 inline-flex items-center gap-1">
+          <button onClick={() => load()} data-testid="attribution-refresh" className="px-3 py-1 bg-black text-white text-xs rounded hover:bg-gray-800 inline-flex items-center gap-1">
             <RefreshCw size={12} /> Uygula
           </button>
         </div>
+      </div>
+      <div className="flex flex-wrap gap-1 items-center">
+        {[["today","Bugün"],["yesterday","Dün"],["7","Son 7"],["30","Son 30"],["month","Bu Ay"]].map(([k,l]) => (
+          <button key={k} type="button" onClick={() => setDatePreset(k)} className="px-2 py-1 border rounded text-xs bg-white hover:bg-gray-100 transition-colors">{l}</button>
+        ))}
       </div>
 
       {/* Totals */}

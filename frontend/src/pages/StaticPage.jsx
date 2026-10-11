@@ -34,7 +34,7 @@ export default function StaticPage() {
   };
 
   return (
-    <div className="min-h-screen" data-testid="static-page">
+    <div className="sf-page min-h-screen" data-testid="static-page">
       <Header />
 
       <div className="container-main py-8 md:py-10 max-w-3xl">

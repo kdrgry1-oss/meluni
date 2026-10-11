@@ -12,14 +12,14 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
  * entegrasyonu gerekiyor" şeffaf durumunda (buton pasif) gösterilir.
  * Yalnız stok adedi ve fiyat gönderilir — ürün açıklaması/görseli değişmez.
  *
- * Faz T2: Trendyol'da "stok kodu / barkod ile" hedefli güncelleme eklendi.
+ * Faz T2: Trendyol ve Amazon'da "stok kodu / barkod ile" hedefli güncelleme eklendi.
  * Backend inventory-sync artık barcodes/stock_codes payload'unu kabul ediyor;
  * payload boşken davranış eskisiyle aynı (tüm aktif).
  *
  * Görünüm: sade (stone) tema — nötr gri + tek koyu vurgu (stone-900).
  * İşlev birebir korunur; yalnız stil minimalist hale getirildi.
  */
-const SUPPORTED = ["trendyol", "hepsiburada"];
+const SUPPORTED = ["trendyol", "hepsiburada", "amazon-tr"];
 
 export default function StockPriceUpdatePanel({ marketplace, auth }) {
   const [loading, setLoading] = useState(false);
@@ -30,8 +30,9 @@ export default function StockPriceUpdatePanel({ marketplace, auth }) {
 
   const mp = (marketplace || "").toUpperCase();
   const supported = SUPPORTED.includes(marketplace);
-  // Kod-bazlı hedefleme şimdilik yalnız Trendyol backend'inde var (önce Trendyol).
-  const codeTargeting = marketplace === "trendyol";
+  // Her iki backend de barcodes/stock_codes filtresini destekler. Amazon'da bu seçim
+  // özellikle önemlidir: yanlışlıkla bütün kataloğun tekliflerini PATCH'lemeyi önler.
+  const codeTargeting = ["trendyol", "amazon-tr"].includes(marketplace);
 
   const parseCodes = () =>
     codesText.split(/[\n,;\s]+/).map((s) => s.trim()).filter(Boolean);

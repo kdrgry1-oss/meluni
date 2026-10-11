@@ -197,6 +197,13 @@ class TrendyolClient:
         async with httpx.AsyncClient(timeout=30.0) as client:
             try:
                 response = await client.get(url, headers=self._get_headers(), params=params)
+                # 2026-09: Trendyol bazı parametre birleşimlerinde 426 Upgrade Required dönüyor
+                # (V1 geçişi). 'archived' süzgeci olmadan bir kez daha dene (arşivliler de gelir;
+                # çağıranlar bunu tolere eder). Sayfalama bozulmasın diye size DEĞİŞTİRİLMEZ.
+                if response.status_code == 426 and "archived" in params:
+                    _p2 = {k: v for k, v in params.items() if k != "archived"}
+                    logger.warning(f"Trendyol ürün listesi 426 → archived süzgeçsiz tekrar: {params}")
+                    response = await client.get(url, headers=self._get_headers(), params=_p2)
                 response.raise_for_status()
                 return response.json()
             except httpx.HTTPStatusError as e:
@@ -289,7 +296,9 @@ class TrendyolClient:
 
     # ------------------ ORDERS ------------------
 
-    async def get_orders(self, start_date_ms: int = None, end_date_ms: int = None, status: str = None, order_number: str = None, size: int = 50, page: int = 0) -> Dict:
+    async def get_orders(self, start_date_ms: int = None, end_date_ms: int = None,
+                         status: str = None, order_number: str = None, size: int = 50,
+                         page: int = 0, order_by_field: str = "PackageLastModifiedDate") -> Dict:
         """
         Fetches orders from Trendyol.
         Endpoint: GET /order/sellers/{supplierId}/orders
@@ -306,7 +315,8 @@ class TrendyolClient:
             params["orderNumber"] = order_number
         else:
             # Sadece order_number yoksa siralamayi ekle, spesifik sipariste siralama istenmez
-            params["orderByField"] = "PackageLastModifiedDate"
+            params["orderByField"] = ("CreatedDate" if order_by_field == "CreatedDate"
+                                      else "PackageLastModifiedDate")
             params["orderByDirection"] = "DESC"
             
         async with httpx.AsyncClient(timeout=30.0) as client:

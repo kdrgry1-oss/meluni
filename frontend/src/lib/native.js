@@ -9,6 +9,7 @@
  * Detaylı kurulum: /app/CAPACITOR_DEPLOYMENT_GUIDE.md
  */
 import axios from "axios";
+import { installAppVersionHeaders, installUpdateRequiredInterceptor, withTimeout } from "./appVersionGate";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -32,6 +33,28 @@ export const platform = Capacitor ? Capacitor.getPlatform() : "web"; // ios | an
 //   "admin"                 → native açılış /admin — yönetim uygulaması (ayrı appId)
 // Web build'de isNative=false olduğundan bu değer yalnız native app'te anlamlıdır.
 export const appTarget = (process.env.REACT_APP_APP_TARGET || "customer").toLowerCase();
+
+/* -------------------------------------------------------------------------- */
+/*  ASGARİ SÜRÜM POLİTİKASI (ADM-15) — X-App-* başlıkları + 426 ekranı          */
+/* -------------------------------------------------------------------------- */
+// Sürüm = mağazadaki native ikili sürümü (App.getInfo). Okunamazsa derleme zamanı
+// REACT_APP_VERSION; o da yoksa "" → sunucu politika açıkken bu istemciyi "eski" sayar.
+let _versionPromise = null;
+export function getNativeAppVersion() {
+  if (!_versionPromise) {
+    const fallback = process.env.REACT_APP_VERSION || "";
+    _versionPromise = !isNative || !App
+      ? Promise.resolve(fallback)
+      : withTimeout(App.getInfo().then((i) => (i && i.version) || fallback), 1500, fallback);
+  }
+  return _versionPromise;
+}
+
+// İnterceptor'lar modül yüklenirken kurulur: AuthProvider'ın açılış /auth/me isteği de kapsansın.
+if (isNative) {
+  installAppVersionHeaders(axios, { platform, appTarget, getVersion: getNativeAppVersion, apiBase: API });
+  installUpdateRequiredInterceptor(axios);
+}
 
 /* -------------------------------------------------------------------------- */
 /*  PUSH NOTIFICATIONS — FCM (Android) + APNs (iOS)                            */
@@ -64,7 +87,7 @@ export async function setupPushNotifications() {
           platform,
           device_id: deviceId,
           push_token: token.value,
-          app_version: "1.0.0",
+          app_version: (await getNativeAppVersion()) || "0.0.0",
         },
         { headers: { Authorization: `Bearer ${userToken}` } }
       );

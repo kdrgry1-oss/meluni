@@ -124,24 +124,38 @@ function ChatTab({ onUpdate }) {
       const res = await axios.post(`${API}/ai-assistant/chat`,
         { text, session_id: sessionId.current }, auth());
       const r = res.data;
-      let badge = "";
-      if (r.kb_added) badge = "KB'ye eklendi ✓";
-      else if (r.instruction_saved) badge = "Talimat kaydedildi ✓";
+      const p = r.proposal || null;
       setMessages((m) => [...m, {
         role: "bot",
         text: r.reply,
         intent: r.intent,
-        badge,
-        kb_q: r.kb_question,
-        kb_a: r.kb_answer,
-        instruction: r.instruction,
+        badge: "",
+        proposal: p,
+        kb_q: p && p.kind === "kb" ? p.question : null,
+        kb_a: p && p.kind === "kb" ? p.answer : null,
+        instruction: p && p.kind === "instruction" ? p.instruction : null,
       }]);
-      if (r.kb_added || r.instruction_saved) onUpdate?.();
     } catch (e) {
       toast.error(e.response?.data?.detail || e.message);
     } finally {
       setLoading(false);
       setTimeout(() => endRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+    }
+  };
+
+  // Öneri yalnız personelin açık onayıyla (ve yazma yetkisiyle) kaydedilir.
+  const applyProposal = async (idx) => {
+    const msg = messages[idx];
+    if (!msg?.proposal || msg.saving || msg.badge) return;
+    setMessages((m) => m.map((x, i) => (i === idx ? { ...x, saving: true } : x)));
+    try {
+      const res = await axios.post(`${API}/ai-assistant/chat/apply`, msg.proposal, auth());
+      const badge = res.data?.kb_added ? "KB'ye eklendi ✓" : "Talimat kaydedildi ✓";
+      setMessages((m) => m.map((x, i) => (i === idx ? { ...x, saving: false, badge } : x)));
+      onUpdate?.();
+    } catch (e) {
+      setMessages((m) => m.map((x, i) => (i === idx ? { ...x, saving: false } : x)));
+      toast.error(e.response?.data?.detail || e.message);
     }
   };
 
@@ -179,6 +193,17 @@ function ChatTab({ onUpdate }) {
                 {m.instruction && (
                   <div className="mt-2 text-xs bg-blue-50 text-blue-900 rounded p-2">
                     <ShieldCheck className="w-3 h-3 inline mr-1"/>{m.instruction}
+                  </div>
+                )}
+                {m.proposal && !m.badge && (
+                  <div className="mt-2 flex items-center justify-end">
+                    <button
+                      data-testid={`ai-chat-apply-${i}`}
+                      onClick={() => applyProposal(i)}
+                      disabled={m.saving}
+                      className="inline-flex items-center gap-1 text-xs bg-black text-white rounded px-3 py-1 disabled:opacity-50">
+                      {m.saving ? "Kaydediliyor..." : "Kaydet"}
+                    </button>
                   </div>
                 )}
               </div>

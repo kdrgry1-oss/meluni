@@ -1,6 +1,6 @@
 """
 Ticimax SOAP Web Service Client  –  meluni.com.tr
-Default WS Key (UyeKodu): AKG0M8DTRSEBAIA898JA6HW22EDIU3 (override via DB settings)
+WS Key (UyeKodu): TICIMAX_API_KEY environment variable
 
 Gerçek WSDL imzaları (doğrulanmış):
   SelectKategori  : UyeKodu, kategoriID=0, dil='tr', parentID
@@ -24,7 +24,7 @@ warnings.filterwarnings("ignore")
 logger = logging.getLogger(__name__)
 
 TICIMAX_DOMAIN  = os.environ.get("TICIMAX_DOMAIN") or "meluni.ticimaxeticaret.com"
-TICIMAX_API_KEY = os.environ.get("TICIMAX_API_KEY") or "AKG0M8DTRSEBAIA898JA6HW22EDIU3"
+TICIMAX_API_KEY = os.environ.get("TICIMAX_API_KEY", "").strip()
 RATE_LIMIT_SLEEP = 13   # Ticimax rate limit: 12 sn, biz 13 sn bekliyoruz
 
 URUN_WSDL    = f"https://{TICIMAX_DOMAIN}/Servis/UrunServis.svc?wsdl"
@@ -86,7 +86,29 @@ def set_domain(domain: str):
     _siparis_client_cache = None
     _uye_client_cache = None
     logger.info(f"Ticimax domain set → {domain}")
-    logger.info(f"Ticimax domain set → {domain}")
+
+
+def _SAFE_SETTINGS():
+    """GÜVENLİK (T10): huge_tree KAPALI (lxml varsayılan metin/derinlik sınırları), DTD/varlık/
+    harici kaynak çözümleme yasak. Ticimax yanıtları çok satırlı ama tek düğümleri küçüktür."""
+    from security.soap_safe import safe_settings
+    return safe_settings()
+
+
+def _pinned_transport(**kw):
+    """Şema içe aktarmaları YALNIZ Ticimax alan adından (security/soap_safe.py)."""
+    from security.soap_safe import PinnedHostTransport
+    return PinnedHostTransport(allowed_hosts={str(TICIMAX_DOMAIN or "").lower()}, **kw)
+
+
+def _capped_session():
+    """T10: yanıt gövdesi 200 MB ile sınırlı requests oturumu (tam ürün listesi büyük olabilir)."""
+    try:
+        from security_fetch import make_capped_session
+        return make_capped_session(200 * 1024 * 1024)
+    except Exception:
+        import requests
+        return requests.Session()
 
 
 def _urun_client():
@@ -98,8 +120,8 @@ def _urun_client():
         from zeep.transports import Transport
         _urun_client_cache = Client(
             URUN_WSDL,
-            settings=Settings(strict=False, xml_huge_tree=True),
-            transport=Transport(timeout=90, operation_timeout=180),
+            settings=_SAFE_SETTINGS(),
+            transport=_pinned_transport(timeout=90, operation_timeout=180, session=_capped_session()),
         )
     return _urun_client_cache
 
@@ -113,8 +135,8 @@ def _siparis_client():
         from zeep.transports import Transport
         _siparis_client_cache = Client(
             SIPARIS_WSDL,
-            settings=Settings(strict=False, xml_huge_tree=True),
-            transport=Transport(timeout=90, operation_timeout=180),
+            settings=_SAFE_SETTINGS(),
+            transport=_pinned_transport(timeout=90, operation_timeout=180, session=_capped_session()),
         )
     return _siparis_client_cache
 
@@ -128,8 +150,8 @@ def _uye_client():
         from zeep.transports import Transport
         _uye_client_cache = Client(
             UYE_WSDL,
-            settings=Settings(strict=False, xml_huge_tree=True),
-            transport=Transport(timeout=90, operation_timeout=180),
+            settings=_SAFE_SETTINGS(),
+            transport=_pinned_transport(timeout=90, operation_timeout=180, session=_capped_session()),
         )
     return _uye_client_cache
 

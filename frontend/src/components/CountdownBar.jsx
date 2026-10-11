@@ -116,7 +116,7 @@ export default function CountdownBar() {
     (!endAt   || now <= endAt.getTime());
 
   let rawText;
-  if (!block)          rawText = "500 TL Üzeri Ücretsiz Kargo"; // statik varsayılan
+  if (!block)          rawText = "";                             // blok yok → metin yok (yedek metin kaldırıldı)
   else if (!inWindow)  rawText = s.fallback_text || "";          // pencere dışı
   else                 rawText = s.left_text || "";              // aktif
 
@@ -144,15 +144,8 @@ export default function CountdownBar() {
     return <div className="bg-black" data-testid="topbar-loading" aria-hidden="true" style={{ minHeight: 38 }} />;
   }
 
-  // Hiç blok yok → orijinal statik metin, vatkali tarzı SÜREKLİ kayan marquee.
-  if (!block) {
-    return (
-      <div className="bg-black text-white py-2 md:py-2.5" data-testid="topbar-static">
-        <Marquee items={messages} fg="#ffffff"
-          className="text-[13px] md:text-[17px] uppercase fct-topbar-heavy" />
-      </div>
-    );
-  }
+  // Hiç blok yok → hiçbir şey gösterme (yedek/statik metin kaldırıldı).
+  if (!block) return null;
 
   if (!inWindow) {
     // Bar pasif (planlanmış ya da süresi dolmuş) → fallback metin (kayan marquee)
@@ -178,14 +171,14 @@ export default function CountdownBar() {
       data-testid="topbar-countdown"
     >
       {fadeKeyframes}
-      <div className="max-w-screen-2xl mx-auto px-3 md:px-6 flex items-center justify-center md:justify-between gap-3 flex-wrap">
+      <div className="max-w-screen-2xl mx-auto px-3 md:px-6 flex items-center justify-center gap-3 md:gap-5 flex-wrap">
         {currentMsg && (
           <Rotator idx={msgIdx} text={currentMsg} multi={multi}
-             className="text-[13px] md:text-[17px] uppercase fct-topbar-heavy flex-shrink-0" />
+             className="text-xs md:text-sm font-semibold tracking-wide flex-shrink-0" />
         )}
         <div className="flex items-center gap-2 md:gap-3">
           {timerLbl && (
-            <span className="text-[11px] md:text-[13px] tracking-[0.22em] uppercase font-medium hidden md:inline">
+            <span className="text-[11px] md:text-[13px] tracking-[0.22em] uppercase font-semibold hidden md:inline">
               {timerLbl}
             </span>
           )}
@@ -260,7 +253,7 @@ function CountUnit({ value, label, fg, bg }) {
       >
         {_pad(value)}
       </span>
-      <span className="text-[9px] md:text-[11px] tracking-[0.18em] uppercase font-light">{label}</span>
+      <span className="text-[9px] md:text-[11px] tracking-[0.18em] uppercase font-medium">{label}</span>
     </div>
   );
 }

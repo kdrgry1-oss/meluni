@@ -45,6 +45,7 @@ def _sanitize_sections(sections):
             how = it.get("how") or []
             tips = it.get("tips") or []
             items.append({
+                "key": _clean_str(it.get("key"), 100),
                 "title": _clean_str(it.get("title"), 200),
                 "path": _clean_str(it.get("path"), 300),
                 "what": _clean_str(it.get("what"), 2000),
@@ -72,6 +73,7 @@ async def get_help_content_admin(current_user: dict = Depends(require_admin)):
         "is_custom": bool(doc.get("sections") is not None),
         "updated_by": doc.get("updated_by"),
         "updated_at": doc.get("updated_at"),
+        "content_version": doc.get("content_version"),
     }
 
 
@@ -81,18 +83,24 @@ async def put_help_content(payload: dict, current_user: dict = Depends(require_a
     Firma kendi yönergelerini buradan yazar; içerik DB'de saklanır."""
     import json as _json
     sections = _sanitize_sections((payload or {}).get("sections"))
+    content_version = _clean_str((payload or {}).get("content_version"), 40)
     if len(_json.dumps(sections, ensure_ascii=False).encode("utf-8")) > _MAX_BYTES:
         raise HTTPException(status_code=413, detail="İçerik çok büyük (500KB sınırı).")
+    update_fields = {
+        "id": _DOC_ID, "sections": sections,
+        "updated_by": current_user.get("email"),
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+    # Eski istemci sürüm göndermiyorsa kaydedilmiş sürüm bilgisini boşaltma;
+    # yeni istemci paketlediği açık sürümü kayda geçirir.
+    if content_version:
+        update_fields["content_version"] = content_version
     await db.settings.update_one(
         {"id": _DOC_ID},
-        {"$set": {
-            "id": _DOC_ID, "sections": sections,
-            "updated_by": current_user.get("email"),
-            "updated_at": datetime.now(timezone.utc).isoformat(),
-        }},
+        {"$set": update_fields},
         upsert=True,
     )
-    return {"success": True, "section_count": len(sections)}
+    return {"success": True, "section_count": len(sections), "content_version": content_version}
 
 
 @admin_router.delete("")
@@ -103,7 +111,9 @@ async def reset_help_content(current_user: dict = Depends(require_admin)):
 
 
 @public_router.get("")
-async def get_help_content():
-    """Panelin okuduğu içerik. Kayıt yoksa sections=null → frontend varsayılanı gösterir."""
+async def get_help_content(current_user: dict = Depends(require_admin)):
+    """Panelin okuduğu içerik. Kayıt yoksa sections=null → frontend varsayılanı gösterir.
+    GÜVENLİK (denetim #30): içerik firmaya özel PANEL yönergeleridir (iç süreçler, ekran yolları) →
+    kimliksiz erişime kapalı; yalnız panel personeli okur (tek tüketici: admin Eğitim sayfası)."""
     doc = await db.settings.find_one({"id": _DOC_ID}, {"_id": 0}) or {}
-    return {"sections": doc.get("sections")}
+    return {"sections": doc.get("sections"), "content_version": doc.get("content_version")}

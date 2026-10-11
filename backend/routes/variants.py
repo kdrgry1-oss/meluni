@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 from models import VariantOption, VariantOptionCreate
-from routes.deps import db, require_admin
+from routes.deps import db, require_admin, require_permission
 import logging
 
 logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ async def get_variants_by_type(variant_type: str):
     return variants
 
 @router.post("", response_model=VariantOption)
-async def create_variant(variant: VariantOptionCreate, admin=Depends(require_admin)):
+async def create_variant(variant: VariantOptionCreate, admin=Depends(require_permission("products.edit"))):
     """Yeni bir varyant değeri ekler"""
     # Aynı değerde var mı kontrol et
     existing = await db.variant_options.find_one({
@@ -42,7 +42,7 @@ async def create_variant(variant: VariantOptionCreate, admin=Depends(require_adm
     return new_variant
 
 @router.put("/reorder", response_model=dict)
-async def reorder_variants(items: List[dict], admin=Depends(require_admin)):
+async def reorder_variants(items: List[dict], admin=Depends(require_permission("products.edit"))):
     """
     Birden fazla varyantın sırasını günceller.
     Beklenen format: [{"id": "...", "sort_order": 1}, {"id": "...", "sort_order": 2}]
@@ -72,7 +72,7 @@ async def reorder_variants(items: List[dict], admin=Depends(require_admin)):
     return {"success": False, "message": "Geçerli veri bulunamadı"}
 
 @router.post("/bulk-delete")
-async def bulk_delete_variants(payload: dict, admin=Depends(require_admin)):
+async def bulk_delete_variants(payload: dict, admin=Depends(require_permission("products.edit"))):
     """Seçili birden fazla varyant değerini TOPLU siler. payload: {"ids": ["...", "..."]}"""
     ids = payload.get("ids") or []
     ids = [str(i) for i in ids if i]
@@ -83,14 +83,14 @@ async def bulk_delete_variants(payload: dict, admin=Depends(require_admin)):
             "message": f"{result.deleted_count} değer silindi"}
 
 @router.delete("/{variant_id}")
-async def delete_variant(variant_id: str, admin=Depends(require_admin)):
+async def delete_variant(variant_id: str, admin=Depends(require_permission("products.edit"))):
     result = await db.variant_options.delete_one({"id": variant_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Varyant bulunamadı")
     return {"success": True, "message": "Varyant silindi"}
 
 @router.put("/{variant_id}", response_model=VariantOption)
-async def update_variant(variant_id: str, update_data: dict, admin=Depends(require_admin)):
+async def update_variant(variant_id: str, update_data: dict, admin=Depends(require_permission("products.edit"))):
     if "value" in update_data:
         existing = await db.variant_options.find_one({
             "type": update_data.get("type"),
@@ -111,7 +111,7 @@ async def update_variant(variant_id: str, update_data: dict, admin=Depends(requi
     return VariantOption(**updated)
 
 @router.post("/aggregate")
-async def aggregate_variants(admin=Depends(require_admin)):
+async def aggregate_variants(admin=Depends(require_permission("products.edit"))):
     """Mevcut ürünlerden beden ve renk değerlerini toplayıp varyant seçeneklerine ekler."""
     products = await db.products.find({}, {"variants": 1}).to_list(length=None)
     

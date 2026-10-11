@@ -44,6 +44,8 @@ except Exception as _e:  # noqa
 # surec basina BIR kez parse eder; SESSION_ID her SOAP cagrisinda header ile
 # gectigi icin istemci paylasimi guvenlidir.
 _WSDL_CACHE = InMemoryCache()
+# T10: tek SOAP yanıtı için üst sınır (base64 PDF/UBL faturalar birkaç MB; 64 MB bol pay).
+_DOGAN_MAX_RESPONSE_BYTES = 64 * 1024 * 1024
 _CLIENT_CACHE = {}
 _CLIENT_LOCK = _threading.Lock()
 
@@ -57,6 +59,24 @@ def _get_cached_client(wsdl_url, transport, settings):
                 c = Client(wsdl_url, transport=transport, settings=settings)
                 _CLIENT_CACHE[wsdl_url] = c
     return c
+
+
+# Doğan/altyapı GEÇİCİ hataları (5xx gateway, F5 "No Available Server / TR7", timeout,
+# bağlantı sıfırlama, WSDL çekememe). Bunlar İŞ hatalarından (10009 mükerrer, 10013 şablon/şema
+# gibi — bunlar yanıtta ERROR_CODE ile döner ve retry EDİLMEZ) ayrılır; yalnız geçici hatalarda
+# kısa backoff ile yeniden denenir. Doğan tarafı kısa süre ayakta değilse fatura kendiliğinden
+# tamamlanır; kalıcı provizyon/IP sorununda ise (birkaç deneme sonrası) yine net hata döner.
+_DOGAN_TRANSIENT_MARKERS = (
+    "no available server", "tr7", " 503", "503 ", "502", "504", "500 server",
+    "service unavailable", "bad gateway", "gateway time", "temporarily unavailable",
+    "timed out", "timeout", "connection", "connect", "reset by peer",
+    "max retries", "read timed", "eof occurred", "handshake", "remotedisconnected",
+)
+
+
+def _is_transient_dogan_error(msg: str) -> bool:
+    m = (msg or "").lower()
+    return any(t in m for t in _DOGAN_TRANSIENT_MARKERS)
 
 
 def _free_shipping_line_xml(idx: int, waived_incl: float, currency: str, kdv_rate: float = 20.0) -> str:
@@ -125,10 +145,29 @@ class DoganClient:
             self.earsiv_wsdl = "https://connector.doganedonusum.com/EIArchiveWS/EFaturaArchive?wsdl"
             self.eirsaliye_wsdl = "https://connector.doganedonusum.com/EIrsaliyeWS/EIrsaliye?wsdl"
 
-        session = Session()
+        # GÜVENLİK (T10 — XML limitleri): SOAP/WSDL yanıtı akış hâlinde okunur ve 64 MB'ı aşarsa
+        # reddedilir (bellek tüketimi). DTD/varlık/harici kaynak çözümleme KAPALI (XXE / billion laughs).
+        try:
+            from security_fetch import make_capped_session
+            session = make_capped_session(_DOGAN_MAX_RESPONSE_BYTES)
+        except Exception:  # yardımcı yüklenemezse eski davranış (fatura akışı durmasın)
+            session = Session()
         session.verify = True
-        self.transport = Transport(session=session, timeout=30, cache=_WSDL_CACHE)
-        self.zeep_settings = ZeepSettings(strict=False, xml_huge_tree=True)
+        from security.soap_safe import PinnedHostTransport, host_of
+        # Şema içe aktarmaları YALNIZ Doğan'ın kendi sunucusundan (security/soap_safe.py).
+        self.transport = PinnedHostTransport(
+            session=session, timeout=30, cache=_WSDL_CACHE,
+            allowed_hosts={host_of(u) for u in (self.auth_wsdl, self.efatura_wsdl, self.earsiv_wsdl,
+                                                self.eirsaliye_wsdl)})
+        # Kimlik doğrulama vb. küçük yanıtlar: lxml varsayılan sınırları (huge_tree KAPALI).
+        self.zeep_settings = ZeepSettings(strict=False, xml_huge_tree=False, forbid_dtd=True,
+                                          forbid_entities=True, forbid_external=False)
+        # e-Fatura / e-Arşiv istemcileri BELGE (PDF/UBL, base64 TEK metin düğümü) döndürür. lxml
+        # (libxml2 2.14) huge_tree KAPALIYKEN ~10 MB'ı aşan tek metin düğümünü SESSİZCE KESİYOR
+        # (doğrulandı: 100 MB'lık düğüm 9.999.994 bayta kırpıldı) → bozuk PDF. Bu yüzden huge_tree
+        # YALNIZ bu iki istemcide açık; yanıt boyutu yukarıdaki oturumla 64 MB'a sınırlı, DTD/varlık yasak.
+        self.zeep_settings_docs = ZeepSettings(strict=False, xml_huge_tree=True, forbid_dtd=True,
+                                               forbid_entities=True, forbid_external=False)
 
     def login(self) -> str:
         """Authenticate and get session ID. Raises on failure."""
@@ -181,12 +220,12 @@ class DoganClient:
     def _get_efatura_client(self):
         if not self.session_id:
             self.login()
-        return _get_cached_client(self.efatura_wsdl, self.transport, self.zeep_settings)
+        return _get_cached_client(self.efatura_wsdl, self.transport, self.zeep_settings_docs)
 
     def _get_earsiv_client(self):
         if not self.session_id:
             self.login()
-        return _get_cached_client(self.earsiv_wsdl, self.transport, self.zeep_settings)
+        return _get_cached_client(self.earsiv_wsdl, self.transport, self.zeep_settings_docs)
 
     def _make_header(self, compressed="N"):
         return {
@@ -430,73 +469,58 @@ class DoganClient:
             return []
 
     def cancel_earsiv_invoice(self, *, invoice_uuid: str = "", invoice_id: str = "",
-                               reason: str = "Sipariş iptal edildi") -> dict:
+                               reason: str = "Sipariş iptal edildi", total_amount=None) -> dict:
         """E-Arşiv faturayı Doğan üzerinden iptal eder.
 
-        ÖNEMLİ: connector/test domaini geliştirme ortamında ağ izninde olmadığı için
-        WSDL'deki iptal operasyonunun adı/şeması BİREBİR doğrulanamadı. Bu yüzden:
-          - iptal operasyonunu WSDL'den DİNAMİK buluruz (CancelEArchiveInvoice / CancelInvoice
-            / 'cancel' içeren ilk operasyon),
-          - en yaygın payload şemasıyla çağırırız,
-          - HATA durumunda mevcut operasyon adlarını döndürürüz ki test ortamında
-            gerçek ad/şema netleşsin ve buraya birebir yazılabilsin.
-        Durum güncellemesini ASLA bloklamaz (çağıran taraf try/except ile sarmalıdır).
+        Şema WSDL'den BİREBİR okundu ve canlıda doğrulandı (HB4029270518, 2026-09-28):
+          CancelEArchiveInvoice(REQUEST_HEADER, CancelEArsivInvoiceContent=[{
+              FATURA_UUID, FATURA_ID, IPTAL_TARIHI, TOPLAM_TUTAR, IPTAL_NOTU }])
+        Eski sürüm var olmayan parametre adlarıyla (CANCEL_INVOICE/...) çağırdığı için HİÇ
+        çalışmıyordu. ÖNCE giriş (SESSION_ID), SONRA başlık. "Zaten iptal/raporlanmış iptal"
+        (10020) → başarı sayılır. Sonuç GetEArchiveInvoiceStatus ile doğrulanır.
         """
         try:
-            client = self._get_earsiv_client()
-            ops = self._list_earsiv_operations()
-            cancel_op = None
-            for cand in ("CancelEArchiveInvoice", "CancelInvoice",
-                         "CancelArchiveInvoice", "CancelEArsivInvoice", "CancelEArchive"):
-                if cand in ops:
-                    cancel_op = cand
-                    break
-            if not cancel_op:
-                cancel_op = next((o for o in ops if "cancel" in o.lower()), None)
-            if not cancel_op:
-                return {"success": False, "error": "İptal operasyonu WSDL'de bulunamadı",
-                        "available_operations": ops}
-
-            from datetime import datetime, timezone
-            op = getattr(client.service, cancel_op)
-            cancel_payload = {
-                "CANCEL_REASON": (reason or "Sipariş iptal edildi")[:250],
-                "CANCEL_DATE": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            from datetime import date as _date
+            from decimal import Decimal
+            from zeep.helpers import serialize_object
+            client = self._get_earsiv_client()          # giriş burada yapılır
+            content = {
+                "FATURA_UUID": invoice_uuid or None,
+                "FATURA_ID": invoice_id or None,
+                "IPTAL_TARIHI": _date.today(),
+                "IPTAL_NOTU": (reason or "Sipariş iptal edildi")[:250],
             }
+            if total_amount is not None:
+                content["TOPLAM_TUTAR"] = Decimal(f"{float(total_amount):.2f}")
+            content = {k: v for k, v in content.items() if v is not None}
+            result = client.service.CancelEArchiveInvoice(
+                REQUEST_HEADER=self._make_header(), CancelEArsivInvoiceContent=[content])
+            ser = serialize_object(result) or {}
+            err = (ser.get("ERROR_TYPE") or {}) if isinstance(ser, dict) else {}
+            out = {"operation": "CancelEArchiveInvoice", "raw": str(ser)[:600]}
+            if err and err.get("ERROR_CODE"):
+                _msg = str(err.get("ERROR_SHORT_DES") or "Bilinmeyen hata")
+                if str(err.get("ERROR_CODE")) == "10020" and "iptal" in _msg.lower():
+                    out.update({"success": True, "already_cancelled": True, "message": _msg})
+                else:
+                    out.update({"success": False, "code": str(err.get("ERROR_CODE")), "message": _msg})
+            else:
+                out["success"] = True
+            # Doğrulama
             if invoice_uuid:
-                cancel_payload["UUID"] = invoice_uuid
-            if invoice_id:
-                cancel_payload["INVOICE_ID"] = invoice_id
-
-            # En yaygın imza: REQUEST_HEADER + tekil iptal kaydı. Param adı doğrulanamadığı
-            # için birkaç olası sarmalayıcı adını sırayla dener.
-            last_err = None
-            for wrap in ("CANCEL_INVOICE", "CANCEL", "INVOICE", "ARCHIVE_INVOICE_CANCEL"):
                 try:
-                    result = op(REQUEST_HEADER=self._make_header(), **{wrap: cancel_payload})
-                    from zeep.helpers import serialize_object
-                    ser = serialize_object(result) or {}
-                    err = (ser.get("ERROR_TYPE") or {}) if isinstance(ser, dict) else {}
-                    err_code = err.get("ERROR_CODE") if err else None
-                    if err_code:
-                        return {"success": False, "operation": cancel_op,
-                                "code": str(err_code),
-                                "message": str(err.get("ERROR_SHORT_DES") or "Bilinmeyen hata"),
-                                "raw": str(ser)[:600]}
-                    return {"success": True, "operation": cancel_op,
-                            "param": wrap, "raw": str(ser)[:600]}
-                except TypeError as te:
-                    last_err = str(te)
-                    continue  # param adı yanlış → sıradaki sarmalayıcıyı dene
-            return {"success": False, "operation": cancel_op,
-                    "error": f"İptal payload şeması eşleşmedi: {last_err}",
-                    "available_operations": ops}
+                    st = serialize_object(client.service.GetEArchiveInvoiceStatus(
+                        REQUEST_HEADER=self._make_header(), UUID=invoice_uuid)) or {}
+                    hdr = ((st.get("INVOICE") or [{}])[0] or {}).get("HEADER") or {}
+                    out["status"] = f"{hdr.get('STATUS')} {hdr.get('STATUS_DESC')} {hdr.get('PROFILE')}"
+                    if str(hdr.get("PROFILE") or "").upper() == "IPTAL" or str(hdr.get("STATUS")) == "201":
+                        out["success"] = True
+                        out["verified"] = True
+                except Exception as _se:
+                    out["status_error"] = str(_se)[:200]
+            return out
         except Exception as e:
-            try:
-                ops = self._list_earsiv_operations()
-            except Exception:
-                ops = []
-            return {"success": False, "error": str(e), "available_operations": ops}
+            return {"success": False, "error": str(e)[:500]}
 
     def check_user(self, vkn: str) -> dict:
         """Check if a VKN is registered for e-Fatura. Returns the user list with
@@ -1581,10 +1605,11 @@ class DoganClient:
       <cac:AdditionalItemIdentification>
         <cbc:ID schemeID="GTIN">{escape(_barcode)}</cbc:ID>
       </cac:AdditionalItemIdentification>""" if _barcode else "")
-            # NOT: AdditionalItemProperty (Renk/Beden) EKLENMEZ — GİB UBL-TR Item şeması bu
-            # pozisyonda kabul etmiyor ("INVALID XML: Expected AdditionalItemIdentification /
-            # OriginCountry"). Sütun doldurma denemesi faturayı bozuyordu → geri alındı.
-            # Fatura ÇALIŞIR halde; Renk/Beden bilgisi fatura-altı Note'ta zaten var.
+            # NOT: Barkod/Renk/Beden fatura SATIR SÜTUNLARINI, Doğan şablonu SATIR NOTUNDAN
+            # (cbc:Note) parse eder — e-Arşiv'de kanıtlanmış yöntem. Bu yüzden Renk/Beden/Barkod
+            # AdditionalItemProperty olarak EKLENMEZ (GİB e-Fatura Item şeması sıra/validasyonu riskli);
+            # bunun yerine caller satır notunu 'Renk:..;Beden:..:Barcode:..' formatında geçirir ve
+            # yukarıdaki note_xml (cbc:Note) ile yazılır. Barkod ayrıca GTIN olarak da verilir (std_item_xml).
             item_props_xml = ""
 
             invoice_lines_xml.append(f"""<cac:InvoiceLine>
@@ -1902,7 +1927,37 @@ class DoganClient:
 </Invoice>"""
         return xml
 
-    def send_efatura_invoice(self, ubl_xml: str, invoice_uuid: str,
+    def _send_with_retry(self, fn, *args, _max_attempts: int = 3, **kwargs) -> dict:
+        """Doğan gönderimini GEÇİCİ altyapı hatalarında (503/TR7/timeout/bağlantı) kısa backoff
+        ile yeniden dener. İŞ hatalarını (ERROR_CODE dolu — 10009/10013 vb.) veya kalıcı hataları
+        RETRY ETMEZ; onlarda ilk sonucu döndürür. Geçici hatada oturumu (session_id) sıfırlayıp
+        yeniden login + WSDL çekimi yaptırır (WSDL fetch 503'ü de bu yolla toparlanır)."""
+        import time as _t
+        result = {"success": False, "code": "", "message": "gönderilemedi", "raw": ""}
+        for attempt in range(max(1, _max_attempts)):
+            result = fn(*args, **kwargs)
+            if result.get("success"):
+                return result
+            # İş hatası (ERROR_CODE dolu) VEYA geçici olmayan hata → yeniden deneme
+            if result.get("code") or not _is_transient_dogan_error(result.get("message")):
+                return result
+            if attempt < _max_attempts - 1:
+                logger.warning(
+                    f"Doğan geçici hata (deneme {attempt + 1}/{_max_attempts}), yeniden denenecek: "
+                    f"{str(result.get('message'))[:160]}")
+                self.session_id = None  # oturumu tazele → yeniden login + WSDL fetch
+                _t.sleep(1.5 * (attempt + 1))
+        return result
+
+    def send_earsiv_invoice(self, *args, **kwargs) -> dict:
+        """Public: geçici Doğan hatalarında otomatik retry ile e-Arşiv gönderimi."""
+        return self._send_with_retry(self._send_earsiv_invoice_once, *args, **kwargs)
+
+    def send_efatura_invoice(self, *args, **kwargs) -> dict:
+        """Public: geçici Doğan hatalarında otomatik retry ile e-Fatura gönderimi."""
+        return self._send_with_retry(self._send_efatura_invoice_once, *args, **kwargs)
+
+    def _send_efatura_invoice_once(self, ubl_xml: str, invoice_uuid: str,
                               invoice_number: str,
                               receiver_vkn: str, receiver_alias: str,
                               sender_alias: str = "",
@@ -1977,7 +2032,7 @@ class DoganClient:
             logger.error(f"send_efatura_invoice error: {e}")
             return {"success": False, "code": "", "message": str(e), "raw": ""}
 
-    def send_earsiv_invoice(self, ubl_xml: str, invoice_uuid: str = None,
+    def _send_earsiv_invoice_once(self, ubl_xml: str, invoice_uuid: str = None,
                               email_to: str = "", archive_note: str = "") -> dict:
         """E-Arşiv faturayı Doğan WriteToArchiveExtended ile senkron olarak gönderir.
 

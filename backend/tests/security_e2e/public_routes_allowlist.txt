@@ -1,0 +1,189 @@
+# IAM-01 — Gözden geçirilmiş HERKESE AÇIK API yüzeyi (yetki bağımlılığı OLMAYAN uçlar).
+#
+# test_iam01_authz_matrix.py::test_public_surface_matches_reviewed_allowlist bu dosyayı uygulamanın
+# GERÇEK rota envanteriyle BİREBİR karşılaştırır:
+#   * listede olmayan yeni bir herkese açık uç  → test KIRMIZI (ya yetki bağımlılığı ekleyin ya da
+#     gerçekten herkese açıksa ve kendi doğrulaması varsa buraya GEREKÇESİYLE ekleyin);
+#   * listede olup artık herkese açık olmayan / silinmiş uç → test KIRMIZI (listeyi güncel tutun).
+#
+# Biçim:  METHOD /tam/yol | tek satır gerekçe          (# ile başlayan satırlar yorum)
+# "Misafire açık (opsiyonel kimlik)" bölümü: get_current_user ile kimliği OPSİYONEL okuyan, misafire
+# bilerek açık uçlar. Gövdede oturumu zorunlu kılan opsiyonel uçlar burada DEĞİL, testteki
+# BODY_GUARDED_LOGIN kümesindedir (token yoksa 401 dinamik olarak doğrulanır).
+#
+# ÖDEME: iyzico callback/webhook/ödeme başlatma uçları herkese açık KALMALIDIR (misafir checkout +
+# iyzico sunucusu çağırır). Siparişi paid/confirmed yapan TEK yol payment.py::_mark_order_from_payment
+# (iyzico onayı + tutar/sipariş eşleşmesi) — CLAUDE.md değişmez 1.
+
+## Sistem / sağlık / SEO
+GET /api/ | Kök sağlık yanıtı; veri yok
+GET /api/health | Canlılık kontrolü (Railway/uptime); veri yok
+GET /llms.txt | SEO: LLM tarayıcı yönergesi (statik içerik)
+GET /robots.txt | SEO: robots.txt
+GET /sitemap.xml | SEO: site haritası (yalnız yayındaki ürün/kategori/sayfa adresleri)
+GET /api/seo/meta | SEO meta (vitrin sayfa başlık/açıklama)
+GET /api/seo/page-meta | SEO sayfa meta çözümü (vitrin)
+GET /api/seo/resolve-redirect | SEO 301 yönlendirme çözümü (vitrin yönlendirici)
+GET /api/seo/runtime-config | SEO çalışma zamanı ayarı (vitrin; sır yok)
+GET /api/app/config | Mobil uygulama genel yapılandırması (sır yok)
+GET /api/app/version-check | Mobil uygulama sürüm kontrolü
+
+## Vitrin: katalog / içerik (salt okuma; iç alanlar _strip_internal_fields ile ayıklanır — alan testi var)
+GET /api/products | Vitrin ürün listesi (iç alanlar ayıklanır; personel optional_admin ile görür)
+GET /api/products/{product_id} | Vitrin ürün detayı (iç alanlar ayıklanır)
+GET /api/products/{product_id}/color-siblings | Vitrin renk kardeşleri
+GET /api/products/{product_id}/combine-products | Vitrin kombin ürünleri
+GET /api/products/{product_id}/similar | Vitrin benzer ürünler
+GET /api/products/slider-feed | Anasayfa slider ürün akışı (iç alanlar ayıklanır)
+GET /api/products/search/popular | Popüler aramalar (toplu sayaç; PII yok)
+GET /api/products/feed/{slug}.xml | Pazarlama ürün beslemesi (yalnız yayındaki ürün; feed slug'ı ile)
+GET /api/products/google-merchant-feed.xml | Google Merchant ürün beslemesi (yalnız vitrin alanları)
+GET /api/feeds/google-merchant.xml | Google Merchant ürün beslemesi (eski yol; yalnız vitrin alanları)
+POST /api/products/cart-pricing | Sepet fiyatlama — salt hesaplama, yazma yok (misafir sepeti)
+POST /api/products/cart-suggestions | Sepet önerileri — salt okuma (misafir sepeti)
+POST /api/products/checkout-deals | Checkout fırsatları — salt okuma (misafir sepeti)
+GET /api/categories | Vitrin kategori ağacı (üyelere özel kategoriler misafirden gizlenir)
+GET /api/categories/{category_id} | Vitrin kategori detayı
+GET /api/variants | Vitrin varyant (beden/renk) sözlüğü
+GET /api/variants/{variant_type} | Vitrin varyant sözlüğü (tür bazında)
+GET /api/size-tables-public/{product_id} | Vitrin beden tablosu
+GET /api/reviews/product/{pid} | Onaylı ürün yorumları (yalnız onaylı; e-posta yok)
+GET /api/full-look | Vitrin kombin sayfası (taslak/admin meta döndürmez; iç alanlar ayıklanır)
+GET /api/page-blocks | Vitrin sayfa blokları (zaman kuralı sunucuda; ?all=1 yalnız personel)
+GET /api/page-blocks/header-menu | Vitrin header menüsü (üyelere özel sekmeler misafirden gizlenir)
+GET /api/page-blocks/{block_id} | Vitrin tek sayfa bloğu
+GET /api/pages/{slug} | Vitrin CMS sayfası (yayındaki)
+GET /api/banners | Vitrin bannerları
+GET /api/banners/{banner_id} | Vitrin tek banner
+GET /api/sale-menu | Vitrin indirim menüsü
+GET /api/sale-menu/campaign/{campaign_id} | Vitrin kampanya bilgisi
+GET /api/storefront/announcements | Vitrin duyuru şeridi
+GET /api/storefront/popups | Vitrin popup'ları
+GET /api/storefront/themes/active | Vitrin aktif tema
+GET /api/storefront/themes/{slug} | Vitrin tema önizleme (slug ile; yayın içeriği)
+GET /api/custom-theme | Vitrin özel tema CSS/ayarı (CSP ile sınırlı)
+GET /api/footer-template | Vitrin alt bilgi şablonu
+GET /api/instagram/feed | Vitrin Instagram akışı (yalnız yayın görselleri; token sunucuda)
+GET /api/marketing-pixels/active-public | Vitrine enjekte edilen aktif piksel snippet'leri (token yok)
+GET /api/business-rules | İşletme kurallarının yalnız _PUBLIC_KEYS alt kümesi
+GET /api/settings | Vitrin ayarları — YALNIZ beyaz liste: kargo ücreti/eşiği, ödeme yöntemleri, havale indirimi %, çerez bildirimi metni (tam belge: /settings/admin, settings.view); anonim GET asla yazmaz
+GET /api/settings/maintenance | Bakım modu durumu (vitrin)
+GET /api/settings/public/bank-default | Havale sayfası varsayılan IBAN (zaten müşteriye gösterilen bilgi)
+GET /api/admin/rules/shipping/resolve | Checkout: aktif kargo kuralını sepet tutarına göre çözer (PII yok, yazma yok)
+GET /api/admin/rules/payment-discounts/resolve | Checkout: aktif ödeme tipi indirimlerini çözer (PII yok, yazma yok)
+GET /api/locations/countries | Adres formu ülke listesi (statik)
+GET /api/locations/tr/districts | Adres formu ilçe listesi (statik)
+GET /api/locations/tr/provinces | Adres formu il listesi (statik)
+GET /api/locations/tr/search | Adres formu il/ilçe arama (statik)
+GET /api/auth/social/providers | Giriş ekranı: etkin sosyal sağlayıcılar (sır yok)
+GET /api/capi/health | CAPI sağlık: yalnız aktif piksel SAYISI (token yok)
+
+## Dosya / görsel servisleri
+GET /api/files/{path:path} | Eski herkese açık ürün/içerik görselleri (R2 public kova; özel arşiv DEĞİL)
+GET /api/upload/files/{path:path} | Herkese açık ürün/içerik görselleri (R2 public kova; özel arşiv DEĞİL)
+GET /api/upload/jpeg/{token}.jpg | Görselin JPEG türevi (opak token; SSRF korumalı)
+GET /api/upload/to-jpeg | Görsel JPEG dönüştürme (yalnız izinli görsel kaynakları; SSRF korumalı)
+
+## Kimlik doğrulama girişleri (rate-limit + kilit mekanizması; henüz oturum yok)
+POST /api/auth/login | Giriş (rate-limit, IP/hesap kilidi)
+POST /api/auth/register | Kayıt (rate-limit)
+GET /api/auth/verify-email | E-posta doğrulama linki (imzalı tek kullanımlık token)
+POST /api/auth/verify-email | E-posta doğrulama onayı (imzalı tek kullanımlık token)
+POST /api/auth/forgot-password/email | Parola sıfırlama e-postası (rate-limit; hesap varlığı sızdırılmaz)
+POST /api/auth/forgot-password/request-otp | Parola sıfırlama OTP isteği (rate-limit, SMS bütçesi)
+POST /api/auth/forgot-password/verify-otp | Parola sıfırlama OTP doğrulama (deneme sınırı)
+POST /api/auth/forgot-password/reset | Parola sıfırlama (OTP/e-posta token'ı ile)
+POST /api/auth/mfa/send | MFA ikinci adım kodu — kısa ömürlü MFA bileti ile
+POST /api/auth/mfa/verify | MFA ikinci adım doğrulama — kısa ömürlü MFA bileti ile
+POST /api/auth/apple | Sosyal giriş — sağlayıcı token'ı sunucuda doğrulanır
+POST /api/auth/facebook | Sosyal giriş — sağlayıcı token'ı sunucuda doğrulanır
+POST /api/auth/google | Sosyal giriş — Google kimlik token'ı sunucuda doğrulanır
+GET /api/auth/google/login | Google OAuth başlatma (state üretir)
+GET /api/auth/google/callback | Google OAuth dönüşü (state doğrulanır)
+POST /api/auth/google/callback | Google OAuth dönüşü (state doğrulanır)
+POST /api/auth/google/exchange | Google OAuth kod değişimi (tek kullanımlık kod)
+POST /api/auth/google/session | Google oturum değişimi (sağlayıcı doğrulaması)
+POST /api/auth/invite/inspect | Personel daveti — tek kullanımlık davet token'ı + rate-limit
+POST /api/auth/invite/mfa-start | Personel daveti MFA kurulumu — davet token'ı ile
+POST /api/auth/invite/accept | Personel daveti kabulü — davet token'ı ile
+POST /api/auth/guest-convert/send-code | Misafir siparişini hesaba çevirme kodu (e-posta + rate-limit)
+POST /api/auth/convert-guest-order | Misafir siparişini hesaba çevirme (e-posta kodu + taze sipariş şartı)
+
+## Ödeme (iyzico) — CLAUDE.md değişmez 1: paid/confirmed yalnız iyzico onayı + tutar eşleşmesiyle
+POST /api/payment/initialize | Ödeme başlatma (misafir checkout; tutar sunucuda hesaplanır)
+POST /api/payment/3ds/initialize | 3DS başlatma (misafir checkout; tutar sunucuda hesaplanır)
+GET /api/payment/3ds/callback | iyzico 3DS dönüşü — iyzico retrieve + tutar/sipariş eşleşmesi
+POST /api/payment/3ds/callback | iyzico 3DS dönüşü — iyzico retrieve + tutar/sipariş eşleşmesi
+GET /api/payment/callback | iyzico checkout-form dönüşü — iyzico retrieve + tutar eşleşmesi
+POST /api/payment/callback | iyzico checkout-form dönüşü — iyzico retrieve + tutar eşleşmesi
+POST /api/payment/card/pay | Non-3DS kart ödemesi — iyzico sonucu + tutar eşleşmesi
+POST /api/payment/installments | Taksit seçenekleri (BIN sorgusu; yazma yok)
+POST /api/payment/webhook | iyzico webhook — imza doğrulanır; durum iyzico'dan yeniden okunur
+POST /api/payments/havale-notify | Misafir havale "ödedim" bildirimi — yalnız bildirim kaydı; paid YAPMAZ
+POST /api/gift-cards/check | Hediye çeki bakiye sorgusu (rate-limit; bakiye düşmez)
+
+## Misafir sipariş işlemleri (sipariş no + iletişim eşleşmesi, PII maskeli)
+GET /api/orders/by-number/{order_number} | Ödeme sonrası başarı sayfası — PII maskeli
+POST /api/orders/by-number/{order_number}/payment-notification | Misafir dekont bildirimi — iletişim eşleşmesi; paid YAPMAZ
+POST /api/orders/by-number/{order_number}/return-request | Misafir iade talebi — iletişim eşleşmesi + rate-limit
+POST /api/orders/by-number/{order_number}/return-request/cancel | Misafir iade talebi iptali — iletişim eşleşmesi
+GET /api/customer/track/{tracking_code} | Kargo takibi (sipariş/kargo no ile; PII maskeli)
+GET /api/track/{tracking_code} | Kargo takibi (kısa yol; aynı işleyici)
+GET /api/orders/returns/{return_id}/barcode.png | İade barkodu görseli (opak return_id yetki anahtarı)
+GET /api/orders/{order_id}/einvoice-pdf | e-Fatura PDF — sipariş+süreye bağlı HMAC imzalı link
+GET /api/orders/{order_id}/manual-invoice-file/signed | Manuel fatura dosyası — HMAC imzalı + süreli link
+GET /api/security/alert-ack | SOC-01 güvenlik uyarısı onay SAYFASI (HMAC imzalı, süreli, tek kullanımlık; kayıt yapmaz, içerik göstermez)
+POST /api/security/alert-ack | SOC-01 güvenlik uyarısı onayı (HMAC imzalı, süreli, tek kullanımlık token; yalnız onay kaydeder)
+
+## Teşhis uçları (env anahtarı yoksa KAPALI; sabit-zamanlı karşılaştırma)
+GET /api/orders/diag/stock-movements | Teşhis: env HB_DIAG_KEY anahtarı şart (yoksa 403)
+GET /api/orders/hepsiburada/invoice-diag | Teşhis: env HB_DIAG_KEY salt-okur; do_upload yalnız süper-admin JWT
+
+## Anonim ziyaretçi / pazarlama (rate-limit; PII hash'lenir ya da tutulmaz)
+GET /api/attribution/session/{sid} | Atıf oturumu (opak sid; IP/UA döndürülmez)
+POST /api/attribution/track-visit | Atıf ziyaret izleme (anonim)
+POST /api/capi/event | Tarayıcı CAPI olay köprüsü (PII hash'lenir)
+POST /api/consent/log | Çerez onayı kaydı (KVKK)
+POST /api/client-log | İstemci hata günlüğü (boyut/oran sınırlı, redakte)
+POST /api/custom-theme/csp-report | CSP ihlal raporu (16 KB tavan + oran sınırı; yalnız toplu sayaç)
+POST /api/cart/mark-ordered | Terk edilmiş sepet oturumunu havuzdan düşürür (session_id ile; rate-limit)
+POST /api/alerts | Stok/fiyat alarmı kaydı (misafir; rate-limit)
+POST /api/stock-notify | "Gelince haber ver" kaydı (misafir; rate-limit)
+POST /api/newsletter/subscribe | Bülten aboneliği (çift onay/İYS kuralları)
+POST /api/iys/otp/send | İYS izin OTP'si (misafir checkout; rate-limit)
+POST /api/settings/maintenance/notify | Bakım modu "açılınca haber ver" (rate-limit)
+POST /api/shared-carts | Sepet paylaşım linki oluşturma (yalnız sepet içeriği; PII yok)
+GET /api/shared-carts/{share_id} | Paylaşılan sepet (opak share_id; PII yok)
+GET /api/email-marketing/unsubscribe | Abonelikten çıkış sayfası (imzalı e-posta token'ı)
+POST /api/email-marketing/unsubscribe | Abonelikten çıkış (RFC 8058 one-click; imzalı token)
+
+## Sağlayıcı webhook / OAuth dönüşleri (paylaşımlı sır / imza / state ile doğrulanır; fail-closed)
+POST /api/email-marketing/brevo-webhook | Brevo webhook — paylaşımlı sır
+POST /api/email-marketing/ses-webhook | Amazon SES/SNS webhook — imza doğrulaması
+POST /api/inbound-mail | Gelen e-posta webhook'u — paylaşımlı sır
+POST /api/send-test | Test e-postası — X-Webhook-Secret paylaşımlı sırrı şart
+POST /api/influencers/cargo-webhook | Influencer kargo webhook'u — paylaşımlı sır
+POST /api/influencers/meta-webhook | Meta mention webhook STUB — yalnız loglar, DB'ye yazmaz
+POST /api/integrations/temu/webhook | Temu webhook — imza doğrulaması
+GET /api/meta-messaging/webhook | Meta webhook doğrulama (hub.verify_token)
+POST /api/meta-messaging/webhook | Meta mesajlaşma webhook'u — X-Hub-Signature doğrulaması
+GET /api/whatsapp/webhook | WhatsApp webhook doğrulama (hub.verify_token)
+POST /api/whatsapp/webhook | WhatsApp webhook'u — X-Hub-Signature doğrulaması
+POST /api/orders/cargo/mng-webhook | MNG kargo webhook'u — paylaşımlı sır
+POST /api/webhooks/trendyol | Trendyol webhook'u — paylaşımlı sır
+GET /api/amazon/spapi/oauth/callback | Amazon SP-API OAuth dönüşü — panelde üretilmiş tek kullanımlık state ZORUNLU (fail-closed)
+GET /api/instagram/oauth/callback | Instagram OAuth dönüşü — panelde üretilmiş tek kullanımlık, 30 dk geçerli state ZORUNLU
+
+## Misafire açık (opsiyonel kimlik — get_current_user; misafir yolu gövdede doğrulanır)
+POST /api/orders | Sipariş oluşturma (misafir checkout); kart siparişi awaiting_payment başlar (değişmez 2)
+GET /api/orders/{order_id} | Sipariş detayı: sahibi ya da misafir iletişim eşleşmesi (IDOR testli)
+GET /api/orders/{order_id}/return | İade bilgisi: sahibi ya da misafir iletişim eşleşmesi
+POST /api/orders/{order_id}/return-request | İade talebi: sahibi ya da misafir iletişim eşleşmesi
+POST /api/orders/{order_id}/return-request/cancel | İade talebi iptali: sahibi ya da misafir eşleşmesi
+POST /api/coupons/apply | Kupon uygulama (misafir sepeti; kullanım ödeme onayından SONRA yazılır)
+POST /api/coupons/available | Uygun kuponlar (misafir sepeti; salt okuma)
+POST /api/coupons/evaluate | Promosyon motoru değerlendirmesi (salt hesaplama)
+POST /api/cart/track | Canlı sepet kaydı (misafir; user_id yalnız JWT'den)
+POST /api/iys/otp/verify | İYS OTP doğrulama (deneme sınırı; üye yalnız KENDİ numarasını doğrular)
+GET /api/storefront/member-discount | Üye grubu indirimi (misafire 0)
+POST /api/tickets | Destek talebi (misafir de açabilir; rate-limit)

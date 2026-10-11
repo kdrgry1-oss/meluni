@@ -1,17 +1,20 @@
 import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation, useNavigationType } from "react-router-dom";
-import { useEffect, useRef, lazy, Suspense } from "react";
+import { useEffect, useLayoutEffect, useRef, lazy, Suspense } from "react";
 import { Toaster } from "sonner";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { FavoritesProvider } from "./context/FavoritesContext";
 import { bootstrapNative, isNative, appTarget } from "./lib/native";
 import ErrorBoundary from "./components/ErrorBoundary";
+import AppUpdateRequired from "./components/AppUpdateRequired";
 
 // Storefront — sadece ana sayfa (LCP) eager; gerisi route'a girilince yüklenir.
 // Bu, ilk açılışta indirilen JS'i ciddi şekilde küçültür (mobil TBT/LCP/FCP iyileşir).
 import Home from "./pages/Home";
 const GizlilikPolitikasi = lazy(() => import("./pages/GizlilikPolitikasi"));
 const Category = lazy(() => import("./pages/Category"));
+const CampaignProducts = lazy(() => import("./pages/CampaignProducts"));
+const FullLook = lazy(() => import("./pages/FullLook"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Checkout = lazy(() => import("./pages/Checkout"));
@@ -44,6 +47,7 @@ const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
 import { trackVisit } from "./lib/attribution";
 
 import "./App.css";
+import "./storefront.css";
 
 // Rota değişiminde sayfayı anında en üste al — 2./3. sayfaya geçişte veya yeni
 // sayfa açıldığında footer'ın önce görünüp sonra yukarı zıplaması engellenir.
@@ -80,6 +84,31 @@ function LegacyOrderRedirect() {
   return <Navigate to={`/order-success/${orderNumber}`} replace />;
 }
 
+function StorefrontScope({ children }) {
+  const { pathname } = useLocation();
+  const isAdmin = (pathname || "").startsWith("/admin");
+  const section = pathname === "/" ? "home"
+    : pathname.startsWith("/kategori/") ? "category"
+    : pathname.startsWith("/urun/") ? "product"
+    : pathname === "/sepet" ? "cart"
+    : pathname === "/hesabim" ? "account"
+    : pathname === "/giris" ? "login"
+    : pathname.startsWith("/sayfa/") || pathname === "/gizlilik" || pathname.includes("sorulan") ? "static"
+    : "utility";
+  // DOM'a yeni bir wrapper eklemeyerek mevcut tema/CSS child selector'larını bozma.
+  // Layout effect admin'e geçişte scope'u boyamadan önce kaldırır.
+  useLayoutEffect(() => {
+    document.body.classList.toggle("storefront-shell", !isAdmin);
+    if (!isAdmin) document.body.setAttribute("data-storefront-section", section);
+    else document.body.removeAttribute("data-storefront-section");
+    return () => {
+      document.body.classList.remove("storefront-shell");
+      document.body.removeAttribute("data-storefront-section");
+    };
+  }, [isAdmin, section]);
+  return children;
+}
+
 function App() {
   useEffect(() => {
     // UTM/referrer yakalama — render'ı bloklamaması için mount sonrası.
@@ -93,6 +122,8 @@ function App() {
 
   return (
     <ErrorBoundary>
+    {/* ADM-15: asgari sürümün altındaki native uygulamada engelleyici güncelleme ekranı */}
+    <AppUpdateRequired />
     <AuthProvider>
       <CartProvider>
         <FavoritesProvider>
@@ -101,6 +132,7 @@ function App() {
             <Toaster position="top-center" richColors />
             <MarketingPixelsInjector />
             <CookieConsent />
+            <StorefrontScope>
             {/* Storefront Duyuru barı + Popup + SEO (native uygulamada gösterme).
                 Görünüm bozulmasının gerçek nedeni lock-file (yarn.lock) değişikliğiydi;
                 düzeltildi. Bu bileşenler güvenli (aktif popup/duyuru/yönlendirme yoksa
@@ -121,6 +153,9 @@ function App() {
                     Hedef, build zamanı REACT_APP_APP_TARGET ile belirlenir (native.js appTarget). */}
                 <Route path="/" element={isNative && appTarget === "admin" ? <Navigate to="/admin" replace /> : <Home />} />
                 <Route path="/kategori/:slug" element={<Category />} />
+                <Route path="/full-look" element={<FullLook />} />
+                <Route path="/full-look/:lookRef" element={<FullLook />} />
+                <Route path="/kategori/full-look" element={<FullLook />} />
                 <Route path="/sepet" element={<Cart />} />
                 <Route path="/odeme" element={<Checkout />} />
                 <Route path="/arama" element={<Search />} />
@@ -141,7 +176,7 @@ function App() {
                 <Route path="/iade-islemleri" element={<GuestReturn />} />
 
                 {/* Tema önizleme */}
-                <Route path="/tema/:slug" element={<MiuMiuTheme />} />
+                <Route path="/tema/:slug/*" element={<MiuMiuTheme />} />
                 <Route path="/tema" element={<MiuMiuTheme />} />
 
                 {/* Admin — lazy yüklenen ayrı chunk. /admin/login dahil tüm admin
@@ -153,11 +188,13 @@ function App() {
 
                 {/* Ürün detay — SEO dostu kök URL. Statik rotalar dinamikten önce
                     eşleştiği için /sepet, /giris, /admin vb. her zaman önceliklidir. */}
+                <Route path="/kampanya/:id" element={<CampaignProducts />} />
                 <Route path="/urun/:slug" element={<ProductDetail />} />
                 <Route path="/:slug" element={<SlugRouter />} />
                 </Routes>
               </Suspense>
             </MaintenanceGate>
+            </StorefrontScope>
           </BrowserRouter>
         </FavoritesProvider>
       </CartProvider>

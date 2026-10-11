@@ -11,14 +11,16 @@ import AdminProductActions from "../components/AdminProductActions";
 import { optimizeImg } from "../lib/img";
 import { slugify } from "../lib/slug";
 import { priceView } from "../lib/price";
-import { resolveColor, MULTI_GRADIENT } from "../lib/colorMap";
+import { resolveColor } from "../lib/colorMap";
 import { isRecommendedSize, recommendLetterSize } from "../lib/sizeRecommend";
+import { applyRuntimeSeo, setProductSeo } from "../lib/seo";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
 import { useAuth } from "../context/AuthContext";
 import { useShipping } from "../lib/shipping";
 import { trackViewContent, trackAddToCart } from "../utils/pixelEvents";
 import { sortLikeSize } from "../utils/sizeSort";
+import { isStandardSized, fitSizesText } from "../lib/fitSizes";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -186,6 +188,9 @@ export default function ProductDetail() {
   const recLetter = user ? recommendLetterSize(user.height_cm, user.weight_kg) : null;
   const [product, setProduct] = useState(null);
   const [similarProducts, setSimilarProducts] = useState([]);
+  // Benzer ürünlerde ilk açılışta gösterilen adet; "Daha Fazla" ile 8'er artar.
+  const SIM_STEP = 8;
+  const [simShown, setSimShown] = useState(SIM_STEP);
   const [comboProducts, setComboProducts] = useState([]);
   const [recentItems, setRecentItems] = useState([]); // son gezilenler (önceki sayfalardan)
   // Son gezilen kartların fiyat/kampanyası CANLI tazelenir: localStorage'daki eski
@@ -198,21 +203,34 @@ export default function ProductDetail() {
     axios.post(`${API}/products/cart-pricing`, { product_ids: _rvIdsKey.split(",") })
       .then((r) => {
         if (cancel || !r.data?.items) return;
+        const items = r.data.items;
         setRecentItems((prev) => {
-          let changed = false;
-          const next = prev.map((it) => {
-            const info = r.data.items[it.id];
-            if (!info) return it;
-            const patch = {
-              price: info.price, sale_price: info.sale_price,
-              campaign_discount_percent: info.campaign_discount_percent,
-            };
-            if (Number(it.price) === Number(info.price) && Number(it.sale_price || 0) === Number(info.sale_price || 0)
-                && Number(it.campaign_discount_percent || 0) === Number(info.campaign_discount_percent || 0)) return it;
-            changed = true;
-            return { ...it, ...patch };
-          });
-          return changed ? next : prev;
+          // PASİF/SİLİNMİŞ ÜRÜNLERİ AT: cart-pricing bulunan her ürün için is_active döner.
+          // Sunucudan HİÇ dönmeyen (info yok) = silinmiş; is_active===false = pasif. İkisi de
+          // "Son Gezdiklerin"de gösterilmez (kırık görsel / satılamayan ürün sızmasın).
+          const next = prev
+            .filter((it) => {
+              const info = items[it.id];
+              return info && info.is_active !== false;
+            })
+            .map((it) => {
+              const info = items[it.id];
+              return {
+                ...it,
+                price: info.price, sale_price: info.sale_price,
+                campaign_discount_percent: info.campaign_discount_percent,
+              };
+            });
+          // Değişiklik yoksa aynı referansı koru (gereksiz render/döngü olmasın)
+          const unchanged = next.length === prev.length && next.every((it, i) =>
+            it.id === prev[i].id
+            && Number(it.price) === Number(prev[i].price)
+            && Number(it.sale_price || 0) === Number(prev[i].sale_price || 0)
+            && Number(it.campaign_discount_percent || 0) === Number(prev[i].campaign_discount_percent || 0));
+          if (unchanged) return prev;
+          // Temizlenmiş listeyi localStorage'a da yaz (pasifler bir daha yüklenmesin)
+          try { localStorage.setItem(RV_KEY, JSON.stringify(next.slice(0, 12))); } catch { /* sessiz */ }
+          return next;
         });
       })
       .catch(() => {});
@@ -288,64 +306,17 @@ export default function ProductDetail() {
     }
   };
 
-  // SEO — JSON-LD yapısal veri (Product + BreadcrumbList). react-helmet yok,
-  // bu yüzden <head>'e script'i elle enjekte edip temizliyoruz. Google'ın
-  // "rich results" (fiyat, stok, marka) göstermesini sağlar.
+  // Edge ile aynı canonical runtime SEO sonucunu SPA gezinmesinde de uygula.
+  // Backend yalnız gerçek ürün verisini JSON-LD'ye ekler; veri yoksa uydurmaz.
   useEffect(() => {
     if (!product) return;
-    // Edge SEO middleware (functions/_middleware.js) zaten JSON-LD bastıysa
-    // client tarafında tekrar ekleme — Google'da duplicate Product/Breadcrumb olmasın.
-    if (typeof document !== "undefined" && document.querySelector('script[data-seo="edge"]')) return;
-    const origin = (typeof window !== "undefined" && window.location && window.location.origin) || "https://meluni.com.tr";
-    const canonical = `${origin}/urun/${product.slug || product.id}`;
-    const price = product.sale_price || product.price;
-    const inStock = Array.isArray(product.variants) && product.variants.length > 0
-      ? product.variants.some((v) => (v.stock || 0) > 0)
-      : true;
-
-    const productLd = {
-      "@context": "https://schema.org/",
-      "@type": "Product",
-      name: product.name,
-      image: Array.isArray(product.images) && product.images.length ? product.images : undefined,
-      description: product.description || product.name,
-      sku: product.barcode || product.stock_code || product.id,
-      brand: product.brand ? { "@type": "Brand", name: product.brand } : undefined,
-      offers: {
-        "@type": "Offer",
-        url: canonical,
-        priceCurrency: "TRY",
-        price: price != null ? String(price) : undefined,
-        availability: inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      },
-    };
-
-    const crumbs = [{ name: "Ana Sayfa", item: origin }];
-    if (product.category_name) {
-      crumbs.push({ name: product.category_name, item: `${origin}/${slugify(product.category_name || product.category_slug || "")}` });
-    }
-    crumbs.push({ name: product.name, item: canonical });
-    const breadcrumbLd = {
-      "@context": "https://schema.org/",
-      "@type": "BreadcrumbList",
-      itemListElement: crumbs.map((c, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        name: c.name,
-        item: c.item,
-      })),
-    };
-
-    const tag = document.createElement("script");
-    tag.type = "application/ld+json";
-    tag.setAttribute("data-seo", "product");
-    tag.text = JSON.stringify([productLd, breadcrumbLd]);
-    // Önceki kalmışsa temizle, sonra ekle
-    document.querySelectorAll('script[data-seo="product"]').forEach((el) => el.remove());
-    document.head.appendChild(tag);
-
+    const controller = new AbortController();
+    applyRuntimeSeo(`/urun/${product.slug || product.id}`, () => setProductSeo(product), {
+      signal: controller.signal,
+    });
     return () => {
-      document.querySelectorAll('script[data-seo="product"]').forEach((el) => el.remove());
+      controller.abort();
+      document.querySelectorAll('script[data-seo="runtime"]').forEach((el) => el.remove());
     };
   }, [product]);
 
@@ -437,13 +408,16 @@ export default function ProductDetail() {
           setSelectedSize(defaultVariant.size);
         }
 
-        // Benzer ürünler — kategori bazlı. (Eski /similar endpoint'i backend'de
-        // yok ve her seferinde 404 dönüyordu; doğrudan kategori sorgusu kullanılıyor.)
+        // Benzer ürünler — GERÇEK ürün-tipi kategorisinden (promo/sanal kategoriler HARİÇ).
+        // Backend /products/{id}/similar: category_ids içinden en spesifik gerçek tip
+        // kategoriyi seçer; yoksa ürün adından tip çıkarır; hiçbiri tutmazsa BOŞ döner
+        // (İNDİRİM/KOLEKSİYONLAR gibi promo birincil-kategori kaynaklı alakasız öneri düzeltmesi).
         try {
-          if (res.data?.category_name) {
-            const fallbackRes = await axios.get(`${API}/products?category=${encodeURIComponent(res.data.category_name)}&limit=4`);
-            setSimilarProducts(fallbackRes.data?.products?.filter(p => p.id !== res.data.id) || []);
-          }
+          // 24 (backend üst sınırı) çekilir, ilk 8'i gösterilir; gerisi "Daha Fazla" ile
+          // açılır — her tıklamada yeni istek atılmaz.
+          const simRes = await axios.get(`${API}/products/${res.data.id}/similar?limit=24`);
+          setSimilarProducts((simRes.data?.similar || []).filter(p => p.id !== res.data.id));
+          setSimShown(SIM_STEP);   // başka ürüne geçilince baştan 8
         } catch {
           // benzer ürün getirilemezse sessizce geç
         }
@@ -460,6 +434,21 @@ export default function ProductDetail() {
         }
       } catch (err) {
         if (cancel || axios.isCancel?.(err) || err.name === "CanceledError") return;
+        // ÜYELERE ÖZEL: misafir üyelere özel ürüne (ya da /:slug ile üyelere özel kategoriye)
+        // girerse "bulunamadı" yerine GİRİŞ sayfasına yönlendirilir (giriş sonrası geri döner).
+        if (err?.response?.status === 404 && !(() => { try { return localStorage.getItem("token"); } catch { return null; } })()) {
+          let mo = err?.response?.data?.detail === "members_only";
+          if (!mo) {
+            try {
+              const c = await axios.get(`${API}/categories/${encodeURIComponent(slug)}`);
+              mo = !!(c.data?.members_only || c.data?.members_only_effective);
+            } catch { /* kategori de değil → normal "bulunamadı" */ }
+          }
+          if (mo && !cancel) {
+            navigate(`/giris?redirect=${encodeURIComponent("/" + slug)}`, { replace: true });
+            return;
+          }
+        }
         console.error(err);
       } finally {
         if (!cancel) setLoading(false);
@@ -557,7 +546,7 @@ export default function ProductDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen">
+      <div className="sf-page min-h-screen">
         <Header />
         <div className="max-w-screen-2xl mx-auto px-4 py-8">
           <div className="grid md:grid-cols-2 gap-8">
@@ -575,7 +564,7 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="min-h-screen">
+      <div className="sf-page min-h-screen">
         <Header />
         <div className="max-w-screen-2xl mx-auto px-4 py-16 text-center">
           <p className="text-gray-500">Ürün bulunamadı</p>
@@ -623,7 +612,7 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="sf-page min-h-screen">
       <Header />
 
       {/* Sticky Product Bar — mobile: bottom, desktop: top.
@@ -747,13 +736,16 @@ export default function ProductDetail() {
                 geri dönüldü (kullanıcı isteği). */}
             <div className="hidden lg:flex gap-4 justify-center">
               {displayImages.length > 1 && (
-                <div className="flex flex-col gap-2 w-[92px] shrink-0">
+                // İlk anda 5 küçük resim görünür (5×138 + 4×8 = 722px ≈ ana görsel yüksekliği);
+                // daha fazlası ŞERİDİN İÇİNDE kaydırılır — sayfa aşağı doğru uzamaz.
+                <div className="flex flex-col gap-2 w-[92px] shrink-0 self-start max-h-[722px] overflow-y-auto overscroll-contain [scrollbar-width:thin]"
+                  data-testid="pdp-thumb-strip">
                   {displayImages.map((img, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
                       onMouseEnter={() => setSelectedImage(index)}
-                      className={`relative aspect-[3/4] bg-stone-50 overflow-hidden border transition-colors ${
+                      className={`relative shrink-0 aspect-[2/3] bg-stone-50 overflow-hidden border transition-colors ${
                         index === selectedImage ? "border-black" : "border-transparent hover:border-gray-300"
                       }`}
                       aria-label={`Görsel ${index + 1}`}
@@ -806,15 +798,27 @@ export default function ProductDetail() {
                       <Pencil size={16} />
                     </Link>
                   )}
-                  <img
-                    src={optimizeImg(displayImages[selectedImage] || displayImages[0], 1400)}
-                    alt={product.name}
-                    className="w-full h-full object-contain transition-transform duration-150 ease-out"
-                    style={zoom.on ? { transform: "scale(2.3)", transformOrigin: `${zoom.x}% ${zoom.y}%` } : undefined}
-                    loading="eager"
-                    fetchPriority="high"
-                    decoding="async"
-                  />
+                  {/* Görsele tıklayınca ORİJİNAL boyutuyla yeni sekmede açılır.
+                      YALNIZ MASAÜSTÜ: bu blok "hidden lg:flex" içinde; mobildeki kaydırmalı
+                      karusel (yukarıda) hiç değişmez — dokunmatikte tıklama kaydırmayı bozardı. */}
+                  <a
+                    href={displayImages[selectedImage] || displayImages[0]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Görseli yeni sekmede tam boyutta aç"
+                    data-testid="pdp-image-fullsize"
+                    className="block w-full h-full"
+                  >
+                    <img
+                      src={optimizeImg(displayImages[selectedImage] || displayImages[0], 1400)}
+                      alt={product.name}
+                      className="w-full h-full object-cover object-top transition-transform duration-150 ease-out"
+                      style={zoom.on ? { transform: "scale(2.3)", transformOrigin: `${zoom.x}% ${zoom.y}%` } : undefined}
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
+                    />
+                  </a>
                 </div>
               </div>
             </div>
@@ -822,6 +826,11 @@ export default function ProductDetail() {
 
           {/* Product Info */}
           <div className="lg:col-span-5 lg:sticky lg:top-24 min-w-0 lg:max-w-[420px] lg:mx-auto w-full">
+            {product.promo_badge ? (
+              <p className="text-sm font-bold tracking-wide uppercase text-red-600 mb-1.5" data-testid="promo-badge">
+                {product.promo_badge}
+              </p>
+            ) : null}
             <h1 className="text-xl md:text-2xl font-light mb-2">{product.name}</h1>
 
             {/* Price */}
@@ -834,6 +843,9 @@ export default function ProductDetail() {
                   {displayPrice.toFixed(2).replace('.', ',')} TL
                 </span>
               </div>
+              {product.tier_badge ? (
+                <p className="mt-1 text-sm text-red-600" data-testid="tier-badge">{product.tier_badge}</p>
+              ) : null}
 
             {/* Yıldız derecelendirme — fiyatın altında; tıkla → yorumlara git */}
             <button
@@ -873,6 +885,12 @@ export default function ProductDetail() {
                     // Kaynak: ürün formundaki size_advice VEYA Özellikler'deki "Kalıp" değeri.
                     // DİKKAT: attributes bazı (XML kaynaklı) ürünlerde LİSTE değil SÖZLÜK —
                     // dizi varsayımı sayfayı çökertiyordu; iki format da desteklenir.
+                    // STANDART bedenli üründe kalıp tavsiyesi GÖSTERİLMEZ; panelde seçilen uyumlu
+                    // beden aralığı yazılır ("Bu ürün S – L bedenler arası uyumludur.").
+                    if (isStandardSized(product.variants)) {
+                      const _t = fitSizesText(product.fit_sizes);
+                      return _t ? <b className="font-bold" data-testid="std-fit-text">{_t}</b> : "Standart Beden";
+                    }
                     const _attrs = product.attributes;
                     let _attrFitRaw = "";
                     if (Array.isArray(_attrs)) {
@@ -1189,10 +1207,28 @@ export default function ProductDetail() {
                   {expandedSections.shipping ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </button>
                 {expandedSections.shipping && (
-                  <ul className="pb-3 text-xs text-gray-600 space-y-1.5">
-                    <li>• {(freeShippingThreshold != null ? Number(freeShippingThreshold) : 4000).toLocaleString("tr-TR")} TL ve üzeri siparişlerde ücretsiz kargo</li>
-                    <li>• 1-3 iş günü içinde kargoya verilir</li>
-                  </ul>
+                  <div className="pb-3 text-xs text-gray-600 space-y-2.5 leading-relaxed">
+                    <div>
+                      <p className="font-semibold text-gray-800">Ücretsiz Kargo</p>
+                      <p>{(freeShippingThreshold != null ? Number(freeShippingThreshold) : 4000).toLocaleString("tr-TR")} TL ve üzeri tüm siparişlerinizde kargo ücretsizdir.</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">Sipariş Hazırlama &amp; Kargoya Teslim</p>
+                      <p>Siparişiniz, ödeme onayının ardından 1–2 iş günü içerisinde özenle hazırlanarak kargoya teslim edilir.</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">Güvenli Teslimat</p>
+                      <p>Gönderimlerimiz, güvenli ve hızlı teslimat süreçleri için DHL Kargo ile gerçekleştirilir.</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">Kargo Takip</p>
+                      <p>Siparişiniz kargoya teslim edildiğinde, kargo takip numaranız SMS ve/veya e-posta yoluyla tarafınıza iletilir. Böylece siparişinizin teslimat sürecini kolayca takip edebilirsiniz.</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">Teslimat Süresi</p>
+                      <p>Teslimat süresi, teslimat adresine ve kargo firmasının operasyonel süreçlerine bağlı olarak değişiklik gösterebilir. Kargoya teslim edilen siparişlerin tahmini teslimat süresi, bulunduğunuz bölgeye göre farklılık gösterebilir.</p>
+                    </div>
+                  </div>
                 )}
               </div>
               
@@ -1391,9 +1427,21 @@ export default function ProductDetail() {
         {similarProducts.length > 0 && (
           <section className="mt-12 pt-12 border-t">
             <h2 className="text-base font-light mb-6">Benzer Ürünler</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {similarProducts.map((p) => <ProductCard key={p.id} product={p} />)}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-testid="similar-grid">
+              {similarProducts.slice(0, simShown).map((p) => <ProductCard key={p.id} product={p} />)}
             </div>
+            {similarProducts.length > simShown && (
+              <div className="flex justify-center mt-6">
+                <button
+                  type="button"
+                  onClick={() => setSimShown((n) => n + SIM_STEP)}
+                  data-testid="similar-load-more"
+                  className="px-8 py-3 border border-black text-sm tracking-wide hover:bg-black hover:text-white transition-colors"
+                >
+                  Daha Fazla Göster ({similarProducts.length - simShown})
+                </button>
+              </div>
+            )}
           </section>
         )}
 
@@ -1470,8 +1518,13 @@ export default function ProductDetail() {
                         _before.lastIndexOf("<div"), _before.lastIndexOf("<ul"),
                         _before.lastIndexOf("<strong"), _before.lastIndexOf("<b"));
                       const _idx = _cut > 0 ? _cut : _m;
-                      _left = _html.slice(0, _idx);
-                      _right = _html.slice(_idx);
+                      // GÜVENLİK: temizlenmiş HTML METİN olarak bölünüyor; kesim noktası bir öznitelik
+                      // değerinin İÇİNE düşebilir (eski Chrome/Safari serileştirmesi öznitelikteki '<'
+                      // karakterini kaçırmaz: title="<b><img onerror=…>Yıkama"). O zaman yarım parça
+                      // yeni, temizlenmemiş bir etiket olarak parse edilir → stored-XSS. Her iki parça
+                      // basılmadan önce YENİDEN temizlenir.
+                      _left = sanitizeHtml(_html.slice(0, _idx));
+                      _right = sanitizeHtml(_html.slice(_idx));
                     }
                     const _cls = "text-[11px] text-gray-600 leading-snug [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-0 [&_p]:mb-1";
                     return (

@@ -4,6 +4,7 @@ import { Package, Truck, CheckCircle, Clock, MapPin, Search, ExternalLink } from
 import axios from "axios";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { orderAccessHeaders } from "../lib/orderAccess";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -17,6 +18,10 @@ export default function TrackOrder() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searched, setSearched] = useState(false);
+  // Denetim #27: sipariş NUMARASIYLA aramada ayrıntı için siparişteki e-posta/telefon istenir
+  // (kargo takip numarasıyla arama doğrudan sonuç verir).
+  const [needsContact, setNeedsContact] = useState(false);
+  const [contact, setContact] = useState("");
 
   const handleSearch = async (e) => {
     e?.preventDefault();
@@ -27,10 +32,21 @@ export default function TrackOrder() {
     setSearched(true);
     
     try {
-      const res = await axios.get(`${API}/track/${trackingCode.trim()}`);
-      setOrder(res.data);
+      const code = trackingCode.trim();
+      const headers = orderAccessHeaders(code, needsContact && contact.trim() ? { "X-Order-Contact": contact.trim() } : {});
+      const res = await axios.get(`${API}/track/${encodeURIComponent(code)}`, { headers });
+      if (res.data?.verification_required) {
+        setNeedsContact(true);
+        setOrder(null);
+      } else {
+        setNeedsContact(false);
+        setOrder(res.data);
+      }
     } catch (err) {
-      setError("Sipariş bulunamadı. Lütfen sipariş numaranızı veya kargo takip numaranızı kontrol edin.");
+      const st = err.response?.status;
+      setError(st === 403 ? "Girdiğiniz e-posta/telefon sipariş kayıtları ile eşleşmiyor."
+        : st === 429 ? "Çok fazla hatalı deneme. Lütfen 1 saat sonra tekrar deneyin."
+        : "Sipariş bulunamadı. Lütfen sipariş numaranızı veya kargo takip numaranızı kontrol edin.");
       setOrder(null);
     } finally {
       setLoading(false);
@@ -93,6 +109,32 @@ export default function TrackOrder() {
             </button>
           </div>
         </form>
+
+        {needsContact && !order && (
+          <form onSubmit={handleSearch} className="mb-8 bg-white border rounded-lg p-4" data-testid="tracking-contact-form">
+            <p className="text-sm text-gray-700 mb-3">
+              Güvenliğiniz için sipariş ayrıntılarını görmek üzere siparişte kullandığınız e-posta adresini
+              veya telefon numaranızın tamamını girin.
+            </p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                placeholder="E-posta veya telefon numarası"
+                className="flex-1 min-w-0 border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-black"
+                data-testid="tracking-contact-input"
+              />
+              <button
+                type="submit"
+                disabled={loading || !contact.trim()}
+                className="shrink-0 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 disabled:bg-gray-400 flex items-center gap-2"
+              >
+                Doğrula
+              </button>
+            </div>
+          </form>
+        )}
 
         {/* Error */}
         {error && searched && (

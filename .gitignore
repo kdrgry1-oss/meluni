@@ -254,3 +254,6 @@ data_export/
 backend/scripts/backups/
 *.xlsx
 *.archive.gz
+
+# Meluni marketplace inventory regression coverage
+!backend/tests/security_e2e/test_meluni_retired_inventory.py

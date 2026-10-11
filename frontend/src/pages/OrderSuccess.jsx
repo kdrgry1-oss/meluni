@@ -7,6 +7,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import BankTransferInfo from "../components/BankTransferInfo";
 import { useAuth } from "../context/AuthContext";
+import { maskTaxId } from "../lib/taxId";
+import { orderAccessHeaders } from "../lib/orderAccess";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -38,7 +40,7 @@ export default function OrderSuccess() {
     (async () => {
       try {
         const token = localStorage.getItem("token");
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const headers = orderAccessHeaders(orderNumber, token ? { Authorization: `Bearer ${token}` } : {});
         const r = await axios.get(`${API}/orders/by-number/${orderNumber}`, { headers });
         if (!cancel) setOrder(r.data);
       } catch (_) {
@@ -200,7 +202,7 @@ export default function OrderSuccess() {
               <MapPin size={12} /> Teslimat Adresi
             </p>
             <p className="text-sm text-black mb-1">{ship.first_name} {ship.last_name}</p>
-            <p className="text-sm text-gray-700 leading-relaxed">{ship.address}</p>
+            {ship.address && <p className="text-sm text-gray-700 leading-relaxed">{ship.address}</p>}
             <p className="text-sm text-gray-700">{ship.district} / {ship.city}</p>
             <p className="text-sm text-gray-700 mt-2 flex items-center gap-2">
               <Phone size={12} /> {ship.phone}
@@ -215,7 +217,7 @@ export default function OrderSuccess() {
             <div>
               <p className="text-[10px] tracking-[0.2em] text-gray-500 uppercase mb-4">Kurumsal Fatura</p>
               <p className="text-sm text-black mb-1">{order.billing_info.company_name}</p>
-              <p className="text-sm text-gray-700">VKN: {order.billing_info.tax_number}</p>
+              <p className="text-sm text-gray-700">VKN: {maskTaxId(order.billing_info.tax_number)}</p>
               <p className="text-sm text-gray-700">Vergi Dairesi: {order.billing_info.tax_office}</p>
               {order.billing_info.e_invoice_user && (
                 <p className="text-xs text-gray-500 mt-2">e-Fatura mükellefi</p>

@@ -9,15 +9,17 @@
  * Numara girilmeden veya kapalıyken HİÇBİR ŞEY render etmez (ölü buton yok).
  * /admin rotalarında ve native uygulamada gösterilmez.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { enforceSingleWhatsAppFab, restoreSuppressedWhatsAppFabs } from "../lib/whatsappSingleton";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 export default function WhatsAppButton() {
   const [cfg, setCfg] = useState(null);
   const loc = useLocation();
+  const fabRef = useRef(null);
 
   useEffect(() => {
     axios.get(`${API}/business-rules`)
@@ -25,27 +27,44 @@ export default function WhatsAppButton() {
       .catch(() => {});
   }, []);
 
+  const isAdmin = (loc.pathname || "").startsWith("/admin");
+  const enabled = cfg?.["storefront.whatsapp_enabled"] === true;
+  const raw = String(cfg?.["storefront.whatsapp_number"] || "").replace(/[^\d]/g, "");
+
+  useEffect(() => {
+    if (isAdmin) {
+      restoreSuppressedWhatsAppFabs(document);
+      return undefined;
+    }
+    const sync = () => enforceSingleWhatsAppFab(document, enabled && raw ? fabRef.current : null);
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "href", "style"] });
+    return () => observer.disconnect();
+  }, [enabled, raw, isAdmin]);
+
   if (!cfg) return null;
-  if (cfg["storefront.whatsapp_enabled"] !== true) return null;
-  const raw = String(cfg["storefront.whatsapp_number"] || "").replace(/[^\d]/g, "");
+  if (!enabled) return null;
   if (!raw) return null;
   // Admin rotalarında gösterme
-  if ((loc.pathname || "").startsWith("/admin")) return null;
+  if (isAdmin) return null;
 
   const msg = String(cfg["storefront.whatsapp_message"] || "Merhaba, yardımcı olur musunuz?");
   const href = `https://wa.me/${raw}?text=${encodeURIComponent(msg)}`;
 
   return (
     <a
+      ref={fabRef}
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="WhatsApp ile destek"
       data-testid="whatsapp-fab"
+      data-meluni-contact-fab="true"
       style={{
-        position: "fixed", right: "18px", bottom: "18px", zIndex: 9998,
+        position: "fixed", right: "18px", bottom: "max(18px, env(safe-area-inset-bottom))", zIndex: 9998,
         width: "54px", height: "54px", borderRadius: "50%",
-        background: "#25D366", display: "flex", alignItems: "center", justifyContent: "center",
+        background: "#116b43", display: "flex", alignItems: "center", justifyContent: "center",
         boxShadow: "0 4px 14px rgba(0,0,0,.25)", transition: "transform .15s ease",
       }}
       onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.08)"; }}

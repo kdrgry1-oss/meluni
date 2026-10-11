@@ -17,7 +17,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import {
-  Search, RefreshCw, Check, X, Store, AlertCircle, ArrowRight, Link as LinkIcon, FileJson, ChevronsUpDown,
+  Search, RefreshCw, Check, X, Store, AlertCircle, ArrowRight, Link as LinkIcon, FileJson, ChevronsUpDown, Trash2,
 } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle,
@@ -75,6 +75,64 @@ function _fixedDefaultFor(name) {
   const k = (name || "").toLocaleLowerCase("tr").trim();
   return FIXED_DEFAULT_VALUES[k] || null;
 }
+
+// ── AMAZON: İngilizce productType attribute'ları için Türkçe etiket + otomatik/varsayılan davranış ──
+const AMZ_TR = {
+  item_name: "Ürün Adı", brand: "Marka", product_description: "Ürün Açıklaması",
+  bullet_point: "Madde İşaretleri (özellikler)", fabric_type: "Kumaş Türü",
+  country_of_origin: "Menşei (üretim ülkesi)", material: "Malzeme", color: "Renk",
+  size: "Beden", style: "Stil", department: "Bölüm", target_gender: "Cinsiyet",
+  age_range_description: "Yaş Grubu", occasion_type: "Kullanım Ortamı",
+  care_instructions: "Yıkama / Bakım", pattern_type: "Desen", neck_style: "Yaka Tipi",
+  sleeve_type: "Kol Tipi", closure_type: "Kapama Tipi", main_product_image_locator: "Ana Görsel",
+  purchasable_offer: "Fiyat", fulfillment_availability: "Stok", condition_type: "Ürün Durumu",
+  externally_assigned_product_identifier: "Barkod (EAN/UPC)",
+};
+// Meluni ürün alanından OTOMATİK dolan → kullanıcı elle girmez.
+const AMZ_AUTO_FILLED = new Set([
+  "item_name", "brand", "product_description", "bullet_point", "main_product_image_locator",
+  "purchasable_offer", "fulfillment_availability", "condition_type",
+  "externally_assigned_product_identifier", "size", "color",
+]);
+// Varsayılan değer için öneri (placeholder).
+const AMZ_DEFAULT_SUGGEST = {
+  country_of_origin: "Türkiye", target_gender: "Kadın", department: "Kadın",
+  age_range_description: "Yetişkin",
+};
+// Amazon alanlarının Türkçe AÇIKLAMASI — kullanıcı ne olduğunu görüp mantıklı seçsin.
+const AMZ_DESC = {
+  item_name: "Ürün başlığı — Meluni ürün adından otomatik gelir.",
+  brand: "Marka adı — Meluni markadan otomatik.",
+  product_description: "Ürün açıklaması — Meluni açıklamasından otomatik.",
+  bullet_point: "Madde madde öne çıkan özellikler (5 adede kadar).",
+  fabric_type: "Kumaş içeriği (ör. %100 Pamuk, Polyester).",
+  country_of_origin: "Menşei — üretildiği/ithal edildiği ülke (ör. Türkiye).",
+  material: "Ana malzeme.",
+  color: "Renk — Meluni varyant renginden otomatik.",
+  size: "Beden — Meluni varyant bedeninden otomatik.",
+  department: "Bölüm/hedef grup (womens=Kadın, mens=Erkek, girls=Kız çocuk).",
+  target_gender: "Hedef cinsiyet (female=Kadın, male=Erkek, unisex).",
+  age_range_description: "Yaş grubu (adult=Yetişkin, child=Çocuk).",
+  style: "Stil/tarz (ör. Casual, Klasik).",
+  occasion_type: "Kullanım ortamı (Günlük, Spor, Ofis).",
+  care_instructions: "Yıkama/bakım talimatı (ör. 30°C, kuru temizleme).",
+  pattern_type: "Desen (Düz, Çizgili, Çiçekli).",
+  neck_style: "Yaka tipi.",
+  sleeve_type: "Kol tipi (Kısa, Uzun, Kolsuz).",
+  closure_type: "Kapama tipi (Fermuar, Düğme, Bağcık).",
+  outer_material_type: "Dış malzeme.",
+  fit_type: "Kalıp (Slim, Regular, Oversize).",
+  model_number: "Model/stil kodun (kendi kodun) — opsiyonel, boş bırakılabilir.",
+  model_name: "Model/stil adı — opsiyonel, boş bırakılabilir.",
+  recommended_browse_nodes: "Amazon kategori düğümü (browse node) ID'si — ürünün Amazon'da göründüğü kategori. Boş bırakılırsa Amazon productType'a göre atar.",
+  parentage_level: "Varyant yapısı: parent=ana ürün, child=alt (beden/renk) varyant.",
+  variation_theme: "Varyant teması (SIZE=beden, COLOR=renk, SIZE_COLOR).",
+  item_type_name: "Ürün tipi adı.",
+  number_of_items: "Paketteki adet (tek ürün = 1).",
+  batteries_required: "Pil gerekli mi (giyimde Hayır).",
+  supplier_declared_dg_hz_regulation: "Tehlikeli madde beyanı (giyimde 'not_applicable').",
+  is_expiration_dated_product: "Son kullanma tarihli ürün mü (giyimde Hayır).",
+};
 
 function sortLikeSize(arr, getName) {
   return [...(arr || [])].sort((a, b) => {
@@ -160,15 +218,22 @@ function SearchableValueSelect({ value, options, onChange, placeholder, testId, 
   // Büyük listelerde (Renk ~1999, Menşei ~285) TÜM seçenekleri DOM'a basmak donmaya yol açar.
   // Aramaya göre filtrele ve en fazla 250 seçenek göster; seçili olanı her zaman dahil et.
   const nq = _normVal(q);
+  // Otomatik ön-arama (seed) sonuç vermiyorsa (örn. "Pamuklu" → HB'de yalnız "Pamuk" var) kullanıcıya
+  // boş liste gösterme: önce kısa ön-ekle (ilk 4 harf) dene, o da boşsa TÜM listeyi göster.
   const filtered = React.useMemo(() => {
-    const base = nq
+    let base = nq
       ? (options || []).filter((o) => _normVal(o.name).includes(nq))
       : (options || []);
+    if (nq && base.length === 0 && seed && q === seed) {
+      const short = _normVal(seed).slice(0, 4);
+      base = short ? (options || []).filter((o) => _normVal(o.name).includes(short)) : [];
+      if (base.length === 0) base = options || [];
+    }
     const top = base.slice(0, 250);
     if (selected && !top.some((o) => (selected.id != null ? String(o.id) === String(selected.id) : o.name === selected.name))) top.unshift(selected);
     return top;
   }, [options, nq, selected]);
-  const moreCount = Math.max(0, (nq ? (options || []).filter((o) => _normVal(o.name).includes(nq)).length : (options || []).length) - 250);
+  const moreCount = Math.max(0, ((options || []).length > 250 && filtered.length >= 250 ? (options || []).length : filtered.length) - 250);
   return (
     <Popover open={open} onOpenChange={(o) => { setOpen(o); setQ(o ? (seed || "") : ""); }}>
       <PopoverTrigger asChild>
@@ -549,6 +614,9 @@ export function AdvancedAttributeMatchModal({ open, onClose, marketplace, catego
                   const hasVals = attr.attributeValues?.length > 0;
                   const mapped = mappings[id];
                   const isReq = !!attr.required;
+                  const isAmazon = (marketplace || "").toString().startsWith("amazon");
+                  const amzAuto = isAmazon && AMZ_AUTO_FILLED.has(name);
+                  const trLabel = isAmazon ? (AMZ_TR[name] || name) : name;
                   // Zorunlu/opsiyonel geçişinde küçük başlık satırı
                   const showReqHeader = idx === 0 && isReq;
                   const showOptHeader = !isReq && idx > 0 && rows[idx - 1]?.required;
@@ -577,12 +645,24 @@ export function AdvancedAttributeMatchModal({ open, onClose, marketplace, catego
                           )}
                         </td>
                         <td className="px-4 py-2.5">
-                          <p className={`font-medium ${isReq ? "text-red-900" : "text-gray-800"}`}>{name}</p>
+                          <p className={`font-medium ${isReq ? "text-red-900" : "text-gray-800"}`}>{trLabel}</p>
+                          {isAmazon && trLabel !== name && (
+                            <p className="text-[11px] text-gray-400 font-mono">{name}</p>
+                          )}
+                          {isAmazon && AMZ_DESC[name] && (
+                            <p className="text-[11px] text-gray-500 mt-0.5 leading-snug max-w-xs">{AMZ_DESC[name]}</p>
+                          )}
                           {attr.attributeType && (
                             <p className="text-xs text-gray-400">Tür: {attr.attributeType}</p>
                           )}
                         </td>
                         <td className="px-4 py-2.5 space-y-2">
+                          {amzAuto ? (
+                            <span className="inline-block text-[11px] bg-green-50 text-green-700 border border-green-200 rounded px-2 py-1">
+                              ✓ Otomatik — Meluni ürün alanından doldurulur (eşleştirme gerekmez)
+                            </span>
+                          ) : (
+                          <>
                           <LocalAttrAutoComplete
                             value={mapped || ""}
                             onChange={(v) => setMappings((p) => ({ ...p, [id]: v }))}
@@ -633,9 +713,11 @@ export function AdvancedAttributeMatchModal({ open, onClose, marketplace, catego
                               </select>
                             </div>
                         )}
+                          </>
+                          )}
                         </td>
                         <td className="px-4 py-2.5 text-center">
-                          {mapped || defaults[id] ? (
+                          {amzAuto || mapped || defaults[id] ? (
                             <Check size={16} className="text-green-500 mx-auto" />
                           ) : isReq ? (
                             <X size={16} className="text-red-400 mx-auto" />
@@ -710,6 +792,9 @@ export function AdvancedValueMatchModal({ open, onClose, marketplace, category }
   // Attribute değiştiğinde aramayı sıfırla
   useEffect(() => { setValSearch(""); }, [selectedAttrId]);
   const color = MP_COLORS[marketplace] || "orange";
+  // Pazaryeri adı — modal metinleri için (eskiden "HB" sabitti; Trendyol modalında YANLIŞ
+  // görünüyordu. Kaynak değerler zaten seçili pazaryerinin enum'undan gelir).
+  const mpLabel = { trendyol: "Trendyol", hepsiburada: "Hepsiburada", temu: "Temu" }[marketplace] || marketplace;
 
   const load = useCallback(async () => {
     if (!category) return;
@@ -784,6 +869,23 @@ export function AdvancedValueMatchModal({ open, onClose, marketplace, category }
     } catch {
       toast.error("Kaydedilemedi");
     } finally { setSaving(false); }
+  };
+
+  // ── KATEGORİ-SCOPED SİLME (yalnız BU kategorinin category_mappings belgesini değiştirir;
+  // auto-save otomatik yazar. Diğer kategoriler ETKİLENMEZ). ──────────────────────────────
+  const deleteAttrMappings = (attrId, attrName) => {
+    if (!window.confirm(`"${attrName}" özelliğinin BU KATEGORİDEKİ tüm değer eşleştirmeleri ve varsayılanı kaldırılsın mı? (Diğer kategoriler etkilenmez)`)) return;
+    setValueMappings((p) => {
+      const n = {};
+      for (const k of Object.keys(p)) if (!k.startsWith(`${attrId}|`)) n[k] = p[k];
+      return n;
+    });
+    setDefaults((p) => { const n = { ...p }; delete n[attrId]; delete n[String(attrId)]; return n; });
+    toast.success(`"${attrName}" bu kategoride temizlendi`);
+  };
+  const deleteValueMapping = (attrId, lv) => {
+    setValueMappings((p) => { const n = { ...p }; delete n[`${attrId}|${lv}`]; return n; });
+    toast.success(`"${lv}" eşleştirmesi bu kategoride kaldırıldı`);
   };
 
   // Otomatik değer eşleştirme — TÜM attribute'lardaki TÜM değerleri tarar.
@@ -1007,10 +1109,10 @@ export function AdvancedValueMatchModal({ open, onClose, marketplace, category }
                   const isActive = id === String(selectedAttrId);
                   const isVariant = a.variant === true || /_variant_property$/i.test(id);
                   return (
+                    <div key={id} className="flex items-stretch">
                     <button
-                      key={id}
                       onClick={() => setSelectedAttrId(id)}
-                      className={`w-full text-left px-3 py-2 text-xs transition flex items-center justify-between gap-2 ${
+                      className={`flex-1 min-w-0 text-left px-3 py-2 text-xs transition flex items-center justify-between gap-2 ${
                         isActive
                           ? `bg-${color}-50 border-l-2 border-${color}-500 font-semibold text-${color}-900`
                           : "hover:bg-gray-50 border-l-2 border-transparent text-gray-700"
@@ -1038,6 +1140,14 @@ export function AdvancedValueMatchModal({ open, onClose, marketplace, category }
                         <span className="text-[9px] text-gray-400">{localCount}</span>
                       </span>
                     </button>
+                    <span role="button" tabIndex={0}
+                      title="Bu özelliğin BU kategorideki eşleştirmelerini/varsayılanını sil (diğer kategoriler etkilenmez)"
+                      onClick={(e) => { e.stopPropagation(); deleteAttrMappings(id, name); }}
+                      className="shrink-0 w-7 flex items-center justify-center text-gray-300 hover:text-red-600 hover:bg-red-50 cursor-pointer border-l"
+                      data-testid={`adv-attr-del-${id}`}>
+                      <Trash2 size={13} />
+                    </span>
+                    </div>
                   );
                   });
                 })()}
@@ -1070,8 +1180,8 @@ export function AdvancedValueMatchModal({ open, onClose, marketplace, category }
                           value={curDef}
                           options={_enrichWithLocalVals(mpVals, attrName, currentAttr)}
                           onChange={setDef}
-                          placeholder="— HB değeri seç —"
-                          seed={mpVals.length > 200 ? (attrName || "") : ""}
+                          placeholder={`— ${mpLabel} değeri seç —`}
+                          seed=""
                           color={color}
                           testId={`adv-val-default-${aid}`}
                         />
@@ -1098,20 +1208,31 @@ export function AdvancedValueMatchModal({ open, onClose, marketplace, category }
                       <span className="text-[11px] text-blue-700">(Sistem sabiti: "{fixed}" zaten gönderiliyor)</span>
                     )}
                     {mpVals.length > 0 && (
-                      <span className="ml-auto text-[10px] text-gray-400 shrink-0">{mpVals.length} HB değeri çekildi</span>
+                      <span className="ml-auto text-[10px] text-gray-400 shrink-0" title="Soldaki 'Sistem Değeri' listesi ÜRÜNLERDEKİ mevcut değerlerden gelir; ürünlerde olmayan bir değer (örn. Dokuma) burada satır olarak görünmez. Böyle bir değeri tüm ürünlere vermek için üstteki 'Varsayılan değer'i kullanın; tek ürüne vermek için doğrulama ekranındaki yeşil 'TY:' rozetine tıklayın.">{mpVals.length} {mpLabel} değeri çekildi · ⓘ</span>
                     )}
                   </div>
                 );
               })()}
+              {(marketplace || "").startsWith("amazon") && (
+                <div className="bg-emerald-50 border-b border-emerald-200 px-3 py-2 text-[11px] text-emerald-900 flex items-start gap-1.5" data-testid="adv-amazon-valinfo">
+                  <AlertCircle size={12} className="mt-0.5 shrink-0" />
+                  <span>
+                    <b>Amazon'da nasıl çalışır:</b> Bu alanın Amazon değerini <b>üstteki "Varsayılan değer"</b>
+                    kutusundan seç — tüm ürünlere gönderilir. <b>Alt tablo</b> yalnız ürünlerinde <b>farklı
+                    değerler olan</b> alanlarda (Beden/Renk) dolar. Menşei/Kumaş/Kategori gibi tek-değerli
+                    alanlarda alt tabloyu boş bırak; üstten seçmen yeterli.
+                  </span>
+                </div>
+              )}
               {/* HB serbest-metin bilgilendirmesi: bu özellik HB'de kapalı (seçmeli) liste DEĞİL —
                   kullanıcı "acaba HB'de var mı" diye tedirgin olmasın diye serbest metin olduğunu açıkça belirt. */}
               {(currentAttr?.attributeValues || []).length === 0 && (
                 <div className="bg-blue-50 border-b border-blue-200 px-3 py-2 text-[11px] text-blue-800 flex items-start gap-1.5" data-testid="adv-freetext-info">
                   <AlertCircle size={12} className="mt-0.5 shrink-0" />
                   <span>
-                    <b>{attrName}</b> HB'de <b>serbest metin</b> alanı — kapalı (seçmeli) liste yok.
-                    Yazdığın her değer geçerlidir (ör. "normal"); HB'nin hazır "kabul edilen değer" listesi yoktur.
-                    Kapalı listeli alanlarda dropdown zaten yalnız HB'nin kabul ettiği değerleri gösterir.
+                    <b>{attrName}</b> {mpLabel}'de <b>serbest metin</b> alanı — kapalı (seçmeli) liste yok.
+                    Yazdığın her değer geçerlidir (ör. "normal"); {mpLabel}'nin hazır "kabul edilen değer" listesi yoktur.
+                    Kapalı listeli alanlarda dropdown zaten yalnız {mpLabel}'nin kabul ettiği değerleri gösterir.
                   </span>
                 </div>
               )}
@@ -1158,7 +1279,10 @@ export function AdvancedValueMatchModal({ open, onClose, marketplace, category }
                     if (filtered.length === 0) {
                       return (
                         <tr><td colSpan={2} className="py-8 text-center text-xs text-gray-400">
-                          {q ? `"${valSearch}" ile eşleşen değer yok` : `Bu kategorideki ürünlerde "${attrName}" özelliği için değer yok.`}
+                          {q ? `"${valSearch}" ile eşleşen değer yok`
+                            : ((marketplace || "").startsWith("amazon")
+                                ? `Bu alan için ürünlerinde ayrı değer yok — üstteki "Varsayılan değer"den Amazon değerini seç (tüm ürünlere gider). Bu tablo yalnız Beden/Renk gibi çok-değerli alanlarda dolar.`
+                                : `Bu kategorideki ürünlerde "${attrName}" özelliği için değer yok.`)}
                         </td></tr>
                       );
                     }
@@ -1183,6 +1307,13 @@ export function AdvancedValueMatchModal({ open, onClose, marketplace, category }
                               ) : (
                                 <span className="text-[9px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-bold">✓ EŞLEŞTİ</span>
                               ))}
+                              <button type="button"
+                                title="Bu değerin BU kategorideki eşleştirmesini kaldır (diğer kategoriler etkilenmez)"
+                                onClick={() => deleteValueMapping(selectedAttrId, lv)}
+                                className="ml-auto shrink-0 w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-red-600 hover:bg-red-50"
+                                data-testid={`adv-valmap-del-${lv}`}>
+                                <Trash2 size={12} />
+                              </button>
                             </div>
                           </td>
                           <td className="px-4 py-2">
