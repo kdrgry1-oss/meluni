@@ -2635,6 +2635,10 @@ async def sync_products_to_trendyol(
                         continue  # kullanıcı bu barkodu istemedi, atla
                     item = base_item.copy()
                     item["barcode"] = v.get("barcode")
+                    # Barcode migrations may need a new marketplace model identity.
+                    # Keep this per variant so subsequent exports reuse its accepted card.
+                    if v.get("trendyol_product_main_id"):
+                        item["productMainId"] = str(v["trendyol_product_main_id"])
                     # stockCode = parent stok kodu (FCSS.../FCFW...). Trendyol unique
                     # check'i barcode üzerinden yapar, stockCode aynı olabilir.
                     parent_stock = (product.get("stock_code") or product.get("sku") or "").strip()
