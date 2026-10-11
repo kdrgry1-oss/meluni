@@ -1690,5 +1690,66 @@ async def import_status(_admin=Depends(require_admin)):
 
 
 @router.post("/sync-stock")
-async def run_stock_sync(_admin=Depends(require_admin)):
-    return await sync_stock()
+async def run_stock_sync(payload: dict | None = None, _admin=Depends(require_admin)):
+    """Stok/fiyat senkronunu ARKA PLANDA başlatır ve hemen döner.
+
+    6.700 kalemlik iş istek-yanıt döngüsüne sığmıyor: canlıda vekil 116.
+    saniyede 502 veriyor, istemcinin bağlantısı kopunca coroutine iptal oluyor
+    ve senkron YARIDA kalıyor — panelden elle çalıştırmak bu yüzden hiç
+    tamamlanmıyordu. Artık iş sunucuda bağımsız çalışır, durum
+    /sync-stock-status ile sorulur.
+
+    `bekle: true` ile eski (senkron) davranış korunur — betikler için.
+    """
+    p = payload or {}
+    if p.get("bekle"):
+        return await sync_stock()
+
+    st = (await get_config()).get("stock_status") or {}
+    if st.get("running"):
+        _bayat = False
+        try:
+            from datetime import datetime, timezone, timedelta
+            _bas = datetime.fromisoformat(str(st.get("started_at") or "").replace("Z", "+00:00"))
+            if _bas.tzinfo is None:
+                _bas = _bas.replace(tzinfo=timezone.utc)
+            _bayat = (datetime.now(timezone.utc) - _bas) > timedelta(hours=2)
+        except Exception:
+            _bayat = True
+        if not _bayat:
+            raise HTTPException(status_code=409,
+                                detail=f"Zaten bir stok senkronu sürüyor (başlangıç: {st.get('started_at')}).")
+        logger.warning("[supplier_xml] bayat stok senkronu kilidi temizlendi (%s)",
+                       st.get("started_at"))
+
+    async def _job():
+        await _set_stock_status(running=True, started_at=_now_iso(),
+                                result=None, error=None)
+        try:
+            res = await sync_stock()
+            await _set_stock_status(running=False, finished_at=_now_iso(),
+                                    result=res, error=None)
+            logger.info(f"[supplier_xml] stok senkronu bitti: {res}")
+        except Exception as e:
+            await _set_stock_status(running=False, finished_at=_now_iso(),
+                                    result=None, error=f"{type(e).__name__}: {e}")
+            logger.exception("[supplier_xml] stok senkronu basarisiz")
+
+    asyncio.create_task(_job())
+    return {"started": True,
+            "message": "Stok senkronu arka planda başladı. Durum: GET /api/supplier-xml/sync-stock-status"}
+
+
+async def _set_stock_status(**fields) -> None:
+    await db.settings.update_one(
+        {"id": SETTINGS_ID},
+        {"$set": {f"stock_status.{k}": v for k, v in fields.items()}},
+        upsert=True)
+
+
+@router.get("/sync-stock-status")
+async def stock_sync_status(_admin=Depends(require_admin)):
+    """Arka plandaki stok senkronunun durumu."""
+    cfg = await get_config()
+    return {**(cfg.get("stock_status") or {}),
+            "last_stock_sync": cfg.get("last_stock_sync")}

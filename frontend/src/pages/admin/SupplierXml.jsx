@@ -116,6 +116,12 @@ export default function SupplierXml() {
       const d = await r.json();
       if (!r.ok) throw new Error(d.detail || `${label} başarısız`);
       if (path === "preview") setPreview(d);
+      else if (d.started) {
+        // İş ARKA PLANDA başladı; "tamam" demek yanıltıcı olur — 6.700 kalemlik
+        // senkron dakikalarca sürüyor ve sonucu durum ucundan geliyor.
+        setMsg({ type: "warn", text: `${label} arka planda başladı — ${d.message || "durumu birazdan yenileyin."}` });
+        load();
+      }
       else {
         setMsg({
           type: d.warning ? "warn" : "ok",
