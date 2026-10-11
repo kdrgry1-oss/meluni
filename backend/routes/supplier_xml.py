@@ -1625,9 +1625,30 @@ async def run_import(payload: dict | None = None, _admin=Depends(require_admin))
     """
     p = payload or {}
     st = (await get_config()).get("import_status") or {}
+    # KİLİT KENDİLİĞİNDEN AÇILIR. İş `asyncio.create_task` ile çalışıyor;
+    # sunucu yeniden başlarsa (deploy) iş ölüyor ama `running` bayrağı sonsuza
+    # kadar açık kalıyor ve içe aktarma bir daha HİÇ çalıştırılamıyor. Canlıda
+    # bayrak 10 Ağustos'tan beri açıktı: iki ay boyunca elle içe aktarma 409
+    # dönüyordu. Makul bir süreden eski kilit, biten değil ÖLEN bir iştir.
+    _BAYAT_SAAT = 3
     if st.get("running"):
-        raise HTTPException(status_code=409,
-                            detail=f"Zaten bir içe aktarma sürüyor (başlangıç: {st.get('started_at')}).")
+        _bayat = False
+        try:
+            from datetime import datetime, timezone, timedelta
+            _bas = datetime.fromisoformat(str(st.get("started_at") or "").replace("Z", "+00:00"))
+            if _bas.tzinfo is None:
+                _bas = _bas.replace(tzinfo=timezone.utc)
+            _bayat = (datetime.now(timezone.utc) - _bas) > timedelta(hours=_BAYAT_SAAT)
+        except Exception:
+            _bayat = True          # tarih okunamıyorsa kilide güvenilmez
+        if _bayat:
+            logger.warning("[supplier_xml] bayat içe aktarma kilidi temizlendi "
+                           "(başlangıç: %s)", st.get("started_at"))
+            await _set_status(running=False, phase="bayat kilit temizlendi",
+                              error=None)
+        else:
+            raise HTTPException(status_code=409,
+                                detail=f"Zaten bir içe aktarma sürüyor (başlangıç: {st.get('started_at')}).")
 
     only_new = bool(p.get("only_new", True))
     limit = int(p.get("limit") or 0)
