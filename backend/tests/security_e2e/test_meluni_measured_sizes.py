@@ -81,3 +81,49 @@ def test_photo_output_keeps_entire_frame_without_stretching_edges(kv_client):
     assert output.getpixel((600,300))[0]>200
     assert output.getpixel((600,300))[1]<40
     assert min(output.getpixel((600,1780)))>245
+
+
+def test_whole_product_absence_requires_two_complete_xml_reads(kv_client,kv_db,monkeypatch):
+    from routes import supplier_xml as sx
+    import supplier_codes
+    source={'model_ref':'present','name':'Kazak','price':100,'vat':10,'variants':[{'supplier_barcode':'present-M','size':'M','color':'Siyah','stock':12,'ref':'present-M'}]}
+    async def feed():return [source],{}
+    monkeypatch.setattr(sx,'load_items',feed)
+    key=supplier_codes.supplier_key('modayakamoz','removed')
+    original={'id':'removed','supplier':'modayakamoz','supplier_key':key,'is_active':True,'stock':9,'variants':[{'id':'historical','barcode':'keep-me','size':'L','stock':9}]}
+    kv_run(kv_db.products.insert_one(original))
+    kv_run(sx.sync_stock())
+    assert kv_run(kv_db.products.find_one({'id':'removed'}))['stock']==9
+    result=kv_run(sx.sync_stock())
+    stored=kv_run(kv_db.products.find_one({'id':'removed'}))
+    assert result['absent_products_zeroed']==1
+    assert stored['stock']==0 and stored['variants'][0]['feed_missing']
+    assert stored['variants'][0]['barcode']=='keep-me' and stored['is_active'] is True
+
+
+def test_partial_xml_does_not_clear_absent_product_stock(kv_client,kv_db,monkeypatch):
+    from routes import supplier_xml as sx
+    import supplier_codes
+    source={'model_ref':'only-one','name':'Kazak','variants':[]}
+    async def feed():return [source],{}
+    monkeypatch.setattr(sx,'load_items',feed)
+    previous=[supplier_codes.supplier_key('modayakamoz',str(i)) for i in range(10)]
+    kv_run(kv_db.settings.insert_one({'id':sx.SETTINGS_ID,'stock_feed_keys':previous}))
+    kv_run(kv_db.products.insert_one({'id':'safe','supplier':'modayakamoz','supplier_key':supplier_codes.supplier_key('modayakamoz','not-seen'),'stock':7,'variants':[{'id':'S','size':'S','stock':7}]}))
+    result=kv_run(sx.sync_stock())
+    assert result['absent_products_zeroed']==0
+    assert kv_run(kv_db.products.find_one({'id':'safe'}))['stock']==7
+    assert kv_run(kv_db.settings.find_one({'id':sx.SETTINGS_ID}))['stock_feed_keys']==previous
+
+
+def test_changed_source_product_key_does_not_erase_a_matching_supplier_barcode(kv_client,kv_db,monkeypatch):
+    from routes import supplier_xml as sx
+    import supplier_codes
+    source={'model_ref':'renamed','name':'Kazak','variants':[{'supplier_barcode':'same-real-M','size':'M','stock':11}]}
+    async def feed():return [source],{}
+    monkeypatch.setattr(sx,'load_items',feed)
+    kv_run(kv_db.settings.insert_one({'id':sx.SETTINGS_ID,'stock_feed_keys':[supplier_codes.supplier_key('modayakamoz','renamed')]}))
+    kv_run(kv_db.products.insert_one({'id':'previous-key','supplier':'modayakamoz','supplier_key':supplier_codes.supplier_key('modayakamoz','old'),'stock':11,'variants':[{'id':'M','size':'M','supplier_barcode':'same-real-M','stock':11}]}))
+    result=kv_run(sx.sync_stock())
+    assert result['absent_alias_skipped']==1
+    assert kv_run(kv_db.products.find_one({'id':'previous-key'}))['stock']==11

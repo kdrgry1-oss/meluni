@@ -1525,8 +1525,40 @@ async def sync_stock() -> Dict[str, Any]:
             failed += 1
             logger.error(f"[supplier_xml] stok eşitlenemedi ({rec.get('name')!r}): {e}")
 
+    # Bütün ürünün XML'den düşmesi de eski stok bırakmamalı. İki ayrı tam
+    # okuma aynı kaybı doğrulamadan kapatma yapmayız; ciddi küçülen veya
+    # hatalı beslemede bu adım atlanır. Kimlikler ve manuel kapatma korunur.
+    source_keys = {supplier_codes.supplier_key(supplier, r["model_ref"]) for r in records}
+    previous_keys = set(cfg.get("stock_feed_keys") or [])
+    absent_zeroed = absent_alias_skipped = 0
+    source_barcodes = {v.get("supplier_barcode") for r in records for v in r.get("variants", [])
+                       if v.get("supplier_barcode")}
+    complete = (bool(source_keys) and bool(previous_keys)
+                and len(source_keys) >= len(previous_keys) * 0.9)
+    if not failed and complete:
+        async for absent in db.products.find(
+                {"supplier": supplier, "supplier_key": {"$nin": list(source_keys | previous_keys)}},
+                {"_id": 0, "id": 1, "stock": 1, "variants": 1}):
+            original = absent.get("variants") or []
+            if any(v.get("supplier_barcode") in source_barcodes for v in original):
+                absent_alias_skipped += 1
+                continue
+            if not absent.get("stock") and all(v.get("feed_missing") for v in original):
+                continue
+            stamp = _now_iso()
+            closed = [{**v, "stock": 0, "feed_missing": True,
+                       "feed_missing_at": v.get("feed_missing_at") or stamp} for v in original]
+            saved = await db.products.update_one(
+                {"id": absent["id"], "variants": original},
+                {"$set": {"variants": closed, "stock": 0, "stock_synced_at": stamp}})
+            absent_zeroed += saved.modified_count
+    if not failed and source_keys and (not previous_keys or complete):
+        await db.settings.update_one({"id": SETTINGS_ID}, {"$set": {
+            "stock_feed_keys": sorted(source_keys), "stock_feed_checked_at": _now_iso()}}, upsert=True)
+
     result = {"updated": touched, "not_in_catalog": missing, "failed": failed,
-              "total": len(records), "retired_single_size": retired,
+              "total": len(records), "absent_products_zeroed": absent_zeroed, "absent_alias_skipped": absent_alias_skipped,
+              "retired_single_size": retired,
               "single_size_max_stock": tek_beden_esik,
               "match_failed_products": eslesmeyen_urun,
               "match_failed_samples": eslesme_ornek, "at": _now_iso()}
