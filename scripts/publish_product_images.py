@@ -46,6 +46,7 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
 
     current_by_id={}
     already={}
+    skipped={}
     for p in products:
         pid=p["product_id"]
         if set((p.get("assets") or {}).keys()) != set(VIEW_ORDER):
@@ -59,7 +60,8 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
                 raise RuntimeError(f"asset missing or checksum mismatch for {pid} {view}")
         doc=await db.products.find_one({"id":pid},{"_id":0,"id":1,"name":1,"is_active":1,"active":1,"stock":1,"images":1,"images_custom":1,"ai_images_publication_id":1,"ai_images_published_assets":1})
         if not doc:
-            raise RuntimeError(f"product not found: {pid}")
+            skipped[pid]="product_not_found"
+            continue
         if doc.get("ai_images_publication_id")==publication_id:
             urls=doc.get("ai_images_published_assets") or {}
             if set(urls.keys()) != set(VIEW_ORDER) or not all(urls.values()):
@@ -71,14 +73,21 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
         try: stock=float(doc.get("stock") or 0)
         except (TypeError,ValueError): stock=0
         if active is not True or stock <= 0:
-            raise RuntimeError(f"product is inactive or out of stock: {pid}")
+            skipped[pid]="inactive_or_out_of_stock"
+            continue
         if doc.get("images_custom") is True:
-            raise RuntimeError(f"custom gallery changed since staging: {pid}")
+            skipped[pid]="custom_gallery_preserved"
+            continue
         if canon(doc.get("name")) != canon(p.get("name")):
-            raise RuntimeError(f"product name changed since staging: {pid}")
+            skipped[pid]="product_name_changed"
+            continue
         if canon(doc.get("images") or []) != canon(p.get("expected_original_images") or []):
-            raise RuntimeError(f"original gallery changed since staging: {pid}")
+            skipped[pid]="original_gallery_changed"
+            continue
         current_by_id[pid]=doc
+
+    if not current_by_id:
+        raise RuntimeError("no eligible product remains after live catalog preflight")
 
     if not r2.is_enabled():
         raise RuntimeError("public R2 storage is not configured on the production server")
@@ -93,6 +102,8 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
     now=datetime.now(timezone.utc).isoformat()
     for p in products:
         pid=p["product_id"]
+        if pid in skipped:
+            continue
         if pid in already:
             staged[pid]=already[pid]
             continue
@@ -106,7 +117,7 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
             staged[pid][view]=url
             staged[pid][f"_record_{view}"]={"id":str(uuid.uuid5(uuid.NAMESPACE_URL,f"meluni:{publication_id}:{pid}:{view}")),"storage_path":filename,"r2_key":key,"r2_url":url,"original_filename":f.name,"content_type":"image/jpeg","size":len(data),"source":"ai_generated","product_id":pid,"pose":ROLE_NAMES[view],"is_deleted":False,"created_at":now}
 
-    pending=[p for p in products if p["product_id"] not in already]
+    pending=[p for p in products if p["product_id"] not in already and p["product_id"] not in skipped]
     if pending:
         async with await client.start_session() as session:
             async with session.start_transaction():
@@ -131,6 +142,8 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
     results=[]
     for p in products:
         pid=p["product_id"]
+        if pid in skipped:
+            continue
         doc=await db.products.find_one({"id":pid},{"_id":0,"id":1,"is_active":1,"stock":1,"images_custom":1,"ai_images_publication_id":1,"ai_images_published_assets":1})
         if not doc or doc.get("ai_images_publication_id")!=publication_id or doc.get("images_custom") is not True:
             raise RuntimeError(f"post-write verification failed for {pid}")
@@ -138,9 +151,9 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
         if set(urls.keys()) != set(VIEW_ORDER):
             raise RuntimeError(f"post-write URL check failed for {pid}")
         results.append({"product_id":pid,"sample":p["sample"],"name":p["name"],"active":doc.get("is_active"),"stock":doc.get("stock"),"publication_id":publication_id,"urls":urls,"gallery_image_count":None})
-    status={"status":"published_and_verified","publication_id":publication_id,"published_at_utc":now,"catalog_poll_at_staging":payload.get("catalog_poll_at"),"products":results,"notes":"R2 object checks passed, gallery updates used transactional compare-and-set, original images preserved, generated size chart last."}
+    status={"status":"published_partial_and_verified" if skipped else "published_and_verified","publication_id":publication_id,"published_at_utc":now,"catalog_poll_at_staging":payload.get("catalog_poll_at"),"products":results,"skipped":[{"product_id":p["product_id"],"sample":p["sample"],"reason":skipped[p["product_id"]]} for p in products if p["product_id"] in skipped],"notes":"R2 object checks passed, gallery updates used transactional compare-and-set, original images preserved, generated size chart last."}
     status_path.write_text(json.dumps(status,ensure_ascii=False,indent=2)+"\n")
-    print(json.dumps({"status":status["status"],"publication_id":publication_id,"products":len(results),"asset_count":len(results)*4},ensure_ascii=False))
+    print(json.dumps({"status":status["status"],"publication_id":publication_id,"products":len(results),"skipped":len(skipped),"asset_count":len(results)*4},ensure_ascii=False))
 
 if __name__=="__main__":
     if len(sys.argv)!=4: raise SystemExit("usage: publish_product_images.py payload.json assets_root status.json")
