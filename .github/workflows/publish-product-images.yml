@@ -10,6 +10,7 @@ on:
         options:
           - publish
           - remove-empty-mongo-url
+          - inspect-catalog
 
 permissions:
   contents: write
@@ -19,6 +20,42 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  inspect_catalog:
+    if: inputs.task == 'inspect-catalog' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+    steps:
+      - name: Inspect live catalog storage read only
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_meluni_publish"
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          else
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
+          fi
+          APP_ROOT="${DEPLOY_PATH:-/home/${SSH_USER}/apps/meluni}"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" bash -s -- "$APP_ROOT" <<'REMOTE'
+          set -euo pipefail
+          root="$1"
+          printf 'App service: '; systemctl is-active meluni 2>/dev/null || true
+          printf 'API response: '; curl -sS -o /dev/null -w '%{http_code}\n' --max-time 5 http://127.0.0.1:8000/api/health || true
+          printf 'Backend target: '; readlink -f "$root/current/backend" || true
+          printf 'Backend product store declarations:\n'
+          rg -n 'MONGO_URL|AsyncIOMotorClient|sqlite3|DATABASE_URL|db = client' "$root/current/backend/routes/deps.py" 2>/dev/null | head -n 14 || true
+          printf 'Data and catalog files:\n'
+          find "$root/current" "$root/shared" -maxdepth 3 -type f \( -iname '*catalog*.json' -o -iname '*products*.json' -o -iname '*catalog*.sqlite*' -o -iname '*products*.sqlite*' -o -iname '*catalog*.db' -o -iname '*products*.db' \) -printf '%p %s bytes\n' 2>/dev/null | head -n 25 || true
+          printf 'Storage directories:\n'
+          find "$root/current/backend" "$root/shared" -maxdepth 2 -type d \( -name uploads -o -name data -o -name storage \) -print 2>/dev/null | head -n 25 || true
+          REMOTE
   remove_empty_mongo_url:
     if: inputs.task == 'remove-empty-mongo-url' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
     runs-on: ubuntu-latest
