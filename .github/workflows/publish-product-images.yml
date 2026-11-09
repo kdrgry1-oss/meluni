@@ -58,9 +58,6 @@ jobs:
           if len(target) != 1:
               raise SystemExit('Multiple Mongo URL settings; no change made.')
           i = target[0]
-          val = lines[i].split(b'=', 1)[1].strip()
-          if val not in (b'', b'""', b"''"):
-              raise SystemExit('Mongo URL setting is nonempty; no change made.')
           suffix = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
           backup = p.with_name(p.name + '.before-mongo-removal-' + suffix)
           backup.write_bytes(raw)
@@ -70,7 +67,7 @@ jobs:
               temp = pathlib.Path(f.name)
           os.chmod(temp, p.stat().st_mode & 0o777)
           temp.replace(p)
-          print('Removed only empty Mongo URL setting; backup retained.')
+          print('Removed only Mongo URL setting; backup retained.')
           PY
           REMOTE
   publish:
