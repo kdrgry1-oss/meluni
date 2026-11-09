@@ -79,6 +79,32 @@ jobs:
           set -euo pipefail
           scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -r publication/payload.json publication/assets scripts/publish_product_images.py "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/"
 
+      - name: Sunucu veritabanı bağlantısını tanıla
+        run: |
+          set -euo pipefail
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" bash -s -- "$APP_ROOT" <<'REMOTE'
+          set -euo pipefail
+          APP_ROOT="$1"
+          set -a
+          . "$APP_ROOT/shared/.env"
+          set +a
+          printf 'Environment keys: '
+          sed -n 's/^\([A-Za-z_][A-Za-z0-9_]*\)=.*/\1/p' "$APP_ROOT/shared/.env" | sort -u | tr '\n' ' '
+          printf '\nMONGO_URL: '
+          if [ -n "${MONGO_URL:-}" ]; then
+            python3 -c 'import os,urllib.parse; u=urllib.parse.urlsplit(os.environ["MONGO_URL"]); print((u.scheme, u.hostname, u.port, u.path))'
+          else
+            printf 'unset\n'
+          fi
+          printf 'Mongo services: '
+          systemctl is-active mongod mongodb 2>/dev/null || true
+          printf 'Mongo listeners: '
+          ss -ltn 2>/dev/null | awk '$4 ~ /:27017$/ {print $4}' | tr '\n' ' '
+          printf '\nMongo sockets: '
+          for s in /tmp/mongodb-27017.sock /run/mongodb/mongodb-27017.sock; do [ ! -S "$s" ] || printf '%s ' "$s"; done
+          printf '\n'
+          REMOTE
+
       - name: Güncel stok ve galeriyle karşılaştırıp yayımla
         run: |
           set -euo pipefail
