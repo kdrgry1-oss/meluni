@@ -58,6 +58,17 @@ jobs:
               print('Local product parse:', type(e).__name__)
           PY
           printf 'Backend target: '; readlink -f "$root/current/backend" || true
+          python3 - <<'PY'
+          import os, subprocess, urllib.parse
+          pid = subprocess.check_output(['systemctl','show','meluni','--property=MainPID','--value'], text=True).strip()
+          try:
+              env = dict(chunk.split(b'=',1) for chunk in open(f'/proc/{pid}/environ','rb').read().split(b'\0') if b'=' in chunk)
+              uri = env.get(b'MONGO_URL',b'').decode()
+              p = urllib.parse.urlsplit(uri) if uri else None
+              print('Running service Mongo URL set:', bool(uri), 'scheme:', p.scheme if p else '', 'host:', p.hostname if p else '', 'DB_NAME set:', bool(env.get(b'DB_NAME')))
+          except Exception as e:
+              print('Running service environment unavailable:', type(e).__name__)
+          PY
           printf 'Backend product store declarations:\n'
           rg -n 'MONGO_URL|AsyncIOMotorClient|sqlite3|DATABASE_URL|db = client' "$root/current/backend/routes/deps.py" 2>/dev/null | head -n 14 || true
           sed -n '14,35p' "$root/current/backend/routes/deps.py" 2>/dev/null || true
