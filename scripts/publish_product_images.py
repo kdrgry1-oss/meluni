@@ -5,6 +5,9 @@ import asyncio, hashlib, json, os, sys, uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
+# The script is staged outside the application package and executed by file
+# path. Make the checked-out backend the import root for its existing modules.
+sys.path.insert(0, os.getcwd())
 from motor.motor_asyncio import AsyncIOMotorClient
 from services import r2_storage as r2
 from routes.deps import db, client
