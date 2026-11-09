@@ -1,7 +1,7 @@
 {
-  "status": "published_partial_and_verified",
+  "status": "published_and_verified",
   "publication_id": "meluni-images-20261110-v1",
-  "published_at_utc": "2026-11-09T23:36:23.017887+00:00",
+  "published_at_utc": "2026-11-09T23:39:32.887560+00:00",
   "catalog_poll_at_staging": "2026-11-09T22:01:48+00:00",
   "products": [
     {
@@ -33,19 +33,38 @@
         "size_chart": "https://cdn.meluni.com.tr/ai-products/5a57a060-5f72-40ec-95c0-37d29efb5b78-size-chart-910d76f27402.jpg"
       },
       "gallery_image_count": null
-    }
-  ],
-  "skipped": [
+    },
     {
       "product_id": "0149d26f-841c-4c99-8e32-16d6ae15173b",
       "sample": 1861,
-      "reason": "custom_gallery_preserved"
+      "name": "Yüksek Bel Kemersiz Atlas Pantolon",
+      "active": true,
+      "stock": 7,
+      "publication_id": "meluni-images-20261110-v1",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0149d26f-841c-4c99-8e32-16d6ae15173b-front-e37c66b0eaa4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0149d26f-841c-4c99-8e32-16d6ae15173b-back-717aada2dee7.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0149d26f-841c-4c99-8e32-16d6ae15173b-model-114113baf99f.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0149d26f-841c-4c99-8e32-16d6ae15173b-size-chart-bd210584bd7b.jpg"
+      },
+      "gallery_image_count": null
     },
     {
       "product_id": "88e0630a-61f4-4704-b84c-1bab9ff67e7f",
       "sample": 1863,
-      "reason": "custom_gallery_preserved"
+      "name": "Yüksek Bel Krep Pantolon",
+      "active": true,
+      "stock": 22,
+      "publication_id": "meluni-images-20261110-v1",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/88e0630a-61f4-4704-b84c-1bab9ff67e7f-front-900fd960c490.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/88e0630a-61f4-4704-b84c-1bab9ff67e7f-back-f837a9c84eae.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/88e0630a-61f4-4704-b84c-1bab9ff67e7f-model-c962900743f1.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/88e0630a-61f4-4704-b84c-1bab9ff67e7f-size-chart-6aa0412ac5e8.jpg"
+      },
+      "gallery_image_count": null
     }
   ],
+  "skipped": [],
   "notes": "R2 object checks passed, gallery updates used transactional compare-and-set, original images preserved, generated size chart last."
 }
