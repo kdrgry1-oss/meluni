@@ -48,9 +48,19 @@ jobs:
           root="$1"
           printf 'App service: '; systemctl is-active meluni 2>/dev/null || true
           printf 'API response: '; curl -sS -o /dev/null -w '%{http_code}\n' --max-time 5 http://127.0.0.1:8000/api/health || true
+          printf 'Local product endpoint: '; curl -sS -o /tmp/meluni-catalog-inspect.json -w '%{http_code}\n' --max-time 8 'http://127.0.0.1:8000/api/products?limit=1' || true
+          python3 - <<'PY'
+          import json
+          try:
+              d=json.load(open('/tmp/meluni-catalog-inspect.json'))
+              print('Local product count:', d.get('total'), 'first id:', (d.get('products') or [{}])[0].get('id'))
+          except Exception as e:
+              print('Local product parse:', type(e).__name__)
+          PY
           printf 'Backend target: '; readlink -f "$root/current/backend" || true
           printf 'Backend product store declarations:\n'
           rg -n 'MONGO_URL|AsyncIOMotorClient|sqlite3|DATABASE_URL|db = client' "$root/current/backend/routes/deps.py" 2>/dev/null | head -n 14 || true
+          sed -n '14,35p' "$root/current/backend/routes/deps.py" 2>/dev/null || true
           printf 'Data and catalog files:\n'
           find "$root/current" "$root/shared" -maxdepth 3 -type f \( -iname '*catalog*.json' -o -iname '*products*.json' -o -iname '*catalog*.sqlite*' -o -iname '*products*.sqlite*' -o -iname '*catalog*.db' -o -iname '*products*.db' \) -printf '%p %s bytes\n' 2>/dev/null | head -n 25 || true
           printf 'Storage directories:\n'
