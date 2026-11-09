@@ -1,0 +1,120 @@
+name: Publish reviewed Meluni product images
+
+on:
+  push:
+    branches:
+      - codex/meluni-publish-images-20261110
+
+permissions:
+  contents: write
+
+concurrency:
+  group: meluni-publish-images
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Yayın paketini doğrula
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          p=pathlib.Path('publication/payload.json')
+          data=json.loads(p.read_text())
+          assert data['publication_id']=='meluni-images-20261110-v1'
+          assert data['publish_authorized_by_user'] is True
+          assert len(data['products'])==4
+          assert {x['product_id'] for x in data['products']}=={
+            '0179e9a2-0510-494c-b5ec-da95cb982ac3',
+            '5a57a060-5f72-40ec-95c0-37d29efb5b78',
+            '0149d26f-841c-4c99-8e32-16d6ae15173b',
+            '88e0630a-61f4-4704-b84c-1bab9ff67e7f'}
+          for product in data['products']:
+            assert product['active_at_poll'] is True and product['stock_at_poll']>0
+            assert set(product['assets'])=={'front','back','fashion_model','size_chart'}
+            for asset in product['assets'].values():
+              path=pathlib.Path('publication/assets')/asset['file']
+              assert path.is_file()
+              assert hashlib.sha256(path.read_bytes()).hexdigest()==asset['sha256']
+              assert '_pass' in asset['qa_status'] or '_verified' in asset['qa_status']
+          print('Verified 4 in-stock products and 16 QA-approved 1200x1800 masters.')
+          PY
+
+      - name: SSH erişimini hazırla
+        run: |
+          set -euo pipefail
+          test -n "$SSH_HOST" && test -n "$SSH_USER" && test -n "$SSH_PRIVATE_KEY"
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_meluni_publish"
+          chmod 600 "$HOME/.ssh/id_meluni_publish"
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          else
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
+          fi
+          chmod 644 "$HOME/.ssh/known_hosts"
+          APP_ROOT="${DEPLOY_PATH:-/home/${SSH_USER}/apps/meluni}"
+          REMOTE_STAGE="${APP_ROOT}/shared/tmp/meluni-images-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          printf 'APP_ROOT=%s\nREMOTE_STAGE=%s\n' "$APP_ROOT" "$REMOTE_STAGE" >> "$GITHUB_ENV"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_STAGE'"
+
+      - name: Paket dosyalarını sunucuya kopyala
+        run: |
+          set -euo pipefail
+          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -r publication/payload.json publication/assets scripts/publish_product_images.py "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/"
+
+      - name: Güncel stok ve galeriyle karşılaştırıp yayımla
+        run: |
+          set -euo pipefail
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" bash -s -- "$APP_ROOT" "$REMOTE_STAGE" <<'REMOTE'
+          set -euo pipefail
+          APP_ROOT="$1"
+          REMOTE_STAGE="$2"
+          test -f "$APP_ROOT/shared/.env"
+          test -x "$APP_ROOT/shared/venv/bin/python"
+          set -a
+          . "$APP_ROOT/shared/.env"
+          set +a
+          cd "$APP_ROOT/current/backend"
+          "$APP_ROOT/shared/venv/bin/python" "$REMOTE_STAGE/publish_product_images.py" "$REMOTE_STAGE/payload.json" "$REMOTE_STAGE/assets" "$REMOTE_STAGE/status.json"
+          REMOTE
+
+      - name: Yayın sonucunu geri al
+        run: |
+          set -euo pipefail
+          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/status.json" publication/result.json
+          cat publication/result.json
+
+      - name: Sonucu dalda sakla
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add publication/result.json
+          git commit -m "Record Meluni image publication result [publisher status]"
+          git push origin HEAD:codex/meluni-publish-images-20261110
+
+      - name: Sunucudaki geçici dosyaları temizle
+        if: always() && env.REMOTE_STAGE != ''
+        run: |
+          set +e
+          if [ -f "$HOME/.ssh/id_meluni_publish" ] && [ -n "$REMOTE_STAGE" ]; then
+            ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" "rm -rf -- '$REMOTE_STAGE'"
+          fi
+          rm -f "$HOME/.ssh/id_meluni_publish"

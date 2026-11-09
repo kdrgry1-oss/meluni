@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "publication_id": "meluni-images-20261110-v1",
+  "created_at": "2026-11-09T22:05:36.867579+00:00",
+  "catalog_poll_at": "2026-11-09T22:01:48+00:00",
+  "products": [
+    {
+      "product_id": "0179e9a2-0510-494c-b5ec-da95cb982ac3",
+      "sample": 1858,
+      "name": "Yüksek Bel Geniş Paçalı Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 30,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193313-1-ec03078fd39b.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193313-946e8dbc095db915.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193313-dd1e02f17c5fa45d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193313-f61cf7c3276da4db.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0179e9a2-0510-494c-b5ec-da95cb982ac3/front.jpg",
+          "sha256": "ec07de88529f84b4b890e62095ae9d0bfab91aaaf1127b6516cba9c687307072",
+          "qa_status": "source_values_verified_unpublished_draft",
+          "sample": 1858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1858/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0179e9a2-0510-494c-b5ec-da95cb982ac3/back.jpg",
+          "sha256": "cdf682f99b0108f76d5a905ca5b93cab7beb0f48efb513356c33cc68f9a71547",
+          "qa_status": "source_values_verified_unpublished_draft",
+          "sample": 1858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1858/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0179e9a2-0510-494c-b5ec-da95cb982ac3/model.jpg",
+          "sha256": "89fe662aa208bf9761163700f4922dcb4d8f1d399e92d0d181d008f9b9f0fb4f",
+          "qa_status": "source_values_verified_unpublished_draft",
+          "sample": 1858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1858/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "0179e9a2-0510-494c-b5ec-da95cb982ac3/size-chart.jpg",
+          "sha256": "910d76f27402c60c138d0d7013a13f540ce409fba5c2c07f746658f445c364b9",
+          "qa_status": "source_values_verified_unpublished_draft",
+          "sample": 1858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1858/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "5a57a060-5f72-40ec-95c0-37d29efb5b78",
+      "sample": 1859,
+      "name": "Yüksek Bel Geniş Paçalı Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 44,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193310-1-42dfbfdcf79b.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193310-734eeaab607e2530.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193310-6ba32e5f8ab28c89.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193310-a5e7dee5792380f0.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193310-f61cf7c3276da4db.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5a57a060-5f72-40ec-95c0-37d29efb5b78/front.jpg",
+          "sha256": "af95d28fbe5bb20276994a7fd22bf642c03c5b5407ee37e110031838fad0cb19",
+          "qa_status": "source_values_verified_unpublished_draft",
+          "sample": 1859,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1859/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5a57a060-5f72-40ec-95c0-37d29efb5b78/back.jpg",
+          "sha256": "cfd274f34f3173793c3f0b3ecbc02f082e2fdbb59b59b7e5666c12e436f64170",
+          "qa_status": "source_values_verified_unpublished_draft",
+          "sample": 1859,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1859/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5a57a060-5f72-40ec-95c0-37d29efb5b78/model.jpg",
+          "sha256": "d8565c53b209d2b940d6d13a35cd6054200ad0a614bda8f01c51cc2345858275",
+          "qa_status": "source_values_verified_unpublished_draft",
+          "sample": 1859,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1859/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "5a57a060-5f72-40ec-95c0-37d29efb5b78/size-chart.jpg",
+          "sha256": "910d76f27402c60c138d0d7013a13f540ce409fba5c2c07f746658f445c364b9",
+          "qa_status": "source_values_verified_unpublished_draft",
+          "sample": 1859,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1859/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "0149d26f-841c-4c99-8e32-16d6ae15173b",
+      "sample": 1861,
+      "name": "Yüksek Bel Kemersiz Atlas Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5d1f5dcd87c0104dc706.jpeg",
+        "https://modayakamoz.com/orj/9e3c8cbc2ba8f8ac39fd.jpeg",
+        "https://modayakamoz.com/orj/6afacc1809c63e1d7648.jpeg",
+        "https://modayakamoz.com/orj/0ee14c8543e3e6a55c2d.jpeg",
+        {
+          "id": "80ed4dee-dfb7-4dbc-8179-d6136d2106f6",
+          "url": "https://cdn.meluni.com.tr/ai-products/0f1adbfb-c86f-4e52-8b79-b26793d7e12a-olcu-oto-ccebca55.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:06:42.684542+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "0149d26f-841c-4c99-8e32-16d6ae15173b/front.jpg",
+          "sha256": "e37c66b0eaa48d878b736b60cbe412ee9a34e664c9bef53201ae3bddc7ca8f9d",
+          "qa_status": "source_values_verified_shared_exact_chart_unpublished_draft",
+          "sample": 1861,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1861/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0149d26f-841c-4c99-8e32-16d6ae15173b/back.jpg",
+          "sha256": "717aada2dee7f2b6778eb03c29c5a2dda4a9ca9d12e745d022a91f14f6878487",
+          "qa_status": "source_values_verified_shared_exact_chart_unpublished_draft",
+          "sample": 1861,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1861/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0149d26f-841c-4c99-8e32-16d6ae15173b/model.jpg",
+          "sha256": "114113baf99f2922971a015c0f191faca0ee8530048138f7edd39b376ea2e1e5",
+          "qa_status": "source_values_verified_shared_exact_chart_unpublished_draft",
+          "sample": 1861,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1861/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "0149d26f-841c-4c99-8e32-16d6ae15173b/size-chart.jpg",
+          "sha256": "bd210584bd7b643a3616611ce5926f1cb3d83d49567de70a554cdd1dcf5083ce",
+          "qa_status": "source_values_verified_shared_exact_chart_unpublished_draft",
+          "sample": 1861,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1861/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "88e0630a-61f4-4704-b84c-1bab9ff67e7f",
+      "sample": 1863,
+      "name": "Yüksek Bel Krep Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/172691-2025-12-02-09-24-21.jpeg",
+        "https://modayakamoz.com/orj/7b5531c88439f9f78a48.jpeg",
+        "https://modayakamoz.com/orj/b2637b591341f543d7a4.jpeg",
+        "https://modayakamoz.com/orj/99cf01b822de5f363a9c.jpeg",
+        "https://modayakamoz.com/orj/94c1c354f8d0743024b0.jpeg",
+        "https://modayakamoz.com/orj/932c2e0ac0cb3709f716.jpeg",
+        "https://modayakamoz.com/orj/dfd8584fef3be128e4e2.jpeg",
+        "https://modayakamoz.com/orj/bfbd5d4967501277bad7.jpeg",
+        "https://modayakamoz.com/orj/172691-2025-12-02-09-24-28.jpeg",
+        {
+          "id": "ee28e316-5430-4d0a-840e-42d95404d11f",
+          "url": "https://cdn.meluni.com.tr/ai-products/88e0630a-61f4-4704-b84c-1bab9ff67e7f-olcu-oto-ee972ed5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:02:48.840408+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "88e0630a-61f4-4704-b84c-1bab9ff67e7f/front.jpg",
+          "sha256": "900fd960c490f387e51fb1b8ebfdbc7c3f228752ec7d5a311482025c7ffbf7da",
+          "qa_status": "visual_source_fidelity_and_framing_pass_unpublished_draft",
+          "sample": 1863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1863/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "88e0630a-61f4-4704-b84c-1bab9ff67e7f/back.jpg",
+          "sha256": "f837a9c84eaecc3c23ffe7f7c09014f490e9930e3dbce0f2e9d406a463621ae0",
+          "qa_status": "visual_source_fidelity_and_framing_pass_unpublished_draft",
+          "sample": 1863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1863/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "88e0630a-61f4-4704-b84c-1bab9ff67e7f/model.jpg",
+          "sha256": "c962900743f1ba9ca15b2f3e756de3928c00c320211a1bac425d2664650ec008",
+          "qa_status": "visual_source_fidelity_and_framing_pass_unpublished_draft",
+          "sample": 1863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1863/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "88e0630a-61f4-4704-b84c-1bab9ff67e7f/size-chart.jpg",
+          "sha256": "6aa0412ac5e86bdc46488ad342460d33c821fc81cd48a044b73f2348f36d4c58",
+          "qa_status": "visual_source_fidelity_and_framing_pass_unpublished_draft",
+          "sample": 1863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1863/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publication_order": [
+    "front",
+    "back",
+    "fashion_model",
+    "preserve_existing_gallery",
+    "size_chart_last"
+  ],
+  "publish_authorized_by_user": true
+}
