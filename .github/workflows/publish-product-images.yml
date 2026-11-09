@@ -2,9 +2,14 @@ name: Publish reviewed Meluni product images
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - codex/meluni-publish-images-20261110
+    inputs:
+      task:
+        description: One-time server maintenance
+        required: true
+        type: choice
+        options:
+          - publish
+          - remove-empty-mongo-url
 
 permissions:
   contents: write
@@ -14,8 +19,52 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  remove_empty_mongo_url:
+    if: inputs.task == 'remove-empty-mongo-url' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+    steps:
+      - name: Remove only empty Mongo URL line
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_meluni_publish"
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          else
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
+          fi
+          APP_ROOT="${DEPLOY_PATH:-/home/${SSH_USER}/apps/meluni}"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" bash -s -- "$APP_ROOT" <<'REMOTE'
+          set -euo pipefail
+          env_file="$1/shared/.env"
+          test -f "$env_file"
+          if ! grep -Eq '^MONGO_URL=[[:space:]]*$' "$env_file"; then
+            echo 'No empty MONGO_URL line found; no change made.'
+            exit 0
+          fi
+          backup="${env_file}.before-mongo-removal-$(date -u +%Y%m%dT%H%M%SZ)"
+          cp -p "$env_file" "$backup"
+          tmp="$(mktemp "${env_file}.XXXXXX")"
+          chmod --reference="$env_file" "$tmp"
+          sed '/^MONGO_URL=[[:space:]]*$/d' "$env_file" > "$tmp"
+          mv "$tmp" "$env_file"
+          if grep -q '^MONGO_URL=' "$env_file"; then
+            echo 'Unexpected nonempty Mongo entry; restored backup.'
+            cp -p "$backup" "$env_file"
+            exit 1
+          fi
+          echo 'Removed only empty MONGO_URL line; backup retained.'
+          REMOTE
   publish:
-    if: github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    if: inputs.task == 'publish' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
