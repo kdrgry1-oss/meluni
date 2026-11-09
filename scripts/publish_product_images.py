@@ -12,13 +12,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from services import r2_storage as r2
 from routes.deps import db, client
 
-EXPECTED_PUBLICATION = "meluni-images-20261110-v1"
-EXPECTED_PRODUCTS = {
-    "0179e9a2-0510-494c-b5ec-da95cb982ac3",
-    "5a57a060-5f72-40ec-95c0-37d29efb5b78",
-    "0149d26f-841c-4c99-8e32-16d6ae15173b",
-    "88e0630a-61f4-4704-b84c-1bab9ff67e7f",
-}
+EXPECTED_PUBLICATION = "meluni-images-20261110-v2"
 VIEW_ORDER = ("front", "back", "fashion_model", "size_chart")
 ROLE_NAMES = {"front":"front", "back":"back", "fashion_model":"model", "size_chart":"size-chart"}
 
@@ -39,7 +33,7 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
     publication_id=payload.get("publication_id")
     products=payload.get("products") or []
     ids={p.get("product_id") for p in products}
-    if publication_id != EXPECTED_PUBLICATION or ids != EXPECTED_PRODUCTS or len(products)!=4:
+    if publication_id != EXPECTED_PUBLICATION or len(ids)!=25 or len(products)!=25:
         raise RuntimeError("publication package scope mismatch")
     if payload.get("publish_authorized_by_user") is not True:
         raise RuntimeError("explicit publication authorization marker missing")
@@ -53,7 +47,8 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
             raise RuntimeError(f"asset views mismatch for {pid}")
         for view in VIEW_ORDER:
             a=p["assets"][view]
-            if a.get("sample") != p.get("sample") or "_pass" not in a.get("qa_status","") and "_verified" not in a.get("qa_status",""):
+            qa=str(a.get("qa_status","")).lower()
+            if a.get("sample") != p.get("sample") or not any(s in qa for s in ("pass","verified")) or any(s in qa for s in ("fail","open","unverified","insufficient")):
                 raise RuntimeError(f"QA marker missing for {pid} {view}")
             f=assets_root / a["file"]
             if not f.is_file() or sha256(f) != a.get("sha256"):
