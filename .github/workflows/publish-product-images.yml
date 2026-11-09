@@ -270,11 +270,17 @@ jobs:
           REMOTE_STAGE="$2"
           test -f "$APP_ROOT/shared/.env"
           test -x "$APP_ROOT/shared/venv/bin/python"
-          set -a
-          . "$APP_ROOT/shared/.env"
-          set +a
           cd "$APP_ROOT/current/backend"
-          "$APP_ROOT/shared/venv/bin/python" "$REMOTE_STAGE/publish_product_images.py" "$REMOTE_STAGE/payload.json" "$REMOTE_STAGE/assets" "$REMOTE_STAGE/status.json"
+          "$APP_ROOT/shared/venv/bin/python" - "$REMOTE_STAGE" <<'PY'
+          import os, pathlib, subprocess, sys
+          stage=sys.argv[1]
+          pid=subprocess.check_output(['systemctl','show','meluni','--property=MainPID','--value'],text=True).strip()
+          raw=pathlib.Path(f'/proc/{pid}/environ').read_bytes()
+          env={k.decode():v.decode() for k,v in (part.split(b'=',1) for part in raw.split(b'\0') if b'=' in part)}
+          if not env.get('MONGO_URL') or not env.get('DB_NAME'):
+              raise SystemExit('Running application database settings unavailable')
+          os.execve(sys.executable,[sys.executable,f'{stage}/publish_product_images.py',f'{stage}/payload.json',f'{stage}/assets',f'{stage}/status.json'],env)
+          PY
           REMOTE
 
       - name: Yayın sonucunu geri al
