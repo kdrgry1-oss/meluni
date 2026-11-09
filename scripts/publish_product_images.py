@@ -75,9 +75,6 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
         if active is not True or stock <= 0:
             skipped[pid]="inactive_or_out_of_stock"
             continue
-        if doc.get("images_custom") is True:
-            skipped[pid]="custom_gallery_preserved"
-            continue
         if canon(doc.get("name")) != canon(p.get("name")):
             skipped[pid]="product_name_changed"
             continue
@@ -127,7 +124,7 @@ async def main(payload_path: Path, assets_root: Path, status_path: Path):
                     new_images=[urls["front"],urls["back"],urls["fashion_model"]]+old+[
                         {"id":str(uuid.uuid5(uuid.NAMESPACE_URL,f"meluni:{publication_id}:{pid}:size_chart_gallery")),"url":urls["size_chart"],"is_size_table":True,"alt":"Ölçü Tablosu","created_at":now}
                     ]
-                    filt={"id":pid,"images":doc.get("images") or [],"images_custom":{"$ne":True},"stock":{"$gt":0}}
+                    filt={"id":pid,"images":doc.get("images") or [],"stock":{"$gt":0}}
                     if doc.get("is_active") is not None: filt["is_active"]=True
                     else: filt["active"]=True
                     result=await db.products.update_one(filt,{"$set":{"images":new_images,"images_custom":True,"images_custom_at":now,"ai_images_generated_at":now,"ai_images_publication_id":publication_id,"ai_images_published_assets":{v:urls[v] for v in VIEW_ORDER}}},session=session)
