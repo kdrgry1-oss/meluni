@@ -1,0 +1,51 @@
+{
+  "status": "published_partial_and_verified",
+  "publication_id": "meluni-images-20261110-v1",
+  "published_at_utc": "2026-11-09T23:36:23.017887+00:00",
+  "catalog_poll_at_staging": "2026-11-09T22:01:48+00:00",
+  "products": [
+    {
+      "product_id": "0179e9a2-0510-494c-b5ec-da95cb982ac3",
+      "sample": 1858,
+      "name": "Yüksek Bel Geniş Paçalı Kot Pantolon",
+      "active": true,
+      "stock": 30,
+      "publication_id": "meluni-images-20261110-v1",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0179e9a2-0510-494c-b5ec-da95cb982ac3-front-ec07de88529f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0179e9a2-0510-494c-b5ec-da95cb982ac3-back-cdf682f99b01.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0179e9a2-0510-494c-b5ec-da95cb982ac3-model-89fe662aa208.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0179e9a2-0510-494c-b5ec-da95cb982ac3-size-chart-910d76f27402.jpg"
+      },
+      "gallery_image_count": null
+    },
+    {
+      "product_id": "5a57a060-5f72-40ec-95c0-37d29efb5b78",
+      "sample": 1859,
+      "name": "Yüksek Bel Geniş Paçalı Kot Pantolon",
+      "active": true,
+      "stock": 44,
+      "publication_id": "meluni-images-20261110-v1",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5a57a060-5f72-40ec-95c0-37d29efb5b78-front-af95d28fbe5b.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5a57a060-5f72-40ec-95c0-37d29efb5b78-back-cfd274f34f31.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5a57a060-5f72-40ec-95c0-37d29efb5b78-model-d8565c53b209.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5a57a060-5f72-40ec-95c0-37d29efb5b78-size-chart-910d76f27402.jpg"
+      },
+      "gallery_image_count": null
+    }
+  ],
+  "skipped": [
+    {
+      "product_id": "0149d26f-841c-4c99-8e32-16d6ae15173b",
+      "sample": 1861,
+      "reason": "custom_gallery_preserved"
+    },
+    {
+      "product_id": "88e0630a-61f4-4704-b84c-1bab9ff67e7f",
+      "sample": 1863,
+      "reason": "custom_gallery_preserved"
+    }
+  ],
+  "notes": "R2 object checks passed, gallery updates used transactional compare-and-set, original images preserved, generated size chart last."
+}
