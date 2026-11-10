@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-31",
+  "created_at": "2026-11-10T23:12:41.829780+00:00",
+  "catalog_poll_at": "2026-11-10T23:12:41.830059+00:00",
+  "products": [
+    {
+      "product_id": "596a2c77-471d-4c54-998b-2c748ccbd06a",
+      "sample": 3154,
+      "name": "Uzun Kollu Bisiklet Yakalı Fırfırlı Uzun Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 86,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192295-1-45a36f03bf.jpg",
+        "https://modayakamoz.com/orj/janes-192295-2-06d99c240c.jpg",
+        "https://modayakamoz.com/orj/janes-192295-3-2b5e4483ac.jpg",
+        "https://modayakamoz.com/orj/janes-192295-7-eba187e5ed.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "596a2c77-471d-4c54-998b-2c748ccbd06a/front.jpg",
+          "sha256": "53144a67d5d3035ffca8b5c12fbfeac4e5beb5672bbf25cb6c96fe178e7b1660",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3154,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-596a2c77/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "596a2c77-471d-4c54-998b-2c748ccbd06a/back.jpg",
+          "sha256": "9d3793608e96849feb645ac7ea4be89ae1def34b5314e7c1f5a5cedd7739ecae",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3154,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-596a2c77/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "596a2c77-471d-4c54-998b-2c748ccbd06a/model.jpg",
+          "sha256": "998b58dbede4a99a3f7de0fcac5efac2c92faf805c56d0cb94631dcf237c4c6d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3154,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-596a2c77/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
