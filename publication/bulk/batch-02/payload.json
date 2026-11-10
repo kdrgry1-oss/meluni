@@ -1,0 +1,1315 @@
+{
+  "schema_version": 1,
+  "publication_id": "meluni-images-20261110-v3-02",
+  "created_at": "2026-11-10T00:07:23.998861+00:00",
+  "catalog_poll_at": "2026-11-09T22:01:48+00:00",
+  "products": [
+    {
+      "product_id": "c59ef655-3852-4c20-9c2f-71b005271ebb",
+      "sample": 966,
+      "name": "Kısa Kollu Yakalı Fermuarlı Süs Cep Detaylı Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 13,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/34db5af58387cf15ce7c.jpeg",
+        "https://modayakamoz.com/orj/a91a597e2e44092460d3.jpeg",
+        "https://modayakamoz.com/orj/45206b0e70144591741b.jpeg",
+        "https://modayakamoz.com/orj/001343884e4590915a6a.jpeg",
+        "https://modayakamoz.com/orj/a0c6ff51ccf447ea9c86.jpeg",
+        "https://modayakamoz.com/orj/891150fe8a1a71897f52.jpeg",
+        {
+          "id": "e1d0e2d2-da0f-4771-8b58-b23990ebc9e4",
+          "url": "https://cdn.meluni.com.tr/ai-products/c59ef655-3852-4c20-9c2f-71b005271ebb-olcu-oto-1024141a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:22:43.419640+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c59ef655-3852-4c20-9c2f-71b005271ebb/front.jpg",
+          "sha256": "84c63510067430097cd7703be95bb46652383f27768f21fc5e179eec9088593e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 966,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-966-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c59ef655-3852-4c20-9c2f-71b005271ebb/back.jpg",
+          "sha256": "483274d27f159dcefd46fb59cb4e36536c4fa304203fecc4899f60d59bf20590",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 966,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-966-back-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "c59ef655-3852-4c20-9c2f-71b005271ebb/size_chart.jpg",
+          "sha256": "6d28911e80290b2c10a021bb88852346d2112e815f0a714f0872baaaccd95103",
+          "qa_status": "visual_qa_pass_catalog_linked_values_verified_reused_same_product_variant",
+          "sample": 966,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-967-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "4e465b56-5063-4f8b-a3e2-b12096842f43",
+      "sample": 967,
+      "name": "Kısa Kollu Yakalı Fermuarlı Süs Cep Detaylı Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 40,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7aa3751f13702623baa5.jpeg",
+        "https://modayakamoz.com/orj/f9c478107848ab44860e.jpeg",
+        "https://modayakamoz.com/orj/4f3a29ebbc8fa0a968d1.jpeg",
+        "https://modayakamoz.com/orj/7ec64fa84d18d9930b86.jpeg",
+        "https://modayakamoz.com/orj/2632698b2600788218a3.jpeg",
+        "https://modayakamoz.com/orj/da1be70dd5f12cb83c43.jpeg",
+        "https://modayakamoz.com/orj/19ee483f07cb1e94ed84.jpeg",
+        {
+          "id": "fcd97508-f391-4bf2-8251-31cfcc363992",
+          "url": "https://cdn.meluni.com.tr/ai-products/c59ef655-3852-4c20-9c2f-71b005271ebb-olcu-oto-1024141a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:22:43.586366+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4e465b56-5063-4f8b-a3e2-b12096842f43/front.jpg",
+          "sha256": "e510ded92c9a674eabf2f093e8cd4782763271191b5f62c67058b6604eb4c0d5",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 967,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-967-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4e465b56-5063-4f8b-a3e2-b12096842f43/back.jpg",
+          "sha256": "d283eeeed0a7b29089ff0b73bf7b7e8817a8a02310f0276f5766bec7bceadd9b",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 967,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-967-back-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "0e069cfc-b491-46f7-8afe-373ba280cb1f",
+      "sample": 968,
+      "name": "Kısa Kollu Yakalı Fermuarlı Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 45,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8309b5c84c707ce96e1a.jpeg",
+        "https://modayakamoz.com/orj/c7c45e377822f907ec67.jpeg",
+        "https://modayakamoz.com/orj/cbdfc884e0c9458fb05f.jpeg",
+        "https://modayakamoz.com/orj/71fdadb332855e87c6f1.jpeg",
+        {
+          "id": "ad41c45c-5523-4488-bc0e-65ce4a360d8b",
+          "url": "https://cdn.meluni.com.tr/ai-products/af39aa9c-d986-47c0-8fb0-11c5953b6e85-olcu-oto-598f42a9.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:21:53.370957+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "0e069cfc-b491-46f7-8afe-373ba280cb1f/front.jpg",
+          "sha256": "f009a12358c52cdfcee79f9446e609729e002c97271752b8e5786a9a1dd853e4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 968,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-968-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "af39aa9c-d986-47c0-8fb0-11c5953b6e85",
+      "sample": 969,
+      "name": "Kısa Kollu Yakalı Fermuarlı Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 105,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/107fa7571b8358e61234.jpeg",
+        "https://modayakamoz.com/orj/f273b2be2b0a6f785d91.jpeg",
+        "https://modayakamoz.com/orj/240d8edcbe5bf5ac3802.jpeg",
+        {
+          "id": "44faa3aa-bb88-4e81-ace4-cbf9f8fbf0e9",
+          "url": "https://cdn.meluni.com.tr/ai-products/af39aa9c-d986-47c0-8fb0-11c5953b6e85-olcu-oto-598f42a9.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:21:53.229568+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "af39aa9c-d986-47c0-8fb0-11c5953b6e85/front.jpg",
+          "sha256": "30e7cb47f74c0971332ed597b57bb546c62a420b2dd5168ee6e8b096eceaacaa",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 969,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-969-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "6dc0aea5-b4bb-4add-81da-a77ff6c6b802",
+      "sample": 970,
+      "name": "Kısa Kollu Yakalı Fermuarlı Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 61,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b51df533cbbf5c81170d.jpeg",
+        "https://modayakamoz.com/orj/548793a8945d820845c8.jpeg",
+        "https://modayakamoz.com/orj/31cfb86f21a60536be06.jpeg",
+        "https://modayakamoz.com/orj/2cb1c326c4fc7954600b.jpeg",
+        {
+          "id": "62e2fc0f-1904-477a-bd8e-3446b4f03809",
+          "url": "https://cdn.meluni.com.tr/ai-products/af39aa9c-d986-47c0-8fb0-11c5953b6e85-olcu-oto-598f42a9.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:21:53.413427+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "6dc0aea5-b4bb-4add-81da-a77ff6c6b802/front.jpg",
+          "sha256": "f8548d68a8da1c83ea6d70ed9076ef3ebe0587c1873a3387ff20f53a16cc2720",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 970,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-970-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "7209076b-c387-4e7c-825e-003652aeed47",
+      "sample": 971,
+      "name": "Kısa Kollu Yakalı Kruvaze Beli Kemerli Midi Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/477059f0cbb966ccdfc6.jpeg",
+        "https://modayakamoz.com/orj/4fb38ff77497240b5dac.jpeg",
+        "https://modayakamoz.com/orj/e71f254ea510d9e1eeb5.jpeg",
+        "https://modayakamoz.com/orj/bc7a95516267abb19e69.jpeg",
+        "https://modayakamoz.com/orj/208c442b23e45d08ab53.jpeg",
+        "https://modayakamoz.com/orj/a1677c79085fccb984ef.jpeg",
+        "https://modayakamoz.com/orj/de2c9964595e81acd610.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7209076b-c387-4e7c-825e-003652aeed47/front.jpg",
+          "sha256": "17534fa9368511d829ff20031eddd3a6be9d16e5c115c2abf71ce4a3652b12c1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 971,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-971-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7209076b-c387-4e7c-825e-003652aeed47/back.jpg",
+          "sha256": "4117c5974639acaa6a279847f13eaf578ba98b3cae2893da5f5418e27ea63bbb",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 971,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-971-back-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "27559b6a-40dd-4c00-9070-dab5c760e8da",
+      "sample": 972,
+      "name": "Kısa Kollu Yakalı Kruvaze Beli Kemerli Midi Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/797cf5ab70937c35d026a687437bb218.jpg",
+        "https://modayakamoz.com/orj/5e03fbb19048f3c423b23ee4dd5d7076.jpg",
+        "https://modayakamoz.com/orj/30bb8bbbd161c8a9a077fcb344cbcb4e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "27559b6a-40dd-4c00-9070-dab5c760e8da/front.jpg",
+          "sha256": "e4179c7185a4f6b9019d9c809706ebb138a1958401e1d0861574345f6bd54b79",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 972,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-972-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "3125f33e-c690-4ca3-9c1d-061ed51c2401",
+      "sample": 974,
+      "name": "Kısa Kollu Yakalı Viskon Iki Iplik Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 75,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/3125f33e-c690-4ca3-9c1d-061ed51c2401/3125f33e-c690-4ca3-9c1d-061ed51c2401-hd0-0f686e8e.jpg",
+        "https://cdn.meluni.com.tr/products/3125f33e-c690-4ca3-9c1d-061ed51c2401/3125f33e-c690-4ca3-9c1d-061ed51c2401-hd1-ce2310b5.jpg",
+        "https://cdn.meluni.com.tr/products/3125f33e-c690-4ca3-9c1d-061ed51c2401/3125f33e-c690-4ca3-9c1d-061ed51c2401-hd2-6925e18a.jpg",
+        "https://modayakamoz.com/orj/db966f21bccbf203736f.jpeg",
+        "https://cdn.meluni.com.tr/products/3125f33e-c690-4ca3-9c1d-061ed51c2401/3125f33e-c690-4ca3-9c1d-061ed51c2401-hd4-7164582e.jpg",
+        {
+          "id": "ff2b57c8-f9c3-49c1-8822-4cb521a8a872",
+          "url": "https://cdn.meluni.com.tr/ai-products/3125f33e-c690-4ca3-9c1d-061ed51c2401-olcu-oto-8fd1eb16.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:30:51.490685+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "3125f33e-c690-4ca3-9c1d-061ed51c2401/front.jpg",
+          "sha256": "e083e8c44621977ce0c0656d2b154e7fc37cedbd529e6649225d19e5c6a200ff",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 974,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-974-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "9f7f8905-bdbe-4a02-a11e-80cc60009ef1",
+      "sample": 975,
+      "name": "Kısa Kollu Yakalı Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 87,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d48820b9d6eb07b835af.jpeg",
+        "https://modayakamoz.com/orj/8e80757881119d1c3e86.jpeg",
+        "https://modayakamoz.com/orj/3d76e46ed66410c6e507.jpeg",
+        "https://modayakamoz.com/orj/ba29b32df24fd0ccc1e7.jpeg",
+        "https://modayakamoz.com/orj/a0197da482d38aa77888.jpeg",
+        "https://modayakamoz.com/orj/cbb0a0f6f36b8cacaf7e.jpeg",
+        {
+          "id": "233bdfc5-655e-46c6-a628-a299c7419add",
+          "url": "https://cdn.meluni.com.tr/ai-products/9f7f8905-bdbe-4a02-a11e-80cc60009ef1-olcu-oto-d08cdb06.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:19:16.786788+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "9f7f8905-bdbe-4a02-a11e-80cc60009ef1/front.jpg",
+          "sha256": "3175e3d54bde885550c4b5cb5e1e9de849e907c6003bdd42c40b739363f5ab0d",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 975,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-975-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "86c79494-0966-4407-8cda-62e73ad61315",
+      "sample": 976,
+      "name": "Kısa Kollu Yakalı Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/62ce68ac806f54230eee.jpeg",
+        "https://modayakamoz.com/orj/04abfc64782fefc09e7d.jpeg",
+        "https://modayakamoz.com/orj/9ac1c91fa1dffdc64df4.jpeg",
+        "https://modayakamoz.com/orj/cce9f81378848ff6b262.jpeg",
+        {
+          "id": "8a9474f1-6a7c-4042-be95-044505309760",
+          "url": "https://cdn.meluni.com.tr/ai-products/9f7f8905-bdbe-4a02-a11e-80cc60009ef1-olcu-oto-d08cdb06.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:19:16.972381+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "86c79494-0966-4407-8cda-62e73ad61315/front.jpg",
+          "sha256": "e8c4210f19de08c1b6e973cfa0b936cfe13eec4226c0c6fada9ef70ac364ae56",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 976,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-976-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "36b828c2-63cf-4b65-acf1-8d1f041cd0aa",
+      "sample": 977,
+      "name": "Kısa Kollu Yakalı Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b63a6f77c24280eb14f0.jpeg",
+        "https://modayakamoz.com/orj/d4eaf711a4948151ba26.jpeg",
+        "https://modayakamoz.com/orj/f767e52d6c3f547eee33.jpeg",
+        "https://modayakamoz.com/orj/9406a237ae5d567d1394.jpeg",
+        {
+          "id": "e6e3c4bf-4522-4a51-9921-8b11cd31ad49",
+          "url": "https://cdn.meluni.com.tr/ai-products/9f7f8905-bdbe-4a02-a11e-80cc60009ef1-olcu-oto-d08cdb06.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:19:16.930391+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "36b828c2-63cf-4b65-acf1-8d1f041cd0aa/front.jpg",
+          "sha256": "1011efb8cb05eacb8d39293433881c148275ab925ae646191fb789a721b41b3c",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 977,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-977-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "326bede2-d087-476f-9485-771fc8b5a9a6",
+      "sample": 979,
+      "name": "Kısa Kollu Yakalı Yırtmaçlı Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d1be38644d6d48d610af.jpeg",
+        "https://modayakamoz.com/orj/a51ab34dad9126f60a0b.jpeg",
+        "https://modayakamoz.com/orj/4db419c129e570ecdab7.jpeg",
+        "https://modayakamoz.com/orj/3241b7769e2dfd98cb6b.jpeg",
+        {
+          "id": "9726c4e9-9cc5-42f3-8f63-5d15432f453e",
+          "url": "https://cdn.meluni.com.tr/ai-products/326bede2-d087-476f-9485-771fc8b5a9a6-olcu-oto-43a56f32.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-26T05:18:11.334920+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "326bede2-d087-476f-9485-771fc8b5a9a6/front.jpg",
+          "sha256": "ece85e148dcf4a3737b55a6be0e6ed91649953b37ab3d8665820994dc0caadd7",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 979,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-979-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "6debbab0-4c9e-4a42-9af4-7cc84442a1e6",
+      "sample": 980,
+      "name": "Kısa Kollu Yakalı Yırtmaçlı Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 13,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/68474c527dca7b9096c8.jpeg",
+        "https://modayakamoz.com/orj/84eeaef7e4530299df62.jpeg",
+        "https://modayakamoz.com/orj/2b791a6cbc058a897c68.jpeg",
+        "https://modayakamoz.com/orj/8f8e3004b09880fa8fbd.jpeg",
+        "https://modayakamoz.com/orj/304c2521ae48f5ab04fb.jpeg",
+        {
+          "id": "c0283300-a57f-46fb-830d-59290f5a370c",
+          "url": "https://cdn.meluni.com.tr/ai-products/326bede2-d087-476f-9485-771fc8b5a9a6-olcu-oto-43a56f32.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-26T05:18:11.482018+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "6debbab0-4c9e-4a42-9af4-7cc84442a1e6/front.jpg",
+          "sha256": "61299c6aa4b7a8d6e2f5b8388ca6295f2675290af7a12b29a5cd61ea1b9a2079",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 980,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-980-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "68137c54-84fb-4444-984d-cde8e1095c0a",
+      "sample": 981,
+      "name": "Kısa Kollu Yakası Açık Fermuarlı Kiloş Midi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c7c0bdfadddcfca00e8b.jpeg",
+        "https://modayakamoz.com/orj/c14bbc6c8e36ee174b4a.jpeg",
+        "https://modayakamoz.com/orj/43d4173ed3ccc53df0d6.jpeg",
+        {
+          "id": "598d6c10-002d-40a2-b6db-f5ebf9f0e38e",
+          "url": "https://cdn.meluni.com.tr/ai-products/68137c54-84fb-4444-984d-cde8e1095c0a-olcu-oto-9496cc57.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-31T05:18:51.698193+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "68137c54-84fb-4444-984d-cde8e1095c0a/front.jpg",
+          "sha256": "b622f9b32938c00b90502e8589d6f421f239aeec7eaddb56aadbebaa521a1cc2",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-981-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "68137c54-84fb-4444-984d-cde8e1095c0a/back.jpg",
+          "sha256": "57b37a5a5fb3a0c953551d46fd367083b6a604c8237c84708e7bc71e9646bf96",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-981-back-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "460438f5-5f84-4a5b-9fb0-ec223287382d",
+      "sample": 982,
+      "name": "Kısa Kollu Yakası Açık Fermuarlı Kiloş Midi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2c0832f259c244082697.jpeg",
+        "https://modayakamoz.com/orj/ebb3e22c922af66235d6.jpeg",
+        "https://modayakamoz.com/orj/31e3b67e8e3986d56fd8.jpeg",
+        "https://modayakamoz.com/orj/e9a8efe636b2ad2510f7.jpeg",
+        {
+          "id": "855b55d0-41eb-44a0-8e5d-e66d4f6b4598",
+          "url": "https://cdn.meluni.com.tr/ai-products/68137c54-84fb-4444-984d-cde8e1095c0a-olcu-oto-9496cc57.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-31T05:18:51.844861+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "460438f5-5f84-4a5b-9fb0-ec223287382d/front.jpg",
+          "sha256": "6963aec1142283162c53565129dbf8482153f00953c07e4f2d2a67de32a8a376",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 982,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-982-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "460438f5-5f84-4a5b-9fb0-ec223287382d/back.jpg",
+          "sha256": "a0f96b0a271a5f4435d2fb70d84468facb8c37d314d703ef9433aaf1350658c4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 982,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-982-back-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "cf69fe15-d14c-423d-a680-3323a98231b0",
+      "sample": 983,
+      "name": "Kısa Kollu Yakası Açık Fermuarlı Kiloş Midi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 32,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d61a901570dfb725f5d4.jpeg",
+        "https://modayakamoz.com/orj/f2d4e588c61456462fa6.jpeg",
+        "https://modayakamoz.com/orj/a810d838853e64b1c4ed.jpeg",
+        "https://modayakamoz.com/orj/df083a67c94830ae4e1e.jpeg",
+        {
+          "id": "69f41681-49ed-4508-a679-90415489ec65",
+          "url": "https://cdn.meluni.com.tr/ai-products/68137c54-84fb-4444-984d-cde8e1095c0a-olcu-oto-9496cc57.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-31T05:18:51.890380+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "cf69fe15-d14c-423d-a680-3323a98231b0/front.jpg",
+          "sha256": "abf0c3b586151cd0fd9841882eb9b6d2b45aea5d71f355ecc7f5482eaa6cc3e1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 983,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-983-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "cf69fe15-d14c-423d-a680-3323a98231b0/back.jpg",
+          "sha256": "13178e133ed512f5083928dd7948612db5c235897940cd400dbd07ea73564e89",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 983,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-983-back-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "bb28b6e2-75be-424b-94a2-95b5b1262df6",
+      "sample": 984,
+      "name": "Kısa Kollu Yakası Açık Katlı Bürümcük Balon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 16,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0251566bf7290ed39795.jpeg",
+        "https://modayakamoz.com/orj/bfbc3a84eaf311c8016b.jpeg",
+        "https://modayakamoz.com/orj/6b89f0d330f281d0fac9.jpeg",
+        {
+          "id": "3f2b4ab9-1f78-4a16-9202-388c960d6ab8",
+          "url": "https://cdn.meluni.com.tr/ai-products/bb28b6e2-75be-424b-94a2-95b5b1262df6-olcu-oto-602f5374.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:23:21.420536+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "bb28b6e2-75be-424b-94a2-95b5b1262df6/front.jpg",
+          "sha256": "a6acfde861065c25cc72028691c6795bfbf2ce42a137abbbaccbc4b718150f4e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 984,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-984-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "531ddb37-8261-49e1-916b-6da3f2ac6468",
+      "sample": 985,
+      "name": "Kısa Kollu Yakası Açık Katlı Bürümcük Balon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8aafb535f9dda5524a2a.jpeg",
+        "https://modayakamoz.com/orj/cb61db1bc838e9725956.jpeg",
+        "https://modayakamoz.com/orj/a48b4e44025fca583345.jpeg",
+        "https://modayakamoz.com/orj/ee210bb3baffd087ecef.jpeg",
+        "https://modayakamoz.com/orj/86ae2f7e5a31c1ae26a3.jpeg",
+        "https://modayakamoz.com/orj/e4650e61e0b7ac8d0b60.jpeg",
+        {
+          "id": "79040a64-ef8c-455c-860d-5c98fb63605c",
+          "url": "https://cdn.meluni.com.tr/ai-products/bb28b6e2-75be-424b-94a2-95b5b1262df6-olcu-oto-602f5374.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:23:21.582705+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "531ddb37-8261-49e1-916b-6da3f2ac6468/front.jpg",
+          "sha256": "0ad8f136353ccb91eee13639e30761de33ab208641e0589140a3bb182070dd63",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 985,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-985-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "cb86549f-cd5c-454d-82a9-6321b6bf7bea",
+      "sample": 986,
+      "name": "Kısa Kollu Yakası Açık Katlı Bürümcük Balon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2817885b6631332d2da9.jpeg",
+        "https://modayakamoz.com/orj/71023ced68deb729406c.jpeg",
+        "https://modayakamoz.com/orj/3cae5f69e588d8fcad5a.jpeg",
+        "https://modayakamoz.com/orj/d4852134cb1abdc0dc68.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "cb86549f-cd5c-454d-82a9-6321b6bf7bea/front.jpg",
+          "sha256": "a6acfde861065c25cc72028691c6795bfbf2ce42a137abbbaccbc4b718150f4e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 986,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-986-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "d918557d-4c97-475a-ba64-f271924f67dc",
+      "sample": 987,
+      "name": "Kısa Kollu Yakası Açık Katlı Bürümcük Balon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/13b0e0c9546bd584fb58b18343878b03.jpg",
+        "https://modayakamoz.com/orj/829822bd9ba5954ceaf09c438d8b7c61.jpg",
+        "https://modayakamoz.com/orj/b13d36f054c57094132a4899a02e0b16.jpg",
+        "https://modayakamoz.com/orj/e81fc7760a1f69cf0d57dc824a158b20.jpg",
+        "https://modayakamoz.com/orj/4b60211f4fbbee48de5791777c70659f.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d918557d-4c97-475a-ba64-f271924f67dc/front.jpg",
+          "sha256": "28c3e8c0e0545571b6e21184acc0e1696dcd44525fe31df46d6280475fa7ec5a",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 987,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-987-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "62409a81-a37f-4feb-a379-1d5b3f00e916",
+      "sample": 989,
+      "name": "Kısa Kollu Yakası Fermuarlı Kısa Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 90,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a3fddc6c75c4f77e8341.jpeg",
+        "https://modayakamoz.com/orj/1921bc66b5d104e7b43f.jpeg",
+        "https://modayakamoz.com/orj/642a34693ee454104c1b.jpeg",
+        "https://modayakamoz.com/orj/898b447531b5f5e7fb6a.jpeg",
+        {
+          "id": "357f7648-2bc3-40d9-bec0-4486841b9ff4",
+          "url": "https://cdn.meluni.com.tr/ai-products/62409a81-a37f-4feb-a379-1d5b3f00e916-olcu-oto-113f2f4e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:23:27.677163+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "62409a81-a37f-4feb-a379-1d5b3f00e916/front.jpg",
+          "sha256": "ec549ad556fbe269a64fbdd5f1fcd5e3b168a9b8b2ca2d4eaa0de865c43bee65",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 989,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-989-front-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "88a97dbb-d81a-48d8-96e2-c375702bab61",
+      "sample": 992,
+      "name": "Kısa Kollu Yandan Toka Detaylı Viskon Iki Iplik Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 38,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/88a97dbb-d81a-48d8-96e2-c375702bab61/88a97dbb-d81a-48d8-96e2-c375702bab61-hd0-e1ff1d1f.jpg",
+        "https://cdn.meluni.com.tr/products/88a97dbb-d81a-48d8-96e2-c375702bab61/88a97dbb-d81a-48d8-96e2-c375702bab61-hd1-d03ecc01.jpg",
+        "https://cdn.meluni.com.tr/products/88a97dbb-d81a-48d8-96e2-c375702bab61/88a97dbb-d81a-48d8-96e2-c375702bab61-hd2-79c25c49.jpg",
+        {
+          "id": "a2d0a577-48bc-489f-bfca-145d8ec033ea",
+          "url": "https://cdn.meluni.com.tr/ai-products/08a3934f-6683-4782-a692-ec3aa006a56a-olcu-oto-83bba5d3.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:31:22.505115+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "88a97dbb-d81a-48d8-96e2-c375702bab61/front.jpg",
+          "sha256": "477a60c61665659654aee28afdf71a954be2e8e1124dc4b36b8d9ba03683fbfc",
+          "qa_status": "production_qa_passed_unpublished",
+          "sample": 992,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-992-front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "88a97dbb-d81a-48d8-96e2-c375702bab61/model.jpg",
+          "sha256": "e4649881fd28c1f1fc1d16cc73cb216a4353d6a9f393bf8944f388928a6dacc8",
+          "qa_status": "production_qa_passed_unpublished_after_one_targeted_correction",
+          "sample": 992,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-992-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "88a97dbb-d81a-48d8-96e2-c375702bab61/size_chart.jpg",
+          "sha256": "a3837225d0e52df1ce529a12ecd05d880c502aa1b8f3a1ef4e09aaa2795b346a",
+          "qa_status": "source_values_transcribed_and_layout_qa_passed_unpublished",
+          "sample": 992,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-992-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "9d51a071-2906-4c5c-9681-dc68881993b7",
+      "sample": 993,
+      "name": "Uzun Kollu V Yakalı Triko Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 189,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192748-1-b829c9907a.jpg",
+        "https://modayakamoz.com/orj/janes-192748-2-00ea71c4a5.jpg",
+        "https://modayakamoz.com/orj/janes-192748-3-847a995a38.jpg",
+        "https://modayakamoz.com/orj/janes-192748-7-8bba6dd93f.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "9d51a071-2906-4c5c-9681-dc68881993b7/front.jpg",
+          "sha256": "343b626dbf74383c7a8dbd0bd1e122e47b00ef87284b9501227356a64067136d",
+          "qa_status": "visual_review_pass_unpublished",
+          "sample": 993,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-993-front-1200x1800.png"
+        },
+        "back": {
+          "file": "9d51a071-2906-4c5c-9681-dc68881993b7/back.jpg",
+          "sha256": "35550cbf4b1cd58cdea0895733f0c2ebbdf4f065bfcfe9cd3af1c0eae6c59df9",
+          "qa_status": "visual_review_pass_unpublished",
+          "sample": 993,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-993-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "9d51a071-2906-4c5c-9681-dc68881993b7/size_chart.jpg",
+          "sha256": "c2f1e1f77d69ca6a02a04f1933f555048daa997882ec105551bc665c9b2cee4a",
+          "qa_status": "pass_values_exact",
+          "sample": 993,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-993/chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "c7064235-bd4e-4bee-b3a4-47e7eaf67087",
+      "sample": 994,
+      "name": "Uzun Kollu V Yakalı Triko Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 35,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192340-1-80bd8afd6b.jpg",
+        "https://modayakamoz.com/orj/janes-192340-2-560a9bac4a.jpg",
+        "https://modayakamoz.com/orj/janes-192340-3-ec2f19cb61.jpg",
+        "https://modayakamoz.com/orj/janes-192340-7-8ad47e2c2c.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c7064235-bd4e-4bee-b3a4-47e7eaf67087/front.jpg",
+          "sha256": "89dd2d39c3b75217a9118e4849f3094d75a41a236612920e2d3b17614197a047",
+          "qa_status": "visual_review_pass_unpublished",
+          "sample": 994,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-994-front-1200x1800.png"
+        },
+        "back": {
+          "file": "c7064235-bd4e-4bee-b3a4-47e7eaf67087/back.jpg",
+          "sha256": "681eb098dbe01046ebd2e0b2e925758efaf9dfe000fbab9365a978fa099a48ab",
+          "qa_status": "visual_review_pass_unpublished",
+          "sample": 994,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-994-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "c7064235-bd4e-4bee-b3a4-47e7eaf67087/size_chart.jpg",
+          "sha256": "c2f1e1f77d69ca6a02a04f1933f555048daa997882ec105551bc665c9b2cee4a",
+          "qa_status": "pass_values_exact_shared_identical_source",
+          "sample": 994,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-993/chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "b4a89778-33ea-4f1d-b7c3-0cd0442cf147",
+      "sample": 997,
+      "name": "Uzun Kollu V Yakalı Viskon Iki Iplik Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 37,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/98415f9bb7ad9e848777.jpeg",
+        "https://modayakamoz.com/orj/d71fa3fe28ec74ff671c.jpeg",
+        "https://modayakamoz.com/orj/373f8da14a8fa315a6dc.jpeg",
+        "https://modayakamoz.com/orj/f0829e5fef4d15d127e5.jpeg",
+        "https://modayakamoz.com/orj/9512cd11bb0986a1b877.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b4a89778-33ea-4f1d-b7c3-0cd0442cf147/front.jpg",
+          "sha256": "c3ba8a23b248fe7d467c828aa3d9bacb57541d79453ec58d94a743ed3e02df94",
+          "qa_status": "visual_review_pass_unpublished",
+          "sample": 997,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-997-front-1200x1800.png"
+        },
+        "back": {
+          "file": "b4a89778-33ea-4f1d-b7c3-0cd0442cf147/back.jpg",
+          "sha256": "08879c660540bd668e006069a459532664081913151fc172efba5203d1fb22be",
+          "qa_status": "visual_review_pass_unpublished",
+          "sample": 997,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-997-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "b4a89778-33ea-4f1d-b7c3-0cd0442cf147/size_chart.jpg",
+          "sha256": "45350b09f0f94bf81e55b231d21fce3f52d8c7208bbe7bda2bfa8b39187aee07",
+          "qa_status": "visual_data_review_pass_unpublished",
+          "sample": 997,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-997-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "6da72f4b-04b0-425c-8116-1080fb4eccc0",
+      "sample": 998,
+      "name": "Uzun Kollu V Yakalı Viskon Iki Iplik Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 39,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/70e6715c97fed595d42f.jpeg",
+        "https://modayakamoz.com/orj/f4162703e384819c074c.jpeg",
+        "https://modayakamoz.com/orj/5022a03f9ed8095e2ff5.jpeg",
+        "https://modayakamoz.com/orj/9af4b526d6406f5a92c3.jpeg",
+        "https://modayakamoz.com/orj/d5de66a2264e87c7cc2c.jpeg",
+        "https://modayakamoz.com/orj/fcce60ef06670412e5a6.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "6da72f4b-04b0-425c-8116-1080fb4eccc0/front.jpg",
+          "sha256": "95ca35069b599080726bc28866227c434bb8c6dd9a8680cb6b68b79b348c44f5",
+          "qa_status": "visual_review_pass_unpublished",
+          "sample": 998,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-998-front-1200x1800.png"
+        },
+        "back": {
+          "file": "6da72f4b-04b0-425c-8116-1080fb4eccc0/back.jpg",
+          "sha256": "e6463b74693f9f5ee775cc576b898fd8250a14ddc05077d2a6e2a1a8f6c510df",
+          "qa_status": "visual_review_pass_unpublished",
+          "sample": 998,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-998-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "6da72f4b-04b0-425c-8116-1080fb4eccc0/size_chart.jpg",
+          "sha256": "45350b09f0f94bf81e55b231d21fce3f52d8c7208bbe7bda2bfa8b39187aee07",
+          "qa_status": "shared_exact_chart_visual_data_qa_pass_unpublished",
+          "sample": 998,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-997-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "9d2d24cc-04cd-49a9-9c87-5c94435b6dcb",
+      "sample": 1003,
+      "name": "Uzun Kollu V Yakalı Waffle Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 237,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/95edaabf5f0817428807963725accc34.png",
+        {
+          "id": "c24c95b6-60b3-44c1-9817-2c09ebc263b2",
+          "url": "https://cdn.meluni.com.tr/ai-products/9d2d24cc-04cd-49a9-9c87-5c94435b6dcb-olcu-oto-09e1fbbb.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-10-01T05:23:19.091704+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "9d2d24cc-04cd-49a9-9c87-5c94435b6dcb/front.jpg",
+          "sha256": "8363b37711eb4c5770347f40923adcdda1eb55533cbbdae6841d7786b8f0aaa4",
+          "qa_status": "visual_review_pass",
+          "sample": 1003,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1003-front-1200x1800.png"
+        },
+        "back": {
+          "file": "9d2d24cc-04cd-49a9-9c87-5c94435b6dcb/back.jpg",
+          "sha256": "986c81535ba90880d567ddc2c16ad6d4d4a977c6e43bf95e8c66d3cf88ddb22e",
+          "qa_status": "visual_review_pass",
+          "sample": 1003,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1003-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "9d2d24cc-04cd-49a9-9c87-5c94435b6dcb/size_chart.jpg",
+          "sha256": "a0afbbfcbbc341998836f1cf01f97092828180ba81cf307f7a90221438a260a9",
+          "qa_status": "visual_review_pass",
+          "sample": 1003,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1003-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "6e9353fe-1069-492f-a181-5c31d8af54a1",
+      "sample": 1006,
+      "name": "Uzun Kollu V Yakalı Waffle Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 108,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c1e11f6b202762fed070.jpeg",
+        "https://modayakamoz.com/orj/b64a3239d79a2b301a7c.jpeg",
+        "https://modayakamoz.com/orj/1b938cb8d37cab5fc693.jpeg",
+        "https://modayakamoz.com/orj/b1c6d526865d8d0ad2f0.jpeg",
+        "https://modayakamoz.com/orj/e1684d8140da8052fe3f.jpeg",
+        {
+          "id": "c8d0baca-9453-4821-8194-6c26a6e49365",
+          "url": "https://cdn.meluni.com.tr/ai-products/9d2d24cc-04cd-49a9-9c87-5c94435b6dcb-olcu-oto-09e1fbbb.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-10-01T05:23:19.235988+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "6e9353fe-1069-492f-a181-5c31d8af54a1/front.jpg",
+          "sha256": "07ab444a46bfa784f0fa4a8251427ebd3178d80cb05b5fc5451234f43a31fe8b",
+          "qa_status": "visual_review_pass",
+          "sample": 1006,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1006-front-1200x1800.png"
+        },
+        "back": {
+          "file": "6e9353fe-1069-492f-a181-5c31d8af54a1/back.jpg",
+          "sha256": "ef5d4509dc4e352d305b1079ac63da56b808f9a8c5ebc4a49f55aaa43652dbb6",
+          "qa_status": "visual_review_pass",
+          "sample": 1006,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1006-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "6e9353fe-1069-492f-a181-5c31d8af54a1/size_chart.jpg",
+          "sha256": "697359b348d5e1a741eba4386cfa440c2b45cb0aaaaa4aa7332dd14e742163db",
+          "qa_status": "visual_review_pass",
+          "sample": 1006,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1006-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "a1f282a9-228b-40f7-8a31-03f77834b030",
+      "sample": 1007,
+      "name": "Uzun Kollu V Yakalı Waffle Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 259,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e5af7b7532a0a94e8203.jpeg",
+        "https://modayakamoz.com/orj/170c12e4e8df47720ebe.jpeg",
+        "https://modayakamoz.com/orj/3081f1df0770db83ebc6.jpeg",
+        "https://modayakamoz.com/orj/bd71d0df6edcf35f4ccb.jpeg",
+        "https://modayakamoz.com/orj/0a3f07763e59e74e57b1.jpeg",
+        {
+          "id": "8cd41ad6-5814-4410-ae8e-2a41efa03fa5",
+          "url": "https://cdn.meluni.com.tr/ai-products/9d2d24cc-04cd-49a9-9c87-5c94435b6dcb-olcu-oto-09e1fbbb.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-10-01T05:23:19.278829+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "a1f282a9-228b-40f7-8a31-03f77834b030/front.jpg",
+          "sha256": "b7e97d3967d885827235586d0b2f58e3e296cd5bae82335a0a1831df775ef460",
+          "qa_status": "visual_review_pass",
+          "sample": 1007,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1007-front-1200x1800.png"
+        },
+        "back": {
+          "file": "a1f282a9-228b-40f7-8a31-03f77834b030/back.jpg",
+          "sha256": "8e3de205febe4bad020735ac317924e3d3e9cd69b887dbe1f9f52b88cae26c5e",
+          "qa_status": "visual_review_pass",
+          "sample": 1007,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1007-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "a1f282a9-228b-40f7-8a31-03f77834b030/size_chart.jpg",
+          "sha256": "af9c57249c811af1fb79d359e566e278c10f247948a29d937387309ca99ffbc8",
+          "qa_status": "visual_review_pass",
+          "sample": 1007,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1007-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "bd51db21-ba4c-4ea7-8391-26b936f41ca1",
+      "sample": 1008,
+      "name": "Uzun Kollu V Yakalı Waffle Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 103,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e70c2afeab1dc7942b15.jpeg",
+        "https://modayakamoz.com/orj/9c862bd300089cf1bce0.jpeg",
+        "https://modayakamoz.com/orj/4678ddbdcb0b56c340a8.jpeg",
+        "https://modayakamoz.com/orj/53f3b4e60969d277a888.jpeg",
+        "https://modayakamoz.com/orj/a313d5504c9056affb25.jpeg",
+        "https://modayakamoz.com/orj/4cccfe85c296fe6722b6.jpeg",
+        "https://modayakamoz.com/orj/df982e05f681c46aff1e.jpeg",
+        {
+          "id": "06c8afc8-52ec-4ce9-a749-45cc1660f66c",
+          "url": "https://cdn.meluni.com.tr/ai-products/54b215f0-d3fe-4a43-8eaa-7d3e50b5761f-olcu-oto-3fd16a47.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-10-01T05:23:53.299413+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "bd51db21-ba4c-4ea7-8391-26b936f41ca1/front.jpg",
+          "sha256": "313b52163b95ccaab271b849e65b95d0601e2cf55b35e8a5d767f940bcc81d25",
+          "qa_status": "visual_review_pass",
+          "sample": 1008,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1008-front-1200x1800.png"
+        },
+        "back": {
+          "file": "bd51db21-ba4c-4ea7-8391-26b936f41ca1/back.jpg",
+          "sha256": "49a11f2c0723e20fb67cfa79d089033019d7751b0d7ae120a9972392619b5d82",
+          "qa_status": "visual_review_pass",
+          "sample": 1008,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1008-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "bd51db21-ba4c-4ea7-8391-26b936f41ca1/size_chart.jpg",
+          "sha256": "1551c45a801daefba8eb1c61e057d2618442d8505183fcf7781d432779329a22",
+          "qa_status": "visual_review_pass_exact_source_values",
+          "sample": 1008,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1008-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "a56d6acb-850e-4059-a20a-828eaef3070e",
+      "sample": 1009,
+      "name": "Uzun Kollu V Yakalı Yırtmaçlı Iki Iplik Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4087edee1f33d49543fa.jpeg",
+        "https://modayakamoz.com/orj/875160b4219ee64217e9.jpeg",
+        "https://modayakamoz.com/orj/16613e1a5f4e36ee7f30.jpeg",
+        "https://modayakamoz.com/orj/6c31234c9478ec9c09f5.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a56d6acb-850e-4059-a20a-828eaef3070e/front.jpg",
+          "sha256": "f0dd60e0fafabf4349fc1b7c8954e5ef9cc021dc32adba913d4dc187aa65b47d",
+          "qa_status": "visual_review_pass",
+          "sample": 1009,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1009-front-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "a56d6acb-850e-4059-a20a-828eaef3070e/size_chart.jpg",
+          "sha256": "773c55d4e2748b6a31480f7c894a9b8cf2f4328053bfa4adc8fa2904a5b4776c",
+          "qa_status": "visual_review_pass_exact_source_values",
+          "sample": 1009,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1009-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "423559e0-b4a3-418b-80a2-8cb30999e8c7",
+      "sample": 1010,
+      "name": "Uzun Kollu V Yakalı Yırtmaçlı Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 25,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3a363311d2872412a984.jpeg",
+        "https://modayakamoz.com/orj/81a22b72969c3a037020.jpeg",
+        "https://modayakamoz.com/orj/255b47f56bfc796be3c2.jpeg",
+        {
+          "id": "0243f880-09d8-4e36-bf96-f6f1b81dd2b0",
+          "url": "https://cdn.meluni.com.tr/ai-products/423559e0-b4a3-418b-80a2-8cb30999e8c7-olcu-oto-ede4312f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:18:40.463089+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "423559e0-b4a3-418b-80a2-8cb30999e8c7/front.jpg",
+          "sha256": "e6b3d288be6cab3554b3bedb837e649353da808ea594a3bbbb0809e83bce39f5",
+          "qa_status": "visual_review_pass",
+          "sample": 1010,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1010-front-1200x1800.png"
+        },
+        "back": {
+          "file": "423559e0-b4a3-418b-80a2-8cb30999e8c7/back.jpg",
+          "sha256": "4782ea71cb7839b065d02a38124220cea98713b6794394876808c92f41438531",
+          "qa_status": "visual_review_pass",
+          "sample": 1010,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1010-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "423559e0-b4a3-418b-80a2-8cb30999e8c7/size_chart.jpg",
+          "sha256": "63b826df7435b73870d5190e2f6b22ebff91fbad882f946c94dd32c53b084fef",
+          "qa_status": "visual_review_pass_exact_source_values",
+          "sample": 1010,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1010-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "8213c566-2060-41dc-85a9-bbad6a4d1ce9",
+      "sample": 1011,
+      "name": "Uzun Kollu V Yakalı Yırtmaçlı Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/93cd788c5a6d6eda44be.jpeg",
+        "https://modayakamoz.com/orj/6032c4c5ebcff9652644.jpeg",
+        "https://modayakamoz.com/orj/80694ce6fedfb4f81987.jpeg",
+        "https://modayakamoz.com/orj/2990ca5af6efbb39e889.jpeg",
+        {
+          "id": "4faf93d7-8727-4ded-96b4-673ad3576643",
+          "url": "https://cdn.meluni.com.tr/ai-products/423559e0-b4a3-418b-80a2-8cb30999e8c7-olcu-oto-ede4312f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:18:40.616629+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8213c566-2060-41dc-85a9-bbad6a4d1ce9/front.jpg",
+          "sha256": "9af9315ca38d495f0b5561142eeaa35821de4de886c46c39aea824844da962d9",
+          "qa_status": "visual_review_pass",
+          "sample": 1011,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1011-front-1200x1800.png"
+        },
+        "back": {
+          "file": "8213c566-2060-41dc-85a9-bbad6a4d1ce9/back.jpg",
+          "sha256": "0fd209c052266821c5c0679d5b11727445291682d5aca40dea154de694eb2104",
+          "qa_status": "visual_review_pass",
+          "sample": 1011,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1011-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "8213c566-2060-41dc-85a9-bbad6a4d1ce9/size_chart.jpg",
+          "sha256": "63b826df7435b73870d5190e2f6b22ebff91fbad882f946c94dd32c53b084fef",
+          "qa_status": "visual_review_pass_exact_source_values",
+          "sample": 1011,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1011-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "1542e446-a46a-423b-a3bc-c8ab92128e4a",
+      "sample": 1012,
+      "name": "Uzun Kollu V Yakalı Çift Renkli Triko Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 20,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/179099-2026-01-30-09-06-46.jpg",
+        "https://modayakamoz.com/orj/a854e613ba829e527c51.jpeg",
+        "https://modayakamoz.com/orj/5ca87726757136cf99ad.jpeg",
+        "https://modayakamoz.com/orj/2864998fc196b8069568.jpeg",
+        "https://modayakamoz.com/orj/62e28acce7975c649e83.jpeg",
+        "https://modayakamoz.com/orj/a2936e0f89de5ff5ae12.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "1542e446-a46a-423b-a3bc-c8ab92128e4a/front.jpg",
+          "sha256": "2d4c31f7402b39e7955c341247e182366810e9108334398a27804afaea5c7ba8",
+          "qa_status": "visual_review_pass",
+          "sample": 1012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1012-front-1200x1800.png"
+        },
+        "back": {
+          "file": "1542e446-a46a-423b-a3bc-c8ab92128e4a/back.jpg",
+          "sha256": "4a68e9faca9ab48a910ca8c909b5b29525d9ffd132a6f4a05e21cc220db57766",
+          "qa_status": "visual_review_pass",
+          "sample": 1012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1012-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "1542e446-a46a-423b-a3bc-c8ab92128e4a/size_chart.jpg",
+          "sha256": "e7db3119fd51742a1de82e49a4baf916bd12f6d98c1049c833ace06ceaa1fb5a",
+          "qa_status": "visual_review_pass_exact_source_values",
+          "sample": 1012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1012-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "d32e8d22-6619-47ec-9b61-9fc6b137ba3d",
+      "sample": 1013,
+      "name": "Uzun Kollu V Yakalı Çift Renkli Viskon Iki Iplik Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 137,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192366-1-d3728ceaf1.jpg",
+        "https://modayakamoz.com/orj/janes-192366-2-a2889f61a5.jpg",
+        "https://modayakamoz.com/orj/janes-192366-3-5129ccfd1e.jpg",
+        "https://modayakamoz.com/orj/janes-192366-6-dffdfed178.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d32e8d22-6619-47ec-9b61-9fc6b137ba3d/front.jpg",
+          "sha256": "1857d1f5c8a40ce861bbba1f620d1aa2bccfe51714d232735ac7cf6d165f05ec",
+          "qa_status": "visual_review_pass",
+          "sample": 1013,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1013-front-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "d32e8d22-6619-47ec-9b61-9fc6b137ba3d/size_chart.jpg",
+          "sha256": "ac4edf83f9e810c2149a26e084b0809d455b545bda2a868fdf93e716fef71256",
+          "qa_status": "visual_review_pass_exact_source_values",
+          "sample": 1013,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1013-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "7bff28e7-d5fc-4889-8ff1-35d1d9268849",
+      "sample": 1014,
+      "name": "Uzun Kollu V Yakalı Çift Renkli Viskon Iki Iplik Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192365-1-33f0dd5f39.jpg",
+        "https://modayakamoz.com/orj/janes-192365-2-cabc81684b.jpg",
+        "https://modayakamoz.com/orj/janes-192365-3-568e5cd5e4.jpg",
+        "https://modayakamoz.com/orj/janes-192365-4-d4a577535a.jpg",
+        "https://modayakamoz.com/orj/janes-192365-7-98fc50d39c.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7bff28e7-d5fc-4889-8ff1-35d1d9268849/front.jpg",
+          "sha256": "1a8f23e03aa7fc0708bb91414267fd7b7ab64f267d0e74b47698ed0299b9d3c3",
+          "qa_status": "visual_review_pass",
+          "sample": 1014,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1014-front-1200x1800.png"
+        },
+        "back": {
+          "file": "7bff28e7-d5fc-4889-8ff1-35d1d9268849/back.jpg",
+          "sha256": "1309e6811e4ae67ad6d048d61c69856b4836db2883efd52db700f58364dc7534",
+          "qa_status": "visual_review_pass",
+          "sample": 1014,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1014-back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "7bff28e7-d5fc-4889-8ff1-35d1d9268849/size_chart.jpg",
+          "sha256": "ac4edf83f9e810c2149a26e084b0809d455b545bda2a868fdf93e716fef71256",
+          "qa_status": "visual_review_pass_exact_source_values",
+          "sample": 1014,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1014-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "857141dd-7dad-4355-97b9-b23e86cfa0c3",
+      "sample": 1015,
+      "name": "Basic Tişört Bisiklet Yaka Kısa Kol Slim Fit T-Shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4966,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a09a2cc3399b6a09a2cc3399e.webp",
+        "https://modayakamoz.com/orj/TY6a09a2cd1f9116a09a2cd1f914.webp",
+        "https://modayakamoz.com/orj/TY6a09a2ce102246a09a2ce10227.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "857141dd-7dad-4355-97b9-b23e86cfa0c3/front.jpg",
+          "sha256": "f965abf0667b48adeb4d42958fabced91118ff08ea9dfc3f8a3858f497c88109",
+          "qa_status": "visual_review_pass_after_one_targeted_correction",
+          "sample": 1015,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1015-front-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "75be371d-e2f9-4105-88a7-7d42c9bd26d0",
+      "sample": 1016,
+      "name": "Basic Tişört Bisiklet Yaka Kısa Kol Slim Fit T-Shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4987,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a09a2c8174aa6a09a2c8174ac.webp",
+        "https://modayakamoz.com/orj/TY6a09a2c90addc6a09a2c90adde.webp",
+        "https://modayakamoz.com/orj/TY6a09a2c9f029b6a09a2c9f029d.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "75be371d-e2f9-4105-88a7-7d42c9bd26d0/front.jpg",
+          "sha256": "34bbe20778b2b378292aafc7bc52c44b15aa754164c012fbc1ce31cdde0e4f46",
+          "qa_status": "visual_review_pass",
+          "sample": 1016,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1016-front-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "863620df-8388-4319-88f1-ffba08c9505d",
+      "sample": 1017,
+      "name": "Basic Tişört Bisiklet Yaka Kısa Kol Slim Fit T-Shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4983,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a09a2bf824696a09a2bf8246b.webp",
+        "https://modayakamoz.com/orj/TY6a09a2c0668526a09a2c066854.webp",
+        "https://modayakamoz.com/orj/TY6a09a2c1590386a09a2c15903a.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "863620df-8388-4319-88f1-ffba08c9505d/front.jpg",
+          "sha256": "71e25709b375939d8b3741dd9be012bf487f9368fafedb5bb5cf8ccfe9cb1a08",
+          "qa_status": "visual_review_pass_after_one_targeted_correction",
+          "sample": 1017,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1017-front-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "90142886-7141-4bd5-9e19-69ec4b4975ab",
+      "sample": 1018,
+      "name": "Basic Tişört Bisiklet Yaka Kısa Kol Slim Fit T-Shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4978,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a09a2b62d3526a09a2b62d355.webp",
+        "https://modayakamoz.com/orj/TY6a09a2b7280bc6a09a2b7280bd.webp",
+        "https://modayakamoz.com/orj/TY6a09a2b845d5e6a09a2b845d60.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "90142886-7141-4bd5-9e19-69ec4b4975ab/front.jpg",
+          "sha256": "9fcafbd00f4a6bdd460ac9309cd57724e4094b02dd447aa44a2f76da88d86ee9",
+          "qa_status": "visual_review_pass",
+          "sample": 1018,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1018-front-1200x1800.png"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
