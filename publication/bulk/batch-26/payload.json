@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-26",
+  "created_at": "2026-11-10T22:31:01.059627+00:00",
+  "catalog_poll_at": "2026-11-10T22:31:01.059935+00:00",
+  "products": [
+    {
+      "product_id": "4c1f3557-4636-4731-ab1a-acb026d341bc",
+      "sample": 3015,
+      "name": "Uzun Kol Yarım Farmuarlı Yakalı SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 5730,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY66fb15ced8a8f66fb15ced8a91.png",
+        "https://modayakamoz.com/orj/TY66fb15d04edf266fb15d04edf5.png",
+        "https://modayakamoz.com/orj/TY66fb15d1b227966fb15d1b227b.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "4c1f3557-4636-4731-ab1a-acb026d341bc/front.jpg",
+          "sha256": "b3179c798b733af616e4e5abe0d96634411c68154373a5520c336e9b94e827ec",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3015,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4c1f3557/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4c1f3557-4636-4731-ab1a-acb026d341bc/back.jpg",
+          "sha256": "667f0a3c8718f97518f51d9ad365b1741b69f05b3ce28bf424b9225329125aaa",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3015,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4c1f3557/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4c1f3557-4636-4731-ab1a-acb026d341bc/model.jpg",
+          "sha256": "0b5fe4fca7e415550d2ee7f14fb18f8bc182702d447e6651475b05cb7fb9a6ca",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3015,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4c1f3557/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
