@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-39",
+  "created_at": "2026-11-10T23:56:01.287165+00:00",
+  "catalog_poll_at": "2026-11-10T23:56:01.287549+00:00",
+  "products": [
+    {
+      "product_id": "c43d4fc5-fc42-4472-a29a-27712db1f63d",
+      "sample": 3263,
+      "name": "Uzun Kollu Fermuarlı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 271,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193470-1-0d8c8dcc4a96.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193470-0cba9a20bebc1c08.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193470-58bd482690e4a29a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193470-39ee1c16f3a1848f.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c43d4fc5-fc42-4472-a29a-27712db1f63d/front.jpg",
+          "sha256": "c496f0dc769e27ba932e86a2275cfc6c47babec45af5559794499d558296b077",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3263,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c43d4fc5/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c43d4fc5-fc42-4472-a29a-27712db1f63d/back.jpg",
+          "sha256": "52b9421f888766caf6a1d88b11accbc8058fedd8b836f6cf7abb25cda4b70c69",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3263,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c43d4fc5/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c43d4fc5-fc42-4472-a29a-27712db1f63d/model.jpg",
+          "sha256": "f9954da4d7cf473eae2a1bee04730ad6e3ff76f5a4fd895ad80ee325c091b381",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3263,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c43d4fc5/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
