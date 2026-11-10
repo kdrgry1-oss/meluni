@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-14",
+  "published_at_utc": "2026-11-10T06:39:27.926506+00:00",
+  "products": [
+    {
+      "product_id": "a20a9af3-ffef-4492-ae19-bbabca6baf76",
+      "sample": 2990,
+      "name": "Uzun Kol Büzgü Detaylı Sandy Ürün Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a20a9af3-ffef-4492-ae19-bbabca6baf76-front-21cc6b5b00bc.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a20a9af3-ffef-4492-ae19-bbabca6baf76-back-b2e85088d279.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a20a9af3-ffef-4492-ae19-bbabca6baf76-model-76e05e4f5d6f.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
