@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-13",
+  "created_at": "2026-11-10T06:31:42.643562+00:00",
+  "catalog_poll_at": "2026-11-10T06:28:21+00:00",
+  "products": [
+    {
+      "product_id": "7db8455f-2375-48d3-8ae0-d2d3f26b917a",
+      "sample": 2982,
+      "name": "Tül Kollu Yuvarlak Yaka Damla Detaylı Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 17,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/30091e1dbd8518a636f1.jpeg",
+        "https://modayakamoz.com/orj/cee7999a9ab9b27c9cc2.jpeg",
+        "https://modayakamoz.com/orj/c19a91ce3118c4a5c0d0.jpeg",
+        "https://modayakamoz.com/orj/ab91a70114f94f1afaa7.jpeg",
+        "https://modayakamoz.com/orj/77fccb280c2e8669a3c4.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7db8455f-2375-48d3-8ae0-d2d3f26b917a/front.jpg",
+          "sha256": "e88e0738254df9f9e4956123a4fc9501c391047af5b0b1fc315119e9d2ae922c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2982,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7db8455f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7db8455f-2375-48d3-8ae0-d2d3f26b917a/back.jpg",
+          "sha256": "fc0a71264c94c0e41bfd600c05ad665a3f52dce222642406288fede2df3ef151",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2982,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7db8455f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7db8455f-2375-48d3-8ae0-d2d3f26b917a/model.jpg",
+          "sha256": "590930cdd6d2278cbd1b1aa0eeaddb42df82b2ae881841f965d13c94a5e1ab09",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2982,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7db8455f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
