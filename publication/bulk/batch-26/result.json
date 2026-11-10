@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-26",
+  "published_at_utc": "2026-11-10T22:31:58.278999+00:00",
+  "products": [
+    {
+      "product_id": "4c1f3557-4636-4731-ab1a-acb026d341bc",
+      "sample": 3015,
+      "name": "Uzun Kol Yarım Farmuarlı Yakalı SweatShirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4c1f3557-4636-4731-ab1a-acb026d341bc-front-b3179c798b73.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4c1f3557-4636-4731-ab1a-acb026d341bc-back-667f0a3c8718.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4c1f3557-4636-4731-ab1a-acb026d341bc-model-0b5fe4fca7e4.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
