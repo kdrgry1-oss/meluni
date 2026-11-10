@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-37",
+  "created_at": "2026-11-10T23:44:21.901248+00:00",
+  "catalog_poll_at": "2026-11-10T23:44:21.901508+00:00",
+  "products": [
+    {
+      "product_id": "cfb24362-e51c-4490-83a8-8e8eb9276dc9",
+      "sample": 3250,
+      "name": "Uzun Kollu Fermuarlı Kiloş Midi Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 48,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192455-1-dd6ffd7be3.jpg",
+        "https://modayakamoz.com/orj/janes-192455-2-68fd255082.jpg",
+        "https://modayakamoz.com/orj/janes-192455-3-0337613d35.jpg",
+        "https://modayakamoz.com/orj/janes-192455-7-ef60c28da5.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "cfb24362-e51c-4490-83a8-8e8eb9276dc9/front.jpg",
+          "sha256": "8961416f610e80f554de0ebcb4fb72038fa797f177a444f8196fa28c64e57f71",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3250,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cfb24362/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "cfb24362-e51c-4490-83a8-8e8eb9276dc9/back.jpg",
+          "sha256": "7a601bcc61d3c767aa2b8894f313fbd86ce7f4b6e9d2d890230ab39608748dfe",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3250,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cfb24362/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "cfb24362-e51c-4490-83a8-8e8eb9276dc9/model.jpg",
+          "sha256": "2956294c98eb4e45f58aff08004aa773e078830748e83762e17206ffc5c4a338",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3250,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cfb24362/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
