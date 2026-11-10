@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-28",
+  "created_at": "2026-11-10T22:59:05.389150+00:00",
+  "catalog_poll_at": "2026-11-10T22:59:05.389457+00:00",
+  "products": [
+    {
+      "product_id": "8883fe6c-c58f-4259-811b-03aec0d8cda3",
+      "sample": 3113,
+      "name": "Uzun Kollu Bisiklet Yaka Kısa Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 199,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193473-1-f470308a8c73.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193473-0272b66aea804bbd.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193473-6d22bdc48e2ee752.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193473-87e8c28f76558534.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193473-ec56db9bfcb10e6c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193473-59243ce0e7b715a2.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "8883fe6c-c58f-4259-811b-03aec0d8cda3/front.jpg",
+          "sha256": "cd04b01dd6f6c71dd90e78b3ba6f8fa82e890e2331eb26ec57d2a312482c3da9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3113,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8883fe6c/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8883fe6c-c58f-4259-811b-03aec0d8cda3/back.jpg",
+          "sha256": "a15634a13d4b399913f3ceb0f39bd87ee3f6fe9fdb119cc2401902bffe03f81a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3113,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8883fe6c/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8883fe6c-c58f-4259-811b-03aec0d8cda3/model.jpg",
+          "sha256": "362d44d21e9efe1e57effa62ef6d85ffc3ce8c4866181738ef30950ea04723a8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3113,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8883fe6c/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
