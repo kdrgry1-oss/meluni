@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-11",
+  "created_at": "2026-11-10T06:19:31.067266+00:00",
+  "catalog_poll_at": "2026-11-10T06:16:21+00:00",
+  "products": [
+    {
+      "product_id": "81b3421f-0421-40b7-a91c-862a0fc1e79b",
+      "sample": 2971,
+      "name": "Tuvakar Kollu Bağcıklı Düğmeli Midi Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 97,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192823-1-3da0393a43.jpg",
+        "https://modayakamoz.com/orj/janes-192823-2-eb2d03717f.jpg",
+        "https://modayakamoz.com/orj/janes-192823-3-aecf05ac7e.jpg",
+        "https://modayakamoz.com/orj/janes-192823-4-2647192d2f.jpg",
+        "https://modayakamoz.com/orj/janes-192823-5-3f55925e26.jpg",
+        "https://modayakamoz.com/orj/janes-extra-192823-a235813f07ee89d2.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "81b3421f-0421-40b7-a91c-862a0fc1e79b/front.jpg",
+          "sha256": "e65c41ca7f01cebe824536a86483148e07ea1cbff7e6da16becb01f33096222e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2971,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-81b3421f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "81b3421f-0421-40b7-a91c-862a0fc1e79b/back.jpg",
+          "sha256": "d268ae61b68dca0927a15ffb7219cd9891f0e547b7718566804cea6668d4ae67",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2971,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-81b3421f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "81b3421f-0421-40b7-a91c-862a0fc1e79b/model.jpg",
+          "sha256": "6922a465f4f3c403e7e00a0e8d9a2792cef754a63ffde2f6afe52bab9b295ca9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2971,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-81b3421f/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "81b3421f-0421-40b7-a91c-862a0fc1e79b/size_chart.jpg",
+          "sha256": "58105dca9095ec1d162b9e5babfd5e309af43ed5a8bfcb816f3397bad0453a5f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2971,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-81b3421f/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
