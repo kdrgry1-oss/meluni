@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-10",
+  "published_at_utc": "2026-11-10T06:14:43.703618+00:00",
+  "products": [
+    {
+      "product_id": "141dab70-8f99-4072-8e80-cb74b18484ec",
+      "sample": 2963,
+      "name": "Truvakar Kollu Kruvaze Yakalı Kuşaklı Uzun Viskon Iki Iplik Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/141dab70-8f99-4072-8e80-cb74b18484ec-front-24b26fcbac32.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/141dab70-8f99-4072-8e80-cb74b18484ec-back-b5309a50c39d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/141dab70-8f99-4072-8e80-cb74b18484ec-model-bb68348e9228.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/141dab70-8f99-4072-8e80-cb74b18484ec-size-chart-47fb43a99d2c.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
