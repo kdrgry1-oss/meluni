@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-27",
+  "created_at": "2026-11-10T22:53:42.324092+00:00",
+  "catalog_poll_at": "2026-11-10T22:53:42.324701+00:00",
+  "products": [
+    {
+      "product_id": "dc97661d-824c-4ac6-87e1-3e31f0be904d",
+      "sample": 3017,
+      "name": "Uzun Kollu Arkadan Pencere Detaylı Bağcıklı Triko Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d850384a70f92deda464.jpeg",
+        "https://modayakamoz.com/orj/015fbd6cc162f419f01b.jpeg",
+        "https://modayakamoz.com/orj/494c420b4b5aea15d946.jpeg",
+        {
+          "id": "ffb76128-0c80-4f35-a626-27e2c08d50bf",
+          "url": "https://cdn.meluni.com.tr/ai-products/dc97661d-824c-4ac6-87e1-3e31f0be904d-olcu-oto-4f8df7d6.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-16T05:24:12.530724+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "dc97661d-824c-4ac6-87e1-3e31f0be904d/front.jpg",
+          "sha256": "8ac4d559cbaacfde50f7204d9a67ac673958b66c48799bc8584354c12cf0cf65",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3017,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dc97661d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "dc97661d-824c-4ac6-87e1-3e31f0be904d/back.jpg",
+          "sha256": "04df21ed895d8e80e3b3c55db329c54ab83534e45393516391a5702490e60fd0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3017,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dc97661d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "dc97661d-824c-4ac6-87e1-3e31f0be904d/model.jpg",
+          "sha256": "701a5523ba7dda798f533c8389d1f6157fde15e14f9f949dcdaa2513d7d5ff32",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3017,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dc97661d/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
