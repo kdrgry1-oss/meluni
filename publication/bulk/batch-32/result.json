@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-32",
+  "published_at_utc": "2026-11-10T23:19:23.920159+00:00",
+  "products": [
+    {
+      "product_id": "d7cd1398-aaef-47f9-ba90-9365be7bc24e",
+      "sample": 3155,
+      "name": "Uzun Kollu Bisiklet Yakalı Fırfırlı Uzun Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d7cd1398-aaef-47f9-ba90-9365be7bc24e-front-60dcf06f8719.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d7cd1398-aaef-47f9-ba90-9365be7bc24e-back-610ae6e31e3e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d7cd1398-aaef-47f9-ba90-9365be7bc24e-model-bf4c199a8b7e.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
