@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-13",
+  "published_at_utc": "2026-11-10T06:32:41.441200+00:00",
+  "products": [
+    {
+      "product_id": "7db8455f-2375-48d3-8ae0-d2d3f26b917a",
+      "sample": 2982,
+      "name": "Tül Kollu Yuvarlak Yaka Damla Detaylı Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7db8455f-2375-48d3-8ae0-d2d3f26b917a-front-e88e0738254d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7db8455f-2375-48d3-8ae0-d2d3f26b917a-back-fc0a71264c94.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7db8455f-2375-48d3-8ae0-d2d3f26b917a-model-590930cdd6d2.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
