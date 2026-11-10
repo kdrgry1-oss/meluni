@@ -1,0 +1,1050 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-07",
+  "created_at": "2026-11-10T05:40:25.459674+00:00",
+  "catalog_poll_at": "2026-11-10T05:28:18+00:00",
+  "products": [
+    {
+      "product_id": "7dc3e556-f297-4346-b1a9-7c2384ac8c8b",
+      "sample": 3744,
+      "name": "V Yaka Basic Tişört Kısa Kol Regular Fit T-Shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4912,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY69f73bb27e52f69f73bb27e531.webp",
+        "https://modayakamoz.com/orj/TY69f73bb4488c869f73bb4488ca.webp",
+        "https://modayakamoz.com/orj/TY69f73bb670c3169f73bb670c33.webp",
+        "https://modayakamoz.com/orj/TY69f73bb83093969f73bb83093c.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "7dc3e556-f297-4346-b1a9-7c2384ac8c8b/front.jpg",
+          "sha256": "050e3cd9196c296ef08bc898991132ea07ae349d425238d7e5d83de2fcb5daba",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3744,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7dc3e556/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7dc3e556-f297-4346-b1a9-7c2384ac8c8b/model.jpg",
+          "sha256": "b5eef22dce21fa1dfa15a4c21847d5749609edc0abb90bc1e5f0653faea25bc3",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3744,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7dc3e556/model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "65f20457-16cd-4606-a025-221a328d4c94",
+      "sample": 3745,
+      "name": "V Yaka Basic Tişört Kısa Kol Regular Fit T-Shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4940,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY69f73ba947f7a69f73ba947f7c.webp",
+        "https://modayakamoz.com/orj/TY69f73bab54dc769f73bab54dc9.webp",
+        "https://modayakamoz.com/orj/TY69f73bacd1dc469f73bacd1dc6.webp",
+        "https://modayakamoz.com/orj/TY69f73baf2eb8569f73baf2eb89.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "65f20457-16cd-4606-a025-221a328d4c94/front.jpg",
+          "sha256": "bf65c6cd4e34be01e24b9d08c72e695a2c0eaf5c6a4e8129e5859ba508abfdfa",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3745,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-65f20457/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "65f20457-16cd-4606-a025-221a328d4c94/model.jpg",
+          "sha256": "06b65bd8724116c103195a35df55b2c8254432f6b05763d463099ac495a9b4fb",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3745,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-65f20457/model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "16c0286a-38b5-4a16-b7a6-1035eea5b313",
+      "sample": 4042,
+      "name": "Üç İplik Düz Bisiklet Yaka SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 5969,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68b4bc491b51268b4bc491b514.png",
+        "https://modayakamoz.com/orj/TY68b4bc4a4164668b4bc4a41648.png",
+        "https://modayakamoz.com/orj/TY68b4bc4b54dfa68b4bc4b54dfd.png",
+        "https://modayakamoz.com/orj/TY68b4bc4c6c2fd68b4bc4c6c2ff.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "16c0286a-38b5-4a16-b7a6-1035eea5b313/front.jpg",
+          "sha256": "5c2b73d1db873d4aa24224aa4becf64842de9bc97edf9c3e8cb183bde362dad0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4042,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-16c0286a/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "16c0286a-38b5-4a16-b7a6-1035eea5b313/model.jpg",
+          "sha256": "d6b0ac927a94cde82e8598c5cf31104758db12c66e0ce503d1772f15a6d91a45",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4042,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-16c0286a/model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "dbafe3a0-7ccd-49ce-b9b8-56c46e19a6ff",
+      "sample": 4044,
+      "name": "Üç İplik Düz Bisiklet Yaka SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 1969,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68b4bc4042cb468b4bc4042cb6.png",
+        "https://modayakamoz.com/orj/TY68b4bc4156c7a68b4bc4156c7d.png",
+        "https://modayakamoz.com/orj/TY68b4bc425cc4868b4bc425cc4a.png",
+        "https://modayakamoz.com/orj/TY68b4bc436afbd68b4bc436afc0.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "dbafe3a0-7ccd-49ce-b9b8-56c46e19a6ff/front.jpg",
+          "sha256": "a54ac303cb30490af201d7bf5f6ff54aa17ae9b47ac30637dd37066f66e5becd",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4044,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dbafe3a0/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "dbafe3a0-7ccd-49ce-b9b8-56c46e19a6ff/model.jpg",
+          "sha256": "931d181c5b26acd46b70d10a1139e23009b0e63e183091b8d3a0382eec9b3920",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4044,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dbafe3a0/model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "25a71bf9-a02a-4227-ad97-f2842914a57f",
+      "sample": 2521,
+      "name": "Madonna Yaka Askılı Krop Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c49ba602bd3e173e758dda90d823d65f.jpg",
+        "https://modayakamoz.com/orj/f357e3d7534e694cb2b76b6539d4f02c.jpg",
+        "https://modayakamoz.com/orj/15ba41405a374cb7fb8a7803dbb90bf5.jpg",
+        "https://modayakamoz.com/orj/03fb575db958df29004236bc6328f6b4.jpg",
+        "https://modayakamoz.com/orj/9d25d2a84a5fa3c2095d7f7a320ea1f1.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "25a71bf9-a02a-4227-ad97-f2842914a57f/front.jpg",
+          "sha256": "befe43d9f26f2ebc89bf3f4b7ab5a45ad64bbeffa87b01dd7dd6ea2fd0622c0c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2521,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-25a71bf9/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "25a71bf9-a02a-4227-ad97-f2842914a57f/model.jpg",
+          "sha256": "4d770889a3d67a5b2dec8941329676cd162ef134d87a32bc81014345799f5b78",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2521,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-25a71bf9/fashion_model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "1a9e7503-6a17-4d8a-b0f6-de4f76fd2fa5",
+      "sample": 2522,
+      "name": "Madonna Yaka Askılı Krop Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f9ca4256ec024e7b84c6df54855fa710.jpg",
+        "https://modayakamoz.com/orj/1534eb93b5bda421a91dd9862cf98610.jpg",
+        "https://modayakamoz.com/orj/f131f37267315ddbf802dc8f25437f5e.jpg",
+        "https://modayakamoz.com/orj/2a4f42590eac682819a83e54620d4076.jpg",
+        "https://modayakamoz.com/orj/8a993b38bc59c68151f37d92a0983558.jpg",
+        "https://modayakamoz.com/orj/08cef4e6c4c1775188e641937034a33a.jpg",
+        "https://modayakamoz.com/orj/f2929412ce06ec3c2d30ef20abf29029.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "1a9e7503-6a17-4d8a-b0f6-de4f76fd2fa5/front.jpg",
+          "sha256": "532ce88342086c62794a1cb7d0beae45aa2759c723bd380325d210042b089e7b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2522,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1a9e7503/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "1a9e7503-6a17-4d8a-b0f6-de4f76fd2fa5/back.jpg",
+          "sha256": "f82593ed8abe146db957721f92c6b4a15c090468948ecb1090d8812210fe2143",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2522,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1a9e7503/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "1a9e7503-6a17-4d8a-b0f6-de4f76fd2fa5/model.jpg",
+          "sha256": "6e10d31cfbfca196f467ae6d0665b9c834de1efd9854e0c0bf30022ca3a54498",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2522,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1a9e7503/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "1a9e7503-6a17-4d8a-b0f6-de4f76fd2fa5/size_chart.jpg",
+          "sha256": "47065ee80f5046dcd85568f22c5b82a11cfeb69d38bd9b3cba3334c2b16be9af",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2522,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1a9e7503/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "efd9683e-e185-4610-998d-db61f45760ea",
+      "sample": 2523,
+      "name": "Madonna Yaka Askılı Krop Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 100,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/cc73c7316df5d5b4aa59111f30d22ea8.jpg",
+        "https://modayakamoz.com/orj/e32df1d3b88e59cde7f04edae77a1e49.jpg",
+        "https://modayakamoz.com/orj/eaf3ee514baa3f228198d036f44cfb4a.jpg",
+        "https://modayakamoz.com/orj/76dfc5706c00f2f59260914b8da187d9.jpg",
+        "https://modayakamoz.com/orj/58b29485f22516d5d3200cee61a7ca7e.jpg",
+        "https://modayakamoz.com/orj/03008da9ab0eb816312d59c881eb0a38.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "efd9683e-e185-4610-998d-db61f45760ea/front.jpg",
+          "sha256": "a78c06b4e2602c967e6248557c5b698df5da434a548e77ac235c482c7444d2be",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2523,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-efd9683e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "efd9683e-e185-4610-998d-db61f45760ea/back.jpg",
+          "sha256": "36aa54775934b19665b71ac03fc7ea707fee7f75143d0fa31e45e7832a370644",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2523,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-efd9683e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "efd9683e-e185-4610-998d-db61f45760ea/model.jpg",
+          "sha256": "36e41984b57a99f8d73a8dc08d084baa2ccdc64b37d74aa876ec8357773813ce",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2523,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-efd9683e/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "efd9683e-e185-4610-998d-db61f45760ea/size_chart.jpg",
+          "sha256": "47065ee80f5046dcd85568f22c5b82a11cfeb69d38bd9b3cba3334c2b16be9af",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2523,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-efd9683e/size_chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "b716e070-4652-459c-b642-5f561db328d0",
+      "sample": 2537,
+      "name": "Madonna Yaka Uzun Kollu Salaş Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 174,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193749-1-75dd74467781.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193749-49a312dfd089d61f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193749-ed82c402ba4bd0a3.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193749-58d1dffbc0b5515d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b716e070-4652-459c-b642-5f561db328d0/front.jpg",
+          "sha256": "8eebebf8269d382e5ed4bc1a43a83f5674584a4ec76383e27bb5c35cc1d658e8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2537,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b716e070/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b716e070-4652-459c-b642-5f561db328d0/back.jpg",
+          "sha256": "671e4ab6f92dad696138231cd6823341e1e353e88a300ea99953056580352163",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2537,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b716e070/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b716e070-4652-459c-b642-5f561db328d0/model.jpg",
+          "sha256": "74bc83772500b7aa8905b741a427a6de4622e890dcfbd248c63fb802083f7957",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2537,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b716e070/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "b716e070-4652-459c-b642-5f561db328d0/size_chart.jpg",
+          "sha256": "ceed2ece678c7c5809e7edda002cecbc89f54c36790166a5e040eefa11d4827b",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2537,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b716e070/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "2c775b9b-5b55-4cb5-ac19-f01ae1f70964",
+      "sample": 2538,
+      "name": "Madonna Yaka Uzun Kollu Salaş Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 44,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193751-1-366ecffa0b8e.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193751-89807e9e784d8dd7.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193751-3dceb5ce99cc6755.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193751-58d1dffbc0b5515d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "2c775b9b-5b55-4cb5-ac19-f01ae1f70964/front.jpg",
+          "sha256": "37937a7f8f44ecf7dd062dbe2df15efc49b1034cd63dd8d6098d24aefcfd5031",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2538,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2c775b9b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "2c775b9b-5b55-4cb5-ac19-f01ae1f70964/back.jpg",
+          "sha256": "cd51c2d8b3d0d18ecaffe3bfd9ef962c140b7f59895b29c148e48b0121e914ea",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2538,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2c775b9b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "2c775b9b-5b55-4cb5-ac19-f01ae1f70964/model.jpg",
+          "sha256": "dcb550021f39b13e3ed23b18119943795e59bed55d9c8f2c5861ea219b51f860",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2538,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2c775b9b/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "2c775b9b-5b55-4cb5-ac19-f01ae1f70964/size_chart.jpg",
+          "sha256": "ceed2ece678c7c5809e7edda002cecbc89f54c36790166a5e040eefa11d4827b",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2538,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2c775b9b/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "28378683-e045-4ae2-8c70-6edf1847f297",
+      "sample": 2539,
+      "name": "Madonna Yaka Uzun Kollu Salaş Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 62,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193753-1-3255fcf8c656.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193753-7e91e32363c18df5.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193753-c7b4cee81fe09940.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193753-58d1dffbc0b5515d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "28378683-e045-4ae2-8c70-6edf1847f297/front.jpg",
+          "sha256": "f7b2c302d4b4b83ab3c66114015b10677322756864a92f40c8116718f8396fb2",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2539,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28378683/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "28378683-e045-4ae2-8c70-6edf1847f297/back.jpg",
+          "sha256": "c8f507df53ddb98b03340d1b87541f9aa03627281969b152c04a8de6d9240f85",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2539,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28378683/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "28378683-e045-4ae2-8c70-6edf1847f297/model.jpg",
+          "sha256": "5a89e8fa50e737e536ab21278714005af3324adaae098006170be2e4ed988651",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2539,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28378683/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "28378683-e045-4ae2-8c70-6edf1847f297/size_chart.jpg",
+          "sha256": "ceed2ece678c7c5809e7edda002cecbc89f54c36790166a5e040eefa11d4827b",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2539,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28378683/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "69957145-3107-41ea-9008-f0fa74b46859",
+      "sample": 2540,
+      "name": "Madonna Yaka Yırtmaç Kol Detaylı Uzun Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 8,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/178877-2026-02-11-18-36-14.jpg",
+        "https://modayakamoz.com/orj/178877-2026-02-11-18-36-09.jpg",
+        "https://modayakamoz.com/orj/178877-2026-02-11-18-36-19.jpg",
+        "https://modayakamoz.com/orj/33972a47d9fb8dd721b9.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "69957145-3107-41ea-9008-f0fa74b46859/front.jpg",
+          "sha256": "934fc8934a0c41d50cc1e48933b12fd4e74c0e4943d08d84dc1e16541d0e95be",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2540,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-69957145/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "69957145-3107-41ea-9008-f0fa74b46859/back.jpg",
+          "sha256": "172b237d6bec70f0cfa997e4d15b2eb97376fabbfc9bdea74103d9d9418e591e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2540,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-69957145/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "69957145-3107-41ea-9008-f0fa74b46859/model.jpg",
+          "sha256": "fa38b8ab23483b1f9ff66194e66cf4a35de4705f6178d8c23da3fb3e67719f75",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2540,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-69957145/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "69957145-3107-41ea-9008-f0fa74b46859/size_chart.jpg",
+          "sha256": "d509b0f29d28d458d0405ad60353efd774c4fa54b0bf330424e3d6f56a69b939",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2540,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-69957145/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "4583ac33-f970-4ad5-ba7d-b743a7ce20eb",
+      "sample": 2587,
+      "name": "Omuz Askılı Düğmeli Waffle Kısa Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 10,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c2627f34fdcb1fe24558.jpeg",
+        "https://modayakamoz.com/orj/254583a242845100f893.jpeg",
+        "https://modayakamoz.com/orj/0af19bb5a58716deb73b.jpeg",
+        "https://modayakamoz.com/orj/73d403a236dc628486c8.jpeg",
+        "https://modayakamoz.com/orj/96ff9d658e1dfeec4037.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "4583ac33-f970-4ad5-ba7d-b743a7ce20eb/front.jpg",
+          "sha256": "1767ab3e0f2ec51a4504717b87784cad8705f04b8d511a7eec5c3053bc3e40d5",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2587,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4583ac33/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4583ac33-f970-4ad5-ba7d-b743a7ce20eb/back.jpg",
+          "sha256": "deaf2c5c62b5a1e1b5c26cb6719a091d5f7d00e819009a7ffdeadf5046457218",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2587,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4583ac33/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4583ac33-f970-4ad5-ba7d-b743a7ce20eb/model.jpg",
+          "sha256": "29e487ef6f5a413ed4868997edeb6042669244aceba39e0776af92dc64eb9570",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2587,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4583ac33/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "4583ac33-f970-4ad5-ba7d-b743a7ce20eb/size_chart.jpg",
+          "sha256": "efbb5d2570dbdd5314504f917fdf7b9554812e7f9680b2bdd992873740042518",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2587,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4583ac33/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "6825cc61-494c-4062-8bdf-31e83d4d8611",
+      "sample": 2612,
+      "name": "Omuzlardan Askı Şerit Detaylı Taşlı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 59,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/87a74cc375532095420b.jpeg",
+        "https://modayakamoz.com/orj/17735d631e8329018e9b.jpeg",
+        "https://modayakamoz.com/orj/97a5f71b5b8562b48318.jpeg",
+        "https://modayakamoz.com/orj/8ebfe6bafc63232c6fcd.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "6825cc61-494c-4062-8bdf-31e83d4d8611/front.jpg",
+          "sha256": "0f978b5b0f9eac30ffc46fe669cef382623e1b70d887f486fd874e8ecba66402",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2612,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6825cc61/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "6825cc61-494c-4062-8bdf-31e83d4d8611/model.jpg",
+          "sha256": "b4f3c2954ce203ea58c7aa6810ffec5ccdb5a56a32b6a80a03e2984a4bdaa4ce",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2612,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6825cc61/fashion_model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "11664449-f7f0-4227-8503-b019c3f12be7",
+      "sample": 2613,
+      "name": "Omuzlardan Askı Şerit Detaylı Taşlı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 24,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/443dcd409cb49a39bc4b.jpeg",
+        "https://modayakamoz.com/orj/5565f238ff72f402c852.jpeg",
+        "https://modayakamoz.com/orj/b630e22f4012d7c56e8d.jpeg",
+        "https://modayakamoz.com/orj/19d705b916c05babe688.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "11664449-f7f0-4227-8503-b019c3f12be7/front.jpg",
+          "sha256": "c369e1625a5b8ad2b99f16f900b28bd1f86abb804039b8f74632bbc03bc80b69",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2613,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-11664449/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "11664449-f7f0-4227-8503-b019c3f12be7/back.jpg",
+          "sha256": "922c2aae1db5772492891f49b41c44e3c83dff0ee72ed2548e0b13d5c612e8ff",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2613,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-11664449/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "11664449-f7f0-4227-8503-b019c3f12be7/model.jpg",
+          "sha256": "af3a3989d398dfd14f1906f2930fbd93a99b028b93e8f74c70fdd274c3337e15",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2613,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-11664449/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "11664449-f7f0-4227-8503-b019c3f12be7/size_chart.jpg",
+          "sha256": "ed5c4d9dd5a6f8d850c7e54670cc51394bda9678e32be141ffd5abf0771243c4",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2613,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-11664449/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "aa5c2a33-4ee4-468c-8237-a534d0df88a9",
+      "sample": 2634,
+      "name": "Omuzlardan Açık Balıkçı Yaka Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/953aafb45ffbf1d458db.jpeg",
+        "https://modayakamoz.com/orj/1b4987a44e435cf619e9.jpeg",
+        "https://modayakamoz.com/orj/fc419cb425da1ec9d673.jpeg",
+        "https://modayakamoz.com/orj/fd18bba7a673a04e3b32.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "aa5c2a33-4ee4-468c-8237-a534d0df88a9/front.jpg",
+          "sha256": "f539a20ff90ba88bd0d69b74eb08e83a148bac0aeb93c056c55f6241ff6a914b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2634,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-aa5c2a33/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "aa5c2a33-4ee4-468c-8237-a534d0df88a9/back.jpg",
+          "sha256": "af8e17215cef9dd619391e7835b7b0f8c37adf169ee75a2d6fec7aee5bfe6ad5",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2634,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-aa5c2a33/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "aa5c2a33-4ee4-468c-8237-a534d0df88a9/model.jpg",
+          "sha256": "5740145c281485b04a82192d64a4a304dd5472b87cd1d92d2cd71e522dd4eab4",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2634,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-aa5c2a33/fashion_model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "8af16c9d-6945-46e6-82f9-aa03ba120eee",
+      "sample": 2687,
+      "name": "Omuzlardan Açık Lastikli Fırfırlı Dubai Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 99,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/18e3fab97aca6e65c9af.jpeg",
+        "https://modayakamoz.com/orj/2c6b14f3f239875cd9c2.jpeg",
+        "https://modayakamoz.com/orj/82d336fbcbcbedf38c88.jpeg",
+        "https://modayakamoz.com/orj/9714355747704b27d163.jpeg",
+        "https://modayakamoz.com/orj/78b461fdea719689656a.jpeg",
+        "https://modayakamoz.com/orj/334e16bac9f3a46815a2.jpeg",
+        "https://modayakamoz.com/orj/b934c6340bb0c49deffc.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "8af16c9d-6945-46e6-82f9-aa03ba120eee/front.jpg",
+          "sha256": "903cdecefa54c284dcb2efc92876432bc763fb097ffe9dcd83c64a0ef407b4d2",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2687,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8af16c9d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8af16c9d-6945-46e6-82f9-aa03ba120eee/back.jpg",
+          "sha256": "3792ca280a3e2d80b0ca7e1455ce086f45ce8603b35a38199b9a8f283f6f29d1",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2687,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8af16c9d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8af16c9d-6945-46e6-82f9-aa03ba120eee/model.jpg",
+          "sha256": "f17419589aaf0eeb88965904f978c7369e7c06706c2bff3420d945f8ac4d52df",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2687,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8af16c9d/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "8af16c9d-6945-46e6-82f9-aa03ba120eee/size_chart.jpg",
+          "sha256": "0df011405962ad73d4981223c9f02d0181aeb862bccc5a02754178e4aa81b948",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2687,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8af16c9d/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "322772e5-b0f2-405b-93cb-ae7fa8c9eeda",
+      "sample": 2688,
+      "name": "Omuzlardan Açık Lastikli Fırfırlı Dubai Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c7cba8dcb85d7f90ccea.jpeg",
+        "https://modayakamoz.com/orj/093d3fc687fd7df59490.jpeg",
+        "https://modayakamoz.com/orj/9c1ec19e1fa92e4ac26a.jpeg",
+        "https://modayakamoz.com/orj/7f8fa5f54cc77d367106.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "322772e5-b0f2-405b-93cb-ae7fa8c9eeda/front.jpg",
+          "sha256": "ee1ae9f3703d4f64f3991f419226c57e06ed6b8b5b19fdf44927d3acff29c507",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2688,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-322772e5/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "322772e5-b0f2-405b-93cb-ae7fa8c9eeda/back.jpg",
+          "sha256": "a11ea652c8bb9e6eb081e4ca87318e2dcb6eee56b7a5684a6c21aeb20dae13ba",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2688,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-322772e5/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "322772e5-b0f2-405b-93cb-ae7fa8c9eeda/model.jpg",
+          "sha256": "ddc17dd13a98127dfea2f6d89fb3b6b391578ca82d361c0f879c6a58e81b5ee3",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2688,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-322772e5/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "322772e5-b0f2-405b-93cb-ae7fa8c9eeda/size_chart.jpg",
+          "sha256": "0df011405962ad73d4981223c9f02d0181aeb862bccc5a02754178e4aa81b948",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2688,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-322772e5/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "afc4338f-481b-4a46-a7ff-87ee39abcc72",
+      "sample": 2689,
+      "name": "Omuzlardan Açık Lastikli Fırfırlı Dubai Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 45,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7550bcbceab0bf40aec1.jpeg",
+        "https://modayakamoz.com/orj/3ce4136e9b5985ce44a1.jpeg",
+        "https://modayakamoz.com/orj/0540959b4bf31e909e51.jpeg",
+        "https://modayakamoz.com/orj/034e5fb05363cb091193.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "afc4338f-481b-4a46-a7ff-87ee39abcc72/front.jpg",
+          "sha256": "246427aed8b61ae23a3e1c935c49687d83fe2571c071cf545cf8fc604e554e32",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2689,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-afc4338f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "afc4338f-481b-4a46-a7ff-87ee39abcc72/back.jpg",
+          "sha256": "4ce7cb777437c1c2f29dc6f4ebde116bd5cb36ec462e14d1886a5224f3aee316",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2689,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-afc4338f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "afc4338f-481b-4a46-a7ff-87ee39abcc72/model.jpg",
+          "sha256": "4492b3e0143ff4a1c2a75ef06b4f4a32a1a4adf44f6f28b2faa94f8c190853c4",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2689,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-afc4338f/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "afc4338f-481b-4a46-a7ff-87ee39abcc72/size_chart.jpg",
+          "sha256": "0df011405962ad73d4981223c9f02d0181aeb862bccc5a02754178e4aa81b948",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2689,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-afc4338f/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "584f87c6-94ec-4ee3-b147-6eb8b91c7f11",
+      "sample": 2727,
+      "name": "Omuzlardan Açık Şerit Detaylı Uzun Kollu Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 115,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192932-1-4be5ba21bc.jpg",
+        "https://modayakamoz.com/orj/janes-192932-2-c950e659e3.jpg",
+        "https://modayakamoz.com/orj/janes-192932-3-2583dbe6be.jpg",
+        "https://modayakamoz.com/orj/janes-192932-7-2efcc5c4cc.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "584f87c6-94ec-4ee3-b147-6eb8b91c7f11/front.jpg",
+          "sha256": "45a32676ab1cace0c09d02e5aef82e26e79962a3cefb9f4dbcf68542d7fbc7ca",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2727,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-584f87c6/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "584f87c6-94ec-4ee3-b147-6eb8b91c7f11/back.jpg",
+          "sha256": "af7fce6ff6ba5b4a825a7c97601781955bd4552acbff1fe050197b62b50e1b63",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2727,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-584f87c6/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "584f87c6-94ec-4ee3-b147-6eb8b91c7f11/model.jpg",
+          "sha256": "6555054b46ac3670bb9642b48971f78feb48ec12d89ffc37f91a7902ee59db10",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2727,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-584f87c6/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "584f87c6-94ec-4ee3-b147-6eb8b91c7f11/size_chart.jpg",
+          "sha256": "ecf10ee7b65f8104f04c9a2b7bbcd2d4e594f66f225a13b9504534f4cc51dc36",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2727,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-584f87c6/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "87067d57-25d4-4dd6-95e9-c2a8cfca220b",
+      "sample": 2728,
+      "name": "Omuzlardan Açık Şerit Detaylı Uzun Kollu Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 17,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192287-1-01b1cd160f.jpg",
+        "https://modayakamoz.com/orj/janes-192287-2-92de0c0f4d.jpg",
+        "https://modayakamoz.com/orj/janes-192287-3-b67fde4338.jpg",
+        "https://modayakamoz.com/orj/janes-192287-7-e5a1ed7ff0.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "87067d57-25d4-4dd6-95e9-c2a8cfca220b/front.jpg",
+          "sha256": "0a80d3cb880b41dfa2b0c315ecc2db1f783b7206224aca5b1905598ad7e51e38",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2728,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87067d57/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "87067d57-25d4-4dd6-95e9-c2a8cfca220b/back.jpg",
+          "sha256": "2080efb2854e2813c8718b9fa118b565321e784b3f6d64352229a675af28a3c0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2728,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87067d57/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "87067d57-25d4-4dd6-95e9-c2a8cfca220b/model.jpg",
+          "sha256": "402a85b9b9071c6ae5d892e648162f03e8041fb07c04ef891d3db331abbba0fe",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2728,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87067d57/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "87067d57-25d4-4dd6-95e9-c2a8cfca220b/size_chart.jpg",
+          "sha256": "ecf10ee7b65f8104f04c9a2b7bbcd2d4e594f66f225a13b9504534f4cc51dc36",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2728,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87067d57/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "146082f1-403a-48b9-9018-c5eb2eeb1c5a",
+      "sample": 2729,
+      "name": "Omuzlardan Açık Şerit Detaylı Uzun Kollu Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 49,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192286-1-aca1e67fb4.jpg",
+        "https://modayakamoz.com/orj/janes-192286-2-9fbc50d786.jpg",
+        "https://modayakamoz.com/orj/janes-192286-3-b80b713b84.jpg",
+        "https://modayakamoz.com/orj/janes-192286-7-1828f0bf9e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "146082f1-403a-48b9-9018-c5eb2eeb1c5a/front.jpg",
+          "sha256": "eda2ec336b4c70f21a02f4f6e2306df271f67297bbec4714cfd4fe6df70181ca",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2729,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-146082f1/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "146082f1-403a-48b9-9018-c5eb2eeb1c5a/back.jpg",
+          "sha256": "1f132c20a891d229249bf1812b5f24835046f1d379476af6dd70b78cedd59727",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2729,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-146082f1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "146082f1-403a-48b9-9018-c5eb2eeb1c5a/model.jpg",
+          "sha256": "1ad8958b2b0ecd6b14caef48b5a21f117f643734a8d42a9d939f1136eeae880f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2729,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-146082f1/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "146082f1-403a-48b9-9018-c5eb2eeb1c5a/size_chart.jpg",
+          "sha256": "ecf10ee7b65f8104f04c9a2b7bbcd2d4e594f66f225a13b9504534f4cc51dc36",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2729,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-146082f1/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "5a146542-57f8-472d-aa95-fb9061a2a460",
+      "sample": 2872,
+      "name": "Sıfır Kollu Bisiklet Yaka Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 10,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1f17578316e20576e1c2.jpeg",
+        "https://modayakamoz.com/orj/44868d2a3719021730ed.jpeg",
+        "https://modayakamoz.com/orj/979069de753f027438fa.jpeg",
+        "https://modayakamoz.com/orj/69e412cc6c39c99bc755.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5a146542-57f8-472d-aa95-fb9061a2a460/front.jpg",
+          "sha256": "a11612691d08e24915ab93dd613caa085910ea495e3a3f1060a22da6d2d91bdd",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2872,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5a146542/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5a146542-57f8-472d-aa95-fb9061a2a460/back.jpg",
+          "sha256": "e72f26ee2d4d90f9a40db01e3757ef76085bd4c2b04ede05071a7c5dbfcc65db",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2872,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5a146542/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5a146542-57f8-472d-aa95-fb9061a2a460/model.jpg",
+          "sha256": "49a4f1dabba562ea0ce25ad72e09c8f4868fec8e3d9bd4a6aedb986588636588",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2872,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5a146542/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "5a146542-57f8-472d-aa95-fb9061a2a460/size_chart.jpg",
+          "sha256": "751b63f9c0626d9f99364f0e4b8fe84c0085646120b84b4d0079918a9ae9fba8",
+          "qa_status": "exact_source_values_verified_unpublished_draft",
+          "sample": 2872,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5a146542/size-chart-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "8e853cc7-4c9f-4614-8bdb-54743f772106",
+      "sample": 2844,
+      "name": "Sporcu Bisiklet Yaka Kolsuz Atlet",
+      "active_at_poll": true,
+      "stock_at_poll": 4960,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a1f244b0c87e6a1f244b0c880.webp",
+        "https://modayakamoz.com/orj/TY6a1f244c6817d6a1f244c6817f.webp",
+        "https://modayakamoz.com/orj/TY6a1f244dca9ae6a1f244dca9b1.webp",
+        "https://modayakamoz.com/orj/TY6a1f244f88b166a1f244f88b19.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "8e853cc7-4c9f-4614-8bdb-54743f772106/front.jpg",
+          "sha256": "abfc45459082285697566a606cf35710f057f351e461969e6f292d9eef930692",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2844,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8e853cc7/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8e853cc7-4c9f-4614-8bdb-54743f772106/back.jpg",
+          "sha256": "80b0da953105b099b667a6009e24a41448def29d9261caf06ad09da73d66462a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2844,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8e853cc7/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8e853cc7-4c9f-4614-8bdb-54743f772106/model.jpg",
+          "sha256": "3cc4b7a9f5dc7bc8b2ff1658bce3eb4b7fae522eb6e111074778fd6308fed4ac",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2844,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8e853cc7/fashion_model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "f0da2ba0-c047-449f-918a-3507447468a1",
+      "sample": 2841,
+      "name": "Sporcu Bisiklet Yaka Kolsuz Atlet",
+      "active_at_poll": true,
+      "stock_at_poll": 4970,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a1f246a7db846a1f246a7db88.webp",
+        "https://modayakamoz.com/orj/TY6a1f246cafd766a1f246cafd78.webp",
+        "https://modayakamoz.com/orj/TY6a1f246e77f596a1f246e77f5d.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "f0da2ba0-c047-449f-918a-3507447468a1/front.jpg",
+          "sha256": "2e607e6fc46b01b73a45fd290b69fdd6131af9189c7ee9840bf468b6ca97824c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f0da2ba0/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f0da2ba0-c047-449f-918a-3507447468a1/back.jpg",
+          "sha256": "ed57cb8534c93ede550d62bb955357f65da80772aafa9917541cf3ae20114ecb",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f0da2ba0/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f0da2ba0-c047-449f-918a-3507447468a1/model.jpg",
+          "sha256": "3f85ae00fb1f6464ab0c47db3835556a8ba1866b52068f7c8d627c8f391c550a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f0da2ba0/fashion_model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "a1e4d9f6-0b69-4d85-aa00-238660eb9cc2",
+      "sample": 2842,
+      "name": "Sporcu Bisiklet Yaka Kolsuz Atlet",
+      "active_at_poll": true,
+      "stock_at_poll": 4964,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a1f245f6e0156a1f245f6e017.webp",
+        "https://modayakamoz.com/orj/TY6a1f2461358ac6a1f2461358af.webp",
+        "https://modayakamoz.com/orj/TY6a1f2462766486a1f24627664c.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "a1e4d9f6-0b69-4d85-aa00-238660eb9cc2/front.jpg",
+          "sha256": "1c76f882f03479143837ee90c249d389e25d2f966e1eb23ddb22f3659d633829",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2842,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a1e4d9f6/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a1e4d9f6-0b69-4d85-aa00-238660eb9cc2/back.jpg",
+          "sha256": "d841b6233a408501fd77ef5e7b107b11775141f5023c1d061bec9d47a8c5a88e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2842,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a1e4d9f6/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a1e4d9f6-0b69-4d85-aa00-238660eb9cc2/model.jpg",
+          "sha256": "0f754ae204d510678d29c9c44215c8142a75e2cd861dedb9cb520f4ffc899121",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2842,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a1e4d9f6/fashion_model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "610e828e-fd50-449c-8c19-5603b6c0cb29",
+      "sample": 2847,
+      "name": "Sporcu Bisiklet Yaka Kolsuz Atlet",
+      "active_at_poll": true,
+      "stock_at_poll": 4938,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a1f2420b7b666a1f2420b7b69.webp",
+        "https://modayakamoz.com/orj/TY6a1f24229cdd46a1f24229cdd8.webp",
+        "https://modayakamoz.com/orj/TY6a1f2424d6a716a1f2424d6a75.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "610e828e-fd50-449c-8c19-5603b6c0cb29/front.jpg",
+          "sha256": "b1145e3e608967ab8eada3630fbddddab1954cb091dee742f168999949bed512",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2847,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-610e828e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "610e828e-fd50-449c-8c19-5603b6c0cb29/back.jpg",
+          "sha256": "206c9122d026ca49711f1893d25d7b54024420e83e34566fa7ccd769b6be30b0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2847,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-610e828e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "610e828e-fd50-449c-8c19-5603b6c0cb29/model.jpg",
+          "sha256": "885eca1f129e3334e935f4a9a0c10f1756b25e020acfcacdb17b72c0cfc40511",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2847,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-610e828e/fashion_model-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "94e4a0a1-9a0d-412b-aa3c-1212c3e44054",
+      "sample": 2848,
+      "name": "Sporcu Bisiklet Yaka Kolsuz Atlet",
+      "active_at_poll": true,
+      "stock_at_poll": 4977,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a1f2418c82de6a1f2418c82e1.webp",
+        "https://modayakamoz.com/orj/TY6a1f241ace90c6a1f241ace90e.webp",
+        "https://modayakamoz.com/orj/TY6a1f241d245506a1f241d24553.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "94e4a0a1-9a0d-412b-aa3c-1212c3e44054/front.jpg",
+          "sha256": "53f745da5e0fe64742c7813ed4b835ccfe8b192615487bacc9773823e4766063",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2848,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-94e4a0a1/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "94e4a0a1-9a0d-412b-aa3c-1212c3e44054/back.jpg",
+          "sha256": "daaaff4a312114453502d0541f8f4e3063b1419ba14249905002433b9525c649",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2848,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-94e4a0a1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "94e4a0a1-9a0d-412b-aa3c-1212c3e44054/model.jpg",
+          "sha256": "76c1f3f4449c75565fe042ca0d1b34fd481f1385fc771c01335a17c548f9b97c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2848,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-94e4a0a1/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
