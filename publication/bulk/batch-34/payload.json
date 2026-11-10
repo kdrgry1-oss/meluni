@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-34",
+  "created_at": "2026-11-10T23:27:48.946114+00:00",
+  "catalog_poll_at": "2026-11-10T23:27:48.946471+00:00",
+  "products": [
+    {
+      "product_id": "799f3b34-b7c2-4f5e-8239-d1d7eee5d1e0",
+      "sample": 3160,
+      "name": "Uzun Kollu Bisiklet Yakalı Kısa Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8870d9091545b6c91aec.jpeg",
+        "https://modayakamoz.com/orj/e7a97847b5e419617cba.jpeg",
+        "https://modayakamoz.com/orj/67d504530e1b54463cbb.jpeg",
+        "https://modayakamoz.com/orj/77e3c500f1d56937be1b.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "799f3b34-b7c2-4f5e-8239-d1d7eee5d1e0/front.jpg",
+          "sha256": "fba057b0ee3709a468054a5ab49a88b2be5f790497dcfeef79f5dfc71b6ff07e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3160,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-799f3b34/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "799f3b34-b7c2-4f5e-8239-d1d7eee5d1e0/back.jpg",
+          "sha256": "8eae4c83eb4457fa6eb6fa79c6db88e4d9557288a6379e62a0c8ce24da89945a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3160,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-799f3b34/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "799f3b34-b7c2-4f5e-8239-d1d7eee5d1e0/model.jpg",
+          "sha256": "190a9ec74844fb35e95a9ee19b30c3e141a313237fe3fa179d44ad11a61e9d64",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3160,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-799f3b34/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
