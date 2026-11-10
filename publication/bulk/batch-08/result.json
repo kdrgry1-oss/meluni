@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-08",
+  "published_at_utc": "2026-11-10T05:51:10.052453+00:00",
+  "products": [
+    {
+      "product_id": "9bffb58d-8578-4092-818d-c6285c13f28a",
+      "sample": 2849,
+      "name": "Sporcu Bisiklet Yaka Kolsuz Atlet",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9bffb58d-8578-4092-818d-c6285c13f28a-front-cdc721426b00.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9bffb58d-8578-4092-818d-c6285c13f28a-back-6a7d06b29a66.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9bffb58d-8578-4092-818d-c6285c13f28a-model-06ae90e5ff4d.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
