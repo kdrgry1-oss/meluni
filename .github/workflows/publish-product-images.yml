@@ -12,6 +12,18 @@ on:
           - remove-empty-mongo-url
           - inspect-catalog
           - restore-mongo-url
+          - publish-bulk
+      batch:
+        description: Bulk batch number (01–06)
+        required: false
+        type: choice
+        options:
+          - '01'
+          - '02'
+          - '03'
+          - '04'
+          - '05'
+          - '06'
 
 permissions:
   contents: write
@@ -170,7 +182,7 @@ jobs:
           PY
           REMOTE
   publish:
-    if: inputs.task == 'publish' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    if: inputs.task == 'publish-bulk' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
@@ -180,6 +192,7 @@ jobs:
       SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
       SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
       DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+      BATCH: ${{ inputs.batch }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -190,23 +203,26 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           import hashlib, json, pathlib
-          p=pathlib.Path('publication/batch2/payload.json')
+          import os
+          batch=os.environ['BATCH']
+          assert batch in {'01','02','03','04','05','06'}
+          p=pathlib.Path(f'publication/bulk/batch-{batch}/payload.json')
           data=json.loads(p.read_text())
-          assert data['publication_id']=='meluni-images-20261110-v2'
+          assert data['publication_id']==f'meluni-images-20261110-v3-{batch}'
           assert data['publish_authorized_by_user'] is True
-          assert len(data['products'])==25
-          assert len({x['product_id'] for x in data['products']})==25
+          assert 1<=len(data['products'])<=40
+          assert len({x['product_id'] for x in data['products']})==len(data['products'])
           for product in data['products']:
             assert product['active_at_poll'] is True and product['stock_at_poll']>0
-            assert set(product['assets'])=={'front','back','fashion_model','size_chart'}
+            assert product['assets'] and set(product['assets'])<={'front','back','fashion_model','size_chart'}
             for asset in product['assets'].values():
-              path=pathlib.Path('publication/batch2/assets')/asset['file']
+              path=pathlib.Path(f'publication/bulk/batch-{batch}/assets')/asset['file']
               assert path.is_file()
               assert hashlib.sha256(path.read_bytes()).hexdigest()==asset['sha256']
               qa=asset['qa_status'].lower()
               assert any(s in qa for s in ('pass','verified'))
               assert not any(s in qa for s in ('fail','open','unverified','insufficient'))
-          print('Verified 25 in-stock products and 100 QA-approved 1200x1800 masters.')
+          print('Verified',len(data['products']),'in-stock products and QA-approved masters.')
           PY
 
       - name: SSH erişimini hazırla
@@ -231,7 +247,7 @@ jobs:
       - name: Paket dosyalarını sunucuya kopyala
         run: |
           set -euo pipefail
-          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -r publication/batch2/payload.json publication/batch2/assets scripts/publish_product_images.py "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/"
+          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -r "publication/bulk/batch-$BATCH/payload.json" "publication/bulk/batch-$BATCH/assets" scripts/publish_bulk_images.py "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/"
 
       - name: Sunucu veritabanı bağlantısını tanıla
         run: |
@@ -277,22 +293,22 @@ jobs:
           env={k.decode():v.decode() for k,v in (part.split(b'=',1) for part in raw.split(b'\0') if b'=' in part)}
           if not env.get('MONGO_URL') or not env.get('DB_NAME'):
               raise SystemExit('Running application database settings unavailable')
-          os.execve(sys.executable,[sys.executable,f'{stage}/publish_product_images.py',f'{stage}/payload.json',f'{stage}/assets',f'{stage}/status.json'],env)
+          os.execve(sys.executable,[sys.executable,f'{stage}/publish_bulk_images.py',f'{stage}/payload.json',f'{stage}/assets',f'{stage}/status.json'],env)
           PY
           REMOTE
 
       - name: Yayın sonucunu geri al
         run: |
           set -euo pipefail
-          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/status.json" publication/batch2/result.json
-          cat publication/batch2/result.json
+          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/status.json" "publication/bulk/batch-$BATCH/result.json"
+          cat "publication/bulk/batch-$BATCH/result.json"
 
       - name: Sonucu dalda sakla
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add publication/batch2/result.json
+          git add "publication/bulk/batch-$BATCH/result.json"
           git commit -m "Record Meluni image publication result [publisher status]"
           git push origin HEAD:codex/meluni-publish-images-20261110
 
