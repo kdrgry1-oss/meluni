@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-09",
+  "created_at": "2026-11-10T06:07:12.572268+00:00",
+  "catalog_poll_at": "2026-11-10T06:02:49+00:00",
+  "products": [
+    {
+      "product_id": "2f06e729-420d-4bb0-a4a8-34e67b182d32",
+      "sample": 2961,
+      "name": "Truvakar Kollu Bisiklet Yakalı Dantel Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 182,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193543-1-dc6aa0ec5bbb.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193543-ec0ed7decd82c7df.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193543-4120b4aced3549c6.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193543-4763456c8257d9de.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193543-a75b16b3d9f5b228.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "2f06e729-420d-4bb0-a4a8-34e67b182d32/front.jpg",
+          "sha256": "ea52ea99a3953ac420ef52a1f62f2fabe8c1a4bbfb7e371e064159e3229b20f9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2961,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2f06e729/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "2f06e729-420d-4bb0-a4a8-34e67b182d32/back.jpg",
+          "sha256": "4b79ccc6e382f5e3205298431817a31fe0a76f3c5fe3653f0a81e28e32df1a83",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2961,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2f06e729/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "2f06e729-420d-4bb0-a4a8-34e67b182d32/model.jpg",
+          "sha256": "f9009c7081c0e5a0d265582f122630a7d47a295addf055b925b60971bc418bdb",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2961,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2f06e729/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "2f06e729-420d-4bb0-a4a8-34e67b182d32/size_chart.jpg",
+          "sha256": "f8eb99121c59cc911b18e12a1de2bcdcc0dfc7935911a1547f507c60acbfe6f7",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2961,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2f06e729/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
