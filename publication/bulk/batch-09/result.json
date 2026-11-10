@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-09",
+  "published_at_utc": "2026-11-10T06:08:37.360877+00:00",
+  "products": [
+    {
+      "product_id": "2f06e729-420d-4bb0-a4a8-34e67b182d32",
+      "sample": 2961,
+      "name": "Truvakar Kollu Bisiklet Yakalı Dantel Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2f06e729-420d-4bb0-a4a8-34e67b182d32-front-ea52ea99a395.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2f06e729-420d-4bb0-a4a8-34e67b182d32-back-4b79ccc6e382.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2f06e729-420d-4bb0-a4a8-34e67b182d32-model-f9009c7081c0.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/2f06e729-420d-4bb0-a4a8-34e67b182d32-size-chart-f8eb99121c59.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
