@@ -1,0 +1,1571 @@
+{
+  "schema_version": 1,
+  "publication_id": "meluni-images-20261110-v3-05",
+  "created_at": "2026-11-10T00:07:24.238823+00:00",
+  "catalog_poll_at": "2026-11-09T22:01:48+00:00",
+  "products": [
+    {
+      "product_id": "672d832d-2826-46f5-a3df-bb9847a72b35",
+      "sample": 1761,
+      "name": "Askılı Kare Yakalı Bağlamalı Aerobin Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 8,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/858eea011e3173bf779a.jpeg",
+        "https://modayakamoz.com/orj/08d898cae4fbb9fe06d6.jpeg",
+        "https://modayakamoz.com/orj/cfff6a00a5b19abf32db.jpeg",
+        "https://modayakamoz.com/orj/2b03c8b66c21f1fda053.jpeg",
+        {
+          "id": "f6cf2b2e-2032-4f5c-b1ac-3726f055b754",
+          "url": "https://cdn.meluni.com.tr/ai-products/672d832d-2826-46f5-a3df-bb9847a72b35-olcu-oto-1a9c7ef7.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:19:43.153952+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "672d832d-2826-46f5-a3df-bb9847a72b35/front.jpg",
+          "sha256": "d27848e4887eb669e8c1df40e030daaa4037aa1af1ca3edaba58906f17a62196",
+          "qa_status": "visual_review_pass",
+          "sample": 1761,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1761/front-ghost-1200x1800.png"
+        },
+        "back": {
+          "file": "672d832d-2826-46f5-a3df-bb9847a72b35/back.jpg",
+          "sha256": "5c1a4188560b3e9c2a03baac84087e703b2a0e6027ba85fbfa60436f1b35fa48",
+          "qa_status": "visual_review_pass",
+          "sample": 1761,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1761/back-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "672d832d-2826-46f5-a3df-bb9847a72b35/size_chart.jpg",
+          "sha256": "2e0350f0356b97e25579d449f4d1fac436df41533aec5af8f2abda9d0dbf6d0a",
+          "qa_status": "visual_review_pass_exact_linked_values",
+          "sample": 1761,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1761/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "93385733-1648-4840-86d8-97042d82b179",
+      "sample": 1762,
+      "name": "Askılı Kare Yakalı Bağlamalı Aerobin Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 43,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/fd44921d8ee282180d59.jpeg",
+        "https://modayakamoz.com/orj/3d38b96670f7cd5ccc75.jpeg",
+        "https://modayakamoz.com/orj/51a461f8bbb0ce94d7bf.jpeg",
+        "https://modayakamoz.com/orj/37a1e2a7cd0e289bca8f.jpeg",
+        "https://modayakamoz.com/orj/4c98ddeb92a6c5daf72c.jpeg",
+        {
+          "id": "6a12aa8d-075f-484f-b307-37572907389d",
+          "url": "https://cdn.meluni.com.tr/ai-products/672d832d-2826-46f5-a3df-bb9847a72b35-olcu-oto-1a9c7ef7.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:19:43.294313+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/93385733-1648-4840-86d8-97042d82b179/04c911ffb267aaec.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "93385733-1648-4840-86d8-97042d82b179/front.jpg",
+          "sha256": "3a2c99211777eecd20cb04c945aaf60155b201d2f08df62959b5f916a39fb6f7",
+          "qa_status": "visual_review_pass",
+          "sample": 1762,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1762/front-ghost-1200x1800.png"
+        },
+        "back": {
+          "file": "93385733-1648-4840-86d8-97042d82b179/back.jpg",
+          "sha256": "1ec0a59a584e49ac802227b96d63a71cff72e68cdad5aa3d6fa005c4293781c3",
+          "qa_status": "visual_review_pass_direct_rear",
+          "sample": 1762,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1762/back-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "93385733-1648-4840-86d8-97042d82b179/size_chart.jpg",
+          "sha256": "2e0350f0356b97e25579d449f4d1fac436df41533aec5af8f2abda9d0dbf6d0a",
+          "qa_status": "visual_review_pass_reused_exact_linked_values",
+          "sample": 1762,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1762/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "5bfecc69-4023-437a-bd6a-118f8d4da2bd",
+      "sample": 1764,
+      "name": "Askılı Yuvarlak Yakalı Düğme Detaylı Kısa Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/189e03c820f4a8e9a407.jpeg",
+        "https://modayakamoz.com/orj/7d1d8984bd080f15c5ac.jpeg",
+        "https://modayakamoz.com/orj/d08b601e87fd7e28f3d9.jpeg",
+        "https://modayakamoz.com/orj/4b0ab2f8768241c2aaa4.jpeg",
+        "https://modayakamoz.com/orj/d43b18aeb909bcf5cfaf.jpeg",
+        {
+          "id": "f2bff5e9-448a-4cb2-b21c-066d93d826e7",
+          "url": "https://cdn.meluni.com.tr/ai-products/5bfecc69-4023-437a-bd6a-118f8d4da2bd-olcu-oto-1b699a26.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-31T05:21:16.185748+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "5bfecc69-4023-437a-bd6a-118f8d4da2bd/front.jpg",
+          "sha256": "4daf4cff71637d3341f9f020e935ab6b6d90a51874a0b967fe02332a30a1a466",
+          "qa_status": "completed_draft_qa_pass",
+          "sample": 1764,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1764/front-ghost-1200x1800.png"
+        },
+        "back": {
+          "file": "5bfecc69-4023-437a-bd6a-118f8d4da2bd/back.jpg",
+          "sha256": "58df96f4791d0231e6dcc232cd4e60929aea3469ef93a0c739f58a5bebe743c9",
+          "qa_status": "completed_draft_qa_pass",
+          "sample": 1764,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1764/back-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "5bfecc69-4023-437a-bd6a-118f8d4da2bd/size_chart.jpg",
+          "sha256": "ee952489e0e981c119c98fbbf25de67343475c44993980c571429720babea486",
+          "qa_status": "visual_review_pass_exact_linked_values",
+          "sample": 1764,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1764/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "27778c02-db4c-4fca-ae4d-ed6bba88df29",
+      "sample": 1765,
+      "name": "Askılı Yuvarlak Yakalı Düğme Detaylı Kısa Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/451c073a4f4419eb5c91.jpeg",
+        "https://modayakamoz.com/orj/233b9f153cf0fc02d9ef.jpeg",
+        "https://modayakamoz.com/orj/fa6732368da7e3e25586.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "27778c02-db4c-4fca-ae4d-ed6bba88df29/front.jpg",
+          "sha256": "cde73510446201748bfcc5b2e237a46e76fda7c56b4c72605c4723f3f062bcbe",
+          "qa_status": "completed_draft_qa_pass",
+          "sample": 1765,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1765/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "27778c02-db4c-4fca-ae4d-ed6bba88df29/model.jpg",
+          "sha256": "ef973c234e0d442d5a74cc9a8898f8074c4c62697c32f543f301368bee642c9c",
+          "qa_status": "completed_draft_qa_pass_after_one_targeted_headroom_correction",
+          "sample": 1765,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1765/model-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "b162368f-2c41-4b62-ba36-f1aa6849c0f2",
+      "sample": 1767,
+      "name": "Askılı Yuvarlak Yakalı Düğmeli Cep Detaylı Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 51,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/6119df0c3a3d811dbfbb.jpeg",
+        "https://modayakamoz.com/orj/3e0330f6601e060c61b9.jpeg",
+        "https://modayakamoz.com/orj/b4ac2ef54576de530980.jpeg",
+        {
+          "id": "72d05c87-21cf-4d5d-8e72-3625094abf18",
+          "url": "https://cdn.meluni.com.tr/ai-products/b162368f-2c41-4b62-ba36-f1aa6849c0f2-olcu-oto-bfab216d.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-11T05:20:01.479447+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "b162368f-2c41-4b62-ba36-f1aa6849c0f2/front.jpg",
+          "sha256": "8a148a8c6377413853a11bba65a85e371b9be4215451b7714bf113eb2f3112d2",
+          "qa_status": "completed_draft_qa_pass",
+          "sample": 1767,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1767/front-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "b162368f-2c41-4b62-ba36-f1aa6849c0f2/size_chart.jpg",
+          "sha256": "170e6f3695bffe104591fee13392c0117e140280c10bfcae29cde6cca5c5996f",
+          "qa_status": "source_values_verified_standardized_qa_pass",
+          "sample": 1767,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1767/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "73fa6d5d-c6e2-446e-bed3-6908a8d3a010",
+      "sample": 1769,
+      "name": "Askılı Yuvarlak Yakalı Düğmeli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 16,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/fdff34916f7d30acb79d.jpeg",
+        "https://modayakamoz.com/orj/e5c200e0157eebc4fa7d.jpeg",
+        "https://modayakamoz.com/orj/9af89e58792334b5c9b8.jpeg",
+        {
+          "id": "77cd0c6c-b385-4bd9-894d-bb7e7e5db675",
+          "url": "https://cdn.meluni.com.tr/ai-products/73fa6d5d-c6e2-446e-bed3-6908a8d3a010-olcu-oto-5d3419e7.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-09T05:23:48.467419+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "73fa6d5d-c6e2-446e-bed3-6908a8d3a010/front.jpg",
+          "sha256": "3fe302d306830a04c64260bc10dbdb00ba617c82d6f1dae4fa86fcfa16655f62",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1769,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1769/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "73fa6d5d-c6e2-446e-bed3-6908a8d3a010/model.jpg",
+          "sha256": "4ac295f04b19853bba21dee666b77b0e437a2d197ac2e4bc3db1d8a347928b78",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1769,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1769/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "73fa6d5d-c6e2-446e-bed3-6908a8d3a010/size_chart.jpg",
+          "sha256": "a440c555fb9290f3c2024aa8b41d8d8df3fa34e94b43cf234429cf631e6010a0",
+          "qa_status": "source_values_verified_standardized_visual_qa_pass",
+          "sample": 1769,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1769/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "6af5045f-a3c0-42fa-a0c1-ba9cb7d6bc29",
+      "sample": 1771,
+      "name": "Askılı Yuvarlak Yakalı Etek Dantelli Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 99,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b8eadbc6080d037836ef.jpeg",
+        "https://modayakamoz.com/orj/76ce20947c923512bb4e.jpeg",
+        "https://modayakamoz.com/orj/b0b0b5b8a2d6278cc8b2.jpeg",
+        "https://modayakamoz.com/orj/87290c2d0ad0b791b839.jpeg",
+        {
+          "id": "a38566b4-e94b-4f8f-a507-1cdba696e34b",
+          "url": "https://cdn.meluni.com.tr/ai-products/ae94dc05-71ab-406e-8cc5-04cf70893c2e-olcu-oto-03426ed3.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:27:06.233135+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "6af5045f-a3c0-42fa-a0c1-ba9cb7d6bc29/front.jpg",
+          "sha256": "175cae178b055e3a087cf5b060b9f90293a3d757237111b8cd9b1eacf8173a2c",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1771,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1771/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "6af5045f-a3c0-42fa-a0c1-ba9cb7d6bc29/model.jpg",
+          "sha256": "8d82c7002d574da38008201b579f42405e912ef63d3a049dfa49c0e5563c1962",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1771,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1771/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "6af5045f-a3c0-42fa-a0c1-ba9cb7d6bc29/size_chart.jpg",
+          "sha256": "cecfd57c6d6164fa769560a499a8008d62751c37376242ef05045f58c71d0bfd",
+          "qa_status": "source_values_verified_standardized_visual_qa_pass",
+          "sample": 1771,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1771/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "ae94dc05-71ab-406e-8cc5-04cf70893c2e",
+      "sample": 1772,
+      "name": "Askılı Yuvarlak Yakalı Etek Dantelli Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 8,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b6da624a33a3969236e2.jpeg",
+        "https://modayakamoz.com/orj/31bc03613510353bae0b.jpeg",
+        "https://modayakamoz.com/orj/f727ee898a248a109c0a.jpeg",
+        {
+          "id": "04d9134e-cda7-4431-adfa-d85a4619d220",
+          "url": "https://cdn.meluni.com.tr/ai-products/ae94dc05-71ab-406e-8cc5-04cf70893c2e-olcu-oto-03426ed3.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:27:06.078586+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "ae94dc05-71ab-406e-8cc5-04cf70893c2e/front.jpg",
+          "sha256": "6be5e18dc45130401aaa84d4285a7bff70d46b8e338eb22723131aedf73e2089",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1772,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1772/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "ae94dc05-71ab-406e-8cc5-04cf70893c2e/model.jpg",
+          "sha256": "9cba56c1533e9ef98e754460c42b0b9b3fed12074e9610df2cdff57874e8f50c",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1772,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1772/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "ae94dc05-71ab-406e-8cc5-04cf70893c2e/size_chart.jpg",
+          "sha256": "cecfd57c6d6164fa769560a499a8008d62751c37376242ef05045f58c71d0bfd",
+          "qa_status": "source_values_verified_standardized_visual_qa_pass",
+          "sample": 1772,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1772/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "aaf9337a-47c7-4376-886f-d53bf791b4b6",
+      "sample": 1773,
+      "name": "Askılı Yuvarlak Yakalı Etek Dantelli Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8d2c01ff09ea190fa474.jpeg",
+        "https://modayakamoz.com/orj/56a769b9754d807f6647.jpeg",
+        "https://modayakamoz.com/orj/a218515ab1d63fe7f681.jpeg",
+        "https://modayakamoz.com/orj/c2ab330551e47da653b7.jpeg",
+        {
+          "id": "bd699bc5-7838-4e75-b633-8615963b4d19",
+          "url": "https://cdn.meluni.com.tr/ai-products/ae94dc05-71ab-406e-8cc5-04cf70893c2e-olcu-oto-03426ed3.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:27:06.279838+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "aaf9337a-47c7-4376-886f-d53bf791b4b6/front.jpg",
+          "sha256": "3da683dc20f62b560d3fef5886a6a5b4ddcddd310b49d87f500a746e0bd21a8a",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1773,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1773/front-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "aaf9337a-47c7-4376-886f-d53bf791b4b6/size_chart.jpg",
+          "sha256": "cecfd57c6d6164fa769560a499a8008d62751c37376242ef05045f58c71d0bfd",
+          "qa_status": "source_values_verified_standardized_visual_qa_pass",
+          "sample": 1773,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1773/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "747e494c-72d2-42e7-87d2-a15e70e24ef5",
+      "sample": 1774,
+      "name": "Askılı Yuvarlak Yakalı Etek Ucu Şerit Detaylı Uzun Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 163,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4f95061895330e05ab06.jpeg",
+        "https://modayakamoz.com/orj/252b03d535f3496e90254e17820ef3cd.jpeg",
+        "https://modayakamoz.com/orj/f17e39b937fab74af2bf54ec0831ba44.jpeg",
+        "https://modayakamoz.com/orj/d85e0d3bf4678afb91fe7dc8231f3200.jpeg",
+        {
+          "id": "622913db-7865-4fbb-b27a-992e1940f6ef",
+          "url": "https://cdn.meluni.com.tr/ai-products/95b7027e-f841-4af4-9471-452f8f2f12fd-olcu-oto-b6b9ab42.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:24:56.046101+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "747e494c-72d2-42e7-87d2-a15e70e24ef5/front.jpg",
+          "sha256": "444a85097e04061863cf9117ba6f7f03463535c63506c827764b9b34a70e93b4",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1774,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1774/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "747e494c-72d2-42e7-87d2-a15e70e24ef5/model.jpg",
+          "sha256": "3250d14a2310503fb32d9ba6976f5644f2d7fd3ad510923c5f59dc4fce7be6de",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1774,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1774/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "747e494c-72d2-42e7-87d2-a15e70e24ef5/size_chart.jpg",
+          "sha256": "cc82267f59f970a3770df7f1bf3ca36ac93424d849a9d003035c2800b1339301",
+          "qa_status": "source_values_verified_standardized_visual_qa_pass",
+          "sample": 1774,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1774/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "95b7027e-f841-4af4-9471-452f8f2f12fd",
+      "sample": 1775,
+      "name": "Askılı Yuvarlak Yakalı Etek Ucu Şerit Detaylı Uzun Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b710bb653554f2ec70bd.jpeg",
+        "https://modayakamoz.com/orj/6f6e0d4889398483a796.jpeg",
+        "https://modayakamoz.com/orj/d1f9d561bf9c1868177c.jpeg",
+        {
+          "id": "1fbaaea7-734a-4a8b-b335-ad91fba265c8",
+          "url": "https://cdn.meluni.com.tr/ai-products/95b7027e-f841-4af4-9471-452f8f2f12fd-olcu-oto-b6b9ab42.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:24:55.831099+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "95b7027e-f841-4af4-9471-452f8f2f12fd/front.jpg",
+          "sha256": "4afe577e4f8eeadeaeaaffe8d9ba9dd7e3fdfaed21ad449feb5d19d9f369089d",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1775,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1775/front-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "95b7027e-f841-4af4-9471-452f8f2f12fd/size_chart.jpg",
+          "sha256": "cc82267f59f970a3770df7f1bf3ca36ac93424d849a9d003035c2800b1339301",
+          "qa_status": "source_values_verified_standardized_visual_qa_pass",
+          "sample": 1775,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1775/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "0e25991c-85db-42a3-a84c-e1eaa88361ea",
+      "sample": 1776,
+      "name": "Askılı Yuvarlak Yakalı Etek Ucu Şerit Detaylı Uzun Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 86,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/fb31e7f924d685c73ea6.jpeg",
+        "https://modayakamoz.com/orj/85529f30ff1dd6260395.jpeg",
+        "https://modayakamoz.com/orj/9af9ae894116c71c2865.jpeg",
+        "https://modayakamoz.com/orj/c36e6aa16e9b0e805223.jpeg",
+        {
+          "id": "a348fcfc-ee62-480e-9573-f53a2e0bbcaf",
+          "url": "https://cdn.meluni.com.tr/ai-products/95b7027e-f841-4af4-9471-452f8f2f12fd-olcu-oto-b6b9ab42.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:24:55.996019+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "0e25991c-85db-42a3-a84c-e1eaa88361ea/front.jpg",
+          "sha256": "e516a7bf5080948012f8fc341dd2934dabd1f08ed873dfad1ddc6a7f01d09df5",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1776,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1776/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "0e25991c-85db-42a3-a84c-e1eaa88361ea/model.jpg",
+          "sha256": "18fe3f5be6b176b223649b938525df91562e851d462bf0b6dcab52fa52fffbb1",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1776,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1776/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "0e25991c-85db-42a3-a84c-e1eaa88361ea/size_chart.jpg",
+          "sha256": "cc82267f59f970a3770df7f1bf3ca36ac93424d849a9d003035c2800b1339301",
+          "qa_status": "source_values_verified_standardized_visual_qa_pass",
+          "sample": 1776,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1776/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "c36496b3-1e73-4dc7-8cf4-ce30e10adf64",
+      "sample": 1777,
+      "name": "Askılı Yuvarlak Yakalı Etek Şifon Detaylı Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 33,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ffc82007cda704d3faaf.jpeg",
+        "https://modayakamoz.com/orj/1052032f8be299008f19.jpeg",
+        "https://modayakamoz.com/orj/653b5a65c85207e387bc.jpeg",
+        "https://modayakamoz.com/orj/5fdc734c10e9dcabc3f5.jpeg",
+        {
+          "id": "4d65439e-e348-4cb9-815a-e96dbca8fe0d",
+          "url": "https://cdn.meluni.com.tr/ai-products/c36496b3-1e73-4dc7-8cf4-ce30e10adf64-olcu-oto-450c42dc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:17:26.493356+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c36496b3-1e73-4dc7-8cf4-ce30e10adf64/front.jpg",
+          "sha256": "ff8cb59d7006c83ed3fe0e95738e68768082fe6d05e9b07490688c60c6b1aebb",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1777,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1777/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "c36496b3-1e73-4dc7-8cf4-ce30e10adf64/model.jpg",
+          "sha256": "67072213e17e1482b4fe7c1f039f65278f3587aa304947e314e003d2e0a7f5e4",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1777,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1777/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "c36496b3-1e73-4dc7-8cf4-ce30e10adf64/size_chart.jpg",
+          "sha256": "2f7501c3ee86c33a5df438558415bcc540abe97dbf8b3d7ac95cf72c03a9aba8",
+          "qa_status": "source_values_and_product_details_verified_standardized_visual_qa_pass",
+          "sample": 1777,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1777/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "bc8e17e1-abb7-4920-8920-a3fd8a58acf1",
+      "sample": 1778,
+      "name": "Askılı Yuvarlak Yakalı Etek Şifon Detaylı Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 23,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b9e2a9d2a35e481f728b.jpeg",
+        "https://modayakamoz.com/orj/368b1d23080a8257e406.jpeg",
+        "https://modayakamoz.com/orj/864447163f8db57726ed.jpeg",
+        "https://modayakamoz.com/orj/88a3c5184559dc21db09.jpeg",
+        "https://modayakamoz.com/orj/f59edeab9a1724e9b652.jpeg",
+        {
+          "id": "a5885460-f566-4ed4-9074-897d7f2dd5c1",
+          "url": "https://cdn.meluni.com.tr/ai-products/c36496b3-1e73-4dc7-8cf4-ce30e10adf64-olcu-oto-450c42dc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:17:26.676939+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "bc8e17e1-abb7-4920-8920-a3fd8a58acf1/front.jpg",
+          "sha256": "80a8df35dd20862d29bced75f44e64794f64f47339e2cb4ae411019cb315e164",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1778,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1778/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "bc8e17e1-abb7-4920-8920-a3fd8a58acf1/model.jpg",
+          "sha256": "ecd75e5a6a0e36f80b0d87cd86e8e832b99aaad2be5551d77e87439a186a4bcd",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1778,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1778/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "bc8e17e1-abb7-4920-8920-a3fd8a58acf1/size_chart.jpg",
+          "sha256": "2f7501c3ee86c33a5df438558415bcc540abe97dbf8b3d7ac95cf72c03a9aba8",
+          "qa_status": "source_values_and_product_details_verified_standardized_visual_qa_pass",
+          "sample": 1778,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1778/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "4f1142a2-7777-4b08-97ac-e1c1dd047fbd",
+      "sample": 1779,
+      "name": "Askılı Yuvarlak Yakalı Etek Şifon Detaylı Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 20,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/53a8f10b6d36593c2c61.jpeg",
+        "https://modayakamoz.com/orj/c7fe61ac29a197295c3c.jpeg",
+        "https://modayakamoz.com/orj/c5e8b4aebf427db76468.jpeg",
+        "https://modayakamoz.com/orj/05239cc84247be81796e.jpeg",
+        "https://modayakamoz.com/orj/524b0a9466d93a059d96.jpeg",
+        {
+          "id": "1b55929a-2241-487e-b966-8f1bf0829153",
+          "url": "https://cdn.meluni.com.tr/ai-products/c36496b3-1e73-4dc7-8cf4-ce30e10adf64-olcu-oto-450c42dc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:17:26.634573+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4f1142a2-7777-4b08-97ac-e1c1dd047fbd/front.jpg",
+          "sha256": "497c76bd45e2a42dcf97a186f167ea926f09b64b24c1bb5c58f139e5dc0c2644",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_piping_width_correction",
+          "sample": 1779,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1779/front-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "4f1142a2-7777-4b08-97ac-e1c1dd047fbd/size_chart.jpg",
+          "sha256": "2f7501c3ee86c33a5df438558415bcc540abe97dbf8b3d7ac95cf72c03a9aba8",
+          "qa_status": "source_values_and_linked_product_details_verified_reused_visual_qa_pass",
+          "sample": 1779,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1779/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "957320a8-2790-46c6-9678-35367ab5ca23",
+      "sample": 1780,
+      "name": "Askılı Yuvarlak Yakalı Fırfırlı Kısa Sandy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 124,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7c2ed3afdcd1bdbd5e16.jpeg",
+        "https://modayakamoz.com/orj/24ecd2f8442a718cb4c5.jpeg",
+        "https://modayakamoz.com/orj/43b9446ccd3f2220e2f8.jpeg",
+        {
+          "id": "5a23bfc7-b395-4d6d-bc24-fd83b3ec7c96",
+          "url": "https://cdn.meluni.com.tr/ai-products/957320a8-2790-46c6-9678-35367ab5ca23-olcu-oto-d11ab27c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:26:31.308433+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "957320a8-2790-46c6-9678-35367ab5ca23/front.jpg",
+          "sha256": "e1364a2f8e0cd69a7293846b89356b15e292d04f35d307c1b932dddf5cca6d94",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1780,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1780/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "957320a8-2790-46c6-9678-35367ab5ca23/model.jpg",
+          "sha256": "4428a0d7fb37cb0a54730e74cd09f169e2ab4a0294e150a785f10f19cbdde679",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1780,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1780/model-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "adc2e0e5-7808-48ce-a867-60c781434782",
+      "sample": 1781,
+      "name": "Askılı Yuvarlak Yakalı Kuş Gözü Detaylı Düğmeli Aerobin Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 118,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c4b976b3a50f5ce69bc0.jpeg",
+        "https://modayakamoz.com/orj/abf3feaf22e5db73adb7.jpeg",
+        "https://modayakamoz.com/orj/6bd8c4586b7798b1a02d.jpeg",
+        {
+          "id": "c65df3cf-7a62-4931-858d-902a3db7c839",
+          "url": "https://cdn.meluni.com.tr/ai-products/adc2e0e5-7808-48ce-a867-60c781434782-olcu-oto-e3aa6951.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-29T05:22:31.420838+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "adc2e0e5-7808-48ce-a867-60c781434782/front.jpg",
+          "sha256": "77cd73005ef4cdffdeb83ba3219f665fb41e6d5d8b73041141fb14f64096417c",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1781,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1781/front-ghost-1200x1800.png"
+        },
+        "back": {
+          "file": "adc2e0e5-7808-48ce-a867-60c781434782/back.jpg",
+          "sha256": "82f4acb2d0ee475f048bffd1f2e273341531cad44b798f8ba3c7931bb1c5cd3a",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1781,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1781/back-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "adc2e0e5-7808-48ce-a867-60c781434782/size_chart.jpg",
+          "sha256": "4ab4359854dd830170e29ace96978b36b3291021ed959c6993807dbb57fec014",
+          "qa_status": "source_values_and_visual_qa_pass",
+          "sample": 1781,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1781/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "7f6ba18c-e324-4069-a6a8-5a4a752e0747",
+      "sample": 1783,
+      "name": "Askılı Kalp Yakalı Halka Detaylı Kısa Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/dac8556bd87541db1aa6.jpeg",
+        "https://modayakamoz.com/orj/04eb8c8f7e18ca4f3d77.jpeg",
+        "https://modayakamoz.com/orj/5d74f3fbe454e9656644.jpeg",
+        "https://modayakamoz.com/orj/1ae8bf1b9c3c58578b4b.jpeg",
+        {
+          "id": "049a4999-6ec4-45dd-89e9-aaea9769b125",
+          "url": "https://cdn.meluni.com.tr/ai-products/5b80ef65-39a5-463d-afcb-665dd4f03644-olcu-oto-532c27be.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-29T05:19:32.848933+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7f6ba18c-e324-4069-a6a8-5a4a752e0747/front.jpg",
+          "sha256": "e4d7d23d62963307b4179816a9846b11f6198a50ff15d9b95663604e832ae092",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1783,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1783/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "7f6ba18c-e324-4069-a6a8-5a4a752e0747/model.jpg",
+          "sha256": "32fcd3c12477657ce1c62e305c68598e74ea58eab916dc73c66369b36eb6c6ce",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1783,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1783/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "7f6ba18c-e324-4069-a6a8-5a4a752e0747/size_chart.jpg",
+          "sha256": "30d18329d00f357f117ad3180f7517f517d660d16997550c9af3c32addaa4a98",
+          "qa_status": "exact_linked_chart_reuse_values_verified",
+          "sample": 1783,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1783/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "58885de0-e832-4bd6-a7d3-9a3cd859add8",
+      "sample": 1784,
+      "name": "Askılı Kare Yaka Fermuarlı Geniş Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 53,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2fd2bd19df9f897f1f01.jpeg",
+        "https://modayakamoz.com/orj/e98ace6041ff24fea7ed.jpeg",
+        "https://modayakamoz.com/orj/b603e8edada0e01a6646.jpeg",
+        "https://modayakamoz.com/orj/8e6f8f95bf6ed264de59.jpeg",
+        {
+          "id": "6a418b37-ced9-474e-8b96-dbbe43dae733",
+          "url": "https://cdn.meluni.com.tr/ai-products/58885de0-e832-4bd6-a7d3-9a3cd859add8-olcu-oto-9e64a7e1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-11T05:23:00.988827+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "58885de0-e832-4bd6-a7d3-9a3cd859add8/front.jpg",
+          "sha256": "bfcd8ebea3d31a9c38f37710e7245209ce0a9890c2d6585a02a7aafb0c774587",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1784,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1784/front-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "58885de0-e832-4bd6-a7d3-9a3cd859add8/size_chart.jpg",
+          "sha256": "c8efeb2caf43b05e50ad5caf409891bc20cb88577a5df2efc13ab5b91a6a3531",
+          "qa_status": "values_verified_and_styled",
+          "sample": 1784,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1784/size-chart-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "58885de0-e832-4bd6-a7d3-9a3cd859add8/model.jpg",
+          "sha256": "4fcec3e4c22611b060084a0331f4dc9df4546a3729570757bf45082921acecfa",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1784,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1784/model-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "5d48f58c-a3b5-4444-a984-94a8ce996bd0",
+      "sample": 1792,
+      "name": "Askılı Kruvaze Yakalı Uzun Yırtmaçlı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 107,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7d3e7f58058348cef117.jpeg",
+        "https://modayakamoz.com/orj/c5afaccd5ee122db5b87.jpeg",
+        "https://modayakamoz.com/orj/d2763782b41035559808.jpeg",
+        {
+          "id": "824d92cd-7ae7-4d35-9544-379897539454",
+          "url": "https://cdn.meluni.com.tr/ai-products/f0ede8fc-c568-49f3-b8a9-aae5a1a0b677-olcu-oto-f33eedf0.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:25:27.189705+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "5d48f58c-a3b5-4444-a984-94a8ce996bd0/front.jpg",
+          "sha256": "375664aa73dfcf4bf386008f633ba1812f5cffcb47910f281cd47c521013e242",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1792,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1792/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "5d48f58c-a3b5-4444-a984-94a8ce996bd0/model.jpg",
+          "sha256": "5948981e6cf4cb2737d69e417177990f1d1aced3989037daa420c13cbf0c5b81",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1792,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1792/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "5d48f58c-a3b5-4444-a984-94a8ce996bd0/size_chart.jpg",
+          "sha256": "330e0f24dba3db918fe0fe604764c11ac6c20fe443df37d35d985fd391b51ba5",
+          "qa_status": "values_verified_and_styled",
+          "sample": 1792,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1792/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "34605eba-0a38-44f7-b87c-3ff5825b4ce2",
+      "sample": 1795,
+      "name": "Askılı Sırtı Açık Bol Janjan Krep Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/cac77581193cec9f8dba.jpeg",
+        "https://modayakamoz.com/orj/e69fda4b57e28432cad9.jpeg",
+        "https://modayakamoz.com/orj/7afb68a7a9006ffb09ee.jpeg",
+        {
+          "id": "671b3c40-96e3-4444-bd6c-4add0d2d279f",
+          "url": "https://cdn.meluni.com.tr/ai-products/34605eba-0a38-44f7-b87c-3ff5825b4ce2-olcu-oto-73c26f56.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-31T05:21:26.970877+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "34605eba-0a38-44f7-b87c-3ff5825b4ce2/front.jpg",
+          "sha256": "e8e55fcbd0f5a731d5b896719cfcb86bbb341e507565e63f46735ba0b50c4856",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1795,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1795/front-ghost-1200x1800.png"
+        },
+        "back": {
+          "file": "34605eba-0a38-44f7-b87c-3ff5825b4ce2/back.jpg",
+          "sha256": "2e6d4a7ff3c3d00bad5e12da45c5e13b42308cb4b4e02d482e094fc5e6b1b17c",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1795,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1795/back-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "34605eba-0a38-44f7-b87c-3ff5825b4ce2/size_chart.jpg",
+          "sha256": "b09d59009984ca13c489f4bbf1cc1bec63403a9f5a896b42b00b7b2429632ba4",
+          "qa_status": "values_verified_and_styled",
+          "sample": 1795,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1795/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "fcf2ec6e-307c-4f95-a55d-28efcc054aae",
+      "sample": 1797,
+      "name": "Askılı V Dantel Yakalı Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 10,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/bdc02fa2d1798587aa6d.jpeg",
+        "https://modayakamoz.com/orj/b4d82d912a13cfa7ea93.jpeg",
+        "https://modayakamoz.com/orj/f08245911e364132486a.jpeg",
+        {
+          "id": "fa5e9d88-0936-4f39-bcb0-3a3f1e495896",
+          "url": "https://cdn.meluni.com.tr/ai-products/fcf2ec6e-307c-4f95-a55d-28efcc054aae-olcu-oto-d7f115c6.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-18T05:25:02.200463+00:00"
+        }
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "fcf2ec6e-307c-4f95-a55d-28efcc054aae/size_chart.jpg",
+          "sha256": "c64671dc5cbaa3554bee02d81fb3d3fdeb70272fe800af6e34d42999188e585a",
+          "qa_status": "source_values_transcribed_and_verified",
+          "sample": 1797,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1797/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "f9393131-e3c1-4f92-90a7-1fd59a2687bb",
+      "sample": 1798,
+      "name": "Askılı V Yaka Kuş Gözü Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 47,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ba37fa2446c9fc12f190.jpeg",
+        "https://modayakamoz.com/orj/9c1196364f292de12875.jpeg",
+        "https://modayakamoz.com/orj/36492086c9c860737ae4.jpeg",
+        "https://modayakamoz.com/orj/67be9e70062c815dbb44.jpeg",
+        {
+          "id": "e5cb3651-161f-477e-80bd-85275884eca8",
+          "url": "https://cdn.meluni.com.tr/ai-products/14652dfa-8ebf-4f70-9c92-269eb8a679f3-olcu-oto-f3c8eec9.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-18T05:24:27.773540+00:00"
+        }
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "f9393131-e3c1-4f92-90a7-1fd59a2687bb/size_chart.jpg",
+          "sha256": "852cf3fca3d82fbc3e49227bbecf3bcd356314903c706697b851b196ce8f4bb8",
+          "qa_status": "source_values_transcribed_and_verified",
+          "sample": 1798,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1798/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "cf88e55d-32b1-41e3-8529-6635d90209d4",
+      "sample": 397,
+      "name": "Askılı V Yakalı Aerobin Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 90,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/cf88e55d-32b1-41e3-8529-6635d90209d4/3e27b0d5dc78bf07.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/cf88e55d-32b1-41e3-8529-6635d90209d4/9531e48c08cacf23.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/cf88e55d-32b1-41e3-8529-6635d90209d4/cbf5c678c6e6ec0d.jpg",
+        "https://modayakamoz.com/orj/29c88075c5803720d3ee.jpeg",
+        "https://modayakamoz.com/orj/2c71aba68eaed11980b3.jpeg",
+        "https://modayakamoz.com/orj/7e36b0a8551906861eff.jpeg",
+        "https://modayakamoz.com/orj/fc49ecb14b2dce359b5d.jpeg",
+        {
+          "id": "b7a26b8f-1826-42d2-825a-85a46e3e6777",
+          "url": "https://cdn.meluni.com.tr/ai-products/cf88e55d-32b1-41e3-8529-6635d90209d4-olcu-oto-65d53fba.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:22:18.002089+00:00"
+        }
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "cf88e55d-32b1-41e3-8529-6635d90209d4/model.jpg",
+          "sha256": "5063047fbc4ff50790c2f641fa7719245e796ca38dbd28ebfe0ff988947ca395",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 397,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-397/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "cf88e55d-32b1-41e3-8529-6635d90209d4/size_chart.jpg",
+          "sha256": "b471e2ade57f0dccf8e550e0e3457c4fb11ca5c2d25ff55d4b9628a3710bbc0a",
+          "qa_status": "source_values_transcribed_and_verified",
+          "sample": 397,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-397/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "b0485468-11d1-40de-8098-c283c996545c",
+      "sample": 1799,
+      "name": "Askılı V Yakalı Cepli Kısa Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 61,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/bcc90bc07cf933daf5ab.jpeg",
+        "https://modayakamoz.com/orj/dd9722d2f6ad0415da0f.jpeg",
+        {
+          "id": "2c20e806-b2da-4fa9-8e7a-59c0ebb0a61e",
+          "url": "https://cdn.meluni.com.tr/ai-products/b0485468-11d1-40de-8098-c283c996545c-olcu-oto-8d9a9440.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-26T05:21:56.358681+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "b0485468-11d1-40de-8098-c283c996545c/front.jpg",
+          "sha256": "c040e90b5dde74317723d02f3090953b910efbddc3b19ae2977d327c5044e42d",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1799,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1799/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "b0485468-11d1-40de-8098-c283c996545c/model.jpg",
+          "sha256": "edc8528dfd82b1ca47723e14813a2775f83be5479bde34cd5d4812844639af7f",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1799,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1799/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "b0485468-11d1-40de-8098-c283c996545c/size_chart.jpg",
+          "sha256": "b96f036eb53cf12ead093253b44f9eeda6845c05805a56478f7aeaf287cd27b0",
+          "qa_status": "source_values_transcribed_and_verified",
+          "sample": 1799,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1799/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "a9ddc895-da40-4593-8ae9-56bb6048e537",
+      "sample": 1807,
+      "name": "Dalgıç Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/53cdff2291feac3455c2.jpeg",
+        "https://modayakamoz.com/orj/e444a211ec97a8bdefe6.jpeg",
+        "https://modayakamoz.com/orj/f110c9052f6e991c3dc6.jpeg",
+        "https://modayakamoz.com/orj/0033e4fbcb2961d19e20.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a9ddc895-da40-4593-8ae9-56bb6048e537/front.jpg",
+          "sha256": "6123236f59645e9a8608da92257aeb9a40189d77b8d1caa50102ffd44e2f75b4",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1807,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1807/front-ghost-1200x1800.png"
+        },
+        "back": {
+          "file": "a9ddc895-da40-4593-8ae9-56bb6048e537/back.jpg",
+          "sha256": "5abcf521a5f1b4906751a3f1aa0d92f3caab58e2b84b998f091619a08b8dd6ec",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1807,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1807/back-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "a9ddc895-da40-4593-8ae9-56bb6048e537/model.jpg",
+          "sha256": "d303e43ada822eb3747591948cc404b1f0a9bf022757788db000749b79f3c5c6",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1807,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1807/model-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "aca941d8-b2cd-4204-9e23-23324cdca188",
+      "sample": 1808,
+      "name": "V Yaka Kısa Kol Dokuma Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 16,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c7f21425927e91d878545daab53f27bf.jpg",
+        "https://modayakamoz.com/orj/6a29bae6829f4503ae335ec9aa8c51c7.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "aca941d8-b2cd-4204-9e23-23324cdca188/front.jpg",
+          "sha256": "644854cd4ce683cca6fd88a233f299c39013f20efef9a86eb6e168c81c8cbc91",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1808,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1808/front-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "aca941d8-b2cd-4204-9e23-23324cdca188/model.jpg",
+          "sha256": "5b00de767aa971b42a58975115080fd95ef24639106728082ee88b4bbaa0e853",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1808,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1808/model-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "c108cf6b-8117-46d4-b16d-11d0078ecc35",
+      "sample": 1809,
+      "name": "Kısa Kollu Yuvarlak Yakalı Omuzlardan Şerit Detaylı Kısa Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/bc3da1dc744d63c9ddd8.jpeg",
+        "https://modayakamoz.com/orj/5ccfa5e62b9263ec698e.jpeg",
+        "https://modayakamoz.com/orj/3787444b8d3f4b187afd.jpeg",
+        {
+          "id": "1c8b4631-6edf-4127-b6ba-ec0876e66478",
+          "url": "https://cdn.meluni.com.tr/ai-products/c108cf6b-8117-46d4-b16d-11d0078ecc35-olcu-oto-3e428667.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-30T05:18:05.052141+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c108cf6b-8117-46d4-b16d-11d0078ecc35/front.jpg",
+          "sha256": "d29b72fc74748c5a8385440c62268905759a8b53a441895973eafb90e78b1b41",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_correction",
+          "sample": 1809,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1809/front-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "c108cf6b-8117-46d4-b16d-11d0078ecc35/size_chart.jpg",
+          "sha256": "f44b6fa496642f9e72de0fcd6240bebb64d62088da8fa053781928cba90a7fb4",
+          "qa_status": "source_values_transcribed_and_visually_verified",
+          "sample": 1809,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1809/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "e9da873e-e1a5-43a2-903d-6d0caa695c04",
+      "sample": 1811,
+      "name": "Bel Büzgü ve Düğme Detay Kapri Keten Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/38e5c3dd6a057f4e12fa.jpeg",
+        "https://modayakamoz.com/orj/f608dffb8e4cfbe82dde.jpeg",
+        "https://modayakamoz.com/orj/08da455d2dff30fc6ce5.jpeg",
+        {
+          "id": "08df8df5-c1b7-494f-bb8f-ee3a78c20ac1",
+          "url": "https://cdn.meluni.com.tr/ai-products/e9da873e-e1a5-43a2-903d-6d0caa695c04-olcu-oto-88e0611e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:06:48.999055+00:00"
+        }
+      ],
+      "assets": {
+        "back": {
+          "file": "e9da873e-e1a5-43a2-903d-6d0caa695c04/back.jpg",
+          "sha256": "5e67279e82947704dbd2ab0e1b6e9aa0bbfd52788d05080ce01ec8f6700a3dbc",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1811,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1811/back-ghost-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "e9da873e-e1a5-43a2-903d-6d0caa695c04/model.jpg",
+          "sha256": "1e498098c8b21d8105b4936e0fe493694f63313d1468ef054dd1b608352f89d4",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1811,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1811/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "e9da873e-e1a5-43a2-903d-6d0caa695c04/size_chart.jpg",
+          "sha256": "8f6b4ab9d00e55a076fcbeefec824cfee9d4bde792c6b765654251f08c599896",
+          "qa_status": "source_values_transcribed_and_visually_verified",
+          "sample": 1811,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1811/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "66d40303-c993-4b8e-b185-8ce965cd429d",
+      "sample": 1815,
+      "name": "Askılı Geometrik Yakalı Şerit Detaylı Uzun Dalgıç Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 30,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d8af0cff6de6dfd2da11.jpeg",
+        "https://modayakamoz.com/orj/e9429921393435c5c140.jpeg",
+        "https://modayakamoz.com/orj/ef1b2b5e03444c1739ad.jpeg",
+        {
+          "id": "4ddd992d-6663-4f49-b8a3-ac2e77dae94e",
+          "url": "https://cdn.meluni.com.tr/ai-products/66d40303-c993-4b8e-b185-8ce965cd429d-olcu-oto-0061f1dd.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-10T05:20:51.052553+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "66d40303-c993-4b8e-b185-8ce965cd429d/front.jpg",
+          "sha256": "7975c2afa97a0a5c8685d851e0f027b142441a0531574b2279a2a393005f2359",
+          "qa_status": "draft_visual_qa_pass",
+          "sample": 1815,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1815/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "66d40303-c993-4b8e-b185-8ce965cd429d/model.jpg",
+          "sha256": "578f794c950de4006fd7cd6bd9ed8ed41d96a48156b1600008ae8a9459a80d8e",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1815,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1815/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "66d40303-c993-4b8e-b185-8ce965cd429d/size_chart.jpg",
+          "sha256": "9c47559ecd0c7a83d1166be50f6a14386d83b801d37000b2a836615da954021b",
+          "qa_status": "source_values_verified_redesigned_serif",
+          "sample": 1815,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1815/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "8d404d82-d044-4bc3-a8bf-356a856f3331",
+      "sample": 1819,
+      "name": "Askılı V Yakalı Puantiyeli Sandy Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 71,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4154a008b38fc9c4fab7.jpeg",
+        "https://modayakamoz.com/orj/15c887a3b509bc4d7064.jpeg",
+        "https://modayakamoz.com/orj/04c8b1e03539a5d991db.jpeg",
+        "https://modayakamoz.com/orj/df3ece676f4355375120.jpeg",
+        {
+          "id": "0b0d015c-a165-4ea9-9f19-d02e2bf64804",
+          "url": "https://cdn.meluni.com.tr/ai-products/8d404d82-d044-4bc3-a8bf-356a856f3331-olcu-oto-364a0486.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:26:33.924126+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8d404d82-d044-4bc3-a8bf-356a856f3331/front.jpg",
+          "sha256": "6c82acfe47ba194bc0a95a20399b212adfb7c693bf9ffb48b66edd2e343a10b1",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_print_correction",
+          "sample": 1819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1819/front-ghost-1200x1800.png"
+        },
+        "back": {
+          "file": "8d404d82-d044-4bc3-a8bf-356a856f3331/back.jpg",
+          "sha256": "d2adb4b3ae45ac2e35ad1a5ddf2714adc74b56ec02a7f2ca605753463f272ad3",
+          "qa_status": "draft_visual_qa_pass_after_one_targeted_print_correction",
+          "sample": 1819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1819/back-ghost-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "8d404d82-d044-4bc3-a8bf-356a856f3331/size_chart.jpg",
+          "sha256": "ef49a6ea5614adb481fa2c1dcfaed8fc10c5a9c3948faa546a959fb084d50d35",
+          "qa_status": "source_values_verified_redesigned_serif",
+          "sample": 1819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/sample-1819/size-chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "4505f768-bc3a-425f-8d23-071a3a849f62",
+      "sample": 1821,
+      "name": "Askılı Viskon Bluz ve Tek Omuzdan Açık Iki Iplik Üçlü Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 54,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/4505f768-bc3a-425f-8d23-071a3a849f62/4505f768-bc3a-425f-8d23-071a3a849f62-hd0-1a35b225.jpg",
+        "https://cdn.meluni.com.tr/products/4505f768-bc3a-425f-8d23-071a3a849f62/4505f768-bc3a-425f-8d23-071a3a849f62-hd1-cca9abaa.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "4505f768-bc3a-425f-8d23-071a3a849f62/front.jpg",
+          "sha256": "d9537e9c56c5af8bb587b7ad66b0ec117b9c79d4c662cc10db1d4577af4bf16c",
+          "qa_status": "pass_visual_review",
+          "sample": 1821,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-391-393/job-391-front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "4505f768-bc3a-425f-8d23-071a3a849f62/model.jpg",
+          "sha256": "9f4a77f1b648c014faabaca129911bc0615075a5d65234dbc85aeb9618ee13ef",
+          "qa_status": "pass_visual_review_after_one_targeted_framing_correction",
+          "sample": 1821,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-391-393/job-391-model-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "adfd789f-1978-4491-acfc-c901d6532644",
+      "sample": 1822,
+      "name": "Askılı Viskon Bluz ve Tek Omuzdan Açık Iki Iplik Üçlü Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 34,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/adfd789f-1978-4491-acfc-c901d6532644/adfd789f-1978-4491-acfc-c901d6532644-hd0-90bc7c90.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "adfd789f-1978-4491-acfc-c901d6532644/front.jpg",
+          "sha256": "f602d1352ed6ea2aeaf06fea8e8c010700d76370a056f6d4b0700f09ab4793f0",
+          "qa_status": "pass_visual_review",
+          "sample": 1822,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-391-393/job-392-front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "adfd789f-1978-4491-acfc-c901d6532644/model.jpg",
+          "sha256": "3c96a758aa4a7c0838a79ba7ebf9e33a4e89eae251e71b552f9a92adcbd8bce7",
+          "qa_status": "pass_visual_review_after_one_targeted_identity_correction",
+          "sample": 1822,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-391-393/job-392-model-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "03e8adba-6765-46e4-bf1b-9c950656dc7b",
+      "sample": 1823,
+      "name": "Askılı Viskon Bluz ve Tek Omuzdan Açık Iki Iplik Üçlü Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 30,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a96f94feadc7925acf72709a60a7b578.jpeg",
+        "https://modayakamoz.com/orj/07b22ea5b75f73fbf00f2566ef25c18e.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "03e8adba-6765-46e4-bf1b-9c950656dc7b/front.jpg",
+          "sha256": "4eb1e762766bdf346bce6e4d6abc86a359d18410e0989d14014bf8e61289122b",
+          "qa_status": "pass_visual_review",
+          "sample": 1823,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-391-393/job-393-front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "03e8adba-6765-46e4-bf1b-9c950656dc7b/model.jpg",
+          "sha256": "883b63e86135a52d68c42af56fcce759c08a2b8dc925f1f34659b744614040f2",
+          "qa_status": "pass_visual_review",
+          "sample": 1823,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-391-393/job-393-model-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "f06077f6-b89a-420f-807c-2dcbae9f8479",
+      "sample": 1824,
+      "name": "Askılı Yuvarlak Yaka Viskon Iki Iplik Bluz ve Eşofman Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 114,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/f06077f6-b89a-420f-807c-2dcbae9f8479/f06077f6-b89a-420f-807c-2dcbae9f8479-hd0-374c4243.jpg",
+        "https://cdn.meluni.com.tr/products/f06077f6-b89a-420f-807c-2dcbae9f8479/f06077f6-b89a-420f-807c-2dcbae9f8479-hd1-48fea880.jpg",
+        "https://cdn.meluni.com.tr/products/f06077f6-b89a-420f-807c-2dcbae9f8479/f06077f6-b89a-420f-807c-2dcbae9f8479-hd2-ec28a660.jpg",
+        "https://cdn.meluni.com.tr/products/f06077f6-b89a-420f-807c-2dcbae9f8479/f06077f6-b89a-420f-807c-2dcbae9f8479-hd3-ae4823c7.jpg",
+        {
+          "id": "83a951ba-c269-4d19-9053-98b1653cfe66",
+          "url": "https://cdn.meluni.com.tr/ai-products/707c577b-1b27-43ce-bb63-c968e00a5855-olcu-oto-bc96a36c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:34:42.117100+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "f06077f6-b89a-420f-807c-2dcbae9f8479/front.jpg",
+          "sha256": "886903750b3e009f34d6d72bf78b7478d8693a4bec5b27fd9ae5cecfa6a8c0a1",
+          "qa_status": "pass_visual_review_one_targeted_correction",
+          "sample": 1824,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-421/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "f06077f6-b89a-420f-807c-2dcbae9f8479/model.jpg",
+          "sha256": "77bb04d9cf135479b385d50072f17c1b020c703865579832029c623c201f34da",
+          "qa_status": "pass_visual_review_after_one_targeted_framing_correction",
+          "sample": 1824,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-421/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "f06077f6-b89a-420f-807c-2dcbae9f8479/size_chart.jpg",
+          "sha256": "b20fc56c3b1e15f9087fcbc08ec237da62b22cf731c3f504688e1a837d99b3e7",
+          "qa_status": "pass_visual_and_value_transcription_source_linked",
+          "sample": 1824,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-421/chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "707c577b-1b27-43ce-bb63-c968e00a5855",
+      "sample": 1825,
+      "name": "Askılı Yuvarlak Yaka Viskon Iki Iplik Bluz ve Eşofman Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 38,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/707c577b-1b27-43ce-bb63-c968e00a5855/707c577b-1b27-43ce-bb63-c968e00a5855-hd0-f2c9614b.jpg",
+        "https://cdn.meluni.com.tr/products/707c577b-1b27-43ce-bb63-c968e00a5855/707c577b-1b27-43ce-bb63-c968e00a5855-hd1-055e0987.jpg",
+        "https://cdn.meluni.com.tr/products/707c577b-1b27-43ce-bb63-c968e00a5855/707c577b-1b27-43ce-bb63-c968e00a5855-hd2-98fc09ae.jpg",
+        "https://cdn.meluni.com.tr/products/707c577b-1b27-43ce-bb63-c968e00a5855/707c577b-1b27-43ce-bb63-c968e00a5855-hd3-1e7b6447.jpg",
+        {
+          "id": "1ab1715f-5ed7-4c38-8ba4-4abf9789ef84",
+          "url": "https://cdn.meluni.com.tr/ai-products/707c577b-1b27-43ce-bb63-c968e00a5855-olcu-oto-bc96a36c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:34:41.813799+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "707c577b-1b27-43ce-bb63-c968e00a5855/front.jpg",
+          "sha256": "d1659e66c39a397edb33b752a54c7fc0cafc202976b12110504c19430ef92dfd",
+          "qa_status": "pass_visual_review",
+          "sample": 1825,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-422/front-1200x1800.png"
+        },
+        "back": {
+          "file": "707c577b-1b27-43ce-bb63-c968e00a5855/back.jpg",
+          "sha256": "d0e07fdaeae8d704ec9746174c4cafe116d3b3c03b69f52e7c99e0987db76509",
+          "qa_status": "pass_visible_rear_geometry_partial_neckline_source_gap",
+          "sample": 1825,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-422/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "707c577b-1b27-43ce-bb63-c968e00a5855/model.jpg",
+          "sha256": "9e52ee2fd2b96a1c809a921d3344cfe6ff59843662d6dc2202f01e0867e7d646",
+          "qa_status": "pass_visual_review_after_one_targeted_correction",
+          "sample": 1825,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-422/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "707c577b-1b27-43ce-bb63-c968e00a5855/size_chart.jpg",
+          "sha256": "3ba0a20f703331c5a7bde6038deac65eab67acbfec7c1efc79320173e727128e",
+          "qa_status": "pass_source_value_transcription_anomalies_preserved",
+          "sample": 1825,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-422/chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "e46ed50c-255a-4e07-8e9a-f34082448b29",
+      "sample": 1826,
+      "name": "Askılı Yuvarlak Yakalı Cepli Yırtmaç Detaylı Viskon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 45,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3d9036695a3d4cf36d88.jpeg",
+        "https://modayakamoz.com/orj/e4df5841dc05abdec4d0.jpeg",
+        "https://modayakamoz.com/orj/e1392940560046055274.jpeg",
+        "https://modayakamoz.com/orj/735e917d76a3bbbe8b04.jpeg",
+        "https://modayakamoz.com/orj/22efa414b863287cd354.jpeg",
+        {
+          "id": "45be5d35-05b4-49bb-9d9a-e0b032741be1",
+          "url": "https://cdn.meluni.com.tr/ai-products/e46ed50c-255a-4e07-8e9a-f34082448b29-olcu-oto-6edfdab1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-30T05:23:32.135491+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "e46ed50c-255a-4e07-8e9a-f34082448b29/front.jpg",
+          "sha256": "62115cd4feed56ba3840ec369fc89874b54863430fa60a50f58ff9f7141af1e1",
+          "qa_status": "pass_visual_review",
+          "sample": 1826,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-423/front-1200x1800.png"
+        },
+        "back": {
+          "file": "e46ed50c-255a-4e07-8e9a-f34082448b29/back.jpg",
+          "sha256": "4cf863e17b365523982cf94a026a8a1cbff438d7eb147c4e8a8c97ec3ed22497",
+          "qa_status": "pass_visual_review_after_one_targeted_correction",
+          "sample": 1826,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-423/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "e46ed50c-255a-4e07-8e9a-f34082448b29/model.jpg",
+          "sha256": "287c05444940b74881c410d264d8bfc81413db3668496083b1b163163c58ddb8",
+          "qa_status": "pass_visual_review_after_one_targeted_headroom_correction",
+          "sample": 1826,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-423/model-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "9e80cd18-7651-4776-b388-ecc5352dda90",
+      "sample": 1827,
+      "name": "Askılı Yuvarlak Yakalı Cepli Yırtmaç Detaylı Viskon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 70,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e5a3c8e931f82a191c40.jpeg",
+        "https://modayakamoz.com/orj/633b507a4bb4f2f7e15f.jpeg",
+        "https://modayakamoz.com/orj/a7da3a2db2fc2948cc95.jpeg",
+        "https://modayakamoz.com/orj/a493ce93f838e56e598e.jpeg",
+        "https://modayakamoz.com/orj/8356921369b6a727beb4.jpeg",
+        "https://modayakamoz.com/orj/7c5632288d5568c1882f.jpeg",
+        "https://modayakamoz.com/orj/0677d9349542bfc0886f.jpeg",
+        "https://modayakamoz.com/orj/596ca2734f0a7705f55d5ceecdf518f0.png",
+        {
+          "id": "6ac5f62b-139c-4cbc-9a21-ca29eccfb467",
+          "url": "https://cdn.meluni.com.tr/ai-products/e46ed50c-255a-4e07-8e9a-f34082448b29-olcu-oto-6edfdab1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-30T05:23:32.283543+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "9e80cd18-7651-4776-b388-ecc5352dda90/front.jpg",
+          "sha256": "f83c44998d89702eca0c170aada28e58c53d93ef40765bfc514989a04fd912ef",
+          "qa_status": "pass_visual_review",
+          "sample": 1827,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-424/front-1200x1800.png"
+        },
+        "back": {
+          "file": "9e80cd18-7651-4776-b388-ecc5352dda90/back.jpg",
+          "sha256": "8c7f116ba285eaa524bded6ab527d836206a7107caf516ea98565ec5879dc9c8",
+          "qa_status": "pass_visual_review",
+          "sample": 1827,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-424/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "9e80cd18-7651-4776-b388-ecc5352dda90/model.jpg",
+          "sha256": "6aaa803d54dbd099951e6fa4494861f56bc30e4b17208ed1c3cef21fcfe4e0b7",
+          "qa_status": "pass_visual_review_after_one_targeted_headroom_correction",
+          "sample": 1827,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-424/model-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "1858301a-396b-4617-93da-6257f1e52c15",
+      "sample": 1828,
+      "name": "Askılı Yuvarlak Yakalı Dantelli Kısa Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 76,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0dfefed43a469b35503b.jpeg",
+        "https://modayakamoz.com/orj/60d28c5d82c4ee521d2c.jpeg",
+        "https://modayakamoz.com/orj/8ac4910d35310b5ed105.jpeg",
+        "https://modayakamoz.com/orj/823cd4b33476d9a03a66.jpeg",
+        {
+          "id": "e63a4a9b-d62e-4334-b043-683224b7697d",
+          "url": "https://cdn.meluni.com.tr/ai-products/1858301a-396b-4617-93da-6257f1e52c15-olcu-oto-c671a56d.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:28:09.592652+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "1858301a-396b-4617-93da-6257f1e52c15/front.jpg",
+          "sha256": "07ec2e2985f5a3937a0ad5113457597e4398c1c974356d4ca452e44cb6ba7775",
+          "qa_status": "pass_visual_review",
+          "sample": 1828,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-425/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "1858301a-396b-4617-93da-6257f1e52c15/model.jpg",
+          "sha256": "d75a2dbf6e0882f357fbb72c514fb3e433632d1dd122e58e2eb97354ede46600",
+          "qa_status": "pass_visual_review_after_one_targeted_headroom_correction",
+          "sample": 1828,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-425/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "1858301a-396b-4617-93da-6257f1e52c15/size_chart.jpg",
+          "sha256": "a79d80f3d213eaae28281d8f9abcbd2a45cec50bdca077e090c35d417c74b840",
+          "qa_status": "pass_source_values_transcribed_exactly",
+          "sample": 1828,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-425/chart-1200x1800.png"
+        }
+      }
+    },
+    {
+      "product_id": "b560a491-922e-45be-972e-44d215e644b6",
+      "sample": 1829,
+      "name": "Askılı Yuvarlak Yakalı Dantelli Kısa Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 26,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e7898c53537600254832.jpeg",
+        "https://modayakamoz.com/orj/356573e3d06fd04e5689.jpeg",
+        "https://modayakamoz.com/orj/50dd2966f4248c7ce670.jpeg",
+        "https://modayakamoz.com/orj/c7644eb62c676eaff5da.jpeg",
+        {
+          "id": "efe75a0a-b838-401a-9eaf-58df468be64a",
+          "url": "https://cdn.meluni.com.tr/ai-products/1858301a-396b-4617-93da-6257f1e52c15-olcu-oto-c671a56d.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:28:09.732155+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "b560a491-922e-45be-972e-44d215e644b6/front.jpg",
+          "sha256": "236bddfedaed9511878527e221ff8c1bc0ce67513e15cc87494dfa24ea48411f",
+          "qa_status": "pass_visual_review",
+          "sample": 1829,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-426/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "b560a491-922e-45be-972e-44d215e644b6/model.jpg",
+          "sha256": "a0ff4b3b2d3f00ed0d0347c6e75e50c46a370a384e7a962bc674f0a014333c3a",
+          "qa_status": "pass_visual_review",
+          "sample": 1829,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-426/model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "b560a491-922e-45be-972e-44d215e644b6/size_chart.jpg",
+          "sha256": "a79d80f3d213eaae28281d8f9abcbd2a45cec50bdca077e090c35d417c74b840",
+          "qa_status": "pass_shared_linked_chart_values_exactly_verified",
+          "sample": 1829,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/candidate-426/chart-1200x1800.png"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
