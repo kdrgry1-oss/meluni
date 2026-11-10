@@ -1,0 +1,386 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-04",
+  "published_at_utc": "2026-11-10T00:20:14.378903+00:00",
+  "products": [
+    {
+      "product_id": "f46b4dbe-484e-410e-9d2a-f3bea0cb5a18",
+      "sample": 520,
+      "name": "Ip Askılı Yuvarlak Yakalı Cepli Uzun Viskon Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f46b4dbe-484e-410e-9d2a-f3bea0cb5a18-size-chart-fe13d9e6a769.jpg"
+      },
+      "gallery_image_count": 8
+    },
+    {
+      "product_id": "7a3773a5-ad20-4cec-8a41-ee7356c5a382",
+      "sample": 543,
+      "name": "Kalın Askılı Büzgülü Sandy Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/7a3773a5-ad20-4cec-8a41-ee7356c5a382-size-chart-934d1bd283fe.jpg"
+      },
+      "gallery_image_count": 9
+    },
+    {
+      "product_id": "892c7c52-c879-443b-bfa7-8ddd44f0ae03",
+      "sample": 533,
+      "name": "Ip Askılı Yuvarlak Yakalı Pileli Kısa Arobin Tulum",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/892c7c52-c879-443b-bfa7-8ddd44f0ae03-size-chart-e8945306e4f7.jpg"
+      },
+      "gallery_image_count": 8
+    },
+    {
+      "product_id": "b2043f19-ad96-48ca-9687-cd1fcdadae2b",
+      "sample": 534,
+      "name": "Ip Askılı Yuvarlak Yakalı Pileli Uzun Viskon Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b2043f19-ad96-48ca-9687-cd1fcdadae2b-size-chart-58dbe84f208d.jpg"
+      },
+      "gallery_image_count": 9
+    },
+    {
+      "product_id": "b40351cc-f64a-49fe-b0bb-b2ced7ada0b8",
+      "sample": 564,
+      "name": "Kayık Yaka Fırfırlı Janjan Krep Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b40351cc-f64a-49fe-b0bb-b2ced7ada0b8-size-chart-4791f100379b.jpg"
+      },
+      "gallery_image_count": 14
+    },
+    {
+      "product_id": "9065da58-1f5b-4e10-a96d-eec4e678c9e7",
+      "sample": 576,
+      "name": "Kolsuz Balıkçı Yaka Kısa Deri Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/9065da58-1f5b-4e10-a96d-eec4e678c9e7-size-chart-81b554e9bd1f.jpg"
+      },
+      "gallery_image_count": 10
+    },
+    {
+      "product_id": "b27e2db4-419f-4b62-835b-5c9d2484430d",
+      "sample": 720,
+      "name": "Kısa Kollu Hakim Yaka Sofya Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b27e2db4-419f-4b62-835b-5c9d2484430d-front-3b0b81727348.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b27e2db4-419f-4b62-835b-5c9d2484430d-size-chart-8abe20ed570c.jpg"
+      },
+      "gallery_image_count": 7
+    },
+    {
+      "product_id": "40472aaf-252c-452c-a8cd-cc0d6f1d3a3b",
+      "sample": 721,
+      "name": "Kısa Kollu Hakim Yaka Sofya Bluz",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/40472aaf-252c-452c-a8cd-cc0d6f1d3a3b-model-41c8cb7f4939.jpg"
+      },
+      "gallery_image_count": 8
+    },
+    {
+      "product_id": "cc780111-f48c-4241-a739-7e171b980585",
+      "sample": 734,
+      "name": "Kısa Kollu Kare Yakalı Kısa Krep Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/cc780111-f48c-4241-a739-7e171b980585-size-chart-bbdf7c3e6010.jpg"
+      },
+      "gallery_image_count": 12
+    },
+    {
+      "product_id": "738f1ef9-1b4f-4c65-b925-055957affa07",
+      "sample": 761,
+      "name": "Kısa Kollu Kruvaze Yakalı Sandy Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/738f1ef9-1b4f-4c65-b925-055957affa07-size-chart-f265f2e6afeb.jpg"
+      },
+      "gallery_image_count": 8
+    },
+    {
+      "product_id": "6242ac25-17ad-4175-8920-e3fcbe2f4ca4",
+      "sample": 762,
+      "name": "Kısa Kollu Kruvaze Yakalı Yırtmaç Detaylı Uzun Aerobin Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6242ac25-17ad-4175-8920-e3fcbe2f4ca4-front-a79a4b4b7222.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6242ac25-17ad-4175-8920-e3fcbe2f4ca4-model-2525bfb4ba45.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6242ac25-17ad-4175-8920-e3fcbe2f4ca4-size-chart-4373ba9c6ddf.jpg"
+      },
+      "gallery_image_count": 8
+    },
+    {
+      "product_id": "dfbd367b-1188-4c9a-a3d5-979e95b7b589",
+      "sample": 764,
+      "name": "Kısa Kollu Kruvaze Yakalı Yırtmaç Detaylı Uzun Aerobin Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/dfbd367b-1188-4c9a-a3d5-979e95b7b589-front-7631ae364448.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/dfbd367b-1188-4c9a-a3d5-979e95b7b589-model-8688e77e3d7f.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/dfbd367b-1188-4c9a-a3d5-979e95b7b589-size-chart-4373ba9c6ddf.jpg"
+      },
+      "gallery_image_count": 8
+    },
+    {
+      "product_id": "76d1bb4e-9c46-453a-a79c-b7b33e327fcb",
+      "sample": 765,
+      "name": "Kısa Kollu Kruvaze Yakalı Önden Toka Detaylı Kısa Viskon Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/76d1bb4e-9c46-453a-a79c-b7b33e327fcb-size-chart-2272d855bba0.jpg"
+      },
+      "gallery_image_count": 7
+    },
+    {
+      "product_id": "c52d2a67-baef-4540-ad5b-29f6e345b3a5",
+      "sample": 766,
+      "name": "Kısa Kollu Kruvaze Yakalı Önden Toka Detaylı Kısa Viskon Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/c52d2a67-baef-4540-ad5b-29f6e345b3a5-size-chart-2272d855bba0.jpg"
+      },
+      "gallery_image_count": 8
+    },
+    {
+      "product_id": "434018be-c0ed-45a6-bd12-99b517f1c009",
+      "sample": 767,
+      "name": "Kısa Kollu Kruvaze Yakalı Önden Toka Detaylı Kısa Viskon Elbise",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/434018be-c0ed-45a6-bd12-99b517f1c009-model-babcf4590493.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/434018be-c0ed-45a6-bd12-99b517f1c009-size-chart-2272d855bba0.jpg"
+      },
+      "gallery_image_count": 9
+    },
+    {
+      "product_id": "d84f8e9d-15a5-403d-b38b-02df8e0e3634",
+      "sample": 1028,
+      "name": "Ip Askılı Beli Lastikli Kısa Süprem Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d84f8e9d-15a5-403d-b38b-02df8e0e3634-front-554c6fea37f2.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d84f8e9d-15a5-403d-b38b-02df8e0e3634-back-6f14652f212b.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d84f8e9d-15a5-403d-b38b-02df8e0e3634-size-chart-f9de4ecf9c84.jpg"
+      },
+      "gallery_image_count": 13
+    },
+    {
+      "product_id": "67351dae-5181-4264-8cd6-412bf3656567",
+      "sample": 1030,
+      "name": "Polo Yaka Pike Düğmeli Basic Tişört T-Shirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/67351dae-5181-4264-8cd6-412bf3656567-front-ab9af1c665b6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/67351dae-5181-4264-8cd6-412bf3656567-back-3e16eabee242.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "15b7e156-93eb-4ea4-ab70-c0d15aab8fb3",
+      "sample": 1032,
+      "name": "Uzun Kollu Düğmeli Klasik Yaka Gömlek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/15b7e156-93eb-4ea4-ab70-c0d15aab8fb3-front-2a24167efd31.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/15b7e156-93eb-4ea4-ab70-c0d15aab8fb3-back-8028468e4729.jpg"
+      },
+      "gallery_image_count": 6
+    },
+    {
+      "product_id": "4c8757a4-4cd4-41a0-b3c7-47f8eb5ddb67",
+      "sample": 1033,
+      "name": "Uzun Kollu Düğmeli Klasik Yaka Gömlek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4c8757a4-4cd4-41a0-b3c7-47f8eb5ddb67-front-9a40e5ff0c84.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4c8757a4-4cd4-41a0-b3c7-47f8eb5ddb67-back-dbe90584cd58.jpg"
+      },
+      "gallery_image_count": 6
+    },
+    {
+      "product_id": "4e70f998-e219-4f1d-aa7d-b31a3648f87e",
+      "sample": 1034,
+      "name": "Uzun Kollu Düğmeli Klasik Yaka Gömlek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4e70f998-e219-4f1d-aa7d-b31a3648f87e-front-e4d8a7d32f34.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "372ae937-b288-45db-afd0-3998a8c2a5c1",
+      "sample": 1035,
+      "name": "Uzun Kollu Düğmeli Klasik Yaka Gömlek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/372ae937-b288-45db-afd0-3998a8c2a5c1-front-a5328ada8e26.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/372ae937-b288-45db-afd0-3998a8c2a5c1-back-a522e91ec926.jpg"
+      },
+      "gallery_image_count": 6
+    },
+    {
+      "product_id": "a4fe1cd6-9567-4ee6-a0ff-b24131ab107d",
+      "sample": 1036,
+      "name": "Uzun Kollu Düğmeli Klasik Yaka Gömlek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a4fe1cd6-9567-4ee6-a0ff-b24131ab107d-front-f3c0cd81679d.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "d2850c09-c796-47a2-92c9-47f1ec90b3b6",
+      "sample": 1037,
+      "name": "Uzun Kollu Fermuarlı Cepli Kısa Deri Ceket",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d2850c09-c796-47a2-92c9-47f1ec90b3b6-size-chart-7ff5b502da40.jpg"
+      },
+      "gallery_image_count": 8
+    },
+    {
+      "product_id": "db7b85ce-5dad-4c2f-911a-8cc8d044cd09",
+      "sample": 1039,
+      "name": "Uzun Kollu V Yakalı Kaşkorse Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/db7b85ce-5dad-4c2f-911a-8cc8d044cd09-size-chart-736b77bfc954.jpg"
+      },
+      "gallery_image_count": 8
+    },
+    {
+      "product_id": "f1c2ffc8-f3c8-4e53-a997-ab529e8da77b",
+      "sample": 1040,
+      "name": "Askılı Yuvarlak Yakalı Kıloş Cepli Uzun Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f1c2ffc8-f3c8-4e53-a997-ab529e8da77b-size-chart-3f4759605b2a.jpg"
+      },
+      "gallery_image_count": 6
+    },
+    {
+      "product_id": "0c038bc5-546a-4d0a-a8dd-9abd64abd951",
+      "sample": 1041,
+      "name": "Askılı Yuvarlak Yakalı Kıloş Cepli Uzun Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0c038bc5-546a-4d0a-a8dd-9abd64abd951-size-chart-3f4759605b2a.jpg"
+      },
+      "gallery_image_count": 6
+    },
+    {
+      "product_id": "e80a5841-bcb3-4492-ac32-2dd6470dbe7f",
+      "sample": 1042,
+      "name": "Askılı Kare Yakalı Kısa Modal Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e80a5841-bcb3-4492-ac32-2dd6470dbe7f-size-chart-055f5e54ac93.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "0a954e36-1997-449d-9016-f8db78399dd5",
+      "sample": 1043,
+      "name": "Askılı Kare Yakalı Kısa Viskon Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0a954e36-1997-449d-9016-f8db78399dd5-size-chart-73cc139a1736.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "85abbd34-bbf0-4e88-98e9-3307254481f1",
+      "sample": 1044,
+      "name": "Askılı Kare Yakalı Midi Kaşkorse Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/85abbd34-bbf0-4e88-98e9-3307254481f1-size-chart-7d83b46bb4d3.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "aa94c501-d0b4-42e6-b260-06c014a747a6",
+      "sample": 1045,
+      "name": "Askılı Kare Yakalı Uzun Viskon Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/aa94c501-d0b4-42e6-b260-06c014a747a6-size-chart-4c035afbbd12.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "465f98cc-b604-48a1-b524-a9d663637a4c",
+      "sample": 1046,
+      "name": "Askılı Kolludantel Detaylı Yakalı Midi Viskon Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/465f98cc-b604-48a1-b524-a9d663637a4c-size-chart-d3dcd913bb77.jpg"
+      },
+      "gallery_image_count": 6
+    },
+    {
+      "product_id": "ad54df05-496c-4968-9885-7448791f46fc",
+      "sample": 1047,
+      "name": "Askılı Kruvaze Yakalı Büzgülü Kısa Krep Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/ad54df05-496c-4968-9885-7448791f46fc-size-chart-b40cea61eddc.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "5fe7ce65-689c-48ec-a32e-6c9f8fe72876",
+      "sample": 1048,
+      "name": "Askılı Kruvaze Yakalı Uzun Yırtmaçlı Janjan Krep Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5fe7ce65-689c-48ec-a32e-6c9f8fe72876-size-chart-886affbdc809.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "79ad5977-7ab7-4c76-9bc9-c9c55d761474",
+      "sample": 1064,
+      "name": "Boyundan Geçmeli Pileli Sırtı Tamamen Açık Kısa Dalgıç Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/79ad5977-7ab7-4c76-9bc9-c9c55d761474-size-chart-95dfb253a258.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "dfa4e76b-e41b-49c9-a347-25082406d16c",
+      "sample": 1704,
+      "name": "Kısa Kollu Bisiklet Yaka Kısa Viskon Iki Iplik Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/dfa4e76b-e41b-49c9-a347-25082406d16c-size-chart-fb4ffe4bf2b6.jpg"
+      },
+      "gallery_image_count": 5
+    },
+    {
+      "product_id": "8ed6152e-25bd-46cc-a712-c6191d840b1d",
+      "sample": 1719,
+      "name": "Kısa Kollu Bisiklet Yaka Triko Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/8ed6152e-25bd-46cc-a712-c6191d840b1d-size-chart-2626123eb958.jpg"
+      },
+      "gallery_image_count": 10
+    },
+    {
+      "product_id": "e66a9a1e-0d12-4239-a68c-f2454f0a3c75",
+      "sample": 1750,
+      "name": "Kısa Kollu Bisiklet Yaka Yırtmaçlı Midi Viskon Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e66a9a1e-0d12-4239-a68c-f2454f0a3c75-size-chart-9aeefb6e640c.jpg"
+      },
+      "gallery_image_count": 6
+    },
+    {
+      "product_id": "3e42718a-4ebd-467e-a28e-c622e8c7ba94",
+      "sample": 1752,
+      "name": "Kısa Kollu V Yakalı Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3e42718a-4ebd-467e-a28e-c622e8c7ba94-front-37c5b63fe4c9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3e42718a-4ebd-467e-a28e-c622e8c7ba94-model-4c65cc6270ff.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/3e42718a-4ebd-467e-a28e-c622e8c7ba94-size-chart-8338ee96ad60.jpg"
+      },
+      "gallery_image_count": 7
+    },
+    {
+      "product_id": "e3457f5d-beec-450f-950e-092c361e479c",
+      "sample": 1755,
+      "name": "Kısa Kollu V Yakalı Düğmeli Bürümcük Midi Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e3457f5d-beec-450f-950e-092c361e479c-front-76edffc28c22.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e3457f5d-beec-450f-950e-092c361e479c-back-917b87bee831.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e3457f5d-beec-450f-950e-092c361e479c-size-chart-ecd9bcc5c3c7.jpg"
+      },
+      "gallery_image_count": 8
+    },
+    {
+      "product_id": "53d03b2e-1785-4355-9207-7be05785a9e7",
+      "sample": 1757,
+      "name": "Uzun Kollu Yuvarlak Yaka Mini Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/53d03b2e-1785-4355-9207-7be05785a9e7-front-0fbd54da68e6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/53d03b2e-1785-4355-9207-7be05785a9e7-back-0d8628cfdf0e.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/53d03b2e-1785-4355-9207-7be05785a9e7-size-chart-6fc0c23509b2.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
