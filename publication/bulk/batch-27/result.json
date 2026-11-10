@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-27",
+  "published_at_utc": "2026-11-10T22:54:39.994977+00:00",
+  "products": [
+    {
+      "product_id": "dc97661d-824c-4ac6-87e1-3e31f0be904d",
+      "sample": 3017,
+      "name": "Uzun Kollu Arkadan Pencere Detaylı Bağcıklı Triko Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/dc97661d-824c-4ac6-87e1-3e31f0be904d-front-8ac4d559cbaa.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/dc97661d-824c-4ac6-87e1-3e31f0be904d-back-04df21ed895d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/dc97661d-824c-4ac6-87e1-3e31f0be904d-model-701a5523ba7d.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
