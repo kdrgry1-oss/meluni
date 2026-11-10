@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-18",
+  "created_at": "2026-11-10T06:59:23.992850+00:00",
+  "catalog_poll_at": "2026-11-10T06:54:24+00:00",
+  "products": [
+    {
+      "product_id": "e94d6723-4612-4587-b6b0-9b2bd12bf214",
+      "sample": 3002,
+      "name": "Uzun Kol Düğmeli Klasik Yaka Gömlek",
+      "active_at_poll": true,
+      "stock_at_poll": 5963,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY69ee2b57e88af69ee2b57e88b1.webp",
+        "https://modayakamoz.com/orj/TY69ee2b58dba5969ee2b58dba5b.webp",
+        "https://modayakamoz.com/orj/TY69ee2b59b3cf869ee2b59b3cfa.webp",
+        "https://modayakamoz.com/orj/TY69ee2b5a8dcb869ee2b5a8dcba.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "e94d6723-4612-4587-b6b0-9b2bd12bf214/front.jpg",
+          "sha256": "b71a1197a39fb15af83ef8849ec1fef83ed475fabc0508f418877c30b441859e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3002,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e94d6723/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e94d6723-4612-4587-b6b0-9b2bd12bf214/back.jpg",
+          "sha256": "6fd0168e965445d495676a0af3b824c64c97e62d09ae97abc89e750e9919aee0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3002,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e94d6723/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e94d6723-4612-4587-b6b0-9b2bd12bf214/model.jpg",
+          "sha256": "dc9cb755c0d833a12542f36c4a7e811fe3d94da4dd01e0d675129f08f4f7c27a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3002,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e94d6723/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
