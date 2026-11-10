@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-11",
+  "published_at_utc": "2026-11-10T06:20:39.886102+00:00",
+  "products": [
+    {
+      "product_id": "81b3421f-0421-40b7-a91c-862a0fc1e79b",
+      "sample": 2971,
+      "name": "Tuvakar Kollu Bağcıklı Düğmeli Midi Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/81b3421f-0421-40b7-a91c-862a0fc1e79b-front-e65c41ca7f01.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/81b3421f-0421-40b7-a91c-862a0fc1e79b-back-d268ae61b68d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/81b3421f-0421-40b7-a91c-862a0fc1e79b-model-6922a465f4f3.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/81b3421f-0421-40b7-a91c-862a0fc1e79b-size-chart-58105dca9095.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
