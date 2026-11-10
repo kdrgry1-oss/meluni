@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-10",
+  "created_at": "2026-11-10T06:13:44.658847+00:00",
+  "catalog_poll_at": "2026-11-10T06:10:49+00:00",
+  "products": [
+    {
+      "product_id": "141dab70-8f99-4072-8e80-cb74b18484ec",
+      "sample": 2963,
+      "name": "Truvakar Kollu Kruvaze Yakalı Kuşaklı Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 45,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f3a556aabbff861c22a67f3695a00ab5.jpg",
+        "https://modayakamoz.com/orj/0cb71182c702733a033c305c3120e364.jpg",
+        "https://modayakamoz.com/orj/6d6b0d6f437ea127ca106e8a3b859261.jpg",
+        "https://modayakamoz.com/orj/1f00883b758f864913c6bf27f5bf1832.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "141dab70-8f99-4072-8e80-cb74b18484ec/front.jpg",
+          "sha256": "24b26fcbac328f5bdfbfc61e7f7ef420368651377c4c968328b7c750edac20ca",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2963,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-141dab70/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "141dab70-8f99-4072-8e80-cb74b18484ec/back.jpg",
+          "sha256": "b5309a50c39d1803f395fb65581b30353472307e1721925a9c7f664e1f078a25",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2963,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-141dab70/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "141dab70-8f99-4072-8e80-cb74b18484ec/model.jpg",
+          "sha256": "bb68348e9228cf5de33fca9c96b94d146c8d0033629d3e2da922f70a41941a15",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2963,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-141dab70/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "141dab70-8f99-4072-8e80-cb74b18484ec/size_chart.jpg",
+          "sha256": "47fb43a99d2c53cadb8a07b9f47df31bada08c65b20fc67c2e4e785b3b5f807c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2963,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-141dab70/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
