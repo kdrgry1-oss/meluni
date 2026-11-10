@@ -32,6 +32,7 @@ on:
           - '12'
           - '13'
           - '14'
+          - '15'
 
 permissions:
   contents: write
@@ -213,7 +214,7 @@ jobs:
           import hashlib, json, pathlib
           import os
           batch=os.environ['BATCH']
-          assert batch in {'01','02','03','04','05','06','07','08','09','10','11','12','13','14'}
+          assert batch in {'01','02','03','04','05','06','07','08','09','10','11','12','13','14','15'}
           p=pathlib.Path(f'publication/bulk/batch-{batch}/payload.json')
           data=json.loads(p.read_text())
           assert data['publication_id']==f'meluni-images-20261110-v3-{batch}'
