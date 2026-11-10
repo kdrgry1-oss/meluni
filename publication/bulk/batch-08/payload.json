@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-08",
+  "created_at": "2026-11-10T05:50:12.178856+00:00",
+  "catalog_poll_at": "2026-11-10T05:46:49+00:00",
+  "products": [
+    {
+      "product_id": "9bffb58d-8578-4092-818d-c6285c13f28a",
+      "sample": 2849,
+      "name": "Sporcu Bisiklet Yaka Kolsuz Atlet",
+      "active_at_poll": true,
+      "stock_at_poll": 4971,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a0afb2251df26a0afb2251df4.webp",
+        "https://modayakamoz.com/orj/TY6a0afb24564686a0afb245646b.webp",
+        "https://modayakamoz.com/orj/TY6a0afb26072166a0afb2607218.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "9bffb58d-8578-4092-818d-c6285c13f28a/front.jpg",
+          "sha256": "cdc721426b0017e4002305e97b43f0263ee3f083b8e9d929c812909c1671fbb8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2849,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9bffb58d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "9bffb58d-8578-4092-818d-c6285c13f28a/back.jpg",
+          "sha256": "6a7d06b29a662f3e92b8eac29450d20cac388db2e0c3830d0f90773ebb9480d0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2849,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9bffb58d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9bffb58d-8578-4092-818d-c6285c13f28a/model.jpg",
+          "sha256": "06ae90e5ff4dd63eb63c6796207a5c04f43d90a1b651b45341b848a0ae696560",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2849,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9bffb58d/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
