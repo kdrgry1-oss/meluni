@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-62",
+  "published_at_utc": "2026-11-11T02:00:07.843158+00:00",
+  "products": [
+    {
+      "product_id": "6d74cbbe-6e14-4a09-bd93-54271d9b5af8",
+      "sample": 3343,
+      "name": "Uzun Kollu Kruvaze Pileli Yakalı Uzun Janjan Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6d74cbbe-6e14-4a09-bd93-54271d9b5af8-front-7e6711155a96.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6d74cbbe-6e14-4a09-bd93-54271d9b5af8-back-3050a25d92b5.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6d74cbbe-6e14-4a09-bd93-54271d9b5af8-model-ac2665b3edbf.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
