@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-65",
+  "published_at_utc": "2026-11-11T02:15:26.734241+00:00",
+  "products": [
+    {
+      "product_id": "730c796a-ab03-41c8-b1a1-afdd379a60aa",
+      "sample": 3350,
+      "name": "Uzun Kollu Kruvaze Yaka Büzgü ve Balon Kol Detay Krep Simli Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/730c796a-ab03-41c8-b1a1-afdd379a60aa-front-29f146eb2847.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/730c796a-ab03-41c8-b1a1-afdd379a60aa-back-5c50d5baf334.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/730c796a-ab03-41c8-b1a1-afdd379a60aa-model-bfb7fef59687.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
