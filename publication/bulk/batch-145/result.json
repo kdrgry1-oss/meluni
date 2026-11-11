@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-145",
+  "published_at_utc": "2026-11-11T23:44:58.260017+00:00",
+  "products": [
+    {
+      "product_id": "78fb2689-c9e4-4c0e-9138-a38ef4f704ae",
+      "sample": 3853,
+      "name": "Yüksek Bel Cepli Kemersiz Kot Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/78fb2689-c9e4-4c0e-9138-a38ef4f704ae-front-731cb352eb4d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/78fb2689-c9e4-4c0e-9138-a38ef4f704ae-back-310b252556f6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/78fb2689-c9e4-4c0e-9138-a38ef4f704ae-model-2adfd84567c1.jpg"
+      },
+      "gallery_image_count": 5
+    }
+  ],
+  "skipped": []
+}
