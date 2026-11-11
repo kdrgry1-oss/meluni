@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-108",
+  "created_at": "2026-11-11T13:46:45.127701+00:00",
+  "catalog_poll_at": "2026-11-11T13:46:45.128247+00:00",
+  "products": [
+    {
+      "product_id": "a8d630e9-7435-4a5c-a82e-07a6f60f2b6e",
+      "sample": 3545,
+      "name": "Uzun Kollu V Yakalı Pencere Dantel Detaylı Kalın Fitilli Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 52,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/01c0200f5d774b245ae2e533696c3e9d.jpeg",
+        "https://modayakamoz.com/orj/2ce7414b926af4c4e1f45f54989bb708.jpeg",
+        "https://modayakamoz.com/orj/4b49a39da8ab74e5fef90ed6438c35b1.jpeg",
+        "https://modayakamoz.com/orj/d98dd4c618bf92e994f9b8d084c7634b.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a8d630e9-7435-4a5c-a82e-07a6f60f2b6e/front.jpg",
+          "sha256": "c2a82e37052278535fe9c5b49109687a1660473d6524d62b355ed0bae2b5cf68",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3545,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a8d630e9/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a8d630e9-7435-4a5c-a82e-07a6f60f2b6e/back.jpg",
+          "sha256": "577bf773bb16598d16360b366e570972cbea8039069c27d219a967abdd5f8a49",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3545,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a8d630e9/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a8d630e9-7435-4a5c-a82e-07a6f60f2b6e/model.jpg",
+          "sha256": "e51d249e1b943e82cfb9cdfe024201ca9727beec76783f690ec77d4a5ba9b1dc",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3545,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a8d630e9/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
