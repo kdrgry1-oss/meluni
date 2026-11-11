@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-103",
+  "published_at_utc": "2026-11-11T11:47:24.622629+00:00",
+  "products": [
+    {
+      "product_id": "82e28b11-5f4a-46ed-ad77-c8ab834bed97",
+      "sample": 3526,
+      "name": "Uzun Kollu V Yakalı Kısa Işıltılı Sandy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/82e28b11-5f4a-46ed-ad77-c8ab834bed97-front-434e49b8a97c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/82e28b11-5f4a-46ed-ad77-c8ab834bed97-back-ec03ee2ee899.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/82e28b11-5f4a-46ed-ad77-c8ab834bed97-model-05b2b0ad178f.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
