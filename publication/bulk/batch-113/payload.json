@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-113",
+  "created_at": "2026-11-11T15:06:41.667809+00:00",
+  "catalog_poll_at": "2026-11-11T15:06:41.668273+00:00",
+  "products": [
+    {
+      "product_id": "f60a0253-3696-4d4d-8855-e4e5021cdc87",
+      "sample": 3638,
+      "name": "Uzun Kollu Yakalı Düğmeli Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 122,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193236-1-198511529afd.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193236-ce9c92cd540f4a51.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193236-061f1f7e95395467.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193236-044fd34f95698272.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "f60a0253-3696-4d4d-8855-e4e5021cdc87/front.jpg",
+          "sha256": "ee5d86be145347fd7095e2a6843f8831d0591c872b56077cac47328543726654",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3638,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f60a0253/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f60a0253-3696-4d4d-8855-e4e5021cdc87/back.jpg",
+          "sha256": "31af0e7df858a98b2d6337b906cfc14746e467cf093c6e4d0c16159c6ca6abb5",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3638,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f60a0253/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f60a0253-3696-4d4d-8855-e4e5021cdc87/model.jpg",
+          "sha256": "3f7cdf9abe91a22c02c0b48c2555151eb4625f09f7ace20e6af1937bbae4f026",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3638,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f60a0253/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
