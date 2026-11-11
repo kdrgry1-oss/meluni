@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-126",
+  "created_at": "2026-11-11T21:57:03.026509+00:00",
+  "catalog_poll_at": "2026-11-11T21:57:03.026509+00:00",
+  "products": [
+    {
+      "product_id": "988feaa9-8ed4-4fff-8b9d-9a595c2721ab",
+      "sample": 3659,
+      "name": "Uzun Kollu Yakalı Düğmeli Yırtmaç Detaylı Uzun Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 75,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/50b7b2a963d826b0f5c3.jpeg",
+        "https://modayakamoz.com/orj/3f61c9735cf59aa9c3cc.jpeg",
+        "https://modayakamoz.com/orj/ce85d9c69946cfd0649a.jpeg",
+        "https://modayakamoz.com/orj/6c6402c18efadbd31e0d.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "988feaa9-8ed4-4fff-8b9d-9a595c2721ab/front.jpg",
+          "sha256": "b016c7a77e4491f9e6697d3b3ff7d9610978a8b5686b085b847446f32b260eb3",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3659,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-988feaa9/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "988feaa9-8ed4-4fff-8b9d-9a595c2721ab/back.jpg",
+          "sha256": "bd8823ce04441ac1d260a38abeda2a7e456a93e3cf74a449d696ee8b22adcde9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3659,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-988feaa9/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "988feaa9-8ed4-4fff-8b9d-9a595c2721ab/model.jpg",
+          "sha256": "0ceec910d05a4145aca0bf040be7c8e1c5bb63bde911b50cdd25e04ccf5e5059",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3659,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-988feaa9/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
