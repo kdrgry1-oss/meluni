@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-111",
+  "published_at_utc": "2026-11-11T14:35:51.296440+00:00",
+  "products": [
+    {
+      "product_id": "05b1613a-cb1b-4956-b9d4-9ead0213651c",
+      "sample": 3601,
+      "name": "Uzun Kollu V Yarasa Bağcıklı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/05b1613a-cb1b-4956-b9d4-9ead0213651c-front-0c13a3f4b252.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/05b1613a-cb1b-4956-b9d4-9ead0213651c-back-6c1b37f7442b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/05b1613a-cb1b-4956-b9d4-9ead0213651c-model-94a2153f76ad.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
