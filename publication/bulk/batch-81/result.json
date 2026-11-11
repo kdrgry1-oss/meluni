@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-81",
+  "published_at_utc": "2026-11-11T03:54:15.082684+00:00",
+  "products": [
+    {
+      "product_id": "041169bb-a9e2-424e-a905-905ad67282d7",
+      "sample": 3406,
+      "name": "Uzun Kollu Kruvaze Yakalı Zincir Detaylı Kısa Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/041169bb-a9e2-424e-a905-905ad67282d7-front-3b6c62b66b96.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/041169bb-a9e2-424e-a905-905ad67282d7-back-3dd727a5be70.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/041169bb-a9e2-424e-a905-905ad67282d7-model-1139daaba95c.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
