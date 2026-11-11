@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-103",
+  "created_at": "2026-11-11T11:45:09.400516+00:00",
+  "catalog_poll_at": "2026-11-11T11:45:09.400802+00:00",
+  "products": [
+    {
+      "product_id": "82e28b11-5f4a-46ed-ad77-c8ab834bed97",
+      "sample": 3526,
+      "name": "Uzun Kollu V Yakalı Kısa Işıltılı Sandy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 155,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193801-1-79737e528373.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193801-f40b2afc286d3869.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193801-1cbe549a5742d61d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193801-d70a548527fdbe99.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193801-d73df3f8c56d8575.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "82e28b11-5f4a-46ed-ad77-c8ab834bed97/front.jpg",
+          "sha256": "434e49b8a97c661a0c618be0a4e90bfb311978a52facb28ee21bdeb3b38ec48e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3526,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-82e28b11/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "82e28b11-5f4a-46ed-ad77-c8ab834bed97/back.jpg",
+          "sha256": "ec03ee2ee899854d7c008644328941785abbc13fea7c4c573f44ea625b8d4775",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3526,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-82e28b11/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "82e28b11-5f4a-46ed-ad77-c8ab834bed97/model.jpg",
+          "sha256": "05b2b0ad178f969a6242e6d19c6071577a9fde2ec8877e6b10b1ac6281bfbba2",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3526,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-82e28b11/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
