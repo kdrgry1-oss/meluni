@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-146",
+  "created_at": "2026-11-11T23:48:20.688130+00:00",
+  "catalog_poll_at": "2026-11-11T23:48:20.688130+00:00",
+  "products": [
+    {
+      "product_id": "3b884463-1b5f-429d-84ca-a19ae81ae190",
+      "sample": 3854,
+      "name": "Yüksek Bel Cepli Krep Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c153085edf191379535b.jpeg",
+        "https://modayakamoz.com/orj/e23a17049cc334f212bd.jpeg",
+        "https://modayakamoz.com/orj/5b1290c6fb449cc375df.jpeg",
+        "https://modayakamoz.com/orj/65b3a09cfcd5ccd6b6d3.jpeg",
+        "https://modayakamoz.com/orj/2e85f259f17ddcd10a697650cfd3d46f.jpeg",
+        "https://modayakamoz.com/orj/22ed099f998d55b4b06a723e04cef85e.jpeg",
+        "https://modayakamoz.com/orj/4c81488822a24feddd6e16b7e20af913.jpeg",
+        "https://modayakamoz.com/orj/4a9c8d060276c968bd619e5470f1d327.jpeg",
+        {
+          "id": "d2e88fc0-ce71-424b-9936-01ea64fa14cb",
+          "url": "https://cdn.meluni.com.tr/ai-products/3b884463-1b5f-429d-84ca-a19ae81ae190-olcu-oto-7f6bc021.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:06:22.612471+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "3b884463-1b5f-429d-84ca-a19ae81ae190/front.jpg",
+          "sha256": "7b9c87e2215acf34c2af32adbaff335832a69ca167df71213c791be41af3feca",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3854,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3b884463/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3b884463-1b5f-429d-84ca-a19ae81ae190/back.jpg",
+          "sha256": "97aa8ef1eb18de6fdd77f3ec2a5e57fffd946ba8900a7afb6c6ecccac9fd3176",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3854,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3b884463/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3b884463-1b5f-429d-84ca-a19ae81ae190/model.jpg",
+          "sha256": "dd925c47dde12c729fb809329e49afd67a6f105a6cbb8c3858cfc52283858106",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3854,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3b884463/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
