@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-70",
+  "created_at": "2026-11-11T02:45:00.305537+00:00",
+  "catalog_poll_at": "2026-11-11T02:45:00.306109+00:00",
+  "products": [
+    {
+      "product_id": "f6a189d1-5727-4a1b-a460-1452e6143ff1",
+      "sample": 3370,
+      "name": "Uzun Kollu Kruvaze Yakalı Büzgülü Midi Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 18,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/6da7291db6099f679359.jpeg",
+        "https://modayakamoz.com/orj/a365f66a70391fa792ea.jpeg",
+        "https://modayakamoz.com/orj/6f2d3915a33e0e3eac29.jpeg",
+        "https://modayakamoz.com/orj/f18459944106650dbf8d.jpeg",
+        {
+          "id": "6e54f7b8-8f0e-4c53-b895-c9cc61a1edea",
+          "url": "https://cdn.meluni.com.tr/ai-products/f6a189d1-5727-4a1b-a460-1452e6143ff1-olcu-oto-dda7e66e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:24:15.844942+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "f6a189d1-5727-4a1b-a460-1452e6143ff1/front.jpg",
+          "sha256": "29161b42244cbba0746bc9c098854cad378df9e9df439c984a0600274499ff43",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3370,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f6a189d1/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f6a189d1-5727-4a1b-a460-1452e6143ff1/back.jpg",
+          "sha256": "06e5ceb28029d1d77e36785cb95622998bb9ab7943dd2de7de844c98b1a04867",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3370,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f6a189d1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f6a189d1-5727-4a1b-a460-1452e6143ff1/model.jpg",
+          "sha256": "47f086af5485972803174b2a18f3c980bb8e6bb0bb766665feb01bca581dd14d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3370,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f6a189d1/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
