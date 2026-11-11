@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-124",
+  "published_at_utc": "2026-11-11T21:48:03.582588+00:00",
+  "products": [
+    {
+      "product_id": "cceea617-af66-4cca-8d7d-a342cf938afc",
+      "sample": 3657,
+      "name": "Uzun Kollu Yakalı Düğmeli Yırtmaç Detaylı Uzun Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/cceea617-af66-4cca-8d7d-a342cf938afc-front-ee8d08de9322.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/cceea617-af66-4cca-8d7d-a342cf938afc-back-578faf18a0f3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/cceea617-af66-4cca-8d7d-a342cf938afc-model-5a8afd4fdc64.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
