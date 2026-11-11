@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-133",
+  "created_at": "2026-11-11T22:37:38.203294+00:00",
+  "catalog_poll_at": "2026-11-11T22:37:38.203294+00:00",
+  "products": [
+    {
+      "product_id": "5f06ef31-2344-4934-ae85-9e5efccae3b6",
+      "sample": 3760,
+      "name": "V Yakalı Beli Kuşaklı Aerobin Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 8,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e380ac87ad99d8d39484.jpeg",
+        "https://modayakamoz.com/orj/c0a08f3b217856b24b8f.jpeg",
+        "https://modayakamoz.com/orj/a6febe70da07c50a6f13.jpeg",
+        "https://modayakamoz.com/orj/c930057666032285234d.jpeg",
+        "https://modayakamoz.com/orj/b4967f3cfc67fa8429ec.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5f06ef31-2344-4934-ae85-9e5efccae3b6/front.jpg",
+          "sha256": "819118ba5212bb70a26edc92c09b612748cfd8275a7adb3c1aa5d449997db7fc",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3760,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f06ef31/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5f06ef31-2344-4934-ae85-9e5efccae3b6/back.jpg",
+          "sha256": "0a7beffd8d99235e44b9472c7180dace1c54415c07514a17a04c104e662999e3",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3760,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f06ef31/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5f06ef31-2344-4934-ae85-9e5efccae3b6/model.jpg",
+          "sha256": "f95177d0be09ad88da63a9c03c28f34d7624eeab8addf1dd7a1b4b44e10d3eed",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3760,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f06ef31/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
