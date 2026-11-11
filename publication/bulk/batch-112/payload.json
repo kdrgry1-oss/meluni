@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-112",
+  "created_at": "2026-11-11T14:47:26.219763+00:00",
+  "catalog_poll_at": "2026-11-11T14:47:26.220628+00:00",
+  "products": [
+    {
+      "product_id": "c19bf1ee-2d4a-4171-8897-1782d43109ee",
+      "sample": 3602,
+      "name": "Uzun Kollu V Yarasa Bağcıklı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 55,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193817-1-97c261c2f5d7.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193817-ca8971bbea723d7d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193817-faf0b233a6a779f7.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193817-497c16429cb5bcb5.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c19bf1ee-2d4a-4171-8897-1782d43109ee/front.jpg",
+          "sha256": "4da838a4c5fad5297b439f8abc7590a304e272ff5497dc754bce0ff94049f245",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3602,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c19bf1ee/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c19bf1ee-2d4a-4171-8897-1782d43109ee/back.jpg",
+          "sha256": "ae199a65f6f1d154c50082d0f2773373136eabffddcfc1f8a08ab29592f6954b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3602,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c19bf1ee/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c19bf1ee-2d4a-4171-8897-1782d43109ee/model.jpg",
+          "sha256": "3c02516088be8d4a9b3d416ddc193ea732ca026f2cc7488aafc6a663c928265e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3602,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c19bf1ee/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
