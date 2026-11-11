@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-54",
+  "created_at": "2026-11-11T01:17:59.073421+00:00",
+  "catalog_poll_at": "2026-11-11T01:17:59.073711+00:00",
+  "products": [
+    {
+      "product_id": "a572ac35-3ffb-4d8e-951d-5998ff7a95c2",
+      "sample": 3312,
+      "name": "Uzun Kollu Kapşonlu Fermuarlı Kaşkorse Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 38,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/46220cf25e0105c6513c.jpeg",
+        "https://modayakamoz.com/orj/e234a43cc13f1d34153c.jpeg",
+        "https://modayakamoz.com/orj/da1724d8bf4e43bb0205.jpeg",
+        "https://modayakamoz.com/orj/6802f0c44ce61411e67c.jpeg",
+        "https://modayakamoz.com/orj/8d651c6e165f3d1c5568.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a572ac35-3ffb-4d8e-951d-5998ff7a95c2/front.jpg",
+          "sha256": "ab6a5cf0e545163238abad257a69cad2f9ff270df78a20dadfc2270bce36255f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3312,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a572ac35/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a572ac35-3ffb-4d8e-951d-5998ff7a95c2/back.jpg",
+          "sha256": "33d5623919c8beb1bad70f96fcf35814f2f2c889eaecd2312f4b08f946a04dd8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3312,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a572ac35/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a572ac35-3ffb-4d8e-951d-5998ff7a95c2/model.jpg",
+          "sha256": "e2696fe615eb4432a6102725f5cc4b54395590e16511b4d66657ebb011b321c9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3312,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a572ac35/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
