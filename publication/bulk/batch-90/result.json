@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-90",
+  "published_at_utc": "2026-11-11T08:09:26.514893+00:00",
+  "products": [
+    {
+      "product_id": "c1925941-9bf2-41c0-95e8-5d389508b180",
+      "sample": 3483,
+      "name": "Uzun Kollu V Hakim Yaka Fermuar Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c1925941-9bf2-41c0-95e8-5d389508b180-front-596938b7c38f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c1925941-9bf2-41c0-95e8-5d389508b180-back-bf37ccadaee2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c1925941-9bf2-41c0-95e8-5d389508b180-model-c8dc0d723cf3.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
