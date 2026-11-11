@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-52",
+  "published_at_utc": "2026-11-11T01:09:03.573398+00:00",
+  "products": [
+    {
+      "product_id": "deed6622-5725-48f8-a58c-668bb3a14a68",
+      "sample": 3309,
+      "name": "Uzun Kollu Kapşonlu Düğmeli ve Bağcıklı Waffle Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/deed6622-5725-48f8-a58c-668bb3a14a68-front-95b3abcc73f1.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/deed6622-5725-48f8-a58c-668bb3a14a68-back-58b93d099534.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/deed6622-5725-48f8-a58c-668bb3a14a68-model-3fe3bfd867d0.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
