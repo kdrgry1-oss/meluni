@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-119",
+  "created_at": "2026-11-11T16:35:34.244284+00:00",
+  "catalog_poll_at": "2026-11-11T16:35:34.244649+00:00",
+  "products": [
+    {
+      "product_id": "15c2b449-5b75-45b2-a53d-f1a1004c2d61",
+      "sample": 3816,
+      "name": "Yuvarlak Yakalı Geniş Kesimli Yarasa Kollu Sandy Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a9fce37acb945e94b0e3.jpeg",
+        "https://modayakamoz.com/orj/ae3bb14f9842c1156f27.jpeg",
+        "https://modayakamoz.com/orj/a1e828138993c06428dd.jpeg",
+        "https://modayakamoz.com/orj/25a97f7419128691d8e6.jpeg",
+        "https://modayakamoz.com/orj/30d001070a1edf50f877.jpeg",
+        {
+          "id": "bc01235d-09f6-4c12-83b4-1373c84f5ff5",
+          "url": "https://cdn.meluni.com.tr/ai-products/15c2b449-5b75-45b2-a53d-f1a1004c2d61-olcu-oto-da3b07b8.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-09T05:24:00.849025+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "15c2b449-5b75-45b2-a53d-f1a1004c2d61/front.jpg",
+          "sha256": "ff6916289f08f085657a41cd7d629d51bfe0f17270c1042bd692ed9415c2efdb",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3816,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-15c2b449/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "15c2b449-5b75-45b2-a53d-f1a1004c2d61/back.jpg",
+          "sha256": "ecbf06b38f15ff4de7ce5f07793855746889881b060eb748d15a257648c22b69",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3816,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-15c2b449/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "15c2b449-5b75-45b2-a53d-f1a1004c2d61/model.jpg",
+          "sha256": "848b30f429d35bbc78dfd4efdf9ddd2788849be105501f7ba005a332120dbe61",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3816,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-15c2b449/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
