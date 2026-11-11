@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-114",
+  "created_at": "2026-11-11T15:20:26.536865+00:00",
+  "catalog_poll_at": "2026-11-11T15:20:26.537156+00:00",
+  "products": [
+    {
+      "product_id": "cf387ccc-bc52-47d0-99b5-0a168b95e1ee",
+      "sample": 3637,
+      "name": "Uzun Kollu Yakalı Düğmeli Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 90,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-extra-193237-93a96e4514a3ffce.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193237-d41adb4b76da1489.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193237-044fd34f95698272.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "cf387ccc-bc52-47d0-99b5-0a168b95e1ee/front.jpg",
+          "sha256": "8a2558f0488d9c4bd2839decf8a38968952ae5a559838d2c37ce08788d818820",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3637,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cf387ccc/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "cf387ccc-bc52-47d0-99b5-0a168b95e1ee/back.jpg",
+          "sha256": "c1c8e458b781002586abd997feee94c06dcf18b9c07803099e9b9f5b6137243e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3637,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cf387ccc/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "cf387ccc-bc52-47d0-99b5-0a168b95e1ee/model.jpg",
+          "sha256": "1dfd5f9db0a202e1139f68f0f993b973d46dfd5d8229b7c1cdec73f4880c786c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3637,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cf387ccc/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
