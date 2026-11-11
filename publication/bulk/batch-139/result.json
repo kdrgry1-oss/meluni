@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-139",
+  "published_at_utc": "2026-11-11T23:11:44.315688+00:00",
+  "products": [
+    {
+      "product_id": "bf83e7cd-e8da-48d0-ae1b-34e39e46c53c",
+      "sample": 3840,
+      "name": "Yüksek Bel Büzgülü Alttan Uzun Kaşkorse Tayt Etek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bf83e7cd-e8da-48d0-ae1b-34e39e46c53c-front-fb6f5feb7528.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/bf83e7cd-e8da-48d0-ae1b-34e39e46c53c-back-53dd4cd6976c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bf83e7cd-e8da-48d0-ae1b-34e39e46c53c-model-633b214ec9fa.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
