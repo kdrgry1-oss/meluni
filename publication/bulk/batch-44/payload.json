@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-44",
+  "created_at": "2026-11-11T00:27:57.650536+00:00",
+  "catalog_poll_at": "2026-11-11T00:27:57.651280+00:00",
+  "products": [
+    {
+      "product_id": "c1bd6931-640d-42b6-9a9a-82bdc46d71ce",
+      "sample": 3293,
+      "name": "Uzun Kollu Kapşonlu Bağcıklı Fermuarlı Kısa Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 57,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-194025-1-3f3dec5a1ed0.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194025-ab5a89d73027b768.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194025-3f3dec5a1ed05128.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194025-440bd7795b40d407.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194025-bde9b2653492959f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194025-70899369b7d5d12e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c1bd6931-640d-42b6-9a9a-82bdc46d71ce/front.jpg",
+          "sha256": "85871fa60ff73cf91a0313ea8f7c1dcece04219e7ffee66d4d2af91e420a9f85",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3293,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1bd6931/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c1bd6931-640d-42b6-9a9a-82bdc46d71ce/back.jpg",
+          "sha256": "b3b2a9c1203fc2fd9444b8a8fae0eec4ba6251532869ee987ded50824fd1b2d5",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3293,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1bd6931/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c1bd6931-640d-42b6-9a9a-82bdc46d71ce/model.jpg",
+          "sha256": "d4d6f5a3f5a56788ac109d87d665f5852ec2850764cf8e5476a579fa27a9530e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3293,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1bd6931/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
