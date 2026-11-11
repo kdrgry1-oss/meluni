@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-55",
+  "published_at_utc": "2026-11-11T01:24:47.419246+00:00",
+  "products": [
+    {
+      "product_id": "828f8b43-575c-47d2-9498-5abbae2f55f0",
+      "sample": 3328,
+      "name": "Uzun Kollu Kare Yakalı Parmaktan Geçmeli Uzun Şardonlu Dalgıç Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/828f8b43-575c-47d2-9498-5abbae2f55f0-front-a10ad6d980ed.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/828f8b43-575c-47d2-9498-5abbae2f55f0-back-3a41e3b8e4ae.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/828f8b43-575c-47d2-9498-5abbae2f55f0-model-bbc936cad157.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
