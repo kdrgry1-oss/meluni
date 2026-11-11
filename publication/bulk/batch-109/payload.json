@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-109",
+  "created_at": "2026-11-11T13:52:33.039520+00:00",
+  "catalog_poll_at": "2026-11-11T13:52:33.040594+00:00",
+  "products": [
+    {
+      "product_id": "ae817604-5d35-4b59-9c24-005a8301a1ed",
+      "sample": 3544,
+      "name": "Uzun Kollu V Yakalı Pencere Dantel Detaylı Kalın Fitilli Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 52,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/72afc5aca9e60e9c60e739603dc71953.jpg",
+        "https://modayakamoz.com/orj/f19c472a43e4b27e1cda3fde78832881.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "ae817604-5d35-4b59-9c24-005a8301a1ed/front.jpg",
+          "sha256": "ab46d1bd5477b4a6858cc0471ff696572293be95d28ea9277b869991fa477e20",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3544,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ae817604/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ae817604-5d35-4b59-9c24-005a8301a1ed/back.jpg",
+          "sha256": "835d3eccd4c446b2237c901af27cafa83c3802ae261bef351baf38e78efa8085",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3544,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ae817604/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ae817604-5d35-4b59-9c24-005a8301a1ed/model.jpg",
+          "sha256": "199c0e102766a0a25796c230f9d67fa540dcbcb27ab49aee29e8a0f6a83f6ee9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3544,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ae817604/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
