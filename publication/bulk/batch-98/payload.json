@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-98",
+  "created_at": "2026-11-11T10:45:55.281446+00:00",
+  "catalog_poll_at": "2026-11-11T10:45:55.281756+00:00",
+  "products": [
+    {
+      "product_id": "73785874-84e8-4dd5-a81f-0e5c0c55677d",
+      "sample": 3531,
+      "name": "Uzun Kollu V Yakalı Kısa Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193671-1-ecd3b4884299.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193671-92ffa7d63e96a6af.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193671-f50968998c52a621.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193671-956422a3782083a4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193671-30c4620cae01e92a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "73785874-84e8-4dd5-a81f-0e5c0c55677d/front.jpg",
+          "sha256": "4557b460d86adf71279f90a856a57a015a7f7780bc9729b645b7c32fd801d582",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3531,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73785874/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "73785874-84e8-4dd5-a81f-0e5c0c55677d/back.jpg",
+          "sha256": "710a205f2ed3fdf82f923d53adedc720944958b42534c98b0d56182bfa4f3df4",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3531,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73785874/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "73785874-84e8-4dd5-a81f-0e5c0c55677d/model.jpg",
+          "sha256": "9b1ef3c7bace90b87a3d301c6f0a09d7b3d43fe70c2ffa735b687442e225e4ad",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3531,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73785874/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
