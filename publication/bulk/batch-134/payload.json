@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-134",
+  "created_at": "2026-11-11T22:43:32.933385+00:00",
+  "catalog_poll_at": "2026-11-11T22:43:32.933385+00:00",
+  "products": [
+    {
+      "product_id": "d4341cbd-edf2-4c93-835e-adf11944db04",
+      "sample": 3783,
+      "name": "Yarı Balıkçı Yaka Kısa Kollu Çicek Aksesuar Detaylı Midi Dalgıç Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f9aa2fe497783c8c4905.jpeg",
+        "https://modayakamoz.com/orj/e45913d47bf300afc88d.jpeg",
+        "https://modayakamoz.com/orj/1e4e00d77cbc5147856b.jpeg",
+        "https://modayakamoz.com/orj/6d4438b50591d19bd13f.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d4341cbd-edf2-4c93-835e-adf11944db04/front.jpg",
+          "sha256": "7b43dae262b91783dc5cfccb39d82682bbfa7f620cd449a1f8856daefa93dbd7",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3783,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d4341cbd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d4341cbd-edf2-4c93-835e-adf11944db04/back.jpg",
+          "sha256": "7ee9c3073b22214582d06eaa258d3fa45aa23bcfa3d4e853690cf9c3173c0d77",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3783,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d4341cbd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d4341cbd-edf2-4c93-835e-adf11944db04/model.jpg",
+          "sha256": "a560b8e3f21ac36f470d471aaa96d384fde0c9e865c22c6b6c9acb7aea8b9181",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3783,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d4341cbd/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
