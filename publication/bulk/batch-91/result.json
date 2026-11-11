@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-91",
+  "published_at_utc": "2026-11-11T08:26:10.011296+00:00",
+  "products": [
+    {
+      "product_id": "879a6cbc-f162-4d80-9bd5-e58a88527cac",
+      "sample": 3501,
+      "name": "Uzun Kollu V Yakalı Cepli Midi Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/879a6cbc-f162-4d80-9bd5-e58a88527cac-front-4bcbfb0e3518.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/879a6cbc-f162-4d80-9bd5-e58a88527cac-back-da3bd3974f12.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/879a6cbc-f162-4d80-9bd5-e58a88527cac-model-106e76a2a5c0.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
