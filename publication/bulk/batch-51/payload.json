@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-51",
+  "created_at": "2026-11-11T01:03:40.292649+00:00",
+  "catalog_poll_at": "2026-11-11T01:03:40.292981+00:00",
+  "products": [
+    {
+      "product_id": "10428c23-b794-439c-b88c-335bb9758172",
+      "sample": 3308,
+      "name": "Uzun Kollu Kapşonlu Düğmeli ve Bağcıklı Waffle Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 315,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/40c5ddaf49f0cf43732d.jpeg",
+        "https://modayakamoz.com/orj/2f0c2841a93a300e0fe0.jpeg",
+        "https://modayakamoz.com/orj/f6ee184ae3c4a0d37a7d.jpeg",
+        "https://modayakamoz.com/orj/8122d73b1b35a6a4855b.jpeg",
+        "https://modayakamoz.com/orj/4f48a6c96de19df4415c.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "10428c23-b794-439c-b88c-335bb9758172/front.jpg",
+          "sha256": "34d87799754582395a1c787a9ceb5ff5eecac0b22dd3bacf4eadfc53817ca5a1",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3308,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-10428c23/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "10428c23-b794-439c-b88c-335bb9758172/back.jpg",
+          "sha256": "fb8df6097d0b079849883dbedd195467b0f2bd53fdd0bac0517d348944b8221f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3308,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-10428c23/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "10428c23-b794-439c-b88c-335bb9758172/model.jpg",
+          "sha256": "11464eba5819f3a2524688accbb49d6e8dceb7b92c964b48584dc91932e44821",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3308,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-10428c23/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
