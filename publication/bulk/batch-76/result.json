@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-76",
+  "published_at_utc": "2026-11-11T03:21:36.192611+00:00",
+  "products": [
+    {
+      "product_id": "3a1628f4-7d52-4cf4-a17c-abeea6ed3d69",
+      "sample": 3397,
+      "name": "Uzun Kollu Kruvaze Yakalı Pileli Belden Kemerli Kısa Şifon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3a1628f4-7d52-4cf4-a17c-abeea6ed3d69-front-b4f513b83a28.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/3a1628f4-7d52-4cf4-a17c-abeea6ed3d69-back-2eca05402aeb.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3a1628f4-7d52-4cf4-a17c-abeea6ed3d69-model-18776dec901e.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
