@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-100",
+  "published_at_utc": "2026-11-11T11:06:09.578743+00:00",
+  "products": [
+    {
+      "product_id": "47a1b733-ade9-485c-a530-489d988903c7",
+      "sample": 3518,
+      "name": "Uzun Kollu V Yakalı Kolları Ispanyol Detayı Sandy Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/47a1b733-ade9-485c-a530-489d988903c7-front-fd2b8655ed20.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/47a1b733-ade9-485c-a530-489d988903c7-back-14f80d967ea9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/47a1b733-ade9-485c-a530-489d988903c7-model-b7b73e3103d9.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
