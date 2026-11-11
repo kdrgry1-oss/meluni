@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-50",
+  "created_at": "2026-11-11T00:59:42.902495+00:00",
+  "catalog_poll_at": "2026-11-11T00:59:42.902825+00:00",
+  "products": [
+    {
+      "product_id": "7510fd22-0411-4dac-9657-e9c80526f8b0",
+      "sample": 3304,
+      "name": "Uzun Kollu Kapşonlu Cep Detaylı Üç Iplik Mevsimlik Kap",
+      "active_at_poll": true,
+      "stock_at_poll": 19,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192436-1-299c363e3d.jpg",
+        "https://modayakamoz.com/orj/janes-192436-2-17d74f4fa0.jpg",
+        "https://modayakamoz.com/orj/janes-192436-3-35a9564ebd.jpg",
+        "https://modayakamoz.com/orj/janes-192436-4-5146f9e028.jpg",
+        "https://modayakamoz.com/orj/janes-192436-5-3c6deac69c.jpg",
+        "https://modayakamoz.com/orj/janes-192436-6-6f8c678e20.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7510fd22-0411-4dac-9657-e9c80526f8b0/front.jpg",
+          "sha256": "7a992bbb01410f08277c9d13949351430c9925166baf764f7b59e617469ee71a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3304,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7510fd22/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7510fd22-0411-4dac-9657-e9c80526f8b0/back.jpg",
+          "sha256": "1157d0b265c6eccbd48493aed0975e835b0b045d1490d3f5cbccbeb21871df4b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3304,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7510fd22/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7510fd22-0411-4dac-9657-e9c80526f8b0/model.jpg",
+          "sha256": "427f6aab969e4dfb3a352f9ec699dfd9b31b00b2536ff99533459468d3f171bb",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3304,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7510fd22/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
