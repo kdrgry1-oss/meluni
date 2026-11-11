@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-147",
+  "created_at": "2026-11-11T23:54:35.647974+00:00",
+  "catalog_poll_at": "2026-11-11T23:54:35.647974+00:00",
+  "products": [
+    {
+      "product_id": "c879b0a1-78e7-4012-a69b-b62eb4e1f3d5",
+      "sample": 3856,
+      "name": "Yüksek Bel Cepli Paçaya Doğru Ispanyol Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/99c135556810d6e55744.jpeg",
+        "https://modayakamoz.com/orj/3c8afeadb94f7051f712.jpeg",
+        "https://modayakamoz.com/orj/ad46a82e9a79031eeea0.jpeg",
+        "https://modayakamoz.com/orj/57a5b1e2c665d9cc509d.jpeg",
+        "https://modayakamoz.com/orj/f06d03cdcceac4fecf6d.jpeg",
+        "https://modayakamoz.com/orj/1279947d09f7b61e8443.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c879b0a1-78e7-4012-a69b-b62eb4e1f3d5/front.jpg",
+          "sha256": "0e4a03718c7b68e34f951ee4f1c33486fcaaba929ab409d5dea6d10ad543a28d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3856,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c879b0a1/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c879b0a1-78e7-4012-a69b-b62eb4e1f3d5/back.jpg",
+          "sha256": "b16c49909ca47c8cd8b5b1d3e280459cd1ee75f539087eb9bdc66c6aaca96e3f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3856,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c879b0a1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c879b0a1-78e7-4012-a69b-b62eb4e1f3d5/model.jpg",
+          "sha256": "793bdc7409caa3fc52885748c20c5dbe34ffb30f29157654775acce2fb7a5db3",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3856,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c879b0a1/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
