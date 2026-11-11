@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-135",
+  "created_at": "2026-11-11T22:47:58.965396+00:00",
+  "catalog_poll_at": "2026-11-11T22:47:58.965396+00:00",
+  "products": [
+    {
+      "product_id": "14fd1619-969a-45f3-80cf-9407df75f4cc",
+      "sample": 3785,
+      "name": "Yarım Ay Kollu Yuvarlak Yaka Önünde Toka Detaylı Modal Maxi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 34,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c710d17e226728be8b0c.jpeg",
+        "https://modayakamoz.com/orj/b0e6a41da518d89deebe.jpeg",
+        "https://modayakamoz.com/orj/3cc764373e1464924369.jpeg",
+        "https://modayakamoz.com/orj/7f6667bc0768c54048ff.jpeg",
+        "https://modayakamoz.com/orj/a365b1f991a05961b483.jpeg",
+        {
+          "id": "27a5d903-5565-4f79-b3f7-426b351e1191",
+          "url": "https://cdn.meluni.com.tr/ai-products/14fd1619-969a-45f3-80cf-9407df75f4cc-olcu-oto-210477d9.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:21:12.074489+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "14fd1619-969a-45f3-80cf-9407df75f4cc/front.jpg",
+          "sha256": "7cc593610002b4e268545ee7c10e7107572c283e4344835b62b12233fb8d46ce",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3785,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-14fd1619/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "14fd1619-969a-45f3-80cf-9407df75f4cc/back.jpg",
+          "sha256": "970cb5e222c4b1bcb0c7e06e8c30d8fc001b937635685d0ef15483116bc088e9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3785,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-14fd1619/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "14fd1619-969a-45f3-80cf-9407df75f4cc/model.jpg",
+          "sha256": "63d34b10934218afe95e1308ee47d1b1308983c9043c097645f0f83917f0b7c8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3785,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-14fd1619/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
