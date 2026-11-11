@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-56",
+  "created_at": "2026-11-11T01:28:31.270627+00:00",
+  "catalog_poll_at": "2026-11-11T01:28:31.270890+00:00",
+  "products": [
+    {
+      "product_id": "fe9425c8-d70c-46e9-8e49-7bb40c972212",
+      "sample": 3329,
+      "name": "Uzun Kollu Kare Yakalı Viskon Deri Midi Elbıse",
+      "active_at_poll": true,
+      "stock_at_poll": 74,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193257-1-8b20a6325413.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193257-c4e5b0910bd2f2dd.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193257-8b20a6325413bb0b.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193257-3d31ad892a0e79d3.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "fe9425c8-d70c-46e9-8e49-7bb40c972212/front.jpg",
+          "sha256": "6d03dd3f317c2c27674b22e5fc3adce368cfbcbc7453b9a41e392badd9b9a647",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3329,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fe9425c8/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "fe9425c8-d70c-46e9-8e49-7bb40c972212/back.jpg",
+          "sha256": "46cb51d891024a38bda0c885bbeec7f81990fe7610712693b363a0ca97f4f8a2",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3329,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fe9425c8/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "fe9425c8-d70c-46e9-8e49-7bb40c972212/model.jpg",
+          "sha256": "12214b16f38fc2c92e1b6a0ec805887b4c42a585aacc9fefca8fe069c0fbe512",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3329,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fe9425c8/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
