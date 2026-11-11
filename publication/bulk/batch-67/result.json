@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-67",
+  "published_at_utc": "2026-11-11T02:26:04.030332+00:00",
+  "products": [
+    {
+      "product_id": "b2165a20-6b64-4acb-bcc2-653a30fc456d",
+      "sample": 3352,
+      "name": "Uzun Kollu Kruvaze Yaka Büzgülü Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b2165a20-6b64-4acb-bcc2-653a30fc456d-front-30c65b48ae66.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b2165a20-6b64-4acb-bcc2-653a30fc456d-back-0263645392eb.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b2165a20-6b64-4acb-bcc2-653a30fc456d-model-56feeb0b5daf.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
