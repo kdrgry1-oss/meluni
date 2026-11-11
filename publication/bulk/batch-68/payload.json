@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-68",
+  "created_at": "2026-11-11T02:33:33.928318+00:00",
+  "catalog_poll_at": "2026-11-11T02:33:33.928620+00:00",
+  "products": [
+    {
+      "product_id": "8252f205-0843-4f07-8cac-35e3384f6c94",
+      "sample": 3375,
+      "name": "Uzun Kollu Kruvaze Yakalı Büzgülü Taşlı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 50,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193809-1-956a34e5ccbf.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193809-92655c0db400c4cc.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193809-126d57ec295088f4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193809-69f49cc64f05d385.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193809-a71ae35ae9f74b40.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "8252f205-0843-4f07-8cac-35e3384f6c94/front.jpg",
+          "sha256": "c42ff541cf1d2bc4db6eb6165afbc71775c2b3da75fe66f306de5afabf7b388b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3375,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8252f205/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8252f205-0843-4f07-8cac-35e3384f6c94/back.jpg",
+          "sha256": "ce2431aca80f2a5207cdb2d21851912c6db80fd3b2d76390d5f7c0ab59d09616",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3375,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8252f205/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8252f205-0843-4f07-8cac-35e3384f6c94/model.jpg",
+          "sha256": "b0acadab120bbdcbfc7d993f04c48dfc12262f97326098cd07b1c58e8bbacc12",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3375,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8252f205/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
