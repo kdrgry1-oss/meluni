@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-65",
+  "created_at": "2026-11-11T02:14:29.774960+00:00",
+  "catalog_poll_at": "2026-11-11T02:14:29.775289+00:00",
+  "products": [
+    {
+      "product_id": "730c796a-ab03-41c8-b1a1-afdd379a60aa",
+      "sample": 3350,
+      "name": "Uzun Kollu Kruvaze Yaka Büzgü ve Balon Kol Detay Krep Simli Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 18,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/044606728770e1c49c34edb20596951f.jpeg",
+        "https://modayakamoz.com/orj/fd48bcdd828817e1ae33d7ecd3a900a7.jpeg",
+        "https://modayakamoz.com/orj/3db1e33084c81d4c379eeb464e37a8d2.jpeg",
+        "https://modayakamoz.com/orj/960ba1a913e43c356e6952e808b0d456.jpeg",
+        "https://modayakamoz.com/orj/eb72a328cbb4dd8d63e22eed02160e7c.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "730c796a-ab03-41c8-b1a1-afdd379a60aa/front.jpg",
+          "sha256": "29f146eb2847a419ae698b9fe25b4a417add76715f709c590526ebc0160fb65c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3350,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-730c796a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "730c796a-ab03-41c8-b1a1-afdd379a60aa/back.jpg",
+          "sha256": "5c50d5baf334f8b3d9f5fa90f1d0118ae21765a6fb9ce5360c12f2551f57ccb7",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3350,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-730c796a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "730c796a-ab03-41c8-b1a1-afdd379a60aa/model.jpg",
+          "sha256": "bfb7fef59687835a05e1d09abb99a90394659ade901e257da0c5edce172d29d1",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3350,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-730c796a/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
