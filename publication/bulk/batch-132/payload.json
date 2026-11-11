@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-132",
+  "created_at": "2026-11-11T22:32:44.118759+00:00",
+  "catalog_poll_at": "2026-11-11T22:32:44.118759+00:00",
+  "products": [
+    {
+      "product_id": "d5efb9e5-10b4-4db2-921e-8d71621d016b",
+      "sample": 3761,
+      "name": "V Yakalı Beli Lastikli Keten Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d7cd07c32ed0db3a56fd.jpeg",
+        "https://modayakamoz.com/orj/53d20a31aa215677cb26.jpeg",
+        "https://modayakamoz.com/orj/bba0731d5ce271c1c75c.jpeg",
+        "https://modayakamoz.com/orj/90cf4a12a5bb38a56f0a.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d5efb9e5-10b4-4db2-921e-8d71621d016b/front.jpg",
+          "sha256": "666409f8c9f1defbda9c019340544aacb0048651fb615fda69954e12a0a9b804",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3761,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d5efb9e5/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d5efb9e5-10b4-4db2-921e-8d71621d016b/back.jpg",
+          "sha256": "ded56cba96b9fd9f5a41497b89b5b661067c02de641c3c521c90fd23425b3011",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3761,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d5efb9e5/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d5efb9e5-10b4-4db2-921e-8d71621d016b/model.jpg",
+          "sha256": "b326ce444d2fa600da7c01d4f79c95e9e7ab2668de5439161d2102cc2233e7c4",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3761,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d5efb9e5/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
