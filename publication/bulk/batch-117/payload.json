@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-117",
+  "created_at": "2026-11-11T16:17:26.000306+00:00",
+  "catalog_poll_at": "2026-11-11T16:17:26.000634+00:00",
+  "products": [
+    {
+      "product_id": "ccd40906-6b8f-4769-b81d-83ba3c7f5aae",
+      "sample": 3818,
+      "name": "Yuvarlak Yakalı Yarasa Kollu Kuşaklı Atlas Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 42,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192418-1-74d2f78d50.jpg",
+        "https://modayakamoz.com/orj/janes-192418-2-47748ac3c9.jpg",
+        "https://modayakamoz.com/orj/janes-192418-3-db2430a87f.jpg",
+        "https://modayakamoz.com/orj/janes-192418-4-3bbdf4d93e.jpg",
+        "https://modayakamoz.com/orj/janes-192418-8-3871f6783e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "ccd40906-6b8f-4769-b81d-83ba3c7f5aae/front.jpg",
+          "sha256": "c976626f80d6bc771b5e9ab16a3dc0a20a1bd2c6195e50094aac2f71323a7c2d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3818,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ccd40906/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ccd40906-6b8f-4769-b81d-83ba3c7f5aae/back.jpg",
+          "sha256": "85249b21ad0018b9c7f865cdb8d07d348228f1fc596124a9aa60c043c7c7bda0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3818,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ccd40906/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ccd40906-6b8f-4769-b81d-83ba3c7f5aae/model.jpg",
+          "sha256": "a665818c8b57c210c08b6491c7c93b4ca9ecb63eaed2d8e9cdba75bc65faa2ec",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3818,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ccd40906/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
