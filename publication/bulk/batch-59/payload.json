@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-59",
+  "created_at": "2026-11-11T01:43:26.113988+00:00",
+  "catalog_poll_at": "2026-11-11T01:43:26.114667+00:00",
+  "products": [
+    {
+      "product_id": "4060487c-5be1-46ee-aa76-a2307ff3234e",
+      "sample": 3337,
+      "name": "Uzun Kollu Kolları Tül Detaylı Önden Nervürlu Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 80,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193731-1-d63effad2419.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193731-c639fd65b8533d6f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193731-84ab2a748ccebf64.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193731-b783d3fb72b43880.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193731-f45cef325f40d02f.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "4060487c-5be1-46ee-aa76-a2307ff3234e/front.jpg",
+          "sha256": "95e0f613ce4d6a34fbcdcf830ff72291c99f5453ac81225c912095324ff9ed38",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3337,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4060487c/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4060487c-5be1-46ee-aa76-a2307ff3234e/back.jpg",
+          "sha256": "803293ac71ca06e4a9b645d9a8fb4ea179ead49b48d08d5764af0b99e6479091",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3337,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4060487c/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4060487c-5be1-46ee-aa76-a2307ff3234e/model.jpg",
+          "sha256": "379e7e94e4b5e1da51a0d3300dd396ce0780e73530be80c01759e3b10c18010d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3337,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4060487c/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
