@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-140",
+  "created_at": "2026-11-11T23:15:17.964628+00:00",
+  "catalog_poll_at": "2026-11-11T23:15:17.964628+00:00",
+  "products": [
+    {
+      "product_id": "3e2c7150-aded-4e0b-ad7a-61c57fe48b21",
+      "sample": 3841,
+      "name": "Yüksek Bel Büzgülü Alttan Uzun Kaşkorse Tayt Etek",
+      "active_at_poll": true,
+      "stock_at_poll": 186,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/92d3cc5adaeeb5e9c5cf.jpeg",
+        "https://modayakamoz.com/orj/cac68820eba0ea632af3.jpeg",
+        "https://modayakamoz.com/orj/ebddaa92db8de4518134.jpeg",
+        "https://modayakamoz.com/orj/5c1678cd019eeabf8f3b.jpeg",
+        "https://modayakamoz.com/orj/7c916532414520e50f09.jpeg",
+        "https://modayakamoz.com/orj/aecd62a6433d1a42adce.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "3e2c7150-aded-4e0b-ad7a-61c57fe48b21/front.jpg",
+          "sha256": "fab57b4c8b773026e6b84660c152404ef95b16b65e1beb10a447796a8be74a2f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3e2c7150/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3e2c7150-aded-4e0b-ad7a-61c57fe48b21/back.jpg",
+          "sha256": "ef42193b9947ca87998002e562dbed9b7c6b7f76130d2828a2d751d54e8637d4",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3e2c7150/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3e2c7150-aded-4e0b-ad7a-61c57fe48b21/model.jpg",
+          "sha256": "8f8c0ae7186ae446c03a1996c01bcfa71d769abe33ac0c31bd5fff216ae013eb",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3e2c7150/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
