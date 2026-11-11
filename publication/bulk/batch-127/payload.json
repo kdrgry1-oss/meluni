@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-127",
+  "created_at": "2026-11-11T22:02:53.773015+00:00",
+  "catalog_poll_at": "2026-11-11T22:02:53.773015+00:00",
+  "products": [
+    {
+      "product_id": "1216ee0f-4650-421a-9e54-e40a553f6be3",
+      "sample": 3666,
+      "name": "Uzun Kollu Yakalı Mini Deri Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 41,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/40c5d0669c286daa284458139ed0a800.png",
+        "https://modayakamoz.com/orj/e1d84b1bd29ac6375267b698d029a493.png",
+        "https://modayakamoz.com/orj/abe3c6fa9620f2b300184ba7f44ee1fb.png",
+        "https://modayakamoz.com/orj/f0c4a447c779a61a35484df9e40d2c46.png",
+        "https://modayakamoz.com/orj/42963f4e5aea0b2964b4d1ac99d50aad.jpeg",
+        {
+          "id": "615df5dd-4fea-4609-a416-967daf6ef1ac",
+          "url": "https://cdn.meluni.com.tr/ai-products/597baf54-1c4d-492a-95ba-7e1788e7ff65-olcu-oto-08ca22b5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-26T05:25:35.015158+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "1216ee0f-4650-421a-9e54-e40a553f6be3/front.jpg",
+          "sha256": "5f7aa6d34122470a0bd76b4c13e8ffad19b03185cba11d7871069831168119ce",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3666,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1216ee0f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "1216ee0f-4650-421a-9e54-e40a553f6be3/back.jpg",
+          "sha256": "be40f88799856b20171cc9081c8e4e8ddc5280c97316f9505e229d4ae5f90ce5",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3666,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1216ee0f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "1216ee0f-4650-421a-9e54-e40a553f6be3/model.jpg",
+          "sha256": "afd4948388a7dec522948e00448759b55b3172940375e1a8ec2fad81fdafd09e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3666,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1216ee0f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
