@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-123",
+  "published_at_utc": "2026-11-11T21:43:12.028490+00:00",
+  "products": [
+    {
+      "product_id": "33ccb80d-3510-4ea7-bb67-ef6a04013614",
+      "sample": 3678,
+      "name": "Uzun Kollu Yakalı Önu Açık Düğme Detaylı Kısa Süet Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/33ccb80d-3510-4ea7-bb67-ef6a04013614-front-3613ebc82fa0.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/33ccb80d-3510-4ea7-bb67-ef6a04013614-back-66356fdfad97.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/33ccb80d-3510-4ea7-bb67-ef6a04013614-model-f07462b926ce.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
