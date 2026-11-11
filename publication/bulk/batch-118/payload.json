@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-118",
+  "created_at": "2026-11-11T16:25:16.467945+00:00",
+  "catalog_poll_at": "2026-11-11T16:25:16.468592+00:00",
+  "products": [
+    {
+      "product_id": "7629958f-df23-4afc-a10e-98bc15103da0",
+      "sample": 3819,
+      "name": "Yuvarlak Yakalı Yarasa Kollu Kuşaklı Atlas Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 67,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192893-1-cc033918b1.jpg",
+        "https://modayakamoz.com/orj/janes-192893-2-fbcd707c25.jpg",
+        "https://modayakamoz.com/orj/janes-192893-3-33da0abb90.jpg",
+        "https://modayakamoz.com/orj/janes-192893-7-ee8ded8f34.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7629958f-df23-4afc-a10e-98bc15103da0/front.jpg",
+          "sha256": "830d5c902d9af479601b45d3309b4f27127020fa70b1ff023ce0c616e0a99262",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7629958f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7629958f-df23-4afc-a10e-98bc15103da0/back.jpg",
+          "sha256": "e061ea3b295bab0be4b4df26547587576aacd9cb0c4e1a2e8f6755c20db5aa55",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7629958f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7629958f-df23-4afc-a10e-98bc15103da0/model.jpg",
+          "sha256": "c0fbe77ce4ff2dfa40a24c5708da9861dbd723dc42fc8530fc0a9c1a2c55da0a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7629958f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
