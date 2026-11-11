@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-143",
+  "published_at_utc": "2026-11-11T23:32:38.203300+00:00",
+  "products": [
+    {
+      "product_id": "1a303ecd-0793-4f62-b741-30bc34457b79",
+      "sample": 3837,
+      "name": "Yüksek Bel Belinde Toka Detaylı Yırtmaçlı Krep Etekli Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/1a303ecd-0793-4f62-b741-30bc34457b79-front-afe5443fb2e8.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/1a303ecd-0793-4f62-b741-30bc34457b79-back-52896bc197f2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/1a303ecd-0793-4f62-b741-30bc34457b79-model-2d5a875306bb.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
