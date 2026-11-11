@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-96",
+  "created_at": "2026-11-11T10:35:07.716941+00:00",
+  "catalog_poll_at": "2026-11-11T10:35:07.717204+00:00",
+  "products": [
+    {
+      "product_id": "bd17849b-512e-4b91-8ca7-48345eca000e",
+      "sample": 3515,
+      "name": "Uzun Kollu V Yakalı Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 92,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3434eb6d57841a2e9c03.jpeg",
+        "https://modayakamoz.com/orj/c2274a855b7b5ec70ea7.jpeg",
+        "https://modayakamoz.com/orj/35a9d7da37cddd548775.jpeg",
+        "https://modayakamoz.com/orj/a31b93315bea51aca98f.jpeg",
+        "https://modayakamoz.com/orj/f1830ec040122ce89b00.jpeg",
+        "https://modayakamoz.com/orj/dca2c0f46329342fcdcd.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "bd17849b-512e-4b91-8ca7-48345eca000e/front.jpg",
+          "sha256": "1b72594130040670a1bf94a6e1f8db9fe5a7ee462db142a9a1cbda885af24e75",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3515,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bd17849b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "bd17849b-512e-4b91-8ca7-48345eca000e/back.jpg",
+          "sha256": "25f9c69d3d013d2831ee1e2f68dc30af0ff72c92af64eb4cc28b8253121369f2",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3515,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bd17849b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bd17849b-512e-4b91-8ca7-48345eca000e/model.jpg",
+          "sha256": "b07392555ab7126fae9ef16b4703440266cfc7282fc83179f7f9ab436ef72309",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3515,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bd17849b/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
