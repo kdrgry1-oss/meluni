@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-64",
+  "created_at": "2026-11-11T02:09:01.547708+00:00",
+  "catalog_poll_at": "2026-11-11T02:09:01.548020+00:00",
+  "products": [
+    {
+      "product_id": "3b8340fd-8a75-4e23-8ec1-0831861278b7",
+      "sample": 3347,
+      "name": "Uzun Kollu Kruvaze Yaka Belden Büzgü Detay Midi Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 141,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/85f78c9d1832bbfa4be4.jpeg",
+        "https://modayakamoz.com/orj/5903d2d2f47c35cd31c8.jpeg",
+        "https://modayakamoz.com/orj/6ac4d5c48ecbc8e63c09.jpeg",
+        "https://modayakamoz.com/orj/71c1dea81d3e20a20716.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "3b8340fd-8a75-4e23-8ec1-0831861278b7/front.jpg",
+          "sha256": "1d0d444e93f8a3b92261e87b844beb702e6c6a9eee300ce47ed67ff18d7b16c5",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3347,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3b8340fd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3b8340fd-8a75-4e23-8ec1-0831861278b7/back.jpg",
+          "sha256": "13137788c53c3a94509a9dc5288c7d096d9310df7af9c76f70db593e82482664",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3347,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3b8340fd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3b8340fd-8a75-4e23-8ec1-0831861278b7/model.jpg",
+          "sha256": "9d77cd98c170ca453eb58b430af704cad974a04a3626c06ebac51e7f4eb6ce3d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3347,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3b8340fd/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
