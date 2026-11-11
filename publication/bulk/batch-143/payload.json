@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-143",
+  "created_at": "2026-11-11T23:31:51.617202+00:00",
+  "catalog_poll_at": "2026-11-11T23:31:51.617202+00:00",
+  "products": [
+    {
+      "product_id": "1a303ecd-0793-4f62-b741-30bc34457b79",
+      "sample": 3837,
+      "name": "Yüksek Bel Belinde Toka Detaylı Yırtmaçlı Krep Etekli Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 184,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2c4e0784f093c6d6f435.jpeg",
+        "https://modayakamoz.com/orj/e05d09fa9df0112e1b1b.jpeg",
+        "https://modayakamoz.com/orj/0ccf1741f56c4c22abaf.jpeg",
+        "https://modayakamoz.com/orj/d861e491c672269d7264.jpeg",
+        {
+          "id": "10acce1f-621d-495e-9039-b451edcd0df9",
+          "url": "https://cdn.meluni.com.tr/ai-products/1a303ecd-0793-4f62-b741-30bc34457b79-olcu-oto-2954ea94.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:05:23.091403+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "1a303ecd-0793-4f62-b741-30bc34457b79/front.jpg",
+          "sha256": "afe5443fb2e8f97d23a9a74a7290e31db7307b8478f1a36a1a53a4f1003b447b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3837,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1a303ecd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "1a303ecd-0793-4f62-b741-30bc34457b79/back.jpg",
+          "sha256": "52896bc197f2d8b06ff80cb8ac2e51f0b85d97f2042e39390aeaafed1da44600",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3837,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1a303ecd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "1a303ecd-0793-4f62-b741-30bc34457b79/model.jpg",
+          "sha256": "2d5a875306bbc24a4cb8ffe5d0c8ec9831ae6f37ceac0875463428b7dd65936c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3837,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1a303ecd/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
