@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-83",
+  "published_at_utc": "2026-11-11T04:08:15.141594+00:00",
+  "products": [
+    {
+      "product_id": "aff8784c-dae0-4faa-8cc4-a924f0f59b8d",
+      "sample": 3421,
+      "name": "Uzun Kollu Madonna Yaka Kadife Midi Boy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/aff8784c-dae0-4faa-8cc4-a924f0f59b8d-front-1fc04df32cae.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/aff8784c-dae0-4faa-8cc4-a924f0f59b8d-back-9f2402729b6b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/aff8784c-dae0-4faa-8cc4-a924f0f59b8d-model-a5646421867e.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
