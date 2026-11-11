@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-107",
+  "published_at_utc": "2026-11-11T13:39:21.985103+00:00",
+  "products": [
+    {
+      "product_id": "a81a551b-b02b-4eb5-9497-b8154165bdb2",
+      "sample": 3542,
+      "name": "Uzun Kollu V Yakalı Pencere Dantel Detaylı Kalın Fitilli Kaşkorse Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a81a551b-b02b-4eb5-9497-b8154165bdb2-front-ab46d1bd5477.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a81a551b-b02b-4eb5-9497-b8154165bdb2-back-835d3eccd4c4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a81a551b-b02b-4eb5-9497-b8154165bdb2-model-199c0e102766.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
