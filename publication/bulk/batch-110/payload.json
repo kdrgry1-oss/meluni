@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-110",
+  "created_at": "2026-11-11T14:05:24.761082+00:00",
+  "catalog_poll_at": "2026-11-11T14:05:24.761419+00:00",
+  "products": [
+    {
+      "product_id": "c25fe671-ddfa-45b9-b928-373953fcb1eb",
+      "sample": 3569,
+      "name": "Uzun Kollu V Yakalı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 63,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193766-1-7f852c38bf8d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193766-4e30020e2aa04126.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193766-d8d3b6d12476828e.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193766-c63064a818b5d7f4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193766-f463f1f76f164c31.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193766-432b1b45a63e5690.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c25fe671-ddfa-45b9-b928-373953fcb1eb/front.jpg",
+          "sha256": "f71b70ce6c6151b1f0de7d25092a34e03bc24b832b9be8e6e70d39baef604016",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3569,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c25fe671/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c25fe671-ddfa-45b9-b928-373953fcb1eb/back.jpg",
+          "sha256": "6c1ae20321d87093267e5b50dad9e63140864ecfa73c9245e328abc8b8dd948d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3569,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c25fe671/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c25fe671-ddfa-45b9-b928-373953fcb1eb/model.jpg",
+          "sha256": "aa1b54e1b4b6233024f95f8cbc567231137176d3547fd74bac97583198a07b9f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3569,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c25fe671/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
