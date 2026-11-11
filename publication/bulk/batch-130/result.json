@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-130",
+  "published_at_utc": "2026-11-11T22:19:36.165311+00:00",
+  "products": [
+    {
+      "product_id": "69877f54-e56b-4f11-92b1-f34e37888e5c",
+      "sample": 3690,
+      "name": "Uzun Kollu Yarı Balıkçı Yaka Tül Detaylı Uzun Sandy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/69877f54-e56b-4f11-92b1-f34e37888e5c-front-c9e6831cc21e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/69877f54-e56b-4f11-92b1-f34e37888e5c-back-a254aece4fcd.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/69877f54-e56b-4f11-92b1-f34e37888e5c-model-b40fe43d516e.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
