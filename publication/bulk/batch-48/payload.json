@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-48",
+  "created_at": "2026-11-11T00:49:26.700019+00:00",
+  "catalog_poll_at": "2026-11-11T00:49:26.700269+00:00",
+  "products": [
+    {
+      "product_id": "e1b0da22-2150-4492-90ac-2f3fa4010a0c",
+      "sample": 3302,
+      "name": "Uzun Kollu Kapşonlu Cep Detaylı Üç Iplik Mevsimlik Kap",
+      "active_at_poll": true,
+      "stock_at_poll": 94,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192782-1-e8d3348c00.jpg",
+        "https://modayakamoz.com/orj/janes-192782-2-53a1707402.jpg",
+        "https://modayakamoz.com/orj/janes-192782-3-9bf0b91dc0.jpg",
+        "https://modayakamoz.com/orj/janes-192782-7-25739b0277.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e1b0da22-2150-4492-90ac-2f3fa4010a0c/front.jpg",
+          "sha256": "6bbc18e6d6677a4bedb6c2dc61a601a93fdb8ec8043aae566c251a1b0bc22a90",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3302,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e1b0da22/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e1b0da22-2150-4492-90ac-2f3fa4010a0c/back.jpg",
+          "sha256": "4bed2a58a5ac9b30e4740134822cd7f1aaa8156c86a9142c15f50dd6382fde9f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3302,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e1b0da22/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e1b0da22-2150-4492-90ac-2f3fa4010a0c/model.jpg",
+          "sha256": "62b0c123ac01e23c9baaee4a9e965ed875642550b73575f91382f4886c859e40",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3302,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e1b0da22/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
