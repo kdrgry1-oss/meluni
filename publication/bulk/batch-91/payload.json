@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-91",
+  "created_at": "2026-11-11T08:23:43.462110+00:00",
+  "catalog_poll_at": "2026-11-11T08:23:43.462455+00:00",
+  "products": [
+    {
+      "product_id": "879a6cbc-f162-4d80-9bd5-e58a88527cac",
+      "sample": 3501,
+      "name": "Uzun Kollu V Yakalı Cepli Midi Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b0e78bc5c7394576fe8f.jpeg",
+        "https://modayakamoz.com/orj/1e243fc44005ecc55dcc.jpeg",
+        "https://modayakamoz.com/orj/85f99783d2cbd3bb6925.jpeg",
+        "https://modayakamoz.com/orj/dc777312ac79495b332d.jpeg",
+        {
+          "id": "122ed205-79e6-4dd2-bbe8-76eb72ee48b6",
+          "url": "https://cdn.meluni.com.tr/ai-products/879a6cbc-f162-4d80-9bd5-e58a88527cac-olcu-oto-dee8444e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:24:57.064701+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "879a6cbc-f162-4d80-9bd5-e58a88527cac/front.jpg",
+          "sha256": "4bcbfb0e351835288a8fd34d056dad1d69788b84e8cdc303b73866981f736798",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3501,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-879a6cbc/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "879a6cbc-f162-4d80-9bd5-e58a88527cac/back.jpg",
+          "sha256": "da3bd3974f120cdc7e19a20e07605d769fa387bf2f49223852b5f487317cf565",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3501,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-879a6cbc/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "879a6cbc-f162-4d80-9bd5-e58a88527cac/model.jpg",
+          "sha256": "106e76a2a5c03da0d24c60287f1ee11b3637e4303a474d40f65ec5b6a3f98387",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3501,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-879a6cbc/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
