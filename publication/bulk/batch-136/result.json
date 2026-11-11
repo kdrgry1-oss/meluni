@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-136",
+  "published_at_utc": "2026-11-11T22:55:28.507949+00:00",
+  "products": [
+    {
+      "product_id": "d29bff30-f36f-4d0e-bd95-bdc00817c6dc",
+      "sample": 3821,
+      "name": "Yüksek Bel Ağzı Lastikli Parasüt Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d29bff30-f36f-4d0e-bd95-bdc00817c6dc-front-2a93153f8995.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d29bff30-f36f-4d0e-bd95-bdc00817c6dc-back-e83e13462322.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d29bff30-f36f-4d0e-bd95-bdc00817c6dc-model-ebb8d56bb852.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
