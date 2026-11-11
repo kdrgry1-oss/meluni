@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-116",
+  "published_at_utc": "2026-11-11T16:09:51.769398+00:00",
+  "products": [
+    {
+      "product_id": "3de7c615-d631-4ebe-ae59-3306b1c350bc",
+      "sample": 3817,
+      "name": "Yuvarlak Yakalı Yarasa Kollu Kuşaklı Atlas Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3de7c615-d631-4ebe-ae59-3306b1c350bc-front-36f4b040a206.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/3de7c615-d631-4ebe-ae59-3306b1c350bc-back-b797c5e2631b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3de7c615-d631-4ebe-ae59-3306b1c350bc-model-5cb1fb608af8.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
