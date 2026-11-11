@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-53",
+  "created_at": "2026-11-11T01:13:20.774907+00:00",
+  "catalog_poll_at": "2026-11-11T01:13:20.775188+00:00",
+  "products": [
+    {
+      "product_id": "7621af44-05c0-462b-aef9-4e6630de416e",
+      "sample": 3311,
+      "name": "Uzun Kollu Kapşonlu Fermuarlı Kaşkorse Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 55,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3f638edb2c2412e5f45d.jpeg",
+        "https://modayakamoz.com/orj/9f06bc1d13e47710feab.jpeg",
+        "https://modayakamoz.com/orj/f88b1648dcc638cadde5.jpeg",
+        "https://modayakamoz.com/orj/920f61e9f96616a7b403.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7621af44-05c0-462b-aef9-4e6630de416e/front.jpg",
+          "sha256": "7b1b64cc67f9837d3534244b028832ebb870d4c6eb94c4d44c775433ab13eac2",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3311,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7621af44/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7621af44-05c0-462b-aef9-4e6630de416e/back.jpg",
+          "sha256": "7e3c8e50dcbdd5ec2d9c3b9acbc7a708f55ddc47be3937f830e75de2d4e2d81a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3311,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7621af44/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7621af44-05c0-462b-aef9-4e6630de416e/model.jpg",
+          "sha256": "c2bc2d6415c0317d0325073d2619bc941a95b21608fb85c3829c334d853b4193",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3311,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7621af44/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
