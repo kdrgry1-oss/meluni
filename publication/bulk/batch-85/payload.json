@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-85",
+  "created_at": "2026-11-11T06:39:23.956611+00:00",
+  "catalog_poll_at": "2026-11-11T06:39:23.956915+00:00",
+  "products": [
+    {
+      "product_id": "2d55e1ed-257b-4e07-9440-5115c7863f21",
+      "sample": 3449,
+      "name": "Uzun Kollu Taş Yaka Detaylı Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193463-1-59c18d5e1605.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193463-6ed0051ba1aaa024.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193463-9f487b892581aac9.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193463-ed34f8ff991d2541.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193463-c4516e1deac57f97.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193463-8411529825ca8da8.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "2d55e1ed-257b-4e07-9440-5115c7863f21/front.jpg",
+          "sha256": "7f54708def86a7c4de1775e9d7f5652975a29681e1ce7c209e8527cb86f739d1",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3449,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2d55e1ed/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "2d55e1ed-257b-4e07-9440-5115c7863f21/back.jpg",
+          "sha256": "59d47e4686e2e315b4ec22b0124334015909bea9edf4692aab4c7a9ac6553846",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3449,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2d55e1ed/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "2d55e1ed-257b-4e07-9440-5115c7863f21/model.jpg",
+          "sha256": "2dbb66c771850c0fd8155106241f244dce4a7bedf5079ca019b1021bf2316ee1",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3449,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2d55e1ed/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
