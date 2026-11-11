@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-147",
+  "published_at_utc": "2026-11-11T23:55:18.799373+00:00",
+  "products": [
+    {
+      "product_id": "c879b0a1-78e7-4012-a69b-b62eb4e1f3d5",
+      "sample": 3856,
+      "name": "Yüksek Bel Cepli Paçaya Doğru Ispanyol Kot Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c879b0a1-78e7-4012-a69b-b62eb4e1f3d5-front-0e4a03718c7b.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c879b0a1-78e7-4012-a69b-b62eb4e1f3d5-back-b16c49909ca4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c879b0a1-78e7-4012-a69b-b62eb4e1f3d5-model-793bdc7409ca.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
