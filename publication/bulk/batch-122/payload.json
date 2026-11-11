@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-122",
+  "created_at": "2026-11-11T17:49:18.628240+00:00",
+  "catalog_poll_at": "2026-11-11T17:49:18.628542+00:00",
+  "products": [
+    {
+      "product_id": "27788a4d-1f2e-447b-911b-fb7b6ed209f7",
+      "sample": 3732,
+      "name": "Uzun Kollu Önü Açık Yakalı Süet Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 191,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192496-1-41011d6fa7.jpg",
+        "https://modayakamoz.com/orj/janes-192496-2-18cdd543ef.jpg",
+        "https://modayakamoz.com/orj/janes-192496-3-a065482ac6.jpg",
+        "https://modayakamoz.com/orj/janes-192496-7-f13aea5e51.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "27788a4d-1f2e-447b-911b-fb7b6ed209f7/front.jpg",
+          "sha256": "2bbe5059c8c0b58cbf26d693e589cf9305473f53233e52215368fa768410c10f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3732,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-27788a4d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "27788a4d-1f2e-447b-911b-fb7b6ed209f7/back.jpg",
+          "sha256": "a43063daca8ba8bc6228d2f497c696bf830c7c0ca6882f9876b4ee79bb985e35",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3732,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-27788a4d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "27788a4d-1f2e-447b-911b-fb7b6ed209f7/model.jpg",
+          "sha256": "9d9364aa61e4bf5bb7c001004d70ebff522b9670489619346825c3d494f0e468",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3732,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-27788a4d/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
