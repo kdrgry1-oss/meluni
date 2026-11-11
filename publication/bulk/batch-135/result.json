@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-135",
+  "published_at_utc": "2026-11-11T22:48:39.378826+00:00",
+  "products": [
+    {
+      "product_id": "14fd1619-969a-45f3-80cf-9407df75f4cc",
+      "sample": 3785,
+      "name": "Yarım Ay Kollu Yuvarlak Yaka Önünde Toka Detaylı Modal Maxi Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/14fd1619-969a-45f3-80cf-9407df75f4cc-front-7cc593610002.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/14fd1619-969a-45f3-80cf-9407df75f4cc-back-970cb5e222c4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/14fd1619-969a-45f3-80cf-9407df75f4cc-model-63d34b109342.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
