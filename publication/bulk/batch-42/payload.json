@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-42",
+  "created_at": "2026-11-11T00:14:34.409746+00:00",
+  "catalog_poll_at": "2026-11-11T00:14:34.410179+00:00",
+  "products": [
+    {
+      "product_id": "878b96b2-a913-4bf1-8037-27f794e563af",
+      "sample": 3278,
+      "name": "Uzun Kollu Hakim Yaka Beli Kemerli Cepli Midi Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/67c6f2c2556b1c0d910b.jpeg",
+        "https://modayakamoz.com/orj/70eb38e49e4c391436fd.jpeg",
+        "https://modayakamoz.com/orj/7504aa6953a9b8209fa4.jpeg",
+        "https://modayakamoz.com/orj/02c635be53f8be8db82f.jpeg",
+        "https://modayakamoz.com/orj/67572cdf293f461c1507.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "878b96b2-a913-4bf1-8037-27f794e563af/front.jpg",
+          "sha256": "fe44893e607a9ab82f2a3014f10d62e624580ce76043e8a2e4735a54e12e5061",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3278,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-878b96b2/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "878b96b2-a913-4bf1-8037-27f794e563af/back.jpg",
+          "sha256": "c32f3277c6a9984ae74d1f78427495a962b3ef63bb2c220beda9ecc6ae260589",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3278,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-878b96b2/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "878b96b2-a913-4bf1-8037-27f794e563af/model.jpg",
+          "sha256": "dcf1481e82284957a461a1f79b8014c4a8d1b32c2fc99427dd17fe3b93dadadf",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3278,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-878b96b2/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
