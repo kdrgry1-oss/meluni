@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-44",
+  "published_at_utc": "2026-11-11T00:29:17.661572+00:00",
+  "products": [
+    {
+      "product_id": "c1bd6931-640d-42b6-9a9a-82bdc46d71ce",
+      "sample": 3293,
+      "name": "Uzun Kollu Kapşonlu Bağcıklı Fermuarlı Kısa Modal Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c1bd6931-640d-42b6-9a9a-82bdc46d71ce-front-85871fa60ff7.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c1bd6931-640d-42b6-9a9a-82bdc46d71ce-back-b3b2a9c1203f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c1bd6931-640d-42b6-9a9a-82bdc46d71ce-model-d4d6f5a3f5a5.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
