@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-120",
+  "created_at": "2026-11-11T16:50:49.082177+00:00",
+  "catalog_poll_at": "2026-11-11T16:50:49.083795+00:00",
+  "products": [
+    {
+      "product_id": "d6c459ce-0d46-4108-946d-c863c6dc8393",
+      "sample": 3765,
+      "name": "V Yakalı Yarasa Kollu Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 32,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/880979b32907f508f88b.jpeg",
+        "https://modayakamoz.com/orj/68eee390a309eaad55cb.jpeg",
+        "https://modayakamoz.com/orj/466a7ca1ce6bc4fbf7da.jpeg",
+        "https://modayakamoz.com/orj/16a31995a5109bd4c614.jpeg",
+        {
+          "id": "e77a0662-47d5-46b3-b9bc-4ee6406d33c4",
+          "url": "https://cdn.meluni.com.tr/ai-products/b43c981f-7406-47c9-930b-715a3417a0c7-olcu-oto-b743fe1e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-21T05:27:08.272075+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d6c459ce-0d46-4108-946d-c863c6dc8393/front.jpg",
+          "sha256": "7a28cb274215688d4fcd7c5d3c1f3b064ab691827215e353a5a8f249c44b66da",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3765,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d6c459ce/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d6c459ce-0d46-4108-946d-c863c6dc8393/back.jpg",
+          "sha256": "66c627ee732a6f81231c36c28f75e7ccf31802227b949a96e96633b19d4b52d6",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3765,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d6c459ce/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d6c459ce-0d46-4108-946d-c863c6dc8393/model.jpg",
+          "sha256": "bb8df5dbe30c489bfb3bdb7c5ed5c532501cd369980c104bd244b2e59afecdff",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3765,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d6c459ce/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
