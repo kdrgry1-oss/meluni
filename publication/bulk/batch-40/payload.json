@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-40",
+  "created_at": "2026-11-11T00:01:08.467728+00:00",
+  "catalog_poll_at": "2026-11-11T00:01:08.468049+00:00",
+  "products": [
+    {
+      "product_id": "06c4758c-92f5-465a-9350-5e641b42870c",
+      "sample": 3264,
+      "name": "Uzun Kollu Fermuarlı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 116,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193471-1-618d60dc3f0f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193471-93866a9fef2684ba.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193471-fb7631aa6407287f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193471-eb0a357d3291ce00.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193471-39ee1c16f3a1848f.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "06c4758c-92f5-465a-9350-5e641b42870c/front.jpg",
+          "sha256": "e6bb89398c50de0f96d9ddb4f3b34b2fa31d426079ac8f289fed757b2a0517f4",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3264,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-06c4758c/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "06c4758c-92f5-465a-9350-5e641b42870c/back.jpg",
+          "sha256": "3ec01974e0949877da4eddb67fef63591db6085237bd865f93719eaff92a22ec",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3264,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-06c4758c/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "06c4758c-92f5-465a-9350-5e641b42870c/model.jpg",
+          "sha256": "217fbd81d639673ec1b621ab6df29e0be6d3ace4731eeda0f5b9d1c4bb117132",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3264,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-06c4758c/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
