@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-142",
+  "published_at_utc": "2026-11-11T23:25:53.085406+00:00",
+  "products": [
+    {
+      "product_id": "55288737-c1cb-4fe3-973b-85de0bca56f1",
+      "sample": 3850,
+      "name": "Yüksek Bel Cepli Deri Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/55288737-c1cb-4fe3-973b-85de0bca56f1-front-fba394e37eaa.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/55288737-c1cb-4fe3-973b-85de0bca56f1-back-6baca490db37.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/55288737-c1cb-4fe3-973b-85de0bca56f1-model-2675bbe9130d.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
