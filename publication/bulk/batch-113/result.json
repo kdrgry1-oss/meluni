@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-113",
+  "published_at_utc": "2026-11-11T15:09:39.523158+00:00",
+  "products": [
+    {
+      "product_id": "f60a0253-3696-4d4d-8855-e4e5021cdc87",
+      "sample": 3638,
+      "name": "Uzun Kollu Yakalı Düğmeli Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f60a0253-3696-4d4d-8855-e4e5021cdc87-front-ee5d86be1453.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/f60a0253-3696-4d4d-8855-e4e5021cdc87-back-31af0e7df858.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f60a0253-3696-4d4d-8855-e4e5021cdc87-model-3f7cdf9abe91.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
