@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-58",
+  "created_at": "2026-11-11T01:38:13.018639+00:00",
+  "catalog_poll_at": "2026-11-11T01:38:13.019380+00:00",
+  "products": [
+    {
+      "product_id": "40e61705-72cc-442e-856d-9277ff84f31d",
+      "sample": 3336,
+      "name": "Uzun Kollu Kolları Tül Detaylı Önden Nervürlu Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 83,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193732-1-eafed33a2632.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193732-89a2330c89e7bc00.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193732-8d84c63d9912d3d8.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193732-772cb68ea6db38f8.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193732-23cf90cd76d31ab7.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193732-f45cef325f40d02f.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "40e61705-72cc-442e-856d-9277ff84f31d/front.jpg",
+          "sha256": "390ddcd9b28d5135ad200de7dd95e98bc60ac4e85ff7db6787d6a5e178819419",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3336,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-40e61705/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "40e61705-72cc-442e-856d-9277ff84f31d/back.jpg",
+          "sha256": "7eb5cd6b13dba1bcfb9717fb4b6d91f18b8ca2663b58957e2ed91b25c6d827bc",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3336,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-40e61705/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "40e61705-72cc-442e-856d-9277ff84f31d/model.jpg",
+          "sha256": "1a4c098b179b03e7e1644f78ccee2e49eca7a55af9b01a97742276eb53667681",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3336,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-40e61705/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
