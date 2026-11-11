@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-47",
+  "created_at": "2026-11-11T00:42:26.851494+00:00",
+  "catalog_poll_at": "2026-11-11T00:42:26.851891+00:00",
+  "products": [
+    {
+      "product_id": "027d3261-980b-412d-b4fa-f6f4f4920b4d",
+      "sample": 3296,
+      "name": "Uzun Kollu Kapşonlu Bağcıklı Fermuarlı Şardonlu Iki Iplik Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 190,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-194056-1-fc262a193e46.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194056-df957592a2e5aec0.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194056-e55acda397172bb2.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194056-35bd2957ff662276.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194056-1e295d63dff29af4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194056-b25011241c28ef1e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "027d3261-980b-412d-b4fa-f6f4f4920b4d/front.jpg",
+          "sha256": "528969be6731bb964d48fbfef8fa98c7226fd02007271917f959b1d6c02a520c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3296,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-027d3261/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "027d3261-980b-412d-b4fa-f6f4f4920b4d/back.jpg",
+          "sha256": "82558639b2ef26cfc0dc3b61afc4f467cb812523c5a7d414e3e8c25c4708759e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3296,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-027d3261/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "027d3261-980b-412d-b4fa-f6f4f4920b4d/model.jpg",
+          "sha256": "b43e1a634e076deefd575d4429111106aba64fd9c2e0efbabd728ad6948fb2a4",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3296,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-027d3261/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
