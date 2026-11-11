@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-146",
+  "published_at_utc": "2026-11-11T23:49:04.563024+00:00",
+  "products": [
+    {
+      "product_id": "3b884463-1b5f-429d-84ca-a19ae81ae190",
+      "sample": 3854,
+      "name": "Yüksek Bel Cepli Krep Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3b884463-1b5f-429d-84ca-a19ae81ae190-front-7b9c87e2215a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/3b884463-1b5f-429d-84ca-a19ae81ae190-back-97aa8ef1eb18.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3b884463-1b5f-429d-84ca-a19ae81ae190-model-dd925c47dde1.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
