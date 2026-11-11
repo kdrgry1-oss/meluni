@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-115",
+  "created_at": "2026-11-11T15:48:27.974677+00:00",
+  "catalog_poll_at": "2026-11-11T15:48:27.974962+00:00",
+  "products": [
+    {
+      "product_id": "6990338f-983f-4584-804d-2b2b5b6d1a8b",
+      "sample": 3720,
+      "name": "Uzun Kollu Yuvarlak Yaka Mini Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 29,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b1dc7acc6b6a9fb19b7f.jpeg",
+        "https://modayakamoz.com/orj/d724620c2e5f0f95c25f.jpeg",
+        "https://modayakamoz.com/orj/aa3c23503f164e9955fc.jpeg",
+        "https://modayakamoz.com/orj/fbd700cf096f2f49d7c8.jpeg",
+        {
+          "id": "120f44c2-e051-4c79-b078-ad0a2769e776",
+          "url": "https://cdn.meluni.com.tr/ai-products/53d03b2e-1785-4355-9207-7be05785a9e7-olcu-oto-1c7982ba.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-16T05:20:47.050045+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "6990338f-983f-4584-804d-2b2b5b6d1a8b/front.jpg",
+          "sha256": "20954bc9ec71fbaaeb0ed8e28365a7cf4597fc02b2438cea133d7bba85b1b2b9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3720,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6990338f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "6990338f-983f-4584-804d-2b2b5b6d1a8b/back.jpg",
+          "sha256": "96b0fea618c04e5c980b3b7ec25eb4e495107543be29e4e48ae57b15c7549e0d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3720,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6990338f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "6990338f-983f-4584-804d-2b2b5b6d1a8b/model.jpg",
+          "sha256": "3c7f856961430a890e46b90da3384e80610c2f0459208ba3731721637c65cea1",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3720,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6990338f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
