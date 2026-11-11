@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-52",
+  "created_at": "2026-11-11T01:08:18.724383+00:00",
+  "catalog_poll_at": "2026-11-11T01:08:18.724684+00:00",
+  "products": [
+    {
+      "product_id": "deed6622-5725-48f8-a58c-668bb3a14a68",
+      "sample": 3309,
+      "name": "Uzun Kollu Kapşonlu Düğmeli ve Bağcıklı Waffle Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 188,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3c5b7dac7c49d0c75fb2.jpeg",
+        "https://modayakamoz.com/orj/523e7e762842bdde326f.jpeg",
+        "https://modayakamoz.com/orj/d5571668bf4cf45bb255.jpeg",
+        "https://modayakamoz.com/orj/72cfeed9cb2af255cfd0.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "deed6622-5725-48f8-a58c-668bb3a14a68/front.jpg",
+          "sha256": "95b3abcc73f17a4bd7decebe1050981542da9acce3c9f2fd02b6d6f84d962761",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3309,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-deed6622/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "deed6622-5725-48f8-a58c-668bb3a14a68/back.jpg",
+          "sha256": "58b93d099534584ca11b97ab726995daca0306196713415adef7790132bd976a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3309,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-deed6622/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "deed6622-5725-48f8-a58c-668bb3a14a68/model.jpg",
+          "sha256": "3fe3bfd867d01a2a39221a3df4a4f2256648b8e45c6de92e9e229cd26f00bc99",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3309,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-deed6622/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
