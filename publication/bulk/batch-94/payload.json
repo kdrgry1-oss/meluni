@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-94",
+  "created_at": "2026-11-11T09:34:10.850256+00:00",
+  "catalog_poll_at": "2026-11-11T09:34:10.850527+00:00",
+  "products": [
+    {
+      "product_id": "e312d08a-16a6-416f-b5b8-b7f9488ea1cb",
+      "sample": 3505,
+      "name": "Uzun Kollu V Yakalı Cepli Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 136,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193298-1-a0aa2c5e9639.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193298-1b15184a69d05719.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193298-0196cf6c07a43145.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193298-7c1ff341302594e4.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e312d08a-16a6-416f-b5b8-b7f9488ea1cb/front.jpg",
+          "sha256": "c5901b95313eeb38a85f56f6737464bfdf5e299d31a3fe431c17d4deffd51012",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3505,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e312d08a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e312d08a-16a6-416f-b5b8-b7f9488ea1cb/back.jpg",
+          "sha256": "3acad26cc69fb6b4b69f95ee2c393196d3e6d0668caca059c02e2717dc2a9cd7",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3505,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e312d08a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e312d08a-16a6-416f-b5b8-b7f9488ea1cb/model.jpg",
+          "sha256": "75822ab80c2414d675a8a094c17fcd3079e332e6fe97077ac76b3189d9665c86",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3505,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e312d08a/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
