@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-41",
+  "published_at_utc": "2026-11-11T00:09:10.534471+00:00",
+  "products": [
+    {
+      "product_id": "2530f0cb-c9d4-4a0e-b57a-74d8ecb08fdc",
+      "sample": 3265,
+      "name": "Uzun Kollu Fermuarlı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2530f0cb-c9d4-4a0e-b57a-74d8ecb08fdc-front-277a9e5bc101.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2530f0cb-c9d4-4a0e-b57a-74d8ecb08fdc-back-a7050576bbe0.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2530f0cb-c9d4-4a0e-b57a-74d8ecb08fdc-model-aed71042ed3a.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
