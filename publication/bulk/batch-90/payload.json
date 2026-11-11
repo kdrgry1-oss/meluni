@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-90",
+  "created_at": "2026-11-11T08:07:37.331888+00:00",
+  "catalog_poll_at": "2026-11-11T08:07:37.332207+00:00",
+  "products": [
+    {
+      "product_id": "c1925941-9bf2-41c0-95e8-5d389508b180",
+      "sample": 3483,
+      "name": "Uzun Kollu V Hakim Yaka Fermuar Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 18,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/135d8311978f76b97e1a.jpeg",
+        "https://modayakamoz.com/orj/72cabcd1f75947c7813b.jpeg",
+        "https://modayakamoz.com/orj/2a258cf98161347b4fbd.jpeg",
+        "https://modayakamoz.com/orj/fe178e779db4f568bef5.jpeg",
+        {
+          "id": "3371d45b-2d93-4528-872f-b2005cb40cbc",
+          "url": "https://cdn.meluni.com.tr/ai-products/c1925941-9bf2-41c0-95e8-5d389508b180-olcu-oto-78f76acb.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-29T05:23:55.816556+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c1925941-9bf2-41c0-95e8-5d389508b180/front.jpg",
+          "sha256": "596938b7c38fcc556c8b3e982c2be5aaabfef9267c63d6aa2fbf616b0219c350",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3483,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1925941/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c1925941-9bf2-41c0-95e8-5d389508b180/back.jpg",
+          "sha256": "bf37ccadaee28474c9806ad8353e5f4cdf3d7327bd4e884bfbe299c10254d650",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3483,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1925941/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c1925941-9bf2-41c0-95e8-5d389508b180/model.jpg",
+          "sha256": "c8dc0d723cf3881c35c70b098ebca0e1c668e2ce746777ec54179f41acb97f39",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3483,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1925941/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
