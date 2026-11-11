@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-92",
+  "created_at": "2026-11-11T08:43:45.651501+00:00",
+  "catalog_poll_at": "2026-11-11T08:43:45.651813+00:00",
+  "products": [
+    {
+      "product_id": "b867c92e-3819-46ea-87ac-8ddb1451d799",
+      "sample": 3503,
+      "name": "Uzun Kollu V Yakalı Cepli Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 116,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193296-1-a65883e02c3c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193296-396633b770cc97ef.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193296-a2c26f708d4c9907.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193296-7c1ff341302594e4.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b867c92e-3819-46ea-87ac-8ddb1451d799/front.jpg",
+          "sha256": "a565aea57f91bb8f1adf6de5b73e2e0307b4ec6ebeac1edf028dfc7de4bff8f2",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3503,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b867c92e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b867c92e-3819-46ea-87ac-8ddb1451d799/back.jpg",
+          "sha256": "fc93f5dafd90cb4389a9f76307d142994cf1a2840c61cddc60c9f4e3741c05ff",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3503,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b867c92e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b867c92e-3819-46ea-87ac-8ddb1451d799/model.jpg",
+          "sha256": "ef87486f92c240560b849988ad2172be22bf5798245e3ead43ba7aae23ef08e2",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3503,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b867c92e/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
