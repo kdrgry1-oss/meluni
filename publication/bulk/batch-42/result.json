@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-42",
+  "published_at_utc": "2026-11-11T00:15:42.552565+00:00",
+  "products": [
+    {
+      "product_id": "878b96b2-a913-4bf1-8037-27f794e563af",
+      "sample": 3278,
+      "name": "Uzun Kollu Hakim Yaka Beli Kemerli Cepli Midi Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/878b96b2-a913-4bf1-8037-27f794e563af-front-fe44893e607a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/878b96b2-a913-4bf1-8037-27f794e563af-back-c32f3277c6a9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/878b96b2-a913-4bf1-8037-27f794e563af-model-dcf1481e8228.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
