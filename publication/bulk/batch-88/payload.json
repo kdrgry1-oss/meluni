@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-88",
+  "created_at": "2026-11-11T07:36:29.650444+00:00",
+  "catalog_poll_at": "2026-11-11T07:36:29.650743+00:00",
+  "products": [
+    {
+      "product_id": "bbc5174f-b1ba-4706-8203-db0588c16fbb",
+      "sample": 3477,
+      "name": "Uzun Kollu V Dantel Yakalı Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 43,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-extra-193394-a57f0ae14637df08.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193394-a2807e665185686e.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193394-2fe9231a69e352b4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193394-34794b27ee7a5ccf.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "bbc5174f-b1ba-4706-8203-db0588c16fbb/front.jpg",
+          "sha256": "7478345eaa8952c1dfc27de7da40ba956fae5f20c775fb77b4f45a041e7ff51e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3477,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bbc5174f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "bbc5174f-b1ba-4706-8203-db0588c16fbb/back.jpg",
+          "sha256": "4cee5f23110a863dbf944d775c6e4f465654cdedfa8a5f7d71e9060b3a8697d8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3477,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bbc5174f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bbc5174f-b1ba-4706-8203-db0588c16fbb/model.jpg",
+          "sha256": "3ad4a3a0f6accb83dbbc8b2f6e93f7adde9f4327152c3bba292ebd583cc076cc",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3477,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bbc5174f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
