@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-63",
+  "published_at_utc": "2026-11-11T02:05:07.310214+00:00",
+  "products": [
+    {
+      "product_id": "fc7a1a36-6702-4921-ac7f-3972bf737b01",
+      "sample": 3346,
+      "name": "Uzun Kollu Kruvaze Yaka Belden Büzgü Detay Midi Kadife Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/fc7a1a36-6702-4921-ac7f-3972bf737b01-front-bc49d1333c44.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/fc7a1a36-6702-4921-ac7f-3972bf737b01-back-9e3549b56c14.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/fc7a1a36-6702-4921-ac7f-3972bf737b01-model-1625cce228c0.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
