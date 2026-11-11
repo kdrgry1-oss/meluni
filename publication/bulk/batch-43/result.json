@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-43",
+  "published_at_utc": "2026-11-11T00:23:07.724738+00:00",
+  "products": [
+    {
+      "product_id": "1387883d-6ecb-4059-b322-e0d14116beda",
+      "sample": 3289,
+      "name": "Uzun Kollu Inci Yakalı Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/1387883d-6ecb-4059-b322-e0d14116beda-front-5ca35fece4b0.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/1387883d-6ecb-4059-b322-e0d14116beda-back-bf1286fc8911.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/1387883d-6ecb-4059-b322-e0d14116beda-model-8c5f9c881d3a.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
