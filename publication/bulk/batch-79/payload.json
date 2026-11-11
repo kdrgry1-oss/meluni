@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-79",
+  "created_at": "2026-11-11T03:36:12.874565+00:00",
+  "catalog_poll_at": "2026-11-11T03:36:12.874955+00:00",
+  "products": [
+    {
+      "product_id": "a23689e3-caec-4a88-ad96-3ecd087b3879",
+      "sample": 3408,
+      "name": "Uzun Kollu Kruvaze Yakalı Önü Asimetrik Kısa Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 37,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192891-1-24bab787df.jpg",
+        "https://modayakamoz.com/orj/janes-192891-2-94c16f337b.jpg",
+        "https://modayakamoz.com/orj/janes-192891-3-91850e62b9.jpg",
+        "https://modayakamoz.com/orj/janes-192891-4-4e6c04c09f.jpg",
+        "https://modayakamoz.com/orj/janes-192891-7-dce3f0fb6c.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a23689e3-caec-4a88-ad96-3ecd087b3879/front.jpg",
+          "sha256": "07f7260b35c7d4ece256d2325f1a56f8b4d92702d0f11894d90df7c202cb9199",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3408,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a23689e3/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a23689e3-caec-4a88-ad96-3ecd087b3879/back.jpg",
+          "sha256": "d59fa8294a2eebbda31e8a146263e8a236a2a7eb30b348f94630a98786580e46",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3408,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a23689e3/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a23689e3-caec-4a88-ad96-3ecd087b3879/model.jpg",
+          "sha256": "9b5a85cf9cd2527c2ce21ca244abe498fffe1f955bac6b81ae92e507ed90f4f3",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3408,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a23689e3/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
