@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-148",
+  "created_at": "2026-11-11T23:58:48.674478+00:00",
+  "catalog_poll_at": "2026-11-11T23:58:48.674478+00:00",
+  "products": [
+    {
+      "product_id": "1bfc5cc7-777e-4d96-a8d3-c2287aa2d80b",
+      "sample": 3857,
+      "name": "Yüksek Bel Cepli Sandy Short Etek",
+      "active_at_poll": true,
+      "stock_at_poll": 20,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b4190e2fe85561d18c9b.jpeg",
+        "https://modayakamoz.com/orj/c59d614be2627472c1ed.jpeg",
+        "https://modayakamoz.com/orj/b921c4d9e76d2889fdac.jpeg",
+        "https://modayakamoz.com/orj/d5448fe16c5e367d3208.jpeg",
+        "https://modayakamoz.com/orj/f5c83f97e90948f57c75.jpeg",
+        {
+          "id": "0582d1c5-610d-448b-afc9-b12bc4df5035",
+          "url": "https://cdn.meluni.com.tr/ai-products/1bfc5cc7-777e-4d96-a8d3-c2287aa2d80b-olcu-oto-1fbeac75.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:37:06.722205+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "1bfc5cc7-777e-4d96-a8d3-c2287aa2d80b/front.jpg",
+          "sha256": "d9e279fdc0bc8c78569491aca755bde38ec2632b15342fd4479b7a064b6d9b63",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3857,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1bfc5cc7/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "1bfc5cc7-777e-4d96-a8d3-c2287aa2d80b/back.jpg",
+          "sha256": "e66f1caf30d1fbcd19acfb7985486c905fb3990ceb8ea0afdffe5c7e4284f65d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3857,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1bfc5cc7/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "1bfc5cc7-777e-4d96-a8d3-c2287aa2d80b/model.jpg",
+          "sha256": "7f71a33d3d4d3a5bc4f9519699aaff82aacff5fff50a77c769b12f3462555df8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3857,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1bfc5cc7/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
