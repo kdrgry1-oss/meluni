@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-88",
+  "published_at_utc": "2026-11-11T07:41:08.371958+00:00",
+  "products": [
+    {
+      "product_id": "bbc5174f-b1ba-4706-8203-db0588c16fbb",
+      "sample": 3477,
+      "name": "Uzun Kollu V Dantel Yakalı Janjan Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bbc5174f-b1ba-4706-8203-db0588c16fbb-front-7478345eaa89.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/bbc5174f-b1ba-4706-8203-db0588c16fbb-back-4cee5f23110a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bbc5174f-b1ba-4706-8203-db0588c16fbb-model-3ad4a3a0f6ac.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
