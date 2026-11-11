@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-121",
+  "published_at_utc": "2026-11-11T17:08:07.355470+00:00",
+  "products": [
+    {
+      "product_id": "b43c981f-7406-47c9-930b-715a3417a0c7",
+      "sample": 3764,
+      "name": "V Yakalı Yarasa Kollu Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b43c981f-7406-47c9-930b-715a3417a0c7-front-1cb9b40b7590.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b43c981f-7406-47c9-930b-715a3417a0c7-back-42399d6ef2db.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b43c981f-7406-47c9-930b-715a3417a0c7-model-d3f91c21045f.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
