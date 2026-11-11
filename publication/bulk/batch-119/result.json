@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-119",
+  "published_at_utc": "2026-11-11T16:37:20.744428+00:00",
+  "products": [
+    {
+      "product_id": "15c2b449-5b75-45b2-a53d-f1a1004c2d61",
+      "sample": 3816,
+      "name": "Yuvarlak Yakalı Geniş Kesimli Yarasa Kollu Sandy Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/15c2b449-5b75-45b2-a53d-f1a1004c2d61-front-ff6916289f08.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/15c2b449-5b75-45b2-a53d-f1a1004c2d61-back-ecbf06b38f15.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/15c2b449-5b75-45b2-a53d-f1a1004c2d61-model-848b30f429d3.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
