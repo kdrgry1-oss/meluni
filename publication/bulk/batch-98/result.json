@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-98",
+  "published_at_utc": "2026-11-11T10:46:58.209195+00:00",
+  "products": [
+    {
+      "product_id": "73785874-84e8-4dd5-a81f-0e5c0c55677d",
+      "sample": 3531,
+      "name": "Uzun Kollu V Yakalı Kısa Viskon Iki Iplik Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/73785874-84e8-4dd5-a81f-0e5c0c55677d-front-4557b460d86a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/73785874-84e8-4dd5-a81f-0e5c0c55677d-back-710a205f2ed3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/73785874-84e8-4dd5-a81f-0e5c0c55677d-model-9b1ef3c7bace.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
