@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-107",
+  "created_at": "2026-11-11T13:37:33.825374+00:00",
+  "catalog_poll_at": "2026-11-11T13:37:33.825673+00:00",
+  "products": [
+    {
+      "product_id": "a81a551b-b02b-4eb5-9497-b8154165bdb2",
+      "sample": 3542,
+      "name": "Uzun Kollu V Yakalı Pencere Dantel Detaylı Kalın Fitilli Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 57,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a4fda811ba8e2f41f292.jpeg",
+        "https://modayakamoz.com/orj/1bd59f9be00dca9e662c.jpeg",
+        "https://modayakamoz.com/orj/f1adb865377b383fcede.jpeg",
+        "https://modayakamoz.com/orj/58ad37e5d639ee5f6c05.jpeg",
+        "https://modayakamoz.com/orj/e5a46af343525959e56a.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a81a551b-b02b-4eb5-9497-b8154165bdb2/front.jpg",
+          "sha256": "ab46d1bd5477b4a6858cc0471ff696572293be95d28ea9277b869991fa477e20",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3542,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a81a551b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a81a551b-b02b-4eb5-9497-b8154165bdb2/back.jpg",
+          "sha256": "835d3eccd4c446b2237c901af27cafa83c3802ae261bef351baf38e78efa8085",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3542,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a81a551b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a81a551b-b02b-4eb5-9497-b8154165bdb2/model.jpg",
+          "sha256": "199c0e102766a0a25796c230f9d67fa540dcbcb27ab49aee29e8a0f6a83f6ee9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3542,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a81a551b/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
