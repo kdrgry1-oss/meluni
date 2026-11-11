@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-49",
+  "created_at": "2026-11-11T00:54:32.436386+00:00",
+  "catalog_poll_at": "2026-11-11T00:54:32.436902+00:00",
+  "products": [
+    {
+      "product_id": "1ce998b1-7ec5-4d28-bdc1-000f8c668edf",
+      "sample": 3303,
+      "name": "Uzun Kollu Kapşonlu Cep Detaylı Üç Iplik Mevsimlik Kap",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192438-1-8d8c877a11.jpg",
+        "https://modayakamoz.com/orj/janes-192438-2-4eb3a8ea74.jpg",
+        "https://modayakamoz.com/orj/janes-192438-3-7f3999a2a4.jpg",
+        "https://modayakamoz.com/orj/janes-192438-4-9a1f921f16.jpg",
+        "https://modayakamoz.com/orj/janes-192438-7-f195ef36b7.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "1ce998b1-7ec5-4d28-bdc1-000f8c668edf/front.jpg",
+          "sha256": "f920f5f3b057798c5567798d097d3fc4ca958ba2dc076cc668c3d6abe835b98b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3303,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1ce998b1/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "1ce998b1-7ec5-4d28-bdc1-000f8c668edf/back.jpg",
+          "sha256": "3539d8ff55c82a7770c8fa2991f6652d48f715a767989a8627a8c51de75845b5",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3303,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1ce998b1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "1ce998b1-7ec5-4d28-bdc1-000f8c668edf/model.jpg",
+          "sha256": "0f408df74ce243a896aa7fa92110bc49645ac00b081226d16841c956f950c176",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3303,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1ce998b1/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
