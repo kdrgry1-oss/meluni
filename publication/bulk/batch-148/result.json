@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-148",
+  "published_at_utc": "2026-11-11T23:59:32.038461+00:00",
+  "products": [
+    {
+      "product_id": "1bfc5cc7-777e-4d96-a8d3-c2287aa2d80b",
+      "sample": 3857,
+      "name": "Yüksek Bel Cepli Sandy Short Etek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/1bfc5cc7-777e-4d96-a8d3-c2287aa2d80b-front-d9e279fdc0bc.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/1bfc5cc7-777e-4d96-a8d3-c2287aa2d80b-back-e66f1caf30d1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/1bfc5cc7-777e-4d96-a8d3-c2287aa2d80b-model-7f71a33d3d4d.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
