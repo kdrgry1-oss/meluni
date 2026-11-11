@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-115",
+  "published_at_utc": "2026-11-11T15:51:48.399818+00:00",
+  "products": [
+    {
+      "product_id": "6990338f-983f-4584-804d-2b2b5b6d1a8b",
+      "sample": 3720,
+      "name": "Uzun Kollu Yuvarlak Yaka Mini Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6990338f-983f-4584-804d-2b2b5b6d1a8b-front-20954bc9ec71.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6990338f-983f-4584-804d-2b2b5b6d1a8b-back-96b0fea618c0.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6990338f-983f-4584-804d-2b2b5b6d1a8b-model-3c7f85696143.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
