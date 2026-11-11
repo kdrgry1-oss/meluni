@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-142",
+  "created_at": "2026-11-11T23:24:59.536245+00:00",
+  "catalog_poll_at": "2026-11-11T23:24:59.536245+00:00",
+  "products": [
+    {
+      "product_id": "55288737-c1cb-4fe3-973b-85de0bca56f1",
+      "sample": 3850,
+      "name": "Yüksek Bel Cepli Deri Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 62,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193406-1-24360234b51b.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193406-2a2fb526c6241634.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193406-888b3cae93b0cb8a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193406-2adc0470e251e64a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193406-492010bf0c31f14c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193406-e07590555d639fb6.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "55288737-c1cb-4fe3-973b-85de0bca56f1/front.jpg",
+          "sha256": "fba394e37eaa999d91e251d962a649afb105f799da20f247e143545deda780d7",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3850,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-55288737/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "55288737-c1cb-4fe3-973b-85de0bca56f1/back.jpg",
+          "sha256": "6baca490db37c3658d413c7cd61eb8e90e60df742e8466440dcda1b7c09a75e6",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3850,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-55288737/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "55288737-c1cb-4fe3-973b-85de0bca56f1/model.jpg",
+          "sha256": "2675bbe9130dcb3f29f84ee5674994a101c4c421e2ffa50bc75c6ec4e10ccdad",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3850,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-55288737/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
