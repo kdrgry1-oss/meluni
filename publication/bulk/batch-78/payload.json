@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-78",
+  "created_at": "2026-11-11T03:31:03.214895+00:00",
+  "catalog_poll_at": "2026-11-11T03:31:03.215204+00:00",
+  "products": [
+    {
+      "product_id": "afb75c48-ba7d-4fd6-90a5-ff987d4d8950",
+      "sample": 3403,
+      "name": "Uzun Kollu Kruvaze Yakalı Yandan Tokalı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 127,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193735-1-eddbb30f7fd4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193735-a45ef0c003731970.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193735-79ebbb0f59ea3018.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193735-09f34f5f2296381d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "afb75c48-ba7d-4fd6-90a5-ff987d4d8950/front.jpg",
+          "sha256": "2f06b9721564d9d6d7401d271aa7be6014d95a2d606427dc097f2af3ef357f9a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3403,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-afb75c48/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "afb75c48-ba7d-4fd6-90a5-ff987d4d8950/back.jpg",
+          "sha256": "5432626f38d34f70a7e8f472e2419a7677ff165981d21bae89944fd0372484f6",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3403,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-afb75c48/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "afb75c48-ba7d-4fd6-90a5-ff987d4d8950/model.jpg",
+          "sha256": "80b172a493c1c356279c3793aab86f307ca0f5f162418fc72f5d23773bd61e4a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3403,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-afb75c48/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
