@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-71",
+  "published_at_utc": "2026-11-11T02:51:17.563348+00:00",
+  "products": [
+    {
+      "product_id": "df1e894e-2f82-4ae8-a2a1-b5294b08f426",
+      "sample": 3381,
+      "name": "Uzun Kollu Kruvaze Yakalı Dantelli Fermuar Detaylı Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/df1e894e-2f82-4ae8-a2a1-b5294b08f426-front-df79a314f783.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/df1e894e-2f82-4ae8-a2a1-b5294b08f426-back-eab14c0e673d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/df1e894e-2f82-4ae8-a2a1-b5294b08f426-model-a0f23a736a4f.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
