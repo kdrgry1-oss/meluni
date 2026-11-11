@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-80",
+  "created_at": "2026-11-11T03:46:27.254705+00:00",
+  "catalog_poll_at": "2026-11-11T03:46:27.255032+00:00",
+  "products": [
+    {
+      "product_id": "c9d5960a-73a8-49bc-aeb1-b6432cf1b26c",
+      "sample": 3410,
+      "name": "Uzun Kollu Kruvaze Yakalı Önü Asimetrik Kısa Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 65,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192401-1-49021335cc.jpg",
+        "https://modayakamoz.com/orj/janes-192401-2-77f4e1ffa8.jpg",
+        "https://modayakamoz.com/orj/janes-192401-3-f091eb7ece.jpg",
+        "https://modayakamoz.com/orj/janes-192401-4-86b24012aa.jpg",
+        "https://modayakamoz.com/orj/janes-192401-5-f837d9df01.jpg",
+        "https://modayakamoz.com/orj/janes-192401-7-01d7efd3f5.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c9d5960a-73a8-49bc-aeb1-b6432cf1b26c/front.jpg",
+          "sha256": "fbc3665ee883ff5be9bd7961ee8b7d415396ea7531be3ff23735a6d06072e18c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3410,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c9d5960a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c9d5960a-73a8-49bc-aeb1-b6432cf1b26c/back.jpg",
+          "sha256": "0dbb8f33f12f153127147cc0a60d6f22ed7f35f25e520fb02e34324c16a2b74e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3410,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c9d5960a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c9d5960a-73a8-49bc-aeb1-b6432cf1b26c/model.jpg",
+          "sha256": "78ab51be87e97d5c7fe0968ff4215bf821d034533eeac96fd716a67d9638e63b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3410,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c9d5960a/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
