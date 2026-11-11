@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-128",
+  "created_at": "2026-11-11T22:08:53.156509+00:00",
+  "catalog_poll_at": "2026-11-11T22:08:53.156509+00:00",
+  "products": [
+    {
+      "product_id": "07f1be85-8ede-4ea3-9729-5cfd49371618",
+      "sample": 3684,
+      "name": "Uzun Kollu Yarı Balıkçı Yaka Dantel Detaylı Sandy Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 119,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192734-1-dad47eba4e.jpg",
+        "https://modayakamoz.com/orj/janes-192734-2-565070d08e.jpg",
+        "https://modayakamoz.com/orj/janes-192734-3-1e79099e60.jpg",
+        "https://modayakamoz.com/orj/janes-192734-7-1a9a1e4aba.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "07f1be85-8ede-4ea3-9729-5cfd49371618/front.jpg",
+          "sha256": "34446d27aed38bf8050d290b0ac67b1613a7eed13d64fc6728178425d314f63f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3684,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-07f1be85/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "07f1be85-8ede-4ea3-9729-5cfd49371618/back.jpg",
+          "sha256": "b0539d2fe5ef49b6d4f537df94a47cd78ede55f1f6f5fc3069d5f0c867eb1d92",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3684,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-07f1be85/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "07f1be85-8ede-4ea3-9729-5cfd49371618/model.jpg",
+          "sha256": "4282fd19242f6858f71e97dbeddac76b33128fc61fe95d53f4dfc8497f0a8d2e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3684,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-07f1be85/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
