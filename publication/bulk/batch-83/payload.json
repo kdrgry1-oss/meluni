@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-83",
+  "created_at": "2026-11-11T04:07:12.567269+00:00",
+  "catalog_poll_at": "2026-11-11T04:07:12.567631+00:00",
+  "products": [
+    {
+      "product_id": "aff8784c-dae0-4faa-8cc4-a924f0f59b8d",
+      "sample": 3421,
+      "name": "Uzun Kollu Madonna Yaka Kadife Midi Boy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 13,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d14fd178585ea4c7258b.jpeg",
+        "https://modayakamoz.com/orj/2f9f71e2fc7dd587797a.jpeg",
+        "https://modayakamoz.com/orj/4280dbe3e61ac3576b65.jpeg",
+        "https://modayakamoz.com/orj/891c10b7a47c2a5bc6e4.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "aff8784c-dae0-4faa-8cc4-a924f0f59b8d/front.jpg",
+          "sha256": "1fc04df32cae02dcc3460fea05977c5328bc02ebb66b41a59711dae24ddfe3ed",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3421,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-aff8784c/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "aff8784c-dae0-4faa-8cc4-a924f0f59b8d/back.jpg",
+          "sha256": "9f2402729b6bb34fc7797e2398c2248e76f93169754b1fb6bd2dee90e6ea71ef",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3421,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-aff8784c/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "aff8784c-dae0-4faa-8cc4-a924f0f59b8d/model.jpg",
+          "sha256": "a5646421867ee80d71723a506725a32e5358a9228b1c9933725de76d2071caf9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3421,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-aff8784c/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
