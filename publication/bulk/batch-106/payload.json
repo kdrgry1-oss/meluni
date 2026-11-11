@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-106",
+  "created_at": "2026-11-11T13:29:43.201151+00:00",
+  "catalog_poll_at": "2026-11-11T13:29:43.201586+00:00",
+  "products": [
+    {
+      "product_id": "09c27e0e-ea20-49bf-9608-f07f0f8cecb5",
+      "sample": 3541,
+      "name": "Uzun Kollu V Yakalı Onu Pileli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 109,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192895-1-fe9caf0d41.jpg",
+        "https://modayakamoz.com/orj/janes-192895-2-58ae515004.jpg",
+        "https://modayakamoz.com/orj/janes-192895-3-1f4cbda931.jpg",
+        "https://modayakamoz.com/orj/janes-192895-7-0992080033.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "09c27e0e-ea20-49bf-9608-f07f0f8cecb5/front.jpg",
+          "sha256": "9f5eb98358638708f57526ca7281332ed3d1c7b4dea48041f7383d6cfb428891",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3541,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-09c27e0e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "09c27e0e-ea20-49bf-9608-f07f0f8cecb5/back.jpg",
+          "sha256": "0def9d83439dde681e79782132f16bbbf7ba4f55677961b91e10f8531bfaf3f9",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3541,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-09c27e0e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "09c27e0e-ea20-49bf-9608-f07f0f8cecb5/model.jpg",
+          "sha256": "50262d3b630f2c4838bb94b1a349adc682fe75643c3013144ffe7fbb2b6414a5",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3541,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-09c27e0e/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
