@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-87",
+  "created_at": "2026-11-11T07:16:20.678089+00:00",
+  "catalog_poll_at": "2026-11-11T07:16:20.678379+00:00",
+  "products": [
+    {
+      "product_id": "06b53e85-4de5-4fbe-8416-26bd17d1aa77",
+      "sample": 3476,
+      "name": "Uzun Kollu V Dantel Yakalı Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 52,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193395-1-5eb67585f753.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193395-098c595576c7adcd.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193395-26edf683b2077f2a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193395-b877a5d91da8dfac.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193395-34794b27ee7a5ccf.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "06b53e85-4de5-4fbe-8416-26bd17d1aa77/front.jpg",
+          "sha256": "cf17a04812d90dd4ac0ca4e14870901f9a151e80ab47d3af3fccfa8f6afd4403",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3476,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-06b53e85/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "06b53e85-4de5-4fbe-8416-26bd17d1aa77/back.jpg",
+          "sha256": "46d2b002af356fdf84180d6655e9f1f7ee63ffc5e811da9d08123349a2c293cd",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3476,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-06b53e85/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "06b53e85-4de5-4fbe-8416-26bd17d1aa77/model.jpg",
+          "sha256": "1dd23a9ef95b02f38addeba05f10283d3f9d6a2c3cf578b71fe2cb3dbd73456f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3476,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-06b53e85/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
