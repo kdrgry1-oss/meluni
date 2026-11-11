@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-137",
+  "published_at_utc": "2026-11-11T22:59:53.333456+00:00",
+  "products": [
+    {
+      "product_id": "28ec71b9-b38c-43e8-a780-3ecf88ac038a",
+      "sample": 3835,
+      "name": "Yüksek Bel Bei Kuşaklı Yırtmaçlı Uzun Sandy Etek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/28ec71b9-b38c-43e8-a780-3ecf88ac038a-front-f7255f220f0f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/28ec71b9-b38c-43e8-a780-3ecf88ac038a-back-c45d24cf7946.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/28ec71b9-b38c-43e8-a780-3ecf88ac038a-model-79ad66a8fce9.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
