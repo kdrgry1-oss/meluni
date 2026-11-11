@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-76",
+  "created_at": "2026-11-11T03:20:31.574212+00:00",
+  "catalog_poll_at": "2026-11-11T03:20:31.574504+00:00",
+  "products": [
+    {
+      "product_id": "3a1628f4-7d52-4cf4-a17c-abeea6ed3d69",
+      "sample": 3397,
+      "name": "Uzun Kollu Kruvaze Yakalı Pileli Belden Kemerli Kısa Şifon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 61,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-194082-1-0311307fbc37.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194082-6ed7b762efd355d6.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194082-f969be76078817d9.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194082-9a7a7492eb881fd6.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194082-b4075cab55d478c6.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "3a1628f4-7d52-4cf4-a17c-abeea6ed3d69/front.jpg",
+          "sha256": "b4f513b83a289033f403861ff5e6e432bc3d79e72e8f43c644510a0989de86d5",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3397,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3a1628f4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3a1628f4-7d52-4cf4-a17c-abeea6ed3d69/back.jpg",
+          "sha256": "2eca05402aeb9651133683df24a6e4f26406e11d26c7928d33928b56bf13ecd3",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3397,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3a1628f4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3a1628f4-7d52-4cf4-a17c-abeea6ed3d69/model.jpg",
+          "sha256": "18776dec901e60abe4f4f57fcf7d836c738918cab0f2b1bb5c903218f38c4cf3",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3397,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3a1628f4/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
