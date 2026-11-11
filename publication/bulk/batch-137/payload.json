@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-137",
+  "created_at": "2026-11-11T22:59:14.953294+00:00",
+  "catalog_poll_at": "2026-11-11T22:59:14.953294+00:00",
+  "products": [
+    {
+      "product_id": "28ec71b9-b38c-43e8-a780-3ecf88ac038a",
+      "sample": 3835,
+      "name": "Yüksek Bel Bei Kuşaklı Yırtmaçlı Uzun Sandy Etek",
+      "active_at_poll": true,
+      "stock_at_poll": 61,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/fe19aeb1c4f5210802ba53bffae4fe71.jpeg",
+        "https://modayakamoz.com/orj/438f87daedd259ae7c78.jpeg",
+        "https://modayakamoz.com/orj/d25aa56deaa033959c09.jpeg",
+        "https://modayakamoz.com/orj/9e696c83fb87535378d2.jpeg",
+        "https://modayakamoz.com/orj/e9da8c2fdac3aec53f58.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "28ec71b9-b38c-43e8-a780-3ecf88ac038a/front.jpg",
+          "sha256": "f7255f220f0f0d4fba37148a8353dee522651ef19d46ebb8936fd7d011a3c693",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3835,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28ec71b9/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "28ec71b9-b38c-43e8-a780-3ecf88ac038a/back.jpg",
+          "sha256": "c45d24cf794673bb6976a2b1e615e9400c9bee319ff5daab73faea73bd15df73",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3835,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28ec71b9/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "28ec71b9-b38c-43e8-a780-3ecf88ac038a/model.jpg",
+          "sha256": "79ad66a8fce99832939681fc89021f1f12508ef6ce677205a8fcec2027120f33",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3835,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28ec71b9/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
