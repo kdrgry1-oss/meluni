@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-82",
+  "published_at_utc": "2026-11-11T04:03:21.086272+00:00",
+  "products": [
+    {
+      "product_id": "d87aafe3-5119-4039-bbdf-11db2a6efff1",
+      "sample": 3417,
+      "name": "Uzun Kollu Lazer Kesim Dalga Yakalı Dalgıç Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d87aafe3-5119-4039-bbdf-11db2a6efff1-front-4f94085081b0.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d87aafe3-5119-4039-bbdf-11db2a6efff1-back-6b3055bbb24b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d87aafe3-5119-4039-bbdf-11db2a6efff1-model-2ec357166076.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
