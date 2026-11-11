@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-55",
+  "created_at": "2026-11-11T01:24:02.701013+00:00",
+  "catalog_poll_at": "2026-11-11T01:24:02.701290+00:00",
+  "products": [
+    {
+      "product_id": "828f8b43-575c-47d2-9498-5abbae2f55f0",
+      "sample": 3328,
+      "name": "Uzun Kollu Kare Yakalı Parmaktan Geçmeli Uzun Şardonlu Dalgıç Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 73,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192975-1-2d1a0778c6.jpg",
+        "https://modayakamoz.com/orj/janes-192975-2-e26d89a6b6.jpg",
+        "https://modayakamoz.com/orj/janes-192975-3-7c6e71291f.jpg",
+        "https://modayakamoz.com/orj/janes-192975-4-1882f62098.jpg",
+        "https://modayakamoz.com/orj/janes-192975-8-fc3d2c683e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "828f8b43-575c-47d2-9498-5abbae2f55f0/front.jpg",
+          "sha256": "a10ad6d980ed5c9e05f26f22a52c4571a725c1ee5f35ab7b03caccd8b56f68bf",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3328,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-828f8b43/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "828f8b43-575c-47d2-9498-5abbae2f55f0/back.jpg",
+          "sha256": "3a41e3b8e4aecd13274a0f2bd43b63a57bd61f1d7a120c14493eb89040809955",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3328,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-828f8b43/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "828f8b43-575c-47d2-9498-5abbae2f55f0/model.jpg",
+          "sha256": "bbc936cad157211c25c2ffaeccb499cb0cac644e7c18384d1849c9996a02b171",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3328,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-828f8b43/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
