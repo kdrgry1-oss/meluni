@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-131",
+  "created_at": "2026-11-11T22:23:50.054629+00:00",
+  "catalog_poll_at": "2026-11-11T22:23:50.054629+00:00",
+  "products": [
+    {
+      "product_id": "ac5f895b-5149-4eb3-bb96-c016a7f8527b",
+      "sample": 3691,
+      "name": "Uzun Kollu Yarı Balıkçı Yaka Tül Detaylı Uzun Sandy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 112,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8542fb2d756187b34145.jpeg",
+        "https://modayakamoz.com/orj/ce3ff586cea0e9e51c2b.jpeg",
+        "https://modayakamoz.com/orj/54958991d08a249dafa9.jpeg",
+        "https://modayakamoz.com/orj/ede12fd031a86033f7ee.jpeg",
+        {
+          "id": "40756226-84b3-4381-94b5-f8c91bed90c2",
+          "url": "https://cdn.meluni.com.tr/ai-products/11d8d7ef-30a9-4ff6-ae94-d16b2a87136e-olcu-oto-ddd4414d.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-10-01T05:16:55.925374+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "ac5f895b-5149-4eb3-bb96-c016a7f8527b/front.jpg",
+          "sha256": "d1096a13562c44b46a568b112886b7fb1481f5047d4ca3a6087238ff9c1dd072",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3691,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac5f895b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ac5f895b-5149-4eb3-bb96-c016a7f8527b/back.jpg",
+          "sha256": "fc08fb1486b3f539b66c3a18da603d8f357a551d1b5300fbdb8867bf86cb2ba0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3691,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac5f895b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ac5f895b-5149-4eb3-bb96-c016a7f8527b/model.jpg",
+          "sha256": "f85ffe179c34bb4f7a217da442db41a016e9c57ee4db50b83cf443b31aa23164",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3691,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac5f895b/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
