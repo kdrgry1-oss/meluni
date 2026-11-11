@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-81",
+  "created_at": "2026-11-11T03:53:16.209035+00:00",
+  "catalog_poll_at": "2026-11-11T03:53:16.209491+00:00",
+  "products": [
+    {
+      "product_id": "041169bb-a9e2-424e-a905-905ad67282d7",
+      "sample": 3406,
+      "name": "Uzun Kollu Kruvaze Yakalı Zincir Detaylı Kısa Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 125,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192945-1-f732168e03.jpg",
+        "https://modayakamoz.com/orj/janes-192945-2-37850d2a16.jpg",
+        "https://modayakamoz.com/orj/janes-192945-3-6e228c93cc.jpg",
+        "https://modayakamoz.com/orj/janes-192945-4-94c0deb0a0.jpg",
+        "https://modayakamoz.com/orj/janes-192945-8-f18816ae88.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "041169bb-a9e2-424e-a905-905ad67282d7/front.jpg",
+          "sha256": "3b6c62b66b96d015616985f8c65effc3af9ee503423581f576990a3bbff77433",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3406,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-041169bb/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "041169bb-a9e2-424e-a905-905ad67282d7/back.jpg",
+          "sha256": "3dd727a5be70fc72ca54892f49ef291bb8b4523e43c3fe58f678f73b1839e642",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3406,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-041169bb/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "041169bb-a9e2-424e-a905-905ad67282d7/model.jpg",
+          "sha256": "1139daaba95c2e1f94459de8b386248de588bebffdc480bf04a313b9257269ad",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3406,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-041169bb/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
