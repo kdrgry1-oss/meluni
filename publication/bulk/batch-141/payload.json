@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-141",
+  "created_at": "2026-11-11T23:20:04.503093+00:00",
+  "catalog_poll_at": "2026-11-11T23:20:04.503093+00:00",
+  "products": [
+    {
+      "product_id": "a3c735ea-2948-484e-b83e-c81316c889a3",
+      "sample": 3843,
+      "name": "Yüksek Bel Büzgülü Cepli Geniş Viskon Iki Iplik Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 39,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c58314dd176cf82ce418.jpeg",
+        "https://modayakamoz.com/orj/f82683869a3a97c5c6a6.jpeg",
+        "https://modayakamoz.com/orj/2f00dd3218d7ce307dde.jpeg",
+        "https://modayakamoz.com/orj/2224f069521f41cc7600.jpeg",
+        "https://modayakamoz.com/orj/cae69fa4b8765d3a5c92.jpeg",
+        "https://modayakamoz.com/orj/785b73738bf265ca0a49.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a3c735ea-2948-484e-b83e-c81316c889a3/front.jpg",
+          "sha256": "c25fdb1f5ce76814cc776049971b58eced6602ac92a07a28e375f96bf6b43721",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3843,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a3c735ea/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a3c735ea-2948-484e-b83e-c81316c889a3/back.jpg",
+          "sha256": "cd072098915bae8b3c80546726761a9d8a08be0fdd95be6c59326c996cd07ffb",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3843,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a3c735ea/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a3c735ea-2948-484e-b83e-c81316c889a3/model.jpg",
+          "sha256": "ecf7217716513fde798547c87e2368435c61ba24522c2254aed11357635f6e06",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3843,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a3c735ea/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
