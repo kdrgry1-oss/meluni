@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-47",
+  "published_at_utc": "2026-11-11T00:43:20.009344+00:00",
+  "products": [
+    {
+      "product_id": "027d3261-980b-412d-b4fa-f6f4f4920b4d",
+      "sample": 3296,
+      "name": "Uzun Kollu Kapşonlu Bağcıklı Fermuarlı Şardonlu Iki Iplik Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/027d3261-980b-412d-b4fa-f6f4f4920b4d-front-528969be6731.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/027d3261-980b-412d-b4fa-f6f4f4920b4d-back-82558639b2ef.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/027d3261-980b-412d-b4fa-f6f4f4920b4d-model-b43e1a634e07.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
