@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-121",
+  "created_at": "2026-11-11T17:04:11.436484+00:00",
+  "catalog_poll_at": "2026-11-11T17:04:11.436860+00:00",
+  "products": [
+    {
+      "product_id": "b43c981f-7406-47c9-930b-715a3417a0c7",
+      "sample": 3764,
+      "name": "V Yakalı Yarasa Kollu Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/6e0d9ab87ed100d3dcbd.jpeg",
+        "https://modayakamoz.com/orj/e486ed80471fc943fa91.jpeg",
+        "https://modayakamoz.com/orj/8b31ef895114de624fb1.jpeg",
+        "https://modayakamoz.com/orj/fc25ab12494250d6f5b2.jpeg",
+        "https://modayakamoz.com/orj/c9e57106f0a9b7fbe7d6.jpeg",
+        "https://modayakamoz.com/orj/98f793cfe87756fc769d.jpeg",
+        {
+          "id": "b6738eb7-223a-46d9-a758-2c93f59e27bc",
+          "url": "https://cdn.meluni.com.tr/ai-products/b43c981f-7406-47c9-930b-715a3417a0c7-olcu-oto-b743fe1e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-21T05:27:08.130051+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "b43c981f-7406-47c9-930b-715a3417a0c7/front.jpg",
+          "sha256": "1cb9b40b75902ef5b422137e95e6c86bd1b38adb0274bd7e9ff532016192935f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3764,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b43c981f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b43c981f-7406-47c9-930b-715a3417a0c7/back.jpg",
+          "sha256": "42399d6ef2dbec80fb709589f95fd35d40ac646abc030babe8da918934260e27",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3764,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b43c981f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b43c981f-7406-47c9-930b-715a3417a0c7/model.jpg",
+          "sha256": "d3f91c21045f141f447d84229dc8f6c23589a7e7a2ee28c4d9e91f67ba2aac57",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3764,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b43c981f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
