@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-71",
+  "created_at": "2026-11-11T02:50:21.685146+00:00",
+  "catalog_poll_at": "2026-11-11T02:50:21.685468+00:00",
+  "products": [
+    {
+      "product_id": "df1e894e-2f82-4ae8-a2a1-b5294b08f426",
+      "sample": 3381,
+      "name": "Uzun Kollu Kruvaze Yakalı Dantelli Fermuar Detaylı Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 201,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/42afae02c4e5e6b2e630.jpeg",
+        "https://modayakamoz.com/orj/47a58aa238a19ccbea0e.jpeg",
+        "https://modayakamoz.com/orj/5577964bc684ce675197.jpeg",
+        "https://modayakamoz.com/orj/a9690664306ccc3e2093.jpeg",
+        "https://modayakamoz.com/orj/083f6ebffa30b9f33232.jpeg",
+        "https://modayakamoz.com/orj/64f87bafb6715d9e8080.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "df1e894e-2f82-4ae8-a2a1-b5294b08f426/front.jpg",
+          "sha256": "df79a314f783528fe0fe2408bf5a65ad13a077c9a896cd20febb76525f17f612",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3381,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-df1e894e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "df1e894e-2f82-4ae8-a2a1-b5294b08f426/back.jpg",
+          "sha256": "eab14c0e673d2974c1f41bdaf6623f6670ac23df3d25354847b76b8ad67c5198",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3381,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-df1e894e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "df1e894e-2f82-4ae8-a2a1-b5294b08f426/model.jpg",
+          "sha256": "a0f23a736a4f8480d54741d24b3bb6d960726d4126c966b26fe3b24d3bda0064",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3381,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-df1e894e/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
