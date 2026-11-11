@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-134",
+  "published_at_utc": "2026-11-11T22:44:27.969695+00:00",
+  "products": [
+    {
+      "product_id": "d4341cbd-edf2-4c93-835e-adf11944db04",
+      "sample": 3783,
+      "name": "Yarı Balıkçı Yaka Kısa Kollu Çicek Aksesuar Detaylı Midi Dalgıç Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d4341cbd-edf2-4c93-835e-adf11944db04-front-7b43dae262b9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d4341cbd-edf2-4c93-835e-adf11944db04-back-7ee9c3073b22.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d4341cbd-edf2-4c93-835e-adf11944db04-model-a560b8e3f21a.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
