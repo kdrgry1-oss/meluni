@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-145",
+  "created_at": "2026-11-11T23:43:40.110833+00:00",
+  "catalog_poll_at": "2026-11-11T23:43:40.110833+00:00",
+  "products": [
+    {
+      "product_id": "78fb2689-c9e4-4c0e-9138-a38ef4f704ae",
+      "sample": 3853,
+      "name": "Yüksek Bel Cepli Kemersiz Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 19,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/78fb2689-c9e4-4c0e-9138-a38ef4f704ae-hd0-46d156cc.jpg",
+        "https://cdn.meluni.com.tr/ai-products/78fb2689-c9e4-4c0e-9138-a38ef4f704ae-hd1-8f5d1203.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "78fb2689-c9e4-4c0e-9138-a38ef4f704ae/front.jpg",
+          "sha256": "731cb352eb4d006e182a8cd1fed1f96e5aab2bfcdefee3a1b431b762beea279e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3853,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-78fb2689/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "78fb2689-c9e4-4c0e-9138-a38ef4f704ae/back.jpg",
+          "sha256": "310b252556f6784293af58defa17b7311dceb3f77db831cf8612fc39db00750e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3853,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-78fb2689/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "78fb2689-c9e4-4c0e-9138-a38ef4f704ae/model.jpg",
+          "sha256": "2adfd84567c15e139e08b842e6e434edb41c080488c241d0b07e55c34d94e0b0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3853,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-78fb2689/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
