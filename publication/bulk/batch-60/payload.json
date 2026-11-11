@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-60",
+  "created_at": "2026-11-11T01:50:10.577925+00:00",
+  "catalog_poll_at": "2026-11-11T01:50:10.578228+00:00",
+  "products": [
+    {
+      "product_id": "667494f5-29c2-41d2-9a18-a207b0ef6490",
+      "sample": 3341,
+      "name": "Uzun Kollu Kruvaze Pileli Yakalı Uzun Janjan Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 54,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c41525f35f218440d397e5fb78e24f2b.jpg",
+        "https://modayakamoz.com/orj/4b5bc5babe2ba3fde578e304fa80e7df.jpg",
+        "https://modayakamoz.com/orj/60db79c00aba2e0aebb5672f2630c146.jpg",
+        "https://modayakamoz.com/orj/d9afa474b60e3682b0fbf2f7a05892fe.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "667494f5-29c2-41d2-9a18-a207b0ef6490/front.jpg",
+          "sha256": "980c023faf586257b36be99b5137f20ba3195e5d83cfb24e74dd866f27f714e7",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3341,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-667494f5/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "667494f5-29c2-41d2-9a18-a207b0ef6490/back.jpg",
+          "sha256": "aa5fbe5c184e85796b3659fff5421fb364f69d3622d97327255703ec3686ec3b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3341,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-667494f5/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "667494f5-29c2-41d2-9a18-a207b0ef6490/model.jpg",
+          "sha256": "be7d497efd64adfc4288b35298c16a646d6eb1c7ddfea7ce68969b8c18504ace",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3341,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-667494f5/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
