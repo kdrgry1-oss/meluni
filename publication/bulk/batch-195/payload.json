@@ -1,0 +1,38 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-195",
+  "created_at": "2026-11-12T19:39:14.314454+00:00",
+  "catalog_poll_at": "2026-11-12T19:39:14.314454+00:00",
+  "products": [
+    {
+      "product_id": "50c2a4e1-e3f9-4f2c-a738-4a27a7586853",
+      "sample": 284,
+      "name": "Askılı V Yaka Kuş Gözü Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 137,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a9241b26eba518d840feaf9f644d7411.jpeg",
+        "https://modayakamoz.com/orj/346a44ea7d876ddd95a46c73a02b9bdb.jpeg",
+        "https://modayakamoz.com/orj/99fb0ec99a78f963369544aaa6da3acc.jpeg",
+        "https://modayakamoz.com/orj/8138b0dc58a14fbb2401b3b35839307c.jpeg"
+      ],
+      "assets": {
+        "back": {
+          "file": "50c2a4e1-e3f9-4f2c-a738-4a27a7586853/back.jpg",
+          "sha256": "44e4e349f937d879dc8f9293eea0350079a14d2bda923598e45655b29b682499",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 284,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-50c2a4e1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "50c2a4e1-e3f9-4f2c-a738-4a27a7586853/model.jpg",
+          "sha256": "506d6530e6247b3467cc79ebe51677442f7c27ac44757e5cab73260e4573cc8d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 284,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-50c2a4e1/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
