@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-169",
+  "created_at": "2026-11-12T02:01:57.922940+00:00",
+  "catalog_poll_at": "2026-11-12T02:01:57.922940+00:00",
+  "products": [
+    {
+      "product_id": "816bb419-7c51-488f-adbb-f675c90d90c7",
+      "sample": 3981,
+      "name": "Yüksel Bel Önden Asimetrik Detaylı Sandy Etek",
+      "active_at_poll": true,
+      "stock_at_poll": 20,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/48fe0984a7473c560946.jpeg",
+        "https://modayakamoz.com/orj/dc906230b7a804f68e6a.jpeg",
+        "https://modayakamoz.com/orj/021bf81af583cc846e17.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "816bb419-7c51-488f-adbb-f675c90d90c7/front.jpg",
+          "sha256": "84916f6c87474ba9e3519ada6110a1c20dccac2bf520b4ee44595dd4619494be",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-816bb419/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "816bb419-7c51-488f-adbb-f675c90d90c7/back.jpg",
+          "sha256": "a8b2a28998d2c8158718d586edd79b045bc94fa8ff349f881ea5cd1034c0016b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-816bb419/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "816bb419-7c51-488f-adbb-f675c90d90c7/model.jpg",
+          "sha256": "6c64ff365a00e30ea9150174a346310ce116afb128987e1786e086f9cdff4acb",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-816bb419/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
