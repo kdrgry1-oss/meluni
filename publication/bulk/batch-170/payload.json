@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-170",
+  "created_at": "2026-11-12T02:08:31.125777+00:00",
+  "catalog_poll_at": "2026-11-12T02:08:31.125777+00:00",
+  "products": [
+    {
+      "product_id": "34aa210e-15d9-45fd-8419-486558373d48",
+      "sample": 3975,
+      "name": "Yüksel Bel Paça Ağzı Dantelli Dalgıç Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/34aa210e-15d9-45fd-8419-486558373d48-hd0-2364035b.jpg",
+        "https://cdn.meluni.com.tr/ai-products/34aa210e-15d9-45fd-8419-486558373d48-hd1-5f76a818.jpg",
+        "https://cdn.meluni.com.tr/ai-products/34aa210e-15d9-45fd-8419-486558373d48-hd2-f72886cc.jpg",
+        "https://cdn.meluni.com.tr/ai-products/34aa210e-15d9-45fd-8419-486558373d48-hd3-469dd947.jpg",
+        {
+          "id": "bb0f0c04-90be-46b2-ba77-1f06b5bb8a0e",
+          "url": "https://cdn.meluni.com.tr/ai-products/34aa210e-15d9-45fd-8419-486558373d48-olcu-oto-7252681b.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:11:47.157579+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "34aa210e-15d9-45fd-8419-486558373d48/front.jpg",
+          "sha256": "1054cd4c3bc74531a650c43f2f2e0b7e17161fb9e8b78dad1d9428b6d7f6cf00",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3975,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-34aa210e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "34aa210e-15d9-45fd-8419-486558373d48/back.jpg",
+          "sha256": "1452f76f41952c4c161863ef855f01531640db519cdaef9b2270e31595e9d31c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3975,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-34aa210e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "34aa210e-15d9-45fd-8419-486558373d48/model.jpg",
+          "sha256": "08b927aba68a554923dd9bc01460536627bab418b947b46cc0bf70d68b96a026",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3975,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-34aa210e/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
