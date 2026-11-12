@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-168",
+  "published_at_utc": "2026-11-12T01:56:09.575739+00:00",
+  "products": [
+    {
+      "product_id": "e8a6d997-79f1-46ff-ac08-ad511b1e5750",
+      "sample": 3976,
+      "name": "Yüksel Bel Paçaya Doğru Genişleyen Uzun Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e8a6d997-79f1-46ff-ac08-ad511b1e5750-front-8bf0373ce377.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e8a6d997-79f1-46ff-ac08-ad511b1e5750-back-cabccc079869.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e8a6d997-79f1-46ff-ac08-ad511b1e5750-model-16e8c01f384c.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
