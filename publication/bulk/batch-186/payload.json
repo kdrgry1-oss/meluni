@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-186",
+  "created_at": "2026-11-12T03:49:06.604493+00:00",
+  "catalog_poll_at": "2026-11-12T03:49:06.604493+00:00",
+  "products": [
+    {
+      "product_id": "445ee086-8b46-47ab-99e0-250338270a35",
+      "sample": 4077,
+      "name": "İki İplik Kapüşonlu Kanguru Cepli Jogger Üst Eşofman Takımı",
+      "active_at_poll": true,
+      "stock_at_poll": 4996,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a9fae793ba136a9fae793ba15.webp",
+        "https://modayakamoz.com/orj/TY6a9fae7a19cf76a9fae7a19cf9.webp",
+        "https://modayakamoz.com/orj/TY6a9fae7ad9c056a9fae7ad9c08.webp",
+        "https://modayakamoz.com/orj/TY6a9fae7bbb5046a9fae7bbb506.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "445ee086-8b46-47ab-99e0-250338270a35/front.jpg",
+          "sha256": "2eca2622a0e98d6a040b34c896ffc7544aed5b15f6993bf37235037474e456f3",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4077,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-445ee086/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "445ee086-8b46-47ab-99e0-250338270a35/back.jpg",
+          "sha256": "e5b347a81914a96535a5f7e7a91ac7a0b38b1e0bc38411cd84bc2c640e7b82a6",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4077,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-445ee086/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "445ee086-8b46-47ab-99e0-250338270a35/model.jpg",
+          "sha256": "d333b9984725425fe7f7e5d90f68eb54261f1a80ac4e8b5ac3591372a0808120",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4077,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-445ee086/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
