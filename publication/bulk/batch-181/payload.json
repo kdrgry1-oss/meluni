@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-181",
+  "created_at": "2026-11-12T03:17:31.690930+00:00",
+  "catalog_poll_at": "2026-11-12T03:17:31.690930+00:00",
+  "products": [
+    {
+      "product_id": "b5daeb91-df65-4c57-9f82-d0e6bdee8cec",
+      "sample": 4054,
+      "name": "Üç İplik Kapüşonlu Kanguru Hoodie Çepli SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 5983,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68b4bc3b85be568b4bc3b85be7.png",
+        "https://modayakamoz.com/orj/TY68b4bc3cc493668b4bc3cc4939.png",
+        "https://modayakamoz.com/orj/TY68b4bc3dd8e7168b4bc3dd8e74.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "b5daeb91-df65-4c57-9f82-d0e6bdee8cec/front.jpg",
+          "sha256": "d9630f0991fee65197948a565a60b96ea1c92254a99c53da6103321291a73dbf",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4054,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5daeb91/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b5daeb91-df65-4c57-9f82-d0e6bdee8cec/back.jpg",
+          "sha256": "01829c7ac2e932f783f5896b8d45a387c9b0757de2e396c84f1baa8cebf09191",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4054,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5daeb91/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b5daeb91-df65-4c57-9f82-d0e6bdee8cec/model.jpg",
+          "sha256": "50fab20bf0c95c4bdd89449c1cef88c06f411a12ddfe0b4e1a8ea05b4af37081",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4054,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5daeb91/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
