@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-150",
+  "published_at_utc": "2026-11-12T00:21:05.981963+00:00",
+  "products": [
+    {
+      "product_id": "c8c9b90a-7670-4e75-88b4-df5dd8d372e2",
+      "sample": 3892,
+      "name": "Yüksek Bel Lastikli Bağcıklı Kot Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c8c9b90a-7670-4e75-88b4-df5dd8d372e2-front-109a7d6e0629.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c8c9b90a-7670-4e75-88b4-df5dd8d372e2-back-f1be5cfbbfcf.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c8c9b90a-7670-4e75-88b4-df5dd8d372e2-model-015554e6b7e8.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
