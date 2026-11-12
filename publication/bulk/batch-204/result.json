@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-204",
+  "published_at_utc": "2026-11-12T20:49:26.158904+00:00",
+  "products": [
+    {
+      "product_id": "d711faef-06c6-4bb0-988e-9fbf98461194",
+      "sample": 910,
+      "name": "Boyundan Ip Askılı Bluz ve Kısa Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d711faef-06c6-4bb0-988e-9fbf98461194-front-b7606f428841.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d711faef-06c6-4bb0-988e-9fbf98461194-back-9755a19aa8a2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d711faef-06c6-4bb0-988e-9fbf98461194-model-c53f67d8d2d7.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
