@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-178",
+  "created_at": "2026-11-12T03:02:23.520159+00:00",
+  "catalog_poll_at": "2026-11-12T03:02:23.520159+00:00",
+  "products": [
+    {
+      "product_id": "f77478c3-c713-4c81-b08a-f3d1c3558e7b",
+      "sample": 4047,
+      "name": "Üç İplik Dık Yaka Yarım Fermuarlı SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 1475,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68c882e6c5cbe68c882e6c5cc1.png",
+        "https://modayakamoz.com/orj/TY68c882e80a27a68c882e80a27d.png",
+        "https://modayakamoz.com/orj/TY68c882e904b6c68c882e904b6e.png",
+        "https://modayakamoz.com/orj/TY68c882ea120c368c882ea120c5.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "f77478c3-c713-4c81-b08a-f3d1c3558e7b/front.jpg",
+          "sha256": "8f34222ef995f0595024822292c0e8adb92bd69f9eb3fb6be67eb5e3591fe153",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4047,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f77478c3/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f77478c3-c713-4c81-b08a-f3d1c3558e7b/back.jpg",
+          "sha256": "eaeee84d3b336f0c4b3aea236535fc1925dff1eae801e130a54a26c11176bf78",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4047,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f77478c3/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f77478c3-c713-4c81-b08a-f3d1c3558e7b/model.jpg",
+          "sha256": "26ff55297f4ab6970a31eed73d68e1ce0fdb52ec30dbbd4da1274ba104e1d3af",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4047,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f77478c3/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
