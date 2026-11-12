@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-176",
+  "created_at": "2026-11-12T02:46:27.813283+00:00",
+  "catalog_poll_at": "2026-11-12T02:46:27.813283+00:00",
+  "products": [
+    {
+      "product_id": "a513673b-7a18-4c92-97fd-e542be9964e2",
+      "sample": 4019,
+      "name": "Önden Çapraz Lastik Detaylı Omuzlardan Açık Uzun Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ef10063f528e70252281.jpeg",
+        "https://modayakamoz.com/orj/1be77562e53d108053c7.jpeg",
+        "https://modayakamoz.com/orj/a8440e241b94f65cc0b1.jpeg",
+        {
+          "id": "543d2575-76d1-43ee-8bca-3bbce0fb0a29",
+          "url": "https://cdn.meluni.com.tr/ai-products/e1872489-1f25-4946-82b1-890f75e0c8da-olcu-oto-ac5c9152.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:21:57.312556+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "a513673b-7a18-4c92-97fd-e542be9964e2/front.jpg",
+          "sha256": "f930d20be5e5017ffbfb288f25fc6bf50db33b9333dd4c45e209ed067077cfc0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4019,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a513673b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a513673b-7a18-4c92-97fd-e542be9964e2/back.jpg",
+          "sha256": "70798800ee85b3050b4b92c9e4b387173593732d24e39cc0e21817812dc6c521",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4019,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a513673b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a513673b-7a18-4c92-97fd-e542be9964e2/model.jpg",
+          "sha256": "48b88d7b10c6fa4482ad92c952b94e3dc4fcc560d6c08df96a4d786eccdbc766",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4019,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a513673b/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
