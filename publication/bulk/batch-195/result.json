@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-195",
+  "published_at_utc": "2026-11-12T19:40:23.315091+00:00",
+  "products": [
+    {
+      "product_id": "50c2a4e1-e3f9-4f2c-a738-4a27a7586853",
+      "sample": 284,
+      "name": "Askılı V Yaka Kuş Gözü Detaylı Viskon Bluz",
+      "urls": {
+        "back": "https://cdn.meluni.com.tr/ai-products/50c2a4e1-e3f9-4f2c-a738-4a27a7586853-back-44e4e349f937.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/50c2a4e1-e3f9-4f2c-a738-4a27a7586853-model-506d6530e624.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
