@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-169",
+  "published_at_utc": "2026-11-12T02:02:42.534108+00:00",
+  "products": [
+    {
+      "product_id": "816bb419-7c51-488f-adbb-f675c90d90c7",
+      "sample": 3981,
+      "name": "Yüksel Bel Önden Asimetrik Detaylı Sandy Etek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/816bb419-7c51-488f-adbb-f675c90d90c7-front-84916f6c8747.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/816bb419-7c51-488f-adbb-f675c90d90c7-back-a8b2a28998d2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/816bb419-7c51-488f-adbb-f675c90d90c7-model-6c64ff365a00.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
