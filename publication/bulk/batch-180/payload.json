@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-180",
+  "created_at": "2026-11-12T03:12:45.190295+00:00",
+  "catalog_poll_at": "2026-11-12T03:12:45.190295+00:00",
+  "products": [
+    {
+      "product_id": "4eaba2ac-2a26-4965-a49a-04ca3d02fe26",
+      "sample": 4053,
+      "name": "Üç İplik Kapüşonlu Fermuarlı Kanguru Hoodie Çepli SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 5963,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68b56be6d8e6168b56be6d8e62.png",
+        "https://modayakamoz.com/orj/TY68b56be83c2aa68b56be83c2ac.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "4eaba2ac-2a26-4965-a49a-04ca3d02fe26/front.jpg",
+          "sha256": "8269329fa9d9b1e35375df666aaf01ba85b8c71ccdc1e1b6bd21baddda224e6d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4053,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4eaba2ac/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4eaba2ac-2a26-4965-a49a-04ca3d02fe26/back.jpg",
+          "sha256": "f1116cabc63225c699d2ab9647b2923cea7c16bcb0af52b4c1692f77b3cbb5b3",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4053,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4eaba2ac/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4eaba2ac-2a26-4965-a49a-04ca3d02fe26/model.jpg",
+          "sha256": "8c190c9b0e9b87aba3e4ceca566d00068f6f6bb8732573f21be8199259afe0d6",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4053,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4eaba2ac/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
