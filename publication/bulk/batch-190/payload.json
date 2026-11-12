@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-190",
+  "created_at": "2026-11-12T04:15:44.002506+00:00",
+  "catalog_poll_at": "2026-11-12T04:15:44.002506+00:00",
+  "products": [
+    {
+      "product_id": "e29004bf-b500-42de-b1e3-8dd321e36a7c",
+      "sample": 4093,
+      "name": "Şişme Fermuarlı Su Itici Kapitone Astarlı Cepli Yelek",
+      "active_at_poll": true,
+      "stock_at_poll": 5005,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6926ccf34cf496926ccf34cf4c.png",
+        "https://modayakamoz.com/orj/TY6926ccf46b99c6926ccf46b99e.png",
+        "https://modayakamoz.com/orj/TY6926ccf5a43726926ccf5a4375.png",
+        "https://modayakamoz.com/orj/TY6926ccf7038ee6926ccf7038f2.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "e29004bf-b500-42de-b1e3-8dd321e36a7c/front.jpg",
+          "sha256": "06a4093f6f4e7ef6f4a9ad697290032a3af04ea1a5b068896b9b4ed7d40b0836",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4093,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e29004bf/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e29004bf-b500-42de-b1e3-8dd321e36a7c/back.jpg",
+          "sha256": "8388ef101c70e91be636bd53374ebc7a473b178b4d9627a76dafa0d1745d643d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4093,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e29004bf/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e29004bf-b500-42de-b1e3-8dd321e36a7c/model.jpg",
+          "sha256": "b6c6e7a2069cb2cab4f3cc014c57c077d91dbf57e1e09f8cb3d1536cc5eac81a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4093,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e29004bf/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
