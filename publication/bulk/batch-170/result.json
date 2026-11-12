@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-170",
+  "published_at_utc": "2026-11-12T02:09:17.373944+00:00",
+  "products": [
+    {
+      "product_id": "34aa210e-15d9-45fd-8419-486558373d48",
+      "sample": 3975,
+      "name": "Yüksel Bel Paça Ağzı Dantelli Dalgıç Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/34aa210e-15d9-45fd-8419-486558373d48-front-1054cd4c3bc7.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/34aa210e-15d9-45fd-8419-486558373d48-back-1452f76f4195.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/34aa210e-15d9-45fd-8419-486558373d48-model-08b927aba68a.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
