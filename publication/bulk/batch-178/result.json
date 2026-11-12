@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-178",
+  "published_at_utc": "2026-11-12T03:03:13.282446+00:00",
+  "products": [
+    {
+      "product_id": "f77478c3-c713-4c81-b08a-f3d1c3558e7b",
+      "sample": 4047,
+      "name": "Üç İplik Dık Yaka Yarım Fermuarlı SweatShirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f77478c3-c713-4c81-b08a-f3d1c3558e7b-front-8f34222ef995.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/f77478c3-c713-4c81-b08a-f3d1c3558e7b-back-eaeee84d3b33.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f77478c3-c713-4c81-b08a-f3d1c3558e7b-model-26ff55297f4a.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
