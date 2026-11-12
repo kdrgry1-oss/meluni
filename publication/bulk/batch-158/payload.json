@@ -1,0 +1,48 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-158",
+  "created_at": "2026-11-12T01:02:19.914567+00:00",
+  "catalog_poll_at": "2026-11-12T01:02:19.914567+00:00",
+  "products": [
+    {
+      "product_id": "c6c47afb-7b74-42d8-a91c-59379a3ce5b0",
+      "sample": 3935,
+      "name": "Yüksek Bel Yanı Şerit Detaylı Viskon Iki Iplik Eşofman",
+      "active_at_poll": true,
+      "stock_at_poll": 55,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192986-1-520dab3575.jpg",
+        "https://modayakamoz.com/orj/janes-192986-2-b8cf25717b.jpg",
+        "https://modayakamoz.com/orj/janes-192986-3-9f2571704a.jpg",
+        "https://modayakamoz.com/orj/janes-192986-4-676272635d.jpg",
+        "https://modayakamoz.com/orj/janes-192986-5-6452dc0b44.jpg",
+        "https://modayakamoz.com/orj/janes-192986-6-f9d48eba06.jpg",
+        "https://modayakamoz.com/orj/janes-192986-10-51234714a8.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c6c47afb-7b74-42d8-a91c-59379a3ce5b0/front.jpg",
+          "sha256": "1c01f50ffcf18a74beaa19c0a80f4fb697c50d26265686ab875e16d0c1e33313",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3935,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c6c47afb/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c6c47afb-7b74-42d8-a91c-59379a3ce5b0/back.jpg",
+          "sha256": "5f05b455ecba16c3863892f2e906a14b0c01d1391c78e429720e7a7c6d1409d8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3935,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c6c47afb/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c6c47afb-7b74-42d8-a91c-59379a3ce5b0/model.jpg",
+          "sha256": "6990d361961144fffcbd7dc8c209b8efab3ed9b45798d70df9ac42b9a84f6a2c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3935,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c6c47afb/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
