@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261113-v3-209",
+  "created_at": "2026-11-12T21:35:29.749717+00:00",
+  "catalog_poll_at": "2026-11-12T21:35:29.749717+00:00",
+  "products": [
+    {
+      "product_id": "c7aa9678-b929-4c4c-956c-65e701cfbda5",
+      "sample": 4088,
+      "name": "Şifon Kumaş Astalı Kloş Kruvaze Yaka Midi Boy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 151,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3d8c45c64075ce360959b2da2a9ceabd.jpg",
+        "https://modayakamoz.com/orj/8dee59005a35279f3913482c8f47a3ce.jpeg",
+        "https://modayakamoz.com/orj/56f6814fc8c72361015384422840eb65.jpeg",
+        "https://modayakamoz.com/orj/777f26ba71c0e766f8387b33dd1596fa.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c7aa9678-b929-4c4c-956c-65e701cfbda5/front.jpg",
+          "sha256": "d81512a5e0fc55b9d6b5ab3ec244a6abd3a80a18b4d5449dc249896f37157595",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 4088,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c7aa9678/front-master.jpg"
+        },
+        "back": {
+          "file": "c7aa9678-b929-4c4c-956c-65e701cfbda5/back.jpg",
+          "sha256": "3c7fd9f131f01a260065e2733b55ac7565e9f27d1272eeeed1845f25e57157a3",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 4088,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c7aa9678/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "c7aa9678-b929-4c4c-956c-65e701cfbda5/fashion_model.jpg",
+          "sha256": "1bf16de00574e39aecbb44b9dd3d45d01862cc8bcca00a6ea2a90100af16ac44",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 4088,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c7aa9678/fashion_model-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
