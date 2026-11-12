@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-182",
+  "created_at": "2026-11-12T03:22:13.072842+00:00",
+  "catalog_poll_at": "2026-11-12T03:22:13.072842+00:00",
+  "products": [
+    {
+      "product_id": "b1b724ab-1f65-40a9-8784-e8f771600e7a",
+      "sample": 4055,
+      "name": "Üç İplik Kapüşonlu Kanguru Hoodie Çepli SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 5986,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68b4bc361a4aa68b4bc361a4ad.png",
+        "https://modayakamoz.com/orj/TY68b4bc372ad7c68b4bc372ad7f.png",
+        "https://modayakamoz.com/orj/TY68b4bc383b83b68b4bc383b83e.png",
+        "https://modayakamoz.com/orj/TY68b4bc395721f68b4bc3957223.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "b1b724ab-1f65-40a9-8784-e8f771600e7a/front.jpg",
+          "sha256": "d753ff15b957dc75010c048913b976514480b2809987f5cbd4ad353810036006",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4055,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b1b724ab/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b1b724ab-1f65-40a9-8784-e8f771600e7a/back.jpg",
+          "sha256": "c52227956463a4ab738124dc13a9c485ba2db7bb67a7697e7027c458b4ce58a4",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4055,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b1b724ab/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b1b724ab-1f65-40a9-8784-e8f771600e7a/model.jpg",
+          "sha256": "a934be265f2783076d40730dd8d491fd360ee979d9f3dffc4a9e13d0ddb2b55a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4055,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b1b724ab/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
