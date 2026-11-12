@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-164",
+  "published_at_utc": "2026-11-12T01:35:36.540175+00:00",
+  "products": [
+    {
+      "product_id": "117ff2b4-3d93-4482-aee9-a63f9472ecd0",
+      "sample": 3954,
+      "name": "Yüksek Bel Şardonlu Fırsat Ürün Toparlayıcı Tayt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/117ff2b4-3d93-4482-aee9-a63f9472ecd0-front-2a23254c9275.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/117ff2b4-3d93-4482-aee9-a63f9472ecd0-back-3876c597fa49.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/117ff2b4-3d93-4482-aee9-a63f9472ecd0-model-5b80f76dd274.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
