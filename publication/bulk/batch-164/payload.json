@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-164",
+  "created_at": "2026-11-12T01:34:43.837942+00:00",
+  "catalog_poll_at": "2026-11-12T01:34:43.837942+00:00",
+  "products": [
+    {
+      "product_id": "117ff2b4-3d93-4482-aee9-a63f9472ecd0",
+      "sample": 3954,
+      "name": "Yüksek Bel Şardonlu Fırsat Ürün Toparlayıcı Tayt",
+      "active_at_poll": true,
+      "stock_at_poll": 117,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f3e07a35b621578eec71c0e11d1293d7.jpg",
+        "https://modayakamoz.com/orj/0021b7e0f06eb6a11178de053b474ff0.jpg",
+        "https://modayakamoz.com/orj/a555a4def4fced392b70bacc2d709fcb.jpg",
+        "https://modayakamoz.com/orj/4b36b0540b551e4146b4ea2e5b98e6ce.jpg",
+        "https://modayakamoz.com/orj/71aada81b5f9d12210549adb43270958.jpg",
+        "https://modayakamoz.com/orj/952fb2fb1a06b043c1ce8ba6a5bb78dd.jpg",
+        "https://modayakamoz.com/orj/c7142b8b59e2c7d7a752121f98d89423.jpg",
+        "https://modayakamoz.com/orj/d8e6eea67a779c0340ba0500ae3a62f3.jpg",
+        "https://modayakamoz.com/orj/2826b7d6b41117b12056fc2c1e8a602e.jpg",
+        "https://modayakamoz.com/orj/e5243dcac40529cceabc39cb603ce3cb.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "117ff2b4-3d93-4482-aee9-a63f9472ecd0/front.jpg",
+          "sha256": "2a23254c92754f010625a63c26aafe837e20604a9545a1319703a4f7a9d0ea20",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3954,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-117ff2b4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "117ff2b4-3d93-4482-aee9-a63f9472ecd0/back.jpg",
+          "sha256": "3876c597fa493a772ee892ad263c00db0f52549686c096858992bb052e2439d1",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3954,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-117ff2b4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "117ff2b4-3d93-4482-aee9-a63f9472ecd0/model.jpg",
+          "sha256": "5b80f76dd274a4a87323ee9db0b59dd8fdf978d60adf9d581f7ecac8eed59f5f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3954,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-117ff2b4/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
