@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-202",
+  "created_at": "2026-11-12T20:38:13.763744+00:00",
+  "catalog_poll_at": "2026-11-12T20:38:13.763744+00:00",
+  "products": [
+    {
+      "product_id": "7c9ef404-5836-4286-8681-aa1f614036b8",
+      "sample": 566,
+      "name": "Balıkçı Yaka Tül Detaylı Yanlardan Açık Geniş Sandy Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/21e82e8f10d808945aa8.jpeg",
+        "https://modayakamoz.com/orj/90ddc4942ee172253ba5.jpeg",
+        "https://modayakamoz.com/orj/37f4808202c4e0bdd9f7.jpeg",
+        "https://modayakamoz.com/orj/98cc50b6d233703d4663.jpeg",
+        "https://modayakamoz.com/orj/e55861dbd2ae9a8ec1b4.jpeg",
+        "https://modayakamoz.com/orj/f4162e84bde47617ebc7.jpeg",
+        {
+          "id": "6a23adb5-d5dd-4e9b-9fd8-d099edec1983",
+          "url": "https://cdn.meluni.com.tr/ai-products/507cdc16-99a8-47cc-87cd-b574ce2ace90-olcu-oto-8fa3c558.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-23T05:22:47.366056+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7c9ef404-5836-4286-8681-aa1f614036b8/front.jpg",
+          "sha256": "146c4f2347c934d73b8e50850e7128f407bcb9cd1e53a6df9223a433b1360822",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 566,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7c9ef404/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7c9ef404-5836-4286-8681-aa1f614036b8/back.jpg",
+          "sha256": "61aa1c8a2409fa256ffc5736803100ab1b6cb952d08f987a292980faf3de30dd",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 566,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7c9ef404/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7c9ef404-5836-4286-8681-aa1f614036b8/model.jpg",
+          "sha256": "fde66d969c1319dbc35e42638312d761df9bfb7703042fbb7fbb99e07e4f76fc",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 566,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7c9ef404/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
