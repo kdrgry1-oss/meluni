@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-197",
+  "created_at": "2026-11-12T20:00:05.039491+00:00",
+  "catalog_poll_at": "2026-11-12T20:00:05.039491+00:00",
+  "products": [
+    {
+      "product_id": "e2b5a93d-dbf0-4bb7-92a7-030e9fa20f8d",
+      "sample": 374,
+      "name": "Askılı V Yakalı Yırtmaçlı Uzun Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 16,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/94c3d983482c192ea332.jpeg",
+        "https://modayakamoz.com/orj/9bdb19d3cd5d51f83e13.jpeg",
+        "https://modayakamoz.com/orj/abd23348927c86ea7d2b.jpeg",
+        "https://modayakamoz.com/orj/2ae2bdac7c2249589050.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e2b5a93d-dbf0-4bb7-92a7-030e9fa20f8d/front.jpg",
+          "sha256": "9d51574cb44ca68eb8e1f04e355a83c0fdf64300109f6c46c937ee25bbf9493a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 374,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e2b5a93d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e2b5a93d-dbf0-4bb7-92a7-030e9fa20f8d/back.jpg",
+          "sha256": "79f6820dd845a285f34b1853fc0487a29238bb407b032573f778781ef57ddb75",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 374,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e2b5a93d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e2b5a93d-dbf0-4bb7-92a7-030e9fa20f8d/model.jpg",
+          "sha256": "cda6236bbcdde38322ee747c9049159c07664a15f3eeb897770946ab40532628",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 374,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e2b5a93d/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
