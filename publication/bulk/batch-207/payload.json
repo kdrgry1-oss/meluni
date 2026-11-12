@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-207",
+  "created_at": "2026-11-12T21:18:34.346670+00:00",
+  "catalog_poll_at": "2026-11-12T21:18:34.346670+00:00",
+  "products": [
+    {
+      "product_id": "8fae04d0-0fda-4d8a-811b-421f05e65774",
+      "sample": 954,
+      "name": "Kısa Kollu Yakalı Düğmeli Kısa Trikoton Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ee90cddd52abdede24f7.jpeg",
+        "https://modayakamoz.com/orj/97695d8eb3c55f268c23.jpeg",
+        "https://modayakamoz.com/orj/d00b5187a7f936268272.jpeg",
+        "https://modayakamoz.com/orj/52d6a1cb9ecf457f5415.jpeg",
+        "https://modayakamoz.com/orj/2a7d65608ae2ce124922.jpeg",
+        "https://modayakamoz.com/orj/a26a4a378c8701efefdb.jpeg",
+        "https://modayakamoz.com/orj/55c68c3f8634535f841f.jpeg",
+        {
+          "id": "0eb87e67-aca0-416d-a8e7-46d9a1ed0978",
+          "url": "https://cdn.meluni.com.tr/ai-products/d1b0a265-35ad-4201-b80f-924141d8f843-olcu-oto-180bba23.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:20:15.553743+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8fae04d0-0fda-4d8a-811b-421f05e65774/front.jpg",
+          "sha256": "717fedfacc030dc6e9b92198647f4353cf4d1921a5904b86eecaebc11fa5ce1d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 954,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8fae04d0/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8fae04d0-0fda-4d8a-811b-421f05e65774/back.jpg",
+          "sha256": "1b21af2f40ac2feff50cba4748134639ada5fc15320c0123fb7f54880ad8e1b6",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 954,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8fae04d0/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8fae04d0-0fda-4d8a-811b-421f05e65774/model.jpg",
+          "sha256": "f17fe65b9b99a3f0d219934ccbf65cb2b536448808c3cc5067803b4d5152c826",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 954,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8fae04d0/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
