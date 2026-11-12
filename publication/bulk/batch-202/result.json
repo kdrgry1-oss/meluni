@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-202",
+  "published_at_utc": "2026-11-12T20:39:09.406567+00:00",
+  "products": [
+    {
+      "product_id": "7c9ef404-5836-4286-8681-aa1f614036b8",
+      "sample": 566,
+      "name": "Balıkçı Yaka Tül Detaylı Yanlardan Açık Geniş Sandy Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7c9ef404-5836-4286-8681-aa1f614036b8-front-146c4f2347c9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7c9ef404-5836-4286-8681-aa1f614036b8-back-61aa1c8a2409.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7c9ef404-5836-4286-8681-aa1f614036b8-model-fde66d969c13.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
