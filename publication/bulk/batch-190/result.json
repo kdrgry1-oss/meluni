@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-190",
+  "published_at_utc": "2026-11-12T04:16:37.656484+00:00",
+  "products": [
+    {
+      "product_id": "e29004bf-b500-42de-b1e3-8dd321e36a7c",
+      "sample": 4093,
+      "name": "Şişme Fermuarlı Su Itici Kapitone Astarlı Cepli Yelek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e29004bf-b500-42de-b1e3-8dd321e36a7c-front-06a4093f6f4e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e29004bf-b500-42de-b1e3-8dd321e36a7c-back-8388ef101c70.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e29004bf-b500-42de-b1e3-8dd321e36a7c-model-b6c6e7a2069c.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
