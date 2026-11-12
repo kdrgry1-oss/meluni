@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-163",
+  "published_at_utc": "2026-11-12T01:28:04.611854+00:00",
+  "products": [
+    {
+      "product_id": "cd8d6c1d-d195-4da9-8d13-01c7ce3ef08f",
+      "sample": 3938,
+      "name": "Yüksek Bel Yırtmaçlı Kısa Kot Etek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/cd8d6c1d-d195-4da9-8d13-01c7ce3ef08f-front-1a9024bead28.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/cd8d6c1d-d195-4da9-8d13-01c7ce3ef08f-back-a3cf644176c9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/cd8d6c1d-d195-4da9-8d13-01c7ce3ef08f-model-69ef3c757e5b.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
