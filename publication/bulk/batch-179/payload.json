@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-179",
+  "created_at": "2026-11-12T03:07:18.545967+00:00",
+  "catalog_poll_at": "2026-11-12T03:07:18.545967+00:00",
+  "products": [
+    {
+      "product_id": "905b1064-a9d0-474c-a77e-e147d7c6dd49",
+      "sample": 4052,
+      "name": "Üç İplik Kapüşonlu Fermuarlı Kanguru Hoodie Çepli SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 5969,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68b56beaedddf68b56beaedde0.png",
+        "https://modayakamoz.com/orj/TY68b56bebdc23468b56bebdc237.png",
+        "https://modayakamoz.com/orj/TY68b56bece103368b56bece1036.png",
+        "https://modayakamoz.com/orj/TY68b56bedcfbc768b56bedcfbca.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "905b1064-a9d0-474c-a77e-e147d7c6dd49/front.jpg",
+          "sha256": "16d3f02df8c5ac64ba67c97a2aefb7b6f91715955e6cd83eb4767cb8b4cd07a7",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4052,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-905b1064/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "905b1064-a9d0-474c-a77e-e147d7c6dd49/back.jpg",
+          "sha256": "8bb9da80e568167ab474d0958a4718588669a5ffb98370094162ae1b9078e165",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4052,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-905b1064/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "905b1064-a9d0-474c-a77e-e147d7c6dd49/model.jpg",
+          "sha256": "5638d0d2e60bbb821ccd1ecc3bdbed23f05116fff25eea3eab8633d4563594f2",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4052,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-905b1064/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
