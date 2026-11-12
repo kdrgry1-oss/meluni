@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-200",
+  "published_at_utc": "2026-11-12T20:27:31.668089+00:00",
+  "products": [
+    {
+      "product_id": "e77606b6-ae76-4a2e-bc77-9bad08cc238b",
+      "sample": 557,
+      "name": "Balıkçı Yaka Kolsuz Incili Beli Kuşaklı Uzun Janjan Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e77606b6-ae76-4a2e-bc77-9bad08cc238b-front-e64c11078241.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e77606b6-ae76-4a2e-bc77-9bad08cc238b-back-1e4a209a22c1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e77606b6-ae76-4a2e-bc77-9bad08cc238b-model-936099a00590.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
