@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-198",
+  "published_at_utc": "2026-11-12T20:07:18.846864+00:00",
+  "products": [
+    {
+      "product_id": "b1cdcf28-65c4-45d4-a0b4-88f4bc79a004",
+      "sample": 427,
+      "name": "Askılı Yuvarlak Yaka Şerit Detaylı Yırtmaçlı Midi Triko Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b1cdcf28-65c4-45d4-a0b4-88f4bc79a004-front-4ea4930c3a9a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b1cdcf28-65c4-45d4-a0b4-88f4bc79a004-back-ea699191d76f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b1cdcf28-65c4-45d4-a0b4-88f4bc79a004-model-56f2d51b585d.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
