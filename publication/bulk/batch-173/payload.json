@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-173",
+  "created_at": "2026-11-12T02:26:49.031678+00:00",
+  "catalog_poll_at": "2026-11-12T02:26:49.031678+00:00",
+  "products": [
+    {
+      "product_id": "26a83e94-7958-4812-8930-a55cf7d91876",
+      "sample": 4010,
+      "name": "Önden Çapraz Askılı Uzun Vıskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 52,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/48c4992d4a2ece3819b1.jpeg",
+        "https://modayakamoz.com/orj/91a71e7d1057881aa607.jpeg",
+        "https://modayakamoz.com/orj/d54e1061ee27873613ff.jpeg",
+        "https://modayakamoz.com/orj/57dc78443d743297faf9.jpeg",
+        "https://modayakamoz.com/orj/e78f2420dfcbd00e0ced.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "26a83e94-7958-4812-8930-a55cf7d91876/front.jpg",
+          "sha256": "9106b1f9410766ff821c60126b136369b59bb33bd14978b69874a110317ee2fd",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4010,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-26a83e94/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "26a83e94-7958-4812-8930-a55cf7d91876/back.jpg",
+          "sha256": "ebf16626930ddaece6c95fbdd7fd74dade345607d848c6e34bd567f245424786",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4010,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-26a83e94/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "26a83e94-7958-4812-8930-a55cf7d91876/model.jpg",
+          "sha256": "459698c25e243896252cc76a38543f372e85a31dd293c2feec86c83a124ec7cb",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4010,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-26a83e94/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
