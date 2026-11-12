@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-196",
+  "published_at_utc": "2026-11-12T19:48:31.537983+00:00",
+  "products": [
+    {
+      "product_id": "6e1a1c88-9fbb-47d2-a8e3-74ec55cd4e0f",
+      "sample": 288,
+      "name": "Askılı V Yaka Örme Detay Triko Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6e1a1c88-9fbb-47d2-a8e3-74ec55cd4e0f-front-e4439791c6bd.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6e1a1c88-9fbb-47d2-a8e3-74ec55cd4e0f-back-64cdafc95ebe.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6e1a1c88-9fbb-47d2-a8e3-74ec55cd4e0f-model-cfe3fd0f9f32.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
