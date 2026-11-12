@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-156",
+  "created_at": "2026-11-12T00:53:02.095293+00:00",
+  "catalog_poll_at": "2026-11-12T00:53:02.095293+00:00",
+  "products": [
+    {
+      "product_id": "d49bb4b4-5d97-4854-a1f6-de7378a467b7",
+      "sample": 3930,
+      "name": "Yüksek Bel Yanları Lastik Düğmeli Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 309,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/617327f12a606f063e4d.jpeg",
+        "https://modayakamoz.com/orj/a9274661702891bfdad2.jpeg",
+        "https://modayakamoz.com/orj/1e6a1bb04fb91ee0c5d9.jpeg",
+        "https://modayakamoz.com/orj/83169aec117db64f0b46.jpeg",
+        "https://modayakamoz.com/orj/dfa9dc8885954da24786.jpeg",
+        "https://modayakamoz.com/orj/ff98a0d51305a8be5af1.jpeg",
+        "https://modayakamoz.com/orj/0f7c3ae4689133da56f8.jpeg",
+        "https://modayakamoz.com/orj/7aadddb85b9a883f3b1c.jpeg",
+        "https://modayakamoz.com/orj/db46015a16ea36acba1c.jpeg",
+        "https://modayakamoz.com/orj/94af570dc3b975fa324d.jpeg",
+        "https://modayakamoz.com/orj/ba32aeb5bc1cac4a4092.jpeg",
+        "https://modayakamoz.com/orj/111af2901ae79a935dcb.jpeg",
+        {
+          "id": "e8265ccd-7d8f-49bf-87a4-e1ac0ba7fbf3",
+          "url": "https://cdn.meluni.com.tr/ai-products/d49bb4b4-5d97-4854-a1f6-de7378a467b7-olcu-oto-d7819ff0.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:06:00.590519+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d49bb4b4-5d97-4854-a1f6-de7378a467b7/front.jpg",
+          "sha256": "e6ae5fbc0607fa4384f2f798b92a0bd62ee0c9d4cee17ec2538677bdfbeb8b24",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3930,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d49bb4b4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d49bb4b4-5d97-4854-a1f6-de7378a467b7/back.jpg",
+          "sha256": "8443035bd952698d4b4f0e79187d8d6662fb468d20144c3fffd69663b5034231",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3930,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d49bb4b4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d49bb4b4-5d97-4854-a1f6-de7378a467b7/model.jpg",
+          "sha256": "5d4fafe3ad6722241a5c36107bcf36754bc7d3b5f9c3fc34d1538234bcb952ab",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3930,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d49bb4b4/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
