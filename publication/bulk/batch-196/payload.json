@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-196",
+  "created_at": "2026-11-12T19:47:25.143943+00:00",
+  "catalog_poll_at": "2026-11-12T19:47:25.143943+00:00",
+  "products": [
+    {
+      "product_id": "6e1a1c88-9fbb-47d2-a8e3-74ec55cd4e0f",
+      "sample": 288,
+      "name": "Askılı V Yaka Örme Detay Triko Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 51,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4df70126704bc1911a1c.jpeg",
+        "https://modayakamoz.com/orj/03b0c6634410dfe54dda.jpeg",
+        "https://modayakamoz.com/orj/19024cd00603c16c532b.jpeg",
+        "https://modayakamoz.com/orj/1391de5417c796aff8f9.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "6e1a1c88-9fbb-47d2-a8e3-74ec55cd4e0f/front.jpg",
+          "sha256": "e4439791c6bd264012ae3d99318d444c78303a6a749398437d7765791e3e779e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 288,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6e1a1c88/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "6e1a1c88-9fbb-47d2-a8e3-74ec55cd4e0f/back.jpg",
+          "sha256": "64cdafc95ebe93881e257d80fe4ddab45bc408d0d700bfc1308bd4ba7c053c5a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 288,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6e1a1c88/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "6e1a1c88-9fbb-47d2-a8e3-74ec55cd4e0f/model.jpg",
+          "sha256": "cfe3fd0f9f32b345951bedb8e875655055cc117b505fca75288e88a3eb6fa575",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 288,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6e1a1c88/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
