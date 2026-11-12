@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-155",
+  "created_at": "2026-11-12T00:47:36.834261+00:00",
+  "catalog_poll_at": "2026-11-12T00:47:36.834261+00:00",
+  "products": [
+    {
+      "product_id": "179f3b74-f41c-420f-8de4-dfe36b61843b",
+      "sample": 3918,
+      "name": "Yüksek Bel Uzun Geniş Detaylı Krinkıl Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 48,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/170d935b506101f6f660.jpeg",
+        "https://modayakamoz.com/orj/76b946047aa219f83e66.jpeg",
+        "https://modayakamoz.com/orj/7c8ff843299edc3e33ac.jpeg",
+        "https://modayakamoz.com/orj/3eb01f7a5ddd4203e602.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "179f3b74-f41c-420f-8de4-dfe36b61843b/front.jpg",
+          "sha256": "138a7056a50215cacaec1f7f9f4a8ac9bcb14db6bc5936f9f471290abe1a2882",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3918,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-179f3b74/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "179f3b74-f41c-420f-8de4-dfe36b61843b/back.jpg",
+          "sha256": "846e1b66fc3423226ef1eb443121e4852430c2c80ccaf1066a60f449ebc99c7d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3918,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-179f3b74/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "179f3b74-f41c-420f-8de4-dfe36b61843b/model.jpg",
+          "sha256": "d083ae5a741d58241b42c8f00882e2f477b4e330054d0c43db6042b7056a6432",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3918,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-179f3b74/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
