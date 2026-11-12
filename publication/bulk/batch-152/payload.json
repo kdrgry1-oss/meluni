@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-152",
+  "created_at": "2026-11-12T00:31:42.464168+00:00",
+  "catalog_poll_at": "2026-11-12T00:31:42.464168+00:00",
+  "products": [
+    {
+      "product_id": "4db076bd-262a-4b2e-8d1a-3b0a8d1783bd",
+      "sample": 3905,
+      "name": "Yüksek Bel Nervürlü Paçaya Doğru Geniş Krep Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/4db076bd-262a-4b2e-8d1a-3b0a8d1783bd-hd0-ebabaf36.jpg",
+        "https://cdn.meluni.com.tr/ai-products/4db076bd-262a-4b2e-8d1a-3b0a8d1783bd-hd1-2c7738d7.jpg",
+        "https://cdn.meluni.com.tr/ai-products/4db076bd-262a-4b2e-8d1a-3b0a8d1783bd-hd2-ccb0706f.jpg",
+        "https://cdn.meluni.com.tr/ai-products/4db076bd-262a-4b2e-8d1a-3b0a8d1783bd-hd3-02b81845.jpg",
+        {
+          "id": "78a88bdf-a623-49e9-ac92-fcd125e08b6c",
+          "url": "https://cdn.meluni.com.tr/ai-products/4db076bd-262a-4b2e-8d1a-3b0a8d1783bd-olcu-oto-8a59f4df.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:21:39.992890+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4db076bd-262a-4b2e-8d1a-3b0a8d1783bd/front.jpg",
+          "sha256": "cf85af70af874929d4beae7dd0881b8973e0f6109fc7a0a6b65c9868baf0f40c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3905,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4db076bd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4db076bd-262a-4b2e-8d1a-3b0a8d1783bd/back.jpg",
+          "sha256": "a74a2516434c5de796ed5e0a849c6e7532b762036482bd96203a4c674acfc415",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3905,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4db076bd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4db076bd-262a-4b2e-8d1a-3b0a8d1783bd/model.jpg",
+          "sha256": "f1c405e7f82ae23c03101f1be5abb86c8cc79a8aced407a72de0c6aa4d870dfd",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3905,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4db076bd/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
