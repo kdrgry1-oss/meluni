@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-173",
+  "published_at_utc": "2026-11-12T02:27:35.673903+00:00",
+  "products": [
+    {
+      "product_id": "26a83e94-7958-4812-8930-a55cf7d91876",
+      "sample": 4010,
+      "name": "Önden Çapraz Askılı Uzun Vıskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/26a83e94-7958-4812-8930-a55cf7d91876-front-9106b1f94107.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/26a83e94-7958-4812-8930-a55cf7d91876-back-ebf16626930d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/26a83e94-7958-4812-8930-a55cf7d91876-model-459698c25e24.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
