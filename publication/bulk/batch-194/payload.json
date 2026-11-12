@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-194",
+  "created_at": "2026-11-12T19:25:22.629862+00:00",
+  "catalog_poll_at": "2026-11-12T19:25:22.629862+00:00",
+  "products": [
+    {
+      "product_id": "edb36230-dab6-470c-9e17-efac6aa1e1a5",
+      "sample": 4098,
+      "name": "Şişme Kapüşonlu Fermuarlı Su Itici Kapitone Astarlı Cepli Mont",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6940174471788694017447178a.webp",
+        "https://modayakamoz.com/orj/TY694017458b3db694017458b3de.webp",
+        "https://modayakamoz.com/orj/TY6940174674fb56940174674fb8.webp",
+        "https://modayakamoz.com/orj/TY694017477c67b694017477c67e.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "edb36230-dab6-470c-9e17-efac6aa1e1a5/front.jpg",
+          "sha256": "9df5b0f409fc9b60c18fca730504362dbc605961bfa1cc1b6f05c9a62df819e8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4098,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-edb36230/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "edb36230-dab6-470c-9e17-efac6aa1e1a5/back.jpg",
+          "sha256": "fc00a72fd15936afd08a725c484aaef935a6c9ba5ac5d7411252637d12571759",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4098,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-edb36230/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "edb36230-dab6-470c-9e17-efac6aa1e1a5/model.jpg",
+          "sha256": "eb218b9d0740e5b010cb80f4a21aaa45d3d204111bb132133ecc56ad9480b552",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4098,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-edb36230/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
