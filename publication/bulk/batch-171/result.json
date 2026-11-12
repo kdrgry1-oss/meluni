@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-171",
+  "published_at_utc": "2026-11-12T02:15:11.419616+00:00",
+  "products": [
+    {
+      "product_id": "52721aaf-11f3-493d-b6de-6b6ab675ef29",
+      "sample": 3990,
+      "name": "Zincir Askılı Krop Krep Bluz ve Pantolon Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/52721aaf-11f3-493d-b6de-6b6ab675ef29-front-8e0db39dc644.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/52721aaf-11f3-493d-b6de-6b6ab675ef29-back-2c106fb99eb5.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/52721aaf-11f3-493d-b6de-6b6ab675ef29-model-90bdc26f562e.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
