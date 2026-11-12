@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-152",
+  "published_at_utc": "2026-11-12T00:32:33.368814+00:00",
+  "products": [
+    {
+      "product_id": "4db076bd-262a-4b2e-8d1a-3b0a8d1783bd",
+      "sample": 3905,
+      "name": "Yüksek Bel Nervürlü Paçaya Doğru Geniş Krep Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4db076bd-262a-4b2e-8d1a-3b0a8d1783bd-front-cf85af70af87.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4db076bd-262a-4b2e-8d1a-3b0a8d1783bd-back-a74a2516434c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4db076bd-262a-4b2e-8d1a-3b0a8d1783bd-model-f1c405e7f82a.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
