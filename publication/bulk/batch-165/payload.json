@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-165",
+  "created_at": "2026-11-12T01:39:03.192931+00:00",
+  "catalog_poll_at": "2026-11-12T01:39:03.192931+00:00",
+  "products": [
+    {
+      "product_id": "e6c7d4f1-391b-4dc5-9064-49d428475c89",
+      "sample": 3957,
+      "name": "Yüksek Beş Önden Asimetrik Detaylı Uzun Sandy Etek",
+      "active_at_poll": true,
+      "stock_at_poll": 26,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c327863bc276221914ff.jpeg",
+        "https://modayakamoz.com/orj/38c691e9e78fa805feb1.jpeg",
+        "https://modayakamoz.com/orj/6ed4793322a123b3ae94.jpeg",
+        "https://modayakamoz.com/orj/e904994f6aa3e4ab72e3.jpeg",
+        {
+          "id": "af8bbe76-bc8a-4d0f-a66e-2b9134ca8113",
+          "url": "https://cdn.meluni.com.tr/ai-products/e6c7d4f1-391b-4dc5-9064-49d428475c89-olcu-oto-a368a7ac.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:37:27.374108+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "e6c7d4f1-391b-4dc5-9064-49d428475c89/front.jpg",
+          "sha256": "70574ae956018a8a2394726333235021d7045030bfa690ce626e30ec97d9c23b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3957,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e6c7d4f1/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e6c7d4f1-391b-4dc5-9064-49d428475c89/back.jpg",
+          "sha256": "f9362256ebd02adfc571c22d25ad02dc12ef84ae1e57a3058e37f38a81fdfc62",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3957,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e6c7d4f1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e6c7d4f1-391b-4dc5-9064-49d428475c89/model.jpg",
+          "sha256": "6207ba881d6b512b6eebb6a4979ad259cfffc8c34cd4c4efc4d79e3283e40aaf",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3957,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e6c7d4f1/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
