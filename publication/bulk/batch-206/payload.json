@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-206",
+  "created_at": "2026-11-12T21:05:51.194593+00:00",
+  "catalog_poll_at": "2026-11-12T21:05:51.194593+00:00",
+  "products": [
+    {
+      "product_id": "d1b0a265-35ad-4201-b80f-924141d8f843",
+      "sample": 953,
+      "name": "Kısa Kollu Yakalı Düğmeli Kısa Trikoton Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/223fb2bdde2d008fee5b.jpeg",
+        "https://modayakamoz.com/orj/c06170cfffbaa2505bdb.jpeg",
+        "https://modayakamoz.com/orj/9ac81c4d5f8b9704d443.jpeg",
+        "https://modayakamoz.com/orj/df03f36fb361fb7ab968.jpeg",
+        {
+          "id": "b88b5cec-5020-4176-b172-fed6adad590a",
+          "url": "https://cdn.meluni.com.tr/ai-products/d1b0a265-35ad-4201-b80f-924141d8f843-olcu-oto-180bba23.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:20:15.410969+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d1b0a265-35ad-4201-b80f-924141d8f843/front.jpg",
+          "sha256": "74069265d6df1966f8519952c4cef2b4fb90ab018ec990c696f94fd102ea3764",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 953,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d1b0a265/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d1b0a265-35ad-4201-b80f-924141d8f843/back.jpg",
+          "sha256": "fc72cb653183f5e4d59e7dace33154f6d6b3f81ee49bc6b9fa62ecfa8ae62381",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 953,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d1b0a265/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d1b0a265-35ad-4201-b80f-924141d8f843/model.jpg",
+          "sha256": "fd7411a99874be10be59659f542653c5047124b531f11e187aef92b413373b70",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 953,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d1b0a265/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
