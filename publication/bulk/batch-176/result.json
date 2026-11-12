@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-176",
+  "published_at_utc": "2026-11-12T02:47:25.364071+00:00",
+  "products": [
+    {
+      "product_id": "a513673b-7a18-4c92-97fd-e542be9964e2",
+      "sample": 4019,
+      "name": "Önden Çapraz Lastik Detaylı Omuzlardan Açık Uzun Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a513673b-7a18-4c92-97fd-e542be9964e2-front-f930d20be5e5.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a513673b-7a18-4c92-97fd-e542be9964e2-back-70798800ee85.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a513673b-7a18-4c92-97fd-e542be9964e2-model-48b88d7b10c6.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
