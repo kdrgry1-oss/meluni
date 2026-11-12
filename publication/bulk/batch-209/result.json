@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-209",
+  "published_at_utc": "2026-11-12T21:37:17.002695+00:00",
+  "products": [
+    {
+      "product_id": "c7aa9678-b929-4c4c-956c-65e701cfbda5",
+      "sample": 4088,
+      "name": "Şifon Kumaş Astalı Kloş Kruvaze Yaka Midi Boy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c7aa9678-b929-4c4c-956c-65e701cfbda5-front-d81512a5e0fc.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c7aa9678-b929-4c4c-956c-65e701cfbda5-back-3c7fd9f131f0.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c7aa9678-b929-4c4c-956c-65e701cfbda5-model-1bf16de00574.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
