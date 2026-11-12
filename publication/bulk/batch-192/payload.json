@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-192",
+  "created_at": "2026-11-12T19:15:45.557363+00:00",
+  "catalog_poll_at": "2026-11-12T19:15:45.557363+00:00",
+  "products": [
+    {
+      "product_id": "14434b2f-7d9d-4348-9831-eb0aa61c8edc",
+      "sample": 4096,
+      "name": "Şişme Kapüşonlu Fermuarlı Su Itici Kapitone Astarlı Cepli Mont",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY69401749e6e4f69401749e6e51.webp",
+        "https://modayakamoz.com/orj/TY6940174ad38246940174ad3826.webp",
+        "https://modayakamoz.com/orj/TY6940174b96c056940174b96c06.webp",
+        "https://modayakamoz.com/orj/TY6940174c72bff6940174c72c01.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "14434b2f-7d9d-4348-9831-eb0aa61c8edc/front.jpg",
+          "sha256": "434d8dc38638d70dd1bf6523fe3f28623b597813eb9e921bcc29d688061f51b1",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4096,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-14434b2f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "14434b2f-7d9d-4348-9831-eb0aa61c8edc/back.jpg",
+          "sha256": "9ecc2dd9c66fdab84a7a2062edb9b9bc322c38b04e3e68f613c86ab025a86d10",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4096,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-14434b2f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "14434b2f-7d9d-4348-9831-eb0aa61c8edc/model.jpg",
+          "sha256": "531b6d5ad3268c2e16a6e371b9c7644910e20e7d3975471a0e063ff1340ab191",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4096,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-14434b2f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
