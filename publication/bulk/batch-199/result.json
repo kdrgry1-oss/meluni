@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-199",
+  "published_at_utc": "2026-11-12T20:22:50.520102+00:00",
+  "products": [
+    {
+      "product_id": "291a19ed-afdd-48e9-8bb3-d1297c90ebca",
+      "sample": 558,
+      "name": "Balıkçı Yaka Omuzlardan Açık Pılelı Kısa Janjan Krep Elbise",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/291a19ed-afdd-48e9-8bb3-d1297c90ebca-model-f35877d664ce.jpg"
+      },
+      "gallery_image_count": 5
+    }
+  ],
+  "skipped": []
+}
