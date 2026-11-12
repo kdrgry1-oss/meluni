@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-172",
+  "created_at": "2026-11-12T02:18:52.800945+00:00",
+  "catalog_poll_at": "2026-11-12T02:18:52.800945+00:00",
+  "products": [
+    {
+      "product_id": "cca66173-f83d-492f-a900-ccaa6ce0dc43",
+      "sample": 3991,
+      "name": "Zincir Askılı Krop Krep Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/bdba5891a9f5ed6b8183.jpeg",
+        "https://modayakamoz.com/orj/7829f725eeb9eb8f6195.jpeg",
+        "https://modayakamoz.com/orj/4bf6976e2488e27d9aaa.jpeg",
+        "https://modayakamoz.com/orj/e68a379db2d60d95d88d.jpeg",
+        "https://modayakamoz.com/orj/139d7c2d058780206529.jpeg",
+        {
+          "id": "6a2ff6b2-f2fb-47ba-b323-88f47552b4bd",
+          "url": "https://cdn.meluni.com.tr/ai-products/52721aaf-11f3-493d-b6de-6b6ab675ef29-olcu-oto-495d8f4a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-01T05:19:02.029657+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "cca66173-f83d-492f-a900-ccaa6ce0dc43/front.jpg",
+          "sha256": "66aada9a2419df32ab446a33ebdbabcb90be19ec7455476557470724ac0e3cc2",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3991,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cca66173/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "cca66173-f83d-492f-a900-ccaa6ce0dc43/back.jpg",
+          "sha256": "c2e49de93bc8f1e3b0ba779b329d41b554b4e10378e93592e32b1f9004620431",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3991,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cca66173/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "cca66173-f83d-492f-a900-ccaa6ce0dc43/model.jpg",
+          "sha256": "5cbf34512ee84dfeacbeb54c203eddc7424ce3cd5064fce992318351caebe3e8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3991,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cca66173/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
