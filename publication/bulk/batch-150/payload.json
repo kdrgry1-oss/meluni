@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261112-v3-150",
+  "created_at": "2026-11-12T00:19:33.578912+00:00",
+  "catalog_poll_at": "2026-11-12T00:19:33.578912+00:00",
+  "products": [
+    {
+      "product_id": "c8c9b90a-7670-4e75-88b4-df5dd8d372e2",
+      "sample": 3892,
+      "name": "Yüksek Bel Lastikli Bağcıklı Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/77ceee6e7be76d3bc8b2.jpeg",
+        "https://modayakamoz.com/orj/8ca4f58affcaafccd3b8.jpeg",
+        "https://modayakamoz.com/orj/02e902cab34f91b86ff6.jpeg",
+        "https://modayakamoz.com/orj/162684b009632902e6d5.jpeg",
+        "https://modayakamoz.com/orj/03faa6d44c17fd7b6c56.jpeg",
+        {
+          "id": "1f416e2f-3a1b-4145-98d4-a1162a7d5a46",
+          "url": "https://cdn.meluni.com.tr/ai-products/6e379671-fefd-4335-876d-0432d1216ca7-olcu-oto-569122c8.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:03:25.142264+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c8c9b90a-7670-4e75-88b4-df5dd8d372e2/front.jpg",
+          "sha256": "109a7d6e0629ec63d88436607883508ad67b4f620f84736596f5b92fe53c5c7d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3892,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c8c9b90a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c8c9b90a-7670-4e75-88b4-df5dd8d372e2/back.jpg",
+          "sha256": "f1be5cfbbfcfd8189b611299cccf3706c4742919954f2f0e421e2b902f524882",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3892,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c8c9b90a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c8c9b90a-7670-4e75-88b4-df5dd8d372e2/model.jpg",
+          "sha256": "015554e6b7e81b3777d1067636aa37331c81d266fe6813db1f1e2e864181bf00",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3892,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c8c9b90a/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
