@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-192",
+  "published_at_utc": "2026-11-12T19:16:39.843466+00:00",
+  "products": [
+    {
+      "product_id": "14434b2f-7d9d-4348-9831-eb0aa61c8edc",
+      "sample": 4096,
+      "name": "Şişme Kapüşonlu Fermuarlı Su Itici Kapitone Astarlı Cepli Mont",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/14434b2f-7d9d-4348-9831-eb0aa61c8edc-front-434d8dc38638.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/14434b2f-7d9d-4348-9831-eb0aa61c8edc-back-9ecc2dd9c66f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/14434b2f-7d9d-4348-9831-eb0aa61c8edc-model-531b6d5ad326.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
