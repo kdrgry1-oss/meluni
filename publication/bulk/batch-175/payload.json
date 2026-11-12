@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-175",
+  "created_at": "2026-11-12T02:38:47.525085+00:00",
+  "catalog_poll_at": "2026-11-12T02:38:47.525085+00:00",
+  "products": [
+    {
+      "product_id": "566fca78-f1a9-4222-8bfe-0d2e83537f99",
+      "sample": 4012,
+      "name": "Önden Çapraz Askılı Uzun Vıskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 91,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/89f8c22ed5de283fcb04.jpeg",
+        "https://modayakamoz.com/orj/747c3f03b404a53f63dd.jpeg",
+        "https://modayakamoz.com/orj/2410c38f7e6d5b652fcc.jpeg",
+        "https://modayakamoz.com/orj/f4ed66e4db0587cc68ee.jpeg",
+        "https://modayakamoz.com/orj/2767dd0e4e1f93c8d439.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "566fca78-f1a9-4222-8bfe-0d2e83537f99/front.jpg",
+          "sha256": "ebcabd2818ee3aaedaebe1d153d4f626f80684b55f1348ef4e0212c03b568e1b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-566fca78/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "566fca78-f1a9-4222-8bfe-0d2e83537f99/back.jpg",
+          "sha256": "e3a5dbcb5519d03b3ba853dd5282844c317bceb151bf5553b576398e05c52282",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-566fca78/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "566fca78-f1a9-4222-8bfe-0d2e83537f99/model.jpg",
+          "sha256": "b4c5606f01ad479957f9ba8ce09ff2ab3c1876562801f223d6a7e9f5b8e25f8e",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-566fca78/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "566fca78-f1a9-4222-8bfe-0d2e83537f99/size_chart.jpg",
+          "sha256": "3961865890e2026cdc3ae0d8c16046513539a1abd6ab77686ebc0fa8b1217ea7",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 4012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-566fca78/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
