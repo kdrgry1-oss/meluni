@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-186",
+  "published_at_utc": "2026-11-12T03:49:56.799037+00:00",
+  "products": [
+    {
+      "product_id": "445ee086-8b46-47ab-99e0-250338270a35",
+      "sample": 4077,
+      "name": "İki İplik Kapüşonlu Kanguru Cepli Jogger Üst Eşofman Takımı",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/445ee086-8b46-47ab-99e0-250338270a35-front-2eca2622a0e9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/445ee086-8b46-47ab-99e0-250338270a35-back-e5b347a81914.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/445ee086-8b46-47ab-99e0-250338270a35-model-d333b9984725.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
