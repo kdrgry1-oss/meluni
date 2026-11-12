@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-166",
+  "published_at_utc": "2026-11-12T01:44:17.110069+00:00",
+  "products": [
+    {
+      "product_id": "6b93ef41-ae6e-427b-8533-8fda435efa5b",
+      "sample": 3958,
+      "name": "Yüksek Beş Önden Asimetrik Detaylı Uzun Sandy Etek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6b93ef41-ae6e-427b-8533-8fda435efa5b-front-ba58a17c2fa6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6b93ef41-ae6e-427b-8533-8fda435efa5b-back-868cdd4abc42.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6b93ef41-ae6e-427b-8533-8fda435efa5b-model-29c36fdbdb47.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
