@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-167",
+  "published_at_utc": "2026-11-12T01:50:35.882829+00:00",
+  "products": [
+    {
+      "product_id": "40704358-6c95-4c79-bc8f-88db0e2a7e0c",
+      "sample": 3967,
+      "name": "Yüksel Bel Lastikli Önden Çapraz Detaylı Sandy Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/40704358-6c95-4c79-bc8f-88db0e2a7e0c-front-e77b2e2a748c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/40704358-6c95-4c79-bc8f-88db0e2a7e0c-back-a0ff671b4140.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/40704358-6c95-4c79-bc8f-88db0e2a7e0c-model-ae15875189d1.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
