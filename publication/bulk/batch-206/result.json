@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-206",
+  "published_at_utc": "2026-11-12T21:06:58.839602+00:00",
+  "products": [
+    {
+      "product_id": "d1b0a265-35ad-4201-b80f-924141d8f843",
+      "sample": 953,
+      "name": "Kısa Kollu Yakalı Düğmeli Kısa Trikoton Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d1b0a265-35ad-4201-b80f-924141d8f843-front-74069265d6df.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d1b0a265-35ad-4201-b80f-924141d8f843-back-fc72cb653183.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d1b0a265-35ad-4201-b80f-924141d8f843-model-fd7411a99874.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
