@@ -1,0 +1,41 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-208",
+  "created_at": "2026-11-12T21:27:27.615589+00:00",
+  "catalog_poll_at": "2026-11-12T21:27:27.615589+00:00",
+  "products": [
+    {
+      "product_id": "5dd0da85-139c-4b1d-9200-bc319dd7d1ca",
+      "sample": 1038,
+      "name": "Uzun Kollu Düğmeli Cep Detaylı Midi Kaşkorse Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 52,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-194044-1-efb54673305f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194044-fa409fe6061c53d8.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194044-c115ab306963b51c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194044-8ec9abce5b12ee56.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194044-e703086519d499d5.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194044-a1d82ac00db6e55a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194044-b60aad0cfe819cb7.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5dd0da85-139c-4b1d-9200-bc319dd7d1ca/front.jpg",
+          "sha256": "0271e885ff964351bf8044e7f1dd5b04c710dc2740f7d3650385d21c1030be22",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1038,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1038-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5dd0da85-139c-4b1d-9200-bc319dd7d1ca/back.jpg",
+          "sha256": "b0f60bc26e7cfa64ce8de97ccfca842aff52a02e1fbf8dde088c2ac0574d8e13",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1038,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1038-back-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
