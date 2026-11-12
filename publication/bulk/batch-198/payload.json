@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-198",
+  "created_at": "2026-11-12T20:06:13.342347+00:00",
+  "catalog_poll_at": "2026-11-12T20:06:13.342347+00:00",
+  "products": [
+    {
+      "product_id": "b1cdcf28-65c4-45d4-a0b4-88f4bc79a004",
+      "sample": 427,
+      "name": "Askılı Yuvarlak Yaka Şerit Detaylı Yırtmaçlı Midi Triko Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 143,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/28d1687c7a2e961cad2a.jpeg",
+        "https://modayakamoz.com/orj/6334e8fbc871660e4f01.jpeg",
+        "https://modayakamoz.com/orj/a68f996d467c5f23f0e9.jpeg",
+        "https://modayakamoz.com/orj/9d81ae9c66e0c4ea45e3.jpeg",
+        "https://modayakamoz.com/orj/84b66d236dcf7734add0.jpeg",
+        "https://modayakamoz.com/orj/2763ddf40285c406245a.jpeg",
+        "https://modayakamoz.com/orj/ff8a3ed487f5a4216004.jpeg",
+        "https://modayakamoz.com/orj/e3a08e9ca9aece6ffe73.jpeg",
+        {
+          "id": "ad6f490b-00bf-4f8b-966d-bf0bc672e5ca",
+          "url": "https://cdn.meluni.com.tr/ai-products/b1cdcf28-65c4-45d4-a0b4-88f4bc79a004-olcu-oto-6a31bcad.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:22:49.684155+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "b1cdcf28-65c4-45d4-a0b4-88f4bc79a004/front.jpg",
+          "sha256": "4ea4930c3a9aac3c4d458d91ff2f59e108c2764afdc457a0a6a25d31428a1037",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 427,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b1cdcf28/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b1cdcf28-65c4-45d4-a0b4-88f4bc79a004/back.jpg",
+          "sha256": "ea699191d76f627e2bfcc0de8766a48e7b9e3cd377b9f0aa27257931cf6eba24",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 427,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b1cdcf28/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b1cdcf28-65c4-45d4-a0b4-88f4bc79a004/model.jpg",
+          "sha256": "56f2d51b585d4bfcf4fae363bbb3498a6f76947d15226c0bff60e0950f6e70e7",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 427,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b1cdcf28/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
