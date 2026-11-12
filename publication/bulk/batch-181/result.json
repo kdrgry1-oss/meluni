@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-181",
+  "published_at_utc": "2026-11-12T03:18:27.391481+00:00",
+  "products": [
+    {
+      "product_id": "b5daeb91-df65-4c57-9f82-d0e6bdee8cec",
+      "sample": 4054,
+      "name": "Üç İplik Kapüşonlu Kanguru Hoodie Çepli SweatShirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b5daeb91-df65-4c57-9f82-d0e6bdee8cec-front-d9630f0991fe.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b5daeb91-df65-4c57-9f82-d0e6bdee8cec-back-01829c7ac2e9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b5daeb91-df65-4c57-9f82-d0e6bdee8cec-model-50fab20bf0c9.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
