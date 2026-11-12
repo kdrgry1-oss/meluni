@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-201",
+  "published_at_utc": "2026-11-12T20:33:34.076536+00:00",
+  "products": [
+    {
+      "product_id": "0be1647c-faf4-4922-9d7f-cfb6e6cb2918",
+      "sample": 565,
+      "name": "Balıkçı Yaka Transparan Detay Fırsat Ürün Sandy Mini Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0be1647c-faf4-4922-9d7f-cfb6e6cb2918-front-d7cd41ee1837.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0be1647c-faf4-4922-9d7f-cfb6e6cb2918-back-63cc795a32ce.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0be1647c-faf4-4922-9d7f-cfb6e6cb2918-model-8c6e0f926caa.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
