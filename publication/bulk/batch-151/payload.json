@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-151",
+  "created_at": "2026-11-12T00:25:36.076467+00:00",
+  "catalog_poll_at": "2026-11-12T00:25:36.076467+00:00",
+  "products": [
+    {
+      "product_id": "c60f55f4-9c6b-4096-bd65-7f6f2b489a2d",
+      "sample": 3893,
+      "name": "Yüksek Bel Lastikli Bağcıklı Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 74,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/c60f55f4-9c6b-4096-bd65-7f6f2b489a2d-hd0-07b25f71.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c60f55f4-9c6b-4096-bd65-7f6f2b489a2d-hd1-6f08c7f9.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c60f55f4-9c6b-4096-bd65-7f6f2b489a2d-hd2-e41f43a7.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c60f55f4-9c6b-4096-bd65-7f6f2b489a2d-hd3-58799489.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c60f55f4-9c6b-4096-bd65-7f6f2b489a2d-hd4-61cd56f1.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c60f55f4-9c6b-4096-bd65-7f6f2b489a2d-hd5-c00d835e.jpg",
+        {
+          "id": "62c95086-6a58-439d-b1e5-87adfb026a41",
+          "url": "https://cdn.meluni.com.tr/ai-products/6e379671-fefd-4335-876d-0432d1216ca7-olcu-oto-569122c8.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:03:25.099779+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c60f55f4-9c6b-4096-bd65-7f6f2b489a2d/front.jpg",
+          "sha256": "162a6abace2dcad70c40778f6ee0251c95bea4e6a83b4addcfbb234ef0f210a0",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3893,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c60f55f4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c60f55f4-9c6b-4096-bd65-7f6f2b489a2d/back.jpg",
+          "sha256": "f5cd1e620af67ac8435c5ccb17c08b2e5982ed3be8bc1c0607495a289837aa3a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3893,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c60f55f4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c60f55f4-9c6b-4096-bd65-7f6f2b489a2d/model.jpg",
+          "sha256": "8fd43981bf28dad2f8ed19589e7a17b0491e42d90de4bf579971db6ea475cb9a",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3893,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c60f55f4/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
