@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-154",
+  "published_at_utc": "2026-11-12T00:42:24.382393+00:00",
+  "products": [
+    {
+      "product_id": "451b854d-85a5-41eb-a50d-f8e7e5b86c6b",
+      "sample": 3907,
+      "name": "Yüksek Bel Pacaya Dogru Geniş Uzun Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/451b854d-85a5-41eb-a50d-f8e7e5b86c6b-front-3e5525a05fd8.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/451b854d-85a5-41eb-a50d-f8e7e5b86c6b-back-778a0afb1ed0.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/451b854d-85a5-41eb-a50d-f8e7e5b86c6b-model-7be70d9f36dd.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
