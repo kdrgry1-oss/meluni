@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-153",
+  "created_at": "2026-11-12T00:37:07.776791+00:00",
+  "catalog_poll_at": "2026-11-12T00:37:07.776791+00:00",
+  "products": [
+    {
+      "product_id": "3cc59510-9bac-41ef-9e5e-d53198ea4f15",
+      "sample": 3906,
+      "name": "Yüksek Bel Pacaya Dogru Geniş Uzun Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 93,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3928d501de922f61ebb6.jpeg",
+        "https://modayakamoz.com/orj/6dbad0dcbc78921f9924.jpeg",
+        "https://modayakamoz.com/orj/29d39a4ed3b3c86be8dc.jpeg",
+        {
+          "id": "fa284c90-70b0-4fbe-a034-c847af5388e6",
+          "url": "https://cdn.meluni.com.tr/ai-products/3cc59510-9bac-41ef-9e5e-d53198ea4f15-olcu-oto-fa66236e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:06:09.160536+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "3cc59510-9bac-41ef-9e5e-d53198ea4f15/front.jpg",
+          "sha256": "1ffbb7ae321889578665439b7ac1543092325e567d89b7dfd7bfd20ad6fad917",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3906,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3cc59510/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3cc59510-9bac-41ef-9e5e-d53198ea4f15/back.jpg",
+          "sha256": "ffe8d259afba04568344041d1624d49dee930e0781642793ca2c87b010745ab5",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3906,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3cc59510/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3cc59510-9bac-41ef-9e5e-d53198ea4f15/model.jpg",
+          "sha256": "360353126861237cf193e2bafcc1591b7a710c4fa2fed810ac92effe74b8ae23",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3906,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3cc59510/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
