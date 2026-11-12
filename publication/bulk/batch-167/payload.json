@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-167",
+  "created_at": "2026-11-12T01:49:39.065980+00:00",
+  "catalog_poll_at": "2026-11-12T01:49:39.065980+00:00",
+  "products": [
+    {
+      "product_id": "40704358-6c95-4c79-bc8f-88db0e2a7e0c",
+      "sample": 3967,
+      "name": "Yüksel Bel Lastikli Önden Çapraz Detaylı Sandy Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 47,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4c1c3300151c8949dda9.jpeg",
+        "https://modayakamoz.com/orj/7b5c7155bc911440bf24.jpeg",
+        "https://modayakamoz.com/orj/a54dbc403e4abd98f30e.jpeg",
+        "https://modayakamoz.com/orj/ba5f48ad656325351c78.jpeg",
+        "https://modayakamoz.com/orj/52d4efe599d2f872a8d7.jpeg",
+        {
+          "id": "1f2ca2f2-3522-4125-8c48-9751a305eb9e",
+          "url": "https://cdn.meluni.com.tr/ai-products/40704358-6c95-4c79-bc8f-88db0e2a7e0c-olcu-oto-55dff570.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:06:28.691960+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "40704358-6c95-4c79-bc8f-88db0e2a7e0c/front.jpg",
+          "sha256": "e77b2e2a748c340469cb01f9de8097ab3669c8aaecdc3d732cc961b78ee49860",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3967,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-40704358/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "40704358-6c95-4c79-bc8f-88db0e2a7e0c/back.jpg",
+          "sha256": "a0ff671b41406084497759a46e147eafcec33304ba55b21fa1e30a0605ac5561",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3967,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-40704358/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "40704358-6c95-4c79-bc8f-88db0e2a7e0c/model.jpg",
+          "sha256": "ae15875189d118f656a18e8bfb18f3a492b5f3b0f6ae03f1cccd2ecf39f430b8",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 3967,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-40704358/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
