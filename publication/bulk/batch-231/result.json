@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-231",
+  "published_at_utc": "2026-11-15T23:57:32.074273+00:00",
+  "products": [
+    {
+      "product_id": "9e9cfe53-4c29-45f8-ac0e-ef3900694fd7",
+      "sample": 1608,
+      "name": "Kısa Kollu Asımetrik Yaka Detaylı Düğmeli Dubai Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9e9cfe53-4c29-45f8-ac0e-ef3900694fd7-front-365d9359fe92.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9e9cfe53-4c29-45f8-ac0e-ef3900694fd7-back-35f5112945bb.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9e9cfe53-4c29-45f8-ac0e-ef3900694fd7-model-29fd1f5f0450.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/9e9cfe53-4c29-45f8-ac0e-ef3900694fd7-size-chart-878caaff857f.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
