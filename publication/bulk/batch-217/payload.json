@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-217",
+  "created_at": "2026-11-15T20:17:38.944691+00:00",
+  "catalog_poll_at": "2026-11-15T20:17:38.944691+00:00",
+  "products": [
+    {
+      "product_id": "9a34c508-a2d4-4c92-95e6-f49d28c7700a",
+      "sample": 1472,
+      "name": "Kolsuz V Yakalı Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a0272b0d20589a80030f.jpeg",
+        "https://modayakamoz.com/orj/a7bfc889b758a28582e8.jpeg",
+        "https://modayakamoz.com/orj/4f4e88623463cf2486e4.jpeg",
+        "https://modayakamoz.com/orj/8d495fa5da4a048cfded.jpeg",
+        "https://modayakamoz.com/orj/f4da9b9c8dfefcbcdde8.jpeg",
+        {
+          "id": "be37dc40-30ed-49ba-baae-59fa4e2edc4c",
+          "url": "https://cdn.meluni.com.tr/ai-products/9a34c508-a2d4-4c92-95e6-f49d28c7700a-olcu-oto-97ab5083.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-31T05:23:09.671997+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "9a34c508-a2d4-4c92-95e6-f49d28c7700a/front.jpg",
+          "sha256": "d278336b55ced60675211cf09d56411d6358a24ba428dacc9a0782cb30ae01e2",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1472,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9a34c508/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "9a34c508-a2d4-4c92-95e6-f49d28c7700a/back.jpg",
+          "sha256": "ddc2f2859506dc4088a9cfff3ad3d369fd1f45d532fe56ad9e49afd59cac9615",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1472,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9a34c508/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9a34c508-a2d4-4c92-95e6-f49d28c7700a/fashion_model.jpg",
+          "sha256": "f7cce26487af2621a4cce0ace7d36f12ffd3771c527fdbdd08617fbbf0d26dfa",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1472,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9a34c508/model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
