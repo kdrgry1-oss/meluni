@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-222",
+  "created_at": "2026-11-15T20:58:27.316451+00:00",
+  "catalog_poll_at": "2026-11-15T20:58:27.316451+00:00",
+  "products": [
+    {
+      "product_id": "df345ec2-51a4-4231-9753-d8a2face8220",
+      "sample": 1539,
+      "name": "Kosa Kollu V Yaka ve Kol Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/817f492b09e1dd34eea2.jpeg",
+        "https://modayakamoz.com/orj/a3bbed13f07ff882da71.jpeg",
+        "https://modayakamoz.com/orj/09ae7e5a65e818a23610.jpeg",
+        "https://modayakamoz.com/orj/b27218a13880e0b17b5d.jpeg",
+        "https://modayakamoz.com/orj/8bba9cec10d22bc7b91c.jpeg",
+        {
+          "id": "3cc3b822-52d3-432f-89a7-18dbfd8e8b65",
+          "url": "https://cdn.meluni.com.tr/ai-products/df345ec2-51a4-4231-9753-d8a2face8220-olcu-oto-643bccf4.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-10T05:27:17.727034+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "df345ec2-51a4-4231-9753-d8a2face8220/front.jpg",
+          "sha256": "2419d8580c1c11ebbad8469b3b40915f3940933a2657d116fd9476af3237f1a3",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1539,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-df345ec2/front-master.jpg"
+        },
+        "back": {
+          "file": "df345ec2-51a4-4231-9753-d8a2face8220/back.jpg",
+          "sha256": "c8e5bbd4b96221653fe295c44a37fb871014631b399978513706a6df906cf8f9",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1539,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-df345ec2/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "df345ec2-51a4-4231-9753-d8a2face8220/fashion_model.jpg",
+          "sha256": "5cbb779c9fed1329da80a62e3eb648bc71dd05e3f0fc42d307fdd470666e15b8",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1539,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-df345ec2/fashion_model-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
