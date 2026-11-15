@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-229",
+  "published_at_utc": "2026-11-15T23:42:51.476195+00:00",
+  "products": [
+    {
+      "product_id": "2b78edff-5bc3-45f9-90ae-9af0682d2e05",
+      "sample": 1589,
+      "name": "Kısa Kollu Asimetrik Yaka Şerit ve Aksesuar Detaylı Modal Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2b78edff-5bc3-45f9-90ae-9af0682d2e05-front-f29cb2a8af4e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2b78edff-5bc3-45f9-90ae-9af0682d2e05-back-866d47535619.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2b78edff-5bc3-45f9-90ae-9af0682d2e05-model-6c9810cc2fdc.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/2b78edff-5bc3-45f9-90ae-9af0682d2e05-size-chart-2da05b771afa.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
