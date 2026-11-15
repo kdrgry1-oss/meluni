@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-221",
+  "created_at": "2026-11-15T20:51:55.853988+00:00",
+  "catalog_poll_at": "2026-11-15T20:51:55.853988+00:00",
+  "products": [
+    {
+      "product_id": "9376903e-3abe-452b-bb68-e839eeed625f",
+      "sample": 1520,
+      "name": "Kolsuz Önü Açık Yakalı Cepli Janjan Krep Yelek ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/9376903e-3abe-452b-bb68-e839eeed625f/9376903e-3abe-452b-bb68-e839eeed625f-hd0-640f0d39.jpg",
+        "https://cdn.meluni.com.tr/products/9376903e-3abe-452b-bb68-e839eeed625f/9376903e-3abe-452b-bb68-e839eeed625f-hd1-2cba501d.jpg",
+        "https://cdn.meluni.com.tr/products/9376903e-3abe-452b-bb68-e839eeed625f/9376903e-3abe-452b-bb68-e839eeed625f-hd2-6be7e074.jpg",
+        "https://cdn.meluni.com.tr/products/9376903e-3abe-452b-bb68-e839eeed625f/9376903e-3abe-452b-bb68-e839eeed625f-hd3-d5426b1b.jpg",
+        "https://cdn.meluni.com.tr/products/9376903e-3abe-452b-bb68-e839eeed625f/9376903e-3abe-452b-bb68-e839eeed625f-hd4-0ab5cae9.jpg",
+        {
+          "id": "a45d2389-295b-47f3-b422-b073a306be1d",
+          "url": "https://cdn.meluni.com.tr/ai-products/9376903e-3abe-452b-bb68-e839eeed625f-olcu-oto-3740c3bf.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:34:26.834118+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "9376903e-3abe-452b-bb68-e839eeed625f/front.jpg",
+          "sha256": "ea57dd1c96ac9e5d60c829f76117978d3f56d2f1f68fa52fd018ff001ea1280d",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1520,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9376903e/front-master.jpg"
+        },
+        "back": {
+          "file": "9376903e-3abe-452b-bb68-e839eeed625f/back.jpg",
+          "sha256": "3c7ad51e09f899e314f1685fc55349aae76f4c016dae79905acebbb003a8b55a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1520,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9376903e/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "9376903e-3abe-452b-bb68-e839eeed625f/fashion_model.jpg",
+          "sha256": "b59dc1474849f1b831619ff926fb2cefa63b2b3263ffcd93232d607c70a46e3c",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1520,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9376903e/fashion_model-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
