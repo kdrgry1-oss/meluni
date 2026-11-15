@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-224",
+  "published_at_utc": "2026-11-15T21:20:42.074686+00:00",
+  "products": [
+    {
+      "product_id": "b2dd378f-9428-4525-b17a-51e17e6ab985",
+      "sample": 1548,
+      "name": "Krep Midi Boy Kuşaklı 113 Cm Uzunkol Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b2dd378f-9428-4525-b17a-51e17e6ab985-front-c1ad97c04fa3.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b2dd378f-9428-4525-b17a-51e17e6ab985-back-4afd34a105e2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b2dd378f-9428-4525-b17a-51e17e6ab985-model-845354b6c0a4.jpg"
+      },
+      "gallery_image_count": 20
+    }
+  ],
+  "skipped": []
+}
