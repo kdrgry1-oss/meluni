@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-230",
+  "created_at": "2026-11-15T23:49:25.669568+00:00",
+  "catalog_poll_at": "2026-11-15T23:49:25.669568+00:00",
+  "products": [
+    {
+      "product_id": "c0480838-13db-4ae4-9f38-2476795ecc20",
+      "sample": 1607,
+      "name": "Kısa Kollu Asımetrik Yaka Detaylı Düğmeli Dubai Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 65,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/65390bc91c74bff5c6f6.jpeg",
+        "https://modayakamoz.com/orj/165fa6302625f4a8109d.jpeg",
+        "https://modayakamoz.com/orj/e66404cb42048374d8e2.jpeg",
+        "https://modayakamoz.com/orj/1042b8b708a1acfc77af.jpeg",
+        {
+          "id": "a2e032cb-72f6-4b8c-ab56-23061568c56f",
+          "url": "https://cdn.meluni.com.tr/ai-products/c0480838-13db-4ae4-9f38-2476795ecc20-olcu-oto-b02da1bb.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-21T05:27:15.633913+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c0480838-13db-4ae4-9f38-2476795ecc20/front.jpg",
+          "sha256": "dbda836d2f38a60a597e36610c94ba92a3ac1e39daa665ce13d73469297b02ed",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1607,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c0480838/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c0480838-13db-4ae4-9f38-2476795ecc20/back.jpg",
+          "sha256": "4fb84d6f63421eb551d4137f83bcb84b5b794877df4f5ca9b363e3158b6bfc75",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1607,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c0480838/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c0480838-13db-4ae4-9f38-2476795ecc20/fashion_model.jpg",
+          "sha256": "05b75e0eed9e7297d048130ed4a57830095313740f37d5d40f7763a61bb4cdd3",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1607,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c0480838/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
