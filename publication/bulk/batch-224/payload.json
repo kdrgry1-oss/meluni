@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-224",
+  "created_at": "2026-11-15T21:19:53.435617+00:00",
+  "catalog_poll_at": "2026-11-15T21:19:53.435617+00:00",
+  "products": [
+    {
+      "product_id": "b2dd378f-9428-4525-b17a-51e17e6ab985",
+      "sample": 1548,
+      "name": "Krep Midi Boy Kuşaklı 113 Cm Uzunkol Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 8,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4d4dc1dc0a9308acdde85d7853b0111a.jpeg",
+        "https://modayakamoz.com/orj/25058-2021-11-08-16-37-51.jpeg",
+        "https://modayakamoz.com/orj/25058-2021-11-08-16-38-10.jpeg",
+        "https://modayakamoz.com/orj/25058-2021-11-08-16-38-24.jpeg",
+        "https://modayakamoz.com/orj/25058-2022-01-19-15-04-32.jpeg",
+        "https://modayakamoz.com/orj/25058-2022-09-12-15-44-37.jpeg",
+        "https://modayakamoz.com/orj/25058-2022-09-21-09-30-43.jpeg",
+        "https://modayakamoz.com/orj/25058-2022-09-21-09-30-53.jpeg",
+        "https://modayakamoz.com/orj/55b2a3d02d94ac2fef80177770a39443.jpg",
+        "https://modayakamoz.com/orj/d64dc2678b8a178dc795dad62d7505f8.jpg",
+        "https://modayakamoz.com/orj/6d1c73cc132bff3de58cd128216ab908.jpg",
+        "https://modayakamoz.com/orj/873bbecbe984cb6caf5a7f3ca88a0e3a.jpg",
+        "https://modayakamoz.com/orj/f3cd6a87b7c6d6d3055f586cc654cd1c.jpeg",
+        "https://modayakamoz.com/orj/c29b6d5c6f2d33edd1a0a42e3298ae1b.jpeg",
+        "https://modayakamoz.com/orj/18a45935fe674df726b81ddca4f592f0.jpg",
+        "https://modayakamoz.com/orj/ba9354340e9048057eecd6f02c0ebfe2.jpg",
+        "https://modayakamoz.com/orj/cdef2bf95b7140140148cac43dd5446b.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b2dd378f-9428-4525-b17a-51e17e6ab985/front.jpg",
+          "sha256": "c1ad97c04fa3cf271d73e0b10b95601b79706a758b97e104ab0f9f80172bb718",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1548,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b2dd378f/front-master.jpg"
+        },
+        "back": {
+          "file": "b2dd378f-9428-4525-b17a-51e17e6ab985/back.jpg",
+          "sha256": "4afd34a105e2483be3e3e0ad561aac4d6d944d0a8162b8b55b80e2c3e980a26b",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1548,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b2dd378f/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "b2dd378f-9428-4525-b17a-51e17e6ab985/fashion_model.jpg",
+          "sha256": "845354b6c0a4ef982aa16ff7342479f9807aea77fd3176ce84a6295f0fe0f4a5",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1548,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b2dd378f/fashion_model-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
