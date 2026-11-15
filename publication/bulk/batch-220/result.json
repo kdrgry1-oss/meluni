@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-220",
+  "published_at_utc": "2026-11-15T20:46:13.799881+00:00",
+  "products": [
+    {
+      "product_id": "2240676b-1544-4e55-9cc5-0fbdf40327cf",
+      "sample": 1519,
+      "name": "Kolsuz Önü Açık Yakalı Cepli Janjan Krep Yelek ve Pantolon Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2240676b-1544-4e55-9cc5-0fbdf40327cf-front-6b8598699f96.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2240676b-1544-4e55-9cc5-0fbdf40327cf-back-e38027e08e42.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2240676b-1544-4e55-9cc5-0fbdf40327cf-model-2a383134c0fc.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
