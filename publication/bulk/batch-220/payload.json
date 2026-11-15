@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-220",
+  "created_at": "2026-11-15T20:45:11.821787+00:00",
+  "catalog_poll_at": "2026-11-15T20:45:11.821787+00:00",
+  "products": [
+    {
+      "product_id": "2240676b-1544-4e55-9cc5-0fbdf40327cf",
+      "sample": 1519,
+      "name": "Kolsuz Önü Açık Yakalı Cepli Janjan Krep Yelek ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 85,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/2240676b-1544-4e55-9cc5-0fbdf40327cf/2240676b-1544-4e55-9cc5-0fbdf40327cf-hd0-980a99c0.jpg",
+        "https://cdn.meluni.com.tr/products/2240676b-1544-4e55-9cc5-0fbdf40327cf/2240676b-1544-4e55-9cc5-0fbdf40327cf-hd1-1b189890.jpg",
+        "https://cdn.meluni.com.tr/products/2240676b-1544-4e55-9cc5-0fbdf40327cf/2240676b-1544-4e55-9cc5-0fbdf40327cf-hd2-c67984dd.jpg",
+        {
+          "id": "a852c236-9072-4aa5-8a42-fe98c708488f",
+          "url": "https://cdn.meluni.com.tr/ai-products/9376903e-3abe-452b-bb68-e839eeed625f-olcu-oto-3740c3bf.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:34:27.034347+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "2240676b-1544-4e55-9cc5-0fbdf40327cf/front.jpg",
+          "sha256": "6b8598699f96f3faf9034083382e25050bf4c6578d60951c53b7cf7378d10c10",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1519,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2240676b/front-master.jpg"
+        },
+        "back": {
+          "file": "2240676b-1544-4e55-9cc5-0fbdf40327cf/back.jpg",
+          "sha256": "e38027e08e4266ec619f36874251bfda13a91ea359011ec84ad6a123453249e5",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1519,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2240676b/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "2240676b-1544-4e55-9cc5-0fbdf40327cf/fashion_model.jpg",
+          "sha256": "2a383134c0fca28985ba40fb1ccdab07e6927724f0f3f19c22896aa8fc89ec63",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1519,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2240676b/fashion_model-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
