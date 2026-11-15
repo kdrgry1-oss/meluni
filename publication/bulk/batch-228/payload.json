@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-228",
+  "created_at": "2026-11-15T22:48:32.798966+00:00",
+  "catalog_poll_at": "2026-11-15T22:48:32.798966+00:00",
+  "products": [
+    {
+      "product_id": "a0e2c174-7ad5-4c41-adc9-b79e2102e96c",
+      "sample": 1579,
+      "name": "Kısa Kollu Asimetrik Detaylı Düğmeli Bürümcük Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 20,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8ba7a9ef90aee6cc3667e689e940987a.png",
+        "https://modayakamoz.com/orj/6c7f745a0ee89dad2b404c1b88bb9bc1.png",
+        "https://modayakamoz.com/orj/7f2947e5a2a87251ccc54bf62bb4a792.png",
+        "https://modayakamoz.com/orj/4c32e5527f4b3cd646bc8b7666a1517c.png",
+        "https://modayakamoz.com/orj/b9688aeea96045ec0c887b03b8be35dc.png",
+        "https://modayakamoz.com/orj/49f5a6e9136ccf0c3af323ca5ff026b0.jpeg",
+        {
+          "id": "8cca829c-3a6f-4c36-a991-952345795c5a",
+          "url": "https://cdn.meluni.com.tr/ai-products/f89fa7f8-8e32-4f96-83bc-52d0ec4dda58-olcu-oto-1ab85cb8.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-10-09T05:31:11.750939+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "a0e2c174-7ad5-4c41-adc9-b79e2102e96c/front.jpg",
+          "sha256": "4e2ab3f49984d634ae45380aeda48359a406dc6093a17a0e27ad22730d980782",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1579,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0e2c174/front-master.jpg"
+        },
+        "back": {
+          "file": "a0e2c174-7ad5-4c41-adc9-b79e2102e96c/back.jpg",
+          "sha256": "6de14a2454adba84ba1c5f1c3e0b04e7f8fb2d2b495697db4b9609c38c98cd58",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1579,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0e2c174/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "a0e2c174-7ad5-4c41-adc9-b79e2102e96c/fashion_model.jpg",
+          "sha256": "54a793260e8b1d1ab0ece2de0b66b315ffbd14df4bf92504b51c7116407c50b1",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1579,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0e2c174/fashion_model-master.jpg"
+        },
+        "size_chart": {
+          "file": "a0e2c174-7ad5-4c41-adc9-b79e2102e96c/size_chart.jpg",
+          "sha256": "0be3734bd8c1b226747e8de386fd94e6aadd2aeeca908d5a8d9e8bd47b231424",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1579,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0e2c174/size_chart-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
