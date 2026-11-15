@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-216",
+  "created_at": "2026-11-15T20:12:17.571755+00:00",
+  "catalog_poll_at": "2026-11-15T20:12:17.571755+00:00",
+  "products": [
+    {
+      "product_id": "6d31afc0-0ad8-4784-b235-42cbb941a0ff",
+      "sample": 1459,
+      "name": "Kolsuz V Yakalı Aerobin Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5daabff96d503afea895.jpeg",
+        "https://modayakamoz.com/orj/65a3ee1d6a4a2216787e.jpeg",
+        "https://modayakamoz.com/orj/771466ccef8add716464.jpeg",
+        "https://modayakamoz.com/orj/54964081e22558d01fb9.jpeg",
+        "https://modayakamoz.com/orj/50bd0303b4f54b54a6a4.jpeg",
+        "https://modayakamoz.com/orj/8b43a841aff71c4291a2.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "6d31afc0-0ad8-4784-b235-42cbb941a0ff/front.jpg",
+          "sha256": "81a6ec7716e1d3b54b4567235f08068f6ac13a3191cf0d43c3dfd700cf6eb70a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1459,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6d31afc0/front-master.jpg"
+        },
+        "back": {
+          "file": "6d31afc0-0ad8-4784-b235-42cbb941a0ff/back.jpg",
+          "sha256": "62bfe355e9c505aaf1d5d21e8ae128526f92d126092323a3b09991e5e9b8cec0",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1459,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6d31afc0/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "6d31afc0-0ad8-4784-b235-42cbb941a0ff/fashion_model.jpg",
+          "sha256": "98aec853fb9351e78f1312b47ff83cfb2e0ef6d202c729c5f1728e891b741980",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1459,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6d31afc0/fashion_model-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
