@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-222",
+  "published_at_utc": "2026-11-15T20:59:16.018755+00:00",
+  "products": [
+    {
+      "product_id": "df345ec2-51a4-4231-9753-d8a2face8220",
+      "sample": 1539,
+      "name": "Kosa Kollu V Yaka ve Kol Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/df345ec2-51a4-4231-9753-d8a2face8220-front-2419d8580c1c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/df345ec2-51a4-4231-9753-d8a2face8220-back-c8e5bbd4b962.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/df345ec2-51a4-4231-9753-d8a2face8220-model-5cbb779c9fed.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
