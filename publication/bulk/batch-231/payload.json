@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-231",
+  "created_at": "2026-11-15T23:56:34.743626+00:00",
+  "catalog_poll_at": "2026-11-15T23:56:34.743626+00:00",
+  "products": [
+    {
+      "product_id": "9e9cfe53-4c29-45f8-ac0e-ef3900694fd7",
+      "sample": 1608,
+      "name": "Kısa Kollu Asımetrik Yaka Detaylı Düğmeli Dubai Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 110,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ba636e6c4d49affc1341.jpeg",
+        "https://modayakamoz.com/orj/7247ae2c144410f99144.jpeg",
+        "https://modayakamoz.com/orj/b2dfa9db15c0c239000b.jpeg",
+        "https://modayakamoz.com/orj/2b23c218bda65c2983e1.jpeg",
+        "https://modayakamoz.com/orj/fac0ae9753600a6cd27c.jpeg",
+        {
+          "id": "057ad8c2-2e81-4f35-bb95-b6ce5b82aad6",
+          "url": "https://cdn.meluni.com.tr/ai-products/c0480838-13db-4ae4-9f38-2476795ecc20-olcu-oto-b02da1bb.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-21T05:27:15.775776+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "9e9cfe53-4c29-45f8-ac0e-ef3900694fd7/front.jpg",
+          "sha256": "365d9359fe9234473c0a49c436b238e495ddd07eae32cde0b5ed0b741fa5c46a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1608,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9e9cfe53/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "9e9cfe53-4c29-45f8-ac0e-ef3900694fd7/back.jpg",
+          "sha256": "35f5112945bbf74002f31641d151dd2045c78aa9b53dd4dcdabd70e3652d5a29",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1608,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9e9cfe53/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9e9cfe53-4c29-45f8-ac0e-ef3900694fd7/fashion_model.jpg",
+          "sha256": "29fd1f5f0450ba87865f93feea009990189eaa171f1b62f008137a929752b6c7",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1608,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9e9cfe53/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "9e9cfe53-4c29-45f8-ac0e-ef3900694fd7/size_chart.jpg",
+          "sha256": "878caaff857f1b2e965cb42ee0d40e895cee2aa8a87ed47cc21cf5dc03c1c043",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1608,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9e9cfe53/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
