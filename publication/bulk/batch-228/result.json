@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-228",
+  "published_at_utc": "2026-11-15T22:49:28.609926+00:00",
+  "products": [
+    {
+      "product_id": "a0e2c174-7ad5-4c41-adc9-b79e2102e96c",
+      "sample": 1579,
+      "name": "Kısa Kollu Asimetrik Detaylı Düğmeli Bürümcük Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a0e2c174-7ad5-4c41-adc9-b79e2102e96c-front-4e2ab3f49984.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a0e2c174-7ad5-4c41-adc9-b79e2102e96c-back-6de14a2454ad.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a0e2c174-7ad5-4c41-adc9-b79e2102e96c-model-54a793260e8b.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/a0e2c174-7ad5-4c41-adc9-b79e2102e96c-size-chart-0be3734bd8c1.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
