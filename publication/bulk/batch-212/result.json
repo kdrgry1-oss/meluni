@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-212",
+  "published_at_utc": "2026-11-15T14:35:12.928134+00:00",
+  "products": [
+    {
+      "product_id": "72713973-321e-424a-abcd-7aea884b2cb9",
+      "sample": 1478,
+      "name": "Kolsuz Yaka Onu Düğmeli Kuşaklı Uzun Trikoton Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/72713973-321e-424a-abcd-7aea884b2cb9-front-20f0b8b299fb.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/72713973-321e-424a-abcd-7aea884b2cb9-back-f073ef24f6db.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/72713973-321e-424a-abcd-7aea884b2cb9-model-bd081fbad322.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
