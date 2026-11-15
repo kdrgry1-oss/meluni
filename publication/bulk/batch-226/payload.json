@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-226",
+  "created_at": "2026-11-15T22:22:54.066437+00:00",
+  "catalog_poll_at": "2026-11-15T22:22:54.066437+00:00",
+  "products": [
+    {
+      "product_id": "a089f9ec-a82f-4017-83a4-7e9f99392d1a",
+      "sample": 1560,
+      "name": "Kruvaze Yakalı Bağlamalı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2abb0abb5086c57beccf.jpeg",
+        "https://modayakamoz.com/orj/1dc384080159dd426366.jpeg",
+        "https://modayakamoz.com/orj/9e01fa5466c9ae96a8f3.jpeg",
+        "https://modayakamoz.com/orj/966f74867e56a0d20722.jpeg",
+        {
+          "id": "d9e4b045-37e4-4e8d-a566-6d39d48bcfe1",
+          "url": "https://cdn.meluni.com.tr/ai-products/f7f6677f-f358-4f6a-90a7-b7230de10e6f-olcu-oto-4bafe2bd.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-03T05:25:57.667536+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "a089f9ec-a82f-4017-83a4-7e9f99392d1a/front.jpg",
+          "sha256": "dc223527a17df74ea051c0df9d3486412019c94c28dd5ca2ed9a0cc7a4dc9beb",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1560,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a089f9ec/front-master.jpg"
+        },
+        "back": {
+          "file": "a089f9ec-a82f-4017-83a4-7e9f99392d1a/back.jpg",
+          "sha256": "18a02006be0e4fc1011140622e0d903f4ed47eeba3de6fe08e1efbd0acd83693",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1560,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a089f9ec/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "a089f9ec-a82f-4017-83a4-7e9f99392d1a/fashion_model.jpg",
+          "sha256": "e12fc936c41b4da5395f01829e588b7225b4990460c7fd0e65e61a84eeb0ea2b",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1560,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a089f9ec/fashion_model-master.jpg"
+        },
+        "size_chart": {
+          "file": "a089f9ec-a82f-4017-83a4-7e9f99392d1a/size_chart.jpg",
+          "sha256": "a2432f59782967ca78e3e58e8dd73a97f724fd9511b24b33627f46468f8fb23c",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1560,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a089f9ec/size_chart-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
