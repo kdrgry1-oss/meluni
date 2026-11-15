@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-229",
+  "created_at": "2026-11-15T23:42:00.894670+00:00",
+  "catalog_poll_at": "2026-11-15T23:42:00.894670+00:00",
+  "products": [
+    {
+      "product_id": "2b78edff-5bc3-45f9-90ae-9af0682d2e05",
+      "sample": 1589,
+      "name": "Kısa Kollu Asimetrik Yaka Şerit ve Aksesuar Detaylı Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 59,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3c552a12309d5fd45807.jpeg",
+        "https://modayakamoz.com/orj/1014719a355f50ea82ee.jpeg",
+        "https://modayakamoz.com/orj/4904c9c802f99d362d88.jpeg",
+        "https://modayakamoz.com/orj/ad59306bc2c56ace8ece.jpeg",
+        "https://modayakamoz.com/orj/d8faadfacfe728cec4fc.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "2b78edff-5bc3-45f9-90ae-9af0682d2e05/front.jpg",
+          "sha256": "f29cb2a8af4ea115067012b345b86c30b24488d9950dd61d465a0d2df7a5efb2",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1589,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2b78edff/front-master.jpg"
+        },
+        "back": {
+          "file": "2b78edff-5bc3-45f9-90ae-9af0682d2e05/back.jpg",
+          "sha256": "866d47535619388e293bd50051562c53140ace8b2b30c9a85b38d84114ee334f",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1589,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2b78edff/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "2b78edff-5bc3-45f9-90ae-9af0682d2e05/fashion_model.jpg",
+          "sha256": "6c9810cc2fdc1b34dac0f88bf7aa855587b0b3cc9e473693b16513306c98c4f8",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1589,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2b78edff/fashion_model-master.jpg"
+        },
+        "size_chart": {
+          "file": "2b78edff-5bc3-45f9-90ae-9af0682d2e05/size_chart.jpg",
+          "sha256": "2da05b771afa4d8762a26570d7ceb728b6c145ca460f5728cd1d59bd4468684e",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1589,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2b78edff/size_chart-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
