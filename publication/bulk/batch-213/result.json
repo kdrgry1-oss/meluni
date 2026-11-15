@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-213",
+  "published_at_utc": "2026-11-15T14:50:26.254494+00:00",
+  "products": [
+    {
+      "product_id": "6e1d7d03-eab3-4b96-b32d-2b7cdc59402d",
+      "sample": 1406,
+      "name": "Kolsuz Düğmeli Yelek ve Pantolon Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6e1d7d03-eab3-4b96-b32d-2b7cdc59402d-front-42a7f13fcc43.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6e1d7d03-eab3-4b96-b32d-2b7cdc59402d-back-12050629102b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6e1d7d03-eab3-4b96-b32d-2b7cdc59402d-model-28c257ef2036.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
