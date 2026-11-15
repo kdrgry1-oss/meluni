@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-214",
+  "created_at": "2026-11-15T14:55:43.230709+00:00",
+  "catalog_poll_at": "2026-11-15T14:55:43.230709+00:00",
+  "products": [
+    {
+      "product_id": "0068dcf6-33f7-49aa-ac4a-989be98f7db3",
+      "sample": 1407,
+      "name": "Kolsuz Düğmeli Yelek ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 121,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/0068dcf6-33f7-49aa-ac4a-989be98f7db3/0068dcf6-33f7-49aa-ac4a-989be98f7db3-hd0-e697dfb7.jpg",
+        "https://cdn.meluni.com.tr/products/0068dcf6-33f7-49aa-ac4a-989be98f7db3/0068dcf6-33f7-49aa-ac4a-989be98f7db3-hd1-884567a9.jpg",
+        "https://cdn.meluni.com.tr/products/0068dcf6-33f7-49aa-ac4a-989be98f7db3/0068dcf6-33f7-49aa-ac4a-989be98f7db3-hd2-b285d953.jpg",
+        "https://cdn.meluni.com.tr/products/0068dcf6-33f7-49aa-ac4a-989be98f7db3/0068dcf6-33f7-49aa-ac4a-989be98f7db3-hd3-b1e25a69.jpg",
+        "https://cdn.meluni.com.tr/products/0068dcf6-33f7-49aa-ac4a-989be98f7db3/0068dcf6-33f7-49aa-ac4a-989be98f7db3-hd4-2ad41242.jpg",
+        {
+          "id": "6f53635f-69d2-483c-9b5b-ca97143e9bde",
+          "url": "https://cdn.meluni.com.tr/ai-products/0068dcf6-33f7-49aa-ac4a-989be98f7db3-olcu-oto-27b5d487.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:35:01.914531+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "0068dcf6-33f7-49aa-ac4a-989be98f7db3/front.jpg",
+          "sha256": "4d35edcdc667d55600ecb2af42c26707c39b2170d6e435045f5d8c0535e42882",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1407,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0068dcf6/front-master.jpg"
+        },
+        "back": {
+          "file": "0068dcf6-33f7-49aa-ac4a-989be98f7db3/back.jpg",
+          "sha256": "d4290ba7dee317657b3896cedc7338ee41c9f560779bd79f12eeb8eb8f511ef8",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1407,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0068dcf6/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "0068dcf6-33f7-49aa-ac4a-989be98f7db3/fashion_model.jpg",
+          "sha256": "19c5eaa13554ccb37f56d5b3d0b8697d7a0b40c4c558988cedd2d0bc7609ec48",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1407,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0068dcf6/fashion_model-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
