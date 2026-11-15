@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-232",
+  "published_at_utc": "2026-11-15T23:59:38.279164+00:00",
+  "products": [
+    {
+      "product_id": "c0480838-13db-4ae4-9f38-2476795ecc20",
+      "sample": 1607,
+      "name": "Kısa Kollu Asımetrik Yaka Detaylı Düğmeli Dubai Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/c0480838-13db-4ae4-9f38-2476795ecc20-size-chart-878caaff857f.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
