@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-217",
+  "published_at_utc": "2026-11-15T20:18:32.978171+00:00",
+  "products": [
+    {
+      "product_id": "9a34c508-a2d4-4c92-95e6-f49d28c7700a",
+      "sample": 1472,
+      "name": "Kolsuz V Yakalı Janjan Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9a34c508-a2d4-4c92-95e6-f49d28c7700a-front-d278336b55ce.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9a34c508-a2d4-4c92-95e6-f49d28c7700a-back-ddc2f2859506.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9a34c508-a2d4-4c92-95e6-f49d28c7700a-model-f7cce26487af.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
