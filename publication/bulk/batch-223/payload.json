@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-223",
+  "created_at": "2026-11-15T21:11:50.710341+00:00",
+  "catalog_poll_at": "2026-11-15T21:11:50.710341+00:00",
+  "products": [
+    {
+      "product_id": "1438061f-7201-4a2f-be33-a4a627389603",
+      "sample": 1554,
+      "name": "Kruvaze Yaka Balon Kol Simli Krep Midi Boy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1891930b1c64b438887af70f327af9cb.jpg",
+        "https://modayakamoz.com/orj/0b5227474eb614c2a44e53827b78dc10.jpg",
+        "https://modayakamoz.com/orj/fb1e8263fe8ff018e2b4434b5da7faf4.jpg",
+        "https://modayakamoz.com/orj/b75f01dde3080647b7f6cc0c0d6e2422.jpg",
+        "https://modayakamoz.com/orj/862af4d5de64d957f6cbb719b29542ab.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "1438061f-7201-4a2f-be33-a4a627389603/front.jpg",
+          "sha256": "675de6dd78db3fcb598eacbda649f916abc23b6d678afb37ed7068cbac61962a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1554,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1438061f/front-master.jpg"
+        },
+        "back": {
+          "file": "1438061f-7201-4a2f-be33-a4a627389603/back.jpg",
+          "sha256": "b1aad61e5e40bb8f82e01753318881b4657672e96047a8901bbe65fe4d2c8673",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1554,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1438061f/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "1438061f-7201-4a2f-be33-a4a627389603/fashion_model.jpg",
+          "sha256": "c9c33e9b932a0816e759d955f60f37f9c6bc1bda0cd21347ccef1f1448f069f7",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1554,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1438061f/fashion_model-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
