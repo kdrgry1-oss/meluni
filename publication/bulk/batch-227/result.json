@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-227",
+  "published_at_utc": "2026-11-15T22:39:54.677363+00:00",
+  "products": [
+    {
+      "product_id": "f7f6677f-f358-4f6a-90a7-b7230de10e6f",
+      "sample": 1559,
+      "name": "Kruvaze Yakalı Bağlamalı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f7f6677f-f358-4f6a-90a7-b7230de10e6f-front-0e2d741215b7.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/f7f6677f-f358-4f6a-90a7-b7230de10e6f-back-065631cbce3e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f7f6677f-f358-4f6a-90a7-b7230de10e6f-model-5eafc6574712.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f7f6677f-f358-4f6a-90a7-b7230de10e6f-size-chart-a2432f597829.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
