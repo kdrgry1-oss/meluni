@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-210",
+  "created_at": "2026-11-15T14:22:45.646848+00:00",
+  "catalog_poll_at": "2026-11-15T14:22:45.646848+00:00",
+  "products": [
+    {
+      "product_id": "45b0dd05-74f6-4178-b855-8b2f0f21d648",
+      "sample": 1480,
+      "name": "Kolsuz Yaka Onu Düğmeli Kuşaklı Uzun Trikoton Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 218,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/80bf0a1b0e5e268bfd04.jpeg",
+        "https://modayakamoz.com/orj/463d4b2bfbf79ac4d2a3.jpeg",
+        "https://modayakamoz.com/orj/94733a06a0c98f1fcde0.jpeg",
+        "https://modayakamoz.com/orj/54f4649b330713cdc249.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "45b0dd05-74f6-4178-b855-8b2f0f21d648/front.jpg",
+          "sha256": "7d45dbca1686cf39f0c4bd97f323b67e61f43d3f48ee78188d964217970675cc",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1480,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-45b0dd05/front-master.jpg"
+        },
+        "back": {
+          "file": "45b0dd05-74f6-4178-b855-8b2f0f21d648/back.jpg",
+          "sha256": "8f54455c1dbbc62f079850e914295ceb01d6c062945cf281e769de36ed4353db",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1480,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-45b0dd05/back-master.jpg"
+        },
+        "fashion_model": {
+          "file": "45b0dd05-74f6-4178-b855-8b2f0f21d648/fashion_model.jpg",
+          "sha256": "73f76d853fd2891cd2d6c523e29771e9115d10c1012905199d6a36a173822219",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1480,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-45b0dd05/fashion_model-master.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
