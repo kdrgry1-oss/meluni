@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-320",
+  "created_at": "2026-11-16T14:27:43.859162+00:00",
+  "catalog_poll_at": "2026-11-16T14:27:43.859162+00:00",
+  "products": [
+    {
+      "product_id": "f0131fb5-3317-41f0-b282-68e72f066f55",
+      "sample": 2672,
+      "name": "Omuzlardan Açık Devrik Yaka Formunda Kısa Triko Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 56,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/61cd194795ddbe96d7db.jpeg",
+        "https://modayakamoz.com/orj/bd2c2b49b27d2423cbf9.jpeg",
+        "https://modayakamoz.com/orj/0ee76da4d47ee9224422.jpeg",
+        "https://modayakamoz.com/orj/48b2da345b903f226491.jpeg",
+        {
+          "id": "f635a034-d893-459e-a95f-90352411688f",
+          "url": "https://cdn.meluni.com.tr/ai-products/7ce18ee4-0f6b-4b2f-a1d5-d0a909a0ce20-olcu-oto-e8d307aa.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:24:56.869339+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "f0131fb5-3317-41f0-b282-68e72f066f55/front.jpg",
+          "sha256": "8c68b0076b20d496495972aad3f16e4c721ca768c3ab4d3df8b2057f45b518a1",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2672,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f0131fb5/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f0131fb5-3317-41f0-b282-68e72f066f55/back.jpg",
+          "sha256": "e8f9e6eb5bbda3a2112fdebb9860501c0d794cd417247da1ad4d83dd0eefe2a3",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2672,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f0131fb5/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f0131fb5-3317-41f0-b282-68e72f066f55/fashion_model.jpg",
+          "sha256": "2f15bfaa49b565f86ec44ca96d97e889878b129787cf580482975d5e751001ba",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2672,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f0131fb5/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "f0131fb5-3317-41f0-b282-68e72f066f55/size_chart.jpg",
+          "sha256": "0774e980a08a0bf22a69545ea1bfd65cc4c395de994395cfa3935463fa78db30",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2672,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f0131fb5/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
