@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-338",
+  "created_at": "2026-11-16T21:28:21.279277+00:00",
+  "catalog_poll_at": "2026-11-16T21:28:21.279277+00:00",
+  "products": [
+    {
+      "product_id": "b758e658-fb3a-4b0d-bb57-61cf815033a1",
+      "sample": 2904,
+      "name": "Tek Askılı Beli Kuşaklı Yırtmaçlı Uzun Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 19,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b999387f0e94f533f692.jpeg",
+        "https://modayakamoz.com/orj/247a31429f52aabc1006.jpeg",
+        "https://modayakamoz.com/orj/94ff4b03b096c918b3f4.jpeg",
+        {
+          "id": "4a1f7dc4-d349-4cff-ab0e-b85c18b8b493",
+          "url": "https://cdn.meluni.com.tr/ai-products/b758e658-fb3a-4b0d-bb57-61cf815033a1-olcu-oto-75d42312.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:22:28.058680+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "b758e658-fb3a-4b0d-bb57-61cf815033a1/front.jpg",
+          "sha256": "06da11ab08d4dad0ca7ea9f6ef66ac5eceb9862140705bdef2f8a0b1a8cafd45",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2904,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b758e658/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b758e658-fb3a-4b0d-bb57-61cf815033a1/back.jpg",
+          "sha256": "93edcc213f8936af6a0de75110de1738c5d2487ccb1cbe7d01d8edf7e89e1ee0",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2904,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b758e658/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b758e658-fb3a-4b0d-bb57-61cf815033a1/fashion_model.jpg",
+          "sha256": "88b33b9fcafb62693e30483b9163494164c891633f038a280892f62a22afb5ce",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2904,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b758e658/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
