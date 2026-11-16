@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-314",
+  "created_at": "2026-11-16T13:30:23.727427+00:00",
+  "catalog_poll_at": "2026-11-16T13:30:23.727427+00:00",
+  "products": [
+    {
+      "product_id": "91c68d26-000b-40a3-91fc-ec792c2e0cd9",
+      "sample": 2630,
+      "name": "Omuzlardan Açık Balıkçı Yaka Dantel Detaylı Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 38,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f1cccf35cfc25a1857e0.jpeg",
+        "https://modayakamoz.com/orj/370ad878f919c083facb.jpeg",
+        "https://modayakamoz.com/orj/ef9249a8c03775f1f2dc.jpeg",
+        "https://modayakamoz.com/orj/8114b888b471c3bfbde9.jpeg",
+        "https://modayakamoz.com/orj/bb96c0af8ae6f10591aa.jpeg",
+        "https://modayakamoz.com/orj/7efa6f7ec5d43cd869cd.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "91c68d26-000b-40a3-91fc-ec792c2e0cd9/front.jpg",
+          "sha256": "18e13d623eef1e655bedab51341987f81ff9c16dd833cc366a731130b8a68c07",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2630,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91c68d26/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "91c68d26-000b-40a3-91fc-ec792c2e0cd9/back.jpg",
+          "sha256": "abdf3bd51e1d239caa87d74061f3ac9d947a1f6d281c8935c00d1b53c3d98994",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2630,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91c68d26/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "91c68d26-000b-40a3-91fc-ec792c2e0cd9/fashion_model.jpg",
+          "sha256": "499da0cde485fcfdbba93153a7f17f43c9823754f5d880dc289d602c00902a9d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2630,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91c68d26/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "91c68d26-000b-40a3-91fc-ec792c2e0cd9/size_chart.jpg",
+          "sha256": "ad4384c42d263f6c68c6d549df17af1cb1189290a1b740e0639ef93f7a147c10",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2630,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91c68d26/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
