@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-316",
+  "published_at_utc": "2026-11-16T13:51:23.520109+00:00",
+  "products": [
+    {
+      "product_id": "69b3d246-a9b1-4ea3-8d67-d93cf742eddf",
+      "sample": 2665,
+      "name": "Omuzlardan Açık Degaje Yakalı Toka Detaylı Viskon Kısa Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/69b3d246-a9b1-4ea3-8d67-d93cf742eddf-front-827a9d429b17.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/69b3d246-a9b1-4ea3-8d67-d93cf742eddf-back-ad84e03dba1c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/69b3d246-a9b1-4ea3-8d67-d93cf742eddf-model-796846478805.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/69b3d246-a9b1-4ea3-8d67-d93cf742eddf-size-chart-db48ad1f12e6.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
