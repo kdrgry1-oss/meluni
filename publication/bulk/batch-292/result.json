@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-292",
+  "published_at_utc": "2026-11-16T08:25:11.791364+00:00",
+  "products": [
+    {
+      "product_id": "e9747340-3af3-49a8-8147-e962b376f9bf",
+      "sample": 2248,
+      "name": "Kısa Kollu V Yakalı Omuzlardan Açık Salaş Şifon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e9747340-3af3-49a8-8147-e962b376f9bf-front-e315ea23d48e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e9747340-3af3-49a8-8147-e962b376f9bf-back-64c2cb2911cd.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e9747340-3af3-49a8-8147-e962b376f9bf-model-c880716f2158.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e9747340-3af3-49a8-8147-e962b376f9bf-size-chart-ec2ba4e02773.jpg"
+      },
+      "gallery_image_count": 14
+    }
+  ],
+  "skipped": []
+}
