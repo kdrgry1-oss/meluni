@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-311",
+  "created_at": "2026-11-16T13:02:21.492490+00:00",
+  "catalog_poll_at": "2026-11-16T13:02:21.492490+00:00",
+  "products": [
+    {
+      "product_id": "bc06d3eb-da0e-44ba-b803-7750ea05fd28",
+      "sample": 2494,
+      "name": "Kısa Kollu Önü Açık Bürümcük Ceket ve Şort Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a215693e1d3c4e1d04ba.jpeg",
+        "https://modayakamoz.com/orj/6200d6259564646e12f2.jpeg",
+        "https://modayakamoz.com/orj/4d8b7073db4c78faf26b.jpeg",
+        "https://modayakamoz.com/orj/df2d040212be1a9b90b4.jpeg",
+        "https://modayakamoz.com/orj/af134245842f684f14d7.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "bc06d3eb-da0e-44ba-b803-7750ea05fd28/front.jpg",
+          "sha256": "cf5d27a9a48016b9a71f485bf536bcadb2087092148ee2792b0c54da313d2818",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2494,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bc06d3eb/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "bc06d3eb-da0e-44ba-b803-7750ea05fd28/back.jpg",
+          "sha256": "cce6d6e1dffaff86f8007949b4922c37c565a728440832a0e80dcda5a13010d5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2494,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bc06d3eb/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bc06d3eb-da0e-44ba-b803-7750ea05fd28/fashion_model.jpg",
+          "sha256": "df76eb51a0a67a2a1f90e7b8bd805f4e5787f4181d64fa1866ca64d275af0b2e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2494,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bc06d3eb/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "bc06d3eb-da0e-44ba-b803-7750ea05fd28/size_chart.jpg",
+          "sha256": "7e0057a37093ed1fcf0a0139630514e0fdc3526951acf2bdd3cbfcb339d752b6",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2494,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bc06d3eb/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
