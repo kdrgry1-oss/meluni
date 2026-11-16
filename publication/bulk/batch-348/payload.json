@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-348",
+  "created_at": "2026-11-16T22:28:23.882045+00:00",
+  "catalog_poll_at": "2026-11-16T22:28:23.882045+00:00",
+  "products": [
+    {
+      "product_id": "fae331f3-a424-42de-9ea0-8d076cafd3e1",
+      "sample": 3108,
+      "name": "Uzun Kollu Bisiklet Yaka Kuşaklı Midi Waffle Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 83,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192517-1-7f4722c133.jpg",
+        "https://modayakamoz.com/orj/janes-192517-2-83f36a818b.jpg",
+        "https://modayakamoz.com/orj/janes-192517-3-b6933ff75a.jpg",
+        "https://modayakamoz.com/orj/janes-192517-7-b95aa4e45e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "fae331f3-a424-42de-9ea0-8d076cafd3e1/front.jpg",
+          "sha256": "fb0ca24c3fd0da351e879974f52c0787fa399e2748ff8e47084d36885c0ca168",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3108,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fae331f3/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "fae331f3-a424-42de-9ea0-8d076cafd3e1/back.jpg",
+          "sha256": "2d34fcba6894d509fd272bfdfac1e3edbd716bc6a2eaba597ef4827b4aaf536a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3108,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fae331f3/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "fae331f3-a424-42de-9ea0-8d076cafd3e1/fashion_model.jpg",
+          "sha256": "ddfcc976640e302f74f52e05605aebbe25321a7827014e47c894f973f509b0a4",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3108,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fae331f3/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "fae331f3-a424-42de-9ea0-8d076cafd3e1/size_chart.jpg",
+          "sha256": "cd9ffd7633b41065c09cb7cc70403d8dc78605435d7027136923054c3d882407",
+          "qa_status": "exact_source_values_verified",
+          "sample": 3108,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fae331f3/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
