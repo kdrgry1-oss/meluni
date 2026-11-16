@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-329",
+  "published_at_utc": "2026-11-16T19:25:31.638946+00:00",
+  "products": [
+    {
+      "product_id": "b5afd215-7cdf-4e4b-962b-db99c28afc3d",
+      "sample": 2721,
+      "name": "Omuzlardan Açık Yuvarlak Yakalı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b5afd215-7cdf-4e4b-962b-db99c28afc3d-front-d087263d7f63.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b5afd215-7cdf-4e4b-962b-db99c28afc3d-back-dba918e75242.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b5afd215-7cdf-4e4b-962b-db99c28afc3d-model-f05073ae5de2.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b5afd215-7cdf-4e4b-962b-db99c28afc3d-size-chart-a8fb932d4f41.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
