@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-272",
+  "created_at": "2026-11-16T05:48:05.324460+00:00",
+  "catalog_poll_at": "2026-11-16T05:48:05.324460+00:00",
+  "products": [
+    {
+      "product_id": "ddb0caa5-a507-48b8-8e88-dbc19d651abb",
+      "sample": 2089,
+      "name": "Kısa Kollu V Yaka ve Ribana Detay Midiboy Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 84,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/620ed16df2603a74149e76e11232426b.jpeg",
+        "https://modayakamoz.com/orj/1ace8248626096549c1e5ba9ba870972.jpeg",
+        "https://modayakamoz.com/orj/a9157ea79f8de745c25168c18ed9e0a0.jpeg",
+        "https://modayakamoz.com/orj/859f60865557b345ac0c66aa9bdd7559.jpeg",
+        "https://modayakamoz.com/orj/2ff11164c7e377492c05b14045ea26d0.jpeg",
+        "https://modayakamoz.com/orj/5c14e97c18c53c50b80417f3e2e38ca9.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/ddb0caa5-a507-48b8-8e88-dbc19d651abb/948f5039e6cc3aea.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "ddb0caa5-a507-48b8-8e88-dbc19d651abb/front.jpg",
+          "sha256": "ba2cb4752250a958e825521c0a8a718c1bd01d8de02d5a17ebb0254abb7d8780",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2089,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ddb0caa5/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ddb0caa5-a507-48b8-8e88-dbc19d651abb/back.jpg",
+          "sha256": "b663ffa5c4361f03d3146e229aa0a1cc2ab8bbf27cea0cf75da08b5ac0708bf0",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2089,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ddb0caa5/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ddb0caa5-a507-48b8-8e88-dbc19d651abb/fashion_model.jpg",
+          "sha256": "48dcb22fa9ca34fb9e27fd510472abcaeb1048dd1eb9726e9361284d9481ec6a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2089,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ddb0caa5/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "ddb0caa5-a507-48b8-8e88-dbc19d651abb/size_chart.jpg",
+          "sha256": "948f5039e6cc3aeae67c66f887bfcc819154df3c81fd892b7cfd6dae7af7b5e4",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2089,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ddb0caa5/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
