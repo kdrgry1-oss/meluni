@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-271",
+  "published_at_utc": "2026-11-16T05:41:21.122643+00:00",
+  "products": [
+    {
+      "product_id": "747f128a-108e-41d6-a3ac-aa9bb0991e4b",
+      "sample": 2065,
+      "name": "Kısa Kollu V Kruvaze Yakalı Dantel Detaylı Viskon Gecelik",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/747f128a-108e-41d6-a3ac-aa9bb0991e4b-front-67b7535e2288.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/747f128a-108e-41d6-a3ac-aa9bb0991e4b-back-cda070d0db9b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/747f128a-108e-41d6-a3ac-aa9bb0991e4b-model-b175078be6d8.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/747f128a-108e-41d6-a3ac-aa9bb0991e4b-size-chart-b1255d0553c6.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
