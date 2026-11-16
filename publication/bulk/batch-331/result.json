@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-331",
+  "published_at_utc": "2026-11-16T20:43:23.121833+00:00",
+  "products": [
+    {
+      "product_id": "71bb2ae8-1744-41d8-bea0-386e84130be2",
+      "sample": 2759,
+      "name": "Oversize Pens Detaylı Cepli Yırtmaçlı Poplin Gömlek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/71bb2ae8-1744-41d8-bea0-386e84130be2-front-2231c9a0faf4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/71bb2ae8-1744-41d8-bea0-386e84130be2-back-bf6c4bf9038d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/71bb2ae8-1744-41d8-bea0-386e84130be2-model-6a4806846975.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
