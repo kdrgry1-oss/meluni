@@ -1,0 +1,65 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-336",
+  "created_at": "2026-11-16T21:15:15.605644+00:00",
+  "catalog_poll_at": "2026-11-16T21:15:15.605644+00:00",
+  "products": [
+    {
+      "product_id": "532512ce-1f88-48f0-ada0-4d228847a793",
+      "sample": 2864,
+      "name": "Sıfır Kol Tek Omuz Damla Detay JanJan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 82,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/767eccd758551b846269.jpeg",
+        "https://modayakamoz.com/orj/55c0159e3dedb9c24183.jpeg",
+        "https://modayakamoz.com/orj/8c12a201ea4c5a986048.jpeg",
+        "https://modayakamoz.com/orj/b9a93c640c0758d518fc.jpeg",
+        "https://modayakamoz.com/orj/6a195a846c2e7f7a2a1ce25a33e87525.jpg",
+        "https://modayakamoz.com/orj/543640f37d60c40744f5c45dd569aa77.jpg",
+        "https://modayakamoz.com/orj/49fd04abaf4caaea7ea9e1a0b0869de9.jpg",
+        "https://modayakamoz.com/orj/30944b4292e32e76570e5341478dc3f4.jpg",
+        "https://modayakamoz.com/orj/df841dc40e6dcdcc9f384d5e777d2db0.jpg",
+        "https://modayakamoz.com/orj/a824d51d45098429c4c5fea9b8f9a9bd.jpg",
+        {
+          "id": "19613799-791a-4e03-b33b-03b757da53be",
+          "url": "https://cdn.meluni.com.tr/ai-products/2efe79e5-f89d-4888-90aa-91d4f18d5356-olcu-oto-d63cf54f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-17T05:26:18.334453+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "532512ce-1f88-48f0-ada0-4d228847a793/front.jpg",
+          "sha256": "a79765489cc67e0848304b26ebeaf5e655457b97e67bdec20416aced5be6122c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2864,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-532512ce/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "532512ce-1f88-48f0-ada0-4d228847a793/back.jpg",
+          "sha256": "39529ca234461cf4c900fcc93003c0de21bce6898db9e8f34a74ccaf86c4cad7",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2864,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-532512ce/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "532512ce-1f88-48f0-ada0-4d228847a793/fashion_model.jpg",
+          "sha256": "52f9e59e831ed63e22a1ebb359e670d26cb0661ac91746bfc60b77b7f92722fe",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2864,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-532512ce/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "532512ce-1f88-48f0-ada0-4d228847a793/size_chart.jpg",
+          "sha256": "2df822a71c1127c83d3e730e071b19276ab5e02123b8fca5f3c3cda15f8072cb",
+          "qa_status": "exact_source_values_verified",
+          "sample": 2864,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-532512ce/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
