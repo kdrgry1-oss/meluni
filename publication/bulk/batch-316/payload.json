@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-316",
+  "created_at": "2026-11-16T13:50:25.095944+00:00",
+  "catalog_poll_at": "2026-11-16T13:50:25.095944+00:00",
+  "products": [
+    {
+      "product_id": "69b3d246-a9b1-4ea3-8d67-d93cf742eddf",
+      "sample": 2665,
+      "name": "Omuzlardan Açık Degaje Yakalı Toka Detaylı Viskon Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f90709cbd79fb7564f66.jpeg",
+        "https://modayakamoz.com/orj/9b02906556171d56eba5.jpeg",
+        "https://modayakamoz.com/orj/10b523bb7e959bfcab25.jpeg",
+        "https://modayakamoz.com/orj/0c44c3ab8bac1e85c1b6.jpeg",
+        "https://modayakamoz.com/orj/97574e034279179eb51d.jpeg",
+        {
+          "id": "84fcb43e-b642-42e2-a533-598be2d977d9",
+          "url": "https://cdn.meluni.com.tr/ai-products/ab11d1e7-cc2d-47ee-8105-e076a35b1cd6-olcu-oto-978eb4f6.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-03T05:25:12.460807+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "69b3d246-a9b1-4ea3-8d67-d93cf742eddf/front.jpg",
+          "sha256": "827a9d429b17fd616cf9faf8925d94f51b73082ce1dcda4e04a2dc445db060cd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2665,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-69b3d246/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "69b3d246-a9b1-4ea3-8d67-d93cf742eddf/back.jpg",
+          "sha256": "ad84e03dba1c832b7000179bf8df361a0c5c356003c5cd473e8e99426d7a295c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2665,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-69b3d246/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "69b3d246-a9b1-4ea3-8d67-d93cf742eddf/fashion_model.jpg",
+          "sha256": "7968464788053086cb16ca18fc343124a568fc5c6046450a51c1fcb78b24d75d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2665,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-69b3d246/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "69b3d246-a9b1-4ea3-8d67-d93cf742eddf/size_chart.jpg",
+          "sha256": "db48ad1f12e674a201a4380156db93ab07962bec7471aa109c9a373da66f8741",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2665,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-69b3d246/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
