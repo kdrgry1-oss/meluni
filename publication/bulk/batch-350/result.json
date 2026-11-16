@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-350",
+  "published_at_utc": "2026-11-16T22:39:54.027916+00:00",
+  "products": [
+    {
+      "product_id": "0df45b47-f62a-4e3d-8428-8c489d9a0aee",
+      "sample": 3110,
+      "name": "Uzun Kollu Bisiklet Yaka Kuşaklı Midi Waffle Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0df45b47-f62a-4e3d-8428-8c489d9a0aee-front-334d012620a8.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0df45b47-f62a-4e3d-8428-8c489d9a0aee-back-39481d35180c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0df45b47-f62a-4e3d-8428-8c489d9a0aee-model-ed6dfe6b4177.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0df45b47-f62a-4e3d-8428-8c489d9a0aee-size-chart-cd9ffd7633b4.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
