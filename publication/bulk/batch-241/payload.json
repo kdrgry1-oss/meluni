@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-241",
+  "created_at": "2026-11-16T01:11:31.853898+00:00",
+  "catalog_poll_at": "2026-11-16T01:11:31.853898+00:00",
+  "products": [
+    {
+      "product_id": "6f15b776-a8bf-403d-81e8-a78e6d89c12f",
+      "sample": 1632,
+      "name": "Kısa Kollu Bisiklet Yaka Asimetrik Detaylı Bürümcük Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 117,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/00fb7a0d09fd77ec945a6ab5626615a2.jpeg",
+        "https://modayakamoz.com/orj/44557020f5f8002929bedc30ebc071bf.jpeg",
+        "https://modayakamoz.com/orj/ded04fbda88b824acae025288924a828.jpeg",
+        "https://modayakamoz.com/orj/114161fdcddbc27825a332eb31bc567f.jpeg",
+        "https://modayakamoz.com/orj/7c3ac82baf8a06e115d2ed7cf49980b6.jpeg",
+        "https://modayakamoz.com/orj/8d1012165df83e756b2b7be0742e87f4.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "6f15b776-a8bf-403d-81e8-a78e6d89c12f/front.jpg",
+          "sha256": "4215d3c7bc169d155aecddfbda9595001e4a1d6a4eb7526e07dd0582b219eda1",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1632,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6f15b776/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "6f15b776-a8bf-403d-81e8-a78e6d89c12f/back.jpg",
+          "sha256": "f62b54e05d5a002e5d821b9a2350871aa916bca8bd89475440f3e4daf22092d9",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1632,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6f15b776/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "6f15b776-a8bf-403d-81e8-a78e6d89c12f/fashion_model.jpg",
+          "sha256": "3a485912cd66445adcf7faa3534910501974acfb313d863f6ddab5c975febb74",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1632,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6f15b776/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "6f15b776-a8bf-403d-81e8-a78e6d89c12f/size_chart.jpg",
+          "sha256": "f709d8a5189beb457aec4c3d046905f1ad991a1b240a98a01d5615a86537a6dc",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1632,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6f15b776/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
