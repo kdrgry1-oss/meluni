@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-300",
+  "published_at_utc": "2026-11-16T10:47:50.853409+00:00",
+  "products": [
+    {
+      "product_id": "20bb7ffc-fa5c-4bf8-943b-68627f148051",
+      "sample": 2437,
+      "name": "Kısa Kollu Yuvarlak Yaka Düğmeli Viskon Midi Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/20bb7ffc-fa5c-4bf8-943b-68627f148051-front-83b215b79937.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/20bb7ffc-fa5c-4bf8-943b-68627f148051-back-aa91ad7182cb.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/20bb7ffc-fa5c-4bf8-943b-68627f148051-model-626a540ac867.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
