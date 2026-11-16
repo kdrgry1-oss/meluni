@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-286",
+  "created_at": "2026-11-16T07:37:02.742683+00:00",
+  "catalog_poll_at": "2026-11-16T07:37:02.742683+00:00",
+  "products": [
+    {
+      "product_id": "99967bbf-781b-4b85-b438-c26c1f0ecc75",
+      "sample": 2265,
+      "name": "Kısa Kollu V Yakalı Süs Cep Detaylı Midi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 54,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/767ed49bd6c193062760.jpeg",
+        "https://modayakamoz.com/orj/18bb8ea5d0580ae11937.jpeg",
+        "https://modayakamoz.com/orj/884499ed5103f719f5fc.jpeg",
+        {
+          "id": "90d33bc5-9e99-455e-b18c-30d6ee7fa15f",
+          "url": "https://cdn.meluni.com.tr/ai-products/99967bbf-781b-4b85-b438-c26c1f0ecc75-olcu-oto-6ac5d841.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:20:34.279873+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "99967bbf-781b-4b85-b438-c26c1f0ecc75/front.jpg",
+          "sha256": "c661bcf832c2f1c96492c74586bd35eed6300ab5956e4c4cf7402d267eb41390",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2265,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-99967bbf/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "99967bbf-781b-4b85-b438-c26c1f0ecc75/back.jpg",
+          "sha256": "5378071875380cb05734b98f658f03ea618459cec6b57f5565111d25f4483049",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2265,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-99967bbf/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "99967bbf-781b-4b85-b438-c26c1f0ecc75/fashion_model.jpg",
+          "sha256": "671deba9de69314531a4c481d1ea7c6e3f3fa85ef20de55818e64ebb2526d14d",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2265,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-99967bbf/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
