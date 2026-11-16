@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-310",
+  "created_at": "2026-11-16T12:53:11.273027+00:00",
+  "catalog_poll_at": "2026-11-16T12:53:11.273027+00:00",
+  "products": [
+    {
+      "product_id": "bd17eb04-890f-41f2-93fe-8a43ee6b8951",
+      "sample": 2499,
+      "name": "Kısa Yarasa Kollu V Yakalı Düğmeli Aerobin Gömlek",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/bde1f714c6c6fe1c4181.jpeg",
+        "https://modayakamoz.com/orj/1a3f748f8a3811b5a9b0.jpeg",
+        "https://modayakamoz.com/orj/916abe9d9291aef89121.jpeg",
+        "https://modayakamoz.com/orj/1449a43bf14a67401074.jpeg",
+        {
+          "id": "0273d933-50ff-42d5-b196-e462451db345",
+          "url": "https://cdn.meluni.com.tr/ai-products/bd17eb04-890f-41f2-93fe-8a43ee6b8951-olcu-oto-583dd862.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-31T05:20:43.947092+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "bd17eb04-890f-41f2-93fe-8a43ee6b8951/front.jpg",
+          "sha256": "219390f2feeff7e98c59df845facfe5dcddee298206e63aca9edf462f18f4af6",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2499,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bd17eb04/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "bd17eb04-890f-41f2-93fe-8a43ee6b8951/back.jpg",
+          "sha256": "eb27ff791c41595a54a3d720bd3808597a5f5b5cba123855ad021ba26349a338",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2499,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bd17eb04/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bd17eb04-890f-41f2-93fe-8a43ee6b8951/fashion_model.jpg",
+          "sha256": "0744c2b529b428c25c07521f6f6e312b0d2b19f7021a35b44cd9a76181b74294",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2499,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bd17eb04/model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
