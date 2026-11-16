@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-337",
+  "created_at": "2026-11-16T21:21:22.062931+00:00",
+  "catalog_poll_at": "2026-11-16T21:21:22.062931+00:00",
+  "products": [
+    {
+      "product_id": "ed8a866d-1681-4716-9067-3cd19b99dc94",
+      "sample": 2863,
+      "name": "Sıfır Kol Sırt Çapraz Detay Triko Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 99,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/40dda31d9e96005b500d6215c8e2376b.jpeg",
+        "https://modayakamoz.com/orj/0b1e79ca39984aef77c254aa5dec53c4.jpeg",
+        "https://modayakamoz.com/orj/e8e389d03f6d013f81ed4ab1cdc5386a.jpeg",
+        "https://modayakamoz.com/orj/c3c9a44bc3b849d39812.jpeg",
+        "https://modayakamoz.com/orj/5bcbe99d1a34f153b911.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "ed8a866d-1681-4716-9067-3cd19b99dc94/front.jpg",
+          "sha256": "4ef5f77fc30505371ce72853948f2d82a825dc3046448daa5dac7f888b6e6e6c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ed8a866d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ed8a866d-1681-4716-9067-3cd19b99dc94/back.jpg",
+          "sha256": "bdcb71be581d421c1b63d7d0fd450dde76110dd77030ae334ce31b1dd65da335",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ed8a866d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ed8a866d-1681-4716-9067-3cd19b99dc94/fashion_model.jpg",
+          "sha256": "5e920c38965f0440056baa0f989aba5adb3a6a46bf17df57e4ce6d6aa7d6ded2",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ed8a866d/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
