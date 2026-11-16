@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-273",
+  "published_at_utc": "2026-11-16T05:56:56.058354+00:00",
+  "products": [
+    {
+      "product_id": "190bab9a-a6af-48ef-bb97-985c91de2e25",
+      "sample": 2094,
+      "name": "Kısa Kollu V Yakalı Arkası Derin Bağcıklı Uzun Aerobin Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/190bab9a-a6af-48ef-bb97-985c91de2e25-front-b63cedacf52f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/190bab9a-a6af-48ef-bb97-985c91de2e25-back-97cfea611cff.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/190bab9a-a6af-48ef-bb97-985c91de2e25-model-bd3c3721b5f6.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/190bab9a-a6af-48ef-bb97-985c91de2e25-size-chart-54de263f9ca5.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
