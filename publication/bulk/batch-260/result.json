@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-260",
+  "published_at_utc": "2026-11-16T04:04:51.151423+00:00",
+  "products": [
+    {
+      "product_id": "bb24fd0d-d238-451b-9385-aab50ad97b49",
+      "sample": 1969,
+      "name": "Kısa Kollu Kruvaze Yakalı Sırttan Açık ve Bağcıklı Kısa Aerobin Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bb24fd0d-d238-451b-9385-aab50ad97b49-front-b44a5290ceb5.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/bb24fd0d-d238-451b-9385-aab50ad97b49-back-2a06bf495699.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bb24fd0d-d238-451b-9385-aab50ad97b49-model-98579829ba11.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
