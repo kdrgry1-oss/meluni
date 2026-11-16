@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-298",
+  "created_at": "2026-11-16T09:09:04.595846+00:00",
+  "catalog_poll_at": "2026-11-16T09:09:04.595846+00:00",
+  "products": [
+    {
+      "product_id": "c3380032-7a28-47a6-a580-44d3e6f92a21",
+      "sample": 2251,
+      "name": "Kısa Kollu V Yakalı Omuzlardan Şerit Detaylı Viskon Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 32,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e55c1cb232a0b1eddfde.jpeg",
+        "https://modayakamoz.com/orj/9a236ef940c6bb96dfdb.jpeg",
+        "https://modayakamoz.com/orj/6b8838611916b8af43aa.jpeg",
+        "https://modayakamoz.com/orj/c3eff8f95b3d2e5712e4.jpeg",
+        {
+          "id": "bd3d7ad2-28af-4f85-bca1-1e5754d8e4f0",
+          "url": "https://cdn.meluni.com.tr/ai-products/c3380032-7a28-47a6-a580-44d3e6f92a21-olcu-oto-283ccad3.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-02T05:19:09.398262+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c3380032-7a28-47a6-a580-44d3e6f92a21/front.jpg",
+          "sha256": "f9694501abed19b01822d9eefefb3841ba828d23060459dab2beddb68632b607",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2251,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c3380032/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c3380032-7a28-47a6-a580-44d3e6f92a21/fashion_model.jpg",
+          "sha256": "ffb5640010f816f9c6f726730d69e274f448714e9be4ace82d08d6fb95943738",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2251,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c3380032/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
