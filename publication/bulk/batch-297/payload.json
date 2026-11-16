@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-297",
+  "created_at": "2026-11-16T08:56:45.645013+00:00",
+  "catalog_poll_at": "2026-11-16T08:56:45.645013+00:00",
+  "products": [
+    {
+      "product_id": "2eedc158-0ae4-4647-8984-4d772a115809",
+      "sample": 2269,
+      "name": "Kısa Kollu V Yakalı Uzun Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 19,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7c1007a8b41ea4471c85.jpeg",
+        "https://modayakamoz.com/orj/f2bcc30fb7bbce308970.jpeg",
+        "https://modayakamoz.com/orj/eb78685c94fce6f9e259.jpeg",
+        {
+          "id": "c7074f55-ca15-462c-8e35-8236e3c2fde5",
+          "url": "https://cdn.meluni.com.tr/ai-products/2eedc158-0ae4-4647-8984-4d772a115809-olcu-oto-700e6165.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:17:30.452629+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "2eedc158-0ae4-4647-8984-4d772a115809/front.jpg",
+          "sha256": "66f6436e553a140cd18f7420e82771442f0c83be90f7258ef311bf51f88b5e35",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2269,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2eedc158/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "2eedc158-0ae4-4647-8984-4d772a115809/fashion_model.jpg",
+          "sha256": "854371eac0dbb0ccb68ef7217cf2cbca9538e88017786d783ad587251bce4f8c",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2269,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2eedc158/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
