@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-334",
+  "published_at_utc": "2026-11-16T21:02:02.610307+00:00",
+  "products": [
+    {
+      "product_id": "0cc7f9cf-4ccb-427b-823c-4ffa82e3ed15",
+      "sample": 2823,
+      "name": "Scuba Fırfırlı Midi Boy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0cc7f9cf-4ccb-427b-823c-4ffa82e3ed15-front-982ae8266b37.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0cc7f9cf-4ccb-427b-823c-4ffa82e3ed15-back-374d6762cb60.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0cc7f9cf-4ccb-427b-823c-4ffa82e3ed15-model-0c4012624613.jpg"
+      },
+      "gallery_image_count": 15
+    }
+  ],
+  "skipped": []
+}
