@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-279",
+  "created_at": "2026-11-16T06:42:06.385942+00:00",
+  "catalog_poll_at": "2026-11-16T06:42:06.385942+00:00",
+  "products": [
+    {
+      "product_id": "ff024dea-c8c7-4fb0-82d3-01a50c20a094",
+      "sample": 2212,
+      "name": "Kısa Kollu V Yakalı Kuşaklı Dantel Detaylı Kısa Aerobin Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5baf8e1fe2fabf0febde.jpeg",
+        "https://modayakamoz.com/orj/a60dc090923c2a1d6383.jpeg",
+        "https://modayakamoz.com/orj/1c1cfee0d5d1c14ad6ee.jpeg",
+        "https://modayakamoz.com/orj/e0dcec92406efcae8274.jpeg",
+        "https://modayakamoz.com/orj/b34319821f18c89df225.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "ff024dea-c8c7-4fb0-82d3-01a50c20a094/front.jpg",
+          "sha256": "4545b76d9bde28d1cc5328558f4d30abc3880cdb84b7b1fcec502263dcc39748",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2212,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ff024dea/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ff024dea-c8c7-4fb0-82d3-01a50c20a094/back.jpg",
+          "sha256": "8b4195fa85f533d7eb46a5d7e7690d1ec4ba83e71f6382eb716c2d0f2bdcd612",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2212,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ff024dea/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ff024dea-c8c7-4fb0-82d3-01a50c20a094/fashion_model.jpg",
+          "sha256": "e2318b5958ad8a5436dcc3336496fb8b2b9c26eec8cbfc12c60304a754ec7efd",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2212,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ff024dea/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
