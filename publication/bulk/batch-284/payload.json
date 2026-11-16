@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-284",
+  "created_at": "2026-11-16T07:19:43.946774+00:00",
+  "catalog_poll_at": "2026-11-16T07:19:43.946774+00:00",
+  "products": [
+    {
+      "product_id": "24803bb2-a1ce-401d-bf4e-d96cd5f9f7cf",
+      "sample": 2214,
+      "name": "Kısa Kollu V Yakalı Kısa Jakarlı Bürümcük Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 62,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/80c89da9be2f757a2121.jpeg",
+        "https://modayakamoz.com/orj/fbbaf76a0063b8342d9e.jpeg",
+        "https://modayakamoz.com/orj/52eb21ef4d64fd7021df.jpeg",
+        "https://modayakamoz.com/orj/c8e03b33757d6bcd3b2c.jpeg",
+        "https://modayakamoz.com/orj/dceccf4a80f84abcae7e.jpeg",
+        {
+          "id": "c652f3fa-88b6-450c-98b6-927420ef8934",
+          "url": "https://cdn.meluni.com.tr/ai-products/24803bb2-a1ce-401d-bf4e-d96cd5f9f7cf-olcu-oto-ef63d24c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:23:22.202093+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "24803bb2-a1ce-401d-bf4e-d96cd5f9f7cf/front.jpg",
+          "sha256": "96a92f2a45ccf84b79f04863f0fc8829a86ff11312ceb73f1c9400fe6862345e",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2214,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-24803bb2/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "24803bb2-a1ce-401d-bf4e-d96cd5f9f7cf/back.jpg",
+          "sha256": "8264c03d55de91e0b36c24e64ad249af8240d05a8961a1fa5549e139dfeff99e",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2214,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-24803bb2/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "24803bb2-a1ce-401d-bf4e-d96cd5f9f7cf/fashion_model.jpg",
+          "sha256": "d546d51ab73b2711860488c4fafe5e06957c90a8302ac2cc991ddce5c58746b2",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2214,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-24803bb2/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
