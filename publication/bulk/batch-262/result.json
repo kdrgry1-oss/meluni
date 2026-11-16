@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-262",
+  "published_at_utc": "2026-11-16T04:27:13.461615+00:00",
+  "products": [
+    {
+      "product_id": "08b607d6-4962-47f1-becb-7181e049ca15",
+      "sample": 1978,
+      "name": "Kısa Kollu Kruvaze Yakalı Önden Asimetrik Kesım Detaylı Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/08b607d6-4962-47f1-becb-7181e049ca15-front-daf10d233746.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/08b607d6-4962-47f1-becb-7181e049ca15-back-a202687bf523.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/08b607d6-4962-47f1-becb-7181e049ca15-model-b5494e04f066.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/08b607d6-4962-47f1-becb-7181e049ca15-size-chart-a76b07562692.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
