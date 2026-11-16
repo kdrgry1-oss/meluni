@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-279",
+  "published_at_utc": "2026-11-16T06:43:05.912918+00:00",
+  "products": [
+    {
+      "product_id": "ff024dea-c8c7-4fb0-82d3-01a50c20a094",
+      "sample": 2212,
+      "name": "Kısa Kollu V Yakalı Kuşaklı Dantel Detaylı Kısa Aerobin Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ff024dea-c8c7-4fb0-82d3-01a50c20a094-front-4545b76d9bde.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ff024dea-c8c7-4fb0-82d3-01a50c20a094-back-8b4195fa85f5.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ff024dea-c8c7-4fb0-82d3-01a50c20a094-model-e2318b5958ad.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
