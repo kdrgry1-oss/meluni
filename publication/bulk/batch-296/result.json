@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-296",
+  "published_at_utc": "2026-11-16T08:48:49.083002+00:00",
+  "products": [
+    {
+      "product_id": "1b7bb313-d700-4c8e-9b35-c5ff66feba37",
+      "sample": 2280,
+      "name": "Kısa Kollu V Yakalı Viskon Bluz ve Pantolon Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/1b7bb313-d700-4c8e-9b35-c5ff66feba37-front-cac672187b2c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/1b7bb313-d700-4c8e-9b35-c5ff66feba37-back-96668717c10a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/1b7bb313-d700-4c8e-9b35-c5ff66feba37-model-20ca557f29c7.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/1b7bb313-d700-4c8e-9b35-c5ff66feba37-size-chart-812a6ebbb2b9.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
