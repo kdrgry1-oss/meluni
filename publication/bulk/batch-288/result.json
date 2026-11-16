@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-288",
+  "published_at_utc": "2026-11-16T07:55:38.668667+00:00",
+  "products": [
+    {
+      "product_id": "220d7443-6c77-435b-8891-132e7e94d422",
+      "sample": 2257,
+      "name": "Kısa Kollu V Yakalı Puantiyeli Kısa Örme Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/220d7443-6c77-435b-8891-132e7e94d422-front-8df6b542c256.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/220d7443-6c77-435b-8891-132e7e94d422-back-07bcb2011d61.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/220d7443-6c77-435b-8891-132e7e94d422-model-b4c0cd2a2f9c.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/220d7443-6c77-435b-8891-132e7e94d422-size-chart-015f5fc23180.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
