@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-293",
+  "published_at_utc": "2026-11-16T08:31:20.060157+00:00",
+  "products": [
+    {
+      "product_id": "40a83401-cc2d-40ee-acb4-03bdd0c584a0",
+      "sample": 924,
+      "name": "Kısa Kollu Yaka Fermuarlı Kısa Modal Elbise",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/40a83401-cc2d-40ee-acb4-03bdd0c584a0-model-74aac7fcee77.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
