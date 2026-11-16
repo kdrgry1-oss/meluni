@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-342",
+  "published_at_utc": "2026-11-16T21:56:38.825457+00:00",
+  "products": [
+    {
+      "product_id": "3c1ada33-ed2d-4cc1-b8c3-3d51bfbd4c34",
+      "sample": 3018,
+      "name": "Uzun Kollu Arma Detaylı Iki Iplik Viskon Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3c1ada33-ed2d-4cc1-b8c3-3d51bfbd4c34-front-3d5d8adca022.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/3c1ada33-ed2d-4cc1-b8c3-3d51bfbd4c34-back-ef7111e46bf8.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
