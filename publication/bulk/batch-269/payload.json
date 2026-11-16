@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-269",
+  "created_at": "2026-11-16T05:17:25.002335+00:00",
+  "catalog_poll_at": "2026-11-16T05:17:25.002335+00:00",
+  "products": [
+    {
+      "product_id": "7c9cf4c3-985b-433d-9a58-69aec0a75e25",
+      "sample": 2016,
+      "name": "Kısa Kollu Sırt Dekolteli Yırtmaç Detaylı Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/9915d68cccd5f379eeef.jpeg",
+        "https://modayakamoz.com/orj/1f783ea5d362421a579e.jpeg",
+        "https://modayakamoz.com/orj/05ebceb8a2577f1dbbc0.jpeg",
+        "https://modayakamoz.com/orj/0639febc475c80d7cc93.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7c9cf4c3-985b-433d-9a58-69aec0a75e25/front.jpg",
+          "sha256": "10aa2b1a956bcbc6c891a3767bd0ed52d8bb7c95fecf0e59e736df07f60b8b6b",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2016,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7c9cf4c3/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7c9cf4c3-985b-433d-9a58-69aec0a75e25/back.jpg",
+          "sha256": "e7b2b9653f06693a2e4ec787734f7b71f30d367703404dc627f4b409d2ca9de8",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2016,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7c9cf4c3/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7c9cf4c3-985b-433d-9a58-69aec0a75e25/fashion_model.jpg",
+          "sha256": "5189339dbf513c8f530e0c7beaf1d2c7e097e46c35a56a4cdc283bb67ebde6c8",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2016,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7c9cf4c3/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7c9cf4c3-985b-433d-9a58-69aec0a75e25/size_chart.jpg",
+          "sha256": "c94fd1992f4d8d5d8eeee6e1e953a655a41606b526272a60468a59bd5a3528f6",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2016,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7c9cf4c3/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
