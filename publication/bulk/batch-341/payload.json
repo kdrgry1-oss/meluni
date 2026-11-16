@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-341",
+  "created_at": "2026-11-16T21:43:41.891132+00:00",
+  "catalog_poll_at": "2026-11-16T21:43:41.891132+00:00",
+  "products": [
+    {
+      "product_id": "680f27ce-19bb-4e88-97cb-509697df54b5",
+      "sample": 2928,
+      "name": "Tek Omuzdan Açık Damla Detaylı Yırtmaç Uzun Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 16,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4676f7764792c627a891.jpeg",
+        "https://modayakamoz.com/orj/b0af21ecda85942c1fe8.jpeg",
+        "https://modayakamoz.com/orj/3507c31b2a3c4104f956.jpeg",
+        "https://modayakamoz.com/orj/cefa50d7f7e85adfc1e7.jpeg",
+        "https://modayakamoz.com/orj/4485aa16f139abc6240b.jpeg",
+        "https://modayakamoz.com/orj/73f6e53eeb5e95d33309.jpeg",
+        {
+          "id": "44c8a381-faf2-4ad6-ba8f-23bfb8af24a1",
+          "url": "https://cdn.meluni.com.tr/ai-products/680f27ce-19bb-4e88-97cb-509697df54b5-olcu-oto-fa46ae56.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-11T05:23:08.974089+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "680f27ce-19bb-4e88-97cb-509697df54b5/front.jpg",
+          "sha256": "911bc971490917e45b48435869079e3d2ecf06d1598e55eb54195316b9665cbf",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2928,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-680f27ce/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "680f27ce-19bb-4e88-97cb-509697df54b5/back.jpg",
+          "sha256": "e1f5093f047ff5ba1c4617496beb0c6aa1a560de786ccdfdd81d0b8fd8f2e8ad",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2928,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-680f27ce/back-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
