@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-265",
+  "created_at": "2026-11-16T04:54:50.546093+00:00",
+  "catalog_poll_at": "2026-11-16T04:54:50.546093+00:00",
+  "products": [
+    {
+      "product_id": "f5c44184-b5ce-4d9c-b295-37624dfa8818",
+      "sample": 2012,
+      "name": "Kısa Kollu Sırt Dekolte Detay Önü Çift Yırtmaçlı Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 18,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4f93cc502c579038a9b4.jpeg",
+        "https://modayakamoz.com/orj/250fd56ac6ea3439fee2.jpeg",
+        "https://modayakamoz.com/orj/cc7754703e27fb0242ee.jpeg",
+        "https://modayakamoz.com/orj/30daba47aca44b2a2731.jpeg",
+        "https://modayakamoz.com/orj/4265a4f784affe46d30d.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "f5c44184-b5ce-4d9c-b295-37624dfa8818/front.jpg",
+          "sha256": "0dde762912f2d81e774fb1f4ed6ec0722bd238e1ee0b6c073792a9fc9a9f13f7",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f5c44184/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f5c44184-b5ce-4d9c-b295-37624dfa8818/back.jpg",
+          "sha256": "11545293fb8b3f4b58bc449ead76c9a285de8c58a168f5ca5a4929a8d4b930ba",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f5c44184/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f5c44184-b5ce-4d9c-b295-37624dfa8818/fashion_model.jpg",
+          "sha256": "c6da15ee78729814154ce86f4b45ffac36620e519ee1c1bc2d6f7543a2be8abb",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f5c44184/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
