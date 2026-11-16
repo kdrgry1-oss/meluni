@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-361",
+  "created_at": "2026-11-16T23:50:14.044015+00:00",
+  "catalog_poll_at": "2026-11-16T23:50:14.044015+00:00",
+  "products": [
+    {
+      "product_id": "0b7165a5-9b20-4edf-a149-a40e097faa18",
+      "sample": 3199,
+      "name": "Uzun Kollu Dantelli Kapşonlu Viskon Iki Iplik Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 41,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8329fee4f2f5b32e683e.jpeg",
+        "https://modayakamoz.com/orj/6ff3d3be1625a0225ccd.jpeg",
+        "https://modayakamoz.com/orj/cdec72f006d4f9088094.jpeg",
+        "https://modayakamoz.com/orj/290cfd52f13471ebb8ac.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0b7165a5-9b20-4edf-a149-a40e097faa18/front.jpg",
+          "sha256": "7a8e103583efe7c627751957d478f57107ee5d0c3ab726d1676b4929c49145ad",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3199,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0b7165a5/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0b7165a5-9b20-4edf-a149-a40e097faa18/back.jpg",
+          "sha256": "f9a23f901bab9e27eccdc0f1684af8f66ff7d059657f56b150bce223d9b9b004",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3199,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0b7165a5/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0b7165a5-9b20-4edf-a149-a40e097faa18/fashion_model.jpg",
+          "sha256": "a11f0247b34100d533544f71ddd082aca09f22ddd5df32bb0aeafebb731eca3d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3199,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0b7165a5/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "0b7165a5-9b20-4edf-a149-a40e097faa18/size_chart.jpg",
+          "sha256": "2b22821e85ff942a91662b9be612ef6be430dc51c96cfc193290c903c2559f69",
+          "qa_status": "exact_source_values_verified",
+          "sample": 3199,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0b7165a5/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
