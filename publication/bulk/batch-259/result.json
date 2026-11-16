@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-259",
+  "published_at_utc": "2026-11-16T03:53:39.099417+00:00",
+  "products": [
+    {
+      "product_id": "71230986-c996-4641-a0e8-47554ead8241",
+      "sample": 1921,
+      "name": "Kısa Kollu Kruvaze Yakalı Asımetrık Kesım Detaylı Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/71230986-c996-4641-a0e8-47554ead8241-front-cef612dd5e3a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/71230986-c996-4641-a0e8-47554ead8241-back-f5c23e86084d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/71230986-c996-4641-a0e8-47554ead8241-model-8ce14da594ab.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/71230986-c996-4641-a0e8-47554ead8241-size-chart-18269c198ffa.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
