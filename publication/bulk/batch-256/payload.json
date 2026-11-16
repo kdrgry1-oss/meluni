@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-256",
+  "created_at": "2026-11-16T03:23:23.342974+00:00",
+  "catalog_poll_at": "2026-11-16T03:23:23.342974+00:00",
+  "products": [
+    {
+      "product_id": "3fffd5a4-90bb-4303-aa00-6eacb27293e5",
+      "sample": 1819,
+      "name": "Kısa Kollu Derin Sırt Dekolteli Uzun Dalgıç Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 87,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/024540010048fe943095.jpeg",
+        "https://modayakamoz.com/orj/dbcdd0d3cb7137f428a7.jpeg",
+        "https://modayakamoz.com/orj/71edb80e11b740406f72.jpeg",
+        "https://modayakamoz.com/orj/a7e919984637e0bf7104.jpeg",
+        "https://modayakamoz.com/orj/aa3f69c1f8125c80b8bb.jpeg",
+        {
+          "id": "78545981-f97a-45cb-b191-1404fd724e3b",
+          "url": "https://cdn.meluni.com.tr/ai-products/3fffd5a4-90bb-4303-aa00-6eacb27293e5-olcu-oto-1fdd1e0a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:20:07.665946+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "3fffd5a4-90bb-4303-aa00-6eacb27293e5/front.jpg",
+          "sha256": "c8317d2a8c7170d41bf004b216b7287ef4955222a4dba0c93613b00611665119",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3fffd5a4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3fffd5a4-90bb-4303-aa00-6eacb27293e5/back.jpg",
+          "sha256": "79163b957720216f2223dac6eacb462b9dddc8f3e8b90bec563f3002c99d3a31",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3fffd5a4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3fffd5a4-90bb-4303-aa00-6eacb27293e5/fashion_model.jpg",
+          "sha256": "774ecdd569252c2299b936bb57c89d6075add78c7b71dc446a21e59a7a0b3b14",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3fffd5a4/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "3fffd5a4-90bb-4303-aa00-6eacb27293e5/size_chart.jpg",
+          "sha256": "6dff1ce00eecb76d04ea728406b4c8f3b2be0e2124f7857e69458aa1ab079df0",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3fffd5a4/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
