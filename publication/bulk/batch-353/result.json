@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-353",
+  "published_at_utc": "2026-11-16T22:58:46.751866+00:00",
+  "products": [
+    {
+      "product_id": "ede3e2db-16db-4c41-8de6-9448af797dda",
+      "sample": 3148,
+      "name": "Uzun Kollu Bisiklet Yakalı Dantel Detaylı Uzun Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ede3e2db-16db-4c41-8de6-9448af797dda-front-a4570068ad30.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ede3e2db-16db-4c41-8de6-9448af797dda-back-935ca717578e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ede3e2db-16db-4c41-8de6-9448af797dda-model-b589e224c7cc.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/ede3e2db-16db-4c41-8de6-9448af797dda-size-chart-ed22361ce80c.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
