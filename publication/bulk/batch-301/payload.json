@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-301",
+  "created_at": "2026-11-16T11:04:00.051514+00:00",
+  "catalog_poll_at": "2026-11-16T11:04:00.051514+00:00",
+  "products": [
+    {
+      "product_id": "7e261e8d-d537-4a1b-b535-1153a301b4ea",
+      "sample": 2446,
+      "name": "Kısa Kollu Yuvarlak Yakalı Beli Lastikli Cepli Aerobin Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c2b22fb71853a36e95de.jpeg",
+        "https://modayakamoz.com/orj/7baa635f9a4590239272.jpeg",
+        "https://modayakamoz.com/orj/ecb9bb913b973875e483.jpeg",
+        "https://modayakamoz.com/orj/c1615866b04ca9a1e793.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7e261e8d-d537-4a1b-b535-1153a301b4ea/front.jpg",
+          "sha256": "04100311470bab485e27612d716b731c13703ba047449a7b3266502e7de14add",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2446,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7e261e8d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7e261e8d-d537-4a1b-b535-1153a301b4ea/back.jpg",
+          "sha256": "b374408b64c3825763924a30f09d40681475a174eb8240f97e7f3de392373123",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2446,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7e261e8d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7e261e8d-d537-4a1b-b535-1153a301b4ea/fashion_model.jpg",
+          "sha256": "efe0212210ae8e7ebc518164f5137f8b188727995501f9e3e4fb0a1d15e181f8",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2446,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7e261e8d/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7e261e8d-d537-4a1b-b535-1153a301b4ea/size_chart.jpg",
+          "sha256": "a714c52f9b74ae596add5222115f6a4e4df07313c10d86d09822f9b1c3ea616d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2446,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7e261e8d/chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
