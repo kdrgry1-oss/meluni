@@ -1,0 +1,63 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-291",
+  "created_at": "2026-11-16T08:14:54.404307+00:00",
+  "catalog_poll_at": "2026-11-16T08:14:54.404307+00:00",
+  "products": [
+    {
+      "product_id": "944bdedf-68f5-4ab5-9fcd-b53133759b2c",
+      "sample": 2239,
+      "name": "Kısa Kollu V Yakalı Midi Astarlı Şifon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 16,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a75f79c2f08a721b8e9f.jpeg",
+        "https://modayakamoz.com/orj/20dc4f386bc70ac58817.jpeg",
+        "https://modayakamoz.com/orj/20c16afb1607b19c8dcc.jpeg",
+        "https://modayakamoz.com/orj/59f42ba36915a22f8898.jpeg",
+        "https://modayakamoz.com/orj/c738b5e1840f2e1d6a17.jpeg",
+        "https://modayakamoz.com/orj/89fc0971a92aff70143b.jpeg",
+        "https://modayakamoz.com/orj/c4051d463a33830ec5e5.jpeg",
+        "https://modayakamoz.com/orj/f4beb3c8bdf4f06ba8b0.jpeg",
+        {
+          "id": "377983ea-daf7-4529-9281-fd7704b82b46",
+          "url": "https://cdn.meluni.com.tr/ai-products/b54fc6dc-99e0-4b43-beb6-32b463d03423-olcu-oto-2460669b.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-31T05:22:37.773626+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "944bdedf-68f5-4ab5-9fcd-b53133759b2c/front.jpg",
+          "sha256": "ac471da2543d81c1558d742df75d93ee6286b4706247dec8d423852ad48f71e3",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2239,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-944bdedf/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "944bdedf-68f5-4ab5-9fcd-b53133759b2c/back.jpg",
+          "sha256": "0eaaba80b51482bc82878beed3067bcf0892436a94ac4838e20dc384d42bfb47",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2239,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-944bdedf/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "944bdedf-68f5-4ab5-9fcd-b53133759b2c/fashion_model.jpg",
+          "sha256": "708e5833d8426d62bfa9126f177f6d8574ccee16af7826cfec747b78e3a7cf4a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2239,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-944bdedf/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "944bdedf-68f5-4ab5-9fcd-b53133759b2c/size_chart.jpg",
+          "sha256": "5a7b5a547de840e7735f0cfc0c09e42d692a6b482b483afd4dad46d9d3da1c13",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2239,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-944bdedf/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
