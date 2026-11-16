@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-278",
+  "published_at_utc": "2026-11-16T06:34:51.177705+00:00",
+  "products": [
+    {
+      "product_id": "d0655c2d-faea-4cc5-bf31-57805dd6a0cc",
+      "sample": 2125,
+      "name": "Kısa Kollu V Yakalı Büzgülü Çapraz Detaylı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d0655c2d-faea-4cc5-bf31-57805dd6a0cc-front-691481f27c86.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d0655c2d-faea-4cc5-bf31-57805dd6a0cc-back-fdced74d2b30.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d0655c2d-faea-4cc5-bf31-57805dd6a0cc-model-7aa450737fe9.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
