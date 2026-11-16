@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-307",
+  "published_at_utc": "2026-11-16T12:19:31.107198+00:00",
+  "products": [
+    {
+      "product_id": "7627bfad-2ae3-4426-ba40-cb3e04f7c2b3",
+      "sample": 2461,
+      "name": "Kısa Kollu Yuvarlak Yakalı Midi Krinkıl Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7627bfad-2ae3-4426-ba40-cb3e04f7c2b3-front-c99975d5bf39.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7627bfad-2ae3-4426-ba40-cb3e04f7c2b3-back-098028b8eefc.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7627bfad-2ae3-4426-ba40-cb3e04f7c2b3-model-eb7695542020.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
