@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-332",
+  "created_at": "2026-11-16T20:49:17.607280+00:00",
+  "catalog_poll_at": "2026-11-16T20:49:17.607280+00:00",
+  "products": [
+    {
+      "product_id": "d0998285-e02d-430d-9ace-45ff571c7d03",
+      "sample": 2793,
+      "name": "Pileli Balın Kol Bürümcük Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5f2fa9e0a37aec1ff1e4.jpeg",
+        "https://modayakamoz.com/orj/6565248854a18d18181a.jpeg",
+        "https://modayakamoz.com/orj/4c4431f9696cf06775e7.jpeg",
+        "https://modayakamoz.com/orj/bed91e049b4eea2f471a.jpeg",
+        {
+          "id": "ba9b09c6-6692-4d83-9ab7-471075c2e308",
+          "url": "https://cdn.meluni.com.tr/ai-products/8449d7eb-723c-4961-8203-0b4432782156-olcu-oto-128aeb9c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-31T05:19:17.888760+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d0998285-e02d-430d-9ace-45ff571c7d03/front.jpg",
+          "sha256": "e374a367d613764eb13e13aafb700c0863890d1cae1d54602763f0d59404b81e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2793,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d0998285/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d0998285-e02d-430d-9ace-45ff571c7d03/back.jpg",
+          "sha256": "cd901d9df573fb4cbc7340e226d06035d2be2b72bc09cdf4081d777085ed8ffe",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2793,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d0998285/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d0998285-e02d-430d-9ace-45ff571c7d03/fashion_model.jpg",
+          "sha256": "ca6164d15da9ab08f50704867ae5a797ca1b96fbbcce936c132bc71591728043",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2793,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d0998285/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "d0998285-e02d-430d-9ace-45ff571c7d03/size_chart.jpg",
+          "sha256": "2e565cd4ca9e18752fefce8d23e79613ff685a52677338f47174dba70bb2f168",
+          "qa_status": "exact_source_values_verified",
+          "sample": 2793,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d0998285/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
