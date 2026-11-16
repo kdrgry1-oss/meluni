@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-295",
+  "created_at": "2026-11-16T08:38:40.939630+00:00",
+  "catalog_poll_at": "2026-11-16T08:38:40.939630+00:00",
+  "products": [
+    {
+      "product_id": "713e4035-524d-4d40-868e-e98395e7812f",
+      "sample": 919,
+      "name": "Kısa Kollu Vatkalı Bağcıklı Kısa Viskon Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 35,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/713e4035-524d-4d40-868e-e98395e7812f-front-907313267a6d.jpg",
+        "https://cdn.meluni.com.tr/ai-products/713e4035-524d-4d40-868e-e98395e7812f-back-4dbe1b1245e2.jpg",
+        "https://modayakamoz.com/orj/fc48c73893c5566263ff.jpeg",
+        "https://modayakamoz.com/orj/b84ea0ef2eb6770a01af.jpeg",
+        "https://modayakamoz.com/orj/0ef794a4f114b7695db9.jpeg",
+        {
+          "id": "5bcac4e0-d414-492a-b744-39d5d2c8c371",
+          "url": "https://cdn.meluni.com.tr/ai-products/713e4035-524d-4d40-868e-e98395e7812f-olcu-oto-717a4991.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:21:56.508848+00:00"
+        },
+        {
+          "id": "36c6f83c-8991-5a58-a51b-f292f5bd59f3",
+          "url": "https://cdn.meluni.com.tr/ai-products/713e4035-524d-4d40-868e-e98395e7812f-size-chart-7194a0146a05.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:10:33.476029+00:00"
+        }
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "713e4035-524d-4d40-868e-e98395e7812f/fashion_model.jpg",
+          "sha256": "3916409ab32f2e8192e7cfcb0b9eede77d802277926aeade0176fa177d8a267e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 919,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-919-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
