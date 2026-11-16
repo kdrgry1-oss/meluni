@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-323",
+  "published_at_utc": "2026-11-16T18:43:22.695946+00:00",
+  "products": [
+    {
+      "product_id": "babdd616-0538-44bd-a919-afd3cb8ac013",
+      "sample": 2705,
+      "name": "Omuzlardan Açık Yaka Ince Şerit Detaylı Uzun Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/babdd616-0538-44bd-a919-afd3cb8ac013-front-91fcacd203f0.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/babdd616-0538-44bd-a919-afd3cb8ac013-back-fba612bbdf91.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/babdd616-0538-44bd-a919-afd3cb8ac013-model-20c089e0a74c.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/babdd616-0538-44bd-a919-afd3cb8ac013-size-chart-19633ddb9f0a.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
