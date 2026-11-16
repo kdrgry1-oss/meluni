@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-293",
+  "created_at": "2026-11-16T08:30:13.249350+00:00",
+  "catalog_poll_at": "2026-11-16T08:30:13.249350+00:00",
+  "products": [
+    {
+      "product_id": "40a83401-cc2d-40ee-acb4-03bdd0c584a0",
+      "sample": 924,
+      "name": "Kısa Kollu Yaka Fermuarlı Kısa Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/40a83401-cc2d-40ee-acb4-03bdd0c584a0-front-bc231142e7b8.jpg",
+        "https://cdn.meluni.com.tr/ai-products/40a83401-cc2d-40ee-acb4-03bdd0c584a0-back-a54cb7fe01d4.jpg",
+        "https://modayakamoz.com/orj/00c7f435e839266a0be4.jpeg",
+        "https://modayakamoz.com/orj/8b115fc1d3d332aa4c88.jpeg",
+        "https://modayakamoz.com/orj/fb0f6ec12f72697fd49e.jpeg",
+        "https://modayakamoz.com/orj/45de30c8295a953a729e.jpeg",
+        {
+          "id": "7e27c0ba-000f-407f-bd72-b509bb7301ba",
+          "url": "https://cdn.meluni.com.tr/ai-products/40a83401-cc2d-40ee-acb4-03bdd0c584a0-olcu-oto-7eef0b43.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-02T05:18:53.544268+00:00"
+        },
+        {
+          "id": "72633135-4f75-58d5-b593-7041ca2e43c0",
+          "url": "https://cdn.meluni.com.tr/ai-products/40a83401-cc2d-40ee-acb4-03bdd0c584a0-size-chart-d5361e2c04b1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:10:33.476029+00:00"
+        }
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "40a83401-cc2d-40ee-acb4-03bdd0c584a0/fashion_model.jpg",
+          "sha256": "74aac7fcee77b696a5e80124dfeabf6537d1dfe7ad839708e609fd728e129ac4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 924,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-924-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
