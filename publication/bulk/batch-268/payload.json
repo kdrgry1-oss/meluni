@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-268",
+  "created_at": "2026-11-16T05:10:58.848084+00:00",
+  "catalog_poll_at": "2026-11-16T05:10:58.848084+00:00",
+  "products": [
+    {
+      "product_id": "f5c44184-b5ce-4d9c-b295-37624dfa8818",
+      "sample": 2012,
+      "name": "Kısa Kollu Sırt Dekolte Detay Önü Çift Yırtmaçlı Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 18,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/f5c44184-b5ce-4d9c-b295-37624dfa8818-front-0dde762912f2.jpg",
+        "https://cdn.meluni.com.tr/ai-products/f5c44184-b5ce-4d9c-b295-37624dfa8818-back-11545293fb8b.jpg",
+        "https://cdn.meluni.com.tr/ai-products/f5c44184-b5ce-4d9c-b295-37624dfa8818-model-c6da15ee7872.jpg",
+        "https://modayakamoz.com/orj/4f93cc502c579038a9b4.jpeg",
+        "https://modayakamoz.com/orj/250fd56ac6ea3439fee2.jpeg",
+        "https://modayakamoz.com/orj/cc7754703e27fb0242ee.jpeg",
+        "https://modayakamoz.com/orj/30daba47aca44b2a2731.jpeg",
+        "https://modayakamoz.com/orj/4265a4f784affe46d30d.jpeg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "f5c44184-b5ce-4d9c-b295-37624dfa8818/size_chart.jpg",
+          "sha256": "c94fd1992f4d8d5d8eeee6e1e953a655a41606b526272a60468a59bd5a3528f6",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2012,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f5c44184/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
