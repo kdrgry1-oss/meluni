@@ -1,0 +1,62 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-322",
+  "created_at": "2026-11-16T18:16:09.045406+00:00",
+  "catalog_poll_at": "2026-11-16T18:16:09.045406+00:00",
+  "products": [
+    {
+      "product_id": "0d213c57-c9fc-4e3e-985e-366a2a3de92e",
+      "sample": 2702,
+      "name": "Omuzlardan Açık V Yakalı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 38,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1fab9f450c8c482525cb.jpeg",
+        "https://modayakamoz.com/orj/b35300ab41bf996c3ac2.jpeg",
+        "https://modayakamoz.com/orj/1d0fc2377452f423817f.jpeg",
+        "https://modayakamoz.com/orj/594cff4820d0c9a1de5b.jpeg",
+        "https://modayakamoz.com/orj/2ee6f05aed7eb92d7dd0.jpeg",
+        "https://modayakamoz.com/orj/9be8611d37ef1410e95e.jpeg",
+        "https://modayakamoz.com/orj/7970ebced84bf46f631b.jpeg",
+        {
+          "id": "b83e0c9b-37c3-496b-853c-73c34621d78c",
+          "url": "https://cdn.meluni.com.tr/ai-products/95fa3756-7d12-457d-92fa-26f2ebdccc82-olcu-oto-9c8bb7f4.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-09T05:25:43.739272+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "0d213c57-c9fc-4e3e-985e-366a2a3de92e/front.jpg",
+          "sha256": "41eaf36ac600e9b2c3e8ac3b2b20eec78b7337e5712d3db17001dcbfe2be1a63",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2702,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0d213c57/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0d213c57-c9fc-4e3e-985e-366a2a3de92e/back.jpg",
+          "sha256": "fbe2a5d83589265f105377d7b28badd11fb27d1ff32cf752b5a9eea28d7dea50",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2702,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0d213c57/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0d213c57-c9fc-4e3e-985e-366a2a3de92e/fashion_model.jpg",
+          "sha256": "d54b02afb75450e4adb5c7b9c3429e5e8f4c11207a4f780798d239f3a9ed2db7",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2702,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0d213c57/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "0d213c57-c9fc-4e3e-985e-366a2a3de92e/size_chart.jpg",
+          "sha256": "d475e142377c3b3ae9ff5189ec1af463a442150d5d25671c3dd34ce268a9560d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2702,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0d213c57/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
