@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-261",
+  "published_at_utc": "2026-11-16T04:12:21.437101+00:00",
+  "products": [
+    {
+      "product_id": "f96afa35-3613-4d9c-ab43-6bdaa2bae6d2",
+      "sample": 1965,
+      "name": "Kısa Kollu Kruvaze Yakalı Onu Düğmeli Belinde Toka Detaylı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f96afa35-3613-4d9c-ab43-6bdaa2bae6d2-front-0c828cdd1ae5.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/f96afa35-3613-4d9c-ab43-6bdaa2bae6d2-back-0f86036be8ae.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f96afa35-3613-4d9c-ab43-6bdaa2bae6d2-model-acdbbc5bd84d.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f96afa35-3613-4d9c-ab43-6bdaa2bae6d2-size-chart-c49641b17c7c.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
