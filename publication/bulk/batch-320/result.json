@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-320",
+  "published_at_utc": "2026-11-16T14:28:43.091593+00:00",
+  "products": [
+    {
+      "product_id": "f0131fb5-3317-41f0-b282-68e72f066f55",
+      "sample": 2672,
+      "name": "Omuzlardan Açık Devrik Yaka Formunda Kısa Triko Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f0131fb5-3317-41f0-b282-68e72f066f55-front-8c68b0076b20.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/f0131fb5-3317-41f0-b282-68e72f066f55-back-e8f9e6eb5bbd.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f0131fb5-3317-41f0-b282-68e72f066f55-model-2f15bfaa49b5.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f0131fb5-3317-41f0-b282-68e72f066f55-size-chart-0774e980a08a.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
