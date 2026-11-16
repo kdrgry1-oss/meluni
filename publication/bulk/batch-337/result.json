@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-337",
+  "published_at_utc": "2026-11-16T21:22:27.454392+00:00",
+  "products": [
+    {
+      "product_id": "ed8a866d-1681-4716-9067-3cd19b99dc94",
+      "sample": 2863,
+      "name": "Sıfır Kol Sırt Çapraz Detay Triko Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ed8a866d-1681-4716-9067-3cd19b99dc94-front-4ef5f77fc305.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ed8a866d-1681-4716-9067-3cd19b99dc94-back-bdcb71be581d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ed8a866d-1681-4716-9067-3cd19b99dc94-model-5e920c38965f.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
