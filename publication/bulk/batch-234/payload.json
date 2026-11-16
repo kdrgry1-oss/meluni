@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-234",
+  "created_at": "2026-11-16T00:18:42.206690+00:00",
+  "catalog_poll_at": "2026-11-16T00:18:42.206690+00:00",
+  "products": [
+    {
+      "product_id": "d7c1b905-071a-4be2-98fd-eaabd750c3be",
+      "sample": 1623,
+      "name": "Kısa Kollu Belden Çiçek Aksesuarlı Yırtmaçlı Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 160,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/49f7229498e22d57ffcb.jpeg",
+        "https://modayakamoz.com/orj/b4f96a9316202866b158.jpeg",
+        "https://modayakamoz.com/orj/0f4ef4081eef89942e11.jpeg",
+        "https://modayakamoz.com/orj/50e8394a80ffd419bfde.jpeg",
+        "https://modayakamoz.com/orj/30ed8c37a85abd099786.jpeg",
+        {
+          "id": "2842dfd1-317d-4079-ac3a-c52910328d2c",
+          "url": "https://cdn.meluni.com.tr/ai-products/215f4dd3-b1c5-4f5c-a65f-fc8d461c2b52-olcu-oto-23ea6eea.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:20:04.315654+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d7c1b905-071a-4be2-98fd-eaabd750c3be/front.jpg",
+          "sha256": "3f4fa2543c76ef370a4a7a50939770545c2fff3491097a51096d3c05a0a2a0d6",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1623,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d7c1b905/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d7c1b905-071a-4be2-98fd-eaabd750c3be/back.jpg",
+          "sha256": "af8aabcb16b90fe7412d00ca76f4e91bc3ab9e5feb4d60ce8b1b0a13d9dfa9d7",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1623,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d7c1b905/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d7c1b905-071a-4be2-98fd-eaabd750c3be/fashion_model.jpg",
+          "sha256": "788302c0b598d2091eb6d99b354d2d2f4ef159dbae069b8785b6941b2c809fa3",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1623,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d7c1b905/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "d7c1b905-071a-4be2-98fd-eaabd750c3be/size_chart.jpg",
+          "sha256": "bbf40cf93fbb336cc2d4a7e6577d5797086b7241125b50cd63b377d3b5ffe3e7",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1623,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d7c1b905/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
