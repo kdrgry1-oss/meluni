@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-242",
+  "created_at": "2026-11-16T01:20:54.570770+00:00",
+  "catalog_poll_at": "2026-11-16T01:20:54.570770+00:00",
+  "products": [
+    {
+      "product_id": "692a3bec-1d9f-4e48-9c71-07f21bd59761",
+      "sample": 1673,
+      "name": "Kısa Kollu Bisiklet Yaka Fırfırlı Kısa Bürümcük Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 26,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/eb3946deb888a8085622.jpeg",
+        "https://modayakamoz.com/orj/037189c56cf62ee5db41.jpeg",
+        "https://modayakamoz.com/orj/7ece5f41cb1782d93292.jpeg",
+        "https://modayakamoz.com/orj/1731e60e5efb50ded196.jpeg",
+        "https://modayakamoz.com/orj/36236ba054ca9173a364.jpeg",
+        "https://modayakamoz.com/orj/9f0011ad53d202c44af7.jpeg",
+        {
+          "id": "cf25a819-bf0f-4bc2-8978-64038c83ced6",
+          "url": "https://cdn.meluni.com.tr/ai-products/692a3bec-1d9f-4e48-9c71-07f21bd59761-olcu-oto-b1121c38.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-26T05:23:58.006154+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "692a3bec-1d9f-4e48-9c71-07f21bd59761/front.jpg",
+          "sha256": "df0bf63cf059ee73f840a1dfb782bd48573f03b94b9d8a50f850e474527878dc",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1673,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-692a3bec/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "692a3bec-1d9f-4e48-9c71-07f21bd59761/back.jpg",
+          "sha256": "90ae94104ab556cd7cbba7b0389343d68f80141505468082c8bb68aed9b7b628",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1673,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-692a3bec/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "692a3bec-1d9f-4e48-9c71-07f21bd59761/fashion_model.jpg",
+          "sha256": "808de4081cc40601770d9355f0b91c3bfeb87fc573dcf6f46d48e6ac82f60fed",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1673,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-692a3bec/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
