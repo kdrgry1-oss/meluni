@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-344",
+  "published_at_utc": "2026-11-16T22:08:23.239245+00:00",
+  "products": [
+    {
+      "product_id": "e3357e6d-e792-4597-b613-1e3ee606988a",
+      "sample": 3060,
+      "name": "Uzun Kollu Balıkçı Yakalı Dekolte Tül Detaylı Kısa Kadife Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e3357e6d-e792-4597-b613-1e3ee606988a-front-ca57500937f5.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e3357e6d-e792-4597-b613-1e3ee606988a-back-ff3c64654f18.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e3357e6d-e792-4597-b613-1e3ee606988a-model-f2158bc09f17.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e3357e6d-e792-4597-b613-1e3ee606988a-size-chart-e0cee6c88e15.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
