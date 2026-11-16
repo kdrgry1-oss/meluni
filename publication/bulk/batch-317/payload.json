@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-317",
+  "created_at": "2026-11-16T14:00:12.053021+00:00",
+  "catalog_poll_at": "2026-11-16T14:00:12.053021+00:00",
+  "products": [
+    {
+      "product_id": "176ebafb-c5d2-4885-a3c5-7273fecaddbc",
+      "sample": 2666,
+      "name": "Omuzlardan Açık Derin Yırtmaçlı Maksi Boy Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 107,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/9b30009387f11d2729f5.jpeg",
+        "https://modayakamoz.com/orj/86c668e646232095a8d5.jpeg",
+        "https://modayakamoz.com/orj/9a52e6acf5ef57a30a34.jpeg",
+        "https://modayakamoz.com/orj/de16326c70adfb44468b.jpeg",
+        {
+          "id": "d53d95fa-37af-4fd2-8dc0-50b5ad70c6dc",
+          "url": "https://cdn.meluni.com.tr/ai-products/176ebafb-c5d2-4885-a3c5-7273fecaddbc-olcu-oto-10d5abe9.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-26T05:20:20.503726+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "176ebafb-c5d2-4885-a3c5-7273fecaddbc/front.jpg",
+          "sha256": "e78b7dc1f43dd3ad6e06f86d8a61cb4452eecfe553832eb1b5325e7cb542ee9e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2666,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-176ebafb/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "176ebafb-c5d2-4885-a3c5-7273fecaddbc/back.jpg",
+          "sha256": "ebe93874a40d5b034306a352536b06eedba17b4fdae8dac6224855f68473f713",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2666,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-176ebafb/back-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "176ebafb-c5d2-4885-a3c5-7273fecaddbc/size_chart.jpg",
+          "sha256": "401fecae78316986232e9b87f376b46c237ec0061cfade50fd36d92498b18e08",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2666,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-176ebafb/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
