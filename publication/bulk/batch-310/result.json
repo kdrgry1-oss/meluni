@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-310",
+  "published_at_utc": "2026-11-16T12:54:17.995114+00:00",
+  "products": [
+    {
+      "product_id": "bd17eb04-890f-41f2-93fe-8a43ee6b8951",
+      "sample": 2499,
+      "name": "Kısa Yarasa Kollu V Yakalı Düğmeli Aerobin Gömlek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bd17eb04-890f-41f2-93fe-8a43ee6b8951-front-219390f2feef.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/bd17eb04-890f-41f2-93fe-8a43ee6b8951-back-eb27ff791c41.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bd17eb04-890f-41f2-93fe-8a43ee6b8951-model-0744c2b529b4.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
