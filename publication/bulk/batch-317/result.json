@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-317",
+  "published_at_utc": "2026-11-16T14:43:52.256540+00:00",
+  "products": [
+    {
+      "product_id": "176ebafb-c5d2-4885-a3c5-7273fecaddbc",
+      "sample": 2666,
+      "name": "Omuzlardan Açık Derin Yırtmaçlı Maksi Boy Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/176ebafb-c5d2-4885-a3c5-7273fecaddbc-front-e78b7dc1f43d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/176ebafb-c5d2-4885-a3c5-7273fecaddbc-back-ebe93874a40d.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/176ebafb-c5d2-4885-a3c5-7273fecaddbc-size-chart-401fecae7831.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
