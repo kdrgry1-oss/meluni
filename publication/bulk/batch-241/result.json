@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-241",
+  "published_at_utc": "2026-11-16T01:12:29.194435+00:00",
+  "products": [
+    {
+      "product_id": "6f15b776-a8bf-403d-81e8-a78e6d89c12f",
+      "sample": 1632,
+      "name": "Kısa Kollu Bisiklet Yaka Asimetrik Detaylı Bürümcük Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6f15b776-a8bf-403d-81e8-a78e6d89c12f-front-4215d3c7bc16.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6f15b776-a8bf-403d-81e8-a78e6d89c12f-back-f62b54e05d5a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6f15b776-a8bf-403d-81e8-a78e6d89c12f-model-3a485912cd66.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6f15b776-a8bf-403d-81e8-a78e6d89c12f-size-chart-f709d8a5189b.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
