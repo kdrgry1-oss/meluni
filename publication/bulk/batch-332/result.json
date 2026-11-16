@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-332",
+  "published_at_utc": "2026-11-16T20:50:28.112332+00:00",
+  "products": [
+    {
+      "product_id": "d0998285-e02d-430d-9ace-45ff571c7d03",
+      "sample": 2793,
+      "name": "Pileli Balın Kol Bürümcük Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d0998285-e02d-430d-9ace-45ff571c7d03-front-e374a367d613.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d0998285-e02d-430d-9ace-45ff571c7d03-back-cd901d9df573.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d0998285-e02d-430d-9ace-45ff571c7d03-model-ca6164d15da9.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d0998285-e02d-430d-9ace-45ff571c7d03-size-chart-2e565cd4ca9e.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
