@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-330",
+  "created_at": "2026-11-16T19:35:25.221932+00:00",
+  "catalog_poll_at": "2026-11-16T19:35:25.221932+00:00",
+  "products": [
+    {
+      "product_id": "40203ed6-ac5c-4d5a-b64d-8cdfd87f4f2d",
+      "sample": 2718,
+      "name": "Omuzlardan Açık Yuvarlak Yakalı Dantel Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 74,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/eddef3f0f2a7e149584b.jpeg",
+        "https://modayakamoz.com/orj/50e06cd22e5fb773c3e4.jpeg",
+        "https://modayakamoz.com/orj/c7c67f1e0973d37c1b7a.jpeg",
+        "https://modayakamoz.com/orj/36a3e9ee7fab0c1c4563.jpeg",
+        "https://modayakamoz.com/orj/85eddbb3e20d1c382463.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "40203ed6-ac5c-4d5a-b64d-8cdfd87f4f2d/front.jpg",
+          "sha256": "2861a047d78255c84a02dff28a430f321d9e50f342d7297d3369cfdaa94fd6c4",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2718,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-40203ed6/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "40203ed6-ac5c-4d5a-b64d-8cdfd87f4f2d/back.jpg",
+          "sha256": "784fc2f28a93edb26589872e7192258276588c950b0e060577a4ea1ef17be2fe",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2718,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-40203ed6/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "40203ed6-ac5c-4d5a-b64d-8cdfd87f4f2d/fashion_model.jpg",
+          "sha256": "229f28c53b93c1b99d035b8d589fc640cb42e73e4676ba4760aecfdf614ee717",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2718,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-40203ed6/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
