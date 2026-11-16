@@ -1,0 +1,63 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-261",
+  "created_at": "2026-11-16T04:11:16.896680+00:00",
+  "catalog_poll_at": "2026-11-16T04:11:16.896680+00:00",
+  "products": [
+    {
+      "product_id": "f96afa35-3613-4d9c-ab43-6bdaa2bae6d2",
+      "sample": 1965,
+      "name": "Kısa Kollu Kruvaze Yakalı Onu Düğmeli Belinde Toka Detaylı Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 63,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192665-1-b05bda70ca.png",
+        "https://modayakamoz.com/orj/janes-192665-2-ce733e0817.png",
+        "https://modayakamoz.com/orj/janes-192665-3-6d724558dd.png",
+        "https://modayakamoz.com/orj/janes-192665-4-9952ce6597.png",
+        "https://modayakamoz.com/orj/janes-192665-5-6ef67adb5f.png",
+        "https://modayakamoz.com/orj/janes-192665-6-f2a45f9ba3.png",
+        "https://modayakamoz.com/orj/janes-192665-7-450da3110b.png",
+        "https://modayakamoz.com/orj/janes-192665-8-9f42852d4d.png",
+        {
+          "id": "762dfb7f-19a4-475e-9359-f42b099ddb3a",
+          "url": "https://cdn.meluni.com.tr/ai-products/d18cfb01-e4b0-4ce8-90cf-cc1281643136-olcu-oto-b29fe4a1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-16T05:17:28.540374+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "f96afa35-3613-4d9c-ab43-6bdaa2bae6d2/front.jpg",
+          "sha256": "0c828cdd1ae569d8d86f1f47b7fe3434aff0ab37138a5291bfbc77f3508b3cfc",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1965,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f96afa35/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f96afa35-3613-4d9c-ab43-6bdaa2bae6d2/back.jpg",
+          "sha256": "0f86036be8aea1c3141dfcf19b370ed57bbd0f7c91a19a766c06adcda7b0f74a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1965,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f96afa35/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f96afa35-3613-4d9c-ab43-6bdaa2bae6d2/fashion_model.jpg",
+          "sha256": "acdbbc5bd84dcf98b9864a5bcbbf909e0762aa015eaf7b7892e7cd96805b052d",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1965,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f96afa35/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "f96afa35-3613-4d9c-ab43-6bdaa2bae6d2/size_chart.jpg",
+          "sha256": "c49641b17c7c2ccd2d24a14e83cc770356f5b19d7f78669f6f1072a1e51f6547",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1965,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f96afa35/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
