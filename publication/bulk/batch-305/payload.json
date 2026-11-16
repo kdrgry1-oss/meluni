@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-305",
+  "created_at": "2026-11-16T12:03:04.780374+00:00",
+  "catalog_poll_at": "2026-11-16T12:03:04.780374+00:00",
+  "products": [
+    {
+      "product_id": "7f3cc3c8-a317-4b3e-af53-cdfb33a182eb",
+      "sample": 2457,
+      "name": "Kısa Kollu Yuvarlak Yakalı Kontrast Manset Detaylı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 120,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ed5216bf38976b3dcfdc.jpeg",
+        "https://modayakamoz.com/orj/f947ea0e154ea959f391.jpeg",
+        "https://modayakamoz.com/orj/1e4a1fee61ee4d248fbb.jpeg",
+        "https://modayakamoz.com/orj/f79c86ad5ce31fb91e26.jpeg",
+        {
+          "id": "183001d0-1495-4007-ab80-7be11afdabd1",
+          "url": "https://cdn.meluni.com.tr/ai-products/5d9c929b-4ef8-44f0-b8c1-933a68d8b7be-olcu-oto-d8c7e0d1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:21:05.563955+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7f3cc3c8-a317-4b3e-af53-cdfb33a182eb/front.jpg",
+          "sha256": "c9715cd31121681585ddd3fac24abb7b46a05c4b11e46476515ac37fe86e9f45",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2457,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7f3cc3c8/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7f3cc3c8-a317-4b3e-af53-cdfb33a182eb/back.jpg",
+          "sha256": "064304138a1b89cd22713cfc7de28d609c4692fde6d09200165a1b48447d0061",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2457,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7f3cc3c8/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7f3cc3c8-a317-4b3e-af53-cdfb33a182eb/fashion_model.jpg",
+          "sha256": "914411c1c3e146bc910a09829d7bedb9f011036ce4ebb493d42168e5fe48fc82",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2457,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7f3cc3c8/model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
