@@ -1,0 +1,38 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-342",
+  "created_at": "2026-11-16T21:55:20.459481+00:00",
+  "catalog_poll_at": "2026-11-16T21:55:20.459481+00:00",
+  "products": [
+    {
+      "product_id": "3c1ada33-ed2d-4cc1-b8c3-3d51bfbd4c34",
+      "sample": 3018,
+      "name": "Uzun Kollu Arma Detaylı Iki Iplik Viskon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 154,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/74b5ac51bfaf0992087d.jpeg",
+        "https://modayakamoz.com/orj/4dacc4403dc9776d6995.jpeg",
+        "https://modayakamoz.com/orj/38ea45f0b61263e5fffd.jpeg",
+        "https://modayakamoz.com/orj/a4edfd1a65ea6a537809.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "3c1ada33-ed2d-4cc1-b8c3-3d51bfbd4c34/front.jpg",
+          "sha256": "3d5d8adca022df133cde00bb5f3f67f3bc381bf80580c92f195712f5afadcd4b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3018,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3c1ada33/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3c1ada33-ed2d-4cc1-b8c3-3d51bfbd4c34/back.jpg",
+          "sha256": "ef7111e46bf86e4e3f5c9db0df72b9dc53effe50b2d86bc5e4b54e7e06d017d0",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3018,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3c1ada33/back-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
