@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-270",
+  "created_at": "2026-11-16T05:30:30.206468+00:00",
+  "catalog_poll_at": "2026-11-16T05:30:30.206468+00:00",
+  "products": [
+    {
+      "product_id": "8ee50937-b218-4b70-860d-55e9cb177662",
+      "sample": 2048,
+      "name": "Kısa Kollu V Dantel Yakalı Viskon Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 37,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d9fdc0210f4382786933.jpeg",
+        "https://modayakamoz.com/orj/c5b1c22d56281e894ebc.jpeg",
+        "https://modayakamoz.com/orj/46771e78daa93cd7ad3c.jpeg",
+        "https://modayakamoz.com/orj/1edc3b029b15d0e30e4f.jpeg",
+        "https://modayakamoz.com/orj/69de13dc6862414801af.jpeg",
+        "https://modayakamoz.com/orj/444f78ad1c7ed1cea866.jpeg",
+        {
+          "id": "59432904-4c3f-4a14-ada2-6d43c298df17",
+          "url": "https://cdn.meluni.com.tr/ai-products/f42ee20c-7977-49d9-96c5-a964e3c0f64b-olcu-oto-05f9aa5b.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-10T05:20:43.846949+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8ee50937-b218-4b70-860d-55e9cb177662/front.jpg",
+          "sha256": "a81788d092c3467b96f3d8817396f1a1310df85ff884170a467d7653685eab1b",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2048,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8ee50937/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8ee50937-b218-4b70-860d-55e9cb177662/back.jpg",
+          "sha256": "2424b9eaf641f7e70096677ca6d3c8627f800ba96de0d387247867335c853efa",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2048,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8ee50937/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8ee50937-b218-4b70-860d-55e9cb177662/fashion_model.jpg",
+          "sha256": "6479a92ab913f13d4a43d663bc50fe25a86f824d8070a4f5fb4a12474ac49963",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2048,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8ee50937/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
