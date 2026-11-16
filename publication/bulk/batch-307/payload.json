@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-307",
+  "created_at": "2026-11-16T12:18:42.419627+00:00",
+  "catalog_poll_at": "2026-11-16T12:18:42.419627+00:00",
+  "products": [
+    {
+      "product_id": "7627bfad-2ae3-4426-ba40-cb3e04f7c2b3",
+      "sample": 2461,
+      "name": "Kısa Kollu Yuvarlak Yakalı Midi Krinkıl Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 37,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/cf22cbce98d61db0a308.jpeg",
+        "https://modayakamoz.com/orj/05b2902e6c5d5e7cbcf2.jpeg",
+        "https://modayakamoz.com/orj/e208cc3f8d7941d15d9c.jpeg",
+        {
+          "id": "70f354a1-e515-4ee5-9bc6-9abd4fa203d2",
+          "url": "https://cdn.meluni.com.tr/ai-products/7627bfad-2ae3-4426-ba40-cb3e04f7c2b3-olcu-oto-574b9ab5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:19:52.119833+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7627bfad-2ae3-4426-ba40-cb3e04f7c2b3/front.jpg",
+          "sha256": "c99975d5bf39afdefcaf1645eaa92f7ad29c05e5c5e64b7d114bab478f0051ed",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2461,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7627bfad/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7627bfad-2ae3-4426-ba40-cb3e04f7c2b3/back.jpg",
+          "sha256": "098028b8eefc1cb03fc99ec0727fbf58f53a0ed9127c047666681bb07093cb9e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2461,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7627bfad/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7627bfad-2ae3-4426-ba40-cb3e04f7c2b3/fashion_model.jpg",
+          "sha256": "eb76955420204c285b1bb6d554ca3d49b61c433d70eaf4180f812ea4db93165b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2461,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7627bfad/model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
