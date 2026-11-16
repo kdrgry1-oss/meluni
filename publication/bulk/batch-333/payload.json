@@ -1,0 +1,62 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-333",
+  "created_at": "2026-11-16T20:54:47.725487+00:00",
+  "catalog_poll_at": "2026-11-16T20:54:47.725487+00:00",
+  "products": [
+    {
+      "product_id": "2fbd5e26-ab60-400e-a3c5-656b23885b73",
+      "sample": 2780,
+      "name": "Pelerın Kollu Yuvarlak Yakalı Tokalı Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7d9c2095bc926f4db4b1.jpeg",
+        "https://modayakamoz.com/orj/ce298629aa66f67b5212.jpeg",
+        "https://modayakamoz.com/orj/82a70e02055186d8cd87.jpeg",
+        "https://modayakamoz.com/orj/86beecacc385fbba1781.jpeg",
+        "https://modayakamoz.com/orj/4002d01f377ae32337f6.jpeg",
+        "https://modayakamoz.com/orj/22b1f28e9f27cd7071c8.jpeg",
+        "https://modayakamoz.com/orj/31b6fc76b55c739e109b.jpeg",
+        {
+          "id": "e4ffdfa9-7530-4a28-a89c-2099e7ad23f6",
+          "url": "https://cdn.meluni.com.tr/ai-products/42ae73ae-9023-4d7b-a740-73fd01347574-olcu-oto-0787b292.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:26:52.410854+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "2fbd5e26-ab60-400e-a3c5-656b23885b73/front.jpg",
+          "sha256": "18b7d8e9fe373340f8ca8ec3a7799e51adf6b6acebf7234b3748dc2d59543962",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2780,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fbd5e26/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "2fbd5e26-ab60-400e-a3c5-656b23885b73/back.jpg",
+          "sha256": "33c5f4d5b75213b51fdd0c4e7f992025a656f0d3abddae375d014529e1f296d2",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2780,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fbd5e26/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "2fbd5e26-ab60-400e-a3c5-656b23885b73/fashion_model.jpg",
+          "sha256": "548a5859d05e66bd53c35eb84e1e6d351a40d3677edc0931c6f032a6cc439297",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2780,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fbd5e26/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "2fbd5e26-ab60-400e-a3c5-656b23885b73/size_chart.jpg",
+          "sha256": "08c7cdfec3328dfcf9db6bb82a099c4c87a3178203fb9f20216ed9994a39e47b",
+          "qa_status": "exact_source_values_verified",
+          "sample": 2780,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fbd5e26/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
