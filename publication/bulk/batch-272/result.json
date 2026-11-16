@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-272",
+  "published_at_utc": "2026-11-16T05:49:19.546641+00:00",
+  "products": [
+    {
+      "product_id": "ddb0caa5-a507-48b8-8e88-dbc19d651abb",
+      "sample": 2089,
+      "name": "Kısa Kollu V Yaka ve Ribana Detay Midiboy Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ddb0caa5-a507-48b8-8e88-dbc19d651abb-front-ba2cb4752250.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ddb0caa5-a507-48b8-8e88-dbc19d651abb-back-b663ffa5c436.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ddb0caa5-a507-48b8-8e88-dbc19d651abb-model-48dcb22fa9ca.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/ddb0caa5-a507-48b8-8e88-dbc19d651abb-size-chart-948f5039e6cc.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
