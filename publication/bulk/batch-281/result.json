@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-281",
+  "published_at_utc": "2026-11-16T06:58:11.999340+00:00",
+  "products": [
+    {
+      "product_id": "9b738f11-7442-4c0a-ad4b-8a3be21254ed",
+      "sample": 2255,
+      "name": "Kısa Kollu V Yakalı Pileli Uzun Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9b738f11-7442-4c0a-ad4b-8a3be21254ed-front-46643abc2125.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9b738f11-7442-4c0a-ad4b-8a3be21254ed-back-39d6958f8346.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9b738f11-7442-4c0a-ad4b-8a3be21254ed-model-54db2d8d1eab.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/9b738f11-7442-4c0a-ad4b-8a3be21254ed-size-chart-58d708af64f8.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
