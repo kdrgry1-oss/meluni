@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-339",
+  "created_at": "2026-11-16T21:32:19.076059+00:00",
+  "catalog_poll_at": "2026-11-16T21:32:19.076059+00:00",
+  "products": [
+    {
+      "product_id": "3f76727f-ad05-4b82-afdc-0f58cc1dc6c8",
+      "sample": 2917,
+      "name": "Tek Omuz Dekolte Detay Uzun Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 29,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/36c450bbbe613708b67c.jpeg",
+        "https://modayakamoz.com/orj/9321d8fcce717ae372f6.jpeg",
+        "https://modayakamoz.com/orj/195aca6b01db8485f904.jpeg",
+        "https://modayakamoz.com/orj/2fb40ea1fbc2622ea7b7.jpeg",
+        "https://modayakamoz.com/orj/2694dcb8fb9e1fd1c6ba.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "3f76727f-ad05-4b82-afdc-0f58cc1dc6c8/front.jpg",
+          "sha256": "458a6cc9c5f84380cf7f3e99719d3a46481a64e91f334d7969f6496e8a1d5a23",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2917,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3f76727f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3f76727f-ad05-4b82-afdc-0f58cc1dc6c8/back.jpg",
+          "sha256": "74d1253720823146d81fde40284667c94f493e38da3003edf583f3599cdc623e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2917,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3f76727f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3f76727f-ad05-4b82-afdc-0f58cc1dc6c8/fashion_model.jpg",
+          "sha256": "3a4ee71dce3cec288d20adebd6cece8bdc578b79fa0714d5d392807ed989af8e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2917,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3f76727f/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "3f76727f-ad05-4b82-afdc-0f58cc1dc6c8/size_chart.jpg",
+          "sha256": "eab8a4f46d08bfc0e13f0ef528e650b7f89596433d3af3d52f4cef69567f3921",
+          "qa_status": "exact_source_values_verified",
+          "sample": 2917,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3f76727f/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
