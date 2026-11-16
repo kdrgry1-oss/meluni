@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-285",
+  "published_at_utc": "2026-11-16T07:28:42.954165+00:00",
+  "products": [
+    {
+      "product_id": "e3cc89b7-c169-4e76-a979-82d3fe27e9b0",
+      "sample": 2223,
+      "name": "Kısa Kollu V Yakalı Kısa Sandy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e3cc89b7-c169-4e76-a979-82d3fe27e9b0-front-13348cc51aa4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e3cc89b7-c169-4e76-a979-82d3fe27e9b0-model-4535a3790c1f.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
