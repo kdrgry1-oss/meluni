@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-283",
+  "published_at_utc": "2026-11-16T07:13:14.243033+00:00",
+  "products": [
+    {
+      "product_id": "ebc84c29-6cdd-46d1-843c-92503246fe27",
+      "sample": 2246,
+      "name": "Kısa Kollu V Yakalı Mini Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ebc84c29-6cdd-46d1-843c-92503246fe27-front-4b251f309328.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ebc84c29-6cdd-46d1-843c-92503246fe27-back-a44c2c572a13.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ebc84c29-6cdd-46d1-843c-92503246fe27-model-a6fba37eb3ab.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
