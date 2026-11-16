@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-340",
+  "created_at": "2026-11-16T21:37:37.764985+00:00",
+  "catalog_poll_at": "2026-11-16T21:37:37.764985+00:00",
+  "products": [
+    {
+      "product_id": "2fdfa951-8e89-469f-bb59-f0c093232eb7",
+      "sample": 2945,
+      "name": "Tek Omuzu Açık Omuzdan Pelerinli Midi Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 64,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f8db7000b44719f482a5.jpeg",
+        "https://modayakamoz.com/orj/df0d7b55e77e086d119f.jpeg",
+        "https://modayakamoz.com/orj/d7163e32f3dab7896b53.jpeg",
+        "https://modayakamoz.com/orj/29f4cc1db53aff253107.jpeg",
+        "https://modayakamoz.com/orj/579803725640b67c3223.jpeg",
+        "https://modayakamoz.com/orj/eb6934621992712d05f0.jpeg",
+        {
+          "id": "363a6dbc-f297-4cac-a927-f60836feb0eb",
+          "url": "https://cdn.meluni.com.tr/ai-products/2fdfa951-8e89-469f-bb59-f0c093232eb7-olcu-oto-cd328cd4.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:27:30.751155+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "2fdfa951-8e89-469f-bb59-f0c093232eb7/front.jpg",
+          "sha256": "a0e4095b148c2c70e71ff3f06637b8d6a4e618b0dd4fc65d2e270ed5add79e3d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2945,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fdfa951/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "2fdfa951-8e89-469f-bb59-f0c093232eb7/back.jpg",
+          "sha256": "f7a44f74cb7c83c63efdfddc676f7e232e4eb1b965940223480f5e13b773b127",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2945,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fdfa951/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "2fdfa951-8e89-469f-bb59-f0c093232eb7/fashion_model.jpg",
+          "sha256": "6c23fd0d1a86c59680e0f5e4a776e78d3d3797f290a50bccb015fc4d4e8607a4",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2945,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fdfa951/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
