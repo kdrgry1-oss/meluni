@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-265",
+  "published_at_utc": "2026-11-16T04:55:55.686517+00:00",
+  "products": [
+    {
+      "product_id": "f5c44184-b5ce-4d9c-b295-37624dfa8818",
+      "sample": 2012,
+      "name": "Kısa Kollu Sırt Dekolte Detay Önü Çift Yırtmaçlı Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f5c44184-b5ce-4d9c-b295-37624dfa8818-front-0dde762912f2.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/f5c44184-b5ce-4d9c-b295-37624dfa8818-back-11545293fb8b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f5c44184-b5ce-4d9c-b295-37624dfa8818-model-c6da15ee7872.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
