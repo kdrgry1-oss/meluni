@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-328",
+  "created_at": "2026-11-16T19:16:22.412489+00:00",
+  "catalog_poll_at": "2026-11-16T19:16:22.412489+00:00",
+  "products": [
+    {
+      "product_id": "b5e6b71e-6a26-45fc-9183-2f1247a09a3e",
+      "sample": 2720,
+      "name": "Omuzlardan Açık Yuvarlak Yakalı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 29,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3ec2d995a0b8432eb175.jpeg",
+        "https://modayakamoz.com/orj/9b978f992ba23e6f2fd4.jpeg",
+        "https://modayakamoz.com/orj/5a6eeff2d481a604fe4c.jpeg",
+        {
+          "id": "c937db05-0221-40e0-9542-eb0562599f99",
+          "url": "https://cdn.meluni.com.tr/ai-products/b5e6b71e-6a26-45fc-9183-2f1247a09a3e-olcu-oto-39d5abdb.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:20:45.390202+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "b5e6b71e-6a26-45fc-9183-2f1247a09a3e/front.jpg",
+          "sha256": "dfb52989eb8c5a2aa1b0154d69c9a52959583000a3c7521c514d1959dacdb885",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2720,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5e6b71e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b5e6b71e-6a26-45fc-9183-2f1247a09a3e/back.jpg",
+          "sha256": "0f8c4fc3b1b009f8d8e18cc672b01ea93efcde5dc7e92d59f556fb391186a9fd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2720,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5e6b71e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b5e6b71e-6a26-45fc-9183-2f1247a09a3e/fashion_model.jpg",
+          "sha256": "bd99afe9b25dbd6aa2e62cc0cce719c08e8537d18647ced181d5ffceaeb33ae6",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2720,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5e6b71e/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "b5e6b71e-6a26-45fc-9183-2f1247a09a3e/size_chart.jpg",
+          "sha256": "a8fb932d4f41effdbfae0059d97b4dfbd9b32d0158a3c0c44cceac9e3f733400",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2720,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5e6b71e/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
