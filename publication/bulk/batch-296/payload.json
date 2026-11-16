@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-296",
+  "created_at": "2026-11-16T08:47:28.674528+00:00",
+  "catalog_poll_at": "2026-11-16T08:47:28.674528+00:00",
+  "products": [
+    {
+      "product_id": "1b7bb313-d700-4c8e-9b35-c5ff66feba37",
+      "sample": 2280,
+      "name": "Kısa Kollu V Yakalı Viskon Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 8,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d79323534bad83f4afe5.jpeg",
+        "https://modayakamoz.com/orj/dc9102770759daf8d3c7.jpeg",
+        "https://modayakamoz.com/orj/25f2b027ef18869823fc.jpeg",
+        "https://modayakamoz.com/orj/a1cc7d5728580fa94eba.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "1b7bb313-d700-4c8e-9b35-c5ff66feba37/front.jpg",
+          "sha256": "cac672187b2c17cbdf20ad9a3c9244ca54615a3f6a171cfcee1bd7304ca68ea4",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2280,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1b7bb313/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "1b7bb313-d700-4c8e-9b35-c5ff66feba37/back.jpg",
+          "sha256": "96668717c10a335579cfac3608feff0bdde51948ece2faac15d1b919a659ee53",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2280,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1b7bb313/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "1b7bb313-d700-4c8e-9b35-c5ff66feba37/fashion_model.jpg",
+          "sha256": "20ca557f29c712ab7f6b060a8d7b481015e01b7eda33bbde94a5b57ebd71883b",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2280,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1b7bb313/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "1b7bb313-d700-4c8e-9b35-c5ff66feba37/size_chart.jpg",
+          "sha256": "812a6ebbb2b9d50cf27b30ffaf59e9bcd2de7ed5c8e802223e584c40184e9adb",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2280,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1b7bb313/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
