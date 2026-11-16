@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-295",
+  "published_at_utc": "2026-11-16T08:39:36.461003+00:00",
+  "products": [
+    {
+      "product_id": "713e4035-524d-4d40-868e-e98395e7812f",
+      "sample": 919,
+      "name": "Kısa Kollu Vatkalı Bağcıklı Kısa Viskon Tulum",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/713e4035-524d-4d40-868e-e98395e7812f-model-3916409ab32f.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
