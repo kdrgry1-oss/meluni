@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-294",
+  "created_at": "2026-11-16T08:36:18.368200+00:00",
+  "catalog_poll_at": "2026-11-16T08:36:18.368200+00:00",
+  "products": [
+    {
+      "product_id": "4a8fb2b6-4ef5-4746-8082-cc4004c24996",
+      "sample": 914,
+      "name": "Kısa Kollu V Yakalı Önden Şerit Detaylı Sandy Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 51,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/4a8fb2b6-4ef5-4746-8082-cc4004c24996-front-a2cef085b21f.jpg",
+        "https://cdn.meluni.com.tr/ai-products/4a8fb2b6-4ef5-4746-8082-cc4004c24996-back-de5f68d8faa6.jpg",
+        "https://modayakamoz.com/orj/0de551fe9c455db65966.jpeg",
+        "https://modayakamoz.com/orj/bb341ca2e3872e2dd16d.jpeg",
+        "https://modayakamoz.com/orj/f29312e898107bd9a6b2.jpeg",
+        "https://modayakamoz.com/orj/e87d3dfaf6f8ecdd059d.jpeg",
+        {
+          "id": "6d00dbf0-4b73-43d9-a65e-e4a9cfa2e654",
+          "url": "https://cdn.meluni.com.tr/ai-products/4a8fb2b6-4ef5-4746-8082-cc4004c24996-olcu-oto-6ba110b8.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:20:05.291155+00:00"
+        },
+        {
+          "id": "afb119f2-d168-59a9-a478-45dad236ca24",
+          "url": "https://cdn.meluni.com.tr/ai-products/4a8fb2b6-4ef5-4746-8082-cc4004c24996-size-chart-5f5ac00458b1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:10:33.476029+00:00"
+        }
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "4a8fb2b6-4ef5-4746-8082-cc4004c24996/fashion_model.jpg",
+          "sha256": "6ca89ce51160d86595a0336f5bb1337ec3eaeaab9ced2cd96e736862a4a6a815",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 914,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-914-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
