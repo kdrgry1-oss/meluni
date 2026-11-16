@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-305",
+  "published_at_utc": "2026-11-16T12:03:58.942339+00:00",
+  "products": [
+    {
+      "product_id": "7f3cc3c8-a317-4b3e-af53-cdfb33a182eb",
+      "sample": 2457,
+      "name": "Kısa Kollu Yuvarlak Yakalı Kontrast Manset Detaylı Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7f3cc3c8-a317-4b3e-af53-cdfb33a182eb-front-c9715cd31121.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7f3cc3c8-a317-4b3e-af53-cdfb33a182eb-back-064304138a1b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7f3cc3c8-a317-4b3e-af53-cdfb33a182eb-model-914411c1c3e1.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
