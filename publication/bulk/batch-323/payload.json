@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-323",
+  "created_at": "2026-11-16T18:42:23.359635+00:00",
+  "catalog_poll_at": "2026-11-16T18:42:23.359635+00:00",
+  "products": [
+    {
+      "product_id": "babdd616-0538-44bd-a919-afd3cb8ac013",
+      "sample": 2705,
+      "name": "Omuzlardan Açık Yaka Ince Şerit Detaylı Uzun Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/9892a5d8464e97ffb841.jpeg",
+        "https://modayakamoz.com/orj/76831e4dedefcf87bb00.jpeg",
+        "https://modayakamoz.com/orj/5e0cada630cf81b6bec0.jpeg",
+        "https://modayakamoz.com/orj/42cbf029608393891b19.jpeg",
+        {
+          "id": "20076392-be81-4a85-8f98-d71de774ad92",
+          "url": "https://cdn.meluni.com.tr/ai-products/babdd616-0538-44bd-a919-afd3cb8ac013-olcu-oto-2a169eb3.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:23:19.408205+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "babdd616-0538-44bd-a919-afd3cb8ac013/front.jpg",
+          "sha256": "91fcacd203f084d2a9e9fd164931d7274a40734b36e98a17d0ff2f37170c3adf",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2705,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-babdd616/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "babdd616-0538-44bd-a919-afd3cb8ac013/back.jpg",
+          "sha256": "fba612bbdf9125ec114d44871d8483aa9c3c9d9716a629d9173c99caf15c18c5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2705,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-babdd616/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "babdd616-0538-44bd-a919-afd3cb8ac013/fashion_model.jpg",
+          "sha256": "20c089e0a74c718e284ed8ace99bebe1378b3b35c5306a764a9cbcbda150dabf",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2705,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-babdd616/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "babdd616-0538-44bd-a919-afd3cb8ac013/size_chart.jpg",
+          "sha256": "19633ddb9f0a06839566a4323627e0f99b3b6e5ba5e45e5c372c56c583dcc6f8",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2705,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-babdd616/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
