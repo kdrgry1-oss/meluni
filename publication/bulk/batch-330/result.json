@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-330",
+  "published_at_utc": "2026-11-16T19:36:32.609955+00:00",
+  "products": [
+    {
+      "product_id": "40203ed6-ac5c-4d5a-b64d-8cdfd87f4f2d",
+      "sample": 2718,
+      "name": "Omuzlardan Açık Yuvarlak Yakalı Dantel Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/40203ed6-ac5c-4d5a-b64d-8cdfd87f4f2d-front-2861a047d782.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/40203ed6-ac5c-4d5a-b64d-8cdfd87f4f2d-back-784fc2f28a93.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/40203ed6-ac5c-4d5a-b64d-8cdfd87f4f2d-model-229f28c53b93.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
