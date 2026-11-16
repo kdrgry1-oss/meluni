@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-289",
+  "published_at_utc": "2026-11-16T08:04:45.891239+00:00",
+  "products": [
+    {
+      "product_id": "b54fc6dc-99e0-4b43-beb6-32b463d03423",
+      "sample": 2240,
+      "name": "Kısa Kollu V Yakalı Midi Astarlı Şifon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b54fc6dc-99e0-4b43-beb6-32b463d03423-front-dec1539ec84e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b54fc6dc-99e0-4b43-beb6-32b463d03423-back-5993ee38bec7.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b54fc6dc-99e0-4b43-beb6-32b463d03423-model-8749dc3c4475.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
