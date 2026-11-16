@@ -1,0 +1,41 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-237",
+  "created_at": "2026-11-16T00:42:35.528697+00:00",
+  "catalog_poll_at": "2026-11-16T00:42:35.528697+00:00",
+  "products": [
+    {
+      "product_id": "19debae4-dee2-4866-bb2f-13a261d0e6d0",
+      "sample": 1629,
+      "name": "Kısa Kollu Bisiklet Yaka Asimetrik Detaylı Bürümcük Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 94,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/19debae4-dee2-4866-bb2f-13a261d0e6d0-front-28aabca76a87.jpg",
+        "https://cdn.meluni.com.tr/ai-products/19debae4-dee2-4866-bb2f-13a261d0e6d0-back-567058ea88fc.jpg",
+        "https://cdn.meluni.com.tr/ai-products/19debae4-dee2-4866-bb2f-13a261d0e6d0-model-b5242f4b656e.jpg",
+        "https://cdn.meluni.com.tr/products/19debae4-dee2-4866-bb2f-13a261d0e6d0/19debae4-dee2-4866-bb2f-13a261d0e6d0-hd0-d313d3a0.jpg",
+        "https://cdn.meluni.com.tr/products/19debae4-dee2-4866-bb2f-13a261d0e6d0/19debae4-dee2-4866-bb2f-13a261d0e6d0-hd1-512d5582.jpg",
+        "https://cdn.meluni.com.tr/products/19debae4-dee2-4866-bb2f-13a261d0e6d0/19debae4-dee2-4866-bb2f-13a261d0e6d0-hd2-72f3e920.jpg",
+        "https://cdn.meluni.com.tr/products/19debae4-dee2-4866-bb2f-13a261d0e6d0/19debae4-dee2-4866-bb2f-13a261d0e6d0-hd3-e7cb804a.jpg",
+        {
+          "id": "606cb61a-7f74-4dc4-b67a-a78e00767c02",
+          "url": "https://cdn.meluni.com.tr/ai-products/6afb2b5a-ae89-4f9a-806b-041045761de9-olcu-oto-fdfaad5f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:32:20.272363+00:00"
+        }
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "19debae4-dee2-4866-bb2f-13a261d0e6d0/size_chart.jpg",
+          "sha256": "f709d8a5189beb457aec4c3d046905f1ad991a1b240a98a01d5615a86537a6dc",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1629,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-19debae4/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
