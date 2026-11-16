@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-258",
+  "created_at": "2026-11-16T03:45:52.883213+00:00",
+  "catalog_poll_at": "2026-11-16T03:45:52.883213+00:00",
+  "products": [
+    {
+      "product_id": "1889a703-ed1f-414f-a4c5-704af6505fd1",
+      "sample": 1922,
+      "name": "Kısa Kollu Kruvaze Yakalı Asımetrık Kesım Detaylı Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8ace1a22481c512a7934.jpeg",
+        "https://modayakamoz.com/orj/1067b1cd0ae084202ce0.jpeg",
+        "https://modayakamoz.com/orj/775f28e2bc067cf40e59.jpeg",
+        "https://modayakamoz.com/orj/d102ef7bd73c26d655f4.jpeg",
+        {
+          "id": "86de75d5-2d00-4852-9f6f-4ce3c4183c62",
+          "url": "https://cdn.meluni.com.tr/ai-products/439671cb-7050-46b8-a9ac-1bc27f4ffec9-olcu-oto-9449c312.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:21:22.505936+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "1889a703-ed1f-414f-a4c5-704af6505fd1/front.jpg",
+          "sha256": "fe9e44e4c571b553ecb3d7de1f5648b9ad4a6dbd1386bb6fbb3808c09e375647",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1922,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1889a703/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "1889a703-ed1f-414f-a4c5-704af6505fd1/back.jpg",
+          "sha256": "5872651a32ea16a4e8acea6a4a0a923a20e258c3c075a540653c991c987d34f2",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1922,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1889a703/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "1889a703-ed1f-414f-a4c5-704af6505fd1/fashion_model.jpg",
+          "sha256": "66c4c76ec0055b73cc735a1abfb38eb053939bca6036e8edc71f5a4fc7aa5ead",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1922,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1889a703/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "1889a703-ed1f-414f-a4c5-704af6505fd1/size_chart.jpg",
+          "sha256": "18269c198ffa77cb144b0c6d8dbc8bb15e3df53f598fc590e75f9a745d494503",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1922,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1889a703/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
