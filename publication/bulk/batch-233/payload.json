@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-233",
+  "created_at": "2026-11-16T00:08:57.777215+00:00",
+  "catalog_poll_at": "2026-11-16T00:08:57.777215+00:00",
+  "products": [
+    {
+      "product_id": "8646c1ef-d45e-4358-b077-3805d7841cf7",
+      "sample": 1610,
+      "name": "Kısa Kollu Balıkçı Yaka Asimetrik Detaylı Aerobin Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 34,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/8646c1ef-d45e-4358-b077-3805d7841cf7/8646c1ef-d45e-4358-b077-3805d7841cf7-hd0-c3ee3d0c.jpg",
+        "https://cdn.meluni.com.tr/products/8646c1ef-d45e-4358-b077-3805d7841cf7/8646c1ef-d45e-4358-b077-3805d7841cf7-hd1-98018b65.jpg",
+        "https://cdn.meluni.com.tr/products/8646c1ef-d45e-4358-b077-3805d7841cf7/8646c1ef-d45e-4358-b077-3805d7841cf7-hd2-eef1f422.jpg",
+        "https://cdn.meluni.com.tr/products/8646c1ef-d45e-4358-b077-3805d7841cf7/8646c1ef-d45e-4358-b077-3805d7841cf7-hd3-ce3f54f7.jpg",
+        {
+          "id": "14e7a873-4c23-4534-8f9a-69c381b8b3c8",
+          "url": "https://cdn.meluni.com.tr/ai-products/8646c1ef-d45e-4358-b077-3805d7841cf7-olcu-oto-bc8e5331.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:32:16.942682+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8646c1ef-d45e-4358-b077-3805d7841cf7/front.jpg",
+          "sha256": "ca89d8b4b2dcfb2831e16acb6c10a2bb7959322ada65725ef808ec52de95fc43",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1610,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8646c1ef/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8646c1ef-d45e-4358-b077-3805d7841cf7/back.jpg",
+          "sha256": "54f9efdbd648fc87f01c34e2e2bd9ee5fdd4dff26dd4067ac7fdb3d55e13121c",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1610,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8646c1ef/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8646c1ef-d45e-4358-b077-3805d7841cf7/fashion_model.jpg",
+          "sha256": "1446feb56452a5981bf91dcaeda89b931cc69fc524829bff3b2465d32b3c7f45",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1610,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8646c1ef/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "8646c1ef-d45e-4358-b077-3805d7841cf7/size_chart.jpg",
+          "sha256": "4512f94840139fc68b1fba8477ae688d0ee853dffeb519a4026ea9b0c384137b",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1610,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8646c1ef/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
