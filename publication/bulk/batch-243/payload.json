@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-243",
+  "created_at": "2026-11-16T01:28:10.394535+00:00",
+  "catalog_poll_at": "2026-11-16T01:28:10.394535+00:00",
+  "products": [
+    {
+      "product_id": "a0c9262c-1bd2-4dbf-a39d-de3b73f84974",
+      "sample": 1685,
+      "name": "Kısa Kollu Bisiklet Yaka Kısa Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3fe70805046224630997.jpeg",
+        "https://modayakamoz.com/orj/571796e27979783bd843.jpeg",
+        "https://modayakamoz.com/orj/5b80dcee65918ef49f98.jpeg",
+        "https://modayakamoz.com/orj/88c09ec32799c2a23e5e.jpeg",
+        {
+          "id": "7ffe3a82-6bbf-4d34-955c-c49639172027",
+          "url": "https://cdn.meluni.com.tr/ai-products/dfa4e76b-e41b-49c9-a347-25082406d16c-olcu-oto-aef58153.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-03T05:17:50.819241+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "a0c9262c-1bd2-4dbf-a39d-de3b73f84974/front.jpg",
+          "sha256": "fdaec336da6d9eabef9a3b169c0d74997065b85916de6bfae7c99ee1201d025a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1685,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0c9262c/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a0c9262c-1bd2-4dbf-a39d-de3b73f84974/fashion_model.jpg",
+          "sha256": "d0faf6b35e3cc27919238f2e490f5efb6fb199e33442677001ab2758cda62da9",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1685,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0c9262c/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "a0c9262c-1bd2-4dbf-a39d-de3b73f84974/size_chart.jpg",
+          "sha256": "42fce47bb424355f70f96c6558a4ba86c436739421836ee1db5b324a343c7b8a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1685,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0c9262c/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
