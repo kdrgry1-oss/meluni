@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-343",
+  "created_at": "2026-11-16T22:01:46.297483+00:00",
+  "catalog_poll_at": "2026-11-16T22:01:46.297483+00:00",
+  "products": [
+    {
+      "product_id": "29c92456-ed53-46be-a227-81afb4a229a2",
+      "sample": 3051,
+      "name": "Uzun Kollu Balıkçı Yaka Tül Detaylı Mini Deri Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 243,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5c69d8ad1759c1857c38.jpeg",
+        "https://modayakamoz.com/orj/486f0b342f8c6fbc6ea3.jpeg",
+        "https://modayakamoz.com/orj/4f3a176c6a3eb2042633.jpeg",
+        "https://modayakamoz.com/orj/f853f45099a2029cf4e9.jpeg",
+        "https://modayakamoz.com/orj/1c31d35a9c4d8c5167ad.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "29c92456-ed53-46be-a227-81afb4a229a2/front.jpg",
+          "sha256": "1dfd2e89edfd0b6c51df5595a07271fa507d9a49de828ecbcae46bc100e969fe",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3051,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-29c92456/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "29c92456-ed53-46be-a227-81afb4a229a2/back.jpg",
+          "sha256": "a228a7aab61479c185ef8478139a9031ec21195dfdb82f5adad3e3439d1b3690",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3051,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-29c92456/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "29c92456-ed53-46be-a227-81afb4a229a2/fashion_model.jpg",
+          "sha256": "ce9c674ca954b0e97206817efecbdfc7b0b2346ef87669a234822e1dd6c24f70",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3051,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-29c92456/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "29c92456-ed53-46be-a227-81afb4a229a2/size_chart.jpg",
+          "sha256": "be030e8e4737a570d09faedd1df90ee6362b105db509fae63813c63b5b1949c7",
+          "qa_status": "exact_source_values_verified",
+          "sample": 3051,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-29c92456/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
