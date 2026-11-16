@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-242",
+  "published_at_utc": "2026-11-16T01:21:50.604132+00:00",
+  "products": [
+    {
+      "product_id": "692a3bec-1d9f-4e48-9c71-07f21bd59761",
+      "sample": 1673,
+      "name": "Kısa Kollu Bisiklet Yaka Fırfırlı Kısa Bürümcük Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/692a3bec-1d9f-4e48-9c71-07f21bd59761-front-df0bf63cf059.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/692a3bec-1d9f-4e48-9c71-07f21bd59761-back-90ae94104ab5.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/692a3bec-1d9f-4e48-9c71-07f21bd59761-model-808de4081cc4.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
