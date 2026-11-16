@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-251",
+  "published_at_utc": "2026-11-16T02:34:34.935491+00:00",
+  "products": [
+    {
+      "product_id": "3a17156c-1760-4f28-96e6-ccd2d2cdce1c",
+      "sample": 1715,
+      "name": "Kısa Kollu Bisiklet Yaka Viskon Iki Iplik Bluz ve Pantolon Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3a17156c-1760-4f28-96e6-ccd2d2cdce1c-front-7a49b19f6918.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/3a17156c-1760-4f28-96e6-ccd2d2cdce1c-back-48f534682dfe.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3a17156c-1760-4f28-96e6-ccd2d2cdce1c-model-5160bbdf4bfb.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
