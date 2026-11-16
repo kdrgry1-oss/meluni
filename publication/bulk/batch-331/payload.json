@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-331",
+  "created_at": "2026-11-16T20:41:42.642852+00:00",
+  "catalog_poll_at": "2026-11-16T20:41:42.642852+00:00",
+  "products": [
+    {
+      "product_id": "71bb2ae8-1744-41d8-bea0-386e84130be2",
+      "sample": 2759,
+      "name": "Oversize Pens Detaylı Cepli Yırtmaçlı Poplin Gömlek",
+      "active_at_poll": true,
+      "stock_at_poll": 4000,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a4fd68a15a206a4fd68a15a22.webp",
+        "https://modayakamoz.com/orj/TY6a4fd68b9b2176a4fd68b9b21a.webp",
+        "https://modayakamoz.com/orj/TY6a4fd68d7ba096a4fd68d7ba0b.webp",
+        "https://modayakamoz.com/orj/TY6a4fd68f72a5e6a4fd68f72a61.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "71bb2ae8-1744-41d8-bea0-386e84130be2/front.jpg",
+          "sha256": "2231c9a0faf4c3857d47ba84738af8c01ca77947b2969645987e2879577f63f5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2759,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-71bb2ae8/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "71bb2ae8-1744-41d8-bea0-386e84130be2/back.jpg",
+          "sha256": "bf6c4bf9038d7caaefa81d45df6deb53aaf62b9649509447cd33dc3473fdb043",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2759,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-71bb2ae8/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "71bb2ae8-1744-41d8-bea0-386e84130be2/fashion_model.jpg",
+          "sha256": "6a4806846975d8c1e3aa68cd46ef68cbff23dc0be0d657f2284621fc4af599a9",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2759,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-71bb2ae8/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
