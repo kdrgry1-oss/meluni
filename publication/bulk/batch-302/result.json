@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-302",
+  "published_at_utc": "2026-11-16T11:21:08.613754+00:00",
+  "products": [
+    {
+      "product_id": "05df56c0-174e-476c-aa0d-280ab681002b",
+      "sample": 2447,
+      "name": "Kısa Kollu Yuvarlak Yakalı Beli Lastikli Cepli Aerobin Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/05df56c0-174e-476c-aa0d-280ab681002b-front-bb33fb8146b4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/05df56c0-174e-476c-aa0d-280ab681002b-back-cf74b8e21443.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/05df56c0-174e-476c-aa0d-280ab681002b-model-f82ec5fde51f.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/05df56c0-174e-476c-aa0d-280ab681002b-size-chart-a714c52f9b74.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
