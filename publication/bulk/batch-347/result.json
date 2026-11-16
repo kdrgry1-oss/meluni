@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-347",
+  "published_at_utc": "2026-11-16T22:23:54.145832+00:00",
+  "products": [
+    {
+      "product_id": "22739a3e-1baf-4f6c-8a68-09edcada2983",
+      "sample": 3092,
+      "name": "Uzun Kollu Bisiklet Yaka Fermuarlı Midi Deri Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/22739a3e-1baf-4f6c-8a68-09edcada2983-front-79749fd5d593.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/22739a3e-1baf-4f6c-8a68-09edcada2983-back-45c44860b50f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/22739a3e-1baf-4f6c-8a68-09edcada2983-model-7d25f4435c60.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
