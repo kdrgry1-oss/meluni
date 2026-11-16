@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-304",
+  "created_at": "2026-11-16T11:55:11.427938+00:00",
+  "catalog_poll_at": "2026-11-16T11:55:11.427938+00:00",
+  "products": [
+    {
+      "product_id": "5d9c929b-4ef8-44f0-b8c1-933a68d8b7be",
+      "sample": 2456,
+      "name": "Kısa Kollu Yuvarlak Yakalı Kontrast Manset Detaylı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 17,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ad4deba6fd6a5463df8c.jpeg",
+        "https://modayakamoz.com/orj/123a4989fd89d19329c4.jpeg",
+        "https://modayakamoz.com/orj/bd49d8e716d52469ab15.jpeg",
+        {
+          "id": "35f29179-fb5d-4b2d-aee1-b8684d605ee8",
+          "url": "https://cdn.meluni.com.tr/ai-products/5d9c929b-4ef8-44f0-b8c1-933a68d8b7be-olcu-oto-d8c7e0d1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:21:05.360001+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "5d9c929b-4ef8-44f0-b8c1-933a68d8b7be/front.jpg",
+          "sha256": "e44486478d5dd311b6ea5c52955139e1c8b73c167bbc7c7dbb52598ada672fcd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2456,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5d9c929b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5d9c929b-4ef8-44f0-b8c1-933a68d8b7be/back.jpg",
+          "sha256": "951a0cbfe4b75542dcc845d60f077686641b5b7a42187f5b2ebcd1abbc955fe5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2456,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5d9c929b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5d9c929b-4ef8-44f0-b8c1-933a68d8b7be/fashion_model.jpg",
+          "sha256": "f9b36af7ab983b315a01f609cf8cdcb1f10de484f34baa4e8c943e125081b755",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2456,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5d9c929b/model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
