@@ -71,7 +71,13 @@ async def main(payload_file, assets_root, result_file):
                     pid=p['product_id']
                     if pid not in eligible:continue
                     doc=eligible[pid];urls=staged[pid]; old=list(doc.get('images') or [])
-                    new=[urls[v] for v in ('front','back','fashion_model') if v in urls]+old
+                    prefix_count=p.get('preserve_leading_existing_count',0)
+                    if prefix_count:
+                        if prefix_count!=2 or set(urls)!={'fashion_model'} or len(old)<2 or not all(isinstance(x,str) and x.startswith('https://cdn.meluni.com.tr/') for x in old[:2]):
+                            raise RuntimeError(f'invalid preserved gallery prefix: {pid}')
+                        new=old[:2]+[urls['fashion_model']]+old[2:]
+                    else:
+                        new=[urls[v] for v in ('front','back','fashion_model') if v in urls]+old
                     if 'size_chart' in urls:
                         new.append({'id':str(uuid.uuid5(uuid.NAMESPACE_URL,f'meluni:{pub}:{pid}:size_chart_gallery')),'url':urls['size_chart'],'is_size_table':True,'alt':'Ölçü Tablosu','created_at':now})
                     filt={'id':pid,'images':old,'stock':{'$gt':0}}

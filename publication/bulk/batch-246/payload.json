@@ -1,0 +1,50 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-246",
+  "created_at": "2026-11-16T01:49:55.070099+00:00",
+  "catalog_poll_at": "2026-11-16T01:49:55.070099+00:00",
+  "products": [
+    {
+      "product_id": "3e7afb93-de88-4978-8eff-0c2db9b5123e",
+      "sample": 698,
+      "name": "Kısa Kollu Bisiklet Yaka Yırtmaçlı Viskon Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261021-reconcile/3e7afb93-de88-4978-8eff-0c2db9b5123e/c0740f6b9bf1cbad.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261021-reconcile/3e7afb93-de88-4978-8eff-0c2db9b5123e/f8c5ca2e0ccb845d.jpg",
+        "https://modayakamoz.com/orj/622ce6050123057b70dd.jpeg",
+        "https://modayakamoz.com/orj/339a448c6d2752f367da.jpeg",
+        "https://modayakamoz.com/orj/5542a5e5ae20fa57851b.jpeg",
+        "https://modayakamoz.com/orj/4860a88a831e9c6e1d7a.jpeg",
+        "https://modayakamoz.com/orj/2bdffc72a8d3d1859d4b.jpeg",
+        "https://modayakamoz.com/orj/6b1e4f4072b4944c75a4.jpeg",
+        {
+          "id": "ea10922e-3fc6-4cde-9c09-739b2bbe7dcb",
+          "url": "https://cdn.meluni.com.tr/ai-products/3e7afb93-de88-4978-8eff-0c2db9b5123e-olcu-oto-a9b95305.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-09T05:20:35.886642+00:00"
+        },
+        {
+          "id": "266151aa-f1c9-5425-905b-7717cff9b0fe",
+          "url": "https://cdn.meluni.com.tr/ai-products/3e7afb93-de88-4978-8eff-0c2db9b5123e-size-chart-2f3fd807ab21.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:17:30.364541+00:00"
+        }
+      ],
+      "preserve_leading_existing_count": 2,
+      "assets": {
+        "fashion_model": {
+          "file": "3e7afb93-de88-4978-8eff-0c2db9b5123e/fashion_model.jpg",
+          "sha256": "ba06f4ee359c95f21e511fb0260017205b0ef39e52aeedef57c23a5caab2f862",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 698,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-698-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
