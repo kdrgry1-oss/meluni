@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-314",
+  "published_at_utc": "2026-11-16T13:31:21.050622+00:00",
+  "products": [
+    {
+      "product_id": "91c68d26-000b-40a3-91fc-ec792c2e0cd9",
+      "sample": 2630,
+      "name": "Omuzlardan Açık Balıkçı Yaka Dantel Detaylı Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/91c68d26-000b-40a3-91fc-ec792c2e0cd9-front-18e13d623eef.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/91c68d26-000b-40a3-91fc-ec792c2e0cd9-back-abdf3bd51e1d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/91c68d26-000b-40a3-91fc-ec792c2e0cd9-model-499da0cde485.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/91c68d26-000b-40a3-91fc-ec792c2e0cd9-size-chart-ad4384c42d26.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
