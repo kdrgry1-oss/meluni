@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-298",
+  "published_at_utc": "2026-11-16T09:10:19.329657+00:00",
+  "products": [
+    {
+      "product_id": "c3380032-7a28-47a6-a580-44d3e6f92a21",
+      "sample": 2251,
+      "name": "Kısa Kollu V Yakalı Omuzlardan Şerit Detaylı Viskon Midi Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c3380032-7a28-47a6-a580-44d3e6f92a21-front-f9694501abed.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c3380032-7a28-47a6-a580-44d3e6f92a21-model-ffb5640010f8.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
