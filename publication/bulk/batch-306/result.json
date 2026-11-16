@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-306",
+  "published_at_utc": "2026-11-16T12:10:59.729840+00:00",
+  "products": [
+    {
+      "product_id": "88c2db40-b4a6-45d3-bab3-52bc61ace980",
+      "sample": 2458,
+      "name": "Kısa Kollu Yuvarlak Yakalı Krop Bluz ve Yırtmaçlı Sandy Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/88c2db40-b4a6-45d3-bab3-52bc61ace980-front-068c874d7a36.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/88c2db40-b4a6-45d3-bab3-52bc61ace980-model-126156f325bc.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
