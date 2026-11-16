@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-234",
+  "published_at_utc": "2026-11-16T00:19:33.933377+00:00",
+  "products": [
+    {
+      "product_id": "d7c1b905-071a-4be2-98fd-eaabd750c3be",
+      "sample": 1623,
+      "name": "Kısa Kollu Belden Çiçek Aksesuarlı Yırtmaçlı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d7c1b905-071a-4be2-98fd-eaabd750c3be-front-3f4fa2543c76.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d7c1b905-071a-4be2-98fd-eaabd750c3be-back-af8aabcb16b9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d7c1b905-071a-4be2-98fd-eaabd750c3be-model-788302c0b598.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d7c1b905-071a-4be2-98fd-eaabd750c3be-size-chart-bbf40cf93fbb.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
