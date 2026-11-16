@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-356",
+  "published_at_utc": "2026-11-16T23:23:43.338696+00:00",
+  "products": [
+    {
+      "product_id": "7bf3010f-98d3-497f-8c9f-cb76f232db0a",
+      "sample": 3152,
+      "name": "Uzun Kollu Bisiklet Yakalı Dantel Detaylı Viskon Iki Iplik Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7bf3010f-98d3-497f-8c9f-cb76f232db0a-front-acec7d656b83.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7bf3010f-98d3-497f-8c9f-cb76f232db0a-back-aec76333a643.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7bf3010f-98d3-497f-8c9f-cb76f232db0a-model-21693850d9a4.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/7bf3010f-98d3-497f-8c9f-cb76f232db0a-size-chart-3670cf9c5ef1.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
