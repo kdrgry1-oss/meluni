@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-325",
+  "created_at": "2026-11-16T18:53:46.793374+00:00",
+  "catalog_poll_at": "2026-11-16T18:53:46.793374+00:00",
+  "products": [
+    {
+      "product_id": "8645c515-07a6-476a-8cb8-fe0c1eb733b6",
+      "sample": 2733,
+      "name": "Omzu Açık Madonna Yaka V Çentik Detaylı Uzun Dalgıç Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 136,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ff303f53ba102c5de5f9.jpeg",
+        "https://modayakamoz.com/orj/10d0e6f11da7178a5ca2.jpeg",
+        "https://modayakamoz.com/orj/81898b81790f85c015c6.jpeg",
+        "https://modayakamoz.com/orj/37ac524505c026eaa256.jpeg",
+        "https://modayakamoz.com/orj/dfd4366e30242a5be03e.jpeg",
+        {
+          "id": "263083ca-aca8-4388-8074-9fd06bf878c1",
+          "url": "https://cdn.meluni.com.tr/ai-products/8645c515-07a6-476a-8cb8-fe0c1eb733b6-olcu-oto-68bb70fe.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:19:15.007778+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8645c515-07a6-476a-8cb8-fe0c1eb733b6/front.jpg",
+          "sha256": "46978ed83e6a01681663f77658e3971ddc46cf0e5e0712553ecf5004dae67f53",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2733,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8645c515/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8645c515-07a6-476a-8cb8-fe0c1eb733b6/back.jpg",
+          "sha256": "c27ccd6cb93e5501a3d15f42e6bdd15a1e1e11dddbf5ce72ea819edea1aa0fef",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2733,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8645c515/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8645c515-07a6-476a-8cb8-fe0c1eb733b6/fashion_model.jpg",
+          "sha256": "ce40fbb13765beb0b1463f341b63d8e4e6d4dcaa23c10b574ed3652044c4b2e2",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2733,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8645c515/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "8645c515-07a6-476a-8cb8-fe0c1eb733b6/size_chart.jpg",
+          "sha256": "174325e532aa9b0c50a7557543ef3ffd99c2f80f467301f4baf166733e825cc1",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2733,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8645c515/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
