@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-338",
+  "published_at_utc": "2026-11-16T21:29:19.702746+00:00",
+  "products": [
+    {
+      "product_id": "b758e658-fb3a-4b0d-bb57-61cf815033a1",
+      "sample": 2904,
+      "name": "Tek Askılı Beli Kuşaklı Yırtmaçlı Uzun Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b758e658-fb3a-4b0d-bb57-61cf815033a1-front-06da11ab08d4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b758e658-fb3a-4b0d-bb57-61cf815033a1-back-93edcc213f89.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b758e658-fb3a-4b0d-bb57-61cf815033a1-model-88b33b9fcafb.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
