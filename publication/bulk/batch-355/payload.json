@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-355",
+  "created_at": "2026-11-16T23:08:49.929051+00:00",
+  "catalog_poll_at": "2026-11-16T23:08:49.929051+00:00",
+  "products": [
+    {
+      "product_id": "d16e681d-c6e7-4595-bf05-89141d66cbe4",
+      "sample": 3151,
+      "name": "Uzun Kollu Bisiklet Yakalı Dantel Detaylı Viskon Iki Iplik Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 152,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192764-1-929fdb26c8.jpg",
+        "https://modayakamoz.com/orj/janes-192764-2-a272cd5102.jpg",
+        "https://modayakamoz.com/orj/janes-192764-3-61e174f14e.jpg",
+        "https://modayakamoz.com/orj/janes-192764-7-785128eeac.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d16e681d-c6e7-4595-bf05-89141d66cbe4/front.jpg",
+          "sha256": "4e48a4a17c20e1d58416d6606378dbba6d764026d8139a68758c910590699175",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3151,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d16e681d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d16e681d-c6e7-4595-bf05-89141d66cbe4/back.jpg",
+          "sha256": "855f86a6df5bb19a26bb6f81875c3e0fd7dbf2c6227991a539be4a8a569f528a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3151,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d16e681d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d16e681d-c6e7-4595-bf05-89141d66cbe4/fashion_model.jpg",
+          "sha256": "c9de836995a3c735509dd22e4d6746131c85a4edbdf4afceaaedea22d7a03eb8",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3151,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d16e681d/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "d16e681d-c6e7-4595-bf05-89141d66cbe4/size_chart.jpg",
+          "sha256": "3670cf9c5ef1d39aeb7194faa2dd9a5f3fa696116754820450e288d137d46288",
+          "qa_status": "exact_source_values_verified",
+          "sample": 3151,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d16e681d/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
