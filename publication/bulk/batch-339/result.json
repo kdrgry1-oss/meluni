@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-339",
+  "published_at_utc": "2026-11-16T21:33:27.361766+00:00",
+  "products": [
+    {
+      "product_id": "3f76727f-ad05-4b82-afdc-0f58cc1dc6c8",
+      "sample": 2917,
+      "name": "Tek Omuz Dekolte Detay Uzun Kadife Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3f76727f-ad05-4b82-afdc-0f58cc1dc6c8-front-458a6cc9c5f8.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/3f76727f-ad05-4b82-afdc-0f58cc1dc6c8-back-74d125372082.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3f76727f-ad05-4b82-afdc-0f58cc1dc6c8-model-3a4ee71dce3c.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/3f76727f-ad05-4b82-afdc-0f58cc1dc6c8-size-chart-eab8a4f46d08.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
