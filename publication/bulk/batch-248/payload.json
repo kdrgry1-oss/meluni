@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-248",
+  "created_at": "2026-11-16T02:07:40.946366+00:00",
+  "catalog_poll_at": "2026-11-16T02:07:40.946366+00:00",
+  "products": [
+    {
+      "product_id": "84b2208c-aa01-4ac7-a3f1-bd633debcbf3",
+      "sample": 1711,
+      "name": "Kısa Kollu Bisiklet Yaka Viskon Iki Iplik Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/84b2208c-aa01-4ac7-a3f1-bd633debcbf3/84b2208c-aa01-4ac7-a3f1-bd633debcbf3-hd0-9fe4af57.jpg",
+        "https://cdn.meluni.com.tr/products/84b2208c-aa01-4ac7-a3f1-bd633debcbf3/84b2208c-aa01-4ac7-a3f1-bd633debcbf3-hd1-2936422a.jpg",
+        "https://cdn.meluni.com.tr/products/84b2208c-aa01-4ac7-a3f1-bd633debcbf3/84b2208c-aa01-4ac7-a3f1-bd633debcbf3-hd2-fea395ae.jpg",
+        "https://cdn.meluni.com.tr/products/84b2208c-aa01-4ac7-a3f1-bd633debcbf3/84b2208c-aa01-4ac7-a3f1-bd633debcbf3-hd3-bce9f891.jpg",
+        "https://cdn.meluni.com.tr/products/84b2208c-aa01-4ac7-a3f1-bd633debcbf3/84b2208c-aa01-4ac7-a3f1-bd633debcbf3-hd4-9a284eea.jpg",
+        {
+          "id": "e844e2b1-1dfa-45f2-bd71-f69d4f2c7392",
+          "url": "https://cdn.meluni.com.tr/ai-products/84b2208c-aa01-4ac7-a3f1-bd633debcbf3-olcu-oto-752b9dd7.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:33:10.362566+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "84b2208c-aa01-4ac7-a3f1-bd633debcbf3/front.jpg",
+          "sha256": "6df27ba1f92e832ff794f5e4e5cf7f40f016543e6f3e5727f65077380e8d605f",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1711,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-84b2208c/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "84b2208c-aa01-4ac7-a3f1-bd633debcbf3/fashion_model.jpg",
+          "sha256": "8ece2ddb51479590ffc3db1258f13e9b37cd93a487ab2a8028e5b200eb499f1a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1711,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-84b2208c/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "84b2208c-aa01-4ac7-a3f1-bd633debcbf3/size_chart.jpg",
+          "sha256": "9cb1ca782bb484cbd7d8ccbd689acd5d30c2878c204ce321ba6455cf4da4b921",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1711,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-84b2208c/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
