@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-252",
+  "published_at_utc": "2026-11-16T02:43:33.653043+00:00",
+  "products": [
+    {
+      "product_id": "2c25af3d-5361-49ab-9389-2dc6a2c1ab7f",
+      "sample": 1718,
+      "name": "Kısa Kollu Bisiklet Yaka Viskon Iki Iplik Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2c25af3d-5361-49ab-9389-2dc6a2c1ab7f-front-c504141314ee.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2c25af3d-5361-49ab-9389-2dc6a2c1ab7f-back-a73d11a19ccb.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2c25af3d-5361-49ab-9389-2dc6a2c1ab7f-model-c3ebbebcbdb2.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
