@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-292",
+  "created_at": "2026-11-16T08:24:06.479563+00:00",
+  "catalog_poll_at": "2026-11-16T08:24:06.479563+00:00",
+  "products": [
+    {
+      "product_id": "e9747340-3af3-49a8-8147-e962b376f9bf",
+      "sample": 2248,
+      "name": "Kısa Kollu V Yakalı Omuzlardan Açık Salaş Şifon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 8,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/95d31bdf74507f7fa67b.jpeg",
+        "https://modayakamoz.com/orj/21a12f7b2bb4f1307728.jpeg",
+        "https://modayakamoz.com/orj/01ad4ed987b2e5f1d031.jpeg",
+        "https://modayakamoz.com/orj/101f8a00543882d2b6a9.jpeg",
+        "https://modayakamoz.com/orj/9cfcd419f94634518184.jpeg",
+        "https://modayakamoz.com/orj/c1bdc0384da5260a4010.jpeg",
+        "https://modayakamoz.com/orj/04513008bc34f34944e1.jpeg",
+        "https://modayakamoz.com/orj/4db42d17e361bd4ac10c.jpeg",
+        "https://modayakamoz.com/orj/8f8d0900f740950005dc.jpeg",
+        "https://modayakamoz.com/orj/abfaac047d968ee73727.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e9747340-3af3-49a8-8147-e962b376f9bf/front.jpg",
+          "sha256": "e315ea23d48ec72e534aa0cc33bc946eca1e47351a274f4d5e51a2ceb5449e1a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2248,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e9747340/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e9747340-3af3-49a8-8147-e962b376f9bf/back.jpg",
+          "sha256": "64c2cb2911cdb1dd993ecff7a5c44eb4e7c205e450e9e77f6e9db6cfe7dbef2c",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2248,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e9747340/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e9747340-3af3-49a8-8147-e962b376f9bf/fashion_model.jpg",
+          "sha256": "c880716f215805b844a0374acc0243d1b36e647213e7e82c04b003666ad9d877",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2248,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e9747340/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "e9747340-3af3-49a8-8147-e962b376f9bf/size_chart.jpg",
+          "sha256": "ec2ba4e02773d198e3b76b88a04d8aeb528b752352a1b0ae596bcd9d446c5239",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 2248,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e9747340/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
