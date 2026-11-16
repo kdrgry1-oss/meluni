@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-351",
+  "published_at_utc": "2026-11-16T22:45:56.989303+00:00",
+  "products": [
+    {
+      "product_id": "6ac328ca-ac5c-4e7b-9a75-4d8e9af4d202",
+      "sample": 3111,
+      "name": "Uzun Kollu Bisiklet Yaka Kısa Dantel Detaylı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6ac328ca-ac5c-4e7b-9a75-4d8e9af4d202-front-cc8c12697806.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6ac328ca-ac5c-4e7b-9a75-4d8e9af4d202-back-52413768e37f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6ac328ca-ac5c-4e7b-9a75-4d8e9af4d202-model-3390e334415c.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6ac328ca-ac5c-4e7b-9a75-4d8e9af4d202-size-chart-ee94b671db7e.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
