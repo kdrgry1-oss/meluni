@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-308",
+  "published_at_utc": "2026-11-16T12:29:43.609834+00:00",
+  "products": [
+    {
+      "product_id": "4088e432-a314-4c9c-a3ad-498fe6181a21",
+      "sample": 2468,
+      "name": "Kısa Kollu Yuvarlak Yakalı Yakası Renkli Kiloş Midi Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4088e432-a314-4c9c-a3ad-498fe6181a21-front-65073b34e9ca.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4088e432-a314-4c9c-a3ad-498fe6181a21-back-4d68c4e2672c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4088e432-a314-4c9c-a3ad-498fe6181a21-model-dab229853d0f.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
