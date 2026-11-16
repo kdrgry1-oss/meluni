@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-280",
+  "published_at_utc": "2026-11-16T06:51:05.056848+00:00",
+  "products": [
+    {
+      "product_id": "8466c006-4765-428b-aa43-3710d2fecdf2",
+      "sample": 2225,
+      "name": "Kısa Kollu V Yakalı Kısa Viskon Gecelik",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8466c006-4765-428b-aa43-3710d2fecdf2-front-590fe77fbcbc.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8466c006-4765-428b-aa43-3710d2fecdf2-back-aba0b8be5cc7.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8466c006-4765-428b-aa43-3710d2fecdf2-model-3ab9381c1f47.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/8466c006-4765-428b-aa43-3710d2fecdf2-size-chart-0090a00ee9d9.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
