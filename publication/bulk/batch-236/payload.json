@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-236",
+  "created_at": "2026-11-16T00:34:37.064127+00:00",
+  "catalog_poll_at": "2026-11-16T00:34:37.064127+00:00",
+  "products": [
+    {
+      "product_id": "19debae4-dee2-4866-bb2f-13a261d0e6d0",
+      "sample": 1629,
+      "name": "Kısa Kollu Bisiklet Yaka Asimetrik Detaylı Bürümcük Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 94,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/19debae4-dee2-4866-bb2f-13a261d0e6d0/19debae4-dee2-4866-bb2f-13a261d0e6d0-hd0-d313d3a0.jpg",
+        "https://cdn.meluni.com.tr/products/19debae4-dee2-4866-bb2f-13a261d0e6d0/19debae4-dee2-4866-bb2f-13a261d0e6d0-hd1-512d5582.jpg",
+        "https://cdn.meluni.com.tr/products/19debae4-dee2-4866-bb2f-13a261d0e6d0/19debae4-dee2-4866-bb2f-13a261d0e6d0-hd2-72f3e920.jpg",
+        "https://cdn.meluni.com.tr/products/19debae4-dee2-4866-bb2f-13a261d0e6d0/19debae4-dee2-4866-bb2f-13a261d0e6d0-hd3-e7cb804a.jpg",
+        {
+          "id": "606cb61a-7f74-4dc4-b67a-a78e00767c02",
+          "url": "https://cdn.meluni.com.tr/ai-products/6afb2b5a-ae89-4f9a-806b-041045761de9-olcu-oto-fdfaad5f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:32:20.272363+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "19debae4-dee2-4866-bb2f-13a261d0e6d0/front.jpg",
+          "sha256": "28aabca76a873f230833fd03f95daaf54a9eff5d00594fad7d36d5a3f625d659",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1629,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-19debae4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "19debae4-dee2-4866-bb2f-13a261d0e6d0/back.jpg",
+          "sha256": "567058ea88fc8f9406e05646dcf75ed20b0b790ff8962c48c37196366781188f",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1629,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-19debae4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "19debae4-dee2-4866-bb2f-13a261d0e6d0/fashion_model.jpg",
+          "sha256": "b5242f4b656e68a449aadc71fc599a3821b77479c6b8b00c4ee617d5c4726a63",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1629,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-19debae4/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
