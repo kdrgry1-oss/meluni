@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-333",
+  "published_at_utc": "2026-11-16T20:55:52.423492+00:00",
+  "products": [
+    {
+      "product_id": "2fbd5e26-ab60-400e-a3c5-656b23885b73",
+      "sample": 2780,
+      "name": "Pelerın Kollu Yuvarlak Yakalı Tokalı Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2fbd5e26-ab60-400e-a3c5-656b23885b73-front-18b7d8e9fe37.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2fbd5e26-ab60-400e-a3c5-656b23885b73-back-33c5f4d5b752.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2fbd5e26-ab60-400e-a3c5-656b23885b73-model-548a5859d05e.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/2fbd5e26-ab60-400e-a3c5-656b23885b73-size-chart-08c7cdfec332.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
