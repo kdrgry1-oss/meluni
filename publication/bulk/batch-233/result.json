@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-233",
+  "published_at_utc": "2026-11-16T00:09:58.969624+00:00",
+  "products": [
+    {
+      "product_id": "8646c1ef-d45e-4358-b077-3805d7841cf7",
+      "sample": 1610,
+      "name": "Kısa Kollu Balıkçı Yaka Asimetrik Detaylı Aerobin Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8646c1ef-d45e-4358-b077-3805d7841cf7-front-ca89d8b4b2dc.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8646c1ef-d45e-4358-b077-3805d7841cf7-back-54f9efdbd648.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8646c1ef-d45e-4358-b077-3805d7841cf7-model-1446feb56452.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/8646c1ef-d45e-4358-b077-3805d7841cf7-size-chart-4512f9484013.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
