@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-343",
+  "published_at_utc": "2026-11-16T22:02:48.231255+00:00",
+  "products": [
+    {
+      "product_id": "29c92456-ed53-46be-a227-81afb4a229a2",
+      "sample": 3051,
+      "name": "Uzun Kollu Balıkçı Yaka Tül Detaylı Mini Deri Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/29c92456-ed53-46be-a227-81afb4a229a2-front-1dfd2e89edfd.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/29c92456-ed53-46be-a227-81afb4a229a2-back-a228a7aab614.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/29c92456-ed53-46be-a227-81afb4a229a2-model-ce9c674ca954.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/29c92456-ed53-46be-a227-81afb4a229a2-size-chart-be030e8e4737.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
