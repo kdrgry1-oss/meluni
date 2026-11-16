@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-312",
+  "published_at_utc": "2026-11-16T13:13:54.383916+00:00",
+  "products": [
+    {
+      "product_id": "e0d51617-02f8-441a-8788-ff868cb0ac2a",
+      "sample": 2589,
+      "name": "Omuz Dekolte Beyaz Kurdele Detay Uzun Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e0d51617-02f8-441a-8788-ff868cb0ac2a-front-2ab267648497.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e0d51617-02f8-441a-8788-ff868cb0ac2a-back-e9faae87fe9b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e0d51617-02f8-441a-8788-ff868cb0ac2a-model-a3b84ed65495.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e0d51617-02f8-441a-8788-ff868cb0ac2a-size-chart-d2ea15f4a5d4.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
