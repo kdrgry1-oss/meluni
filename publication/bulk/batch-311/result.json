@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-311",
+  "published_at_utc": "2026-11-16T13:03:39.697463+00:00",
+  "products": [
+    {
+      "product_id": "bc06d3eb-da0e-44ba-b803-7750ea05fd28",
+      "sample": 2494,
+      "name": "Kısa Kollu Önü Açık Bürümcük Ceket ve Şort Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bc06d3eb-da0e-44ba-b803-7750ea05fd28-front-cf5d27a9a480.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/bc06d3eb-da0e-44ba-b803-7750ea05fd28-back-cce6d6e1dffa.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bc06d3eb-da0e-44ba-b803-7750ea05fd28-model-df76eb51a0a6.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/bc06d3eb-da0e-44ba-b803-7750ea05fd28-size-chart-7e0057a37093.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
