@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-336",
+  "published_at_utc": "2026-11-16T21:16:23.056149+00:00",
+  "products": [
+    {
+      "product_id": "532512ce-1f88-48f0-ada0-4d228847a793",
+      "sample": 2864,
+      "name": "Sıfır Kol Tek Omuz Damla Detay JanJan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/532512ce-1f88-48f0-ada0-4d228847a793-front-a79765489cc6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/532512ce-1f88-48f0-ada0-4d228847a793-back-39529ca23446.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/532512ce-1f88-48f0-ada0-4d228847a793-model-52f9e59e831e.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/532512ce-1f88-48f0-ada0-4d228847a793-size-chart-2df822a71c11.jpg"
+      },
+      "gallery_image_count": 15
+    }
+  ],
+  "skipped": []
+}
