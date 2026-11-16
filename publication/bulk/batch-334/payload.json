@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-334",
+  "created_at": "2026-11-16T21:01:01.479664+00:00",
+  "catalog_poll_at": "2026-11-16T21:01:01.479664+00:00",
+  "products": [
+    {
+      "product_id": "0cc7f9cf-4ccb-427b-823c-4ffa82e3ed15",
+      "sample": 2823,
+      "name": "Scuba Fırfırlı Midi Boy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a0b4a152b6e41f5e1933307394ae27ac.jpg",
+        "https://modayakamoz.com/orj/8d6156e4625e636664219ead9df1cfa9.jpg",
+        "https://modayakamoz.com/orj/26c25b5c00694e411e3c106cf8adc8e7.jpg",
+        "https://modayakamoz.com/orj/6ad87d37047e2cabbcf88c2e50da60c5.jpg",
+        "https://modayakamoz.com/orj/ebcd5297da020ee0195423f0e5e3df5d.jpg",
+        "https://modayakamoz.com/orj/30420-2022-05-06-08-03-30.jpeg",
+        "https://modayakamoz.com/orj/529b88084439ebc86b01bb75779f8f0f.jpg",
+        "https://modayakamoz.com/orj/0236d51a427d7cdaa25185f2d1208de7.jpg",
+        "https://modayakamoz.com/orj/dcc7faa54be4d73bb94323fa766db6e6.jpg",
+        "https://modayakamoz.com/orj/9cbcfb4b1cbf3f635c27e5506fab4995.jpg",
+        "https://modayakamoz.com/orj/30420-2022-05-06-15-15-24.jpeg",
+        "https://modayakamoz.com/orj/30420-2022-05-06-15-15-32.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0cc7f9cf-4ccb-427b-823c-4ffa82e3ed15/front.jpg",
+          "sha256": "982ae8266b37d6d3c4e3c25d035215d1659386195005eaf54c28302a577250a7",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2823,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0cc7f9cf/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0cc7f9cf-4ccb-427b-823c-4ffa82e3ed15/back.jpg",
+          "sha256": "374d6762cb60d26b3eb5ecc7d7dd9e885a8bc63d6ff6ea2f8815723d1e78dc96",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2823,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0cc7f9cf/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0cc7f9cf-4ccb-427b-823c-4ffa82e3ed15/fashion_model.jpg",
+          "sha256": "0c401262461366b3522dd7599c8828fd3d1b2a91e15bd833c2a3e7a9455b7a3d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2823,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0cc7f9cf/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
