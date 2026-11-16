@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-299",
+  "created_at": "2026-11-16T09:33:41.758445+00:00",
+  "catalog_poll_at": "2026-11-16T09:33:41.758445+00:00",
+  "products": [
+    {
+      "product_id": "09e740e9-412b-4d71-866c-d49b3929a13e",
+      "sample": 2438,
+      "name": "Kısa Kollu Yuvarlak Yaka Düğmeli Viskon Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/085828b00d03ddcc6aa0.jpeg",
+        "https://modayakamoz.com/orj/f3564c5d6bad1dfa7357.jpeg",
+        "https://modayakamoz.com/orj/808dafe92ee1d322cc9b.jpeg",
+        "https://modayakamoz.com/orj/8dde6d6ced31e7f12776.jpeg",
+        "https://modayakamoz.com/orj/6d2f2acae1eb3309b77d.jpeg",
+        {
+          "id": "0660b63a-9adc-498a-a9aa-4f2b7e942547",
+          "url": "https://cdn.meluni.com.tr/ai-products/20bb7ffc-fa5c-4bf8-943b-68627f148051-olcu-oto-3b528ff3.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-02T05:19:38.133340+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "09e740e9-412b-4d71-866c-d49b3929a13e/front.jpg",
+          "sha256": "360ff4203d2b3e021bc9bb71458a6b148d7ab246277b464a55204fef14687128",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2438,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-09e740e9/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "09e740e9-412b-4d71-866c-d49b3929a13e/back.jpg",
+          "sha256": "6573041ca23c9e3588f9ab3d0bee98cd8ac85e54ef1a75e2debf6149c79462de",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2438,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-09e740e9/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "09e740e9-412b-4d71-866c-d49b3929a13e/fashion_model.jpg",
+          "sha256": "f548b614c4d1aa21bd45a329386e93e16b205c689a271734601d94de8f740368",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2438,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-09e740e9/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "09e740e9-412b-4d71-866c-d49b3929a13e/size_chart.jpg",
+          "sha256": "5f0ee0ba40d4b9d73e9d2412afa88aff07893fdded3baa4e97dc5e227b98171b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2438,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-09e740e9/chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
