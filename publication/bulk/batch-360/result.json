@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-360",
+  "published_at_utc": "2026-11-16T23:46:11.068124+00:00",
+  "products": [
+    {
+      "product_id": "8ab9f9ff-4565-4ae0-a3b3-10e14701ed2f",
+      "sample": 3193,
+      "name": "Uzun Kollu Damla Detaylı Sandy Mini Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8ab9f9ff-4565-4ae0-a3b3-10e14701ed2f-front-6e030c73e0a8.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8ab9f9ff-4565-4ae0-a3b3-10e14701ed2f-back-c435425a68ea.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8ab9f9ff-4565-4ae0-a3b3-10e14701ed2f-model-0882153d6bdb.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/8ab9f9ff-4565-4ae0-a3b3-10e14701ed2f-size-chart-984689eed0d9.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
