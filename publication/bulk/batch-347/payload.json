@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-347",
+  "created_at": "2026-11-16T22:22:51.476971+00:00",
+  "catalog_poll_at": "2026-11-16T22:22:51.476971+00:00",
+  "products": [
+    {
+      "product_id": "22739a3e-1baf-4f6c-8a68-09edcada2983",
+      "sample": 3092,
+      "name": "Uzun Kollu Bisiklet Yaka Fermuarlı Midi Deri Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/6b4fcaa480936a6c75cb.jpeg",
+        "https://modayakamoz.com/orj/cef952f73b78a7118cae.jpeg",
+        "https://modayakamoz.com/orj/2608bd9a2bbeba85fd235de6f2fc366f.png",
+        {
+          "id": "84fc6d4f-57e7-47cf-ab7d-cd4550069951",
+          "url": "https://cdn.meluni.com.tr/ai-products/22739a3e-1baf-4f6c-8a68-09edcada2983-olcu-oto-e457276a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:25:04.372330+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "22739a3e-1baf-4f6c-8a68-09edcada2983/front.jpg",
+          "sha256": "79749fd5d593cdc0f2ceceadb3f9dd59305f2a3ef7efa04425d3ebb12d5bf026",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3092,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-22739a3e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "22739a3e-1baf-4f6c-8a68-09edcada2983/back.jpg",
+          "sha256": "45c44860b50f221c81cb0202368c5c4e8cb6ef27170cab768a6c199daf466a8e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3092,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-22739a3e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "22739a3e-1baf-4f6c-8a68-09edcada2983/fashion_model.jpg",
+          "sha256": "7d25f4435c605460540eebeb7e60a599ee8b18e9ed7e07071257e93ab79be836",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3092,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-22739a3e/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
