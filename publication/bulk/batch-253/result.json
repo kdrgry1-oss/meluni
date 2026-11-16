@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-253",
+  "published_at_utc": "2026-11-16T02:57:24.389276+00:00",
+  "products": [
+    {
+      "product_id": "91569d5c-ce56-4433-800f-b6396d72441a",
+      "sample": 1729,
+      "name": "Kısa Kollu Bisiklet Yaka Yırtmaçlı Dantel Detaylı Uzun Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/91569d5c-ce56-4433-800f-b6396d72441a-front-d616a5b63026.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/91569d5c-ce56-4433-800f-b6396d72441a-back-a575372a9b19.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/91569d5c-ce56-4433-800f-b6396d72441a-model-3d81338cf4b8.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/91569d5c-ce56-4433-800f-b6396d72441a-size-chart-8ca6c2e3ff3c.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
