@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-267",
+  "published_at_utc": "2026-11-16T05:09:12.684556+00:00",
+  "products": [
+    {
+      "product_id": "00b8dd18-5dec-4807-a989-bf232f4174dc",
+      "sample": 2015,
+      "name": "Kısa Kollu Sırt Dekolteli Yırtmaç Detaylı Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/00b8dd18-5dec-4807-a989-bf232f4174dc-front-0dde762912f2.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/00b8dd18-5dec-4807-a989-bf232f4174dc-back-11545293fb8b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/00b8dd18-5dec-4807-a989-bf232f4174dc-model-c6da15ee7872.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/00b8dd18-5dec-4807-a989-bf232f4174dc-size-chart-c94fd1992f4d.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
