@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-325",
+  "published_at_utc": "2026-11-16T18:54:56.896837+00:00",
+  "products": [
+    {
+      "product_id": "8645c515-07a6-476a-8cb8-fe0c1eb733b6",
+      "sample": 2733,
+      "name": "Omzu Açık Madonna Yaka V Çentik Detaylı Uzun Dalgıç Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8645c515-07a6-476a-8cb8-fe0c1eb733b6-front-46978ed83e6a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8645c515-07a6-476a-8cb8-fe0c1eb733b6-back-c27ccd6cb93e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8645c515-07a6-476a-8cb8-fe0c1eb733b6-model-ce40fbb13765.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/8645c515-07a6-476a-8cb8-fe0c1eb733b6-size-chart-174325e532aa.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
