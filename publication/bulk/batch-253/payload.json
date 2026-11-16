@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-253",
+  "created_at": "2026-11-16T02:56:20.265341+00:00",
+  "catalog_poll_at": "2026-11-16T02:56:20.265341+00:00",
+  "products": [
+    {
+      "product_id": "91569d5c-ce56-4433-800f-b6396d72441a",
+      "sample": 1729,
+      "name": "Kısa Kollu Bisiklet Yaka Yırtmaçlı Dantel Detaylı Uzun Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 504,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0ad4e1b4178770ddfddd.jpeg",
+        "https://modayakamoz.com/orj/2a3bdd8870e4ec58fe3e.jpeg",
+        "https://modayakamoz.com/orj/3ddb404558a6a540d35b.jpeg",
+        "https://modayakamoz.com/orj/c2b4ba22ce398b98ab41.jpeg",
+        "https://modayakamoz.com/orj/c61fddd0219bd978fc78.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "91569d5c-ce56-4433-800f-b6396d72441a/front.jpg",
+          "sha256": "d616a5b630261111e4bc1380c4879e8db69de2b80c5fb1c77218d0972f46df79",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1729,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91569d5c/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "91569d5c-ce56-4433-800f-b6396d72441a/back.jpg",
+          "sha256": "a575372a9b191bf902d0013a9b866c61a80292279ef6cfd58d19986260f83bed",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1729,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91569d5c/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "91569d5c-ce56-4433-800f-b6396d72441a/fashion_model.jpg",
+          "sha256": "3d81338cf4b835dea267b4ca787de7693cc8e1f5a53ee7ec47cb86a2e2c727fa",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1729,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91569d5c/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "91569d5c-ce56-4433-800f-b6396d72441a/size_chart.jpg",
+          "sha256": "8ca6c2e3ff3caa827c6beb3dbb3d57ecfb85cf9232e018d28696a1c5dd394d4d",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1729,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91569d5c/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
