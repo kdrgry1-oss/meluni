@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-319",
+  "created_at": "2026-11-16T14:19:43.166744+00:00",
+  "catalog_poll_at": "2026-11-16T14:19:43.166744+00:00",
+  "products": [
+    {
+      "product_id": "7ce18ee4-0f6b-4b2f-a1d5-d0a909a0ce20",
+      "sample": 2671,
+      "name": "Omuzlardan Açık Devrik Yaka Formunda Kısa Triko Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 19,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d543470dbaeec783c203.jpeg",
+        "https://modayakamoz.com/orj/1ee4797bfff888217b8f.jpeg",
+        "https://modayakamoz.com/orj/46660606dd45d0652e6f.jpeg",
+        "https://modayakamoz.com/orj/827d245af64b216fc40f.jpeg",
+        "https://modayakamoz.com/orj/837e15a699d54ee1bf0a.jpeg",
+        {
+          "id": "32128bf1-4ea2-4247-b4a1-4c76ff42f796",
+          "url": "https://cdn.meluni.com.tr/ai-products/7ce18ee4-0f6b-4b2f-a1d5-d0a909a0ce20-olcu-oto-e8d307aa.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:24:56.677218+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7ce18ee4-0f6b-4b2f-a1d5-d0a909a0ce20/front.jpg",
+          "sha256": "288837ff74816a5ae88a76927ee92d65b1a28e3433078e96eeebeb091d97f379",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2671,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7ce18ee4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7ce18ee4-0f6b-4b2f-a1d5-d0a909a0ce20/back.jpg",
+          "sha256": "40828483d82ca9a42d1f1a487867f5e32da4f92fb81cb35c3aa91cbaca10f2fe",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2671,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7ce18ee4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7ce18ee4-0f6b-4b2f-a1d5-d0a909a0ce20/fashion_model.jpg",
+          "sha256": "c79e21e249c4f634f1d3178fbe8c48f0a2161201b945b998ddc3184841d008d0",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2671,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7ce18ee4/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7ce18ee4-0f6b-4b2f-a1d5-d0a909a0ce20/size_chart.jpg",
+          "sha256": "ecc66adeee9f63003d344d6d2520042fd4d5011288933f6daad45cafab53c20f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2671,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7ce18ee4/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
