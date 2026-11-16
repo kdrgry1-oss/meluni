@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-362",
+  "created_at": "2026-11-16T23:55:58.026747+00:00",
+  "catalog_poll_at": "2026-11-16T23:55:58.026747+00:00",
+  "products": [
+    {
+      "product_id": "abed7cd6-ddd6-4a0d-b196-04a9ad2763fd",
+      "sample": 3200,
+      "name": "Uzun Kollu Dantelli Kapşonlu Viskon Iki Iplik Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 76,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/bd82ae1c594a24b1dac2.jpeg",
+        "https://modayakamoz.com/orj/954c106c3d983de1cbe0.jpeg",
+        "https://modayakamoz.com/orj/c063807cd251523dfda3.jpeg",
+        "https://modayakamoz.com/orj/8da2bf79dd955adf3afc.jpeg",
+        "https://modayakamoz.com/orj/8397cf7d04a0b419cddb.jpeg",
+        "https://modayakamoz.com/orj/5cc9ce394c1c338ab1c8.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "abed7cd6-ddd6-4a0d-b196-04a9ad2763fd/front.jpg",
+          "sha256": "d59f105ca8ab4f48a11634040a4c81632a11b3873a50039ec530a52bdbf577c3",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3200,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-abed7cd6/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "abed7cd6-ddd6-4a0d-b196-04a9ad2763fd/back.jpg",
+          "sha256": "00438288a41e7ba37a3e0bcac8b970270585f8a2e78f5250441e63433d122390",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3200,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-abed7cd6/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "abed7cd6-ddd6-4a0d-b196-04a9ad2763fd/fashion_model.jpg",
+          "sha256": "455162a058ca3a037ac462ba1df26eae5caf86c76b44ebff6339ce13126dcefc",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3200,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-abed7cd6/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "abed7cd6-ddd6-4a0d-b196-04a9ad2763fd/size_chart.jpg",
+          "sha256": "2b22821e85ff942a91662b9be612ef6be430dc51c96cfc193290c903c2559f69",
+          "qa_status": "exact_source_values_verified",
+          "sample": 3200,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-abed7cd6/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
