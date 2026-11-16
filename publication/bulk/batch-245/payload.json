@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-245",
+  "created_at": "2026-11-16T01:44:07.076072+00:00",
+  "catalog_poll_at": "2026-11-16T01:44:07.076072+00:00",
+  "products": [
+    {
+      "product_id": "e66a9a1e-0d12-4239-a68c-f2454f0a3c75",
+      "sample": 1750,
+      "name": "Kısa Kollu Bisiklet Yaka Yırtmaçlı Midi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3b3a5e4a6929340ffc0a.jpeg",
+        "https://modayakamoz.com/orj/d989b2e3b1314d2c49f1.jpeg",
+        "https://modayakamoz.com/orj/bb6098979d0af03decf4.jpeg",
+        "https://modayakamoz.com/orj/24dea9e9d78397b68c80.jpeg",
+        {
+          "id": "a0cdcc8b-9ea4-4a29-ab03-a7aac5fcf707",
+          "url": "https://cdn.meluni.com.tr/ai-products/834cfcf3-fe1a-42eb-9bd1-dd34dd3e222b-olcu-oto-f82e18a4.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-11T05:20:39.602411+00:00"
+        },
+        {
+          "id": "ac62e171-65b6-5e9c-a3f1-6ef4de65b75b",
+          "url": "https://cdn.meluni.com.tr/ai-products/e66a9a1e-0d12-4239-a68c-f2454f0a3c75-size-chart-9aeefb6e640c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:20:14.378903+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "e66a9a1e-0d12-4239-a68c-f2454f0a3c75/front.jpg",
+          "sha256": "e4c5d0d5c192aacc639e635f90741a1479fda5018db82ec1ec907b69c60f0814",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1750,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1750-front-1200x1800.png"
+        },
+        "back": {
+          "file": "e66a9a1e-0d12-4239-a68c-f2454f0a3c75/back.jpg",
+          "sha256": "583e42a0a6c78fda6c8504da8be2c4fcdf6a452b89cefd5c353bc5374d274cb7",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1750,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1750-back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "e66a9a1e-0d12-4239-a68c-f2454f0a3c75/fashion_model.jpg",
+          "sha256": "f2daf8c99f7e921b11f6e9a29c91a3522b1bfb8ba8ed913e205219b2ca44853a",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1750,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-1750-1200x1800.png"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
