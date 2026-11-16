@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-260",
+  "created_at": "2026-11-16T04:03:22.178055+00:00",
+  "catalog_poll_at": "2026-11-16T04:03:22.178055+00:00",
+  "products": [
+    {
+      "product_id": "bb24fd0d-d238-451b-9385-aab50ad97b49",
+      "sample": 1969,
+      "name": "Kısa Kollu Kruvaze Yakalı Sırttan Açık ve Bağcıklı Kısa Aerobin Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 44,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/6c54e0f24864d55c6aa8.jpeg",
+        "https://modayakamoz.com/orj/f2e7140020ee4448d124.jpeg",
+        "https://modayakamoz.com/orj/25abba9d1b7791e59cf4.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "bb24fd0d-d238-451b-9385-aab50ad97b49/front.jpg",
+          "sha256": "b44a5290ceb5458629521ee5c062b5bca13f00c3db5732f1a400ed1971547d51",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1969,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bb24fd0d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "bb24fd0d-d238-451b-9385-aab50ad97b49/back.jpg",
+          "sha256": "2a06bf495699bac4d02aee30078be40c4802969435478f78003c3f8d4a5c99b0",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1969,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bb24fd0d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bb24fd0d-d238-451b-9385-aab50ad97b49/fashion_model.jpg",
+          "sha256": "98579829ba116bacceee2b65da4e3b1ee82b4db47f25b79f8c6e4680c8c4cf72",
+          "qa_status": "draft_visual_source_qa_pass",
+          "sample": 1969,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bb24fd0d/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
