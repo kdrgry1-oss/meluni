@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-246",
+  "published_at_utc": "2026-11-16T01:52:04.932841+00:00",
+  "products": [
+    {
+      "product_id": "3e7afb93-de88-4978-8eff-0c2db9b5123e",
+      "sample": 698,
+      "name": "Kısa Kollu Bisiklet Yaka Yırtmaçlı Viskon Midi Elbise",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3e7afb93-de88-4978-8eff-0c2db9b5123e-model-ba06f4ee359c.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
