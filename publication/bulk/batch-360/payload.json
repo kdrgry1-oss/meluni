@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-360",
+  "created_at": "2026-11-16T23:45:06.171205+00:00",
+  "catalog_poll_at": "2026-11-16T23:45:06.171205+00:00",
+  "products": [
+    {
+      "product_id": "8ab9f9ff-4565-4ae0-a3b3-10e14701ed2f",
+      "sample": 3193,
+      "name": "Uzun Kollu Damla Detaylı Sandy Mini Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 34,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192597-1-430c5a28b9.jpg",
+        "https://modayakamoz.com/orj/janes-192597-2-8728d56b81.jpg",
+        "https://modayakamoz.com/orj/janes-192597-3-d8917d4aff.jpg",
+        "https://modayakamoz.com/orj/janes-192597-4-db7b288338.jpg",
+        "https://modayakamoz.com/orj/janes-192597-5-025fc9e694.jpg",
+        "https://modayakamoz.com/orj/janes-192597-6-141102bedc.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "8ab9f9ff-4565-4ae0-a3b3-10e14701ed2f/front.jpg",
+          "sha256": "6e030c73e0a8be76bb3499d36e23efc1a31af15458e3887e921f4c10436be22f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3193,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8ab9f9ff/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8ab9f9ff-4565-4ae0-a3b3-10e14701ed2f/back.jpg",
+          "sha256": "c435425a68ea54f18ff743efb3479eb38ffb3531612e0c1bd0cecdca2a4773bf",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3193,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8ab9f9ff/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8ab9f9ff-4565-4ae0-a3b3-10e14701ed2f/fashion_model.jpg",
+          "sha256": "0882153d6bdbb53c5cce5fd1c861341079d77b5716a38931b43a4a1931fa4f01",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3193,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8ab9f9ff/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "8ab9f9ff-4565-4ae0-a3b3-10e14701ed2f/size_chart.jpg",
+          "sha256": "984689eed0d9090a1f7439cdb130d0305971d816fac727c09903ca87c26d8d7d",
+          "qa_status": "exact_source_values_verified",
+          "sample": 3193,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8ab9f9ff/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
