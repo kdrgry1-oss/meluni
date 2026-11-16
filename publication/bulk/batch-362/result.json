@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-362",
+  "published_at_utc": "2026-11-16T23:57:19.263729+00:00",
+  "products": [
+    {
+      "product_id": "abed7cd6-ddd6-4a0d-b196-04a9ad2763fd",
+      "sample": 3200,
+      "name": "Uzun Kollu Dantelli Kapşonlu Viskon Iki Iplik Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/abed7cd6-ddd6-4a0d-b196-04a9ad2763fd-front-d59f105ca8ab.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/abed7cd6-ddd6-4a0d-b196-04a9ad2763fd-back-00438288a41e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/abed7cd6-ddd6-4a0d-b196-04a9ad2763fd-model-455162a058ca.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/abed7cd6-ddd6-4a0d-b196-04a9ad2763fd-size-chart-2b22821e85ff.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
