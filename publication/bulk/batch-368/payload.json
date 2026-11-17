@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-368",
+  "created_at": "2026-11-17T00:28:34.852359+00:00",
+  "catalog_poll_at": "2026-11-17T00:28:34.852359+00:00",
+  "products": [
+    {
+      "product_id": "a5c58e6e-4332-4929-b2f5-8c115d13986d",
+      "sample": 3213,
+      "name": "Uzun Kollu Derin Gögüs Detaylı Bağcıklı Uzun Dalgıç Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192776-1-4ae242204c.jpg",
+        "https://modayakamoz.com/orj/janes-192776-2-944bdacd1b.jpg",
+        "https://modayakamoz.com/orj/janes-192776-3-7d8d65e730.jpg",
+        "https://modayakamoz.com/orj/janes-192776-4-e1f25ba385.jpg",
+        "https://modayakamoz.com/orj/janes-192776-5-0d33d37ff8.jpg",
+        "https://modayakamoz.com/orj/janes-192776-7-aef44c188b.jpg",
+        "https://modayakamoz.com/orj/janes-192776-9-198327f071.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a5c58e6e-4332-4929-b2f5-8c115d13986d/front.jpg",
+          "sha256": "4d4e0414a125ef9af20161228286d5a0253876303eb4ee9d16c89277d05e3c16",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3213,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a5c58e6e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a5c58e6e-4332-4929-b2f5-8c115d13986d/back.jpg",
+          "sha256": "696953d31713f554fe29924a78b004b076c833c7d94207ca2197d77d9cc091ad",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3213,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a5c58e6e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a5c58e6e-4332-4929-b2f5-8c115d13986d/fashion_model.jpg",
+          "sha256": "e9fa27921896972947ed4c3d954b217c896a0ccd8d408398c47842e88677a19b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3213,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a5c58e6e/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "a5c58e6e-4332-4929-b2f5-8c115d13986d/size_chart.jpg",
+          "sha256": "354b51beefbe22e8f7d72c515af88b8cb6be2629732ba7e6a44358ed34c342fd",
+          "qa_status": "exact_source_values_verified",
+          "sample": 3213,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a5c58e6e/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
