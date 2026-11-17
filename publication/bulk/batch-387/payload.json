@@ -1,0 +1,34 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-387",
+  "created_at": "2026-11-17T02:17:37.356570+00:00",
+  "catalog_poll_at": "2026-11-17T02:17:37.356570+00:00",
+  "products": [
+    {
+      "product_id": "edc5a45a-3c4d-4ad4-97ef-95f770105535",
+      "sample": 1043,
+      "name": "Uzun Kollu Geometrik Yaka Detaylı Leopar Desenli Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 130,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193745-1-2e433e6006cd.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193745-f37287f77b5e24a3.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193745-ba3872cbb3abe096.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193745-2e636708c0db93ec.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193745-2eb1149e84c1817d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193745-cea29ea42611b276.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193745-edb938a358a2dd8e.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "edc5a45a-3c4d-4ad4-97ef-95f770105535/size_chart.jpg",
+          "sha256": "523228cf975d155236a17ae8a3c341b3ef48f5f7417427adb7d6de6fe8952f05",
+          "qa_status": "source_values_verified_exact_source_resized",
+          "sample": 1043,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-edc5a45a/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
