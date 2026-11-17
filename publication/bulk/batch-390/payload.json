@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-390",
+  "created_at": "2026-11-17T02:45:21.568927+00:00",
+  "catalog_poll_at": "2026-11-17T02:45:21.568927+00:00",
+  "products": [
+    {
+      "product_id": "934dd008-bed4-4c3a-bf56-05ef4c0f5f73",
+      "sample": 1046,
+      "name": "Uzun Kollu Ribana Detay Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 230,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0b7a4e6cb413e630063ea0a0f101a00e.jpg",
+        "https://modayakamoz.com/orj/641ddb48989d7098e4d42182f8fb47ef.jpg",
+        "https://modayakamoz.com/orj/05a0c97603b61a7a0333348a8e41512b.jpg",
+        "https://modayakamoz.com/orj/f4ce98e1e138c1c86ea5a8bcc71cbb11.jpg",
+        "https://modayakamoz.com/orj/391b2bd99dc863f66ecab29acbb9a4ad.jpg",
+        "https://modayakamoz.com/orj/ebf860c0db06d233b15a5daadb183372.jpg",
+        "https://modayakamoz.com/orj/05246eb683f3ac63f8d6daea272654c5.jpg",
+        "https://modayakamoz.com/orj/fa9d9d182efb3904e9100ded0ef60763.jpg",
+        "https://modayakamoz.com/orj/2394da94f4810fa17d79f283912f4a49.jpg",
+        "https://modayakamoz.com/orj/e3a6b4a09a718c511ab8700a139f6ff7.jpg",
+        "https://modayakamoz.com/orj/da87def0723021dec2b099a8e948c304.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "934dd008-bed4-4c3a-bf56-05ef4c0f5f73/front.jpg",
+          "sha256": "d1f5c32a23a6eca975139752c9ce0c4e703b119194850c499611af296a64cb48",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1046,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-934dd008/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "934dd008-bed4-4c3a-bf56-05ef4c0f5f73/back.jpg",
+          "sha256": "736f4494a507b11c8c8113f916039c7c2386f2c3b094d8177455f35f582c8781",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1046,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-934dd008/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "934dd008-bed4-4c3a-bf56-05ef4c0f5f73/fashion_model.jpg",
+          "sha256": "0c46bb1bd831eba76700828b2450835837bb2c36fd9a148b0ec24da067f4ff68",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1046,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-934dd008/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
