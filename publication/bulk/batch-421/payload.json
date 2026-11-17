@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-421",
+  "created_at": "2026-11-17T08:54:54.918058+00:00",
+  "catalog_poll_at": "2026-11-17T08:54:54.918058+00:00",
+  "products": [
+    {
+      "product_id": "5ad939de-bfe7-4139-8097-86f4db0a4a18",
+      "sample": 1077,
+      "name": "Yüksek Bel Yandan Düğme Detaylı Kısa Pera Şort",
+      "active_at_poll": true,
+      "stock_at_poll": 261,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ccf64e57cf992fdc4743.jpeg",
+        "https://modayakamoz.com/orj/e500e3ff4a7e5708c9f4.jpeg",
+        "https://modayakamoz.com/orj/236246436592ea68ce94.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5ad939de-bfe7-4139-8097-86f4db0a4a18/front.jpg",
+          "sha256": "1d8badb8af2dfa34a35da2d0072e90b9da87f1da55b5868deb38b80dd725ba4d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1077,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5ad939de/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5ad939de-bfe7-4139-8097-86f4db0a4a18/back.jpg",
+          "sha256": "c8499bdfcc4834a4b04765377a6e6fa9fa224714a15e2e034c1936e4d8f80d1d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1077,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5ad939de/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5ad939de-bfe7-4139-8097-86f4db0a4a18/fashion_model.jpg",
+          "sha256": "c987248179c4ec7cf2fe55096e09f260c19f82a6ddff3c472b82af67ec7f5bd4",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1077,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5ad939de/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
