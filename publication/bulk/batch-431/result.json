@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-431",
+  "published_at_utc": "2026-11-17T10:32:52.088988+00:00",
+  "products": [
+    {
+      "product_id": "c976bbef-d63d-4eee-814c-8f76dcab0957",
+      "sample": 1087,
+      "name": "Uzun Kollu V Yakalı Midi Çağla Yeşili Modal Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c976bbef-d63d-4eee-814c-8f76dcab0957-front-792666f250c1.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c976bbef-d63d-4eee-814c-8f76dcab0957-back-12a7ee7ee4f1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c976bbef-d63d-4eee-814c-8f76dcab0957-model-5f4e8491cf18.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/c976bbef-d63d-4eee-814c-8f76dcab0957-size-chart-ced508953859.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
