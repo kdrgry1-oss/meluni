@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-389",
+  "published_at_utc": "2026-11-17T02:33:27.001235+00:00",
+  "products": [
+    {
+      "product_id": "22908851-a0bc-43fc-ae26-8cf65fde2a8f",
+      "sample": 1045,
+      "name": "Uzun Kollu Kapşonlu Bağcıklı Düğmeli Çilek Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/22908851-a0bc-43fc-ae26-8cf65fde2a8f-front-326d4a7e4dda.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/22908851-a0bc-43fc-ae26-8cf65fde2a8f-back-ef106b75acbe.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/22908851-a0bc-43fc-ae26-8cf65fde2a8f-model-49ce8dbdd2b5.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/22908851-a0bc-43fc-ae26-8cf65fde2a8f-size-chart-7e55af0e2df6.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
