@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-370",
+  "published_at_utc": "2026-11-17T00:39:51.829608+00:00",
+  "products": [
+    {
+      "product_id": "7c862145-52e5-494e-a46a-aed43276c98c",
+      "sample": 3219,
+      "name": "Uzun Kollu Düğmeli Cep Detaylı Midi Kaşkorse Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7c862145-52e5-494e-a46a-aed43276c98c-front-95b5cf6f134c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7c862145-52e5-494e-a46a-aed43276c98c-back-68f5e2c0045c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7c862145-52e5-494e-a46a-aed43276c98c-model-50d309383dc6.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/7c862145-52e5-494e-a46a-aed43276c98c-size-chart-6d748e5a0cef.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
