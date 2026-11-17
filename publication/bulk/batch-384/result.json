@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-384",
+  "published_at_utc": "2026-11-17T01:57:17.634577+00:00",
+  "products": [
+    {
+      "product_id": "c91e314b-b3c2-4583-8978-46c9f8174713",
+      "sample": 1040,
+      "name": "Uzun Kollu Fermuarlı Incili Kısa Modal Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c91e314b-b3c2-4583-8978-46c9f8174713-front-c70dbe13c29e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c91e314b-b3c2-4583-8978-46c9f8174713-back-a84f3081d125.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c91e314b-b3c2-4583-8978-46c9f8174713-model-8593c68ecd3e.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
