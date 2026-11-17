@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-437",
+  "created_at": "2026-11-17T11:18:21.772227+00:00",
+  "catalog_poll_at": "2026-11-17T11:18:21.772227+00:00",
+  "products": [
+    {
+      "product_id": "acc150fe-b9c6-46e1-b086-513336f28f0e",
+      "sample": 1093,
+      "name": "Uzun Kollu Yakalı Yakası, Kol Ağzı Trikoton Uzun Kaşkorse Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 59,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193875-1-4b9f5367244c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193875-6c69c9f60eb310fd.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193875-f9453d156e9c9ad7.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193875-9cfeb00d898d6790.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "acc150fe-b9c6-46e1-b086-513336f28f0e/front.jpg",
+          "sha256": "fc24f96687395ce44637548ec4dfdaa4f7dfdf4a89d8242715f90ee16c3011c0",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1093,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-acc150fe/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "acc150fe-b9c6-46e1-b086-513336f28f0e/back.jpg",
+          "sha256": "cb42efb67b655c4a8029dfd3d35126cd199ace4b858dd7f527a8a3573c4e40a7",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1093,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-acc150fe/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "acc150fe-b9c6-46e1-b086-513336f28f0e/fashion_model.jpg",
+          "sha256": "e129c750623a8b351e2d51fb885439d04bb54eba3a1e247ad636387b6ffbeecb",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1093,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-acc150fe/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
