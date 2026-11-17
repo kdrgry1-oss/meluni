@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-443",
+  "published_at_utc": "2026-11-17T12:01:58.957020+00:00",
+  "products": [
+    {
+      "product_id": "12eca518-a91c-408e-9a14-aa6c8d846ce0",
+      "sample": 1099,
+      "name": "Uzun Kollu Omuzlardan Açık Kruvaze Yaka Kısa Triko Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/12eca518-a91c-408e-9a14-aa6c8d846ce0-front-3218bccaf031.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/12eca518-a91c-408e-9a14-aa6c8d846ce0-back-60bd36dd4b20.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/12eca518-a91c-408e-9a14-aa6c8d846ce0-model-97c2881649af.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/12eca518-a91c-408e-9a14-aa6c8d846ce0-size-chart-3d1724ae4e18.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
