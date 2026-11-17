@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-372",
+  "created_at": "2026-11-17T00:50:54.190107+00:00",
+  "catalog_poll_at": "2026-11-17T00:50:54.190107+00:00",
+  "products": [
+    {
+      "product_id": "5f6fc43c-a176-4d39-9ff2-d3ac4b334f23",
+      "sample": 3222,
+      "name": "Uzun Kollu Düğmeli Etek Uçları Dantelli Kısa Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193527-1-273015407f9c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193527-b7de9513ae899aa3.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193527-027b4138adb863dc.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5f6fc43c-a176-4d39-9ff2-d3ac4b334f23/front.jpg",
+          "sha256": "be168e8f8461230d3523f149af0892c24d674667eeb9bab810ba3257df89dc9e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3222,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f6fc43c/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5f6fc43c-a176-4d39-9ff2-d3ac4b334f23/back.jpg",
+          "sha256": "0aa45fb772e872edc5dcee94d7732454fa6699f5dcc9b7c1263bfde7d87faf53",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3222,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f6fc43c/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5f6fc43c-a176-4d39-9ff2-d3ac4b334f23/fashion_model.jpg",
+          "sha256": "5a7bb1712a8d7ddd5d401e61865ad160de3d45cbb9a38a630a63717742687663",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3222,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f6fc43c/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
