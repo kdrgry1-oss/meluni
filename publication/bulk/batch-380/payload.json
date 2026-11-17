@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-380",
+  "created_at": "2026-11-17T01:32:44.924331+00:00",
+  "catalog_poll_at": "2026-11-17T01:32:44.924331+00:00",
+  "products": [
+    {
+      "product_id": "4a945cdd-b1ea-4e8e-a326-2e4fbf44e533",
+      "sample": 3235,
+      "name": "Uzun Kollu Düğmeli Kolları Tül Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5e46b6f383cdb2f90367.jpeg",
+        "https://modayakamoz.com/orj/b37687791e15e466390f.jpeg",
+        "https://modayakamoz.com/orj/c02c94a7e5befaf3da1b.jpeg",
+        "https://modayakamoz.com/orj/29df5868639abf125de5.jpeg",
+        {
+          "id": "e2c3b970-1d90-4aa9-8ecf-f6525f44951a",
+          "url": "https://cdn.meluni.com.tr/ai-products/4a945cdd-b1ea-4e8e-a326-2e4fbf44e533-olcu-oto-b13ffcf1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-10-01T05:23:41.800933+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4a945cdd-b1ea-4e8e-a326-2e4fbf44e533/front.jpg",
+          "sha256": "1c2d090b6025b07237450391e69dd7437ba2609f50fceff49f95edb5ec8188bd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3235,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4a945cdd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4a945cdd-b1ea-4e8e-a326-2e4fbf44e533/back.jpg",
+          "sha256": "b7c72786eae495f2823503facfd89dae3ae6963e579fbd090e9f87b7b18fcf6b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3235,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4a945cdd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4a945cdd-b1ea-4e8e-a326-2e4fbf44e533/fashion_model.jpg",
+          "sha256": "701dd747d99eeb9b35855730b03f8a6ef9a6a12871cb7e8e5d60130139b8d05f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3235,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4a945cdd/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
