@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-442",
+  "created_at": "2026-11-17T11:51:25.297894+00:00",
+  "catalog_poll_at": "2026-11-17T11:51:25.297894+00:00",
+  "products": [
+    {
+      "product_id": "feec12dd-1db8-4760-a462-bfdccab41e75",
+      "sample": 1098,
+      "name": "Uzun Kollu Tek Omuzdan Açık Dantel Detaylı Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 133,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/623b5f91543f0762ccc4.jpeg",
+        "https://modayakamoz.com/orj/0b733af523f3ca007a78.jpeg",
+        "https://modayakamoz.com/orj/e7790ba553e13cbaa3ff.jpeg",
+        "https://modayakamoz.com/orj/e22e1dbca3a66c3c0fd1.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "feec12dd-1db8-4760-a462-bfdccab41e75/front.jpg",
+          "sha256": "4292273039758aff613292b738a1612ec844901d0a9e1bc2f4f533713c66777f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1098,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-feec12dd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "feec12dd-1db8-4760-a462-bfdccab41e75/back.jpg",
+          "sha256": "4452d09e48e1490359df694015dff0cfc81ef236d115ced38a6dae4150142b70",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1098,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-feec12dd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "feec12dd-1db8-4760-a462-bfdccab41e75/fashion_model.jpg",
+          "sha256": "2f252f151f8925cb2e879edda709da036ff4a900bcf9ecf0b4cc7581d0bfa7b2",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1098,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-feec12dd/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "feec12dd-1db8-4760-a462-bfdccab41e75/size_chart.jpg",
+          "sha256": "0ea312cae0840e030e0e3ecb60f7937205fc208a96d88dedbafbe0538ddc3cb6",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1098,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-feec12dd/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
