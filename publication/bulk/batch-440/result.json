@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-440",
+  "published_at_utc": "2026-11-17T11:39:21.021446+00:00",
+  "products": [
+    {
+      "product_id": "fba7c058-8368-4066-858f-59e99e9a5cdb",
+      "sample": 1096,
+      "name": "Yüksek Bel Paçaya Doğru Dantellı Dalgıç Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/fba7c058-8368-4066-858f-59e99e9a5cdb-front-9cba05d983d8.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/fba7c058-8368-4066-858f-59e99e9a5cdb-back-b7c92d0717b5.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/fba7c058-8368-4066-858f-59e99e9a5cdb-model-ecfab493fa06.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/fba7c058-8368-4066-858f-59e99e9a5cdb-size-chart-bfcbbf545212.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
