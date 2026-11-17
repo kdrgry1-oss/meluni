@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-433",
+  "published_at_utc": "2026-11-17T10:45:42.725461+00:00",
+  "products": [
+    {
+      "product_id": "65bc6581-03e2-4161-8cd6-c5ce594251b0",
+      "sample": 1089,
+      "name": "Uzun Kollu Kruvaze Yakalı Kuşaklı Işıltılı Kadife Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/65bc6581-03e2-4161-8cd6-c5ce594251b0-front-d48d2bfcd0f9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/65bc6581-03e2-4161-8cd6-c5ce594251b0-back-b0c220b95af2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/65bc6581-03e2-4161-8cd6-c5ce594251b0-model-115dc868c99e.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
