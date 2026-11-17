@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-408",
+  "published_at_utc": "2026-11-17T04:39:00.614288+00:00",
+  "products": [
+    {
+      "product_id": "81b741b1-3cad-4f68-99f1-77f67f5db55a",
+      "sample": 1064,
+      "name": "Uzun Kollu V Yakalı Kürk Detaylı Kaşkorse Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/81b741b1-3cad-4f68-99f1-77f67f5db55a-front-e697f2359b55.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/81b741b1-3cad-4f68-99f1-77f67f5db55a-back-4fdd17e3ab75.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/81b741b1-3cad-4f68-99f1-77f67f5db55a-model-d67ecffac018.jpg"
+      },
+      "gallery_image_count": 14
+    }
+  ],
+  "skipped": []
+}
