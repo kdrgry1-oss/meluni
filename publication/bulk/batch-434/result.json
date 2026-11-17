@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-434",
+  "published_at_utc": "2026-11-17T10:52:37.559710+00:00",
+  "products": [
+    {
+      "product_id": "736d4035-e61a-43d5-a782-39aac3b6f92b",
+      "sample": 1090,
+      "name": "Uzun Kollu Kruvaze Yakalı Kolları Tüllü Viskon Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/736d4035-e61a-43d5-a782-39aac3b6f92b-front-a7b6ba9a7b75.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/736d4035-e61a-43d5-a782-39aac3b6f92b-back-340e4b0db5a6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/736d4035-e61a-43d5-a782-39aac3b6f92b-model-769702eccff2.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/736d4035-e61a-43d5-a782-39aac3b6f92b-size-chart-9a9e81ff7559.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
