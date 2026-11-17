@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-420",
+  "published_at_utc": "2026-11-17T08:50:35.454744+00:00",
+  "products": [
+    {
+      "product_id": "06e8e2df-e677-4881-8c88-8f784cb4ff2c",
+      "sample": 1076,
+      "name": "Yüksek Bel Yandan Düğme Detaylı Kısa Pera Şort",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/06e8e2df-e677-4881-8c88-8f784cb4ff2c-front-7f17946d5f77.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/06e8e2df-e677-4881-8c88-8f784cb4ff2c-back-928c6a1cd824.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/06e8e2df-e677-4881-8c88-8f784cb4ff2c-model-7cb258a36d29.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
