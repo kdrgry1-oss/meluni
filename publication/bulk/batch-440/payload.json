@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-440",
+  "created_at": "2026-11-17T11:38:04.529718+00:00",
+  "catalog_poll_at": "2026-11-17T11:38:04.529718+00:00",
+  "products": [
+    {
+      "product_id": "fba7c058-8368-4066-858f-59e99e9a5cdb",
+      "sample": 1096,
+      "name": "Yüksek Bel Paçaya Doğru Dantellı Dalgıç Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193781-1-aa97fa1c4e97.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193781-a7dae83c31d6d9a5.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193781-ab14b6731146989d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193781-75c563474b0039a1.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193781-7fc9303f5c787ca6.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193781-fa894b8d1fd1a622.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193781-3b519678442ac2d5.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193781-5fed1d9ef76505ed.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "fba7c058-8368-4066-858f-59e99e9a5cdb/front.jpg",
+          "sha256": "9cba05d983d836d2d7f5579c28872bb081c2d5009d217acacefadc730b4f0874",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1096,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fba7c058/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "fba7c058-8368-4066-858f-59e99e9a5cdb/back.jpg",
+          "sha256": "b7c92d0717b54ec16ce227dfe45ced374585940ea0f7e2465f396520db291fba",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1096,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fba7c058/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "fba7c058-8368-4066-858f-59e99e9a5cdb/fashion_model.jpg",
+          "sha256": "ecfab493fa061e16682a1ce007fd2e2f1ed69f8656139da71bb86c7e20d3ade1",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1096,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fba7c058/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "fba7c058-8368-4066-858f-59e99e9a5cdb/size_chart.jpg",
+          "sha256": "bfcbbf5452127e8cc508a406749dc2341edd61038a55ff19af29e8e3dded8002",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1096,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fba7c058/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
