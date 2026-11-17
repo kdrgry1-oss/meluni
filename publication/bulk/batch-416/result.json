@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-416",
+  "published_at_utc": "2026-11-17T07:41:32.424913+00:00",
+  "products": [
+    {
+      "product_id": "8eb13804-3a19-462c-951c-75bd36c2c117",
+      "sample": 1071,
+      "name": "Viskon Iki Iplik Bluz ve Yan Şerit Detaylı Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8eb13804-3a19-462c-951c-75bd36c2c117-front-0ee358e5e248.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8eb13804-3a19-462c-951c-75bd36c2c117-back-ea8a954a834c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8eb13804-3a19-462c-951c-75bd36c2c117-model-8281a668d825.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/8eb13804-3a19-462c-951c-75bd36c2c117-size-chart-1d4fb37c2087.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
