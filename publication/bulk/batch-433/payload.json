@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-433",
+  "created_at": "2026-11-17T10:44:26.170106+00:00",
+  "catalog_poll_at": "2026-11-17T10:44:26.170106+00:00",
+  "products": [
+    {
+      "product_id": "65bc6581-03e2-4161-8cd6-c5ce594251b0",
+      "sample": 1089,
+      "name": "Uzun Kollu Kruvaze Yakalı Kuşaklı Işıltılı Kadife Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 32,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/6e4fc0220c9275a49694.jpeg",
+        "https://modayakamoz.com/orj/b7a7fb492306d3f795a0.jpeg",
+        "https://modayakamoz.com/orj/3427586f85a6b8809543.jpeg",
+        "https://modayakamoz.com/orj/3ddede50cce5c8973946.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "65bc6581-03e2-4161-8cd6-c5ce594251b0/front.jpg",
+          "sha256": "d48d2bfcd0f9a2d9e90076acc8b88788ecee33aa5e65eb8d8552a849a2df082f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1089,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-65bc6581/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "65bc6581-03e2-4161-8cd6-c5ce594251b0/back.jpg",
+          "sha256": "b0c220b95af2eb893d3aa74a9a4008968509f9893208aacb74500b9f028181f5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1089,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-65bc6581/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "65bc6581-03e2-4161-8cd6-c5ce594251b0/fashion_model.jpg",
+          "sha256": "115dc868c99e3ee75cff137107996e6387393f4da02373dfc38173eb55a30d11",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1089,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-65bc6581/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
