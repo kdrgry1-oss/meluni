@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-379",
+  "created_at": "2026-11-17T01:27:38.889100+00:00",
+  "catalog_poll_at": "2026-11-17T01:27:38.889100+00:00",
+  "products": [
+    {
+      "product_id": "79655d9f-e8e6-4bb2-8cb4-7853021e5f6f",
+      "sample": 3234,
+      "name": "Uzun Kollu Düğmeli Klasik Yaka Gömlek",
+      "active_at_poll": true,
+      "stock_at_poll": 493,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY69a0157ef422269a0157ef4224.webp",
+        "https://modayakamoz.com/orj/TY69a015800a80769a015800a809.webp",
+        "https://modayakamoz.com/orj/TY69a01580dd24169a01580dd243.webp",
+        "https://modayakamoz.com/orj/TY69a01581d530a69a01581d530d.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "79655d9f-e8e6-4bb2-8cb4-7853021e5f6f/front.jpg",
+          "sha256": "c79fd50ec073dcc0b3b7d6df2ef2f289723fabe45b86f22e8a9c2a847d5ae12c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3234,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-79655d9f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "79655d9f-e8e6-4bb2-8cb4-7853021e5f6f/back.jpg",
+          "sha256": "b5a52adef778f09f2e980fcc3ed95f22fdbc393ce3efdfb2371ff5286f315e01",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3234,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-79655d9f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "79655d9f-e8e6-4bb2-8cb4-7853021e5f6f/fashion_model.jpg",
+          "sha256": "93a9e929d9dd16b92b85f3efcf8e83c575b2205729b8298292ce0607b769fab9",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 3234,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-79655d9f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
