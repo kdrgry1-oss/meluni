@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-406",
+  "published_at_utc": "2026-11-17T04:27:12.012345+00:00",
+  "products": [
+    {
+      "product_id": "bdf07e81-3e10-4c70-be8c-02307dfcfdfb",
+      "sample": 1062,
+      "name": "Uzun Kollu V Yakalı Kolları Çiçek Desenli Viskon Iki Iplik Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bdf07e81-3e10-4c70-be8c-02307dfcfdfb-front-4142b5dc4f39.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/bdf07e81-3e10-4c70-be8c-02307dfcfdfb-back-cb4f19df6a4a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bdf07e81-3e10-4c70-be8c-02307dfcfdfb-model-2d999d34b44d.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/bdf07e81-3e10-4c70-be8c-02307dfcfdfb-size-chart-8cad61fd3958.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
