@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-396",
+  "created_at": "2026-11-17T03:22:44.482065+00:00",
+  "catalog_poll_at": "2026-11-17T03:22:44.482065+00:00",
+  "products": [
+    {
+      "product_id": "73487d94-358b-4541-987a-ce8cd3bd7d37",
+      "sample": 1052,
+      "name": "Uzun Kollu Truvakar Kol Düğmeli Cepli Dantelli Atlas Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 178,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ded77c26d1fc52dec4cc.jpeg",
+        "https://modayakamoz.com/orj/49eb8dc030664aaadba7.jpeg",
+        "https://modayakamoz.com/orj/28a6678b93ba7dca64e9.jpeg",
+        "https://modayakamoz.com/orj/bf02668b1404bd2306d0.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "73487d94-358b-4541-987a-ce8cd3bd7d37/front.jpg",
+          "sha256": "508c913c24a02a6b53792901e11467a1bc0c9ffdf2f55d217bcd1ef62ef5b0e8",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1052,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73487d94/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "73487d94-358b-4541-987a-ce8cd3bd7d37/back.jpg",
+          "sha256": "90069cb840bdda2e2dd58a20a57d7376a884a6068754d306f1ba7092e69982d9",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1052,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73487d94/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "73487d94-358b-4541-987a-ce8cd3bd7d37/fashion_model.jpg",
+          "sha256": "f72b0817613da16ff7926a1ec3a53644c55752be023aa7a902ac7c148e0e4784",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1052,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73487d94/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "73487d94-358b-4541-987a-ce8cd3bd7d37/size_chart.jpg",
+          "sha256": "c5801acbebf8d663a102f052d5d9954f991f5bb72cda7eac00064b0ebfc2c9bd",
+          "qa_status": "source_values_verified_exact_source_resized",
+          "sample": 1052,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73487d94/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
