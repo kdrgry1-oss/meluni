@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-384",
+  "created_at": "2026-11-17T01:56:13.795679+00:00",
+  "catalog_poll_at": "2026-11-17T01:56:13.795679+00:00",
+  "products": [
+    {
+      "product_id": "c91e314b-b3c2-4583-8978-46c9f8174713",
+      "sample": 1040,
+      "name": "Uzun Kollu Fermuarlı Incili Kısa Modal Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 66,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-extra-172966-4bda3626dc7b54fe.jpg",
+        "https://modayakamoz.com/orj/janes-extra-172966-1ddb9d4d41cc7089.jpg",
+        "https://modayakamoz.com/orj/janes-extra-172966-9febaab8584745ae.jpg",
+        "https://modayakamoz.com/orj/janes-extra-172966-666b7c08f1f2269a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c91e314b-b3c2-4583-8978-46c9f8174713/front.jpg",
+          "sha256": "c70dbe13c29e00da219b4d55ef46d8ee66b1c872ad147ecba3a2ee40939ae2be",
+          "qa_status": "visual_source_fidelity_pass",
+          "sample": 1040,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c91e314b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c91e314b-b3c2-4583-8978-46c9f8174713/back.jpg",
+          "sha256": "a84f3081d12599dcc2c44c55a1dc270f7ce88cb94eeda7dc5acf4e1b91bb262a",
+          "qa_status": "visual_source_fidelity_pass",
+          "sample": 1040,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c91e314b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c91e314b-b3c2-4583-8978-46c9f8174713/fashion_model.jpg",
+          "sha256": "8593c68ecd3e16c1467bd6c0d5a8a0ad9557346b8326ee8bd7beb2aa72e6ed88",
+          "qa_status": "visual_source_fidelity_pass_after_one_targeted_correction",
+          "sample": 1040,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c91e314b/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
