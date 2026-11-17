@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-416",
+  "created_at": "2026-11-17T07:40:10.511872+00:00",
+  "catalog_poll_at": "2026-11-17T07:40:10.511872+00:00",
+  "products": [
+    {
+      "product_id": "8eb13804-3a19-462c-951c-75bd36c2c117",
+      "sample": 1071,
+      "name": "Viskon Iki Iplik Bluz ve Yan Şerit Detaylı Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 66,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192889-1-4611da2e41.jpg",
+        "https://modayakamoz.com/orj/janes-192889-2-323e9dbf49.jpg",
+        "https://modayakamoz.com/orj/janes-192889-3-9f457b7c0e.jpg",
+        "https://modayakamoz.com/orj/janes-192889-6-75b8873b7f.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "8eb13804-3a19-462c-951c-75bd36c2c117/front.jpg",
+          "sha256": "0ee358e5e2483b73e6e81374332a3b4c7b2bc7371306e291c1b9f31dbcf096af",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1071,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8eb13804/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8eb13804-3a19-462c-951c-75bd36c2c117/back.jpg",
+          "sha256": "ea8a954a834c192d793a718746d20c080d8ad6af0b4912f8158ef592f7cb3ca3",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1071,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8eb13804/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8eb13804-3a19-462c-951c-75bd36c2c117/fashion_model.jpg",
+          "sha256": "8281a668d82582d5695c10a6b552dfb31b26e51b0f66bb5e2bd5ffad0d869d40",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1071,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8eb13804/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "8eb13804-3a19-462c-951c-75bd36c2c117/size_chart.jpg",
+          "sha256": "1d4fb37c2087f57a32bed95f45e7bca4429b563579eb8cc3b61f59731e775423",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1071,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8eb13804/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
