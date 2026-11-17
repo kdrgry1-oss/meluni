@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-399",
+  "published_at_utc": "2026-11-17T03:40:49.184273+00:00",
+  "products": [
+    {
+      "product_id": "bed0ffcd-9c0d-4344-ac90-77a7960e830d",
+      "sample": 1055,
+      "name": "Uzun Kollu V Dantel Yakalı Düğmeli Kısa Kadife Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bed0ffcd-9c0d-4344-ac90-77a7960e830d-front-e4457c4058d2.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/bed0ffcd-9c0d-4344-ac90-77a7960e830d-back-f83ba136140a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bed0ffcd-9c0d-4344-ac90-77a7960e830d-model-18821bde9b84.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/bed0ffcd-9c0d-4344-ac90-77a7960e830d-size-chart-c4a89f87c2fa.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
