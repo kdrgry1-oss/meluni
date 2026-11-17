@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-436",
+  "published_at_utc": "2026-11-17T11:06:56.755644+00:00",
+  "products": [
+    {
+      "product_id": "dfeaad14-d99d-486f-b416-2801068b4db1",
+      "sample": 1092,
+      "name": "Uzun Kollu Yakalı Beli Lastikli Trikoton Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/dfeaad14-d99d-486f-b416-2801068b4db1-front-192f3d79e95f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/dfeaad14-d99d-486f-b416-2801068b4db1-back-39afc4afab9f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/dfeaad14-d99d-486f-b416-2801068b4db1-model-55c70b021eda.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/dfeaad14-d99d-486f-b416-2801068b4db1-size-chart-de23081d4fcc.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
