@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-397",
+  "published_at_utc": "2026-11-17T03:30:10.284276+00:00",
+  "products": [
+    {
+      "product_id": "a85e74e0-088a-4ccb-adde-3a0840ca6416",
+      "sample": 1053,
+      "name": "Uzun Kollu Truvakar Kol Düğmeli Cepli Dantelli Atlas Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a85e74e0-088a-4ccb-adde-3a0840ca6416-front-88bf73ee2d60.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a85e74e0-088a-4ccb-adde-3a0840ca6416-back-a2370909f8e0.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a85e74e0-088a-4ccb-adde-3a0840ca6416-model-259d240ad54a.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/a85e74e0-088a-4ccb-adde-3a0840ca6416-size-chart-c5801acbebf8.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
