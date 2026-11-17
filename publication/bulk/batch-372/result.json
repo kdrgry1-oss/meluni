@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-372",
+  "published_at_utc": "2026-11-17T00:51:53.268685+00:00",
+  "products": [
+    {
+      "product_id": "5f6fc43c-a176-4d39-9ff2-d3ac4b334f23",
+      "sample": 3222,
+      "name": "Uzun Kollu Düğmeli Etek Uçları Dantelli Kısa Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5f6fc43c-a176-4d39-9ff2-d3ac4b334f23-front-be168e8f8461.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5f6fc43c-a176-4d39-9ff2-d3ac4b334f23-back-0aa45fb772e8.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5f6fc43c-a176-4d39-9ff2-d3ac4b334f23-model-5a7bb1712a8d.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
