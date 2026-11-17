@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-409",
+  "created_at": "2026-11-17T04:50:47.342383+00:00",
+  "catalog_poll_at": "2026-11-17T04:50:47.342383+00:00",
+  "products": [
+    {
+      "product_id": "1cbf7a33-5c96-4c94-84ab-4d40dc836f65",
+      "sample": 1065,
+      "name": "Uzun Kollu V Yakalı Şardonlu Kaşkorse Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 34,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-194036-1-f80f2bd17164.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194036-f08b7bb851f51395.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194036-19d7c5bab161af34.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194036-519f0ed175da18dd.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194036-bff36189673b9fcc.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194036-230517b53ce6b08d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194036-e8375d7d92d1fad7.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "1cbf7a33-5c96-4c94-84ab-4d40dc836f65/front.jpg",
+          "sha256": "e9692c23a2184281775f91d28addbac7b197df8260e75336a3cb9b3af745cacc",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1065,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1cbf7a33/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "1cbf7a33-5c96-4c94-84ab-4d40dc836f65/back.jpg",
+          "sha256": "38a91a5968991a683a10f085ba6a661b267c04a843f98cf566d328201ec768e9",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1065,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1cbf7a33/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "1cbf7a33-5c96-4c94-84ab-4d40dc836f65/fashion_model.jpg",
+          "sha256": "b0a913ec4bba9dd80b73f1fb79f97c97a2291e8beff955019367e5afd4250c30",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1065,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1cbf7a33/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "1cbf7a33-5c96-4c94-84ab-4d40dc836f65/size_chart.jpg",
+          "sha256": "dddd3d7260c747606ac2078d230604fe910d86797e51af433cd729ee957a3c9e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1065,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1cbf7a33/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
