@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-390",
+  "published_at_utc": "2026-11-17T02:46:31.057605+00:00",
+  "products": [
+    {
+      "product_id": "934dd008-bed4-4c3a-bf56-05ef4c0f5f73",
+      "sample": 1046,
+      "name": "Uzun Kollu Ribana Detay Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/934dd008-bed4-4c3a-bf56-05ef4c0f5f73-front-d1f5c32a23a6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/934dd008-bed4-4c3a-bf56-05ef4c0f5f73-back-736f4494a507.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/934dd008-bed4-4c3a-bf56-05ef4c0f5f73-model-0c46bb1bd831.jpg"
+      },
+      "gallery_image_count": 14
+    }
+  ],
+  "skipped": []
+}
