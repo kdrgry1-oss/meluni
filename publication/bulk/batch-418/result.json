@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-418",
+  "published_at_utc": "2026-11-17T08:09:25.576828+00:00",
+  "products": [
+    {
+      "product_id": "838c2254-644f-45bf-8a92-56050ff42db1",
+      "sample": 1074,
+      "name": "Yüksek Bel Paçaya Doğru Geniş Kot Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/838c2254-644f-45bf-8a92-56050ff42db1-front-f215f53c72f0.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/838c2254-644f-45bf-8a92-56050ff42db1-back-47f0d03378ae.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/838c2254-644f-45bf-8a92-56050ff42db1-model-1058c79af82e.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/838c2254-644f-45bf-8a92-56050ff42db1-size-chart-fec0f9fd04df.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
