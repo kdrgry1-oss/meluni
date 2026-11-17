@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-442",
+  "published_at_utc": "2026-11-17T11:52:55.220946+00:00",
+  "products": [
+    {
+      "product_id": "feec12dd-1db8-4760-a462-bfdccab41e75",
+      "sample": 1098,
+      "name": "Uzun Kollu Tek Omuzdan Açık Dantel Detaylı Janjan Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/feec12dd-1db8-4760-a462-bfdccab41e75-front-429227303975.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/feec12dd-1db8-4760-a462-bfdccab41e75-back-4452d09e48e1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/feec12dd-1db8-4760-a462-bfdccab41e75-model-2f252f151f89.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/feec12dd-1db8-4760-a462-bfdccab41e75-size-chart-0ea312cae084.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
