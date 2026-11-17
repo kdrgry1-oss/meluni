@@ -1,0 +1,57 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-419",
+  "created_at": "2026-11-17T08:37:01.881383+00:00",
+  "catalog_poll_at": "2026-11-17T08:37:01.881383+00:00",
+  "products": [
+    {
+      "product_id": "a2f8f20d-81ed-4d50-9b1c-04fba6b61f5b",
+      "sample": 1075,
+      "name": "Önden Çapraz Detay Şerit Askılı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 18,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5e482ea0340f5c1028d4.jpeg",
+        "https://modayakamoz.com/orj/31fc6309e99e80597197.jpeg",
+        "https://modayakamoz.com/orj/78aade469e8f89cd7d3f.jpeg",
+        "https://modayakamoz.com/orj/4910d39d040529839cd7.jpeg",
+        "https://modayakamoz.com/orj/7d8e362e07a482db700a.jpeg",
+        "https://modayakamoz.com/orj/b87227389126eb1de42c.jpeg",
+        "https://modayakamoz.com/orj/2a05e692847aac2aba2b.jpeg",
+        "https://modayakamoz.com/orj/c1a1227591abc8e76c99.jpeg",
+        "https://modayakamoz.com/orj/74c62c914b2f856772a2.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a2f8f20d-81ed-4d50-9b1c-04fba6b61f5b/front.jpg",
+          "sha256": "74dd6652972b5c60ed849a04d043586608ed4c730aed3754052acb931c607f28",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1075,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a2f8f20d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a2f8f20d-81ed-4d50-9b1c-04fba6b61f5b/back.jpg",
+          "sha256": "dcf4c70227c380d49fd9b5ceb37336684b6f78cbc5670c4ac32b688a1a30922c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1075,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a2f8f20d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a2f8f20d-81ed-4d50-9b1c-04fba6b61f5b/fashion_model.jpg",
+          "sha256": "714c103db72398b505e999364285ff9a88f825faa85c1e1fd79e4b351e75708d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1075,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a2f8f20d/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "a2f8f20d-81ed-4d50-9b1c-04fba6b61f5b/size_chart.jpg",
+          "sha256": "6061cdf66f14ce9f3730e576d6309d21f9005f6388dc859c2740d90ea5f91e7c",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1075,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a2f8f20d/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
