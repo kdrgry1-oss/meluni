@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-437",
+  "published_at_utc": "2026-11-17T11:20:04.394312+00:00",
+  "products": [
+    {
+      "product_id": "acc150fe-b9c6-46e1-b086-513336f28f0e",
+      "sample": 1093,
+      "name": "Uzun Kollu Yakalı Yakası, Kol Ağzı Trikoton Uzun Kaşkorse Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/acc150fe-b9c6-46e1-b086-513336f28f0e-front-fc24f9668739.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/acc150fe-b9c6-46e1-b086-513336f28f0e-back-cb42efb67b65.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/acc150fe-b9c6-46e1-b086-513336f28f0e-model-e129c750623a.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
