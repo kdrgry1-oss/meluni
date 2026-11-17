@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-404",
+  "published_at_utc": "2026-11-17T04:11:47.398676+00:00",
+  "products": [
+    {
+      "product_id": "0bf3ca63-adc8-4438-a8d1-48dcb1284a4e",
+      "sample": 1060,
+      "name": "Uzun Kollu V Yakalı Bluz ve Yırtmaçlı Kısa Modal Etek Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0bf3ca63-adc8-4438-a8d1-48dcb1284a4e-front-841c5c799930.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0bf3ca63-adc8-4438-a8d1-48dcb1284a4e-back-c646b8a2a808.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0bf3ca63-adc8-4438-a8d1-48dcb1284a4e-model-58bc772aeb80.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0bf3ca63-adc8-4438-a8d1-48dcb1284a4e-size-chart-cf66ea40c28a.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
