@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-380",
+  "published_at_utc": "2026-11-17T01:33:53.158250+00:00",
+  "products": [
+    {
+      "product_id": "4a945cdd-b1ea-4e8e-a326-2e4fbf44e533",
+      "sample": 3235,
+      "name": "Uzun Kollu Düğmeli Kolları Tül Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4a945cdd-b1ea-4e8e-a326-2e4fbf44e533-front-1c2d090b6025.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4a945cdd-b1ea-4e8e-a326-2e4fbf44e533-back-b7c72786eae4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4a945cdd-b1ea-4e8e-a326-2e4fbf44e533-model-701dd747d99e.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
