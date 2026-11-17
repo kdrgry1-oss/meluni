@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-424",
+  "published_at_utc": "2026-11-17T09:21:55.245753+00:00",
+  "products": [
+    {
+      "product_id": "d50ca4de-d41d-4d86-ad9d-f4060079f4fc",
+      "sample": 1080,
+      "name": "Uzun Kollu Kruvaze Yakalı Yan Tarafı Taşlı Krep Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d50ca4de-d41d-4d86-ad9d-f4060079f4fc-front-c57675ea81ea.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d50ca4de-d41d-4d86-ad9d-f4060079f4fc-back-0e60d00ab3f7.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d50ca4de-d41d-4d86-ad9d-f4060079f4fc-model-a4f3caa46eb9.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d50ca4de-d41d-4d86-ad9d-f4060079f4fc-size-chart-36c2d34e939f.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
