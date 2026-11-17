@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-402",
+  "published_at_utc": "2026-11-17T04:01:06.459494+00:00",
+  "products": [
+    {
+      "product_id": "241244c5-e46e-4081-91d0-5f95399bc71d",
+      "sample": 1058,
+      "name": "Uzun Kollu V Yakalı Arkadan Kurdela Detaylı Şardonlu Kaşkorse Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/241244c5-e46e-4081-91d0-5f95399bc71d-front-8b8c98ea9bb9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/241244c5-e46e-4081-91d0-5f95399bc71d-back-67b2402d0804.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/241244c5-e46e-4081-91d0-5f95399bc71d-model-5d05482975f7.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
