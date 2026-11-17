@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-399",
+  "created_at": "2026-11-17T03:39:20.573850+00:00",
+  "catalog_poll_at": "2026-11-17T03:39:20.573850+00:00",
+  "products": [
+    {
+      "product_id": "bed0ffcd-9c0d-4344-ac90-77a7960e830d",
+      "sample": 1055,
+      "name": "Uzun Kollu V Dantel Yakalı Düğmeli Kısa Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 47,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193612-1-66ecce227de1.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193612-67f48d39d69a6e68.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193612-c1dc16e4c34721a6.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193612-341d264faf3c933a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "bed0ffcd-9c0d-4344-ac90-77a7960e830d/front.jpg",
+          "sha256": "e4457c4058d28437d79692b5a78ab43185ed128360770470c0c3ab6d80db4155",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1055,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bed0ffcd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "bed0ffcd-9c0d-4344-ac90-77a7960e830d/back.jpg",
+          "sha256": "f83ba136140a0e0a2485f6f46f9d355241847492094d922ea69865de29926a7d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1055,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bed0ffcd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bed0ffcd-9c0d-4344-ac90-77a7960e830d/fashion_model.jpg",
+          "sha256": "18821bde9b84b4eaf6bfa7621e287f34e2b01d620dad731ac90f69c0d9b4f170",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1055,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bed0ffcd/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "bed0ffcd-9c0d-4344-ac90-77a7960e830d/size_chart.jpg",
+          "sha256": "c4a89f87c2faf14c6bc59fa86c21c4c6b2588d0697954c330e6c8f8763468507",
+          "qa_status": "source_values_verified_exact_source_resized",
+          "sample": 1055,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bed0ffcd/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
