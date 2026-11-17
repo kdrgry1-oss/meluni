@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-413",
+  "created_at": "2026-11-17T05:15:21.105255+00:00",
+  "catalog_poll_at": "2026-11-17T05:15:21.105255+00:00",
+  "products": [
+    {
+      "product_id": "e37b0421-4cf0-42bc-9a99-757529520908",
+      "sample": 1069,
+      "name": "Uzun Kollu Yakadan Fiyonklu Yırtmaçlı Incili Midi Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 112,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192799-1-1baa4d9ace.jpg",
+        "https://modayakamoz.com/orj/janes-192799-2-c54734f7e6.jpg",
+        "https://modayakamoz.com/orj/janes-192799-3-255c4fcb6a.jpg",
+        "https://modayakamoz.com/orj/janes-192799-7-30558aac20.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e37b0421-4cf0-42bc-9a99-757529520908/front.jpg",
+          "sha256": "18f5641d6b8d6a6e537ae1a8c694c27edb9a06ae475d2f56881bffa43c08728d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1069,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e37b0421/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e37b0421-4cf0-42bc-9a99-757529520908/back.jpg",
+          "sha256": "cc55ac6dd9c3c276bc8a111323aa2550267e05f8182361e910b0e79cdde03b9c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1069,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e37b0421/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e37b0421-4cf0-42bc-9a99-757529520908/fashion_model.jpg",
+          "sha256": "c4449bff02ae79a917ed1253c9537e8d3bd696b48b275b6d6cd60379ff67d81c",
+          "qa_status": "visual_source_qa_pass_after_one_targeted_correction",
+          "sample": 1069,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e37b0421/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "e37b0421-4cf0-42bc-9a99-757529520908/size_chart.jpg",
+          "sha256": "29e7e4a7bfcb0d136e1149d7f86af00d3c17b89defe602bda614fcdc7bc7a1c7",
+          "qa_status": "visual_source_qa_pass_reused_exact_source",
+          "sample": 1069,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e37b0421/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
