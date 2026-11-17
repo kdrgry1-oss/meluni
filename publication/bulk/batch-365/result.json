@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-365",
+  "published_at_utc": "2026-11-17T00:15:20.208238+00:00",
+  "products": [
+    {
+      "product_id": "0616afa4-8ff1-4dfc-8201-6072963f0b43",
+      "sample": 3208,
+      "name": "Uzun Kollu Degaje Yakalı Sırtı Dantel Detaylı Kadife Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0616afa4-8ff1-4dfc-8201-6072963f0b43-front-09ce154133cd.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0616afa4-8ff1-4dfc-8201-6072963f0b43-back-edf2232557c3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0616afa4-8ff1-4dfc-8201-6072963f0b43-model-54c579d56a2a.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0616afa4-8ff1-4dfc-8201-6072963f0b43-size-chart-cd105e314711.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
