@@ -1,0 +1,33 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-376",
+  "created_at": "2026-11-17T01:08:44.559718+00:00",
+  "catalog_poll_at": "2026-11-17T01:08:44.559718+00:00",
+  "products": [
+    {
+      "product_id": "4e70f998-e219-4f1d-aa7d-b31a3648f87e",
+      "sample": 1034,
+      "name": "Uzun Kollu Düğmeli Klasik Yaka Gömlek",
+      "active_at_poll": true,
+      "stock_at_poll": 6863,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/4e70f998-e219-4f1d-aa7d-b31a3648f87e-front-e4d8a7d32f34.jpg",
+        "https://modayakamoz.com/orj/TY69a0159f6d07969a0159f6d07b.webp",
+        "https://modayakamoz.com/orj/TY69a015a07a4e169a015a07a4e3.webp",
+        "https://modayakamoz.com/orj/TY69a015a16294b69a015a16294e.webp",
+        "https://modayakamoz.com/orj/TY69a015a27d5e569a015a27d5e6.webp"
+      ],
+      "preserve_leading_existing_count": 1,
+      "assets": {
+        "fashion_model": {
+          "file": "4e70f998-e219-4f1d-aa7d-b31a3648f87e/fashion_model.jpg",
+          "sha256": "dab58391b37e0390368a4a74408b032fd33b04dcc03a90889a99d9d89aafdf4b",
+          "qa_status": "visual_source_qa_pass_after_one_targeted_framing_correction",
+          "sample": 1034,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/fashion-1034-model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}

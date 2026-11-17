@@ -73,9 +73,9 @@ async def main(payload_file, assets_root, result_file):
                     doc=eligible[pid];urls=staged[pid]; old=list(doc.get('images') or [])
                     prefix_count=p.get('preserve_leading_existing_count',0)
                     if prefix_count:
-                        if prefix_count!=2 or {v for v in VIEWS if v in urls}!={'fashion_model'} or len(old)<2 or not all(isinstance(x,str) and x.startswith('https://cdn.meluni.com.tr/') for x in old[:2]):
+                        if prefix_count not in (1,2) or {v for v in VIEWS if v in urls}!={'fashion_model'} or len(old)<prefix_count or not all(isinstance(x,str) and x.startswith('https://cdn.meluni.com.tr/') for x in old[:prefix_count]):
                             raise RuntimeError(f'invalid preserved gallery prefix: {pid}')
-                        new=old[:2]+[urls['fashion_model']]+old[2:]
+                        new=old[:prefix_count]+[urls['fashion_model']]+old[prefix_count:]
                     else:
                         new=[urls[v] for v in ('front','back','fashion_model','fashion_model_back') if v in urls]+old
                     if 'size_chart' in urls:
