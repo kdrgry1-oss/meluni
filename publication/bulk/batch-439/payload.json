@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-439",
+  "created_at": "2026-11-17T11:32:23.513080+00:00",
+  "catalog_poll_at": "2026-11-17T11:32:23.513080+00:00",
+  "products": [
+    {
+      "product_id": "5f1a0b67-feca-4aa1-8a2f-7538fdc361f2",
+      "sample": 1095,
+      "name": "Yüksek Bel Önden Çapraz Kuş Göz Detaylı Dalgıç Tayt",
+      "active_at_poll": true,
+      "stock_at_poll": 188,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4f36afff171f6cc1bb8c.jpeg",
+        "https://modayakamoz.com/orj/3070a8f3f1a94a2e4ca2.jpeg",
+        "https://modayakamoz.com/orj/c9f7acd8d9667a88b0e4.jpeg",
+        "https://modayakamoz.com/orj/975af9b22d80dfaf1033.jpeg",
+        "https://modayakamoz.com/orj/ba5b6e80bbae9a6c8dc5.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5f1a0b67-feca-4aa1-8a2f-7538fdc361f2/front.jpg",
+          "sha256": "d3be428b451cad731033cc918fa11cc819c8cfd85b6627f5e6c76a8af02fb048",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1095,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f1a0b67/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5f1a0b67-feca-4aa1-8a2f-7538fdc361f2/back.jpg",
+          "sha256": "0748e8e23dc98313a7e4a49fe47bceddfc8ee94bcd0aa3c457b8116a82a83299",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1095,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f1a0b67/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5f1a0b67-feca-4aa1-8a2f-7538fdc361f2/fashion_model.jpg",
+          "sha256": "d8681a8b9620a8bc54e0e946fa31c100c38423d055ea144c4270bb74def29721",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1095,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f1a0b67/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "5f1a0b67-feca-4aa1-8a2f-7538fdc361f2/size_chart.jpg",
+          "sha256": "f2eb3f44405398003cdfcf2d18088574416a5ea1305b7e52db5f2d17c97f9c71",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1095,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f1a0b67/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
