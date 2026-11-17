@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-392",
+  "published_at_utc": "2026-11-17T02:57:46.038020+00:00",
+  "products": [
+    {
+      "product_id": "0796e4b7-7dba-405a-8533-557d40b35ec0",
+      "sample": 1048,
+      "name": "Uzun Kollu Tek Omuz Askı Detay Salaş Viskon Iki Iplik Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0796e4b7-7dba-405a-8533-557d40b35ec0-front-513332becef6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0796e4b7-7dba-405a-8533-557d40b35ec0-back-73effb881f67.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0796e4b7-7dba-405a-8533-557d40b35ec0-model-9481819710a8.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0796e4b7-7dba-405a-8533-557d40b35ec0-size-chart-c0a6238c6b7a.jpg"
+      },
+      "gallery_image_count": 17
+    }
+  ],
+  "skipped": []
+}
