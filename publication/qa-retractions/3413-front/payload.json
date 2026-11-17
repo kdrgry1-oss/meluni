@@ -1,0 +1,38 @@
+{
+  "product_id": "709229de-e48f-4177-b806-7429ed2962b5",
+  "expected_images": [
+    "https://cdn.meluni.com.tr/ai-products/709229de-e48f-4177-b806-7429ed2962b5-front-7ad384ebeb4b.jpg",
+    "https://cdn.meluni.com.tr/ai-products/709229de-e48f-4177-b806-7429ed2962b5-back-433e2c88973f.jpg",
+    "https://cdn.meluni.com.tr/ai-products/709229de-e48f-4177-b806-7429ed2962b5-model-0637bec26932.jpg",
+    "https://modayakamoz.com/orj/ecc508d84a46dc81f2d0.jpeg",
+    "https://modayakamoz.com/orj/e288298a2de8ab141d77.jpeg",
+    "https://modayakamoz.com/orj/526c2cedc59e9668083b.jpeg",
+    "https://modayakamoz.com/orj/489843fab9ad78b4f478.jpeg",
+    {
+      "id": "02f3d5ea-610d-5256-b7d0-cce1cf94c0db",
+      "url": "https://cdn.meluni.com.tr/ai-products/709229de-e48f-4177-b806-7429ed2962b5-size-chart-85df3ae85b8f.jpg",
+      "is_size_table": true,
+      "alt": "Ölçü Tablosu",
+      "created_at": "2026-11-17T10:05:41.987724+00:00"
+    }
+  ],
+  "new_images": [
+    "https://cdn.meluni.com.tr/ai-products/709229de-e48f-4177-b806-7429ed2962b5-back-433e2c88973f.jpg",
+    "https://cdn.meluni.com.tr/ai-products/709229de-e48f-4177-b806-7429ed2962b5-model-0637bec26932.jpg",
+    "https://modayakamoz.com/orj/ecc508d84a46dc81f2d0.jpeg",
+    "https://modayakamoz.com/orj/e288298a2de8ab141d77.jpeg",
+    "https://modayakamoz.com/orj/526c2cedc59e9668083b.jpeg",
+    "https://modayakamoz.com/orj/489843fab9ad78b4f478.jpeg",
+    {
+      "id": "02f3d5ea-610d-5256-b7d0-cce1cf94c0db",
+      "url": "https://cdn.meluni.com.tr/ai-products/709229de-e48f-4177-b806-7429ed2962b5-size-chart-85df3ae85b8f.jpg",
+      "is_size_table": true,
+      "alt": "Ölçü Tablosu",
+      "created_at": "2026-11-17T10:05:41.987724+00:00"
+    }
+  ],
+  "retract_url": "https://cdn.meluni.com.tr/ai-products/709229de-e48f-4177-b806-7429ed2962b5-front-7ad384ebeb4b.jpg",
+  "expected_publication_id": "meluni-images-20261110-v3-429",
+  "reason": "production_qa_failed_after_reinspection: front neckline falsely mirrors scallop on both sides; supplier only image-right has scalloped edge",
+  "authorized_by_user": true
+}

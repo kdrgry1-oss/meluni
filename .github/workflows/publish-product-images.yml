@@ -13,6 +13,7 @@ on:
           - inspect-catalog
           - restore-mongo-url
           - publish-bulk
+          - retract-qa-front
       batch:
         description: Bulk batch number (01–07)
         required: false
@@ -741,6 +742,91 @@ jobs:
           git commit -m "Record Meluni image publication result [publisher status]"
           git push origin HEAD:codex/meluni-publish-images-20261110
 
+      - name: Sunucudaki geçici dosyaları temizle
+        if: always() && env.REMOTE_STAGE != ''
+        run: |
+          set +e
+          if [ -f "$HOME/.ssh/id_meluni_publish" ] && [ -n "$REMOTE_STAGE" ]; then
+            ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" "rm -rf -- '$REMOTE_STAGE'"
+          fi
+          rm -f "$HOME/.ssh/id_meluni_publish"
+  retract_qa_front:
+    if: inputs.task == 'retract-qa-front' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - name: QA düzeltme paketini doğrula
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=json.loads(pathlib.Path('publication/qa-retractions/3413-front/payload.json').read_text())
+          assert p['product_id']=='709229de-e48f-4177-b806-7429ed2962b5'
+          assert p['expected_publication_id']=='meluni-images-20261110-v3-429'
+          assert p['authorized_by_user'] is True
+          assert p['expected_images'][0]==p['retract_url']
+          assert p['new_images']==p['expected_images'][1:]
+          assert len(p['new_images'])==7
+          PY
+      - name: SSH erişimini hazırla
+        run: |
+          set -euo pipefail
+          test -n "$SSH_HOST" && test -n "$SSH_USER" && test -n "$SSH_PRIVATE_KEY"
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_meluni_publish"
+          chmod 600 "$HOME/.ssh/id_meluni_publish"
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          else
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
+          fi
+          chmod 644 "$HOME/.ssh/known_hosts"
+          APP_ROOT="${DEPLOY_PATH:-/home/${SSH_USER}/apps/meluni}"
+          REMOTE_STAGE="${APP_ROOT}/shared/tmp/meluni-qa-retract-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          printf 'APP_ROOT=%s\nREMOTE_STAGE=%s\n' "$APP_ROOT" "$REMOTE_STAGE" >> "$GITHUB_ENV"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_STAGE'"
+      - name: QA düzeltmesini atomik uygula
+        run: |
+          set -euo pipefail
+          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes publication/qa-retractions/3413-front/payload.json scripts/retract_qa_image.py "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" bash -s -- "$APP_ROOT" "$REMOTE_STAGE" <<'REMOTE'
+          set -euo pipefail
+          APP_ROOT="$1"
+          REMOTE_STAGE="$2"
+          test -x "$APP_ROOT/shared/venv/bin/python"
+          cd "$APP_ROOT/current/backend"
+          "$APP_ROOT/shared/venv/bin/python" - "$REMOTE_STAGE" <<'PY'
+          import os,pathlib,subprocess,sys
+          stage=sys.argv[1]
+          pid=subprocess.check_output(['systemctl','show','meluni','--property=MainPID','--value'],text=True).strip()
+          raw=pathlib.Path(f'/proc/{pid}/environ').read_bytes()
+          env={k.decode():v.decode() for k,v in (part.split(b'=',1) for part in raw.split(b'\0') if b'=' in part)}
+          if not env.get('MONGO_URL') or not env.get('DB_NAME'):
+              raise SystemExit('Running application database settings unavailable')
+          os.execve(sys.executable,[sys.executable,f'{stage}/retract_qa_image.py',f'{stage}/payload.json',f'{stage}/status.json'],env)
+          PY
+          REMOTE
+      - name: QA düzeltme sonucunu kaydet
+        run: |
+          set -euo pipefail
+          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/status.json" publication/qa-retractions/3413-front/result.json
+          cat publication/qa-retractions/3413-front/result.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add publication/qa-retractions/3413-front/result.json
+          git commit -m "Record Meluni QA image retraction result"
+          git push origin HEAD:codex/meluni-publish-images-20261110
       - name: Sunucudaki geçici dosyaları temizle
         if: always() && env.REMOTE_STAGE != ''
         run: |
