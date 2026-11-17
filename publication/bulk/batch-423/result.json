@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-423",
+  "published_at_utc": "2026-11-17T09:11:21.243902+00:00",
+  "products": [
+    {
+      "product_id": "230d6c15-7126-4889-9c0a-d1af3dc76c2f",
+      "sample": 1079,
+      "name": "Uzun Kollu Omuzlardan Şerit Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/230d6c15-7126-4889-9c0a-d1af3dc76c2f-front-c9d66a6231e3.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/230d6c15-7126-4889-9c0a-d1af3dc76c2f-back-c8b806abb9df.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/230d6c15-7126-4889-9c0a-d1af3dc76c2f-model-0ef58fd3af89.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/230d6c15-7126-4889-9c0a-d1af3dc76c2f-size-chart-e6dbd3265837.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
