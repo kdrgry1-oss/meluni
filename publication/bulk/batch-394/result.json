@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-394",
+  "published_at_utc": "2026-11-17T03:12:10.966979+00:00",
+  "products": [
+    {
+      "product_id": "be48b711-1d97-4265-959a-09831c4d5cf0",
+      "sample": 1050,
+      "name": "Uzun Kollu Tek Omuzu Açık Zincir Detaylı Kısa Modal Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/be48b711-1d97-4265-959a-09831c4d5cf0-front-7e524caf0bf3.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/be48b711-1d97-4265-959a-09831c4d5cf0-back-af1b5d2cf95d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/be48b711-1d97-4265-959a-09831c4d5cf0-model-2923e728093d.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/be48b711-1d97-4265-959a-09831c4d5cf0-size-chart-f3e02f5b708f.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
