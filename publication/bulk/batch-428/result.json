@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-428",
+  "published_at_utc": "2026-11-17T09:57:55.942369+00:00",
+  "products": [
+    {
+      "product_id": "5aeacb24-07d4-4e41-a170-33dbca77d950",
+      "sample": 1084,
+      "name": "Uzun Kollu Tek Omuzdan Açık Toka Detaylı Midi Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5aeacb24-07d4-4e41-a170-33dbca77d950-front-a573b43f4237.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5aeacb24-07d4-4e41-a170-33dbca77d950-back-bd2494887e43.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5aeacb24-07d4-4e41-a170-33dbca77d950-model-ad28743d4379.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5aeacb24-07d4-4e41-a170-33dbca77d950-size-chart-174086b4740f.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
