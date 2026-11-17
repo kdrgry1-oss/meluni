@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-412",
+  "published_at_utc": "2026-11-17T05:10:07.254840+00:00",
+  "products": [
+    {
+      "product_id": "5a98fb64-7140-4b0a-b7f1-ef4919f5fb07",
+      "sample": 1068,
+      "name": "Uzun Kollu Yakadan Fiyonklu Yırtmaçlı Incili Midi Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5a98fb64-7140-4b0a-b7f1-ef4919f5fb07-front-63a13f70c406.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5a98fb64-7140-4b0a-b7f1-ef4919f5fb07-back-e8fde73be982.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5a98fb64-7140-4b0a-b7f1-ef4919f5fb07-model-4f78b82a954c.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5a98fb64-7140-4b0a-b7f1-ef4919f5fb07-size-chart-29e7e4a7bfcb.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
