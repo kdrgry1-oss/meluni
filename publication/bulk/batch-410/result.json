@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-410",
+  "published_at_utc": "2026-11-17T04:56:48.691126+00:00",
+  "products": [
+    {
+      "product_id": "8c72a481-b6de-4cf9-82d9-bb5a6e0c2e4e",
+      "sample": 1066,
+      "name": "Uzun Kollu V Yakalı Şardonlu Kaşkorse Bluz ve Pantolon Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8c72a481-b6de-4cf9-82d9-bb5a6e0c2e4e-front-74057207c995.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8c72a481-b6de-4cf9-82d9-bb5a6e0c2e4e-back-1932a7ac5b27.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8c72a481-b6de-4cf9-82d9-bb5a6e0c2e4e-model-328398f5ee82.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/8c72a481-b6de-4cf9-82d9-bb5a6e0c2e4e-size-chart-dddd3d7260c7.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
