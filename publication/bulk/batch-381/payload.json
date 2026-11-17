@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-381",
+  "created_at": "2026-11-17T01:36:48.661178+00:00",
+  "catalog_poll_at": "2026-11-17T01:36:48.661178+00:00",
+  "products": [
+    {
+      "product_id": "d2850c09-c796-47a2-92c9-47f1ec90b3b6",
+      "sample": 1037,
+      "name": "Uzun Kollu Fermuarlı Cepli Kısa Deri Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 107,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2efa4f39108eff44ce2982afe5d5a27e.jpg",
+        "https://modayakamoz.com/orj/294db40786a5b100d71f2aaf9c731ca6.jpg",
+        "https://modayakamoz.com/orj/4d28b97c8d85727f407dbe07f32085ee.jpg",
+        "https://modayakamoz.com/orj/e8ed30b47fd48436bbc8ddb43fe46d86.jpg",
+        "https://modayakamoz.com/orj/40f83c035d18fe88370f012e46008336.jpg",
+        "https://modayakamoz.com/orj/8f3e97c4f1c9b105c9643007f841577c.jpg",
+        "https://modayakamoz.com/orj/36de1ffb2f2ac0842c5979a146214dd0.jpg",
+        {
+          "id": "9045d376-afad-5256-ac19-cb9f3261840a",
+          "url": "https://cdn.meluni.com.tr/ai-products/d2850c09-c796-47a2-92c9-47f1ec90b3b6-size-chart-7ff5b502da40.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:20:14.378903+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d2850c09-c796-47a2-92c9-47f1ec90b3b6/front.jpg",
+          "sha256": "17aacd57c6c63ab034becb5df384c8322274c2d7d5a89edb130f3332da51a948",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1037,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1037-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d2850c09-c796-47a2-92c9-47f1ec90b3b6/back.jpg",
+          "sha256": "2b68dd873123b932e69b4ae42a97151b95559312aabfe834dae728ab85b9e8dd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1037,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1037-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d2850c09-c796-47a2-92c9-47f1ec90b3b6/fashion_model.jpg",
+          "sha256": "8df9b1fc33c9fa18cee187d11765d3b1343b6db22289c7a33d21bc4e6560252c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1037,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/fashion-1037-model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
