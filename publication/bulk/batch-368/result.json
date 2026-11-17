@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-368",
+  "published_at_utc": "2026-11-17T00:29:49.237212+00:00",
+  "products": [
+    {
+      "product_id": "a5c58e6e-4332-4929-b2f5-8c115d13986d",
+      "sample": 3213,
+      "name": "Uzun Kollu Derin Gögüs Detaylı Bağcıklı Uzun Dalgıç Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a5c58e6e-4332-4929-b2f5-8c115d13986d-front-4d4e0414a125.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a5c58e6e-4332-4929-b2f5-8c115d13986d-back-696953d31713.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a5c58e6e-4332-4929-b2f5-8c115d13986d-model-e9fa27921896.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/a5c58e6e-4332-4929-b2f5-8c115d13986d-size-chart-354b51beefbe.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
