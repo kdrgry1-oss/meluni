@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-394",
+  "created_at": "2026-11-17T03:09:02.701847+00:00",
+  "catalog_poll_at": "2026-11-17T03:09:02.701847+00:00",
+  "products": [
+    {
+      "product_id": "be48b711-1d97-4265-959a-09831c4d5cf0",
+      "sample": 1050,
+      "name": "Uzun Kollu Tek Omuzu Açık Zincir Detaylı Kısa Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 39,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193249-1-0d9e8f766d41.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193249-7440955272ea5c08.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193249-6731d3082f312385.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193249-036b1a1ab65b81c6.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "be48b711-1d97-4265-959a-09831c4d5cf0/front.jpg",
+          "sha256": "7e524caf0bf3f4aadf0cd7d715452f74f9151b0f6c905c0d3a4c9445d41f283d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1050,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-be48b711/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "be48b711-1d97-4265-959a-09831c4d5cf0/back.jpg",
+          "sha256": "af1b5d2cf95ddadd26d3474e517b5b3802ceed6564b42089beddfde9346f80f4",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1050,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-be48b711/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "be48b711-1d97-4265-959a-09831c4d5cf0/fashion_model.jpg",
+          "sha256": "2923e728093d7d893c33c98f69b313d869760dbf9f49448470e43c4c346ef005",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1050,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-be48b711/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "be48b711-1d97-4265-959a-09831c4d5cf0/size_chart.jpg",
+          "sha256": "f3e02f5b708f263f01c12e028e42fb3712228baec81c224425c12b89deca4e75",
+          "qa_status": "source_values_verified_exact_source_resized",
+          "sample": 1050,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-be48b711/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
