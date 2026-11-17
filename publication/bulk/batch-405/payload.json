@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-405",
+  "created_at": "2026-11-17T04:15:14.756031+00:00",
+  "catalog_poll_at": "2026-11-17T04:15:14.756031+00:00",
+  "products": [
+    {
+      "product_id": "86756ad9-4d7c-41d1-9432-1431bd98bcce",
+      "sample": 1061,
+      "name": "Uzun Kollu V Yakalı Bluz ve Yırtmaçlı Kısa Modal Etek Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 57,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193255-1-420c28a16ce6.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193255-ce35b0dc5e2613d5.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193255-69cff81ed3091e77.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193255-573b64fca773178b.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193255-abf846477ec8b451.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "86756ad9-4d7c-41d1-9432-1431bd98bcce/front.jpg",
+          "sha256": "daa36e4f0245787ad0c28008d6bcda54a19fce05d0bafe9eb58782abe6035834",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1061,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-86756ad9/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "86756ad9-4d7c-41d1-9432-1431bd98bcce/back.jpg",
+          "sha256": "a1696ea8b4f6eb9c582ada14a4214d6aee8a3d4a79594aedbf4b92351924d998",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1061,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-86756ad9/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "86756ad9-4d7c-41d1-9432-1431bd98bcce/fashion_model.jpg",
+          "sha256": "e40a484b3ab6cdcbd70f702f088c251041dfe35aeb5b0357f1ae39f8809e6dd0",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1061,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-86756ad9/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "86756ad9-4d7c-41d1-9432-1431bd98bcce/size_chart.jpg",
+          "sha256": "cf66ea40c28a3b491d0cbe0600f845c9d25cd5c27814216df6fa87e8f9b8d89c",
+          "qa_status": "source_values_verified_exact_source_resized",
+          "sample": 1061,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-86756ad9/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
