@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-403",
+  "created_at": "2026-11-17T04:04:27.883483+00:00",
+  "catalog_poll_at": "2026-11-17T04:04:27.883483+00:00",
+  "products": [
+    {
+      "product_id": "7233899e-b218-4cb3-adc8-cae5720aad5c",
+      "sample": 1059,
+      "name": "Uzun Kollu V Yakalı Arkadan Kurdela Detaylı Şardonlu Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 85,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2614f7842b66af78a7c3.jpeg",
+        "https://modayakamoz.com/orj/4896b881e8d1779c1de9.jpeg",
+        "https://modayakamoz.com/orj/34eea98869a053a11c91.jpeg",
+        "https://modayakamoz.com/orj/35a55aeb2ed4a5f17b49.jpeg",
+        {
+          "id": "08929c34-3523-4681-b5d1-98c3053f5b16",
+          "url": "https://cdn.meluni.com.tr/ai-products/584df18c-a3a3-4a6c-8f04-dc079ce77ce0-olcu-oto-98aa98b7.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-29T05:24:15.651384+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7233899e-b218-4cb3-adc8-cae5720aad5c/front.jpg",
+          "sha256": "5d000b74c3dc15592d463f41f73237a574cc2ef62da2bcf89aedf4214697db9d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1059,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7233899e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7233899e-b218-4cb3-adc8-cae5720aad5c/back.jpg",
+          "sha256": "0ddca44b74a4eb664ce69552482b1c36acb77ac9a42d744d5d182ac2e2026534",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1059,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7233899e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7233899e-b218-4cb3-adc8-cae5720aad5c/fashion_model.jpg",
+          "sha256": "f0d23fe86336dc8ec6afd2256f5ef3b707262d200f792243100424ca8d3193f3",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1059,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7233899e/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
