@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-443",
+  "created_at": "2026-11-17T12:00:24.440066+00:00",
+  "catalog_poll_at": "2026-11-17T12:00:24.440066+00:00",
+  "products": [
+    {
+      "product_id": "12eca518-a91c-408e-9a14-aa6c8d846ce0",
+      "sample": 1099,
+      "name": "Uzun Kollu Omuzlardan Açık Kruvaze Yaka Kısa Triko Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 18,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/140103-2026-02-10-18-11-09.jpg",
+        "https://modayakamoz.com/orj/381258470a98aefc8df0.jpeg",
+        "https://modayakamoz.com/orj/2490ec7661f4896b8f26.jpeg",
+        "https://modayakamoz.com/orj/2df6a774b86e90cfc8e6.jpeg",
+        "https://modayakamoz.com/orj/e9206f1125490ee03e6a.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "12eca518-a91c-408e-9a14-aa6c8d846ce0/front.jpg",
+          "sha256": "3218bccaf031278d6f41157aa8494da0abeb98ba3e05ec3e4af692f31d45174d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1099,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-12eca518/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "12eca518-a91c-408e-9a14-aa6c8d846ce0/back.jpg",
+          "sha256": "60bd36dd4b20181843a89cd1f02417b7a14cd679668ed2a07a81dfcacfb2245c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1099,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-12eca518/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "12eca518-a91c-408e-9a14-aa6c8d846ce0/fashion_model.jpg",
+          "sha256": "97c2881649afff780c39e5a2600dac92b40caa44e783d07ac21cf68d54e47384",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1099,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-12eca518/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "12eca518-a91c-408e-9a14-aa6c8d846ce0/size_chart.jpg",
+          "sha256": "3d1724ae4e18fc5413c19461c5f72e75c31d9c8d1878aaa2c13d2530e4525ffd",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1099,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-12eca518/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
