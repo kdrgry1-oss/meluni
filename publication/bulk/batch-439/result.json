@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-439",
+  "published_at_utc": "2026-11-17T11:33:35.769824+00:00",
+  "products": [
+    {
+      "product_id": "5f1a0b67-feca-4aa1-8a2f-7538fdc361f2",
+      "sample": 1095,
+      "name": "Yüksek Bel Önden Çapraz Kuş Göz Detaylı Dalgıç Tayt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5f1a0b67-feca-4aa1-8a2f-7538fdc361f2-front-d3be428b451c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5f1a0b67-feca-4aa1-8a2f-7538fdc361f2-back-0748e8e23dc9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5f1a0b67-feca-4aa1-8a2f-7538fdc361f2-model-d8681a8b9620.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5f1a0b67-feca-4aa1-8a2f-7538fdc361f2-size-chart-f2eb3f444053.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
