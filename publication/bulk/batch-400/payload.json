@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-400",
+  "created_at": "2026-11-17T03:45:15.190811+00:00",
+  "catalog_poll_at": "2026-11-17T03:45:15.190811+00:00",
+  "products": [
+    {
+      "product_id": "9f5b9082-33e6-47c1-a9bb-67e74bde71ef",
+      "sample": 1056,
+      "name": "Uzun Kollu V Dantel Yakalı Düğmeli Kısa Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 46,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193613-1-cd878ae2801d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193613-b0ef347ba670fb6c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193613-2e0bcb93919eee57.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193613-eb37b929b8440aaf.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193613-5653abdb8c870579.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193613-341d264faf3c933a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "9f5b9082-33e6-47c1-a9bb-67e74bde71ef/front.jpg",
+          "sha256": "41470fe08846526121eb9733c470b12825f53042136cbf51c6356b44d497300a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1056,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9f5b9082/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "9f5b9082-33e6-47c1-a9bb-67e74bde71ef/back.jpg",
+          "sha256": "c2c010e749b51717ec04fdd192f4fd4d90d810376da29999b0fa4103f1b9418b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1056,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9f5b9082/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9f5b9082-33e6-47c1-a9bb-67e74bde71ef/fashion_model.jpg",
+          "sha256": "7dcefb2d9ed97ad6d29f2243c75de9e998ed0ecd44b9c9a05afcf68150cd2c5c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1056,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9f5b9082/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "9f5b9082-33e6-47c1-a9bb-67e74bde71ef/size_chart.jpg",
+          "sha256": "c4a89f87c2faf14c6bc59fa86c21c4c6b2588d0697954c330e6c8f8763468507",
+          "qa_status": "source_values_verified_exact_source_resized",
+          "sample": 1056,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9f5b9082/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
