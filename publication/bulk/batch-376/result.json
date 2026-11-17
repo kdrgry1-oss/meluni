@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-376",
+  "published_at_utc": "2026-11-17T01:09:51.625561+00:00",
+  "products": [
+    {
+      "product_id": "4e70f998-e219-4f1d-aa7d-b31a3648f87e",
+      "sample": 1034,
+      "name": "Uzun Kollu Düğmeli Klasik Yaka Gömlek",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4e70f998-e219-4f1d-aa7d-b31a3648f87e-model-dab58391b37e.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
