@@ -9,8 +9,8 @@ sys.path.insert(0, os.getcwd())
 from routes.deps import db, client
 from services import r2_storage as r2
 
-VIEWS = ('front', 'back', 'fashion_model', 'size_chart')
-ROLE = {'front':'front','back':'back','fashion_model':'model','size_chart':'size-chart'}
+VIEWS = ('front', 'back', 'fashion_model', 'fashion_model_back', 'size_chart')
+ROLE = {'front':'front','back':'back','fashion_model':'model','fashion_model_back':'model-back','size_chart':'size-chart'}
 
 def digest(path):
     h=hashlib.sha256()
@@ -77,7 +77,7 @@ async def main(payload_file, assets_root, result_file):
                             raise RuntimeError(f'invalid preserved gallery prefix: {pid}')
                         new=old[:2]+[urls['fashion_model']]+old[2:]
                     else:
-                        new=[urls[v] for v in ('front','back','fashion_model') if v in urls]+old
+                        new=[urls[v] for v in ('front','back','fashion_model','fashion_model_back') if v in urls]+old
                     if 'size_chart' in urls:
                         new.append({'id':str(uuid.uuid5(uuid.NAMESPACE_URL,f'meluni:{pub}:{pid}:size_chart_gallery')),'url':urls['size_chart'],'is_size_table':True,'alt':'Ölçü Tablosu','created_at':now})
                     filt={'id':pid,'images':old,'stock':{'$gt':0}}

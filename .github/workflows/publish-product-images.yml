@@ -572,7 +572,7 @@ jobs:
           assert len({x['product_id'] for x in data['products']})==len(data['products'])
           for product in data['products']:
             assert product['active_at_poll'] is True and product['stock_at_poll']>0
-            assert product['assets'] and set(product['assets'])<={'front','back','fashion_model','size_chart'}
+            assert product['assets'] and set(product['assets'])<={'front','back','fashion_model','fashion_model_back','size_chart'}
             for asset in product['assets'].values():
               path=pathlib.Path(f'publication/bulk/batch-{batch}/assets')/asset['file']
               assert path.is_file()
