@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-441",
+  "published_at_utc": "2026-11-17T11:46:20.672786+00:00",
+  "products": [
+    {
+      "product_id": "00c31c4a-2753-404d-a9ae-4b0768ec5832",
+      "sample": 1097,
+      "name": "Uzun Kollu Yakadan ve Düğmeli Süet Kısa Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/00c31c4a-2753-404d-a9ae-4b0768ec5832-front-d260ac567a79.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/00c31c4a-2753-404d-a9ae-4b0768ec5832-back-d2780b745178.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/00c31c4a-2753-404d-a9ae-4b0768ec5832-model-5c7bdd3bbd57.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/00c31c4a-2753-404d-a9ae-4b0768ec5832-size-chart-818b8435e378.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
