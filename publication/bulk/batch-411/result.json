@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-411",
+  "published_at_utc": "2026-11-17T05:02:44.146907+00:00",
+  "products": [
+    {
+      "product_id": "8321a5f4-2604-4249-9547-8eac0de76ac5",
+      "sample": 1067,
+      "name": "Uzun Kollu Yaka Düğme Detay Güpürlü Kol Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8321a5f4-2604-4249-9547-8eac0de76ac5-front-b371d40f9ede.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8321a5f4-2604-4249-9547-8eac0de76ac5-back-f70da09723bf.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8321a5f4-2604-4249-9547-8eac0de76ac5-model-581c0647922a.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/8321a5f4-2604-4249-9547-8eac0de76ac5-size-chart-9fe450b362d9.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
