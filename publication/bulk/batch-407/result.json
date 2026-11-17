@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-407",
+  "published_at_utc": "2026-11-17T04:32:36.450803+00:00",
+  "products": [
+    {
+      "product_id": "73faa36f-b8b3-4756-801b-61426ea0c616",
+      "sample": 1063,
+      "name": "Uzun Kollu V Yakalı Kollar Puantiyeli Beli Kuşaklı Midi Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/73faa36f-b8b3-4756-801b-61426ea0c616-front-f7a5b8f8a7c2.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/73faa36f-b8b3-4756-801b-61426ea0c616-back-5ced638e03e3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/73faa36f-b8b3-4756-801b-61426ea0c616-model-87a64eb89b10.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
