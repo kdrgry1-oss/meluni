@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-382",
+  "created_at": "2026-11-17T01:45:11.983730+00:00",
+  "catalog_poll_at": "2026-11-17T01:45:11.983730+00:00",
+  "products": [
+    {
+      "product_id": "7a066326-31fa-4ba4-b630-3eb89016f475",
+      "sample": 1038,
+      "name": "Uzun Kollu Fermuarlı Cepli Kısa Deri Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193887-1-73f2ac168ab3.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193887-a916cd2fc44de956.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193887-97a33923d5ff78ed.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193887-597f55f61ed65d52.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193887-f91207ce59ba65ab.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193887-0c12624e5512265a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7a066326-31fa-4ba4-b630-3eb89016f475/front.jpg",
+          "sha256": "09378677f714d28a15095293802c665896de34632387637597bade5b6266022a",
+          "qa_status": "visual_source_fidelity_pass",
+          "sample": 1038,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7a066326/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7a066326-31fa-4ba4-b630-3eb89016f475/back.jpg",
+          "sha256": "ceb58576038e80503af8e93eae888d0efaab4ab806798412d494d6e0680a4386",
+          "qa_status": "visual_source_fidelity_pass",
+          "sample": 1038,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7a066326/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7a066326-31fa-4ba4-b630-3eb89016f475/fashion_model.jpg",
+          "sha256": "ecc30f2d2f0007f9dffaa20ddfa745713ffe34f1ed3c634b87e24cde54efd6c1",
+          "qa_status": "visual_source_fidelity_pass_after_one_targeted_correction",
+          "sample": 1038,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7a066326/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7a066326-31fa-4ba4-b630-3eb89016f475/size_chart.jpg",
+          "sha256": "65c0a26dc0d1a46d0d9971f036fe576647183a56b967640cb088208b0b0e7a0a",
+          "qa_status": "source_values_verified_reused_approved_chart",
+          "sample": 1038,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7a066326/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
