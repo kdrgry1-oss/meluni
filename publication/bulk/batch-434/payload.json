@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-434",
+  "created_at": "2026-11-17T10:51:10.522586+00:00",
+  "catalog_poll_at": "2026-11-17T10:51:10.522586+00:00",
+  "products": [
+    {
+      "product_id": "736d4035-e61a-43d5-a782-39aac3b6f92b",
+      "sample": 1090,
+      "name": "Uzun Kollu Kruvaze Yakalı Kolları Tüllü Viskon Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 167,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4d0a5509fccd6880e725.jpeg",
+        "https://modayakamoz.com/orj/73de8c9c6aac01de5ea7.jpeg",
+        "https://modayakamoz.com/orj/1666373742b5afe8641c.jpeg",
+        "https://modayakamoz.com/orj/df8cb33e97618faa7df3.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "736d4035-e61a-43d5-a782-39aac3b6f92b/front.jpg",
+          "sha256": "a7b6ba9a7b757d8d48faa98f9195cf10842d84886439d6a222c8a5925873863c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1090,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-736d4035/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "736d4035-e61a-43d5-a782-39aac3b6f92b/back.jpg",
+          "sha256": "340e4b0db5a6ca84d48b83ff8f8c3f076ba5fd718bf14c9933a0f456301bface",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1090,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-736d4035/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "736d4035-e61a-43d5-a782-39aac3b6f92b/fashion_model.jpg",
+          "sha256": "769702eccff20cce1818c51a8fb58782262185d41beb41ee9ffa35522918747f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1090,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-736d4035/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "736d4035-e61a-43d5-a782-39aac3b6f92b/size_chart.jpg",
+          "sha256": "9a9e81ff7559634a9c59a4208c265c8e97a1a85450ada916a6d4b12757515e9d",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1090,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-736d4035/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
