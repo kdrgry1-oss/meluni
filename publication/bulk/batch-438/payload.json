@@ -1,0 +1,48 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-438",
+  "created_at": "2026-11-17T11:24:05.055870+00:00",
+  "catalog_poll_at": "2026-11-17T11:24:05.055870+00:00",
+  "products": [
+    {
+      "product_id": "60500ebd-99dc-46f0-81e7-45e1d95ee5b9",
+      "sample": 1094,
+      "name": "Uzun Kollu Yakalı Yakası, Kol Ağzı Trikoton Uzun Kaşkorse Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 137,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193874-1-7fa3501b8762.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193874-a72a72625cf4f200.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193874-6ebc37dd7f581450.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193874-623f14c69579ce59.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193874-a05c38bdbb218c77.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193874-961d08201db4675a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193874-9cfeb00d898d6790.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "60500ebd-99dc-46f0-81e7-45e1d95ee5b9/front.jpg",
+          "sha256": "b6220c024fac2eb1664fd13296bc0baf0b3c523bdffe2e7781653bbb0a4113f2",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1094,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-60500ebd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "60500ebd-99dc-46f0-81e7-45e1d95ee5b9/back.jpg",
+          "sha256": "f8a798347c7d5ee5fbd633fddf31c8e822d05277e3a4031037d5d3545b38347b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1094,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-60500ebd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "60500ebd-99dc-46f0-81e7-45e1d95ee5b9/fashion_model.jpg",
+          "sha256": "14a01d37ed351c0cad42b3dab71b4fedb99224dd7a59f9a29e578203cfd4b196",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1094,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-60500ebd/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
