@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-436",
+  "created_at": "2026-11-17T11:05:26.843799+00:00",
+  "catalog_poll_at": "2026-11-17T11:05:26.843799+00:00",
+  "products": [
+    {
+      "product_id": "dfeaad14-d99d-486f-b416-2801068b4db1",
+      "sample": 1092,
+      "name": "Uzun Kollu Yakalı Beli Lastikli Trikoton Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/82be8bb77637bc6c2a04ced8de19601d.jpg",
+        "https://modayakamoz.com/orj/7214ffa2698cc8a431dac5e2bc1e9ebc.jpg",
+        "https://modayakamoz.com/orj/5734b02eca67db502860a57782eabb59.jpg",
+        "https://modayakamoz.com/orj/52a5b8ec581ac1a13528053457d3c9b8.jpg",
+        "https://modayakamoz.com/orj/15b4de971e88723a8ec4ffc8023334de.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "dfeaad14-d99d-486f-b416-2801068b4db1/front.jpg",
+          "sha256": "192f3d79e95ff54fb0b8a6f545be0e9dcb36e7d0c3e4709f9f613b0ac701c466",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1092,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dfeaad14/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "dfeaad14-d99d-486f-b416-2801068b4db1/back.jpg",
+          "sha256": "39afc4afab9fc884e489aa3112881ab7c6dbda9c70449f1a6db80d70ad77e186",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1092,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dfeaad14/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "dfeaad14-d99d-486f-b416-2801068b4db1/fashion_model.jpg",
+          "sha256": "55c70b021eda83506b2b0227668895b152e3b68a009f214117f13d71debd3422",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1092,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dfeaad14/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "dfeaad14-d99d-486f-b416-2801068b4db1/size_chart.jpg",
+          "sha256": "de23081d4fcc3ae6abc693c16503233d82b050412e8ad3fb0945dfeebc43edeb",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1092,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dfeaad14/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
