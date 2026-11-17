@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-424",
+  "created_at": "2026-11-17T09:20:19.057559+00:00",
+  "catalog_poll_at": "2026-11-17T09:20:19.057559+00:00",
+  "products": [
+    {
+      "product_id": "d50ca4de-d41d-4d86-ad9d-f4060079f4fc",
+      "sample": 1080,
+      "name": "Uzun Kollu Kruvaze Yakalı Yan Tarafı Taşlı Krep Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 66,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192541-1-bac7c2c2a4.jpg",
+        "https://modayakamoz.com/orj/janes-192541-2-a62414093e.jpg",
+        "https://modayakamoz.com/orj/janes-192541-3-488d0726c3.jpg",
+        "https://modayakamoz.com/orj/janes-192541-7-e8feb5e445.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d50ca4de-d41d-4d86-ad9d-f4060079f4fc/front.jpg",
+          "sha256": "c57675ea81ea56718367ef114e7dfb6bc480042e70e671bffb4d2431bda223bb",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1080,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d50ca4de/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d50ca4de-d41d-4d86-ad9d-f4060079f4fc/back.jpg",
+          "sha256": "0e60d00ab3f7aaf1bee7009ecb83883abf3b520faacad79c70ba5918331e3515",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1080,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d50ca4de/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d50ca4de-d41d-4d86-ad9d-f4060079f4fc/fashion_model.jpg",
+          "sha256": "a4f3caa46eb9d19d2d35beb5df5100f3fa50c1b44c2dbe0311f8386ab69ee29c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1080,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d50ca4de/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "d50ca4de-d41d-4d86-ad9d-f4060079f4fc/size_chart.jpg",
+          "sha256": "36c2d34e939f7d7dafe867214acad546efa02d80572729bf32aa3b0eb7ae143c",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1080,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d50ca4de/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
