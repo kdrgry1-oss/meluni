@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-392",
+  "created_at": "2026-11-17T02:56:29.319591+00:00",
+  "catalog_poll_at": "2026-11-17T02:56:29.319591+00:00",
+  "products": [
+    {
+      "product_id": "0796e4b7-7dba-405a-8533-557d40b35ec0",
+      "sample": 1048,
+      "name": "Uzun Kollu Tek Omuz Askı Detay Salaş Viskon Iki Iplik Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 109,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/094e2ae22a6e2e18d922.jpeg",
+        "https://modayakamoz.com/orj/c1885c3cc5cdb52e024e.jpeg",
+        "https://modayakamoz.com/orj/16f9799c55491ca0f2ad.jpeg",
+        "https://modayakamoz.com/orj/b326c39d60d24434c7cc.jpeg",
+        "https://modayakamoz.com/orj/47e38b9d19478c669c71.jpeg",
+        "https://modayakamoz.com/orj/85736fa093c6c38b160b.jpeg",
+        "https://modayakamoz.com/orj/d65476d1f5e2853fe0ca.jpeg",
+        "https://modayakamoz.com/orj/c08e5177b96569214f87.jpeg",
+        "https://modayakamoz.com/orj/51e041b6d7e63523872c.jpeg",
+        "https://modayakamoz.com/orj/f699a802cd16ecfb8428.jpeg",
+        "https://modayakamoz.com/orj/c6fc6ca0462d12ba7dd6.jpeg",
+        "https://modayakamoz.com/orj/9a95b53ae07a089d0232.jpeg",
+        "https://modayakamoz.com/orj/6229d3d77636f93fb5f2.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0796e4b7-7dba-405a-8533-557d40b35ec0/front.jpg",
+          "sha256": "513332becef623b639df417215e619665b14dd4f473d4a635bf3a0a8d96f4787",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1048,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0796e4b7/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0796e4b7-7dba-405a-8533-557d40b35ec0/back.jpg",
+          "sha256": "73effb881f67754035c6d21dbb693d045edcb4fc61ff3a22ef3e476218a36b9b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1048,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0796e4b7/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0796e4b7-7dba-405a-8533-557d40b35ec0/fashion_model.jpg",
+          "sha256": "9481819710a8658fe9d4148126b1d5084335d332cb5e1a6600bbd8e00f414d98",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1048,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0796e4b7/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "0796e4b7-7dba-405a-8533-557d40b35ec0/size_chart.jpg",
+          "sha256": "c0a6238c6b7a2b01f82b73d4e25664ffb27f0e44e4311c5e8569177f15c32098",
+          "qa_status": "source_values_verified_exact_source_resized",
+          "sample": 1048,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0796e4b7/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
