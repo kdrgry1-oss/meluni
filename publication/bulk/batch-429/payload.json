@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-429",
+  "created_at": "2026-11-17T10:04:17.476146+00:00",
+  "catalog_poll_at": "2026-11-17T10:04:17.476146+00:00",
+  "products": [
+    {
+      "product_id": "709229de-e48f-4177-b806-7429ed2962b5",
+      "sample": 1085,
+      "name": "Uzun Kollu Lazer Dalga Detaylı Kısa Janjan Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 54,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ecc508d84a46dc81f2d0.jpeg",
+        "https://modayakamoz.com/orj/e288298a2de8ab141d77.jpeg",
+        "https://modayakamoz.com/orj/526c2cedc59e9668083b.jpeg",
+        "https://modayakamoz.com/orj/489843fab9ad78b4f478.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "709229de-e48f-4177-b806-7429ed2962b5/front.jpg",
+          "sha256": "7ad384ebeb4bf983a5c4c46925f52a095dd1c375a24467005c4c5a80e24d3ab5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1085,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-709229de/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "709229de-e48f-4177-b806-7429ed2962b5/back.jpg",
+          "sha256": "433e2c88973f753b1445a4014cf6bc1325cc371d360abc4f536b604d6ecc2318",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1085,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-709229de/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "709229de-e48f-4177-b806-7429ed2962b5/fashion_model.jpg",
+          "sha256": "0637bec26932919be4383e1794bf14a9b08bb406bbb3f1e802a834bf23ac6317",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1085,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-709229de/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "709229de-e48f-4177-b806-7429ed2962b5/size_chart.jpg",
+          "sha256": "85df3ae85b8f9cc51602e485543fef7d4c7096a315211daa5e88b554f50a7c14",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1085,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-709229de/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
