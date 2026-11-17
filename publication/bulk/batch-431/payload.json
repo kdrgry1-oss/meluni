@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-431",
+  "created_at": "2026-11-17T10:31:38.964646+00:00",
+  "catalog_poll_at": "2026-11-17T10:31:38.964646+00:00",
+  "products": [
+    {
+      "product_id": "c976bbef-d63d-4eee-814c-8f76dcab0957",
+      "sample": 1087,
+      "name": "Uzun Kollu V Yakalı Midi Çağla Yeşili Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 30,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/725825131b2858b13d8b21ef45171a9b.jpg",
+        "https://modayakamoz.com/orj/0b8e2e9dec27d228757a680991a84425.jpg",
+        "https://modayakamoz.com/orj/bb1870da36341e86f40f9ff564527243.jpg",
+        "https://modayakamoz.com/orj/69d94af74d63fcb216421f591ba887ae.jpg",
+        "https://modayakamoz.com/orj/6eaaa6cbdfb0ddc3c1a407f286a2fa70.jpg",
+        {
+          "id": "aa49c1a7-3997-4859-8005-d37f38391c67",
+          "url": "https://cdn.meluni.com.tr/ai-products/145a3393-0604-462e-8b72-e9c8220011c9-olcu-oto-10b500c0.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:25:13.793054+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c976bbef-d63d-4eee-814c-8f76dcab0957/front.jpg",
+          "sha256": "792666f250c1c8b0b19068fd84810169426e81b42c0b984ef572875ee91b6c1f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1087,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c976bbef/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c976bbef-d63d-4eee-814c-8f76dcab0957/back.jpg",
+          "sha256": "12a7ee7ee4f183fbceb922031e184ecf9fd3436a316ad7e0ff2cf04f02574a8f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1087,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c976bbef/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c976bbef-d63d-4eee-814c-8f76dcab0957/fashion_model.jpg",
+          "sha256": "5f4e8491cf18ef8982db2c32722ef75605389d15d4f9614f1ea4c21e8699699a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1087,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c976bbef/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "c976bbef-d63d-4eee-814c-8f76dcab0957/size_chart.jpg",
+          "sha256": "ced508953859d11abb7392da07f2250969ae96c58b002a31d4a1bf9c2623d33a",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1087,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c976bbef/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
