@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-441",
+  "created_at": "2026-11-17T11:44:51.517071+00:00",
+  "catalog_poll_at": "2026-11-17T11:44:51.517071+00:00",
+  "products": [
+    {
+      "product_id": "00c31c4a-2753-404d-a9ae-4b0768ec5832",
+      "sample": 1097,
+      "name": "Uzun Kollu Yakadan ve Düğmeli Süet Kısa Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 45,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7d0924155c10b6816b1e.jpeg",
+        "https://modayakamoz.com/orj/09f6e8896614f46d19e3.jpeg",
+        "https://modayakamoz.com/orj/54f8858b2c5e382854b4.jpeg",
+        "https://modayakamoz.com/orj/686e7dda03416aed547e.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "00c31c4a-2753-404d-a9ae-4b0768ec5832/front.jpg",
+          "sha256": "d260ac567a79bb84a4e683ca31605db027891a1d47b9135d70bf527f6fa021ec",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1097,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-00c31c4a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "00c31c4a-2753-404d-a9ae-4b0768ec5832/back.jpg",
+          "sha256": "d2780b745178fe48a0861c54ac469b21acae3fdb0a13e90fbf853fddfb211f3b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1097,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-00c31c4a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "00c31c4a-2753-404d-a9ae-4b0768ec5832/fashion_model.jpg",
+          "sha256": "5c7bdd3bbd57ed4f47b41906822fc990e579d575864f623392feb37c44d96119",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1097,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-00c31c4a/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "00c31c4a-2753-404d-a9ae-4b0768ec5832/size_chart.jpg",
+          "sha256": "818b8435e3788f5f99b6676bba7cf39209c22e9ae2903fd3d361be02bc062924",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1097,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-00c31c4a/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
