@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-381",
+  "published_at_utc": "2026-11-17T01:38:13.434163+00:00",
+  "products": [
+    {
+      "product_id": "d2850c09-c796-47a2-92c9-47f1ec90b3b6",
+      "sample": 1037,
+      "name": "Uzun Kollu Fermuarlı Cepli Kısa Deri Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d2850c09-c796-47a2-92c9-47f1ec90b3b6-front-17aacd57c6c6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d2850c09-c796-47a2-92c9-47f1ec90b3b6-back-2b68dd873123.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d2850c09-c796-47a2-92c9-47f1ec90b3b6-model-8df9b1fc33c9.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
