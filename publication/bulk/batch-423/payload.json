@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-423",
+  "created_at": "2026-11-17T09:10:06.823108+00:00",
+  "catalog_poll_at": "2026-11-17T09:10:06.823108+00:00",
+  "products": [
+    {
+      "product_id": "230d6c15-7126-4889-9c0a-d1af3dc76c2f",
+      "sample": 1079,
+      "name": "Uzun Kollu Omuzlardan Şerit Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 123,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-194181-1-9dc40b3b7a77.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194181-7e68a71359d14f3e.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194181-08ccc4fb995cabb4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194181-c496e7dde7e0ddfd.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194181-05d2d53b0d080f6c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194181-1a106aed85b12ce1.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194181-9df25b1ab823c902.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194181-acf7f1e917024e02.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "230d6c15-7126-4889-9c0a-d1af3dc76c2f/front.jpg",
+          "sha256": "c9d66a6231e3d265326bf7caa32434047cff674caabefe5ec028785f2875d78b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1079,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-230d6c15/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "230d6c15-7126-4889-9c0a-d1af3dc76c2f/back.jpg",
+          "sha256": "c8b806abb9df1304ce6a12a8cdb8c957032cd70e8c83d5b68c097ffb71251bb0",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1079,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-230d6c15/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "230d6c15-7126-4889-9c0a-d1af3dc76c2f/fashion_model.jpg",
+          "sha256": "0ef58fd3af89bca4290baeaba95395c30089422de10f7969ecb84c686b7d06c0",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1079,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-230d6c15/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "230d6c15-7126-4889-9c0a-d1af3dc76c2f/size_chart.jpg",
+          "sha256": "e6dbd326583713aaaeae353273256d0d5f91a666bbd3488f9ddd3ac72c9070c1",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1079,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-230d6c15/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
