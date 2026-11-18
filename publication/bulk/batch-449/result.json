@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-449",
+  "published_at_utc": "2026-11-18T12:17:03.085177+00:00",
+  "products": [
+    {
+      "product_id": "b412cf77-b260-4a43-9eb5-8dc0b3e44de3",
+      "sample": 1105,
+      "name": "V Yaka - Siyah Örgülü Kazak",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b412cf77-b260-4a43-9eb5-8dc0b3e44de3-front-a62765b76670.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b412cf77-b260-4a43-9eb5-8dc0b3e44de3-back-3866caea56f8.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b412cf77-b260-4a43-9eb5-8dc0b3e44de3-model-b27a55d5aebb.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
