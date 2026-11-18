@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-491",
+  "created_at": "2026-11-18T20:27:12.710331+00:00",
+  "catalog_poll_at": "2026-11-18T20:27:12.710331+00:00",
+  "products": [
+    {
+      "product_id": "139c5278-5ddb-459a-a3ea-49158f641613",
+      "sample": 1147,
+      "name": "Kısa Kollu Yuvarlak Yakalı Kolu Dantelli Kısa Viıskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ccfcdf6ed6b1b6232a5b.jpeg",
+        "https://modayakamoz.com/orj/39862fbb1ca6332f6dda.jpeg",
+        "https://modayakamoz.com/orj/278b01240387e5d2bc4e.jpeg",
+        "https://modayakamoz.com/orj/44a57a9fea3db25af1ba.jpeg",
+        "https://modayakamoz.com/orj/005b3c4def3f9a28cb66.jpeg",
+        "https://modayakamoz.com/orj/da20a0ba131f056eb467.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "139c5278-5ddb-459a-a3ea-49158f641613/front.jpg",
+          "sha256": "a48b5c9c350cbe79da996abdcc229d9b9608a851e2ef07f3011bf3995835b8a4",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1147,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-139c5278-5ddb-459a-a3ea-49158f641613/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "139c5278-5ddb-459a-a3ea-49158f641613/fashion_model.jpg",
+          "sha256": "3ffc6a9b68b4a856f05c9281bf72880d78ddb53812705176411cedf33040db0a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1147,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-139c5278-5ddb-459a-a3ea-49158f641613/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "139c5278-5ddb-459a-a3ea-49158f641613/size_chart.jpg",
+          "sha256": "b1906dae9d92be20d8c26b4c9eb9fa561dc96f75d806a54ac6f829b10ced3e53",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1147,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-139c5278-5ddb-459a-a3ea-49158f641613/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
