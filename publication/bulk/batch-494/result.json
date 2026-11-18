@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-494",
+  "published_at_utc": "2026-11-18T20:46:29.052019+00:00",
+  "products": [
+    {
+      "product_id": "4fd5d40b-6b06-4ca2-b58e-4afb887d78b0",
+      "sample": 1150,
+      "name": "Kısa Kollu Önden Sarmal Detaylı Yırtmaçlı Midi Sandy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4fd5d40b-6b06-4ca2-b58e-4afb887d78b0-front-35e9ee38650c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4fd5d40b-6b06-4ca2-b58e-4afb887d78b0-back-a27847f40dc9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4fd5d40b-6b06-4ca2-b58e-4afb887d78b0-model-7dc18e61c78f.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/4fd5d40b-6b06-4ca2-b58e-4afb887d78b0-size-chart-66b7194656f4.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
