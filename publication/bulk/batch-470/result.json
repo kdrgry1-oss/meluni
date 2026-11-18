@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-470",
+  "published_at_utc": "2026-11-18T17:27:38.261759+00:00",
+  "products": [
+    {
+      "product_id": "757e27e6-8749-4205-a484-fbecc6e2fde6",
+      "sample": 1126,
+      "name": "Kısa Kollu Balıkçı Yaka Sırt Kalp Detaylı Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/757e27e6-8749-4205-a484-fbecc6e2fde6-front-f39399d0bd77.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/757e27e6-8749-4205-a484-fbecc6e2fde6-back-c8b031ae3060.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/757e27e6-8749-4205-a484-fbecc6e2fde6-model-5f2c2f60c054.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
