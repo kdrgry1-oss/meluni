@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-462",
+  "created_at": "2026-11-18T16:09:43.007141+00:00",
+  "catalog_poll_at": "2026-11-18T16:09:43.007141+00:00",
+  "products": [
+    {
+      "product_id": "56c7f0f9-e9ed-4e39-8575-e5b960fb9494",
+      "sample": 1118,
+      "name": "Askılı V Yakalı Düğmeli Mini Kalın Fitilli Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 19,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/174aae5cdc5de007a567.jpeg",
+        "https://modayakamoz.com/orj/551f3eb361f77d839872.jpeg",
+        "https://modayakamoz.com/orj/e23a9cd1b0c45e30ac19.jpeg",
+        "https://modayakamoz.com/orj/348974ea80fa4add10ac.jpeg",
+        {
+          "id": "85f9d40e-342d-4681-9bb3-48b4e429e717",
+          "url": "https://cdn.meluni.com.tr/ai-products/56c7f0f9-e9ed-4e39-8575-e5b960fb9494-olcu-oto-4918696c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:17:12.665948+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "56c7f0f9-e9ed-4e39-8575-e5b960fb9494/front.jpg",
+          "sha256": "ee7c8e9446af14230f18aac89988a57e9687294fed499ca81143850b80193099",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1118,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-56c7f0f9-e9ed-4e39-8575-e5b960fb9494/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "56c7f0f9-e9ed-4e39-8575-e5b960fb9494/back.jpg",
+          "sha256": "8aa9b5d4766ba7f166cb9c50fac8edec60fac78faefaa8f43539d4bc7d2b6a0b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1118,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-56c7f0f9-e9ed-4e39-8575-e5b960fb9494/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "56c7f0f9-e9ed-4e39-8575-e5b960fb9494/fashion_model.jpg",
+          "sha256": "3611d1e74e6537dad52edc9a3364083fedb5470a260556e0b6373dbd202cf3f2",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1118,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-56c7f0f9-e9ed-4e39-8575-e5b960fb9494/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
