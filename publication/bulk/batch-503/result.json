@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-503",
+  "published_at_utc": "2026-11-18T21:37:22.573432+00:00",
+  "products": [
+    {
+      "product_id": "c66ded3e-5298-413d-8b83-f1d238ba2bf1",
+      "sample": 1156,
+      "name": "Omuzlardan Açık Arkadan Toka Detaylı Yırtmaçlı Uzun Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c66ded3e-5298-413d-8b83-f1d238ba2bf1-front-927a30b68986.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c66ded3e-5298-413d-8b83-f1d238ba2bf1-back-fb0ec45e74f0.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c66ded3e-5298-413d-8b83-f1d238ba2bf1-model-acce8af783e2.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/c66ded3e-5298-413d-8b83-f1d238ba2bf1-size-chart-81cf96a7433f.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
