@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-508",
+  "created_at": "2026-11-18T22:03:54.669678+00:00",
+  "catalog_poll_at": "2026-11-18T22:03:54.669678+00:00",
+  "products": [
+    {
+      "product_id": "5b63c893-a44d-4411-a475-caa19cb2f15c",
+      "sample": 1161,
+      "name": "Omuzlardan Açık Bağlamalı Arkası Çapraz Detaylı Uzun Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0275c53652ca963221b7.jpeg",
+        "https://modayakamoz.com/orj/50ae42175cd5ee18f11a.jpeg",
+        "https://modayakamoz.com/orj/521d3126919b95a4e42e.jpeg",
+        "https://modayakamoz.com/orj/37b9004894ffdde8b9e4.jpeg",
+        "https://modayakamoz.com/orj/9c622fc61fff966d6fae.jpeg",
+        "https://modayakamoz.com/orj/b47c1b360baa8620629a.jpeg",
+        "https://modayakamoz.com/orj/b5e52baa80e0ad9e1cd7.jpeg",
+        "https://modayakamoz.com/orj/db3d21bc27c5a380f00c.jpeg",
+        {
+          "id": "998fd5a1-0d34-48e1-9af7-0e87ec11edd0",
+          "url": "https://cdn.meluni.com.tr/ai-products/5b63c893-a44d-4411-a475-caa19cb2f15c-olcu-oto-c2348fdf.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:17:00.697318+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "5b63c893-a44d-4411-a475-caa19cb2f15c/front.jpg",
+          "sha256": "b46ed01e29568656b97d10f471914081b8301313e730bc79d6a22288ccf87164",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1161,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5b63c893-a44d-4411-a475-caa19cb2f15c/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5b63c893-a44d-4411-a475-caa19cb2f15c/back.jpg",
+          "sha256": "e7dfaf124144687ad627879cbde8c63e4412c997a85cbc234434cf23cd1b5f4d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1161,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5b63c893-a44d-4411-a475-caa19cb2f15c/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5b63c893-a44d-4411-a475-caa19cb2f15c/fashion_model.jpg",
+          "sha256": "cf8ce1f8bf205e1595bc4226cad906b926fc21c30ae51e75c8161bcd713dc262",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1161,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5b63c893-a44d-4411-a475-caa19cb2f15c/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
