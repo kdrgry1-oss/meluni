@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-522",
+  "created_at": "2026-11-18T23:32:12.778376+00:00",
+  "catalog_poll_at": "2026-11-18T23:32:12.778376+00:00",
+  "products": [
+    {
+      "product_id": "ac603c0a-a2d7-4d56-a997-34686068ed90",
+      "sample": 1175,
+      "name": "Uzun Kollu Damla Detaylı Kuşaklı Yırtmaçlı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 376,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192407-1-09c10f6f11.jpg",
+        "https://modayakamoz.com/orj/janes-192407-2-09e3d07240.jpg",
+        "https://modayakamoz.com/orj/janes-192407-3-9d3225d49f.jpg",
+        "https://modayakamoz.com/orj/janes-192407-6-a8080d7991.jpg",
+        "https://modayakamoz.com/orj/janes-extra-192407-f35e074bc89033f0.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "ac603c0a-a2d7-4d56-a997-34686068ed90/front.jpg",
+          "sha256": "c6e267b902d1ab7b01b523f1ab9c2a6b3f219b74c83f4dd6bba56d4cd65debd8",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1175,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac603c0a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ac603c0a-a2d7-4d56-a997-34686068ed90/back.jpg",
+          "sha256": "a8cb64e7ef2dbd955ee737adfbc5d9479c3b2995e9e720d851c7d1ce0322e5ea",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1175,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac603c0a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ac603c0a-a2d7-4d56-a997-34686068ed90/fashion_model.jpg",
+          "sha256": "f57c0708be3147411aeee7ac35a1ec3dc4cbc969f7a4f4f017c2992335e190bd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1175,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac603c0a/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "ac603c0a-a2d7-4d56-a997-34686068ed90/size_chart.jpg",
+          "sha256": "bf16571826ec4b64f4b1097c883d8ed0a1ecc45103253691f405b7273f0f65d4",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1175,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac603c0a/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
