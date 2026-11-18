@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-484",
+  "created_at": "2026-11-18T19:37:52.956030+00:00",
+  "catalog_poll_at": "2026-11-18T19:37:52.956030+00:00",
+  "products": [
+    {
+      "product_id": "87c09846-134b-45ea-86bf-757083f8ac15",
+      "sample": 1140,
+      "name": "Kısa Kollu V Yakalı Lazer Kesim Çiçek Detaylı Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 80,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/54b29f121220cf42bd3b.jpeg",
+        "https://modayakamoz.com/orj/7fb1c32dc830fde98f2c.jpeg",
+        "https://modayakamoz.com/orj/16c0dcfa8fec36645837.jpeg",
+        "https://modayakamoz.com/orj/e81b58e12d517530e13c.jpeg",
+        "https://modayakamoz.com/orj/8a7a92cec48f1ff08d35.jpeg",
+        "https://modayakamoz.com/orj/170f767349354b4b89bb.jpeg",
+        {
+          "id": "53ea7000-5027-486f-b477-b79ef7e8e6ca",
+          "url": "https://cdn.meluni.com.tr/ai-products/87c09846-134b-45ea-86bf-757083f8ac15-olcu-oto-61684e7d.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-30T05:17:39.952303+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "87c09846-134b-45ea-86bf-757083f8ac15/front.jpg",
+          "sha256": "403ef4b7ab03f6430a2edb9c122415e2918357709b4f1429ec3b5989748a85eb",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1140,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87c09846-134b-45ea-86bf-757083f8ac15/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "87c09846-134b-45ea-86bf-757083f8ac15/back.jpg",
+          "sha256": "59cea4dddcad14e431a1de75ab56903319022a241d378e2350887b8c8dcabe56",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1140,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87c09846-134b-45ea-86bf-757083f8ac15/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "87c09846-134b-45ea-86bf-757083f8ac15/fashion_model.jpg",
+          "sha256": "3c21ab13a6b649f47b51f211617d9aef7fab848c8bb77565f6a5b7154d664b9d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1140,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87c09846-134b-45ea-86bf-757083f8ac15/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "87c09846-134b-45ea-86bf-757083f8ac15/size_chart.jpg",
+          "sha256": "4806d833bbb52dd069deb846f57e8aa2f366f439ee92ed3ded9c8eee6ad7c4f0",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1140,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87c09846-134b-45ea-86bf-757083f8ac15/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
