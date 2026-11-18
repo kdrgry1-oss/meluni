@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-448",
+  "created_at": "2026-11-18T12:02:53.228442+00:00",
+  "catalog_poll_at": "2026-11-18T12:02:53.228442+00:00",
+  "products": [
+    {
+      "product_id": "fc198a02-ca2d-40f3-b24c-7109991e90fc",
+      "sample": 1104,
+      "name": "Uzun Kolu Bisiklet Yakalı Renkli Modal Tunik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 87,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192903-1-34f82c85af.jpg",
+        "https://modayakamoz.com/orj/janes-192903-2-75bba9a5eb.jpg",
+        "https://modayakamoz.com/orj/janes-192903-3-7c943e07e1.jpg",
+        "https://modayakamoz.com/orj/janes-192903-4-1137e7ac99.jpg",
+        "https://modayakamoz.com/orj/janes-192903-7-62a49a108d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "fc198a02-ca2d-40f3-b24c-7109991e90fc/front.jpg",
+          "sha256": "a0638a091488ee389578076329822e73e6d49de202e1fc21b1a5a8f57c13e434",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1104,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fc198a02/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "fc198a02-ca2d-40f3-b24c-7109991e90fc/back.jpg",
+          "sha256": "b64664a7b8eac3232c04e66f42ead65429fa6337be873330bc7134d7b5f97f36",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1104,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fc198a02/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "fc198a02-ca2d-40f3-b24c-7109991e90fc/fashion_model.jpg",
+          "sha256": "3354f7196f27a70de558084d1630160656a11f0c4edcb172b6d8d2990a468dc8",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1104,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fc198a02/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "fc198a02-ca2d-40f3-b24c-7109991e90fc/size_chart.jpg",
+          "sha256": "6a50dede875da2d60d6a15e77cbba433b5d017066a47455b331718d4043fb18d",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1104,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fc198a02/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
