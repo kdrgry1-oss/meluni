@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-477",
+  "published_at_utc": "2026-11-18T18:55:42.086042+00:00",
+  "products": [
+    {
+      "product_id": "60396056-fe06-469c-bf95-23004f98dbe1",
+      "sample": 1133,
+      "name": "Kısa Kollu V Yakalı Düğmeli Bürümcük Midi Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/60396056-fe06-469c-bf95-23004f98dbe1-front-70f1ae7cf3b9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/60396056-fe06-469c-bf95-23004f98dbe1-back-6da4e18e3a78.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/60396056-fe06-469c-bf95-23004f98dbe1-model-1c52ae7d9566.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/60396056-fe06-469c-bf95-23004f98dbe1-size-chart-3ac9097c2b76.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
