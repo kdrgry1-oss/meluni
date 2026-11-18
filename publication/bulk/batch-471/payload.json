@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-471",
+  "created_at": "2026-11-18T18:00:58.842910+00:00",
+  "catalog_poll_at": "2026-11-18T18:00:58.842910+00:00",
+  "products": [
+    {
+      "product_id": "4112dd8d-50d1-4aa3-b8df-687cbfdc27e2",
+      "sample": 1127,
+      "name": "Kısa Kollu Kare Yakalı Cep Detaylı Dalgıç Elbise Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 134,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/726a757e3ffa482ea865.jpeg",
+        "https://modayakamoz.com/orj/0318186c62f2b4c4af4b.jpeg",
+        "https://modayakamoz.com/orj/0671d1970597fae6273c.jpeg",
+        "https://modayakamoz.com/orj/b3df4477bf24a2eba729.jpeg",
+        "https://modayakamoz.com/orj/e1aa06d278134146bf5b.jpeg",
+        {
+          "id": "1567922f-59fb-4216-b63e-dde7ab10c4cc",
+          "url": "https://cdn.meluni.com.tr/ai-products/4112dd8d-50d1-4aa3-b8df-687cbfdc27e2-olcu-oto-8c7179ba.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:23:45.961067+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4112dd8d-50d1-4aa3-b8df-687cbfdc27e2/front.jpg",
+          "sha256": "4d8ad763f5eaa51cc4f27df939b35a11cba9717e995f8f9fc6777f7731d2ee7a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1127,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4112dd8d-50d1-4aa3-b8df-687cbfdc27e2/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4112dd8d-50d1-4aa3-b8df-687cbfdc27e2/back.jpg",
+          "sha256": "55cea37934345fd414ebc5a884894e72d51ef9d643ae802332900efc03039caa",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1127,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4112dd8d-50d1-4aa3-b8df-687cbfdc27e2/back-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
