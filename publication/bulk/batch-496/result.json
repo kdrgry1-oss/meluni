@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-496",
+  "published_at_utc": "2026-11-18T20:55:14.204507+00:00",
+  "products": [
+    {
+      "product_id": "edd3a08b-5580-415f-a5c1-3fe80b1e964c",
+      "sample": 2542,
+      "name": "Madonna Yakalı Büzgü Detaylı Sandy Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/edd3a08b-5580-415f-a5c1-3fe80b1e964c-front-2827f5da3ff1.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/edd3a08b-5580-415f-a5c1-3fe80b1e964c-back-6ae3332743eb.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/edd3a08b-5580-415f-a5c1-3fe80b1e964c-model-8b8915bbe091.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/edd3a08b-5580-415f-a5c1-3fe80b1e964c-size-chart-625eb5d86e01.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
