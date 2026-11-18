@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-458",
+  "created_at": "2026-11-18T15:35:34.673066+00:00",
+  "catalog_poll_at": "2026-11-18T15:35:34.673066+00:00",
+  "products": [
+    {
+      "product_id": "89211cce-f424-4ec0-b978-76b82e6796bb",
+      "sample": 1114,
+      "name": "Yüksel Bel Likralı Kot (Gri) Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 101,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0fdecda90d18577d6abb.jpeg",
+        "https://modayakamoz.com/orj/30ae9ef0e822d8c00b98.jpeg",
+        "https://modayakamoz.com/orj/cd82f802fb98a3044d78.jpeg",
+        "https://modayakamoz.com/orj/bad45f1b366a0e13d60b.jpeg",
+        "https://modayakamoz.com/orj/42376585032985c91b72.jpeg",
+        "https://modayakamoz.com/orj/8ed27c09963fc31545b0.jpeg",
+        "https://modayakamoz.com/orj/fb99283651227d0a3e2b.jpeg",
+        "https://modayakamoz.com/orj/46f2189cb8554268fb16.jpeg",
+        {
+          "id": "82c8bcf5-17a7-4cf1-869b-7c950a15a018",
+          "url": "https://cdn.meluni.com.tr/ai-products/2164a711-ca2d-4459-ba57-738715827856-olcu-oto-09d60ffc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-24T05:21:51.788601+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "89211cce-f424-4ec0-b978-76b82e6796bb/front.jpg",
+          "sha256": "b3cc72120d4bb40a15f3961e0bcd3679bff1d6d0f9980fbdc8f35687837b9450",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1114,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-89211cce-f424-4ec0-b978-76b82e6796bb/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "89211cce-f424-4ec0-b978-76b82e6796bb/back.jpg",
+          "sha256": "4446e00305946f60db610032cf073e1110b4358924942a0eab7fc818e2d5735f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1114,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-89211cce-f424-4ec0-b978-76b82e6796bb/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "89211cce-f424-4ec0-b978-76b82e6796bb/fashion_model.jpg",
+          "sha256": "3772241efd60c731f64c07c4d393e7e4247a64a9c268827a82b409b4966a5e17",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1114,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-89211cce-f424-4ec0-b978-76b82e6796bb/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
