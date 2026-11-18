@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-446",
+  "published_at_utc": "2026-11-18T11:48:51.550308+00:00",
+  "products": [
+    {
+      "product_id": "fdd467bc-46bb-46f6-a713-b55c967513d4",
+      "sample": 1102,
+      "name": "Yüksek Bel Cep Detaylı Scuba Dalgıç Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/fdd467bc-46bb-46f6-a713-b55c967513d4-front-66a61eb6181d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/fdd467bc-46bb-46f6-a713-b55c967513d4-back-ba082b50904e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/fdd467bc-46bb-46f6-a713-b55c967513d4-model-469776424f24.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
