@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-469",
+  "created_at": "2026-11-18T16:57:39.342038+00:00",
+  "catalog_poll_at": "2026-11-18T16:57:39.342038+00:00",
+  "products": [
+    {
+      "product_id": "b00740b1-03e5-47eb-b0c7-9aee12df469e",
+      "sample": 1125,
+      "name": "Askılı V Yakalı Geniş Detaylı Kısa Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 381,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e030674ca308adace6bb94025fce6a2b.jpg",
+        "https://modayakamoz.com/orj/636a5998adc9f74341779eb88feab606.jpg",
+        "https://modayakamoz.com/orj/fb589e6c42f5a7979a393ec2128b5947.jpg",
+        "https://modayakamoz.com/orj/f8a9970de4324916bf4db588d56dd995.jpg",
+        "https://modayakamoz.com/orj/84f19fe423ec57c93fc7fc61e7466216.jpg",
+        "https://modayakamoz.com/orj/6a35cf198e57f4873cafdda456322e62.jpg",
+        "https://modayakamoz.com/orj/341fff6e34b9fc418ba31153e8d46bbd.jpg",
+        "https://modayakamoz.com/orj/f6ac65ce59c24cbc9fbf72f8bee43253.jpg",
+        "https://modayakamoz.com/orj/2b2e0827023a24a770be7e351b0f391e.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/b00740b1-03e5-47eb-b0c7-9aee12df469e/e1d48a173b667261.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b00740b1-03e5-47eb-b0c7-9aee12df469e/front.jpg",
+          "sha256": "2ceb52a571b9068425759d389b1198a54bd07d39b96fb8a04bf6ce7167282be3",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1125,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b00740b1-03e5-47eb-b0c7-9aee12df469e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b00740b1-03e5-47eb-b0c7-9aee12df469e/back.jpg",
+          "sha256": "365efcbf01c86cd45d50958b3f4a67fe11e97393f527d1b54a6206997752c460",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1125,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b00740b1-03e5-47eb-b0c7-9aee12df469e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b00740b1-03e5-47eb-b0c7-9aee12df469e/fashion_model.jpg",
+          "sha256": "26596aaf86b637446ed71042f022f82d4154e45a100cc0cda3477a3d4814f773",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1125,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b00740b1-03e5-47eb-b0c7-9aee12df469e/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
