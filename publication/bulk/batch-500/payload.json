@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-500",
+  "created_at": "2026-11-18T21:21:24.760819+00:00",
+  "catalog_poll_at": "2026-11-18T21:21:24.760819+00:00",
+  "products": [
+    {
+      "product_id": "7efada78-6edc-41cf-bbfe-47aef5771403",
+      "sample": 1153,
+      "name": "Omuzlardan Acık Askılı V Yakalı Kısa Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 25,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e4dabe85a5de38a0c566.jpeg",
+        "https://modayakamoz.com/orj/6311dd1f186dda3b4c89.jpeg",
+        "https://modayakamoz.com/orj/651d4791fdc4bffbbd1a.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7efada78-6edc-41cf-bbfe-47aef5771403/front.jpg",
+          "sha256": "e72b1a07584cab91c958f9745d06ae472ffaf4d7aee6c263a34112fd76e89611",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1153,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7efada78-6edc-41cf-bbfe-47aef5771403/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7efada78-6edc-41cf-bbfe-47aef5771403/back.jpg",
+          "sha256": "df302b22a1d5e89552d1fb70f3fe8b63836d7d59b57b8d9f954beb49928b8bdd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1153,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7efada78-6edc-41cf-bbfe-47aef5771403/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7efada78-6edc-41cf-bbfe-47aef5771403/fashion_model.jpg",
+          "sha256": "4d81e9a51a7713350650f1f9546d13263668a859ba8f1676c042bb8351cace82",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1153,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7efada78-6edc-41cf-bbfe-47aef5771403/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
