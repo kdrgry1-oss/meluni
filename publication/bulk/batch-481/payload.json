@@ -1,0 +1,42 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-481",
+  "created_at": "2026-11-18T19:15:45.399531+00:00",
+  "catalog_poll_at": "2026-11-18T19:15:45.399531+00:00",
+  "products": [
+    {
+      "product_id": "143851f5-318c-4284-b967-b503356935fa",
+      "sample": 1137,
+      "name": "Kısa Kollu V Yakalı Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 145,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/143851f5-318c-4284-b967-b503356935fa/1be3bcf84b22ccf3.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/143851f5-318c-4284-b967-b503356935fa/161262c509d0b4a3.jpg",
+        "https://modayakamoz.com/orj/bf9a470807798fe006f2.jpeg",
+        "https://modayakamoz.com/orj/ef176e4c071a276a6f0f.jpeg",
+        "https://modayakamoz.com/orj/68ec184d0e846a87f040.jpeg",
+        "https://modayakamoz.com/orj/b31cd3cf4390be4f0b12.jpeg",
+        {
+          "id": "3a46c6d9-2126-4554-b9c5-0eacb5d8c979",
+          "url": "https://cdn.meluni.com.tr/ai-products/7f0a4d57-a722-415d-9a91-2362ce3511a1-olcu-oto-ac45b812.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:26:37.631343+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/143851f5-318c-4284-b967-b503356935fa/529d34033a1edee9.jpg"
+      ],
+      "preserve_leading_existing_count": 2,
+      "assets": {
+        "fashion_model": {
+          "file": "143851f5-318c-4284-b967-b503356935fa/fashion_model.jpg",
+          "sha256": "ad8a834d8ad4f508d66ac3b7122a3e39c9d708e2a0a457b9b2f7bcb1a2a3f296",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1137,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-143851f5-318c-4284-b967-b503356935fa/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
