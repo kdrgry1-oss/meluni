@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-456",
+  "created_at": "2026-11-18T15:14:27.048445+00:00",
+  "catalog_poll_at": "2026-11-18T15:14:27.048445+00:00",
+  "products": [
+    {
+      "product_id": "409c1ee8-423d-430d-a1a7-499afd5d4229",
+      "sample": 1112,
+      "name": "Yüksek Bel Likralı Jean 90 Cm Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 82,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a905ffeb22f75cf25eebc86b5444da60.jpeg",
+        "https://modayakamoz.com/orj/37c21d5af2b61110d46c7e7f3b02ccde.jpeg",
+        "https://modayakamoz.com/orj/f04148c72c233c510febe339b6df32bf.jpeg",
+        "https://modayakamoz.com/orj/25421-2022-02-22-07-36-07.jpeg",
+        "https://modayakamoz.com/orj/25421-2022-02-22-07-36-15.jpeg",
+        "https://modayakamoz.com/orj/25421-2022-03-03-13-04-03.jpeg",
+        "https://modayakamoz.com/orj/25421-2022-03-03-13-04-12.jpeg",
+        "https://modayakamoz.com/orj/46249-2023-02-24-19-29-38.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "409c1ee8-423d-430d-a1a7-499afd5d4229/front.jpg",
+          "sha256": "3a5afd9acf27934e04fb162ca095f75f3a4fcaa0441ec30c349439db21683f51",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1112,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-409c1ee8-423d-430d-a1a7-499afd5d4229/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "409c1ee8-423d-430d-a1a7-499afd5d4229/back.jpg",
+          "sha256": "358021c7a0c6f12785b3e62386b703e83e637a838cc31c3e7de539ccee759ea5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1112,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-409c1ee8-423d-430d-a1a7-499afd5d4229/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "409c1ee8-423d-430d-a1a7-499afd5d4229/fashion_model.jpg",
+          "sha256": "14472c799f1be194c7cb16a45dcf729bf0ba618e255d37514caf1f069e5e5f4d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1112,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-409c1ee8-423d-430d-a1a7-499afd5d4229/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "409c1ee8-423d-430d-a1a7-499afd5d4229/size_chart.jpg",
+          "sha256": "322872f6f2ef635d9596432872daaefc1a92852863ee3da3bca2b48aa4c6f927",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1112,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-409c1ee8-423d-430d-a1a7-499afd5d4229/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
