@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-444",
+  "created_at": "2026-11-18T11:32:17.150060+00:00",
+  "catalog_poll_at": "2026-11-18T11:32:17.150060+00:00",
+  "products": [
+    {
+      "product_id": "0aa4a19e-6c7a-4bd5-ab69-c739827e279a",
+      "sample": 1100,
+      "name": "Uzun Kollu Tül Detaylı Önden Asimetrikfırfır Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 907,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193194-1-a7bd8d1e7fac.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193194-2e7ed82d5897b1b9.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193194-330fcfe9ace56f21.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193194-ef2f14a8e226ca26.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193194-14c34f7c1d1778c2.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0aa4a19e-6c7a-4bd5-ab69-c739827e279a/front.jpg",
+          "sha256": "5cf4d52ce2106275e3b4d0b2e4947ff15c53a0ce782e897a670ea23656e91661",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1100,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0aa4a19e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0aa4a19e-6c7a-4bd5-ab69-c739827e279a/back.jpg",
+          "sha256": "566c0c22bb74330f59803864da05cdb0d8b22749879466377fc691d531059c40",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1100,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0aa4a19e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0aa4a19e-6c7a-4bd5-ab69-c739827e279a/fashion_model.jpg",
+          "sha256": "c198e7011ae50559277d34ce40ddacec2b6707538c5de7249d898f4f104b0903",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1100,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0aa4a19e/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "0aa4a19e-6c7a-4bd5-ab69-c739827e279a/size_chart.jpg",
+          "sha256": "6e6dea686cb877725e70d45343e04062ab7326a52fa187cacad6ae0d2c665c3b",
+          "qa_status": "visual_source_qa_pass_all_source_values_verified",
+          "sample": 1100,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0aa4a19e/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
