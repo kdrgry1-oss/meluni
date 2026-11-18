@@ -1,0 +1,66 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-455",
+  "created_at": "2026-11-18T14:57:23.635220+00:00",
+  "catalog_poll_at": "2026-11-18T14:57:23.635417+00:00",
+  "products": [
+    {
+      "product_id": "963a4fae-aae0-47b5-b633-36d50bce3ec6",
+      "sample": 1111,
+      "name": "Yuvarlak Ribana Yaka Beyaz Yırtmaç Detaylı Viskon Boy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 265,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8321c8619adc337420d4.jpeg",
+        "https://modayakamoz.com/orj/fa1b708e2f7797b8ad65.jpeg",
+        "https://modayakamoz.com/orj/25586a8529f36c61486a.jpeg",
+        "https://modayakamoz.com/orj/24e813bd41d7e75f305f.jpeg",
+        "https://modayakamoz.com/orj/afd86f52f62441a15a25.jpeg",
+        "https://modayakamoz.com/orj/9151753275535ed2257fb905e531bfbb.jpg",
+        "https://modayakamoz.com/orj/bffb90978286372c4de2534821e685b3.jpg",
+        "https://modayakamoz.com/orj/277fdb4c69b29c08a2ec4fb2ecc086dc.jpg",
+        "https://modayakamoz.com/orj/659c4ed997967971a89ab8cb35b37502.jpg",
+        "https://modayakamoz.com/orj/67e8147c1a4f5c538fdfb72f62cb965c.jpg",
+        "https://modayakamoz.com/orj/f8e5905967b0c1aaee8a90746258a15d.jpg",
+        {
+          "id": "3b43d3af-69d5-4c7e-b6ed-e03382591ee7",
+          "url": "https://cdn.meluni.com.tr/ai-products/6bb21f32-88ba-4710-8dca-69bcc6e82814-olcu-oto-314a3cf5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:28:42.655364+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "963a4fae-aae0-47b5-b633-36d50bce3ec6/front.jpg",
+          "sha256": "06e88102fb0afe386eb4e9672ebc3594dbe1fa9cd952e432d1538a1c32d89671",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1111,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-963a4fae-aae0-47b5-b633-36d50bce3ec6/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "963a4fae-aae0-47b5-b633-36d50bce3ec6/back.jpg",
+          "sha256": "c80255edce3aed3d7d3d585f66abd0c44702697900f150309f31a2edbf469b14",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1111,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-963a4fae-aae0-47b5-b633-36d50bce3ec6/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "963a4fae-aae0-47b5-b633-36d50bce3ec6/fashion_model.jpg",
+          "sha256": "eb7f208d9d9fa2e3fd6d28efec03af043360ec69405889b84c5aa09803af5a6f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1111,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-963a4fae-aae0-47b5-b633-36d50bce3ec6/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "963a4fae-aae0-47b5-b633-36d50bce3ec6/size_chart.jpg",
+          "sha256": "9f6630e3d050c6f730554abacec780f8a55277ed9155b69b4935778c8ec544bf",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1111,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-963a4fae-aae0-47b5-b633-36d50bce3ec6/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
