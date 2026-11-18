@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-494",
+  "created_at": "2026-11-18T20:45:27.821197+00:00",
+  "catalog_poll_at": "2026-11-18T20:45:27.821197+00:00",
+  "products": [
+    {
+      "product_id": "4fd5d40b-6b06-4ca2-b58e-4afb887d78b0",
+      "sample": 1150,
+      "name": "Kısa Kollu Önden Sarmal Detaylı Yırtmaçlı Midi Sandy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 74,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ca29e3003ba806d4a715.jpeg",
+        "https://modayakamoz.com/orj/c14f76917704f213a683.jpeg",
+        "https://modayakamoz.com/orj/afec86b93e60d3d30f7b.jpeg",
+        "https://modayakamoz.com/orj/bb945ddbc1a754761809.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "4fd5d40b-6b06-4ca2-b58e-4afb887d78b0/front.jpg",
+          "sha256": "35e9ee38650c371dc9288dadd264e550fa79db362255ca2e9ac9f5432160b2ea",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1150,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4fd5d40b-6b06-4ca2-b58e-4afb887d78b0/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4fd5d40b-6b06-4ca2-b58e-4afb887d78b0/back.jpg",
+          "sha256": "a27847f40dc9482c05f790cbb247d76217b9af3949d80e675123d015ed04615b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1150,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4fd5d40b-6b06-4ca2-b58e-4afb887d78b0/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4fd5d40b-6b06-4ca2-b58e-4afb887d78b0/fashion_model.jpg",
+          "sha256": "7dc18e61c78f6404fe7d4eae299eea48f37e84c750cc07832ce9b781de6d8a8b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1150,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4fd5d40b-6b06-4ca2-b58e-4afb887d78b0/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "4fd5d40b-6b06-4ca2-b58e-4afb887d78b0/size_chart.jpg",
+          "sha256": "66b7194656f44faca914299613f43c39a0dacca71498109b7c7984d7138e6551",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1150,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4fd5d40b-6b06-4ca2-b58e-4afb887d78b0/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
