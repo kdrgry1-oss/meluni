@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-486",
+  "published_at_utc": "2026-11-18T19:56:11.673587+00:00",
+  "products": [
+    {
+      "product_id": "1c603228-302c-401b-b53e-589af37d3b9d",
+      "sample": 1142,
+      "name": "Kısa Kollu Yakalı Düğmeli Dubai Gömlek Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/1c603228-302c-401b-b53e-589af37d3b9d-front-361ac980c015.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/1c603228-302c-401b-b53e-589af37d3b9d-back-591cf6db435e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/1c603228-302c-401b-b53e-589af37d3b9d-model-5fb0d3a09171.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/1c603228-302c-401b-b53e-589af37d3b9d-size-chart-89dde898f32c.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
