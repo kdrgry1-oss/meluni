@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-498",
+  "created_at": "2026-11-18T21:08:14.339264+00:00",
+  "catalog_poll_at": "2026-11-18T21:08:14.339264+00:00",
+  "products": [
+    {
+      "product_id": "12ae0fec-47a8-4ebd-a823-a930f091f7a5",
+      "sample": 1151,
+      "name": "Omuzdan Şerit Detaylı Yarı Balıkçı Yaka Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4cffbd01f93395617ecd.jpeg",
+        "https://modayakamoz.com/orj/a56bef04f5af311d805a.jpeg",
+        "https://modayakamoz.com/orj/76521ec1bdc8743ae1a9.jpeg",
+        "https://modayakamoz.com/orj/be665b00f3d5526b7cd5.jpeg",
+        "https://modayakamoz.com/orj/df4cf5409fa5bebc03a5.jpeg",
+        "https://modayakamoz.com/orj/1541f82b2e8b25f1d3fa.jpeg",
+        "https://modayakamoz.com/orj/70f2d93ef5fc82ed2d18.jpeg",
+        {
+          "id": "d0a9c6bc-97b4-4773-aaef-aed7933740ca",
+          "url": "https://cdn.meluni.com.tr/ai-products/cf349a49-1adb-436a-8749-81f5ed017c23-olcu-oto-f13bffc3.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:18:30.543351+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "12ae0fec-47a8-4ebd-a823-a930f091f7a5/front.jpg",
+          "sha256": "de0f35d3f88f34ade243e88ce68de90410928734c4da30da7de29358de288cab",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1151,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-12ae0fec-47a8-4ebd-a823-a930f091f7a5/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "12ae0fec-47a8-4ebd-a823-a930f091f7a5/back.jpg",
+          "sha256": "5b104b9bdf365d2afabd65f5aecd46c24dcc606fff73250fb0a0787b0563f560",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1151,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-12ae0fec-47a8-4ebd-a823-a930f091f7a5/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "12ae0fec-47a8-4ebd-a823-a930f091f7a5/fashion_model.jpg",
+          "sha256": "2c7258eef460afcde9e019faaa10bc73996ab54947eb7b8d8bb590b7fc198f78",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1151,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-12ae0fec-47a8-4ebd-a823-a930f091f7a5/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
