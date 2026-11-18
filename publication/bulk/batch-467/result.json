@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-467",
+  "published_at_utc": "2026-11-18T16:45:18.845084+00:00",
+  "products": [
+    {
+      "product_id": "66e511c3-12f7-44ae-9e1c-71117d5bf3e1",
+      "sample": 1123,
+      "name": "Askılı V Yakalı Düğmeli Bağcıklı Kısa Aerobin Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/66e511c3-12f7-44ae-9e1c-71117d5bf3e1-front-d6c958004074.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/66e511c3-12f7-44ae-9e1c-71117d5bf3e1-back-297a31e35f66.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/66e511c3-12f7-44ae-9e1c-71117d5bf3e1-model-7b76f48b467a.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
