@@ -1,0 +1,48 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-470",
+  "created_at": "2026-11-18T17:26:41.924954+00:00",
+  "catalog_poll_at": "2026-11-18T17:26:41.924954+00:00",
+  "products": [
+    {
+      "product_id": "757e27e6-8749-4205-a484-fbecc6e2fde6",
+      "sample": 1126,
+      "name": "Kısa Kollu Balıkçı Yaka Sırt Kalp Detaylı Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261021-reconcile/757e27e6-8749-4205-a484-fbecc6e2fde6/f39399d0bd77ad2e.jpg",
+        "https://modayakamoz.com/orj/d59be72aa8d1edf9374b.jpeg",
+        "https://modayakamoz.com/orj/e1c7a5929b99ed61f73f.jpeg",
+        "https://modayakamoz.com/orj/bd9b29dcc1f58571e084.jpeg",
+        "https://modayakamoz.com/orj/5ba89098f2838d0ca3c3.jpeg",
+        "https://modayakamoz.com/orj/ca1a75d6e22b5ad96429.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261021-reconcile/757e27e6-8749-4205-a484-fbecc6e2fde6/326287a8dbae3028.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "757e27e6-8749-4205-a484-fbecc6e2fde6/front.jpg",
+          "sha256": "f39399d0bd77ad2e4471de3fd0795908185a0b21ec497f7d19e477a18e0a93e6",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1126,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-656-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "757e27e6-8749-4205-a484-fbecc6e2fde6/back.jpg",
+          "sha256": "c8b031ae3060d38edac367c16541c2723cfa30410e63afb9f4c2859e2038a901",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1126,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-757e27e6-8749-4205-a484-fbecc6e2fde6/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "757e27e6-8749-4205-a484-fbecc6e2fde6/fashion_model.jpg",
+          "sha256": "5f2c2f60c0549700352f49e42068e9d32f82c75c2f70c47ef73e675cf4650035",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1126,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-656-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
