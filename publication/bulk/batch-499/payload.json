@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-499",
+  "created_at": "2026-11-18T21:16:04.291159+00:00",
+  "catalog_poll_at": "2026-11-18T21:16:04.291159+00:00",
+  "products": [
+    {
+      "product_id": "d1192e9f-07f8-4fa5-8291-2feadcfcb25d",
+      "sample": 1152,
+      "name": "Omuzlardan Acık Askılı V Yakalı Kısa Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b39d7860499a12ccc6d8.jpeg",
+        "https://modayakamoz.com/orj/e787275bf4572aacf6a2.jpeg",
+        "https://modayakamoz.com/orj/4d10810f0473b4490b65.jpeg",
+        "https://modayakamoz.com/orj/a20cfc6c30fcbda383d3.jpeg",
+        "https://modayakamoz.com/orj/c5899299f4872f2b3970.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d1192e9f-07f8-4fa5-8291-2feadcfcb25d/front.jpg",
+          "sha256": "a1bffcbcd44f522f6e8fb5a82330bc5908ee0544f79ef5b26527ba92edcad43b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1152,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d1192e9f-07f8-4fa5-8291-2feadcfcb25d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d1192e9f-07f8-4fa5-8291-2feadcfcb25d/back.jpg",
+          "sha256": "63f17a7a5f19267f2639d7796d3e58b4c440dca868689cf942b0950da663f643",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1152,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d1192e9f-07f8-4fa5-8291-2feadcfcb25d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d1192e9f-07f8-4fa5-8291-2feadcfcb25d/fashion_model.jpg",
+          "sha256": "ea0dee85cf6733351dd180017a9c15e584b30a1436af8a604f0602700fe52aff",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1152,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d1192e9f-07f8-4fa5-8291-2feadcfcb25d/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
