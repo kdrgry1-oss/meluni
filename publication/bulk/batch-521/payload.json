@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-521",
+  "created_at": "2026-11-18T23:24:56.718381+00:00",
+  "catalog_poll_at": "2026-11-18T23:24:56.718381+00:00",
+  "products": [
+    {
+      "product_id": "07a47955-730e-48ad-95c1-58a76cc3a9c2",
+      "sample": 1174,
+      "name": "Uzun Kollu Balıkçı Yaka Mini Fırfırlı Sandy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 223,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ee81849d09b14f685de6.jpeg",
+        "https://modayakamoz.com/orj/3c2debbfcb605ddc7367.jpeg",
+        "https://modayakamoz.com/orj/76c3fe2d6e1c7dc06bf6.jpeg",
+        "https://modayakamoz.com/orj/34806dab5ba5a5183994.jpeg",
+        "https://modayakamoz.com/orj/d75cb016ef91ab54bc84.jpeg",
+        "https://modayakamoz.com/orj/53ddee0a2582b3f86be3.jpeg",
+        {
+          "id": "9d885b36-f15d-419d-b934-9e4490e81fb0",
+          "url": "https://cdn.meluni.com.tr/ai-products/0392bbfe-3416-4539-b68a-7e4be9325e07-olcu-oto-4457c8aa.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-24T05:19:23.125404+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "07a47955-730e-48ad-95c1-58a76cc3a9c2/front.jpg",
+          "sha256": "5ed1dc1cb500ba2fba87d0c3b0ce3bc658fb13b804df71eb330d61e6396f63fa",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1174,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-07a47955/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "07a47955-730e-48ad-95c1-58a76cc3a9c2/back.jpg",
+          "sha256": "5139a2e9e522dcdc3860bee3510da757c8b53dc03ceaf1a0ddbd8412941eb5ea",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1174,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-07a47955/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "07a47955-730e-48ad-95c1-58a76cc3a9c2/fashion_model.jpg",
+          "sha256": "a93f82174ffd5b05e00efb9bc133ec8645bbbd0682c421f80d0930b2a164ce98",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1174,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-07a47955/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "07a47955-730e-48ad-95c1-58a76cc3a9c2/size_chart.jpg",
+          "sha256": "2cd48008d8954c8018a59104080ade26de21c701b86a9fdcd4b14cc1b6550d1c",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1174,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-07a47955/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
