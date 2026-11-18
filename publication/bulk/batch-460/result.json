@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-460",
+  "published_at_utc": "2026-11-18T15:50:48.036859+00:00",
+  "products": [
+    {
+      "product_id": "4b21fc66-8bac-4835-8fae-e6f879c93202",
+      "sample": 1116,
+      "name": "Önden Çapraz Detay Şerit Askılı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4b21fc66-8bac-4835-8fae-e6f879c93202-front-3197cd2643de.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4b21fc66-8bac-4835-8fae-e6f879c93202-back-6cc5c715a516.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4b21fc66-8bac-4835-8fae-e6f879c93202-model-6aef83e1d7b6.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
