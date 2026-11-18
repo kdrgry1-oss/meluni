@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-516",
+  "created_at": "2026-11-18T22:54:14.366170+00:00",
+  "catalog_poll_at": "2026-11-18T22:54:14.366170+00:00",
+  "products": [
+    {
+      "product_id": "454cc8b1-98c7-4038-be26-1f08a90f7032",
+      "sample": 1169,
+      "name": "Tek Omuzdan Acık Truvakar Kollu Kuşaklı Sofya Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 60,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192813-1-df16687894.jpg",
+        "https://modayakamoz.com/orj/janes-192813-2-eec28756c6.jpg",
+        "https://modayakamoz.com/orj/janes-192813-3-54216713ac.jpg",
+        "https://modayakamoz.com/orj/janes-192813-4-5ae9d7bf4d.jpg",
+        "https://modayakamoz.com/orj/janes-192813-5-ce6d50a9ab.jpg",
+        "https://modayakamoz.com/orj/janes-192813-7-61073995f1.jpg",
+        "https://modayakamoz.com/orj/janes-192813-8-5ee8c2a607.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "454cc8b1-98c7-4038-be26-1f08a90f7032/front.jpg",
+          "sha256": "d6f48b3b44262367f45b51e7c08e5c7b5310895240d31142ee39f3588b17f094",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1169,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-454cc8b1/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "454cc8b1-98c7-4038-be26-1f08a90f7032/back.jpg",
+          "sha256": "03b9f85bac6e18bf3ae220895b35326f1af20e269ed28ddfcc94c06910268186",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1169,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-454cc8b1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "454cc8b1-98c7-4038-be26-1f08a90f7032/fashion_model.jpg",
+          "sha256": "cf670529176ea02665c4bff3a45ae02be877dbf5e17e2d2c18bbb86739d93d73",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1169,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-454cc8b1/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "454cc8b1-98c7-4038-be26-1f08a90f7032/size_chart.jpg",
+          "sha256": "3b122682ac41b6a7d4ed91067d163ec54d10b0c2e3655d7d9428f71c8e7d0797",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1169,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-454cc8b1/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
