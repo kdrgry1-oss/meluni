@@ -78,6 +78,11 @@ async def main(payload_file, assets_root, result_file):
                         new=old[:prefix_count]+[urls['fashion_model']]+old[prefix_count:]
                     else:
                         new=[urls[v] for v in ('front','back','fashion_model','fashion_model_back') if v in urls]+old
+                    if p.get('move_existing_size_chart_last'):
+                        charts=[x for x in new if isinstance(x,dict) and x.get('is_size_table') is True]
+                        if len(charts)!=1 or not isinstance(old[-2],dict) or old[-2]!=charts[0]:
+                            raise RuntimeError(f'unexpected existing size chart position: {pid}')
+                        new=[x for x in new if x is not charts[0]]+charts
                     if 'size_chart' in urls:
                         new.append({'id':str(uuid.uuid5(uuid.NAMESPACE_URL,f'meluni:{pub}:{pid}:size_chart_gallery')),'url':urls['size_chart'],'is_size_table':True,'alt':'Ölçü Tablosu','created_at':now})
                     filt={'id':pid,'images':old,'stock':{'$gt':0}}

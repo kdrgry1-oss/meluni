@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-464",
+  "created_at": "2026-11-18T16:26:17.004219+00:00",
+  "catalog_poll_at": "2026-11-18T16:26:17.004219+00:00",
+  "products": [
+    {
+      "product_id": "52780721-6063-4e66-a34c-aa776a7e4a3c",
+      "sample": 1120,
+      "name": "Askılı V Yakalı Halka Detaylı Asimetrik Viskon Maxi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8e084ab60626b0a63c76.jpeg",
+        "https://modayakamoz.com/orj/4276d0c9eba803a3d353.jpeg",
+        "https://modayakamoz.com/orj/6c4f10b2b38b2811fd19.jpeg",
+        "https://modayakamoz.com/orj/e031ba9f45088303ffde.jpeg",
+        "https://modayakamoz.com/orj/ce430841a072bf3832c2.jpeg",
+        {
+          "id": "a25777a8-a2fc-4616-9958-ae104a38bb18",
+          "url": "https://cdn.meluni.com.tr/ai-products/38e42d7a-7b10-4e49-a771-60372359c138-olcu-oto-01323b6f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-11T05:21:43.245144+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/52780721-6063-4e66-a34c-aa776a7e4a3c/21feaccdd708a191.jpg"
+      ],
+      "move_existing_size_chart_last": true,
+      "assets": {
+        "front": {
+          "file": "52780721-6063-4e66-a34c-aa776a7e4a3c/front.jpg",
+          "sha256": "2c4bbbbb2db3fe7c749479df661c92f9d9673e92d97e936921154cf06e067c61",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1120,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-52780721-6063-4e66-a34c-aa776a7e4a3c/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "52780721-6063-4e66-a34c-aa776a7e4a3c/back.jpg",
+          "sha256": "ca0078f149f6abd1bfe56acc9efff7e47b0a920044fe0281135d367d65262e6e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1120,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-52780721-6063-4e66-a34c-aa776a7e4a3c/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "52780721-6063-4e66-a34c-aa776a7e4a3c/fashion_model.jpg",
+          "sha256": "7c9d0072bccb01e7ad35cfceaf635c5dd4833a3f786585eb3f2a1c10eefb7270",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1120,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-52780721-6063-4e66-a34c-aa776a7e4a3c/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
