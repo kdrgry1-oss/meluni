@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-466",
+  "published_at_utc": "2026-11-18T16:39:26.431803+00:00",
+  "products": [
+    {
+      "product_id": "6dbddee2-9d46-47f7-bcfb-7b97040934ac",
+      "sample": 1122,
+      "name": "Askılı V Yakalı Düğmeli Mini Kalın Fitilli Kadife Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6dbddee2-9d46-47f7-bcfb-7b97040934ac-front-db387e915d15.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6dbddee2-9d46-47f7-bcfb-7b97040934ac-back-627a36205b67.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6dbddee2-9d46-47f7-bcfb-7b97040934ac-model-de5744c77ea7.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
