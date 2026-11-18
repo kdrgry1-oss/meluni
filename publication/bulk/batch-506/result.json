@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-506",
+  "published_at_utc": "2026-11-18T21:53:08.343314+00:00",
+  "products": [
+    {
+      "product_id": "a1c1f8d4-e6e5-4420-86f5-1db55fcd84e3",
+      "sample": 1159,
+      "name": "Omuzlardan Açık Bağcıklı Uzun Aerobin Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a1c1f8d4-e6e5-4420-86f5-1db55fcd84e3-front-78c5ca608ca1.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a1c1f8d4-e6e5-4420-86f5-1db55fcd84e3-back-948f3e1e8af6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a1c1f8d4-e6e5-4420-86f5-1db55fcd84e3-model-8d8364d2b2c7.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/a1c1f8d4-e6e5-4420-86f5-1db55fcd84e3-size-chart-50c85f70ed91.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
