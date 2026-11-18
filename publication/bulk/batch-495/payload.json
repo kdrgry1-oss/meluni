@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-495",
+  "created_at": "2026-11-18T20:51:24.488422+00:00",
+  "catalog_poll_at": "2026-11-18T20:51:24.488422+00:00",
+  "products": [
+    {
+      "product_id": "ffb978a3-fd7d-4292-b958-f0f1aba20a0b",
+      "sample": 2541,
+      "name": "Madonna Yakalı Büzgü Detaylı Sandy Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 33,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/fee8944303c9c14b8735.jpeg",
+        "https://modayakamoz.com/orj/78a9b5d61625ac6cad3a.jpeg",
+        "https://modayakamoz.com/orj/0797a0c1b59891b34858.jpeg",
+        {
+          "id": "4333674f-e79a-4c59-a023-0b4a6be6fa3d",
+          "url": "https://cdn.meluni.com.tr/ai-products/ffb978a3-fd7d-4292-b958-f0f1aba20a0b-olcu-oto-830ab071.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:25:13.839938+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "ffb978a3-fd7d-4292-b958-f0f1aba20a0b/front.jpg",
+          "sha256": "bad84bdaaf4b2a01ad8713be00a00292f877ea580bc4a7f74d345c43fd6a31bd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2541,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ffb978a3/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ffb978a3-fd7d-4292-b958-f0f1aba20a0b/back.jpg",
+          "sha256": "643003f2ebda1f27850b7880f20ae55ed45968191bb8338cf95f798e35880ea9",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2541,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ffb978a3/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ffb978a3-fd7d-4292-b958-f0f1aba20a0b/fashion_model.jpg",
+          "sha256": "c780d5928710adab0e167283aaa0fa5f13fddcd550fdfad3d920b046a4bd1fed",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2541,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ffb978a3/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "ffb978a3-fd7d-4292-b958-f0f1aba20a0b/size_chart.jpg",
+          "sha256": "625eb5d86e01ce66413c14a23bfd2932d36e35cfeb808b1ae4ffa3ac544b229c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 2541,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ffb978a3/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
