@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-513",
+  "published_at_utc": "2026-11-18T22:36:38.629563+00:00",
+  "products": [
+    {
+      "product_id": "8a71cabd-58c7-4b0b-8859-fcffab6f49ee",
+      "sample": 1166,
+      "name": "Omuzlardan Açık Boyundan Geçmeli Damla Detaylı Dalgıç Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8a71cabd-58c7-4b0b-8859-fcffab6f49ee-front-496aa3a06caa.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8a71cabd-58c7-4b0b-8859-fcffab6f49ee-model-d5e55c0c5314.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/8a71cabd-58c7-4b0b-8859-fcffab6f49ee-size-chart-76dd83cddf0d.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
