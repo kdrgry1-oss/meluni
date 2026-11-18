@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-519",
+  "created_at": "2026-11-18T23:09:17.181002+00:00",
+  "catalog_poll_at": "2026-11-18T23:09:17.181002+00:00",
+  "products": [
+    {
+      "product_id": "88f8f357-2573-4dac-b7ed-50a9df08e93e",
+      "sample": 1172,
+      "name": "Tek Omuzdan Açık Askılı Uzun Kollu Kısa Viskon Iki Iplik Elbıse",
+      "active_at_poll": true,
+      "stock_at_poll": 123,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-194014-1-71dd98fec128.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194014-c346b2dea53500c3.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194014-369f8be94603a462.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194014-50d8c3243989c3d5.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "88f8f357-2573-4dac-b7ed-50a9df08e93e/front.jpg",
+          "sha256": "0cab2687d3328649c60ac4302fb8f382e7378f77eea1c523a8d97e8213b1357c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1172,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-88f8f357/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "88f8f357-2573-4dac-b7ed-50a9df08e93e/back.jpg",
+          "sha256": "5359c644bab88165ff6f53f661cde9ec45c5b8f42bc4dd29c0b14d5bae583866",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1172,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-88f8f357/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "88f8f357-2573-4dac-b7ed-50a9df08e93e/fashion_model.jpg",
+          "sha256": "5a00f134a54266237a8dee7433650dbf5476fcfc65e9032310355e68a5fce418",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1172,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-88f8f357/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "88f8f357-2573-4dac-b7ed-50a9df08e93e/size_chart.jpg",
+          "sha256": "cf049c6eaec284b80f8dc760df54d12cf4f85d2f511553eeb2ef6bef49754940",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1172,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-88f8f357/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
