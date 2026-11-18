@@ -1,0 +1,71 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-475",
+  "created_at": "2026-11-18T18:41:28.180835+00:00",
+  "catalog_poll_at": "2026-11-18T18:41:28.180835+00:00",
+  "products": [
+    {
+      "product_id": "190bab9a-a6af-48ef-bb97-985c91de2e25",
+      "sample": 1131,
+      "name": "Kısa Kollu V Yakalı Arkası Derin Bağcıklı Uzun Aerobin Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/190bab9a-a6af-48ef-bb97-985c91de2e25-front-b63cedacf52f.jpg",
+        "https://cdn.meluni.com.tr/ai-products/190bab9a-a6af-48ef-bb97-985c91de2e25-back-97cfea611cff.jpg",
+        "https://cdn.meluni.com.tr/ai-products/190bab9a-a6af-48ef-bb97-985c91de2e25-model-bd3c3721b5f6.jpg",
+        "https://modayakamoz.com/orj/0c72f97e7c5fa5b6abac.jpeg",
+        "https://modayakamoz.com/orj/fed30470cc388fd74039.jpeg",
+        "https://modayakamoz.com/orj/8217edbe37b6c183248e.jpeg",
+        "https://modayakamoz.com/orj/e1ce7cfad32a28d69906.jpeg",
+        "https://modayakamoz.com/orj/e3001237a57b0267ef80.jpeg",
+        "https://modayakamoz.com/orj/ad331d99de009f6d70f1.jpeg",
+        {
+          "id": "2d6f8c0f-979a-489f-8108-6ab608e1be6e",
+          "url": "https://cdn.meluni.com.tr/ai-products/d3c5336f-0d61-41a8-8ce8-5078cbffb5ca-olcu-oto-22d712c5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:20:05.262197+00:00"
+        },
+        {
+          "id": "f44138a0-9a53-513f-8cc0-b96b56f4e90a",
+          "url": "https://cdn.meluni.com.tr/ai-products/190bab9a-a6af-48ef-bb97-985c91de2e25-size-chart-54de263f9ca5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-16T05:56:56.058354+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "190bab9a-a6af-48ef-bb97-985c91de2e25/front.jpg",
+          "sha256": "f6e90978ae21314a33a20bef88e2b1185865db7345c6d2811193d0dfdaca55cd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1131,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-190bab9a-a6af-48ef-bb97-985c91de2e25/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "190bab9a-a6af-48ef-bb97-985c91de2e25/back.jpg",
+          "sha256": "e17917d0fd4f96c6de9e1ce4eae6e1d7dde3fa6f37f93f0dcc6e309969526879",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1131,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-190bab9a-a6af-48ef-bb97-985c91de2e25/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "190bab9a-a6af-48ef-bb97-985c91de2e25/fashion_model.jpg",
+          "sha256": "a593e6484af01ce37ba878f0a3b8c3089258bc74b013dfc294f65b329e9d4e81",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1131,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-190bab9a-a6af-48ef-bb97-985c91de2e25/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "190bab9a-a6af-48ef-bb97-985c91de2e25/size_chart.jpg",
+          "sha256": "26d7f7636acaef22f88664faf02824cd829bb9ce197454815155d0221083f608",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1131,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-190bab9a-a6af-48ef-bb97-985c91de2e25/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
