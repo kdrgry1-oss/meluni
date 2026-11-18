@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-473",
+  "created_at": "2026-11-18T18:28:51.777689+00:00",
+  "catalog_poll_at": "2026-11-18T18:28:51.777689+00:00",
+  "products": [
+    {
+      "product_id": "124012e8-eec7-402d-84b9-b121a6307e22",
+      "sample": 1129,
+      "name": "Kısa Kollu V Yakalı Dantelli Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/124012e8-eec7-402d-84b9-b121a6307e22/d19f56fb66d48b5f.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/124012e8-eec7-402d-84b9-b121a6307e22/908f5de73891493d.jpg",
+        "https://modayakamoz.com/orj/e91ae7f9afacd88574be.jpeg",
+        "https://modayakamoz.com/orj/ae926e3a46a76c769e76.jpeg",
+        "https://modayakamoz.com/orj/19542810514e18aa811f.jpeg",
+        "https://modayakamoz.com/orj/81f3d43861b224b65d8e.jpeg",
+        "https://modayakamoz.com/orj/4462a776894ff2d9ef46.jpeg",
+        {
+          "id": "b98dbf2d-10ad-4d10-a40f-460a7c6ba51f",
+          "url": "https://cdn.meluni.com.tr/ai-products/124012e8-eec7-402d-84b9-b121a6307e22-olcu-oto-c8058e60.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-26T05:24:28.039701+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "124012e8-eec7-402d-84b9-b121a6307e22/front.jpg",
+          "sha256": "64a6c3e8f290d702f2bb5d8c8f68298f97eb162e8123effd44a627382341902f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1129,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-124012e8-eec7-402d-84b9-b121a6307e22/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "124012e8-eec7-402d-84b9-b121a6307e22/back.jpg",
+          "sha256": "393dfd1dfe306575450b38aa4019de13c07063a988bfb5220cb726f80bc76c7a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1129,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-124012e8-eec7-402d-84b9-b121a6307e22/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "124012e8-eec7-402d-84b9-b121a6307e22/fashion_model.jpg",
+          "sha256": "c73b408c9b61935a0decfc55ddd7d8300502ae28cfe9366920004934ba9be7ae",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1129,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-124012e8-eec7-402d-84b9-b121a6307e22/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
