@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-493",
+  "created_at": "2026-11-18T20:39:22.121402+00:00",
+  "catalog_poll_at": "2026-11-18T20:39:22.121402+00:00",
+  "products": [
+    {
+      "product_id": "85afcdba-7056-42bc-a5e8-f48268979c65",
+      "sample": 1149,
+      "name": "Kısa Kollu Önden Sarmal Detaylı Yırtmaçlı Midi Sandy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 96,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2fa50823f27d844d3022.jpeg",
+        "https://modayakamoz.com/orj/15e2422a01d0040e0cc1.jpeg",
+        "https://modayakamoz.com/orj/3407190fbe8aced33301.jpeg",
+        "https://modayakamoz.com/orj/255e4b9781028e1f9389.jpeg",
+        "https://modayakamoz.com/orj/9aebb9f53bf2cf4ffabf.jpeg",
+        "https://modayakamoz.com/orj/e9263e9a17ac5265cfa1.jpeg",
+        "https://modayakamoz.com/orj/8c357b53d8453f757fb4.jpeg",
+        "https://modayakamoz.com/orj/e956852933851a118f6f.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "85afcdba-7056-42bc-a5e8-f48268979c65/front.jpg",
+          "sha256": "4fe0eb9c5abd9dff5711591657c4a216c30e6e0fab1e3a562be5fb21b3f57a45",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1149,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-85afcdba-7056-42bc-a5e8-f48268979c65/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "85afcdba-7056-42bc-a5e8-f48268979c65/back.jpg",
+          "sha256": "ffa050b47768abb482c1f7a2184da5456b9a94121f575a9829aa8057a6eaf307",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1149,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-85afcdba-7056-42bc-a5e8-f48268979c65/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "85afcdba-7056-42bc-a5e8-f48268979c65/fashion_model.jpg",
+          "sha256": "6b5cfa9e9584774c6239d7e298de1feb9c3af6edcb442be8a5044438cd7e5145",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1149,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-85afcdba-7056-42bc-a5e8-f48268979c65/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "85afcdba-7056-42bc-a5e8-f48268979c65/size_chart.jpg",
+          "sha256": "66b7194656f44faca914299613f43c39a0dacca71498109b7c7984d7138e6551",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1149,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-85afcdba-7056-42bc-a5e8-f48268979c65/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
