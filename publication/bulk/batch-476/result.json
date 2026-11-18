@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-476",
+  "published_at_utc": "2026-11-18T18:48:32.981688+00:00",
+  "products": [
+    {
+      "product_id": "ac233dc6-151b-4d8a-9d29-ebafce378e3a",
+      "sample": 1132,
+      "name": "Kısa Kollu V Yakalı Büzgülü Çapraz Detaylı Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ac233dc6-151b-4d8a-9d29-ebafce378e3a-front-efc23209f822.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ac233dc6-151b-4d8a-9d29-ebafce378e3a-back-8bddfeff5504.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ac233dc6-151b-4d8a-9d29-ebafce378e3a-model-12d639677ae0.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/ac233dc6-151b-4d8a-9d29-ebafce378e3a-size-chart-e8053f4b8d42.jpg"
+      },
+      "gallery_image_count": 17
+    }
+  ],
+  "skipped": []
+}
