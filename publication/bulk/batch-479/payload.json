@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-479",
+  "created_at": "2026-11-18T19:06:02.517991+00:00",
+  "catalog_poll_at": "2026-11-18T19:06:02.517991+00:00",
+  "products": [
+    {
+      "product_id": "7f0a4d57-a722-415d-9a91-2362ce3511a1",
+      "sample": 1135,
+      "name": "Kısa Kollu V Yakalı Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 95,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/7f0a4d57-a722-415d-9a91-2362ce3511a1/166912cd91957f32.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/7f0a4d57-a722-415d-9a91-2362ce3511a1/f0e4c1bdb752374b.jpg",
+        "https://modayakamoz.com/orj/e25f3adbea4ada9dd6f8.jpeg",
+        "https://modayakamoz.com/orj/bafd9a350f6d825f8999.jpeg",
+        "https://modayakamoz.com/orj/d58f66fb331ba68c26be.jpeg",
+        {
+          "id": "7f648841-83a9-43a4-9950-db8996d1b348",
+          "url": "https://cdn.meluni.com.tr/ai-products/7f0a4d57-a722-415d-9a91-2362ce3511a1-olcu-oto-ac45b812.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:26:37.495801+00:00"
+        },
+        {
+          "id": "95f5d748-1566-5dcb-b4e6-aa7dd4744895",
+          "url": "https://cdn.meluni.com.tr/ai-products/7f0a4d57-a722-415d-9a91-2362ce3511a1-size-chart-55edf741ab21.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:17:30.364541+00:00"
+        }
+      ],
+      "preserve_leading_existing_count": 2,
+      "assets": {
+        "fashion_model": {
+          "file": "7f0a4d57-a722-415d-9a91-2362ce3511a1/fashion_model.jpg",
+          "sha256": "590276dd8f1732242231962bd7dc0b0545b875107c2af6212cdf0375cc4e13a9",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1135,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7f0a4d57-a722-415d-9a91-2362ce3511a1/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
