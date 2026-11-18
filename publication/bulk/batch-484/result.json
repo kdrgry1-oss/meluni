@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-484",
+  "published_at_utc": "2026-11-18T19:39:05.024432+00:00",
+  "products": [
+    {
+      "product_id": "87c09846-134b-45ea-86bf-757083f8ac15",
+      "sample": 1140,
+      "name": "Kısa Kollu V Yakalı Lazer Kesim Çiçek Detaylı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/87c09846-134b-45ea-86bf-757083f8ac15-front-403ef4b7ab03.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/87c09846-134b-45ea-86bf-757083f8ac15-back-59cea4dddcad.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/87c09846-134b-45ea-86bf-757083f8ac15-model-3c21ab13a6b6.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/87c09846-134b-45ea-86bf-757083f8ac15-size-chart-4806d833bbb5.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
