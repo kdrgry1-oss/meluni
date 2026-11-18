@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-511",
+  "published_at_utc": "2026-11-18T22:26:09.894755+00:00",
+  "products": [
+    {
+      "product_id": "ba20e043-6d3f-4a59-8b5d-f301c05192d8",
+      "sample": 1164,
+      "name": "Omuzlardan Açık Boyundan Aksesuar Detaylı Kemersiz Uzun Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ba20e043-6d3f-4a59-8b5d-f301c05192d8-front-69ea268a6fa6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ba20e043-6d3f-4a59-8b5d-f301c05192d8-back-b28a3e94cddc.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ba20e043-6d3f-4a59-8b5d-f301c05192d8-model-669e3ae7097f.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
