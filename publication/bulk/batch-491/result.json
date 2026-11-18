@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-491",
+  "published_at_utc": "2026-11-18T20:28:17.843294+00:00",
+  "products": [
+    {
+      "product_id": "139c5278-5ddb-459a-a3ea-49158f641613",
+      "sample": 1147,
+      "name": "Kısa Kollu Yuvarlak Yakalı Kolu Dantelli Kısa Viıskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/139c5278-5ddb-459a-a3ea-49158f641613-front-a48b5c9c350c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/139c5278-5ddb-459a-a3ea-49158f641613-model-3ffc6a9b68b4.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/139c5278-5ddb-459a-a3ea-49158f641613-size-chart-b1906dae9d92.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
