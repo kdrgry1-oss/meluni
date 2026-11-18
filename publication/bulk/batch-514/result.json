@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-514",
+  "published_at_utc": "2026-11-18T22:41:00.898437+00:00",
+  "products": [
+    {
+      "product_id": "b5ea98e0-9325-4dd3-8a17-edad7a72e876",
+      "sample": 1167,
+      "name": "Omuzlardan Açık Damla Detaylı Kısa Sandy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b5ea98e0-9325-4dd3-8a17-edad7a72e876-front-9b7c994c0bea.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b5ea98e0-9325-4dd3-8a17-edad7a72e876-model-1c663121bea0.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b5ea98e0-9325-4dd3-8a17-edad7a72e876-size-chart-e0e961033174.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
