@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-487",
+  "published_at_utc": "2026-11-18T20:03:46.617764+00:00",
+  "products": [
+    {
+      "product_id": "3485323c-c845-4a6d-97a9-b83a294bf3fd",
+      "sample": 1143,
+      "name": "Kısa Kollu Yarı Balıkçı Yaka Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3485323c-c845-4a6d-97a9-b83a294bf3fd-front-cd11bf252784.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/3485323c-c845-4a6d-97a9-b83a294bf3fd-back-6728108cbd53.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3485323c-c845-4a6d-97a9-b83a294bf3fd-model-e80c14668e60.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/3485323c-c845-4a6d-97a9-b83a294bf3fd-size-chart-753e38c73ef1.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
