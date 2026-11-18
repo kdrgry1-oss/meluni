@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-454",
+  "created_at": "2026-11-18T14:41:13.028450+00:00",
+  "catalog_poll_at": "2026-11-18T14:41:13.028450+00:00",
+  "products": [
+    {
+      "product_id": "8fc9e507-9e37-4aa4-8934-492951e4c44e",
+      "sample": 1110,
+      "name": "V Yaka Kısa Kol Dokuma Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 40,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/aed973b68b151f62627319ea83ce718f.jpeg",
+        "https://modayakamoz.com/orj/4ac09ae839c18caa6ebb4254520fdc25.jpeg",
+        "https://modayakamoz.com/orj/9254a33b73b0b738df2d191ffe604189.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "8fc9e507-9e37-4aa4-8934-492951e4c44e/front.jpg",
+          "sha256": "11bfbf53d00b541246716e7833c37aa7a7e83f15499b1d14d2f07be56b32b402",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1110,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8fc9e507/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8fc9e507-9e37-4aa4-8934-492951e4c44e/back.jpg",
+          "sha256": "6e985a332cd9e07597b94c1fb350e13c0796e0bb31a1a4cdeadbf95dcab55a1b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1110,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8fc9e507/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8fc9e507-9e37-4aa4-8934-492951e4c44e/fashion_model.jpg",
+          "sha256": "099ea27fd38730c4d1e0e1a7a0c175d86f421dd1610940437a04c8048f9ced4d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1110,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8fc9e507/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
