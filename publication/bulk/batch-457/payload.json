@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-457",
+  "created_at": "2026-11-18T15:24:00.092235+00:00",
+  "catalog_poll_at": "2026-11-18T15:24:00.092235+00:00",
+  "products": [
+    {
+      "product_id": "0f53d2aa-91e2-48a3-bddf-16fcfe86cf37",
+      "sample": 1113,
+      "name": "Yüksek Bel Tek Düğmeli Paçaya Doğru Genişleyen Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 26,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/0f53d2aa-91e2-48a3-bddf-16fcfe86cf37-hd0-f20942fd.jpg",
+        "https://cdn.meluni.com.tr/ai-products/0f53d2aa-91e2-48a3-bddf-16fcfe86cf37-hd1-fcf5f8fe.jpg",
+        "https://cdn.meluni.com.tr/ai-products/0f53d2aa-91e2-48a3-bddf-16fcfe86cf37-hd2-45d30650.jpg",
+        "https://cdn.meluni.com.tr/ai-products/0f53d2aa-91e2-48a3-bddf-16fcfe86cf37-hd3-75db70ad.jpg",
+        "https://cdn.meluni.com.tr/ai-products/0f53d2aa-91e2-48a3-bddf-16fcfe86cf37-hd4-321386c1.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0f53d2aa-91e2-48a3-bddf-16fcfe86cf37/front.jpg",
+          "sha256": "64610aa27ea4e573aaa38e03afd858001e86041bede42b42f1a72233bb5b7ba5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1113,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0f53d2aa-91e2-48a3-bddf-16fcfe86cf37/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0f53d2aa-91e2-48a3-bddf-16fcfe86cf37/back.jpg",
+          "sha256": "a4bf12171de8541264b95a4ea45873e650c863e6f2e14e23ca4fe2a72ac0d6bb",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1113,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0f53d2aa-91e2-48a3-bddf-16fcfe86cf37/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0f53d2aa-91e2-48a3-bddf-16fcfe86cf37/fashion_model.jpg",
+          "sha256": "63a4d56854121889350f64f569ee8c05ae3cc2fa29a214539fc3039fe2b56bb1",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1113,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0f53d2aa-91e2-48a3-bddf-16fcfe86cf37/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
