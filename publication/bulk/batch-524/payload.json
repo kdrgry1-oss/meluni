@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-524",
+  "created_at": "2026-11-18T23:43:39.037500+00:00",
+  "catalog_poll_at": "2026-11-18T23:43:39.037500+00:00",
+  "products": [
+    {
+      "product_id": "5790b579-f184-49c2-9902-1104f715102a",
+      "sample": 1177,
+      "name": "Uzun Kollu Degaje Yakalı Sandy Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 123,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192875-1-d458f89d3e.jpg",
+        "https://modayakamoz.com/orj/janes-192875-2-ebf933ea65.jpg",
+        "https://modayakamoz.com/orj/janes-192875-3-f0583bf620.jpg",
+        "https://modayakamoz.com/orj/janes-192875-4-e59b62593b.jpg",
+        "https://modayakamoz.com/orj/janes-192875-5-7d2811409e.jpg",
+        "https://modayakamoz.com/orj/janes-192875-9-6cb71eeae5.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5790b579-f184-49c2-9902-1104f715102a/front.jpg",
+          "sha256": "ec9cf178d413c1ce1ed639feef2060249b5672537c655254ef838f8d331f076a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1177,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5790b579/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5790b579-f184-49c2-9902-1104f715102a/back.jpg",
+          "sha256": "777bb4adb0ec2c259920af306116e09ce9172e69ddca43d50f5aad983b9c13cc",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1177,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5790b579/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5790b579-f184-49c2-9902-1104f715102a/fashion_model.jpg",
+          "sha256": "ba94917002270b5d31847e17d9e932cbc0989f84397d1fd7e1bba4dd00164e64",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1177,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5790b579/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "5790b579-f184-49c2-9902-1104f715102a/size_chart.jpg",
+          "sha256": "a6a19afeda43f96a1da07a2b4455fa7ba7e390fcf9e0360d39ae1d7229fb79af",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1177,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5790b579/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
