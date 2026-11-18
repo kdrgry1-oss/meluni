@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-512",
+  "created_at": "2026-11-18T22:29:21.446581+00:00",
+  "catalog_poll_at": "2026-11-18T22:29:21.446581+00:00",
+  "products": [
+    {
+      "product_id": "4c20ed58-f59e-4bfa-92ea-36fdf8bd8783",
+      "sample": 1165,
+      "name": "Omuzlardan Açık V Yakalı Askılı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 24,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3c9442ee0e6a9649893f.jpeg",
+        "https://modayakamoz.com/orj/2b573563f701ce8dbf60.jpeg",
+        "https://modayakamoz.com/orj/500878e067fbf1ea35db.jpeg",
+        "https://modayakamoz.com/orj/87c7bcdcf3290caa7d8b.jpeg",
+        "https://modayakamoz.com/orj/4c3694ff3cdb41013f7e.jpeg",
+        {
+          "id": "300b21cb-b3cf-458a-a427-a72e50abde1d",
+          "url": "https://cdn.meluni.com.tr/ai-products/4c20ed58-f59e-4bfa-92ea-36fdf8bd8783-olcu-oto-5329dbcc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-10T05:23:46.880513+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4c20ed58-f59e-4bfa-92ea-36fdf8bd8783/front.jpg",
+          "sha256": "f2829da1f557a6f36b35f616b8e821aff48a078b5f9b69fc3fa883d6c2160fa5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1165,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4c20ed58-f59e-4bfa-92ea-36fdf8bd8783/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4c20ed58-f59e-4bfa-92ea-36fdf8bd8783/back.jpg",
+          "sha256": "87ab3d81d2b859ba2777fde43894254664c85edf0dd211407ecf340aec70c8b1",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1165,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4c20ed58-f59e-4bfa-92ea-36fdf8bd8783/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4c20ed58-f59e-4bfa-92ea-36fdf8bd8783/fashion_model.jpg",
+          "sha256": "da2f2fd250f262488345450906358dfb54936477aec7e61b4eab380385b0ca73",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1165,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4c20ed58-f59e-4bfa-92ea-36fdf8bd8783/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
