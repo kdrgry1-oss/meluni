@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-472",
+  "created_at": "2026-11-18T18:21:32.599064+00:00",
+  "catalog_poll_at": "2026-11-18T18:21:32.599064+00:00",
+  "products": [
+    {
+      "product_id": "e07e48a1-4ace-4e50-8215-66ac863c98aa",
+      "sample": 1128,
+      "name": "Kısa Kollu V Lazer Yaka Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/6cc8c3837480d8c1ccc8.jpeg",
+        "https://modayakamoz.com/orj/d9a4a28f85e7bc7c3f14.jpeg",
+        "https://modayakamoz.com/orj/1d4faf00725d8140b2f3.jpeg",
+        "https://modayakamoz.com/orj/bb7900eebd4f28dec980.jpeg",
+        "https://modayakamoz.com/orj/667041824711b1e88e06.jpeg",
+        "https://modayakamoz.com/orj/6649036c3030774c50f8.jpeg",
+        "https://modayakamoz.com/orj/6052fd5773da1fcfd8b2.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e07e48a1-4ace-4e50-8215-66ac863c98aa/front.jpg",
+          "sha256": "af3b0772ef5659af677e60c3925ae878923e69e71e642cdd4274282bde71035d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1128,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e07e48a1-4ace-4e50-8215-66ac863c98aa/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e07e48a1-4ace-4e50-8215-66ac863c98aa/back.jpg",
+          "sha256": "c1fe514c5200dbc925175f7ad7c7b1a84552050a0afeb7c50639d27a3c0757c5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1128,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e07e48a1-4ace-4e50-8215-66ac863c98aa/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e07e48a1-4ace-4e50-8215-66ac863c98aa/fashion_model.jpg",
+          "sha256": "c125a8046690fae095ab012b1169cecbc9f847a6ad9b5d3ff474efdfab4b6f94",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1128,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e07e48a1-4ace-4e50-8215-66ac863c98aa/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "e07e48a1-4ace-4e50-8215-66ac863c98aa/size_chart.jpg",
+          "sha256": "ed5fa6785b4dbfb3aa2f266453e267697bf30d6ab86ae4c2c6cf1a9b7cbd0fa6",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1128,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e07e48a1-4ace-4e50-8215-66ac863c98aa/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
