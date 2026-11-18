@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-480",
+  "created_at": "2026-11-18T19:10:28.549395+00:00",
+  "catalog_poll_at": "2026-11-18T19:10:28.549395+00:00",
+  "products": [
+    {
+      "product_id": "bc96f7b9-738c-426b-b6b8-81d8bb5bc018",
+      "sample": 1136,
+      "name": "Kısa Kollu V Yakalı Kolu Dantelli Dubai Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 86,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/bc96f7b9-738c-426b-b6b8-81d8bb5bc018/c65bee788ae398c4.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/bc96f7b9-738c-426b-b6b8-81d8bb5bc018/00b96e7c095e8ce1.jpg",
+        "https://modayakamoz.com/orj/3b8a8abf0fee68f40209.jpeg",
+        "https://modayakamoz.com/orj/459c63496f42bd9ced0c.jpeg",
+        "https://modayakamoz.com/orj/d15617a6af6353cacd5c.jpeg",
+        "https://modayakamoz.com/orj/63cd3c01a3291c044f76.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/bc96f7b9-738c-426b-b6b8-81d8bb5bc018/87c8250dbb7b4fc2.jpg"
+      ],
+      "preserve_leading_existing_count": 2,
+      "assets": {
+        "fashion_model": {
+          "file": "bc96f7b9-738c-426b-b6b8-81d8bb5bc018/fashion_model.jpg",
+          "sha256": "b8657297baabf7e0e9afeb7745aefa17eca0d4726e8ae5545e97b03055b99714",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1136,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bc96f7b9-738c-426b-b6b8-81d8bb5bc018/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
