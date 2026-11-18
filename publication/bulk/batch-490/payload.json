@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-490",
+  "created_at": "2026-11-18T20:22:34.350577+00:00",
+  "catalog_poll_at": "2026-11-18T20:22:34.350577+00:00",
+  "products": [
+    {
+      "product_id": "2fc08a98-88be-4dc6-8a28-b5d8dd947e5b",
+      "sample": 1146,
+      "name": "Kısa Kollu Yuvarlak Yakalı Düğmeli Önden Asimetrik Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 100,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/035cea7fbe4d37e01fb3.jpeg",
+        "https://modayakamoz.com/orj/699f105e547853edb32e.jpeg",
+        "https://modayakamoz.com/orj/379d46ce7f578a8d541c.jpeg",
+        {
+          "id": "bb60267e-c96c-437d-adb8-8f7d29a3f9b3",
+          "url": "https://cdn.meluni.com.tr/ai-products/2fc08a98-88be-4dc6-8a28-b5d8dd947e5b-olcu-oto-ebc7de63.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-11T05:21:55.762337+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "2fc08a98-88be-4dc6-8a28-b5d8dd947e5b/front.jpg",
+          "sha256": "0c05e7133a14d4b18f4faac9addde6b7a0670e253540345a1aef6b6906ad78e3",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1146,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fc08a98-88be-4dc6-8a28-b5d8dd947e5b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "2fc08a98-88be-4dc6-8a28-b5d8dd947e5b/back.jpg",
+          "sha256": "e4e58925f4c3cbe6b64c7283bd03c493e8efbd690c85c402e8a1489170da7604",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1146,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fc08a98-88be-4dc6-8a28-b5d8dd947e5b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "2fc08a98-88be-4dc6-8a28-b5d8dd947e5b/fashion_model.jpg",
+          "sha256": "47bae352e306e6882ed1f3392be69b21019b49457f193fddc3d0d9fd5953ef74",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1146,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fc08a98-88be-4dc6-8a28-b5d8dd947e5b/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "2fc08a98-88be-4dc6-8a28-b5d8dd947e5b/size_chart.jpg",
+          "sha256": "06cb0159a6e2fd1a8ff9f74253354b7fbe513efa2dd288be40f617af40d59303",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1146,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2fc08a98-88be-4dc6-8a28-b5d8dd947e5b/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
