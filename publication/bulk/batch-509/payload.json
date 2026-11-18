@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-509",
+  "created_at": "2026-11-18T22:12:22.517803+00:00",
+  "catalog_poll_at": "2026-11-18T22:12:22.517803+00:00",
+  "products": [
+    {
+      "product_id": "c5be2263-170e-4023-9af9-b115e23c7ed4",
+      "sample": 1162,
+      "name": "Omuzlardan Açık Boyundan Aksesuar Detaylı Kemersiz Uzun Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 24,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/fee538e3ad91f6868e81.jpeg",
+        "https://modayakamoz.com/orj/809ced26396ff8f65629.jpeg",
+        "https://modayakamoz.com/orj/aa9781634e4149d8e13c.jpeg",
+        "https://modayakamoz.com/orj/1f50d33fbd240d451385.jpeg",
+        "https://modayakamoz.com/orj/0b6ee4f3f953a621e014.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c5be2263-170e-4023-9af9-b115e23c7ed4/front.jpg",
+          "sha256": "c4e778dc75ffb5a7a3cfba5873cc9170d6cae5361b12874b98d8a02a40bb5917",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1162,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c5be2263-170e-4023-9af9-b115e23c7ed4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c5be2263-170e-4023-9af9-b115e23c7ed4/back.jpg",
+          "sha256": "554fc4ef84f3e3101b0563159940986cb01b80277d8d970e59e191de4f2f60df",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1162,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c5be2263-170e-4023-9af9-b115e23c7ed4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c5be2263-170e-4023-9af9-b115e23c7ed4/fashion_model.jpg",
+          "sha256": "14f61526146025a410d445bf2dac074a632e61bfe3e92132bc9ea4a77b4e9d77",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1162,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c5be2263-170e-4023-9af9-b115e23c7ed4/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
