@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-480",
+  "published_at_utc": "2026-11-18T19:11:25.973563+00:00",
+  "products": [
+    {
+      "product_id": "bc96f7b9-738c-426b-b6b8-81d8bb5bc018",
+      "sample": 1136,
+      "name": "Kısa Kollu V Yakalı Kolu Dantelli Dubai Bluz",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bc96f7b9-738c-426b-b6b8-81d8bb5bc018-model-b8657297baab.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
