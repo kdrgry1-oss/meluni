@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-510",
+  "published_at_utc": "2026-11-18T22:19:29.628846+00:00",
+  "products": [
+    {
+      "product_id": "edc8815c-c25d-4f60-b990-617ed602c081",
+      "sample": 1163,
+      "name": "Omuzlardan Açık Boyundan Bağlı Damla Detaylı Fırfırlı Sandy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/edc8815c-c25d-4f60-b990-617ed602c081-front-f165bdea7d05.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/edc8815c-c25d-4f60-b990-617ed602c081-back-2ffd3547c607.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/edc8815c-c25d-4f60-b990-617ed602c081-model-cbbcd969f41d.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/edc8815c-c25d-4f60-b990-617ed602c081-size-chart-c474df5b0234.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
