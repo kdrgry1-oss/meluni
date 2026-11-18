@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-501",
+  "published_at_utc": "2026-11-18T21:27:30.841470+00:00",
+  "products": [
+    {
+      "product_id": "4d787da0-e381-4156-a515-9ec4956c888f",
+      "sample": 1154,
+      "name": "Omuzlardan Acık Askılı V Yakalı Kısa Modal Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4d787da0-e381-4156-a515-9ec4956c888f-front-b1dca2670f84.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4d787da0-e381-4156-a515-9ec4956c888f-back-3dc8a284413b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4d787da0-e381-4156-a515-9ec4956c888f-model-744ee5650412.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
