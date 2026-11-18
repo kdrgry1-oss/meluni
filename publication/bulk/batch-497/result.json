@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-497",
+  "published_at_utc": "2026-11-18T21:00:40.476595+00:00",
+  "products": [
+    {
+      "product_id": "200a2aa1-075f-4e8a-a7f4-860e55c04ac1",
+      "sample": 2543,
+      "name": "Madonna Yakalı Büzgülü Yırtmaçlı Midi Sandy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/200a2aa1-075f-4e8a-a7f4-860e55c04ac1-front-3bfdf4a7ae4b.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/200a2aa1-075f-4e8a-a7f4-860e55c04ac1-back-5b0fff733ef6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/200a2aa1-075f-4e8a-a7f4-860e55c04ac1-model-018ef837e981.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/200a2aa1-075f-4e8a-a7f4-860e55c04ac1-size-chart-589ac5ebf9e6.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
