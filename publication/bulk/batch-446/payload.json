@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-446",
+  "created_at": "2026-11-18T11:47:44.101231+00:00",
+  "catalog_poll_at": "2026-11-18T11:47:44.101231+00:00",
+  "products": [
+    {
+      "product_id": "fdd467bc-46bb-46f6-a713-b55c967513d4",
+      "sample": 1102,
+      "name": "Yüksek Bel Cep Detaylı Scuba Dalgıç Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 50,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3c0dc8c563d7d213d699.jpeg",
+        "https://modayakamoz.com/orj/151b4a69965b5198964f.jpeg",
+        "https://modayakamoz.com/orj/fe583777ec23b3c93fde.jpeg",
+        "https://modayakamoz.com/orj/698a1a41356ea3197a96.jpeg",
+        {
+          "id": "f5574efe-cd61-4c51-830f-aa7d6cb229e9",
+          "url": "https://cdn.meluni.com.tr/ai-products/fdd467bc-46bb-46f6-a713-b55c967513d4-olcu-oto-8a10969e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:06:16.255202+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "fdd467bc-46bb-46f6-a713-b55c967513d4/front.jpg",
+          "sha256": "66a61eb6181d98aa0eb0c6e743a0d0d3c27ce553aeb91b62d6dded93c8bbe723",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1102,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fdd467bc/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "fdd467bc-46bb-46f6-a713-b55c967513d4/back.jpg",
+          "sha256": "ba082b50904e244a1f41c2442a95f0431c9e5335d8579712d71c6474d5af5130",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1102,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fdd467bc/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "fdd467bc-46bb-46f6-a713-b55c967513d4/fashion_model.jpg",
+          "sha256": "469776424f248bc0d2883c0946b6404af3d3273eb0564c14ed486bacc868a578",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1102,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fdd467bc/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
