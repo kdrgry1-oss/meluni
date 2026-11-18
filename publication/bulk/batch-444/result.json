@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-444",
+  "published_at_utc": "2026-11-18T11:33:46.942403+00:00",
+  "products": [
+    {
+      "product_id": "0aa4a19e-6c7a-4bd5-ab69-c739827e279a",
+      "sample": 1100,
+      "name": "Uzun Kollu Tül Detaylı Önden Asimetrikfırfır Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0aa4a19e-6c7a-4bd5-ab69-c739827e279a-front-5cf4d52ce210.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0aa4a19e-6c7a-4bd5-ab69-c739827e279a-back-566c0c22bb74.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0aa4a19e-6c7a-4bd5-ab69-c739827e279a-model-c198e7011ae5.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0aa4a19e-6c7a-4bd5-ab69-c739827e279a-size-chart-6e6dea686cb8.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
