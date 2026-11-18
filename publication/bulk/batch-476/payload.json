@@ -1,0 +1,73 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-476",
+  "created_at": "2026-11-18T18:47:26.627844+00:00",
+  "catalog_poll_at": "2026-11-18T18:47:26.627844+00:00",
+  "products": [
+    {
+      "product_id": "ac233dc6-151b-4d8a-9d29-ebafce378e3a",
+      "sample": 1132,
+      "name": "Kısa Kollu V Yakalı Büzgülü Çapraz Detaylı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/ac233dc6-151b-4d8a-9d29-ebafce378e3a-front-a4f08ae4823d.jpg",
+        "https://cdn.meluni.com.tr/ai-products/ac233dc6-151b-4d8a-9d29-ebafce378e3a-back-9ad11fd6a92a.jpg",
+        "https://cdn.meluni.com.tr/ai-products/ac233dc6-151b-4d8a-9d29-ebafce378e3a-model-330deb45e1e1.jpg",
+        "https://modayakamoz.com/orj/78871303a7d3478c5b7a.jpeg",
+        "https://modayakamoz.com/orj/95b6cb46a46d53b8f2b4.jpeg",
+        "https://modayakamoz.com/orj/6f9df1b8ed7aa6bd6e26.jpeg",
+        "https://modayakamoz.com/orj/cbdc902bcd14ea647d4d.jpeg",
+        "https://modayakamoz.com/orj/90a066ea52cdbab0bf7f.jpeg",
+        "https://modayakamoz.com/orj/c3eb4bbfd1890bd3766d.jpeg",
+        "https://modayakamoz.com/orj/5314b9005b80c2c83403.jpeg",
+        "https://modayakamoz.com/orj/e253207402f47437d834cb015d93c2bc.jpeg",
+        {
+          "id": "9b28cf2e-67a1-4edf-876c-499d90f37eca",
+          "url": "https://cdn.meluni.com.tr/ai-products/d0655c2d-faea-4cc5-bf31-57805dd6a0cc-olcu-oto-191dbfec.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-10-09T05:17:00.913156+00:00"
+        },
+        {
+          "id": "1fdabf8e-1b81-5fdb-866a-24a473802760",
+          "url": "https://cdn.meluni.com.tr/ai-products/ac233dc6-151b-4d8a-9d29-ebafce378e3a-size-chart-3f103685f8e0.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-16T06:12:36.164030+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "ac233dc6-151b-4d8a-9d29-ebafce378e3a/front.jpg",
+          "sha256": "efc23209f822298360b3fa892ca2ca52101bbdef83c1a719647d735bdf76d703",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1132,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac233dc6-151b-4d8a-9d29-ebafce378e3a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ac233dc6-151b-4d8a-9d29-ebafce378e3a/back.jpg",
+          "sha256": "8bddfeff550422ebba9753a63eaa82d8cb2fad344890335fea1a720108b078ef",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1132,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac233dc6-151b-4d8a-9d29-ebafce378e3a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ac233dc6-151b-4d8a-9d29-ebafce378e3a/fashion_model.jpg",
+          "sha256": "12d639677ae05593a8e6697a3a9b181ed025b9a8f0deb5d290b107eb33ac7239",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1132,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac233dc6-151b-4d8a-9d29-ebafce378e3a/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "ac233dc6-151b-4d8a-9d29-ebafce378e3a/size_chart.jpg",
+          "sha256": "e8053f4b8d4211092f79ed2f35e22a2d4a6b5f62db973a7216bb57e13301fb9b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1132,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac233dc6-151b-4d8a-9d29-ebafce378e3a/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
