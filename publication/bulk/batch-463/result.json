@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-463",
+  "published_at_utc": "2026-11-18T16:20:05.944686+00:00",
+  "products": [
+    {
+      "product_id": "2d7557c1-a04e-45b2-9f28-f35c37346f1f",
+      "sample": 1119,
+      "name": "Askılı V Yakalı Dantelli Midi Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2d7557c1-a04e-45b2-9f28-f35c37346f1f-front-d034ad463087.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2d7557c1-a04e-45b2-9f28-f35c37346f1f-back-9984e5bef762.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2d7557c1-a04e-45b2-9f28-f35c37346f1f-model-566e18d2ca58.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
