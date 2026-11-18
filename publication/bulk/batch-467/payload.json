@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-467",
+  "created_at": "2026-11-18T16:44:22.881952+00:00",
+  "catalog_poll_at": "2026-11-18T16:44:22.881952+00:00",
+  "products": [
+    {
+      "product_id": "66e511c3-12f7-44ae-9e1c-71117d5bf3e1",
+      "sample": 1123,
+      "name": "Askılı V Yakalı Düğmeli Bağcıklı Kısa Aerobin Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192679-1-6c1801d8e3.png",
+        "https://modayakamoz.com/orj/janes-192679-2-4816d466c2.png",
+        "https://modayakamoz.com/orj/janes-192679-3-c55c96e711.png",
+        "https://modayakamoz.com/orj/janes-192679-5-386b61bd15.png",
+        "https://modayakamoz.com/orj/janes-192679-6-1816a001ff.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "66e511c3-12f7-44ae-9e1c-71117d5bf3e1/front.jpg",
+          "sha256": "d6c9580040746f9db0437c2ea4321cc26ee417ddb70363898adc0566aa22935a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1123,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-66e511c3-12f7-44ae-9e1c-71117d5bf3e1/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "66e511c3-12f7-44ae-9e1c-71117d5bf3e1/back.jpg",
+          "sha256": "297a31e35f665e4a2fd5fc879fcd50dd8b437dc9344879ae6ba98f1f55184dd2",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1123,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-66e511c3-12f7-44ae-9e1c-71117d5bf3e1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "66e511c3-12f7-44ae-9e1c-71117d5bf3e1/fashion_model.jpg",
+          "sha256": "7b76f48b467a1fe5846a1d3c3c2720905f7293bfb837d8d8c7d1900220e939a6",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1123,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-66e511c3-12f7-44ae-9e1c-71117d5bf3e1/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
