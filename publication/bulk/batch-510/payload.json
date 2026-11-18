@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-510",
+  "created_at": "2026-11-18T22:18:34.125796+00:00",
+  "catalog_poll_at": "2026-11-18T22:18:34.125796+00:00",
+  "products": [
+    {
+      "product_id": "edc8815c-c25d-4f60-b990-617ed602c081",
+      "sample": 1163,
+      "name": "Omuzlardan Açık Boyundan Bağlı Damla Detaylı Fırfırlı Sandy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/202b69257f87ecd552a4.jpeg",
+        "https://modayakamoz.com/orj/f2caadc1f71eeab94edd.jpeg",
+        "https://modayakamoz.com/orj/35948087ed32a4bfc81b.jpeg",
+        "https://modayakamoz.com/orj/acc14d9f0f0255bb89ec.jpeg",
+        "https://modayakamoz.com/orj/a2b86f1861e5014f1170.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "edc8815c-c25d-4f60-b990-617ed602c081/front.jpg",
+          "sha256": "f165bdea7d05759c8d188165874f98111a0e1da19934910875d047f95e3b5431",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1163,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-edc8815c-c25d-4f60-b990-617ed602c081/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "edc8815c-c25d-4f60-b990-617ed602c081/back.jpg",
+          "sha256": "2ffd3547c607f041d5e5e2494ec04745e6b44957ba9e60ca1f07141267af1fb6",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1163,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-edc8815c-c25d-4f60-b990-617ed602c081/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "edc8815c-c25d-4f60-b990-617ed602c081/fashion_model.jpg",
+          "sha256": "cbbcd969f41db9016560d1dabb56d75190f3c0a1a5f7039d7d571d5bc8423d02",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1163,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-edc8815c-c25d-4f60-b990-617ed602c081/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "edc8815c-c25d-4f60-b990-617ed602c081/size_chart.jpg",
+          "sha256": "c474df5b0234a18ef3fe4075b02ba48b87776eaedd10f774b8ecc675d000142b",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1163,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-edc8815c-c25d-4f60-b990-617ed602c081/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
