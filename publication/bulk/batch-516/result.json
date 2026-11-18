@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-516",
+  "published_at_utc": "2026-11-18T22:55:26.321322+00:00",
+  "products": [
+    {
+      "product_id": "454cc8b1-98c7-4038-be26-1f08a90f7032",
+      "sample": 1169,
+      "name": "Tek Omuzdan Acık Truvakar Kollu Kuşaklı Sofya Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/454cc8b1-98c7-4038-be26-1f08a90f7032-front-d6f48b3b4426.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/454cc8b1-98c7-4038-be26-1f08a90f7032-back-03b9f85bac6e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/454cc8b1-98c7-4038-be26-1f08a90f7032-model-cf670529176e.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/454cc8b1-98c7-4038-be26-1f08a90f7032-size-chart-3b122682ac41.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
