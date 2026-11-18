@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-469",
+  "published_at_utc": "2026-11-18T16:58:52.661144+00:00",
+  "products": [
+    {
+      "product_id": "b00740b1-03e5-47eb-b0c7-9aee12df469e",
+      "sample": 1125,
+      "name": "Askılı V Yakalı Geniş Detaylı Kısa Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b00740b1-03e5-47eb-b0c7-9aee12df469e-front-2ceb52a571b9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b00740b1-03e5-47eb-b0c7-9aee12df469e-back-365efcbf01c8.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b00740b1-03e5-47eb-b0c7-9aee12df469e-model-26596aaf86b6.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
