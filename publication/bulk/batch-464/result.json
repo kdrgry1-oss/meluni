@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-464",
+  "published_at_utc": "2026-11-18T16:27:31.991146+00:00",
+  "products": [
+    {
+      "product_id": "52780721-6063-4e66-a34c-aa776a7e4a3c",
+      "sample": 1120,
+      "name": "Askılı V Yakalı Halka Detaylı Asimetrik Viskon Maxi Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/52780721-6063-4e66-a34c-aa776a7e4a3c-front-2c4bbbbb2db3.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/52780721-6063-4e66-a34c-aa776a7e4a3c-back-ca0078f149f6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/52780721-6063-4e66-a34c-aa776a7e4a3c-model-7c9d0072bccb.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
