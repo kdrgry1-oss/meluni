@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-463",
+  "created_at": "2026-11-18T16:18:46.402991+00:00",
+  "catalog_poll_at": "2026-11-18T16:18:46.402991+00:00",
+  "products": [
+    {
+      "product_id": "2d7557c1-a04e-45b2-9f28-f35c37346f1f",
+      "sample": 1119,
+      "name": "Askılı V Yakalı Dantelli Midi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 42,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/701f395564326f4bdec2.jpeg",
+        "https://modayakamoz.com/orj/4fd5b115d55caedab27e.jpeg",
+        "https://modayakamoz.com/orj/8ce95644aa011c563660.jpeg",
+        {
+          "id": "38231ddc-4202-4693-bd00-bb94836c8823",
+          "url": "https://cdn.meluni.com.tr/ai-products/2d7557c1-a04e-45b2-9f28-f35c37346f1f-olcu-oto-c0d73717.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-14T05:26:11.686559+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "2d7557c1-a04e-45b2-9f28-f35c37346f1f/front.jpg",
+          "sha256": "d034ad4630870599ee0a390e6badedfd8933ddb8f6cc7a147c5256052151f3f5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1119,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2d7557c1-a04e-45b2-9f28-f35c37346f1f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "2d7557c1-a04e-45b2-9f28-f35c37346f1f/back.jpg",
+          "sha256": "9984e5bef762c5c6b9438d82684dfe38dc1f00bad8b27131dfb18696696ea743",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1119,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2d7557c1-a04e-45b2-9f28-f35c37346f1f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "2d7557c1-a04e-45b2-9f28-f35c37346f1f/fashion_model.jpg",
+          "sha256": "566e18d2ca58baa7c68cf22403bb25d01a01ca8105199ac31ad1b1cab7057b8b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1119,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2d7557c1-a04e-45b2-9f28-f35c37346f1f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
