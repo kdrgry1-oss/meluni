@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-490",
+  "published_at_utc": "2026-11-18T20:23:32.281838+00:00",
+  "products": [
+    {
+      "product_id": "2fc08a98-88be-4dc6-8a28-b5d8dd947e5b",
+      "sample": 1146,
+      "name": "Kısa Kollu Yuvarlak Yakalı Düğmeli Önden Asimetrik Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2fc08a98-88be-4dc6-8a28-b5d8dd947e5b-front-0c05e7133a14.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2fc08a98-88be-4dc6-8a28-b5d8dd947e5b-back-e4e58925f4c3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2fc08a98-88be-4dc6-8a28-b5d8dd947e5b-model-47bae352e306.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/2fc08a98-88be-4dc6-8a28-b5d8dd947e5b-size-chart-06cb0159a6e2.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
