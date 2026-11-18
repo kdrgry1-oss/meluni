@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-518",
+  "published_at_utc": "2026-11-18T23:06:04.510265+00:00",
+  "products": [
+    {
+      "product_id": "7c3df78d-16e9-4a21-b2a7-e375875f5b9f",
+      "sample": 1171,
+      "name": "Tek Omuzdan Açık Askılı Uzun Kollu Kısa Viskon Iki Iplik Elbıse",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7c3df78d-16e9-4a21-b2a7-e375875f5b9f-front-ccffa5a6336d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7c3df78d-16e9-4a21-b2a7-e375875f5b9f-back-44de757810b6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7c3df78d-16e9-4a21-b2a7-e375875f5b9f-model-ea9f89ac7865.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/7c3df78d-16e9-4a21-b2a7-e375875f5b9f-size-chart-cf049c6eaec2.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
