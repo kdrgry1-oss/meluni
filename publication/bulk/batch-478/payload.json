@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-478",
+  "created_at": "2026-11-18T19:00:15.311186+00:00",
+  "catalog_poll_at": "2026-11-18T19:00:15.311186+00:00",
+  "products": [
+    {
+      "product_id": "1c18e215-2ecb-4fbd-9da3-72b473bc5134",
+      "sample": 1134,
+      "name": "Kısa Kollu V Yakalı Düğmeli Dantel Detaylı Waffle Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/1c18e215-2ecb-4fbd-9da3-72b473bc5134/efa9dd5d17273b9d.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/1c18e215-2ecb-4fbd-9da3-72b473bc5134/9987cfd4787c9a8f.jpg",
+        "https://modayakamoz.com/orj/ba41af63c6429e74799d.jpeg",
+        "https://modayakamoz.com/orj/228c3c8ce67086fafa03.jpeg",
+        "https://modayakamoz.com/orj/051b2a7deb9f26de6496.jpeg",
+        {
+          "id": "c6340695-8e5a-4479-b1e4-ab880f7924fe",
+          "url": "https://cdn.meluni.com.tr/ai-products/1c18e215-2ecb-4fbd-9da3-72b473bc5134-olcu-oto-1039c9fc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-29T05:19:16.451625+00:00"
+        },
+        {
+          "id": "50544a78-c8f0-5b01-962b-c66d5b27550f",
+          "url": "https://cdn.meluni.com.tr/ai-products/1c18e215-2ecb-4fbd-9da3-72b473bc5134-size-chart-2606f790026c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:17:30.364541+00:00"
+        }
+      ],
+      "preserve_leading_existing_count": 2,
+      "assets": {
+        "fashion_model": {
+          "file": "1c18e215-2ecb-4fbd-9da3-72b473bc5134/fashion_model.jpg",
+          "sha256": "b68ff9ad63b22022101247cb7d3b4190eb594cd04088588ab8e5bf6aa1a2602d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1134,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1c18e215-2ecb-4fbd-9da3-72b473bc5134/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
