@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-508",
+  "published_at_utc": "2026-11-18T22:05:01.345740+00:00",
+  "products": [
+    {
+      "product_id": "5b63c893-a44d-4411-a475-caa19cb2f15c",
+      "sample": 1161,
+      "name": "Omuzlardan Açık Bağlamalı Arkası Çapraz Detaylı Uzun Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5b63c893-a44d-4411-a475-caa19cb2f15c-front-b46ed01e2956.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5b63c893-a44d-4411-a475-caa19cb2f15c-back-e7dfaf124144.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5b63c893-a44d-4411-a475-caa19cb2f15c-model-cf8ce1f8bf20.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
