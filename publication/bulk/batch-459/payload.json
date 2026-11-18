@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-459",
+  "created_at": "2026-11-18T15:41:26.140142+00:00",
+  "catalog_poll_at": "2026-11-18T15:41:26.140142+00:00",
+  "products": [
+    {
+      "product_id": "63bd0b03-2883-4d4a-8001-31de604afe4a",
+      "sample": 1115,
+      "name": "Yüksel Bel Likralı Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 39,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4fd2e255d76619ef2b48.jpeg",
+        "https://modayakamoz.com/orj/62a7be9ededa3c1dddbf.jpeg",
+        "https://modayakamoz.com/orj/60b0ca70c217eac14f35.jpeg",
+        {
+          "id": "86ea2919-a228-4f24-9eec-a40c72a94bce",
+          "url": "https://cdn.meluni.com.tr/ai-products/2164a711-ca2d-4459-ba57-738715827856-olcu-oto-09d60ffc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-24T05:21:51.747496+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "63bd0b03-2883-4d4a-8001-31de604afe4a/front.jpg",
+          "sha256": "008952708673f06e85f5da992f9dd7c1df2f57d3c3e8e97a2ebcd7d76d3ef9f4",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1115,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-63bd0b03-2883-4d4a-8001-31de604afe4a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "63bd0b03-2883-4d4a-8001-31de604afe4a/back.jpg",
+          "sha256": "71f6ac1df5f772ff9e81239853dec0765e635ea96ac1298d0e9ff671f07fd3f5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1115,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-63bd0b03-2883-4d4a-8001-31de604afe4a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "63bd0b03-2883-4d4a-8001-31de604afe4a/fashion_model.jpg",
+          "sha256": "a81830b0a506e4762bfa4388127da81a63eb27eecc6549b478248d02a730621c",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1115,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-63bd0b03-2883-4d4a-8001-31de604afe4a/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
