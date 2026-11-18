@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-461",
+  "created_at": "2026-11-18T15:57:51.156943+00:00",
+  "catalog_poll_at": "2026-11-18T15:57:51.156943+00:00",
+  "products": [
+    {
+      "product_id": "8ee504c6-7c34-407d-9cd5-9567ac170158",
+      "sample": 1117,
+      "name": "Üç İplik Lastikli Eşofman Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 228,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/8ee504c6-7c34-407d-9cd5-9567ac170158-hd0-1d0a8c3d.jpg",
+        "https://cdn.meluni.com.tr/ai-products/8ee504c6-7c34-407d-9cd5-9567ac170158-hd1-9913c51d.jpg",
+        "https://cdn.meluni.com.tr/ai-products/8ee504c6-7c34-407d-9cd5-9567ac170158-hd2-14d05f9c.jpg",
+        "https://cdn.meluni.com.tr/ai-products/8ee504c6-7c34-407d-9cd5-9567ac170158-hd3-3f85906c.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "8ee504c6-7c34-407d-9cd5-9567ac170158/front.jpg",
+          "sha256": "eadebaa9dd7ffc47b090095295c9fb7bc2a175b9c28ba3cc9b4cde0ccb4b91f7",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1117,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8ee504c6-7c34-407d-9cd5-9567ac170158/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8ee504c6-7c34-407d-9cd5-9567ac170158/back.jpg",
+          "sha256": "8635e33e63d824317c38bd510cd0f774a6e3f21c08260fe61e8ceeac5200b50f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1117,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8ee504c6-7c34-407d-9cd5-9567ac170158/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8ee504c6-7c34-407d-9cd5-9567ac170158/fashion_model.jpg",
+          "sha256": "179f056a9005d44159ac0d8e5866ab8e75585f957d5f149dba6a428f8b617b12",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1117,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8ee504c6-7c34-407d-9cd5-9567ac170158/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
