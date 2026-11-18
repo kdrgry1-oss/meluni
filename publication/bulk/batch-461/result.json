@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-461",
+  "published_at_utc": "2026-11-18T15:59:12.077937+00:00",
+  "products": [
+    {
+      "product_id": "8ee504c6-7c34-407d-9cd5-9567ac170158",
+      "sample": 1117,
+      "name": "Üç İplik Lastikli Eşofman Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8ee504c6-7c34-407d-9cd5-9567ac170158-front-eadebaa9dd7f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8ee504c6-7c34-407d-9cd5-9567ac170158-back-8635e33e63d8.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8ee504c6-7c34-407d-9cd5-9567ac170158-model-179f056a9005.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
