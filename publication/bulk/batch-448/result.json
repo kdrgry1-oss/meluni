@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-448",
+  "published_at_utc": "2026-11-18T12:04:37.960661+00:00",
+  "products": [
+    {
+      "product_id": "fc198a02-ca2d-40f3-b24c-7109991e90fc",
+      "sample": 1104,
+      "name": "Uzun Kolu Bisiklet Yakalı Renkli Modal Tunik Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/fc198a02-ca2d-40f3-b24c-7109991e90fc-front-a0638a091488.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/fc198a02-ca2d-40f3-b24c-7109991e90fc-back-b64664a7b8ea.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/fc198a02-ca2d-40f3-b24c-7109991e90fc-model-3354f7196f27.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/fc198a02-ca2d-40f3-b24c-7109991e90fc-size-chart-6a50dede875d.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
