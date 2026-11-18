@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-482",
+  "published_at_utc": "2026-11-18T19:21:47.588466+00:00",
+  "products": [
+    {
+      "product_id": "c0aae57c-1a99-4bb9-a4fb-634891572afd",
+      "sample": 1138,
+      "name": "Kısa Kollu V Yakalı Krep Bluz",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c0aae57c-1a99-4bb9-a4fb-634891572afd-model-7f80ee669ca1.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
