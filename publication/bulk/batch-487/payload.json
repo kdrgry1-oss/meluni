@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-487",
+  "created_at": "2026-11-18T20:00:20.997737+00:00",
+  "catalog_poll_at": "2026-11-18T20:00:20.997737+00:00",
+  "products": [
+    {
+      "product_id": "3485323c-c845-4a6d-97a9-b83a294bf3fd",
+      "sample": 1143,
+      "name": "Kısa Kollu Yarı Balıkçı Yaka Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 20,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/46ead1fbd0e2b5f6726d.jpeg",
+        "https://modayakamoz.com/orj/1e3c3f6cf3d64b80c610.jpeg",
+        "https://modayakamoz.com/orj/17b4fd0c4f0aba320fb0.jpeg",
+        "https://modayakamoz.com/orj/21d872cf8d89e3ca28c2.jpeg",
+        {
+          "id": "f544f77d-4a72-461d-86ae-b996d48c7bb0",
+          "url": "https://cdn.meluni.com.tr/ai-products/3485323c-c845-4a6d-97a9-b83a294bf3fd-olcu-oto-a8e45ff5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:26:43.977662+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "3485323c-c845-4a6d-97a9-b83a294bf3fd/front.jpg",
+          "sha256": "cd11bf2527840bd413eee137a64566965072f8e3844dbc6de3fbcd63487f77e8",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1143,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3485323c-c845-4a6d-97a9-b83a294bf3fd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3485323c-c845-4a6d-97a9-b83a294bf3fd/back.jpg",
+          "sha256": "6728108cbd532d18fee074e5c7b9b1d91f117680042f97135bf3315d9cef3e8b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1143,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3485323c-c845-4a6d-97a9-b83a294bf3fd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3485323c-c845-4a6d-97a9-b83a294bf3fd/fashion_model.jpg",
+          "sha256": "e80c14668e60fd904e097cd179ba0b14670cecf9432cc08aef8f5c210ab7cf4d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1143,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3485323c-c845-4a6d-97a9-b83a294bf3fd/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "3485323c-c845-4a6d-97a9-b83a294bf3fd/size_chart.jpg",
+          "sha256": "753e38c73ef1341614cff68b971479b385a5dd4d0bc252011f70b32e7b72acb3",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1143,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3485323c-c845-4a6d-97a9-b83a294bf3fd/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
