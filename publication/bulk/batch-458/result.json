@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-458",
+  "published_at_utc": "2026-11-18T15:36:59.909394+00:00",
+  "products": [
+    {
+      "product_id": "89211cce-f424-4ec0-b978-76b82e6796bb",
+      "sample": 1114,
+      "name": "Yüksel Bel Likralı Kot (Gri) Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/89211cce-f424-4ec0-b978-76b82e6796bb-front-b3cc72120d4b.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/89211cce-f424-4ec0-b978-76b82e6796bb-back-4446e0030594.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/89211cce-f424-4ec0-b978-76b82e6796bb-model-3772241efd60.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
