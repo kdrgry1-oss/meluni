@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-514",
+  "created_at": "2026-11-18T22:39:59.322335+00:00",
+  "catalog_poll_at": "2026-11-18T22:39:59.322335+00:00",
+  "products": [
+    {
+      "product_id": "b5ea98e0-9325-4dd3-8a17-edad7a72e876",
+      "sample": 1167,
+      "name": "Omuzlardan Açık Damla Detaylı Kısa Sandy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ec7f14366c7a8b5b65d3.jpeg",
+        "https://modayakamoz.com/orj/7b96041ae058ba198142.jpeg",
+        "https://modayakamoz.com/orj/d209f5a196372264e1fe.jpeg",
+        "https://modayakamoz.com/orj/62e223fa9ae22a053b64.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b5ea98e0-9325-4dd3-8a17-edad7a72e876/front.jpg",
+          "sha256": "9b7c994c0bea4ff21ab8684799b14974b5e89c282552f53aece465065bd17018",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1167,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5ea98e0-9325-4dd3-8a17-edad7a72e876/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b5ea98e0-9325-4dd3-8a17-edad7a72e876/fashion_model.jpg",
+          "sha256": "1c663121bea0e05f29cf5b16ba43a9e32caca7e8482d9808dab3fd2654c9f3cd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1167,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5ea98e0-9325-4dd3-8a17-edad7a72e876/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "b5ea98e0-9325-4dd3-8a17-edad7a72e876/size_chart.jpg",
+          "sha256": "e0e96103317477601fa9ae547f5b26b7336c66818a5aec4715d24508954f65c6",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1167,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5ea98e0-9325-4dd3-8a17-edad7a72e876/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
