@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-526",
+  "created_at": "2026-11-18T23:55:12.360113+00:00",
+  "catalog_poll_at": "2026-11-18T23:55:12.360113+00:00",
+  "products": [
+    {
+      "product_id": "3157d6ad-0bd6-45b3-a974-df9b2d03fda0",
+      "sample": 1179,
+      "name": "Uzun Kollu Balıkçı Yakalı Omuz Geometrik Detaylı Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 76,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-194076-1-5d25b49503dc.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194076-50ae5926b569b0c2.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194076-d330ef4d803183df.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194076-1a28ca60113e0cd4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194076-5d25b49503dc36db.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194076-64a24722c1ce9072.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194076-09e57a5c0b76970e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "3157d6ad-0bd6-45b3-a974-df9b2d03fda0/front.jpg",
+          "sha256": "a4e02c833bc7d5f2411ad67298fc4c5848752b35540a8c78b2c9b89c83e3104b",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1179,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3157d6ad/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3157d6ad-0bd6-45b3-a974-df9b2d03fda0/back.jpg",
+          "sha256": "441008d5c132397fdb6df9dbef71eca4f0ed3bb522ae32e781fe5545e0a96759",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1179,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3157d6ad/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3157d6ad-0bd6-45b3-a974-df9b2d03fda0/fashion_model.jpg",
+          "sha256": "44b1a1bf8a229e9d1d377f263d8bd337ecf930534eae39dbe4a583ac2cca4aed",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1179,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3157d6ad/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "3157d6ad-0bd6-45b3-a974-df9b2d03fda0/size_chart.jpg",
+          "sha256": "516b38b2c69ace0c688c99b58207789ff0550b4579e89b539fbb1881573664e7",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1179,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3157d6ad/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
