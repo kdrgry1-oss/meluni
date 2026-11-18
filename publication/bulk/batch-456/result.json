@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-456",
+  "published_at_utc": "2026-11-18T15:15:57.989652+00:00",
+  "products": [
+    {
+      "product_id": "409c1ee8-423d-430d-a1a7-499afd5d4229",
+      "sample": 1112,
+      "name": "Yüksek Bel Likralı Jean 90 Cm Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/409c1ee8-423d-430d-a1a7-499afd5d4229-front-3a5afd9acf27.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/409c1ee8-423d-430d-a1a7-499afd5d4229-back-358021c7a0c6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/409c1ee8-423d-430d-a1a7-499afd5d4229-model-14472c799f1b.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/409c1ee8-423d-430d-a1a7-499afd5d4229-size-chart-322872f6f2ef.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
