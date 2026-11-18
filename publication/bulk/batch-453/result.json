@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-453",
+  "published_at_utc": "2026-11-18T12:42:36.071160+00:00",
+  "products": [
+    {
+      "product_id": "e16cce3b-b7a6-43ca-aeef-88b6b45724b3",
+      "sample": 1109,
+      "name": "V Yaka Kısa Kol Dokuma Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e16cce3b-b7a6-43ca-aeef-88b6b45724b3-front-3fbf33f2037f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e16cce3b-b7a6-43ca-aeef-88b6b45724b3-back-13d13f96e13a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e16cce3b-b7a6-43ca-aeef-88b6b45724b3-model-4fb25e346ee6.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
