@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-472",
+  "published_at_utc": "2026-11-18T18:23:22.155866+00:00",
+  "products": [
+    {
+      "product_id": "e07e48a1-4ace-4e50-8215-66ac863c98aa",
+      "sample": 1128,
+      "name": "Kısa Kollu V Lazer Yaka Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e07e48a1-4ace-4e50-8215-66ac863c98aa-front-af3b0772ef56.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e07e48a1-4ace-4e50-8215-66ac863c98aa-back-c1fe514c5200.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e07e48a1-4ace-4e50-8215-66ac863c98aa-model-c125a8046690.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e07e48a1-4ace-4e50-8215-66ac863c98aa-size-chart-ed5fa6785b4d.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
