@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-513",
+  "created_at": "2026-11-18T22:35:31.339956+00:00",
+  "catalog_poll_at": "2026-11-18T22:35:31.339956+00:00",
+  "products": [
+    {
+      "product_id": "8a71cabd-58c7-4b0b-8859-fcffab6f49ee",
+      "sample": 1166,
+      "name": "Omuzlardan Açık Boyundan Geçmeli Damla Detaylı Dalgıç Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 59,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/9c510db31ffba2fc9a31.jpeg",
+        "https://modayakamoz.com/orj/50bd0a8b340a7e5f02b8.jpeg",
+        "https://modayakamoz.com/orj/0d25c22952e0eb7add36.jpeg",
+        "https://modayakamoz.com/orj/6a442c82e3147e509910.jpeg",
+        "https://modayakamoz.com/orj/e90119dc534bf7905864.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "8a71cabd-58c7-4b0b-8859-fcffab6f49ee/front.jpg",
+          "sha256": "496aa3a06caa704ef9b9733b51740915f144cacbb6fc6b4d534311e8f79c1141",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1166,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8a71cabd-58c7-4b0b-8859-fcffab6f49ee/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8a71cabd-58c7-4b0b-8859-fcffab6f49ee/fashion_model.jpg",
+          "sha256": "d5e55c0c5314c3bdecb55c9a9376429ca94e1a11d29f2cb5aa2d34641162fcc5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1166,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8a71cabd-58c7-4b0b-8859-fcffab6f49ee/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "8a71cabd-58c7-4b0b-8859-fcffab6f49ee/size_chart.jpg",
+          "sha256": "76dd83cddf0d9475cec847d878af6d5afea997bde7c516c0433ca4c573c92469",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1166,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8a71cabd-58c7-4b0b-8859-fcffab6f49ee/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
