@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-506",
+  "created_at": "2026-11-18T21:52:02.205892+00:00",
+  "catalog_poll_at": "2026-11-18T21:52:02.205892+00:00",
+  "products": [
+    {
+      "product_id": "a1c1f8d4-e6e5-4420-86f5-1db55fcd84e3",
+      "sample": 1159,
+      "name": "Omuzlardan Açık Bağcıklı Uzun Aerobin Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 72,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1fcc76d42e159e19a25c.jpeg",
+        "https://modayakamoz.com/orj/938d65793a6986df1330.jpeg",
+        "https://modayakamoz.com/orj/d2988f02279f8a588641.jpeg",
+        "https://modayakamoz.com/orj/e203a420372b86a4eeea.jpeg",
+        "https://modayakamoz.com/orj/bb2fb321c040ec5c8a98.jpeg",
+        {
+          "id": "229bf053-190d-4ef0-b7f1-4c8b044d9d00",
+          "url": "https://cdn.meluni.com.tr/ai-products/258ecd6b-1039-4473-9c10-241e309da981-olcu-oto-0bc7db28.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-02T05:22:06.929285+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "a1c1f8d4-e6e5-4420-86f5-1db55fcd84e3/front.jpg",
+          "sha256": "78c5ca608ca18d1f00f4cd59e3cc87ec63298dd7f385b3f5d1f1859bce94004a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1159,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a1c1f8d4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a1c1f8d4-e6e5-4420-86f5-1db55fcd84e3/back.jpg",
+          "sha256": "948f3e1e8af6e817be92323fdebc6681ceba14212baa4eae18a7eba960044337",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1159,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a1c1f8d4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a1c1f8d4-e6e5-4420-86f5-1db55fcd84e3/fashion_model.jpg",
+          "sha256": "8d8364d2b2c7323d7de13443027725b78e376c7c1a4dba6529784f8ce2e1459f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1159,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a1c1f8d4/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "a1c1f8d4-e6e5-4420-86f5-1db55fcd84e3/size_chart.jpg",
+          "sha256": "50c85f70ed91e9fd92ccf4274596ff17b2c1cba9c069b56792f7b2bf4fbee01b",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1159,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a1c1f8d4/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
