@@ -1,0 +1,62 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-520",
+  "created_at": "2026-11-18T23:18:14.240959+00:00",
+  "catalog_poll_at": "2026-11-18T23:18:14.240959+00:00",
+  "products": [
+    {
+      "product_id": "01c8a34b-5c94-4827-814e-e457c2539c28",
+      "sample": 1173,
+      "name": "Truvakar Kol Bağlamalı Kısa Şifon Bolero Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 17,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b26cf2bd4ea39939afd1.jpeg",
+        "https://modayakamoz.com/orj/20240c6263eac091dc05.jpeg",
+        "https://modayakamoz.com/orj/5b76ad8b0e6dac705dad.jpeg",
+        "https://modayakamoz.com/orj/178c6d4fedb5c830a8b9.jpeg",
+        "https://modayakamoz.com/orj/afb1449979159938195e.jpeg",
+        "https://modayakamoz.com/orj/9bbd8177a1b7cac3a98d.jpeg",
+        "https://modayakamoz.com/orj/2c9c2bfa68446dba1cfd.jpeg",
+        {
+          "id": "3c5e2e31-4ef1-445b-9e1d-3f46a9a712d4",
+          "url": "https://cdn.meluni.com.tr/ai-products/200529c1-a23f-4642-9861-89094dac09c4-olcu-oto-98fb5bbe.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-10-03T05:18:28.596022+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "01c8a34b-5c94-4827-814e-e457c2539c28/front.jpg",
+          "sha256": "2ea186ea2ae4a325b58a57344c634ac714d8dc46c370a3be8a125bd80503eccd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1173,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-01c8a34b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "01c8a34b-5c94-4827-814e-e457c2539c28/back.jpg",
+          "sha256": "e483db17cec595a9ab064542cdb01cfece2c4443121c5dd2ad7c540d68b98a3d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1173,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-01c8a34b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "01c8a34b-5c94-4827-814e-e457c2539c28/fashion_model.jpg",
+          "sha256": "83d25b56f2a13b5d6a7e9aba971792983a41861aacf1c8dea9001958cad3726d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1173,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-01c8a34b/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "01c8a34b-5c94-4827-814e-e457c2539c28/size_chart.jpg",
+          "sha256": "bb6ade5f94ed84e70af1e04be6687287395fcda0dd14948a44a5d1eb76711988",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1173,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-01c8a34b/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
