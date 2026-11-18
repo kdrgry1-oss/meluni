@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-473",
+  "published_at_utc": "2026-11-18T18:29:52.047265+00:00",
+  "products": [
+    {
+      "product_id": "124012e8-eec7-402d-84b9-b121a6307e22",
+      "sample": 1129,
+      "name": "Kısa Kollu V Yakalı Dantelli Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/124012e8-eec7-402d-84b9-b121a6307e22-front-64a6c3e8f290.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/124012e8-eec7-402d-84b9-b121a6307e22-back-393dfd1dfe30.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/124012e8-eec7-402d-84b9-b121a6307e22-model-c73b408c9b61.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
