@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-468",
+  "published_at_utc": "2026-11-18T16:52:57.018755+00:00",
+  "products": [
+    {
+      "product_id": "e192bcfc-6770-4334-9d8f-e9791c91962a",
+      "sample": 1124,
+      "name": "Askılı V Yakalı Düğmeli Midi Bürümcük Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e192bcfc-6770-4334-9d8f-e9791c91962a-front-c9aba0834c5e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e192bcfc-6770-4334-9d8f-e9791c91962a-back-bdc4dfdfc063.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e192bcfc-6770-4334-9d8f-e9791c91962a-model-7737fde2446b.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
