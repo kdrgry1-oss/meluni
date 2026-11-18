@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-468",
+  "created_at": "2026-11-18T16:51:45.634929+00:00",
+  "catalog_poll_at": "2026-11-18T16:51:45.634929+00:00",
+  "products": [
+    {
+      "product_id": "e192bcfc-6770-4334-9d8f-e9791c91962a",
+      "sample": 1124,
+      "name": "Askılı V Yakalı Düğmeli Midi Bürümcük Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/756d5fc8b8ed06620cd4.jpeg",
+        "https://modayakamoz.com/orj/fd7f7e2dc8ff3622f3f2.jpeg",
+        "https://modayakamoz.com/orj/e5e119b0276d528aa8ff.jpeg",
+        "https://modayakamoz.com/orj/b2f1c1615646ba675314.jpeg",
+        "https://modayakamoz.com/orj/eb156ff33cb531acd4b4.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/e192bcfc-6770-4334-9d8f-e9791c91962a/a7c05dcd45dbcbb7.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e192bcfc-6770-4334-9d8f-e9791c91962a/front.jpg",
+          "sha256": "c9aba0834c5ec448c89ccca25361f4d70df95fe774b07e8b8462d965e858913a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1124,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e192bcfc-6770-4334-9d8f-e9791c91962a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e192bcfc-6770-4334-9d8f-e9791c91962a/back.jpg",
+          "sha256": "bdc4dfdfc06393132888e274875188294e2ac4b464d0ddc78a92393423c130ed",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1124,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e192bcfc-6770-4334-9d8f-e9791c91962a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e192bcfc-6770-4334-9d8f-e9791c91962a/fashion_model.jpg",
+          "sha256": "7737fde2446b71bb7369c811bfb5429004649a546f84807b56e90e260dbaf7bf",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1124,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e192bcfc-6770-4334-9d8f-e9791c91962a/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
