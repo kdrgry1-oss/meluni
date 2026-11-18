@@ -1,0 +1,63 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-474",
+  "created_at": "2026-11-18T18:34:53.728920+00:00",
+  "catalog_poll_at": "2026-11-18T18:34:53.728920+00:00",
+  "products": [
+    {
+      "product_id": "b20af1a5-ce86-468b-884c-c46093fc5689",
+      "sample": 1130,
+      "name": "Kısa Kollu V Yakalı Bürümcük Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 30,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/75a8fed70b1472d49371.jpeg",
+        "https://modayakamoz.com/orj/1b58c1a97d137ab82e0e.jpeg",
+        "https://modayakamoz.com/orj/d8bd02433e816f1c868e.jpeg",
+        "https://modayakamoz.com/orj/bdae8f44eed2d76cfccd.jpeg",
+        "https://modayakamoz.com/orj/43c15f147c0a76bcb5ae.jpeg",
+        "https://modayakamoz.com/orj/1b9e2baba966be09c1a0.jpeg",
+        "https://modayakamoz.com/orj/3a66c9b103ae6ee6a74c.jpeg",
+        {
+          "id": "d7266c42-8693-468a-8695-87837972288c",
+          "url": "https://cdn.meluni.com.tr/ai-products/b5f23c97-232e-4617-9ce4-3015fc0cfa4d-olcu-oto-ab4e9ab7.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-17T05:27:04.027281+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/b20af1a5-ce86-468b-884c-c46093fc5689/23b9c42e90ac4cd8.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b20af1a5-ce86-468b-884c-c46093fc5689/front.jpg",
+          "sha256": "c5397e743b992679e8cafc9962e7a5b36d463084ef616e25c12ad0747cfd301a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1130,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b20af1a5-ce86-468b-884c-c46093fc5689/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b20af1a5-ce86-468b-884c-c46093fc5689/back.jpg",
+          "sha256": "3a506fd890c61319363fd15a218028fcf9577b5b038170db3465080b17ab5c62",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1130,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b20af1a5-ce86-468b-884c-c46093fc5689/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b20af1a5-ce86-468b-884c-c46093fc5689/fashion_model.jpg",
+          "sha256": "37b6a793c5a8ba1a5b1d39a4ec64108b9712be8ba7ff001e4d68aff0ed994082",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1130,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b20af1a5-ce86-468b-884c-c46093fc5689/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "b20af1a5-ce86-468b-884c-c46093fc5689/size_chart.jpg",
+          "sha256": "9eb8532ff491601bf3e7c1adb7155d815814a9922b5431474248124e8348e27f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1130,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b20af1a5-ce86-468b-884c-c46093fc5689/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
