@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-457",
+  "published_at_utc": "2026-11-18T15:25:28.916315+00:00",
+  "products": [
+    {
+      "product_id": "0f53d2aa-91e2-48a3-bddf-16fcfe86cf37",
+      "sample": 1113,
+      "name": "Yüksek Bel Tek Düğmeli Paçaya Doğru Genişleyen Kot Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0f53d2aa-91e2-48a3-bddf-16fcfe86cf37-front-64610aa27ea4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0f53d2aa-91e2-48a3-bddf-16fcfe86cf37-back-a4bf12171de8.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0f53d2aa-91e2-48a3-bddf-16fcfe86cf37-model-63a4d5685412.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
