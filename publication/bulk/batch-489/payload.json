@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-489",
+  "created_at": "2026-11-18T20:16:16.065295+00:00",
+  "catalog_poll_at": "2026-11-18T20:16:16.065295+00:00",
+  "products": [
+    {
+      "product_id": "2bed76e9-e135-4f23-adae-e35b54268526",
+      "sample": 1145,
+      "name": "Kısa Kollu Yuvarlak Yakalı Düğmeli Önden Asimetrik Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 141,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8bf4ec76af2b95d966aa.jpeg",
+        "https://modayakamoz.com/orj/960cf6a613228ddaca71.jpeg",
+        "https://modayakamoz.com/orj/db4a8f84be854f33cc31.jpeg",
+        "https://modayakamoz.com/orj/9b4b276a91b2b12d4518.jpeg",
+        {
+          "id": "948c0af7-ef8b-4bf5-bf25-3ee62dda90b7",
+          "url": "https://cdn.meluni.com.tr/ai-products/2fc08a98-88be-4dc6-8a28-b5d8dd947e5b-olcu-oto-ebc7de63.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-11T05:21:55.939773+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "2bed76e9-e135-4f23-adae-e35b54268526/front.jpg",
+          "sha256": "c903846eeef0bee9e82a02945ac7016ccf54faa9b1edd67182cdaee83a6f8803",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1145,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2bed76e9-e135-4f23-adae-e35b54268526/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "2bed76e9-e135-4f23-adae-e35b54268526/back.jpg",
+          "sha256": "dfc61d8f3728186cb40c589211b67bc9f52c7dc9da1348cf3fc20e804a9aed15",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1145,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2bed76e9-e135-4f23-adae-e35b54268526/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "2bed76e9-e135-4f23-adae-e35b54268526/fashion_model.jpg",
+          "sha256": "75666474f2adfd63a4055267dcd94d319d729ed629eab6ed5c8b9cb17331f7f1",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1145,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2bed76e9-e135-4f23-adae-e35b54268526/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "2bed76e9-e135-4f23-adae-e35b54268526/size_chart.jpg",
+          "sha256": "06cb0159a6e2fd1a8ff9f74253354b7fbe513efa2dd288be40f617af40d59303",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1145,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2bed76e9-e135-4f23-adae-e35b54268526/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
