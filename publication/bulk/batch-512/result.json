@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-512",
+  "published_at_utc": "2026-11-18T22:30:23.576378+00:00",
+  "products": [
+    {
+      "product_id": "4c20ed58-f59e-4bfa-92ea-36fdf8bd8783",
+      "sample": 1165,
+      "name": "Omuzlardan Açık V Yakalı Askılı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4c20ed58-f59e-4bfa-92ea-36fdf8bd8783-front-f2829da1f557.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4c20ed58-f59e-4bfa-92ea-36fdf8bd8783-back-87ab3d81d2b8.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4c20ed58-f59e-4bfa-92ea-36fdf8bd8783-model-da2f2fd250f2.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
