@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-560",
+  "created_at": "2026-11-19T02:58:27.162793+00:00",
+  "catalog_poll_at": "2026-11-19T02:58:27.162793+00:00",
+  "products": [
+    {
+      "product_id": "40e61705-72cc-442e-856d-9277ff84f31d",
+      "sample": 1213,
+      "name": "Uzun Kollu Kolları Tül Detaylı Önden Nervürlu Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 83,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/40e61705-72cc-442e-856d-9277ff84f31d-front-390ddcd9b28d.jpg",
+        "https://cdn.meluni.com.tr/ai-products/40e61705-72cc-442e-856d-9277ff84f31d-back-7eb5cd6b13db.jpg",
+        "https://cdn.meluni.com.tr/ai-products/40e61705-72cc-442e-856d-9277ff84f31d-model-1a4c098b179b.jpg",
+        "https://modayakamoz.com/orj/janes-193732-1-eafed33a2632.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193732-89a2330c89e7bc00.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193732-8d84c63d9912d3d8.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193732-772cb68ea6db38f8.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193732-23cf90cd76d31ab7.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193732-f45cef325f40d02f.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "40e61705-72cc-442e-856d-9277ff84f31d/size_chart.jpg",
+          "sha256": "78c49f5cbbbdcb70a99623d126d04da6b55ccff378604a7b1f631e2df57eb5f0",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1213,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-40e61705/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
