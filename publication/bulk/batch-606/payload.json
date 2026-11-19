@@ -1,0 +1,34 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-606",
+  "created_at": "2026-11-19T06:46:55.794805+00:00",
+  "catalog_poll_at": "2026-11-19T06:46:55.794805+00:00",
+  "products": [
+    {
+      "product_id": "33ccb80d-3510-4ea7-bb67-ef6a04013614",
+      "sample": 1259,
+      "name": "Uzun Kollu Yakalı Önu Açık Düğme Detaylı Kısa Süet Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 71,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/33ccb80d-3510-4ea7-bb67-ef6a04013614-front-3613ebc82fa0.jpg",
+        "https://cdn.meluni.com.tr/ai-products/33ccb80d-3510-4ea7-bb67-ef6a04013614-back-66356fdfad97.jpg",
+        "https://cdn.meluni.com.tr/ai-products/33ccb80d-3510-4ea7-bb67-ef6a04013614-model-f07462b926ce.jpg",
+        "https://modayakamoz.com/orj/janes-192429-1-5e87dad04f.jpg",
+        "https://modayakamoz.com/orj/janes-192429-2-5bc73d1002.jpg",
+        "https://modayakamoz.com/orj/janes-192429-3-ad72c44df8.jpg",
+        "https://modayakamoz.com/orj/janes-192429-7-aadaaecb64.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "33ccb80d-3510-4ea7-bb67-ef6a04013614/size_chart.jpg",
+          "sha256": "e2baa26d49c902065bb12cd3cbc1f6c82129455ab8d2e9b2f221bbfcca128e11",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1259,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-33ccb80d/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
