@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-616",
+  "published_at_utc": "2026-11-19T07:45:20.149708+00:00",
+  "products": [
+    {
+      "product_id": "a3c735ea-2948-484e-b83e-c81316c889a3",
+      "sample": 1273,
+      "name": "Yüksek Bel Büzgülü Cepli Geniş Viskon Iki Iplik Pantolon",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/a3c735ea-2948-484e-b83e-c81316c889a3-size-chart-c10c63f6b021.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
