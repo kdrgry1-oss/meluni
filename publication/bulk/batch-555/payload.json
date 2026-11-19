@@ -1,0 +1,34 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-555",
+  "created_at": "2026-11-19T02:34:09.994766+00:00",
+  "catalog_poll_at": "2026-11-19T02:34:09.994766+00:00",
+  "products": [
+    {
+      "product_id": "7621af44-05c0-462b-aef9-4e6630de416e",
+      "sample": 1208,
+      "name": "Uzun Kollu Kapşonlu Fermuarlı Kaşkorse Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 55,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/7621af44-05c0-462b-aef9-4e6630de416e-front-7b1b64cc67f9.jpg",
+        "https://cdn.meluni.com.tr/ai-products/7621af44-05c0-462b-aef9-4e6630de416e-back-7e3c8e50dcbd.jpg",
+        "https://cdn.meluni.com.tr/ai-products/7621af44-05c0-462b-aef9-4e6630de416e-model-c2bc2d6415c0.jpg",
+        "https://modayakamoz.com/orj/3f638edb2c2412e5f45d.jpeg",
+        "https://modayakamoz.com/orj/9f06bc1d13e47710feab.jpeg",
+        "https://modayakamoz.com/orj/f88b1648dcc638cadde5.jpeg",
+        "https://modayakamoz.com/orj/920f61e9f96616a7b403.jpeg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "7621af44-05c0-462b-aef9-4e6630de416e/size_chart.jpg",
+          "sha256": "66ff6e8c84840108abf95031e86124a8fbeab9316618700b960b53dd4b20794d",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1208,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7621af44/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
