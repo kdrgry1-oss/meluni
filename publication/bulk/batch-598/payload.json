@@ -1,0 +1,34 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-598",
+  "created_at": "2026-11-19T06:12:57.536948+00:00",
+  "catalog_poll_at": "2026-11-19T06:12:57.536948+00:00",
+  "products": [
+    {
+      "product_id": "c19bf1ee-2d4a-4171-8897-1782d43109ee",
+      "sample": 1251,
+      "name": "Uzun Kollu V Yarasa Bağcıklı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 55,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/c19bf1ee-2d4a-4171-8897-1782d43109ee-front-4da838a4c5fa.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c19bf1ee-2d4a-4171-8897-1782d43109ee-back-ae199a65f6f1.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c19bf1ee-2d4a-4171-8897-1782d43109ee-model-3c02516088be.jpg",
+        "https://modayakamoz.com/orj/janes-193817-1-97c261c2f5d7.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193817-ca8971bbea723d7d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193817-faf0b233a6a779f7.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193817-497c16429cb5bcb5.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "c19bf1ee-2d4a-4171-8897-1782d43109ee/size_chart.jpg",
+          "sha256": "359ec14c8ae3792482e6d500e128f676f81aa7a76760600ef6378450f06401e6",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1251,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c19bf1ee/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
