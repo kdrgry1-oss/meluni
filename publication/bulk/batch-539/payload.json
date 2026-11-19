@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-539",
+  "created_at": "2026-11-19T01:10:21.977364+00:00",
+  "catalog_poll_at": "2026-11-19T01:10:21.977364+00:00",
+  "products": [
+    {
+      "product_id": "56a5a83c-3385-4819-b706-d66f70d04f22",
+      "sample": 1192,
+      "name": "Uzun Kollu Bisiklet Yaka Triko Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 124,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193950-1-af0edfd086bc.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193950-919778338be545ee.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193950-72a361b00186425c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193950-89cb4b8d6e955ea8.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193950-226d5373ee722583.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "56a5a83c-3385-4819-b706-d66f70d04f22/front.jpg",
+          "sha256": "2471373c1877be5ea3fcef75a416763a39229cc7487256891d4024170f8fc4fd",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1192,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-56a5a83c/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "56a5a83c-3385-4819-b706-d66f70d04f22/back.jpg",
+          "sha256": "2a610bf6d5bb7d6323ddee772928326f487fd1cd3081660e73cf5a30c995db4d",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1192,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-56a5a83c/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "56a5a83c-3385-4819-b706-d66f70d04f22/fashion_model.jpg",
+          "sha256": "2ed98ae92e8747b4125ff744253ee527a739451ddcfd5f4ed45772a2ee287ad6",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1192,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-56a5a83c/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "56a5a83c-3385-4819-b706-d66f70d04f22/size_chart.jpg",
+          "sha256": "4fc26bb9c5edaedd5ab01461020e2051ed9827134f6201d7f3baa00672ffd227",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1192,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-56a5a83c/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
