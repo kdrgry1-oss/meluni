@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-608",
+  "published_at_utc": "2026-11-19T06:52:44.710399+00:00",
+  "products": [
+    {
+      "product_id": "6fb0accc-089b-4cc8-b7a3-597cd38076f6",
+      "sample": 1261,
+      "name": "Uzun Kollu Yarı Balıkçı Yaka Dantel Detaylı Sandy Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6fb0accc-089b-4cc8-b7a3-597cd38076f6-size-chart-af8f564fdeb0.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
