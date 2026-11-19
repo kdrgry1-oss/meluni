@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-529",
+  "published_at_utc": "2026-11-19T00:12:32.542245+00:00",
+  "products": [
+    {
+      "product_id": "01e0b576-a83f-40df-bdac-c218adeb6c6b",
+      "sample": 1182,
+      "name": "Uzun Kollu Bisiklet Yakalı Kısa Modal Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/01e0b576-a83f-40df-bdac-c218adeb6c6b-front-8288aa0d3703.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/01e0b576-a83f-40df-bdac-c218adeb6c6b-back-c5c69d282eeb.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/01e0b576-a83f-40df-bdac-c218adeb6c6b-model-3dc30b5839aa.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/01e0b576-a83f-40df-bdac-c218adeb6c6b-size-chart-18ffa8fb5118.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
