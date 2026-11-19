@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-561",
+  "created_at": "2026-11-19T03:03:27.515592+00:00",
+  "catalog_poll_at": "2026-11-19T03:03:27.515592+00:00",
+  "products": [
+    {
+      "product_id": "4060487c-5be1-46ee-aa76-a2307ff3234e",
+      "sample": 1214,
+      "name": "Uzun Kollu Kolları Tül Detaylı Önden Nervürlu Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 80,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/4060487c-5be1-46ee-aa76-a2307ff3234e-front-95e0f613ce4d.jpg",
+        "https://cdn.meluni.com.tr/ai-products/4060487c-5be1-46ee-aa76-a2307ff3234e-back-803293ac71ca.jpg",
+        "https://cdn.meluni.com.tr/ai-products/4060487c-5be1-46ee-aa76-a2307ff3234e-model-379e7e94e4b5.jpg",
+        "https://modayakamoz.com/orj/janes-193731-1-d63effad2419.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193731-c639fd65b8533d6f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193731-84ab2a748ccebf64.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193731-b783d3fb72b43880.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193731-f45cef325f40d02f.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "4060487c-5be1-46ee-aa76-a2307ff3234e/size_chart.jpg",
+          "sha256": "96729c3bb6c0559d9e57912bec450e1a0f44c7b233da4ea0fe3855782d5e04e0",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1214,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4060487c/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
