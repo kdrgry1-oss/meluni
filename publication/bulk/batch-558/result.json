@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-558",
+  "published_at_utc": "2026-11-19T02:50:10.656927+00:00",
+  "products": [
+    {
+      "product_id": "fe9425c8-d70c-46e9-8e49-7bb40c972212",
+      "sample": 1211,
+      "name": "Uzun Kollu Kare Yakalı Viskon Deri Midi Elbıse",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/fe9425c8-d70c-46e9-8e49-7bb40c972212-size-chart-f873d253e983.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
