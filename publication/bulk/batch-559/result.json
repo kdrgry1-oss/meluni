@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-559",
+  "published_at_utc": "2026-11-19T02:55:02.166629+00:00",
+  "products": [
+    {
+      "product_id": "3e370dca-8c8a-4be0-8f7e-ed825c805ddf",
+      "sample": 1212,
+      "name": "Uzun Kollu Kolları Tül Detaylı Önden Nervürlu Viskon Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/3e370dca-8c8a-4be0-8f7e-ed825c805ddf-size-chart-d3bded3369be.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
