@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-541",
+  "published_at_utc": "2026-11-19T01:24:28.461225+00:00",
+  "products": [
+    {
+      "product_id": "76c50294-035b-4dc7-895f-dbe88f2790d5",
+      "sample": 1194,
+      "name": "Uzun Kollu Damla Detaylı Kuşaklı Yırtmaçlı Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/76c50294-035b-4dc7-895f-dbe88f2790d5-front-0a2fc0b95482.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/76c50294-035b-4dc7-895f-dbe88f2790d5-back-e94a68877dd2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/76c50294-035b-4dc7-895f-dbe88f2790d5-model-5e7357a4c978.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
