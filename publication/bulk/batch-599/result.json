@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-599",
+  "published_at_utc": "2026-11-19T06:23:25.320755+00:00",
+  "products": [
+    {
+      "product_id": "11d40637-bcfa-43fd-813f-1d2ce3b0a242",
+      "sample": 1252,
+      "name": "Uzun Kollu Viskon Iki Iplik Bluz Pantolon ve Çatlak Deri Üçlü Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/11d40637-bcfa-43fd-813f-1d2ce3b0a242-front-45741cb0d3d1.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/11d40637-bcfa-43fd-813f-1d2ce3b0a242-back-d25b2097a59c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/11d40637-bcfa-43fd-813f-1d2ce3b0a242-model-e301af56523b.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/11d40637-bcfa-43fd-813f-1d2ce3b0a242-size-chart-a31dcd6dc88d.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
