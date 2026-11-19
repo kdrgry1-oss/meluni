@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-618",
+  "published_at_utc": "2026-11-19T07:53:03.619008+00:00",
+  "products": [
+    {
+      "product_id": "b9746d65-4818-4c03-80e2-3e7f0d6be8d9",
+      "sample": 1275,
+      "name": "Yüksek Bel Cepli Deri Pantolon",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b9746d65-4818-4c03-80e2-3e7f0d6be8d9-size-chart-de050d7e88db.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
