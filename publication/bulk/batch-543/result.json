@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-543",
+  "published_at_utc": "2026-11-19T01:33:47.317169+00:00",
+  "products": [
+    {
+      "product_id": "e69a8396-ea7e-4ee6-ae72-40108e5671d0",
+      "sample": 1196,
+      "name": "Uzun Kollu Fermuarlı Kiloş Midi Viskon Iki Iplik Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e69a8396-ea7e-4ee6-ae72-40108e5671d0-size-chart-983e6a357579.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
