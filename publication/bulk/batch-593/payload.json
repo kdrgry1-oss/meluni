@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-593",
+  "created_at": "2026-11-19T05:49:11.974133+00:00",
+  "catalog_poll_at": "2026-11-19T05:49:11.974133+00:00",
+  "products": [
+    {
+      "product_id": "6d6b940f-f6e6-41b2-81cc-aa19c8377021",
+      "sample": 1246,
+      "name": "Uzun Kollu V Yakalı Onu Pileli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 32,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/6d6b940f-f6e6-41b2-81cc-aa19c8377021-front-a977b7347cb9.jpg",
+        "https://cdn.meluni.com.tr/ai-products/6d6b940f-f6e6-41b2-81cc-aa19c8377021-back-d0d08c36e247.jpg",
+        "https://cdn.meluni.com.tr/ai-products/6d6b940f-f6e6-41b2-81cc-aa19c8377021-model-1bfdf617ccc4.jpg",
+        "https://modayakamoz.com/orj/janes-192780-1-eeebfad9ae.jpg",
+        "https://modayakamoz.com/orj/janes-192780-2-001ae7fb58.jpg",
+        "https://modayakamoz.com/orj/janes-192780-3-bcc1b79b46.jpg",
+        "https://modayakamoz.com/orj/janes-192780-4-08ee59c3e7.jpg",
+        "https://modayakamoz.com/orj/janes-192780-6-243b9ada62.jpg",
+        "https://modayakamoz.com/orj/janes-192780-7-c7079dbc5d.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "6d6b940f-f6e6-41b2-81cc-aa19c8377021/size_chart.jpg",
+          "sha256": "d1fd288650c172a86f33ee0a22a2e5cb72df147289dc2c18d55f09e2a9ad43f2",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1246,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6d6b940f/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
