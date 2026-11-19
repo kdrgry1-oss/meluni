@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-536",
+  "published_at_utc": "2026-11-19T00:51:24.630266+00:00",
+  "products": [
+    {
+      "product_id": "9a7bb69d-b4f9-434f-9e4d-69522e76d8aa",
+      "sample": 1189,
+      "name": "Uzun Kollu Kruvaze Yakalı Düğmeli Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9a7bb69d-b4f9-434f-9e4d-69522e76d8aa-front-5be689325ac4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9a7bb69d-b4f9-434f-9e4d-69522e76d8aa-back-048d9e2092f4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9a7bb69d-b4f9-434f-9e4d-69522e76d8aa-model-ea1b813bf0ff.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/9a7bb69d-b4f9-434f-9e4d-69522e76d8aa-size-chart-3d92ec771aaf.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
