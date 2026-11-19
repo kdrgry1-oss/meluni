@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-553",
+  "created_at": "2026-11-19T02:23:46.301488+00:00",
+  "catalog_poll_at": "2026-11-19T02:23:46.301488+00:00",
+  "products": [
+    {
+      "product_id": "10428c23-b794-439c-b88c-335bb9758172",
+      "sample": 1206,
+      "name": "Uzun Kollu Kapşonlu Düğmeli ve Bağcıklı Waffle Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 315,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/10428c23-b794-439c-b88c-335bb9758172-front-34d877997545.jpg",
+        "https://cdn.meluni.com.tr/ai-products/10428c23-b794-439c-b88c-335bb9758172-back-fb8df6097d0b.jpg",
+        "https://cdn.meluni.com.tr/ai-products/10428c23-b794-439c-b88c-335bb9758172-model-11464eba5819.jpg",
+        "https://modayakamoz.com/orj/40c5ddaf49f0cf43732d.jpeg",
+        "https://modayakamoz.com/orj/2f0c2841a93a300e0fe0.jpeg",
+        "https://modayakamoz.com/orj/f6ee184ae3c4a0d37a7d.jpeg",
+        "https://modayakamoz.com/orj/8122d73b1b35a6a4855b.jpeg",
+        "https://modayakamoz.com/orj/4f48a6c96de19df4415c.jpeg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "10428c23-b794-439c-b88c-335bb9758172/size_chart.jpg",
+          "sha256": "73a7f6b2065aeccbb36b23305bcecdab293bbc225398db9fc0343987b2a04684",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1206,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-10428c23/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
