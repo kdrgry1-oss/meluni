@@ -1,0 +1,34 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-550",
+  "created_at": "2026-11-19T02:09:29.518992+00:00",
+  "catalog_poll_at": "2026-11-19T02:09:29.518992+00:00",
+  "products": [
+    {
+      "product_id": "e1b0da22-2150-4492-90ac-2f3fa4010a0c",
+      "sample": 1203,
+      "name": "Uzun Kollu Kapşonlu Cep Detaylı Üç Iplik Mevsimlik Kap",
+      "active_at_poll": true,
+      "stock_at_poll": 94,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/e1b0da22-2150-4492-90ac-2f3fa4010a0c-front-6bbc18e6d667.jpg",
+        "https://cdn.meluni.com.tr/ai-products/e1b0da22-2150-4492-90ac-2f3fa4010a0c-back-4bed2a58a5ac.jpg",
+        "https://cdn.meluni.com.tr/ai-products/e1b0da22-2150-4492-90ac-2f3fa4010a0c-model-62b0c123ac01.jpg",
+        "https://modayakamoz.com/orj/janes-192782-1-e8d3348c00.jpg",
+        "https://modayakamoz.com/orj/janes-192782-2-53a1707402.jpg",
+        "https://modayakamoz.com/orj/janes-192782-3-9bf0b91dc0.jpg",
+        "https://modayakamoz.com/orj/janes-192782-7-25739b0277.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "e1b0da22-2150-4492-90ac-2f3fa4010a0c/size_chart.jpg",
+          "sha256": "7864ec96e30602f208aae60a4beeb8201f9a24d44b1e7fecf33af026219b551e",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1203,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e1b0da22/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
