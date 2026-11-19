@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-621",
+  "published_at_utc": "2026-11-19T08:18:40.354808+00:00",
+  "products": [
+    {
+      "product_id": "179f3b74-f41c-420f-8de4-dfe36b61843b",
+      "sample": 1282,
+      "name": "Yüksek Bel Uzun Geniş Detaylı Krinkıl Pantolon",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/179f3b74-f41c-420f-8de4-dfe36b61843b-size-chart-dc29ca11160c.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
