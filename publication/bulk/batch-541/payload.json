@@ -1,0 +1,49 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-541",
+  "created_at": "2026-11-19T01:23:15.529865+00:00",
+  "catalog_poll_at": "2026-11-19T01:23:15.529865+00:00",
+  "products": [
+    {
+      "product_id": "76c50294-035b-4dc7-895f-dbe88f2790d5",
+      "sample": 1194,
+      "name": "Uzun Kollu Damla Detaylı Kuşaklı Yırtmaçlı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 527,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192773-1-24554ae584.jpg",
+        "https://modayakamoz.com/orj/janes-192773-2-a2acee168c.jpg",
+        "https://modayakamoz.com/orj/janes-192773-3-ca2d258001.jpg",
+        "https://modayakamoz.com/orj/janes-192773-4-93bd6d0a34.jpg",
+        "https://modayakamoz.com/orj/janes-192773-5-c54f6c81bc.jpg",
+        "https://modayakamoz.com/orj/janes-192773-6-77312e6ba9.jpg",
+        "https://modayakamoz.com/orj/janes-192773-7-a6cb3bfcbb.jpg",
+        "https://modayakamoz.com/orj/janes-extra-192773-f35e074bc89033f0.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "76c50294-035b-4dc7-895f-dbe88f2790d5/front.jpg",
+          "sha256": "0a2fc0b954820d6788756667a20bb9b4d9fad387a88d4b7a910a073c70ee7900",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1194,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-76c50294/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "76c50294-035b-4dc7-895f-dbe88f2790d5/back.jpg",
+          "sha256": "e94a68877dd234c75f0d78f9227aec0b6f3271e8b88bb4c02058f892bd2ee18f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1194,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-76c50294/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "76c50294-035b-4dc7-895f-dbe88f2790d5/fashion_model.jpg",
+          "sha256": "5e7357a4c97892233331095335b58845015dd7cbcf3844eca3e84f44ea621e56",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1194,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-76c50294/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
