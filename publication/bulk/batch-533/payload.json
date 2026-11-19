@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-533",
+  "created_at": "2026-11-19T00:33:37.712380+00:00",
+  "catalog_poll_at": "2026-11-19T00:33:37.712380+00:00",
+  "products": [
+    {
+      "product_id": "bf1c347b-0de8-4af7-a728-09472d625c5f",
+      "sample": 1186,
+      "name": "Uzun Kollu Kruvaze Yakalı Önü Asimetrik Kısa Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 168,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192403-1-0df04979e9.jpg",
+        "https://modayakamoz.com/orj/janes-192403-2-04af42dcd3.jpg",
+        "https://modayakamoz.com/orj/janes-192403-3-d28738dfca.jpg",
+        "https://modayakamoz.com/orj/janes-192403-4-cd554e9944.jpg",
+        "https://modayakamoz.com/orj/janes-192403-5-92bf3486c7.jpg",
+        "https://modayakamoz.com/orj/janes-192403-6-4d6b80470d.jpg",
+        "https://modayakamoz.com/orj/janes-192403-9-6f2c797954.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "bf1c347b-0de8-4af7-a728-09472d625c5f/front.jpg",
+          "sha256": "ede120eb576c26b1729c214a9b551f74c03f3880e159a226fce4c97c0f3a5e46",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1186,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bf1c347b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "bf1c347b-0de8-4af7-a728-09472d625c5f/back.jpg",
+          "sha256": "ab57bd9ebb3c98d79a6ffa97fd34fac2d8981e0770e2aa9b4eb9e242899eb541",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1186,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bf1c347b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bf1c347b-0de8-4af7-a728-09472d625c5f/fashion_model.jpg",
+          "sha256": "cf2b49675aa787accced6fd0e051064f5671e0fc6cec9f7f7197fa31e8a1c25e",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1186,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bf1c347b/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "bf1c347b-0de8-4af7-a728-09472d625c5f/size_chart.jpg",
+          "sha256": "7f903cca9f4ff79e5e6bb7ea061a5425454beb0896cad5034c95f03c377990ad",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1186,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bf1c347b/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
