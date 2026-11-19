@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-617",
+  "created_at": "2026-11-19T07:47:29.161079+00:00",
+  "catalog_poll_at": "2026-11-19T07:47:29.161079+00:00",
+  "products": [
+    {
+      "product_id": "55288737-c1cb-4fe3-973b-85de0bca56f1",
+      "sample": 1274,
+      "name": "Yüksek Bel Cepli Deri Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 62,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/55288737-c1cb-4fe3-973b-85de0bca56f1-front-fba394e37eaa.jpg",
+        "https://cdn.meluni.com.tr/ai-products/55288737-c1cb-4fe3-973b-85de0bca56f1-back-6baca490db37.jpg",
+        "https://cdn.meluni.com.tr/ai-products/55288737-c1cb-4fe3-973b-85de0bca56f1-model-2675bbe9130d.jpg",
+        "https://modayakamoz.com/orj/janes-193406-1-24360234b51b.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193406-2a2fb526c6241634.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193406-888b3cae93b0cb8a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193406-2adc0470e251e64a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193406-492010bf0c31f14c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193406-e07590555d639fb6.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "55288737-c1cb-4fe3-973b-85de0bca56f1/size_chart.jpg",
+          "sha256": "de050d7e88dbe72fcdd58da3c93da5b5ebf45bd34c909810fe1e0a5a68e227ae",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1274,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-55288737/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
