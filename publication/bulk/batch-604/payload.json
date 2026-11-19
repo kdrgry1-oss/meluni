@@ -1,0 +1,34 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-604",
+  "created_at": "2026-11-19T06:40:39.524158+00:00",
+  "catalog_poll_at": "2026-11-19T06:40:39.524158+00:00",
+  "products": [
+    {
+      "product_id": "91f00b43-bfdf-4d63-9cbf-8fa08a0eacbf",
+      "sample": 1257,
+      "name": "Uzun Kollu Yakalı Düğmeli Yırtmaç Detaylı Uzun Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 96,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/91f00b43-bfdf-4d63-9cbf-8fa08a0eacbf-front-087c808f5525.jpg",
+        "https://cdn.meluni.com.tr/ai-products/91f00b43-bfdf-4d63-9cbf-8fa08a0eacbf-back-a7ff28e754df.jpg",
+        "https://cdn.meluni.com.tr/ai-products/91f00b43-bfdf-4d63-9cbf-8fa08a0eacbf-model-fff0abfff8dd.jpg",
+        "https://modayakamoz.com/orj/cef27c1931e319baef12.jpeg",
+        "https://modayakamoz.com/orj/b331bb27d9ad1428cd2e.jpeg",
+        "https://modayakamoz.com/orj/6037650b6c0b4609dee4.jpeg",
+        "https://modayakamoz.com/orj/53d04f28fd942551c583.jpeg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "91f00b43-bfdf-4d63-9cbf-8fa08a0eacbf/size_chart.jpg",
+          "sha256": "656137e5df46f2701cfc9cf93f588248dbf2db22043922139cfcabb82b21e243",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1257,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91f00b43/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
