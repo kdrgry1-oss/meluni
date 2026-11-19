@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-623",
+  "published_at_utc": "2026-11-19T08:29:27.001479+00:00",
+  "products": [
+    {
+      "product_id": "c6c47afb-7b74-42d8-a91c-59379a3ce5b0",
+      "sample": 1284,
+      "name": "Yüksek Bel Yanı Şerit Detaylı Viskon Iki Iplik Eşofman",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/c6c47afb-7b74-42d8-a91c-59379a3ce5b0-size-chart-fd463a187669.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
