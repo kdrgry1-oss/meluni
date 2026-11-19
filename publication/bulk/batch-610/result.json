@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-610",
+  "published_at_utc": "2026-11-19T07:04:55.371790+00:00",
+  "products": [
+    {
+      "product_id": "5f06ef31-2344-4934-ae85-9e5efccae3b6",
+      "sample": 1267,
+      "name": "V Yakalı Beli Kuşaklı Aerobin Tulum",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5f06ef31-2344-4934-ae85-9e5efccae3b6-size-chart-bad516b57083.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
