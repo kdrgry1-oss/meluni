@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-540",
+  "published_at_utc": "2026-11-19T01:17:24.076225+00:00",
+  "products": [
+    {
+      "product_id": "056e5824-c213-49d1-bbb6-adabd62882f2",
+      "sample": 1193,
+      "name": "Uzun Kollu Bisiklet Yaka Triko Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/056e5824-c213-49d1-bbb6-adabd62882f2-front-56d1b886bd71.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/056e5824-c213-49d1-bbb6-adabd62882f2-back-ef5a44322c6a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/056e5824-c213-49d1-bbb6-adabd62882f2-model-334d877ada3f.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/056e5824-c213-49d1-bbb6-adabd62882f2-size-chart-af358d0aef76.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
