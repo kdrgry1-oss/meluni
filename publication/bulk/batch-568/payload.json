@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-568",
+  "created_at": "2026-11-19T03:38:23.992677+00:00",
+  "catalog_poll_at": "2026-11-19T03:38:23.992677+00:00",
+  "products": [
+    {
+      "product_id": "972c9fba-23cb-4946-9a35-2a0486322350",
+      "sample": 1221,
+      "name": "Uzun Kollu Kruvaze Yakalı Pileli Belden Kemerli Kısa Şifon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 23,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/972c9fba-23cb-4946-9a35-2a0486322350-front-19680d24c989.jpg",
+        "https://cdn.meluni.com.tr/ai-products/972c9fba-23cb-4946-9a35-2a0486322350-back-ec9d8290508f.jpg",
+        "https://cdn.meluni.com.tr/ai-products/972c9fba-23cb-4946-9a35-2a0486322350-model-8c243184ecec.jpg",
+        "https://modayakamoz.com/orj/janes-194081-1-fb00b9a0288a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194081-fe77d994f2575ca1.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194081-065f998da3f88083.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194081-265885f3393bf289.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194081-b4075cab55d478c6.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "972c9fba-23cb-4946-9a35-2a0486322350/size_chart.jpg",
+          "sha256": "e08d5ab55ccb9c2c77716a2dffa5633ab3999f4846b49c1c1de8d60f7fbafded",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1221,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-972c9fba/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
