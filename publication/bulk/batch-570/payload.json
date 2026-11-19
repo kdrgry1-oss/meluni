@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-570",
+  "created_at": "2026-11-19T03:48:39.200889+00:00",
+  "catalog_poll_at": "2026-11-19T03:48:39.200889+00:00",
+  "products": [
+    {
+      "product_id": "818a1bc7-17a5-4c6f-b2ee-0309ac21cb8d",
+      "sample": 1223,
+      "name": "Uzun Kollu Kruvaze Yakalı Yandan Tokalı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/818a1bc7-17a5-4c6f-b2ee-0309ac21cb8d-front-aca0fabc708c.jpg",
+        "https://cdn.meluni.com.tr/ai-products/818a1bc7-17a5-4c6f-b2ee-0309ac21cb8d-back-60ae342700eb.jpg",
+        "https://cdn.meluni.com.tr/ai-products/818a1bc7-17a5-4c6f-b2ee-0309ac21cb8d-model-0951ef4513ad.jpg",
+        "https://modayakamoz.com/orj/janes-193737-1-709699fbcc08.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193737-449441cb5d9eb872.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193737-9607e9540a4ff8f0.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193737-0af9059e62e30d36.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193737-09f34f5f2296381d.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "818a1bc7-17a5-4c6f-b2ee-0309ac21cb8d/size_chart.jpg",
+          "sha256": "c398cb834553c94b0978fb3ae8aea48991a3b9f1a3e3eeb7de588daf1dee9c5a",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1223,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-818a1bc7/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
