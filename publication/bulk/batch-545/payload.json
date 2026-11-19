@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-545",
+  "created_at": "2026-11-19T01:43:18.308996+00:00",
+  "catalog_poll_at": "2026-11-19T01:43:18.308996+00:00",
+  "products": [
+    {
+      "product_id": "06c4758c-92f5-465a-9350-5e641b42870c",
+      "sample": 1198,
+      "name": "Uzun Kollu Fermuarlı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 116,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/06c4758c-92f5-465a-9350-5e641b42870c-front-e6bb89398c50.jpg",
+        "https://cdn.meluni.com.tr/ai-products/06c4758c-92f5-465a-9350-5e641b42870c-back-3ec01974e094.jpg",
+        "https://cdn.meluni.com.tr/ai-products/06c4758c-92f5-465a-9350-5e641b42870c-model-217fbd81d639.jpg",
+        "https://modayakamoz.com/orj/janes-193471-1-618d60dc3f0f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193471-93866a9fef2684ba.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193471-fb7631aa6407287f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193471-eb0a357d3291ce00.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193471-39ee1c16f3a1848f.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "06c4758c-92f5-465a-9350-5e641b42870c/size_chart.jpg",
+          "sha256": "3a57cf98c2b4cbe3f3a56c6e2a3eaf5df16ffd800afdf6013d7125da2debc243",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1198,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-06c4758c/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
