@@ -1,0 +1,41 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-564",
+  "created_at": "2026-11-19T03:20:43.023052+00:00",
+  "catalog_poll_at": "2026-11-19T03:20:43.023052+00:00",
+  "products": [
+    {
+      "product_id": "f6a189d1-5727-4a1b-a460-1452e6143ff1",
+      "sample": 1217,
+      "name": "Uzun Kollu Kruvaze Yakalı Büzgülü Midi Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 18,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/f6a189d1-5727-4a1b-a460-1452e6143ff1-front-29161b42244c.jpg",
+        "https://cdn.meluni.com.tr/ai-products/f6a189d1-5727-4a1b-a460-1452e6143ff1-back-06e5ceb28029.jpg",
+        "https://cdn.meluni.com.tr/ai-products/f6a189d1-5727-4a1b-a460-1452e6143ff1-model-47f086af5485.jpg",
+        "https://modayakamoz.com/orj/6da7291db6099f679359.jpeg",
+        "https://modayakamoz.com/orj/a365f66a70391fa792ea.jpeg",
+        "https://modayakamoz.com/orj/6f2d3915a33e0e3eac29.jpeg",
+        "https://modayakamoz.com/orj/f18459944106650dbf8d.jpeg",
+        {
+          "id": "6e54f7b8-8f0e-4c53-b895-c9cc61a1edea",
+          "url": "https://cdn.meluni.com.tr/ai-products/f6a189d1-5727-4a1b-a460-1452e6143ff1-olcu-oto-dda7e66e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:24:15.844942+00:00"
+        }
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "f6a189d1-5727-4a1b-a460-1452e6143ff1/size_chart.jpg",
+          "sha256": "521d1779b02b3280c5b619e348977688d5b0b4627a8e77992c13439c3c8dbab3",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1217,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f6a189d1/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
