@@ -1,0 +1,34 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-544",
+  "created_at": "2026-11-19T01:38:20.411172+00:00",
+  "catalog_poll_at": "2026-11-19T01:38:20.411172+00:00",
+  "products": [
+    {
+      "product_id": "c43d4fc5-fc42-4472-a29a-27712db1f63d",
+      "sample": 1197,
+      "name": "Uzun Kollu Fermuarlı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 271,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/c43d4fc5-fc42-4472-a29a-27712db1f63d-front-c496f0dc769e.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c43d4fc5-fc42-4472-a29a-27712db1f63d-back-52b9421f8887.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c43d4fc5-fc42-4472-a29a-27712db1f63d-model-f9954da4d7cf.jpg",
+        "https://modayakamoz.com/orj/janes-193470-1-0d8c8dcc4a96.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193470-0cba9a20bebc1c08.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193470-58bd482690e4a29a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193470-39ee1c16f3a1848f.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "c43d4fc5-fc42-4472-a29a-27712db1f63d/size_chart.jpg",
+          "sha256": "8e94d85989a21f2237f446753492f790c69b4ef25ec25bbe6b12a2dea9103446",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1197,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c43d4fc5/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
