@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-571",
+  "published_at_utc": "2026-11-19T03:54:16.065355+00:00",
+  "products": [
+    {
+      "product_id": "afb75c48-ba7d-4fd6-90a5-ff987d4d8950",
+      "sample": 1224,
+      "name": "Uzun Kollu Kruvaze Yakalı Yandan Tokalı Viskon Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/afb75c48-ba7d-4fd6-90a5-ff987d4d8950-size-chart-c398cb834553.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
