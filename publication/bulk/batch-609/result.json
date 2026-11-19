@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-609",
+  "published_at_utc": "2026-11-19T06:58:49.500544+00:00",
+  "products": [
+    {
+      "product_id": "27788a4d-1f2e-447b-911b-fb7b6ed209f7",
+      "sample": 1266,
+      "name": "Uzun Kollu Önü Açık Yakalı Süet Ceket",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/27788a4d-1f2e-447b-911b-fb7b6ed209f7-size-chart-03d6069e46bc.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
