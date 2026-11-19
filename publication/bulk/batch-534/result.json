@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-534",
+  "published_at_utc": "2026-11-19T00:41:53.130496+00:00",
+  "products": [
+    {
+      "product_id": "04a55596-848b-4f86-a444-27fa0cb263ea",
+      "sample": 1187,
+      "name": "Uzun Kollu Kruvaze Yakalı Belden Çapraz Detaylı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/04a55596-848b-4f86-a444-27fa0cb263ea-front-a387c584056a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/04a55596-848b-4f86-a444-27fa0cb263ea-back-c4aef10a2f6b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/04a55596-848b-4f86-a444-27fa0cb263ea-model-24121199fea0.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/04a55596-848b-4f86-a444-27fa0cb263ea-size-chart-9dabbee9fd76.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
