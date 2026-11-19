@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-591",
+  "created_at": "2026-11-19T05:38:41.567846+00:00",
+  "catalog_poll_at": "2026-11-19T05:38:41.567846+00:00",
+  "products": [
+    {
+      "product_id": "9cc6ea28-1b12-4cd4-a638-2ecc732d3662",
+      "sample": 1244,
+      "name": "Uzun Kollu V Yakalı Kısa Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/9cc6ea28-1b12-4cd4-a638-2ecc732d3662-front-23efda1a62d2.jpg",
+        "https://cdn.meluni.com.tr/ai-products/9cc6ea28-1b12-4cd4-a638-2ecc732d3662-back-26be60627396.jpg",
+        "https://cdn.meluni.com.tr/ai-products/9cc6ea28-1b12-4cd4-a638-2ecc732d3662-model-34d3222e9d4f.jpg",
+        "https://modayakamoz.com/orj/janes-193670-1-1c038a1ae34a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193670-727ddfcbcac35841.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193670-ba32e6a26e72c47b.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193670-74afab369aeca149.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193670-30c4620cae01e92a.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "9cc6ea28-1b12-4cd4-a638-2ecc732d3662/size_chart.jpg",
+          "sha256": "6a304fbcac2d47baa6e3931aeed12afda9abf1ae6ab1db2fede2ac1a9c768a7f",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1244,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9cc6ea28/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
