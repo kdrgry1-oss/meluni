@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-588",
+  "created_at": "2026-11-19T05:23:46.863077+00:00",
+  "catalog_poll_at": "2026-11-19T05:23:46.863077+00:00",
+  "products": [
+    {
+      "product_id": "82e28b11-5f4a-46ed-ad77-c8ab834bed97",
+      "sample": 1241,
+      "name": "Uzun Kollu V Yakalı Kısa Işıltılı Sandy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 155,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/82e28b11-5f4a-46ed-ad77-c8ab834bed97-front-434e49b8a97c.jpg",
+        "https://cdn.meluni.com.tr/ai-products/82e28b11-5f4a-46ed-ad77-c8ab834bed97-back-ec03ee2ee899.jpg",
+        "https://cdn.meluni.com.tr/ai-products/82e28b11-5f4a-46ed-ad77-c8ab834bed97-model-05b2b0ad178f.jpg",
+        "https://modayakamoz.com/orj/janes-193801-1-79737e528373.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193801-f40b2afc286d3869.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193801-1cbe549a5742d61d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193801-d70a548527fdbe99.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193801-d73df3f8c56d8575.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "82e28b11-5f4a-46ed-ad77-c8ab834bed97/size_chart.jpg",
+          "sha256": "d1c97d444329c8a79756e6b77836cc65c7ab4f56d0640a58f87dcef4ff5112af",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1241,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-82e28b11/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
