@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-538",
+  "published_at_utc": "2026-11-19T01:02:54.137697+00:00",
+  "products": [
+    {
+      "product_id": "e9aaa0f3-a525-4a82-a872-4085d96ec134",
+      "sample": 1191,
+      "name": "Uzun Kollu Tek Omuzdan Açık Tül Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e9aaa0f3-a525-4a82-a872-4085d96ec134-front-8de21eaccb86.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e9aaa0f3-a525-4a82-a872-4085d96ec134-back-7c5cc537ebcc.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e9aaa0f3-a525-4a82-a872-4085d96ec134-model-b0856263a832.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e9aaa0f3-a525-4a82-a872-4085d96ec134-size-chart-139bae69fb2c.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
