@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-582",
+  "created_at": "2026-11-19T04:53:27.828714+00:00",
+  "catalog_poll_at": "2026-11-19T04:53:27.828714+00:00",
+  "products": [
+    {
+      "product_id": "4580c263-1efa-4cd9-8896-d349b1f115c7",
+      "sample": 1235,
+      "name": "Uzun Kollu V Yakalı Cepli Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 77,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/4580c263-1efa-4cd9-8896-d349b1f115c7-front-a1c443b89685.jpg",
+        "https://cdn.meluni.com.tr/ai-products/4580c263-1efa-4cd9-8896-d349b1f115c7-back-1c16e43feac5.jpg",
+        "https://cdn.meluni.com.tr/ai-products/4580c263-1efa-4cd9-8896-d349b1f115c7-model-a9ddac76bd82.jpg",
+        "https://modayakamoz.com/orj/janes-193297-1-f099dcb3bae4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193297-9d1e38b2c851fb98.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193297-a5a8cfeca40cff93.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193297-44d654b082f88a6c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193297-7c1ff341302594e4.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "4580c263-1efa-4cd9-8896-d349b1f115c7/size_chart.jpg",
+          "sha256": "91e6920a0e7f8de219533da67eb3659282fdb082bc38a51f215f086315bbed4a",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1235,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4580c263/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
