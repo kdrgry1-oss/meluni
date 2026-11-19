@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-611",
+  "published_at_utc": "2026-11-19T07:08:23.018990+00:00",
+  "products": [
+    {
+      "product_id": "d5efb9e5-10b4-4db2-921e-8d71621d016b",
+      "sample": 1268,
+      "name": "V Yakalı Beli Lastikli Keten Kısa Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d5efb9e5-10b4-4db2-921e-8d71621d016b-size-chart-195e7662d580.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
