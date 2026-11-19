@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-530",
+  "published_at_utc": "2026-11-19T00:16:56.299691+00:00",
+  "products": [
+    {
+      "product_id": "5ba440dd-ff9b-440a-8e32-0b50a697c402",
+      "sample": 1183,
+      "name": "Uzun Kollu Bisiklet Yaka Yırtmaçlı Uzun Viskon Iki Iplik Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5ba440dd-ff9b-440a-8e32-0b50a697c402-size-chart-11c9c3fb0470.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
