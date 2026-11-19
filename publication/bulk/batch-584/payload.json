@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-584",
+  "created_at": "2026-11-19T05:04:04.801456+00:00",
+  "catalog_poll_at": "2026-11-19T05:04:04.801456+00:00",
+  "products": [
+    {
+      "product_id": "bd17849b-512e-4b91-8ca7-48345eca000e",
+      "sample": 1237,
+      "name": "Uzun Kollu V Yakalı Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 92,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/bd17849b-512e-4b91-8ca7-48345eca000e-front-1b7259413004.jpg",
+        "https://cdn.meluni.com.tr/ai-products/bd17849b-512e-4b91-8ca7-48345eca000e-back-25f9c69d3d01.jpg",
+        "https://cdn.meluni.com.tr/ai-products/bd17849b-512e-4b91-8ca7-48345eca000e-model-b07392555ab7.jpg",
+        "https://modayakamoz.com/orj/3434eb6d57841a2e9c03.jpeg",
+        "https://modayakamoz.com/orj/c2274a855b7b5ec70ea7.jpeg",
+        "https://modayakamoz.com/orj/35a9d7da37cddd548775.jpeg",
+        "https://modayakamoz.com/orj/a31b93315bea51aca98f.jpeg",
+        "https://modayakamoz.com/orj/f1830ec040122ce89b00.jpeg",
+        "https://modayakamoz.com/orj/dca2c0f46329342fcdcd.jpeg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "bd17849b-512e-4b91-8ca7-48345eca000e/size_chart.jpg",
+          "sha256": "e3087d3624517f8d966d6405994f4751b1c3306483e6a13f149ea693c7144f29",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1237,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bd17849b/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
