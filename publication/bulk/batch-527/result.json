@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-527",
+  "published_at_utc": "2026-11-19T00:02:06.360098+00:00",
+  "products": [
+    {
+      "product_id": "1f3a46a9-43c3-4062-a933-4c2a6a9e1db0",
+      "sample": 1180,
+      "name": "Uzun Kollu Balıkçı Yakalı Omuz Geometrik Detaylı Kaşkorse Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/1f3a46a9-43c3-4062-a933-4c2a6a9e1db0-front-8f85a1030abf.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/1f3a46a9-43c3-4062-a933-4c2a6a9e1db0-back-f5c546a8007a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/1f3a46a9-43c3-4062-a933-4c2a6a9e1db0-model-9dffc9526e13.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/1f3a46a9-43c3-4062-a933-4c2a6a9e1db0-size-chart-516b38b2c69a.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
