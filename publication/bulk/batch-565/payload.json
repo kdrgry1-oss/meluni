@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-565",
+  "created_at": "2026-11-19T03:23:41.823123+00:00",
+  "catalog_poll_at": "2026-11-19T03:23:41.823123+00:00",
+  "products": [
+    {
+      "product_id": "8252f205-0843-4f07-8cac-35e3384f6c94",
+      "sample": 1218,
+      "name": "Uzun Kollu Kruvaze Yakalı Büzgülü Taşlı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 50,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/8252f205-0843-4f07-8cac-35e3384f6c94-front-c42ff541cf1d.jpg",
+        "https://cdn.meluni.com.tr/ai-products/8252f205-0843-4f07-8cac-35e3384f6c94-back-ce2431aca80f.jpg",
+        "https://cdn.meluni.com.tr/ai-products/8252f205-0843-4f07-8cac-35e3384f6c94-model-b0acadab120b.jpg",
+        "https://modayakamoz.com/orj/janes-193809-1-956a34e5ccbf.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193809-92655c0db400c4cc.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193809-126d57ec295088f4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193809-69f49cc64f05d385.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193809-a71ae35ae9f74b40.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "8252f205-0843-4f07-8cac-35e3384f6c94/size_chart.jpg",
+          "sha256": "c798094c617c1c429b17935d45d6b59cc7d982479ae2eccfdef81e32c0d7324f",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1218,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8252f205/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
