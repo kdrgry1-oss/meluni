@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-566",
+  "created_at": "2026-11-19T03:28:12.298472+00:00",
+  "catalog_poll_at": "2026-11-19T03:28:12.298472+00:00",
+  "products": [
+    {
+      "product_id": "467fb72c-01d3-41df-9b5f-a17b93183a57",
+      "sample": 1219,
+      "name": "Uzun Kollu Kruvaze Yakalı Büzgülü Taşlı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 62,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/467fb72c-01d3-41df-9b5f-a17b93183a57-front-3623acf98829.jpg",
+        "https://cdn.meluni.com.tr/ai-products/467fb72c-01d3-41df-9b5f-a17b93183a57-back-19e1faa02fba.jpg",
+        "https://cdn.meluni.com.tr/ai-products/467fb72c-01d3-41df-9b5f-a17b93183a57-model-d9325f97c627.jpg",
+        "https://modayakamoz.com/orj/janes-193810-1-32b7561bff4b.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193810-c3be38399a9e2f32.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193810-3c388e55d36c8b53.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193810-b6b0e82574f4419a.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193810-a71ae35ae9f74b40.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "467fb72c-01d3-41df-9b5f-a17b93183a57/size_chart.jpg",
+          "sha256": "c798094c617c1c429b17935d45d6b59cc7d982479ae2eccfdef81e32c0d7324f",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1219,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-467fb72c/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
