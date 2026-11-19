@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-567",
+  "created_at": "2026-11-19T03:34:03.549708+00:00",
+  "catalog_poll_at": "2026-11-19T03:34:03.549708+00:00",
+  "products": [
+    {
+      "product_id": "9b907fca-0060-4a7a-924d-374df78e1795",
+      "sample": 1220,
+      "name": "Uzun Kollu Kruvaze Yakalı Pileli Belden Kemerli Kısa Şifon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 148,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/9b907fca-0060-4a7a-924d-374df78e1795-front-38b8b7a667d7.jpg",
+        "https://cdn.meluni.com.tr/ai-products/9b907fca-0060-4a7a-924d-374df78e1795-back-f936777cb8d1.jpg",
+        "https://cdn.meluni.com.tr/ai-products/9b907fca-0060-4a7a-924d-374df78e1795-model-217aa13d685f.jpg",
+        "https://modayakamoz.com/orj/janes-194080-1-9649c93a1aaf.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194080-421d40d64aee721d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194080-221083fd8217a43c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194080-5b3b527e738bd93e.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194080-b4075cab55d478c6.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "9b907fca-0060-4a7a-924d-374df78e1795/size_chart.jpg",
+          "sha256": "e08d5ab55ccb9c2c77716a2dffa5633ab3999f4846b49c1c1de8d60f7fbafded",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1220,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9b907fca/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
