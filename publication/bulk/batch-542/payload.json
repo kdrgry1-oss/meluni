@@ -1,0 +1,34 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-542",
+  "created_at": "2026-11-19T01:29:13.371537+00:00",
+  "catalog_poll_at": "2026-11-19T01:29:13.371537+00:00",
+  "products": [
+    {
+      "product_id": "cfb24362-e51c-4490-83a8-8e8eb9276dc9",
+      "sample": 1195,
+      "name": "Uzun Kollu Fermuarlı Kiloş Midi Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 48,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/cfb24362-e51c-4490-83a8-8e8eb9276dc9-front-8961416f610e.jpg",
+        "https://cdn.meluni.com.tr/ai-products/cfb24362-e51c-4490-83a8-8e8eb9276dc9-back-7a601bcc61d3.jpg",
+        "https://cdn.meluni.com.tr/ai-products/cfb24362-e51c-4490-83a8-8e8eb9276dc9-model-2956294c98eb.jpg",
+        "https://modayakamoz.com/orj/janes-192455-1-dd6ffd7be3.jpg",
+        "https://modayakamoz.com/orj/janes-192455-2-68fd255082.jpg",
+        "https://modayakamoz.com/orj/janes-192455-3-0337613d35.jpg",
+        "https://modayakamoz.com/orj/janes-192455-7-ef60c28da5.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "cfb24362-e51c-4490-83a8-8e8eb9276dc9/size_chart.jpg",
+          "sha256": "071c379e85e8c6a07d59e44576b9e5eebf3bbd4a06cfbf50be14c439af769711",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1195,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cfb24362/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
