@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-585",
+  "published_at_utc": "2026-11-19T05:09:54.567396+00:00",
+  "products": [
+    {
+      "product_id": "d746d237-876c-4ad7-a2ba-9b08cd635c9a",
+      "sample": 1238,
+      "name": "Uzun Kollu V Yakalı Kaşkorse Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d746d237-876c-4ad7-a2ba-9b08cd635c9a-size-chart-e3087d362451.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
