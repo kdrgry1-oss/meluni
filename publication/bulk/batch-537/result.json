@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-537",
+  "published_at_utc": "2026-11-19T00:57:44.779806+00:00",
+  "products": [
+    {
+      "product_id": "5b262914-56bb-4dd6-a277-3d308859115a",
+      "sample": 1190,
+      "name": "Uzun Kollu Sırt Büzgü Detay Kaşkorse Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5b262914-56bb-4dd6-a277-3d308859115a-front-89e358534795.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5b262914-56bb-4dd6-a277-3d308859115a-back-3fd74b5509db.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5b262914-56bb-4dd6-a277-3d308859115a-model-f54e5fd9e552.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5b262914-56bb-4dd6-a277-3d308859115a-size-chart-df5f272badd1.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
