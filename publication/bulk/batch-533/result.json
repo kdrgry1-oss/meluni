@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-533",
+  "published_at_utc": "2026-11-19T00:35:00.668753+00:00",
+  "products": [
+    {
+      "product_id": "bf1c347b-0de8-4af7-a728-09472d625c5f",
+      "sample": 1186,
+      "name": "Uzun Kollu Kruvaze Yakalı Önü Asimetrik Kısa Kadife Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bf1c347b-0de8-4af7-a728-09472d625c5f-front-ede120eb576c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/bf1c347b-0de8-4af7-a728-09472d625c5f-back-ab57bd9ebb3c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bf1c347b-0de8-4af7-a728-09472d625c5f-model-cf2b49675aa7.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/bf1c347b-0de8-4af7-a728-09472d625c5f-size-chart-7f903cca9f4f.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
