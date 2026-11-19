@@ -1,0 +1,34 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-613",
+  "created_at": "2026-11-19T07:23:08.730607+00:00",
+  "catalog_poll_at": "2026-11-19T07:23:08.730607+00:00",
+  "products": [
+    {
+      "product_id": "3de7c615-d631-4ebe-ae59-3306b1c350bc",
+      "sample": 1270,
+      "name": "Yuvarlak Yakalı Yarasa Kollu Kuşaklı Atlas Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 159,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/3de7c615-d631-4ebe-ae59-3306b1c350bc-front-36f4b040a206.jpg",
+        "https://cdn.meluni.com.tr/ai-products/3de7c615-d631-4ebe-ae59-3306b1c350bc-back-b797c5e2631b.jpg",
+        "https://cdn.meluni.com.tr/ai-products/3de7c615-d631-4ebe-ae59-3306b1c350bc-model-5cb1fb608af8.jpg",
+        "https://modayakamoz.com/orj/janes-192420-1-531133ba16.jpg",
+        "https://modayakamoz.com/orj/janes-192420-2-7a862a4437.jpg",
+        "https://modayakamoz.com/orj/janes-192420-3-2afbda798a.jpg",
+        "https://modayakamoz.com/orj/janes-192420-7-558f837cf0.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "3de7c615-d631-4ebe-ae59-3306b1c350bc/size_chart.jpg",
+          "sha256": "4dae20ebe4198dd43722069df1df8e3621240bb4c3ae26b65aa4b438df47b56a",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1270,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3de7c615/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
