@@ -1,0 +1,57 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-537",
+  "created_at": "2026-11-19T00:56:45.912943+00:00",
+  "catalog_poll_at": "2026-11-19T00:56:45.912943+00:00",
+  "products": [
+    {
+      "product_id": "5b262914-56bb-4dd6-a277-3d308859115a",
+      "sample": 1190,
+      "name": "Uzun Kollu Sırt Büzgü Detay Kaşkorse Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0793583af3b0762e3a51.jpeg",
+        "https://modayakamoz.com/orj/8b2fb7d39a1b50e2d0ff.jpeg",
+        {
+          "id": "899f8b7e-ca08-4097-b680-1575158c36bf",
+          "url": "https://cdn.meluni.com.tr/ai-products/5b262914-56bb-4dd6-a277-3d308859115a-olcu-oto-2ee23699.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-17T05:22:19.344403+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "5b262914-56bb-4dd6-a277-3d308859115a/front.jpg",
+          "sha256": "89e35853479522d513f949d81d1dd48b8e9e4c5630be6f270d68dfe3755f828a",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1190,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5b262914/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5b262914-56bb-4dd6-a277-3d308859115a/back.jpg",
+          "sha256": "3fd74b5509dba90f7b2f5eac779d2e327caf5375872b613ac32be7e01cf34919",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1190,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5b262914/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5b262914-56bb-4dd6-a277-3d308859115a/fashion_model.jpg",
+          "sha256": "f54e5fd9e5528fc6d5dcac031c12bf60f8122f5f1d180d5016c2c433d6e3f45f",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1190,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5b262914/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "5b262914-56bb-4dd6-a277-3d308859115a/size_chart.jpg",
+          "sha256": "df5f272badd15c950163f1dc0257abbf92d1c5960b81ee8e68925a64e2799e53",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1190,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5b262914/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
