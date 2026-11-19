@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-553",
+  "published_at_utc": "2026-11-19T02:24:45.165127+00:00",
+  "products": [
+    {
+      "product_id": "10428c23-b794-439c-b88c-335bb9758172",
+      "sample": 1206,
+      "name": "Uzun Kollu Kapşonlu Düğmeli ve Bağcıklı Waffle Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/10428c23-b794-439c-b88c-335bb9758172-size-chart-73a7f6b2065a.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
