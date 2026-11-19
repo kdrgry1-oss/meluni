@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-588",
+  "published_at_utc": "2026-11-19T05:24:53.044655+00:00",
+  "products": [
+    {
+      "product_id": "82e28b11-5f4a-46ed-ad77-c8ab834bed97",
+      "sample": 1241,
+      "name": "Uzun Kollu V Yakalı Kısa Işıltılı Sandy Elbise",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/82e28b11-5f4a-46ed-ad77-c8ab834bed97-size-chart-d1c97d444329.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
