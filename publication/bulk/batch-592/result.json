@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-592",
+  "published_at_utc": "2026-11-19T05:45:40.531608+00:00",
+  "products": [
+    {
+      "product_id": "d014b2ab-75d9-4e80-9347-a33f5a0aeed9",
+      "sample": 1245,
+      "name": "Uzun Kollu V Yakalı Onu Pileli Viskon Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d014b2ab-75d9-4e80-9347-a33f5a0aeed9-size-chart-d1fd288650c1.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
