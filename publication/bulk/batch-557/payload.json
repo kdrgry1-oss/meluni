@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-557",
+  "created_at": "2026-11-19T02:44:23.874948+00:00",
+  "catalog_poll_at": "2026-11-19T02:44:23.874948+00:00",
+  "products": [
+    {
+      "product_id": "828f8b43-575c-47d2-9498-5abbae2f55f0",
+      "sample": 1210,
+      "name": "Uzun Kollu Kare Yakalı Parmaktan Geçmeli Uzun Şardonlu Dalgıç Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 73,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/828f8b43-575c-47d2-9498-5abbae2f55f0-front-a10ad6d980ed.jpg",
+        "https://cdn.meluni.com.tr/ai-products/828f8b43-575c-47d2-9498-5abbae2f55f0-back-3a41e3b8e4ae.jpg",
+        "https://cdn.meluni.com.tr/ai-products/828f8b43-575c-47d2-9498-5abbae2f55f0-model-bbc936cad157.jpg",
+        "https://modayakamoz.com/orj/janes-192975-1-2d1a0778c6.jpg",
+        "https://modayakamoz.com/orj/janes-192975-2-e26d89a6b6.jpg",
+        "https://modayakamoz.com/orj/janes-192975-3-7c6e71291f.jpg",
+        "https://modayakamoz.com/orj/janes-192975-4-1882f62098.jpg",
+        "https://modayakamoz.com/orj/janes-192975-8-fc3d2c683e.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "828f8b43-575c-47d2-9498-5abbae2f55f0/size_chart.jpg",
+          "sha256": "eddf5310273048ff61d1be2ee2dc70ef24a18a5d7f4eddf1dac5df3edc82cae7",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1210,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-828f8b43/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
