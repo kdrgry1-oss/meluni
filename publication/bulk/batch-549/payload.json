@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-549",
+  "created_at": "2026-11-19T02:03:30.534613+00:00",
+  "catalog_poll_at": "2026-11-19T02:03:30.534613+00:00",
+  "products": [
+    {
+      "product_id": "027d3261-980b-412d-b4fa-f6f4f4920b4d",
+      "sample": 1202,
+      "name": "Uzun Kollu Kapşonlu Bağcıklı Fermuarlı Şardonlu Iki Iplik Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 190,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/027d3261-980b-412d-b4fa-f6f4f4920b4d-front-528969be6731.jpg",
+        "https://cdn.meluni.com.tr/ai-products/027d3261-980b-412d-b4fa-f6f4f4920b4d-back-82558639b2ef.jpg",
+        "https://cdn.meluni.com.tr/ai-products/027d3261-980b-412d-b4fa-f6f4f4920b4d-model-b43e1a634e07.jpg",
+        "https://modayakamoz.com/orj/janes-194056-1-fc262a193e46.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194056-df957592a2e5aec0.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194056-e55acda397172bb2.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194056-35bd2957ff662276.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194056-1e295d63dff29af4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194056-b25011241c28ef1e.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "027d3261-980b-412d-b4fa-f6f4f4920b4d/size_chart.jpg",
+          "sha256": "9fcd805dc8f8594ac08f17bf49ea5010be52ae633b8c9bb95048000dafa7c994",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1202,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-027d3261/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
