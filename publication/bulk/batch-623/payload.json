@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-623",
+  "created_at": "2026-11-19T08:28:12.925552+00:00",
+  "catalog_poll_at": "2026-11-19T08:28:12.925552+00:00",
+  "products": [
+    {
+      "product_id": "c6c47afb-7b74-42d8-a91c-59379a3ce5b0",
+      "sample": 1284,
+      "name": "Yüksek Bel Yanı Şerit Detaylı Viskon Iki Iplik Eşofman",
+      "active_at_poll": true,
+      "stock_at_poll": 55,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/c6c47afb-7b74-42d8-a91c-59379a3ce5b0-front-1c01f50ffcf1.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c6c47afb-7b74-42d8-a91c-59379a3ce5b0-back-5f05b455ecba.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c6c47afb-7b74-42d8-a91c-59379a3ce5b0-model-6990d3619611.jpg",
+        "https://modayakamoz.com/orj/janes-192986-1-520dab3575.jpg",
+        "https://modayakamoz.com/orj/janes-192986-2-b8cf25717b.jpg",
+        "https://modayakamoz.com/orj/janes-192986-3-9f2571704a.jpg",
+        "https://modayakamoz.com/orj/janes-192986-4-676272635d.jpg",
+        "https://modayakamoz.com/orj/janes-192986-5-6452dc0b44.jpg",
+        "https://modayakamoz.com/orj/janes-192986-6-f9d48eba06.jpg",
+        "https://modayakamoz.com/orj/janes-192986-10-51234714a8.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "c6c47afb-7b74-42d8-a91c-59379a3ce5b0/size_chart.jpg",
+          "sha256": "fd463a187669140a06b75da5360f876bf4ca50987e7e355827156d55bae9833e",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1284,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c6c47afb/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
