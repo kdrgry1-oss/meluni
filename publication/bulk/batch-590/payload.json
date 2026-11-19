@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-590",
+  "created_at": "2026-11-19T05:33:48.052388+00:00",
+  "catalog_poll_at": "2026-11-19T05:33:48.052388+00:00",
+  "products": [
+    {
+      "product_id": "73785874-84e8-4dd5-a81f-0e5c0c55677d",
+      "sample": 1243,
+      "name": "Uzun Kollu V Yakalı Kısa Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/73785874-84e8-4dd5-a81f-0e5c0c55677d-front-4557b460d86a.jpg",
+        "https://cdn.meluni.com.tr/ai-products/73785874-84e8-4dd5-a81f-0e5c0c55677d-back-710a205f2ed3.jpg",
+        "https://cdn.meluni.com.tr/ai-products/73785874-84e8-4dd5-a81f-0e5c0c55677d-model-9b1ef3c7bace.jpg",
+        "https://modayakamoz.com/orj/janes-193671-1-ecd3b4884299.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193671-92ffa7d63e96a6af.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193671-f50968998c52a621.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193671-956422a3782083a4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193671-30c4620cae01e92a.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "73785874-84e8-4dd5-a81f-0e5c0c55677d/size_chart.jpg",
+          "sha256": "6a304fbcac2d47baa6e3931aeed12afda9abf1ae6ab1db2fede2ac1a9c768a7f",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1243,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73785874/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
