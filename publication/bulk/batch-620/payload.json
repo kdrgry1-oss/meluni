@@ -1,0 +1,41 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-620",
+  "created_at": "2026-11-19T08:12:17.338485+00:00",
+  "catalog_poll_at": "2026-11-19T08:12:17.338485+00:00",
+  "products": [
+    {
+      "product_id": "451b854d-85a5-41eb-a50d-f8e7e5b86c6b",
+      "sample": 1281,
+      "name": "Yüksek Bel Pacaya Dogru Geniş Uzun Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 26,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/451b854d-85a5-41eb-a50d-f8e7e5b86c6b-front-3e5525a05fd8.jpg",
+        "https://cdn.meluni.com.tr/ai-products/451b854d-85a5-41eb-a50d-f8e7e5b86c6b-back-778a0afb1ed0.jpg",
+        "https://cdn.meluni.com.tr/ai-products/451b854d-85a5-41eb-a50d-f8e7e5b86c6b-model-7be70d9f36dd.jpg",
+        "https://modayakamoz.com/orj/71138011e81413278f0e.jpeg",
+        "https://modayakamoz.com/orj/188f35fe93825f81193f.jpeg",
+        "https://modayakamoz.com/orj/aa48ddc8ce9863bfc7aa.jpeg",
+        "https://modayakamoz.com/orj/1223c5aef98b9f0483f7.jpeg",
+        {
+          "id": "3b914ba4-770b-4154-a606-4b5f0a368e7f",
+          "url": "https://cdn.meluni.com.tr/ai-products/3cc59510-9bac-41ef-9e5e-d53198ea4f15-olcu-oto-fa66236e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:06:09.301472+00:00"
+        }
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "451b854d-85a5-41eb-a50d-f8e7e5b86c6b/size_chart.jpg",
+          "sha256": "129ef0e75bc94108c245f324b5e5aa57288e1f98f059fd7a551067d125247a00",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1281,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-451b854d/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
