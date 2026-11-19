@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-552",
+  "published_at_utc": "2026-11-19T02:19:20.222809+00:00",
+  "products": [
+    {
+      "product_id": "7510fd22-0411-4dac-9657-e9c80526f8b0",
+      "sample": 1205,
+      "name": "Uzun Kollu Kapşonlu Cep Detaylı Üç Iplik Mevsimlik Kap",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/7510fd22-0411-4dac-9657-e9c80526f8b0-size-chart-af0a785f3484.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
