@@ -1,0 +1,33 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-601",
+  "created_at": "2026-11-19T06:32:52.752465+00:00",
+  "catalog_poll_at": "2026-11-19T06:32:52.752465+00:00",
+  "products": [
+    {
+      "product_id": "cf387ccc-bc52-47d0-99b5-0a168b95e1ee",
+      "sample": 1254,
+      "name": "Uzun Kollu Yakalı Düğmeli Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 90,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/cf387ccc-bc52-47d0-99b5-0a168b95e1ee-front-8a2558f0488d.jpg",
+        "https://cdn.meluni.com.tr/ai-products/cf387ccc-bc52-47d0-99b5-0a168b95e1ee-back-c1c8e458b781.jpg",
+        "https://cdn.meluni.com.tr/ai-products/cf387ccc-bc52-47d0-99b5-0a168b95e1ee-model-1dfd5f9db0a2.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193237-93a96e4514a3ffce.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193237-d41adb4b76da1489.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193237-044fd34f95698272.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "cf387ccc-bc52-47d0-99b5-0a168b95e1ee/size_chart.jpg",
+          "sha256": "0260f134c3cae083dc6abf22f4b436b1b7601f19f7fe1df2d4a0baa846cb20f8",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1254,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cf387ccc/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
