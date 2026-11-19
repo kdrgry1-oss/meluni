@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-576",
+  "published_at_utc": "2026-11-19T04:20:17.077334+00:00",
+  "products": [
+    {
+      "product_id": "11dcbef6-dbec-4fea-98bc-8c67372ed76d",
+      "sample": 1229,
+      "name": "Uzun Kollu Taş Yaka Detaylı Krep Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/11dcbef6-dbec-4fea-98bc-8c67372ed76d-size-chart-7edde02f5ad9.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
