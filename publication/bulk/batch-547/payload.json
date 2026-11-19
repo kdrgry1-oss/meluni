@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-547",
+  "created_at": "2026-11-19T01:53:36.911559+00:00",
+  "catalog_poll_at": "2026-11-19T01:53:36.911559+00:00",
+  "products": [
+    {
+      "product_id": "273bec2e-5d4c-4388-bf2f-1856e4bc6b95",
+      "sample": 1200,
+      "name": "Uzun Kollu Kapşonlu Bağcıklı Fermuarlı Şardonlu Iki Iplik Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 63,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/273bec2e-5d4c-4388-bf2f-1856e4bc6b95-front-ff1897c64b25.jpg",
+        "https://cdn.meluni.com.tr/ai-products/273bec2e-5d4c-4388-bf2f-1856e4bc6b95-back-0f6dde510b63.jpg",
+        "https://cdn.meluni.com.tr/ai-products/273bec2e-5d4c-4388-bf2f-1856e4bc6b95-model-38e6b13bc549.jpg",
+        "https://modayakamoz.com/orj/janes-194058-1-dff3eb42ca6c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194058-a549880031b64689.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194058-7404516e5ef07baf.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194058-12da08a6ee7b15ba.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194058-b25011241c28ef1e.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "273bec2e-5d4c-4388-bf2f-1856e4bc6b95/size_chart.jpg",
+          "sha256": "2ae323e934cc17ac4bb581f33c0360052e50674874e668d834ffe12919fd4189",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1200,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-273bec2e/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
