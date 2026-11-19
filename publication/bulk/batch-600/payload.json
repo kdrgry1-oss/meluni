@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-600",
+  "created_at": "2026-11-19T06:26:08.390647+00:00",
+  "catalog_poll_at": "2026-11-19T06:26:08.390647+00:00",
+  "products": [
+    {
+      "product_id": "289260ee-de88-4288-9d0c-01e5aeb29b53",
+      "sample": 1253,
+      "name": "Uzun Kollu Viskon Iki Iplik Bluz Pantolon ve Çatlak Deri Üçlü Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 62,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193509-1-c149238bb2d1.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193509-a47e91ea5332d1fd.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193509-cfc050492a827f06.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193509-cd9fc4e8f658863a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "289260ee-de88-4288-9d0c-01e5aeb29b53/front.jpg",
+          "sha256": "df5b05fc79575b1b5f96a35289792d66ddeee32747cbf146684ca9aa04119f88",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1253,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-289260ee/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "289260ee-de88-4288-9d0c-01e5aeb29b53/back.jpg",
+          "sha256": "3c04629d74d3032d9587dd1c7c1252901af6eff0021343802ccebb87544153d5",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1253,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-289260ee/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "289260ee-de88-4288-9d0c-01e5aeb29b53/model.jpg",
+          "sha256": "8e36744fa013322d5ca0df85fd0ddea476e460772cb0a8727d7d5c27a6a1543c",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1253,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-289260ee/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "289260ee-de88-4288-9d0c-01e5aeb29b53/size_chart.jpg",
+          "sha256": "a31dcd6dc88dd937f7f05fbf51d26daabdfd1a129e8f80530a00b5ef872dfa50",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1253,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-289260ee/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
