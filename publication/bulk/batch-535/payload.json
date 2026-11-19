@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-535",
+  "created_at": "2026-11-19T00:45:51.362814+00:00",
+  "catalog_poll_at": "2026-11-19T00:45:51.362814+00:00",
+  "products": [
+    {
+      "product_id": "f78c65c7-c0fd-4942-8340-4fabd895835c",
+      "sample": 1188,
+      "name": "Uzun Kollu Kruvaze Yakalı Belde Pileli Midi Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 125,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192380-1-80ee4018d9.jpg",
+        "https://modayakamoz.com/orj/janes-192380-2-0fe4c087ee.jpg",
+        "https://modayakamoz.com/orj/janes-192380-3-3984f226e6.jpg",
+        "https://modayakamoz.com/orj/janes-192380-7-c99eeae364.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "f78c65c7-c0fd-4942-8340-4fabd895835c/front.jpg",
+          "sha256": "73d6ddf2300d583f2524b24a4652517ed25bba6bcc9f195745fd8052c59614a5",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1188,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f78c65c7/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f78c65c7-c0fd-4942-8340-4fabd895835c/back.jpg",
+          "sha256": "a3b4ffa53b1b375debf7c2adf57fa2a11395475251d490fd2ef9db212f7fd947",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1188,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f78c65c7/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f78c65c7-c0fd-4942-8340-4fabd895835c/fashion_model.jpg",
+          "sha256": "b8cb85e20a8eab85c37339da3b68914563f8691faa90c34ea018b74475796c79",
+          "qa_status": "visual_source_qa_pass",
+          "sample": 1188,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f78c65c7/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "f78c65c7-c0fd-4942-8340-4fabd895835c/size_chart.jpg",
+          "sha256": "d012fa1de2ef70d2052ecae26f5a79f500e0a2a3fd3588239f5dcf1e6e25c915",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1188,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f78c65c7/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
