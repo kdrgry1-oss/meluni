@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-595",
+  "created_at": "2026-11-19T05:59:36.811686+00:00",
+  "catalog_poll_at": "2026-11-19T05:59:36.811686+00:00",
+  "products": [
+    {
+      "product_id": "a81a551b-b02b-4eb5-9497-b8154165bdb2",
+      "sample": 1248,
+      "name": "Uzun Kollu V Yakalı Pencere Dantel Detaylı Kalın Fitilli Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 57,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/a81a551b-b02b-4eb5-9497-b8154165bdb2-front-ab46d1bd5477.jpg",
+        "https://cdn.meluni.com.tr/ai-products/a81a551b-b02b-4eb5-9497-b8154165bdb2-back-835d3eccd4c4.jpg",
+        "https://cdn.meluni.com.tr/ai-products/a81a551b-b02b-4eb5-9497-b8154165bdb2-model-199c0e102766.jpg",
+        "https://modayakamoz.com/orj/a4fda811ba8e2f41f292.jpeg",
+        "https://modayakamoz.com/orj/1bd59f9be00dca9e662c.jpeg",
+        "https://modayakamoz.com/orj/f1adb865377b383fcede.jpeg",
+        "https://modayakamoz.com/orj/58ad37e5d639ee5f6c05.jpeg",
+        "https://modayakamoz.com/orj/e5a46af343525959e56a.jpeg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "a81a551b-b02b-4eb5-9497-b8154165bdb2/size_chart.jpg",
+          "sha256": "c240880c3d7cbef087bd353debbb93fe6882116d0525f18fb37f79a506f87905",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1248,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a81a551b/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
