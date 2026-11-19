@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-585",
+  "created_at": "2026-11-19T05:08:42.045686+00:00",
+  "catalog_poll_at": "2026-11-19T05:08:42.045686+00:00",
+  "products": [
+    {
+      "product_id": "d746d237-876c-4ad7-a2ba-9b08cd635c9a",
+      "sample": 1238,
+      "name": "Uzun Kollu V Yakalı Kaşkorse Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 108,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/d746d237-876c-4ad7-a2ba-9b08cd635c9a-front-a1ea02dcaace.jpg",
+        "https://cdn.meluni.com.tr/ai-products/d746d237-876c-4ad7-a2ba-9b08cd635c9a-back-1967f660ef55.jpg",
+        "https://cdn.meluni.com.tr/ai-products/d746d237-876c-4ad7-a2ba-9b08cd635c9a-model-08296a4af9e0.jpg",
+        "https://modayakamoz.com/orj/990a695186f3c68a4f3c.jpeg",
+        "https://modayakamoz.com/orj/27e892d4fed424abd241.jpeg",
+        "https://modayakamoz.com/orj/ab3cc15f4ebd98f22b35.jpeg",
+        "https://modayakamoz.com/orj/c72f00bc4c2646d99bd9.jpeg",
+        "https://modayakamoz.com/orj/c351f1a998a1324dc189.jpeg",
+        "https://modayakamoz.com/orj/f11a3555d2e2ea9c9e86.jpeg",
+        "https://modayakamoz.com/orj/bf88044a17ff413d4f5f.jpeg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "d746d237-876c-4ad7-a2ba-9b08cd635c9a/size_chart.jpg",
+          "sha256": "e3087d3624517f8d966d6405994f4751b1c3306483e6a13f149ea693c7144f29",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1238,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d746d237/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
