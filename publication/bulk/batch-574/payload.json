@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-574",
+  "created_at": "2026-11-19T04:08:18.710079+00:00",
+  "catalog_poll_at": "2026-11-19T04:08:18.710079+00:00",
+  "products": [
+    {
+      "product_id": "c9d5960a-73a8-49bc-aeb1-b6432cf1b26c",
+      "sample": 1227,
+      "name": "Uzun Kollu Kruvaze Yakalı Önü Asimetrik Kısa Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 65,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/c9d5960a-73a8-49bc-aeb1-b6432cf1b26c-front-fbc3665ee883.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c9d5960a-73a8-49bc-aeb1-b6432cf1b26c-back-0dbb8f33f12f.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c9d5960a-73a8-49bc-aeb1-b6432cf1b26c-model-78ab51be87e9.jpg",
+        "https://modayakamoz.com/orj/janes-192401-1-49021335cc.jpg",
+        "https://modayakamoz.com/orj/janes-192401-2-77f4e1ffa8.jpg",
+        "https://modayakamoz.com/orj/janes-192401-3-f091eb7ece.jpg",
+        "https://modayakamoz.com/orj/janes-192401-4-86b24012aa.jpg",
+        "https://modayakamoz.com/orj/janes-192401-5-f837d9df01.jpg",
+        "https://modayakamoz.com/orj/janes-192401-7-01d7efd3f5.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "c9d5960a-73a8-49bc-aeb1-b6432cf1b26c/size_chart.jpg",
+          "sha256": "859210d1efdfafb35e0079e2af62d77799a105c75c52eb93fb333d20a8423662",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1227,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c9d5960a/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
