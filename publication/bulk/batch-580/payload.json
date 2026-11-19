@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-580",
+  "created_at": "2026-11-19T04:38:35.507375+00:00",
+  "catalog_poll_at": "2026-11-19T04:38:35.507375+00:00",
+  "products": [
+    {
+      "product_id": "c1a6e464-f55b-4957-8a75-8b27d4b830ea",
+      "sample": 1233,
+      "name": "Uzun Kollu V Dantel Yakalı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 87,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/c1a6e464-f55b-4957-8a75-8b27d4b830ea-front-3fd194c3116a.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c1a6e464-f55b-4957-8a75-8b27d4b830ea-back-ad318a87d00e.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c1a6e464-f55b-4957-8a75-8b27d4b830ea-model-c1664f6b6bde.jpg",
+        "https://modayakamoz.com/orj/janes-192847-1-f295f602f2.jpg",
+        "https://modayakamoz.com/orj/janes-192847-2-97ff9231ed.jpg",
+        "https://modayakamoz.com/orj/janes-192847-3-1ee9554f83.jpg",
+        "https://modayakamoz.com/orj/janes-192847-4-603bdce3c4.jpg",
+        "https://modayakamoz.com/orj/janes-192847-5-cacc445729.jpg",
+        "https://modayakamoz.com/orj/janes-192847-6-3f31b026b4.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "c1a6e464-f55b-4957-8a75-8b27d4b830ea/size_chart.jpg",
+          "sha256": "94b10553661f91cda145392b77892fc602ba4a3f554cb9683a9e3f17b7cdfd1d",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1233,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1a6e464/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
