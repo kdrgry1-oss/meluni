@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-566",
+  "published_at_utc": "2026-11-19T03:29:15.834532+00:00",
+  "products": [
+    {
+      "product_id": "467fb72c-01d3-41df-9b5f-a17b93183a57",
+      "sample": 1219,
+      "name": "Uzun Kollu Kruvaze Yakalı Büzgülü Taşlı Viskon Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/467fb72c-01d3-41df-9b5f-a17b93183a57-size-chart-c798094c617c.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
