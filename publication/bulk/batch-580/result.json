@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-580",
+  "published_at_utc": "2026-11-19T04:40:59.869442+00:00",
+  "products": [
+    {
+      "product_id": "c1a6e464-f55b-4957-8a75-8b27d4b830ea",
+      "sample": 1233,
+      "name": "Uzun Kollu V Dantel Yakalı Viskon Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/c1a6e464-f55b-4957-8a75-8b27d4b830ea-size-chart-94b10553661f.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
