@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-596",
+  "created_at": "2026-11-19T06:04:38.020906+00:00",
+  "catalog_poll_at": "2026-11-19T06:04:38.020906+00:00",
+  "products": [
+    {
+      "product_id": "c25fe671-ddfa-45b9-b928-373953fcb1eb",
+      "sample": 1249,
+      "name": "Uzun Kollu V Yakalı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 63,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/c25fe671-ddfa-45b9-b928-373953fcb1eb-front-f71b70ce6c61.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c25fe671-ddfa-45b9-b928-373953fcb1eb-back-6c1ae20321d8.jpg",
+        "https://cdn.meluni.com.tr/ai-products/c25fe671-ddfa-45b9-b928-373953fcb1eb-model-aa1b54e1b4b6.jpg",
+        "https://modayakamoz.com/orj/janes-193766-1-7f852c38bf8d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193766-4e30020e2aa04126.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193766-d8d3b6d12476828e.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193766-c63064a818b5d7f4.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193766-f463f1f76f164c31.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193766-432b1b45a63e5690.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "c25fe671-ddfa-45b9-b928-373953fcb1eb/size_chart.jpg",
+          "sha256": "5a5c3e3a76e7828a0ce3af6df554564c9a595b3808d9fb6702806f4f25f4bcae",
+          "qa_status": "exact_source_values_verified",
+          "sample": 1249,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c25fe671/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
