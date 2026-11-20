@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-626",
+  "created_at": "2026-11-20T17:00:54.639292+00:00",
+  "catalog_poll_at": "2026-11-20T17:00:54.639292+00:00",
+  "products": [
+    {
+      "product_id": "b9478365-aaa7-4917-99b2-d252d7218801",
+      "sample": 1288,
+      "name": "Askılı Yuvarlak Yaka Yırtmaçlı Fiyonk Detaylı Kısa Atlas Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/547170ba5866e3f64362.jpeg",
+        "https://modayakamoz.com/orj/b051b5bdc15f7134a07f.jpeg",
+        "https://modayakamoz.com/orj/746398049d9beef9699c.jpeg",
+        "https://modayakamoz.com/orj/0bbe346d14829336f586.jpeg",
+        "https://modayakamoz.com/orj/0ab4b1c384c3f609350c.jpeg",
+        "https://modayakamoz.com/orj/4941b996bf5dbe27271e.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b9478365-aaa7-4917-99b2-d252d7218801/front.jpg",
+          "sha256": "135e8613da27394ae5e79e5d3f7a2a636b26f662356329f8f44194529272ce32",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1288,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b9478365/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b9478365-aaa7-4917-99b2-d252d7218801/back.jpg",
+          "sha256": "5b353c62fe4d9280554749e0c66300756a9e3fe9d1527f460cbd06ce67556ec5",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1288,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b9478365/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b9478365-aaa7-4917-99b2-d252d7218801/model.jpg",
+          "sha256": "09b957856f230ae98d7bbafb94359bd12a59fbe5d014034133d0d4e157a1e3fc",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1288,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b9478365/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "b9478365-aaa7-4917-99b2-d252d7218801/size_chart.jpg",
+          "sha256": "e2bda706b5abfaa3365239621125026d2e42e1ac245ba862942fb80a6d3a2b85",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1288,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b9478365/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
