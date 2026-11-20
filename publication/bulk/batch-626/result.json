@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-626",
+  "published_at_utc": "2026-11-20T17:03:26.702948+00:00",
+  "products": [
+    {
+      "product_id": "b9478365-aaa7-4917-99b2-d252d7218801",
+      "sample": 1288,
+      "name": "Askılı Yuvarlak Yaka Yırtmaçlı Fiyonk Detaylı Kısa Atlas Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b9478365-aaa7-4917-99b2-d252d7218801-front-135e8613da27.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b9478365-aaa7-4917-99b2-d252d7218801-back-5b353c62fe4d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b9478365-aaa7-4917-99b2-d252d7218801-model-09b957856f23.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b9478365-aaa7-4917-99b2-d252d7218801-size-chart-e2bda706b5ab.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
