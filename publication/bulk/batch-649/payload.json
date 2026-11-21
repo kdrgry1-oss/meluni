@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-649",
+  "created_at": "2026-11-21T17:11:24.447972+00:00",
+  "catalog_poll_at": "2026-11-21T17:11:24.447972+00:00",
+  "products": [
+    {
+      "product_id": "c2c8ad7c-7c5f-47db-b70b-9338e34fb038",
+      "sample": 1601,
+      "name": "Kısa Kollu Askılı Dantel Detaylı Dubai Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 17,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/98530c07505a4ae11c677989b0047fad.png",
+        "https://modayakamoz.com/orj/471edcb33b9fc42b4db7c9014c1a0605.png",
+        "https://modayakamoz.com/orj/af6ddbe98c40c8a02e46ae85b2abda7d.png",
+        "https://modayakamoz.com/orj/8e20e2f237ad6f49e3b0488cc0aa8d66.png",
+        "https://modayakamoz.com/orj/1037a6a38b9ad060fe6c.jpeg",
+        "https://modayakamoz.com/orj/f8c634d96dd5cd9ea0a8.jpeg",
+        "https://modayakamoz.com/orj/fa10abcf235125487213.jpeg",
+        "https://modayakamoz.com/orj/511832a204a6ab3bb0c9.jpeg",
+        "https://modayakamoz.com/orj/78f949814d2061a6001b.jpeg",
+        "https://modayakamoz.com/orj/e912e43531970eff341a1b0535831a99.png",
+        "https://modayakamoz.com/orj/25669c91d2d342b540cbc09f20098ed8.png",
+        "https://modayakamoz.com/orj/7a9adc1bca64762138db192e3579c44d.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "c2c8ad7c-7c5f-47db-b70b-9338e34fb038/front.jpg",
+          "sha256": "3f2ccc84a9b9c67257822c89dcb74c73a802c602f56b405140343e3c35b565ab",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1601,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c2c8ad7c-7c5f-47db-b70b-9338e34fb038/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c2c8ad7c-7c5f-47db-b70b-9338e34fb038/model.jpg",
+          "sha256": "41306d0b684c5ff357cf5e4a90095d6863db2740690b09f30cd8e84c281d124f",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1601,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c2c8ad7c-7c5f-47db-b70b-9338e34fb038/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "c2c8ad7c-7c5f-47db-b70b-9338e34fb038/size_chart.jpg",
+          "sha256": "d490640639a5a394b3eb30a90533437158e2e04d28a886338fedfd7cb08e2208",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1601,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c2c8ad7c-7c5f-47db-b70b-9338e34fb038/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
