@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-632",
+  "published_at_utc": "2026-11-21T13:05:51.589353+00:00",
+  "products": [
+    {
+      "product_id": "3022d6b8-a8bc-4e7e-947c-1bee882913ba",
+      "sample": 1294,
+      "name": "Ip Askılı V Dantel Yakalı Bürümcük Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3022d6b8-a8bc-4e7e-947c-1bee882913ba-front-ae986e4ea500.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/3022d6b8-a8bc-4e7e-947c-1bee882913ba-back-e7c2e8a89f3d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3022d6b8-a8bc-4e7e-947c-1bee882913ba-model-13d9fee0e38b.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
