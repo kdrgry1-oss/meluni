@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-677",
+  "published_at_utc": "2026-11-21T19:57:37.241711+00:00",
+  "products": [
+    {
+      "product_id": "5343ce10-6d82-4edb-81c1-80ff46855b7d",
+      "sample": 2042,
+      "name": "Kısa Kollu V Dantel Yakalı Düğmeli Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5343ce10-6d82-4edb-81c1-80ff46855b7d-front-367e476c0246.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5343ce10-6d82-4edb-81c1-80ff46855b7d-back-4a33fd501253.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5343ce10-6d82-4edb-81c1-80ff46855b7d-model-e7b59c116380.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5343ce10-6d82-4edb-81c1-80ff46855b7d-size-chart-074aa77638ac.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
