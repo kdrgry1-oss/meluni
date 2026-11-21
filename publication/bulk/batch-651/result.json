@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-651",
+  "published_at_utc": "2026-11-21T17:28:12.342878+00:00",
+  "products": [
+    {
+      "product_id": "22599491-3d93-4e33-a9fa-af9726e2b0d4",
+      "sample": 1808,
+      "name": "Kısa Kollu Dantel Detaylı Kısa Viskon Iki Iplik Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/22599491-3d93-4e33-a9fa-af9726e2b0d4-front-7de371602e01.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/22599491-3d93-4e33-a9fa-af9726e2b0d4-back-24beda811f8e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/22599491-3d93-4e33-a9fa-af9726e2b0d4-model-fbe9eae5d4a7.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/22599491-3d93-4e33-a9fa-af9726e2b0d4-size-chart-81f54fea94fe.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
