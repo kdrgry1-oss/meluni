@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-654",
+  "published_at_utc": "2026-11-21T17:43:01.989387+00:00",
+  "products": [
+    {
+      "product_id": "f3f5ac45-d3b0-4529-ac2a-ac34283d14fc",
+      "sample": 1826,
+      "name": "Kısa Kollu Düğmeli Asimetrik Kesım Detaylı Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f3f5ac45-d3b0-4529-ac2a-ac34283d14fc-front-317c4c5b64ac.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/f3f5ac45-d3b0-4529-ac2a-ac34283d14fc-back-5fd268901da2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f3f5ac45-d3b0-4529-ac2a-ac34283d14fc-model-b8f50293c7d6.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f3f5ac45-d3b0-4529-ac2a-ac34283d14fc-size-chart-71d3145795b2.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
