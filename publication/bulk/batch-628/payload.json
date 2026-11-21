@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-628",
+  "created_at": "2026-11-21T12:18:04.715704+00:00",
+  "catalog_poll_at": "2026-11-21T12:18:04.715704+00:00",
+  "products": [
+    {
+      "product_id": "e15d0a69-db3e-4778-ae9e-d6934dec1a49",
+      "sample": 1290,
+      "name": "Ip Askılı Kruvaze Halka Detaylı Asimetrik Mini Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 30,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/91ee204153d75eb1b4e7.jpeg",
+        "https://modayakamoz.com/orj/e55676a766750e812ba6.jpeg",
+        "https://modayakamoz.com/orj/1fdb9889b2e96d22590a.jpeg",
+        "https://modayakamoz.com/orj/55f3e354d37a4e3dccd8.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e15d0a69-db3e-4778-ae9e-d6934dec1a49/front.jpg",
+          "sha256": "0e5d50478b5c0b06dfdbc68d79d5ea954a2c752eb8e802406fd7d2c13a82a09a",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1290,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e15d0a69/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e15d0a69-db3e-4778-ae9e-d6934dec1a49/back.jpg",
+          "sha256": "06b6957a8ed659c9e20dcee1cdec8dbb53a9d168a53c5e502c3506a4e0dc5f85",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1290,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e15d0a69/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e15d0a69-db3e-4778-ae9e-d6934dec1a49/model.jpg",
+          "sha256": "5a41b545c0c988989d60fc184d1f194992d2d388fb702efbd2b7f373105a78de",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1290,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e15d0a69/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
