@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-636",
+  "published_at_utc": "2026-11-21T15:55:17.908580+00:00",
+  "products": [
+    {
+      "product_id": "e284122f-abf0-4bcf-8c67-8f3fba278ac2",
+      "sample": 1298,
+      "name": "Ip Askılı Yaka Dantel Detaylı Kısa Viskon Gecelik",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e284122f-abf0-4bcf-8c67-8f3fba278ac2-front-31d81ddbf1da.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e284122f-abf0-4bcf-8c67-8f3fba278ac2-back-123ff35ae37c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e284122f-abf0-4bcf-8c67-8f3fba278ac2-model-a1c388110b6f.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e284122f-abf0-4bcf-8c67-8f3fba278ac2-size-chart-4cea82641ec4.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
