@@ -1,0 +1,39 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-643",
+  "created_at": "2026-11-21T16:30:29.609693+00:00",
+  "catalog_poll_at": "2026-11-21T16:30:29.609693+00:00",
+  "products": [
+    {
+      "product_id": "53b8a755-9419-499d-9118-0e0970a6c04c",
+      "sample": 1305,
+      "name": "Kolsuz Beli Dantelli Uzun Pera Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5ec7bb2bce521e60e5b8.jpeg",
+        "https://modayakamoz.com/orj/50c4f48bb56d819f5e32.jpeg",
+        "https://modayakamoz.com/orj/81f6082b1e5463bce321.jpeg",
+        "https://modayakamoz.com/orj/aabb2950af29aa79cf17.jpeg",
+        "https://modayakamoz.com/orj/3f72c51bf081cf9d4490.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "53b8a755-9419-499d-9118-0e0970a6c04c/front.jpg",
+          "sha256": "6188f3a59fb779031f945b038e54738ffc3a0adf323bae654df116564757046c",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1305,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-53b8a755-9419-499d-9118-0e0970a6c04c/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "53b8a755-9419-499d-9118-0e0970a6c04c/model.jpg",
+          "sha256": "9f0734176f9161bf0e48558526b487d68ab81a0c80784bf23710bfe049e10a5e",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1305,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-53b8a755-9419-499d-9118-0e0970a6c04c/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
