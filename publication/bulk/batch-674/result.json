@@ -1,0 +1,41 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-674",
+  "published_at_utc": "2026-11-21T19:36:46.570353+00:00",
+  "products": [
+    {
+      "product_id": "61a9969e-f808-44b9-b752-b78c316d11f9",
+      "sample": 2025,
+      "name": "Kısa Kollu Tek Omuzu Açık Askı Toka Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/61a9969e-f808-44b9-b752-b78c316d11f9-front-53a7c204e547.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/61a9969e-f808-44b9-b752-b78c316d11f9-back-895184535ed6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/61a9969e-f808-44b9-b752-b78c316d11f9-model-f9d374c0d266.jpg"
+      },
+      "gallery_image_count": 11
+    },
+    {
+      "product_id": "e1f18f98-bba4-4173-b158-5dd0820cc6ab",
+      "sample": 2026,
+      "name": "Kısa Kollu Tek Omuzu Açık Askı Toka Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e1f18f98-bba4-4173-b158-5dd0820cc6ab-front-0880818d70d9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e1f18f98-bba4-4173-b158-5dd0820cc6ab-back-0ffe56f64c1a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e1f18f98-bba4-4173-b158-5dd0820cc6ab-model-6c50f41475ba.jpg"
+      },
+      "gallery_image_count": 11
+    },
+    {
+      "product_id": "04e5aed5-1e41-445e-8235-18e372be752b",
+      "sample": 2027,
+      "name": "Kısa Kollu Tek Omuzu Açık Askı Toka Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/04e5aed5-1e41-445e-8235-18e372be752b-front-b96337449d7e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/04e5aed5-1e41-445e-8235-18e372be752b-back-8371fd58af44.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/04e5aed5-1e41-445e-8235-18e372be752b-model-c34923b93a79.jpg"
+      },
+      "gallery_image_count": 15
+    }
+  ],
+  "skipped": []
+}
