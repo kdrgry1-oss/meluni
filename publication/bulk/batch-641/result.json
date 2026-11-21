@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-641",
+  "published_at_utc": "2026-11-21T16:20:24.974077+00:00",
+  "products": [
+    {
+      "product_id": "12bdf7b0-b1c2-4f11-bcea-527792e56cba",
+      "sample": 1303,
+      "name": "Ip Askılı Önden Çapraz Detaylı Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/12bdf7b0-b1c2-4f11-bcea-527792e56cba-front-d0f1f2288407.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/12bdf7b0-b1c2-4f11-bcea-527792e56cba-back-b81f36e266d6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/12bdf7b0-b1c2-4f11-bcea-527792e56cba-model-0bb3d1879467.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/12bdf7b0-b1c2-4f11-bcea-527792e56cba-size-chart-02a08620f04c.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
