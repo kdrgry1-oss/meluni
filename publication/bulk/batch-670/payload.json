@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-670",
+  "created_at": "2026-11-21T19:14:52.088992+00:00",
+  "catalog_poll_at": "2026-11-21T19:14:52.088992+00:00",
+  "products": [
+    {
+      "product_id": "9bb3a67b-4ee5-483c-8426-3f46b5cc17ba",
+      "sample": 1948,
+      "name": "Kısa Kollu Kruvaze Yakalı Kuşaklı Kısa Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 48,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7e2b47aae59c422351b7.jpeg",
+        "https://modayakamoz.com/orj/7874feac1e1fbe1c46f0.jpeg",
+        "https://modayakamoz.com/orj/275d74e8329b76f7c1b0.jpeg",
+        "https://modayakamoz.com/orj/8bb904086fc7670c38b9.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "9bb3a67b-4ee5-483c-8426-3f46b5cc17ba/front.jpg",
+          "sha256": "d337bc7a56ef049b37f79dea9c352e993a678f9b92fcc05afa681f00e734eec3",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1948,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9bb3a67b-4ee5-483c-8426-3f46b5cc17ba/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "9bb3a67b-4ee5-483c-8426-3f46b5cc17ba/back.jpg",
+          "sha256": "83d9a78fc9aff1005ad8641a91eda58154fad3d2ab2a3c169ac5a121435f4c8c",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1948,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9bb3a67b-4ee5-483c-8426-3f46b5cc17ba/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9bb3a67b-4ee5-483c-8426-3f46b5cc17ba/model.jpg",
+          "sha256": "c2df518b7e17f04a348b971ef06c5919a62d97247d761a2fb3f1829cb7698b42",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1948,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9bb3a67b-4ee5-483c-8426-3f46b5cc17ba/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "9bb3a67b-4ee5-483c-8426-3f46b5cc17ba/size_chart.jpg",
+          "sha256": "73dc701db86f5b97c3f68c97be7063f60a490a42455889fc25bfcfd43949273f",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1948,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9bb3a67b-4ee5-483c-8426-3f46b5cc17ba/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
