@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-653",
+  "published_at_utc": "2026-11-21T17:38:45.131079+00:00",
+  "products": [
+    {
+      "product_id": "a54093a0-cff8-4dba-893a-b52eb8e67f93",
+      "sample": 1817,
+      "name": "Kısa Kollu Derin Kruvaze Yakalı Kısa Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a54093a0-cff8-4dba-893a-b52eb8e67f93-front-d71752ae3c50.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a54093a0-cff8-4dba-893a-b52eb8e67f93-back-128b34a41845.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a54093a0-cff8-4dba-893a-b52eb8e67f93-model-c7a10bda2dcc.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
