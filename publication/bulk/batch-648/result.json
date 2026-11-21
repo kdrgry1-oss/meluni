@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-648",
+  "published_at_utc": "2026-11-21T17:01:04.250969+00:00",
+  "products": [
+    {
+      "product_id": "470672e7-b3ef-4403-9b6b-1d6e4dc0de12",
+      "sample": 1487,
+      "name": "Kolsuz Yakalı Düğmeli Kuşaklı Atlas Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/470672e7-b3ef-4403-9b6b-1d6e4dc0de12-front-855ebaeae246.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/470672e7-b3ef-4403-9b6b-1d6e4dc0de12-back-03c7afda0363.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/470672e7-b3ef-4403-9b6b-1d6e4dc0de12-model-247310157693.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/470672e7-b3ef-4403-9b6b-1d6e4dc0de12-size-chart-4ac252bc1277.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
