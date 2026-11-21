@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-627",
+  "created_at": "2026-11-21T08:54:17.799578+00:00",
+  "catalog_poll_at": "2026-11-21T08:54:17.799578+00:00",
+  "products": [
+    {
+      "product_id": "b422fc19-3722-4fb2-8edf-9a18cfee4496",
+      "sample": 1289,
+      "name": "Daire Yakalı Omuzlardan Açık Dantel Detaylı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 71,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1b8c7fdc65529797913f.jpeg",
+        "https://modayakamoz.com/orj/6dc96e175d0ce9416c4f.jpeg",
+        "https://modayakamoz.com/orj/012a1b0aac88f9482572.jpeg",
+        "https://modayakamoz.com/orj/37b3af035884ae6c5968.jpeg",
+        {
+          "id": "bb1a15af-1634-4780-96d4-3a265b31d1e2",
+          "url": "https://cdn.meluni.com.tr/ai-products/b422fc19-3722-4fb2-8edf-9a18cfee4496-olcu-oto-0d8714bd.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-02T05:23:53.602071+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "b422fc19-3722-4fb2-8edf-9a18cfee4496/front.jpg",
+          "sha256": "a38a9bb3523d0a42b9e1450da91acf32316e52507415d4f6467f1b814da51ddf",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1289,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b422fc19/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b422fc19-3722-4fb2-8edf-9a18cfee4496/back.jpg",
+          "sha256": "f5eda455820d734b0314a408127273a2ea1cc0205126cbb197ca8f4da120469c",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1289,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b422fc19/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b422fc19-3722-4fb2-8edf-9a18cfee4496/model.jpg",
+          "sha256": "9dc234f288b8c189c8d2d5ac34f3958a8b94bba79f03588bfa43ef0eda32a97b",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1289,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b422fc19/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
