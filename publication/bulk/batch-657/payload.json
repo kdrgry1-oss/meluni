@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-657",
+  "created_at": "2026-11-21T17:59:44.959275+00:00",
+  "catalog_poll_at": "2026-11-21T17:59:44.959275+00:00",
+  "products": [
+    {
+      "product_id": "6c3d5cc7-322e-4469-82fd-4037181a0f9e",
+      "sample": 1836,
+      "name": "Kısa Kollu Fermuarlı Kol Ucu Işıltılı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 40,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ad73d0eb17384cd170e0.jpeg",
+        "https://modayakamoz.com/orj/dd85fa6b0409337a1e72.jpeg",
+        "https://modayakamoz.com/orj/8aebea0b679d74a0bd5f.jpeg",
+        "https://modayakamoz.com/orj/c3c7b689c45837d21e8c.jpeg",
+        {
+          "id": "81472c57-cab3-4456-91ca-3f827aa1db3d",
+          "url": "https://cdn.meluni.com.tr/ai-products/0da32db9-5000-4eff-b664-2f09c3e60509-olcu-oto-15542324.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-01T05:20:13.218551+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "6c3d5cc7-322e-4469-82fd-4037181a0f9e/front.jpg",
+          "sha256": "ad3b01a96dd620a02689393b38cd6692d3febafce8d62a4aa3f5dcd3b3569eab",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1836,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6c3d5cc7-322e-4469-82fd-4037181a0f9e/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "6c3d5cc7-322e-4469-82fd-4037181a0f9e/back.jpg",
+          "sha256": "0b4956b6c156fde968792ae6c8e919f38984d9ceb3467abda92dd3712bc82853",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1836,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6c3d5cc7-322e-4469-82fd-4037181a0f9e/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "6c3d5cc7-322e-4469-82fd-4037181a0f9e/model.jpg",
+          "sha256": "79da71e519da76bef870605245b568aba197346592f06d05fd43bc53d606bc2e",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1836,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6c3d5cc7-322e-4469-82fd-4037181a0f9e/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "6c3d5cc7-322e-4469-82fd-4037181a0f9e/size_chart.jpg",
+          "sha256": "842232c9a901ef6e7bc066f2c6f0928f600401db946678a5601399a1938fdbde",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1836,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6c3d5cc7-322e-4469-82fd-4037181a0f9e/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
