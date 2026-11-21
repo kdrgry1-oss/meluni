@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-639",
+  "created_at": "2026-11-21T16:09:21.379921+00:00",
+  "catalog_poll_at": "2026-11-21T16:09:21.379921+00:00",
+  "products": [
+    {
+      "product_id": "eebff4ae-a1ae-4e1d-bb89-079577088ea1",
+      "sample": 1301,
+      "name": "Ip Askılı Yuvarlak Yakalı Boncuk Detaylı Geniş Paçalı Pera Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 13,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/22ce82a67c2104259c82.jpeg",
+        "https://modayakamoz.com/orj/c85a031013f7db4cda8a.jpeg",
+        "https://modayakamoz.com/orj/98f588830baca6ad36c1.jpeg",
+        "https://modayakamoz.com/orj/116dafc8e35c70ccd09d.jpeg",
+        "https://modayakamoz.com/orj/2a10b0f778cce85cb630.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "eebff4ae-a1ae-4e1d-bb89-079577088ea1/front.jpg",
+          "sha256": "4410de316e85ed5d543924ce6719c75eecd3e387b8f23274d7f6914580ab8ee5",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1301,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-eebff4ae-a1ae-4e1d-bb89-079577088ea1/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "eebff4ae-a1ae-4e1d-bb89-079577088ea1/back.jpg",
+          "sha256": "2f9d0855445a58aea7030ed557346c634baea58511e7e6578fe6c6b350416891",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1301,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-eebff4ae-a1ae-4e1d-bb89-079577088ea1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "eebff4ae-a1ae-4e1d-bb89-079577088ea1/model.jpg",
+          "sha256": "fdb59b80f91d44406209df9494cbf450916d3341a3b5b07422b0c0335f636d05",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1301,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-eebff4ae-a1ae-4e1d-bb89-079577088ea1/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
