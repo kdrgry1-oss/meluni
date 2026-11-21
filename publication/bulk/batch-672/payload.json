@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-672",
+  "created_at": "2026-11-21T19:26:02.101148+00:00",
+  "catalog_poll_at": "2026-11-21T19:26:02.101148+00:00",
+  "products": [
+    {
+      "product_id": "51d36745-d502-4acb-9564-9d9b96d6b667",
+      "sample": 2002,
+      "name": "Kısa Kollu Omuzdan Açık Askılı Kısa Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 170,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/51d36745-d502-4acb-9564-9d9b96d6b667/9d79d84c27a924d2.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/51d36745-d502-4acb-9564-9d9b96d6b667/c7018203733e165d.jpg",
+        "https://modayakamoz.com/orj/bfd586874bb6cc1aaf5d.jpeg",
+        "https://modayakamoz.com/orj/723ad17146e52458a0fb.jpeg",
+        "https://modayakamoz.com/orj/e7e7b3c5186a14bc4109.jpeg",
+        "https://modayakamoz.com/orj/c66d77a88154509f4270.jpeg",
+        "https://modayakamoz.com/orj/5f2ad6eea46d1d72033c.jpeg",
+        "https://modayakamoz.com/orj/b5cb19c8526681231988.jpeg",
+        "https://modayakamoz.com/orj/00db5598ce7c832396da.jpeg",
+        {
+          "id": "c6530a18-4dc7-485a-a2f7-eccde282637e",
+          "url": "https://cdn.meluni.com.tr/ai-products/8f0334ac-603c-42f2-8f1a-0dcd8c6105e8-olcu-oto-d7541323.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-26T05:24:20.269725+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/51d36745-d502-4acb-9564-9d9b96d6b667/44c56d2bf08a5a49.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "51d36745-d502-4acb-9564-9d9b96d6b667/front.jpg",
+          "sha256": "9d79d84c27a924d2be1263923deb79ec63f949f63c5b9aed6799e6164098d1d2",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2002,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-779-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "51d36745-d502-4acb-9564-9d9b96d6b667/back.jpg",
+          "sha256": "c7018203733e165d7da85f0a5e090b85be38f94505e669d6f6fb98c66761f26c",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2002,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-779-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "51d36745-d502-4acb-9564-9d9b96d6b667/model.jpg",
+          "sha256": "fa0153d3a707b03becfe8f4f6a63f239ec6ecf97b60bde39500c7c43ba7105aa",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2002,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-779-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
