@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-658",
+  "published_at_utc": "2026-11-21T18:05:33.866023+00:00",
+  "products": [
+    {
+      "product_id": "2cb26b5c-97df-4ca8-81c0-1274eb19f1ef",
+      "sample": 1837,
+      "name": "Kısa Kollu Fermuarlı Kol Ucu Işıltılı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2cb26b5c-97df-4ca8-81c0-1274eb19f1ef-front-701b87bbc6dd.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2cb26b5c-97df-4ca8-81c0-1274eb19f1ef-back-03aa204b8f1a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2cb26b5c-97df-4ca8-81c0-1274eb19f1ef-model-86d0ea4182a4.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/2cb26b5c-97df-4ca8-81c0-1274eb19f1ef-size-chart-842232c9a901.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
