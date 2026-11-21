@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-689",
+  "created_at": "2026-11-21T21:27:12.400397+00:00",
+  "catalog_poll_at": "2026-11-21T21:27:12.400397+00:00",
+  "products": [
+    {
+      "product_id": "beabf15f-fc78-4d58-a7a8-0412f41ba801",
+      "sample": 2858,
+      "name": "Sıfır Kol Askılı V Yakalı Düğmeli Keten Ceket ve Şort Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 107,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/beabf15f-fc78-4d58-a7a8-0412f41ba801/beabf15f-fc78-4d58-a7a8-0412f41ba801-hd0-b65cdabe.jpg",
+        "https://cdn.meluni.com.tr/products/beabf15f-fc78-4d58-a7a8-0412f41ba801/beabf15f-fc78-4d58-a7a8-0412f41ba801-hd1-b5c19e44.jpg",
+        "https://cdn.meluni.com.tr/products/beabf15f-fc78-4d58-a7a8-0412f41ba801/beabf15f-fc78-4d58-a7a8-0412f41ba801-hd2-b623f011.jpg",
+        {
+          "id": "8ecaa837-3401-4a6f-bb0a-5200ad73b660",
+          "url": "https://cdn.meluni.com.tr/ai-products/53d710ba-d0e0-4ac9-8962-31253f0c8851-olcu-oto-3e6c6c0a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:33:12.201250+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "beabf15f-fc78-4d58-a7a8-0412f41ba801/front.jpg",
+          "sha256": "e958ec0d03098123628e7294f20e48215723f9cf37391e8f7d54d2a9d43adcdd",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2858-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "beabf15f-fc78-4d58-a7a8-0412f41ba801/back.jpg",
+          "sha256": "548a38f568fc5ddeb5afec34460cb84068d9c7aaf48a16c8dc5eeba8eebc3c70",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2858-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "beabf15f-fc78-4d58-a7a8-0412f41ba801/fashion_model.jpg",
+          "sha256": "1922e1a6a932c41010224f2a77f2df911d8e89f327a871e96dbc86dd44559e9d",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/2858-model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "beabf15f-fc78-4d58-a7a8-0412f41ba801/size_chart.jpg",
+          "sha256": "9a3a52179c8cc37bef0f6369435621293d2f1e34b685e7dc8bea0d9041460403",
+          "qa_status": "exact_source_values_verified_passed",
+          "sample": 2858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-2858-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
