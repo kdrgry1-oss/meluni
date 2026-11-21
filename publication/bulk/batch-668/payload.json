@@ -1,0 +1,57 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-668",
+  "created_at": "2026-11-21T19:02:47.349347+00:00",
+  "catalog_poll_at": "2026-11-21T19:02:47.349347+00:00",
+  "products": [
+    {
+      "product_id": "ce800ff5-0095-43a2-8744-1e911f94f5c9",
+      "sample": 1895,
+      "name": "Kısa Kollu Kruvaze Yaka A Kesim Kalın Fitilli Kaşkorse Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 33,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/ce800ff5-0095-43a2-8744-1e911f94f5c9-model-f6380ca5d68c.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/ce800ff5-0095-43a2-8744-1e911f94f5c9/047251a1009cfc8b.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/ce800ff5-0095-43a2-8744-1e911f94f5c9/6d69af1ffb015be9.jpg",
+        "https://modayakamoz.com/orj/f65fae4f6b0a6bb5213b.jpeg",
+        "https://modayakamoz.com/orj/4f95d44cde36f88bba0d.jpeg",
+        "https://modayakamoz.com/orj/396b49b85b54a7010d0c.jpeg",
+        "https://modayakamoz.com/orj/c7102eba83c5e2f9fa5d.jpeg",
+        "https://modayakamoz.com/orj/f62ed9d3fd77493e21f4.jpeg",
+        "https://modayakamoz.com/orj/daeabe02e35579ceac25.jpeg",
+        {
+          "id": "64a2fe78-c9d5-491d-90a3-6be750960432",
+          "url": "https://cdn.meluni.com.tr/ai-products/ce800ff5-0095-43a2-8744-1e911f94f5c9-olcu-oto-23d70b96.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-10T05:28:39.106708+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "ce800ff5-0095-43a2-8744-1e911f94f5c9/front.jpg",
+          "sha256": "047251a1009cfc8b6538d0cddd8cca9f5c156c51be381898e178fd13f80c63fc",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1895,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-739-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ce800ff5-0095-43a2-8744-1e911f94f5c9/back.jpg",
+          "sha256": "6d69af1ffb015be9841e6fbae063075b6d02b6e31e118b42939b51f5310317c2",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1895,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-739-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ce800ff5-0095-43a2-8744-1e911f94f5c9/model.jpg",
+          "sha256": "f6380ca5d68c190fc83196ce91c673bc4762a979b26fd4d31c76005dee59e23e",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1895,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ce800ff5-0095-43a2-8744-1e911f94f5c9/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
