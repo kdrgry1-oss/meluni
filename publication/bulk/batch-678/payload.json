@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-678",
+  "created_at": "2026-11-21T20:03:33.988220+00:00",
+  "catalog_poll_at": "2026-11-21T20:03:33.988220+00:00",
+  "products": [
+    {
+      "product_id": "f1fd1277-4914-47c8-bccb-0df8299c4032",
+      "sample": 2051,
+      "name": "Kısa Kollu V Hakim Yaka Kolları Fırfırlı Dubai Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 54,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c5c8583aa300d4f2a91c.jpeg",
+        "https://modayakamoz.com/orj/1f492bd102fd750e29a9.jpeg",
+        "https://modayakamoz.com/orj/c04fadd1ce56286ac938.jpeg",
+        "https://modayakamoz.com/orj/3187cb1bf5ccc1b8d18e.jpeg",
+        "https://modayakamoz.com/orj/8732d57e9da6ca116249.jpeg",
+        "https://modayakamoz.com/orj/7c5bba8ff7b707ee9579.jpeg",
+        {
+          "id": "9afcff3d-7ddd-415e-9568-213e496d0bb4",
+          "url": "https://cdn.meluni.com.tr/ai-products/bd4e2e99-6c4d-4a9b-8905-af539a405d06-olcu-oto-46b3029f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-01T05:18:34.849983+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "f1fd1277-4914-47c8-bccb-0df8299c4032/front.jpg",
+          "sha256": "0c9b300c31348aef7762d9338dceab9d5fadf010a5e8bceb17a33bb09818a715",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2051,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f1fd1277-4914-47c8-bccb-0df8299c4032/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f1fd1277-4914-47c8-bccb-0df8299c4032/back.jpg",
+          "sha256": "10952d42d2f647d93444d1cf69c932afad224a85b0deb2a982866a948717bf9c",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2051,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f1fd1277-4914-47c8-bccb-0df8299c4032/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f1fd1277-4914-47c8-bccb-0df8299c4032/model.jpg",
+          "sha256": "1c1ebc707981df291f750be6f90c483fd639ccf8339c379ea41c0c016597dae1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2051,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f1fd1277-4914-47c8-bccb-0df8299c4032/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "f1fd1277-4914-47c8-bccb-0df8299c4032/size-chart.jpg",
+          "sha256": "fb854ac33f4ce4585b014c2fe7dba98cc39e073a5f6565bfeffe55dab05a68fe",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2051,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f1fd1277-4914-47c8-bccb-0df8299c4032/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
