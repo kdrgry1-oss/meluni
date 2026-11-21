@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-665",
+  "created_at": "2026-11-21T18:41:05.263844+00:00",
+  "catalog_poll_at": "2026-11-21T18:41:05.263844+00:00",
+  "products": [
+    {
+      "product_id": "a0003c0c-f08a-4202-9211-d96a604c6185",
+      "sample": 1878,
+      "name": "Kısa Kollu Kare Yakalı Kuşaklı Uzun Janjan Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f28264e4e1bec105766a.jpeg",
+        "https://modayakamoz.com/orj/b9d2c6b1eb3f1ea2d8fa.jpeg",
+        "https://modayakamoz.com/orj/ee121d9c0a137d2ad3b3.jpeg",
+        "https://modayakamoz.com/orj/414eb8ade6f50aedcc70.jpeg",
+        {
+          "id": "8a7ab1cc-823f-4a2d-972e-b5e4a20e1771",
+          "url": "https://cdn.meluni.com.tr/ai-products/a0003c0c-f08a-4202-9211-d96a604c6185-olcu-oto-1966ca8f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:23:39.329037+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "a0003c0c-f08a-4202-9211-d96a604c6185/front.jpg",
+          "sha256": "1f3fd5464cfec3f48feed8420b4991cf3f5955242af29f862b30b3cc1b2e06e1",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1878,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0003c0c-f08a-4202-9211-d96a604c6185/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a0003c0c-f08a-4202-9211-d96a604c6185/back.jpg",
+          "sha256": "cd2714239716d25f82741085a3ef99fc3500b9e3933f230febf62ec2b00354da",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1878,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0003c0c-f08a-4202-9211-d96a604c6185/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a0003c0c-f08a-4202-9211-d96a604c6185/model.jpg",
+          "sha256": "69d2eafc2e6963a72dacb767c046f8b5988c98ccec138e5c49e13ac625bfadf3",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1878,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0003c0c-f08a-4202-9211-d96a604c6185/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
