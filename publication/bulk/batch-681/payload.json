@@ -1,0 +1,101 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-681",
+  "created_at": "2026-11-21T20:19:43.869886+00:00",
+  "catalog_poll_at": "2026-11-21T20:19:43.869886+00:00",
+  "products": [
+    {
+      "product_id": "35e1546e-8bc4-4383-8688-6bf73a1924b9",
+      "sample": 2165,
+      "name": "Kısa Kollu V Yakalı Düğmeli Aerobin Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 13,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/35e1546e-8bc4-4383-8688-6bf73a1924b9/bcf590d4258a4f2a.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/35e1546e-8bc4-4383-8688-6bf73a1924b9/30c561c1e06642e4.jpg",
+        "https://modayakamoz.com/orj/b18cb095104e32548f36.jpeg",
+        "https://modayakamoz.com/orj/a878ececc1e03aa57eb3.jpeg",
+        "https://modayakamoz.com/orj/812303a47ed02426ffb1.jpeg",
+        "https://modayakamoz.com/orj/59a9a6769981e3d6ff31.jpeg",
+        "https://modayakamoz.com/orj/52c5a00630bc3000ed78.jpeg",
+        {
+          "id": "4269f5fd-54ae-4bfb-a9ed-4687c834d323",
+          "url": "https://cdn.meluni.com.tr/ai-products/35e1546e-8bc4-4383-8688-6bf73a1924b9-olcu-oto-c168875e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-21T05:20:42.940938+00:00"
+        },
+        {
+          "id": "2018919c-4b5b-5e95-8637-8816248606ff",
+          "url": "https://cdn.meluni.com.tr/ai-products/35e1546e-8bc4-4383-8688-6bf73a1924b9-size-chart-e10fd8a8e0a6.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:17:30.364541+00:00"
+        }
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "35e1546e-8bc4-4383-8688-6bf73a1924b9/fashion_model.jpg",
+          "sha256": "4708fa6ab7fbb8279ebc8af6644e832f2ecc16b79da43a681aa984ce81b21433",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2165,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-835-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "35e1546e-8bc4-4383-8688-6bf73a1924b9/size_chart.jpg",
+          "sha256": "e10fd8a8e0a65504fd21460d8269bfb0d55d1c90db0d6e586e6df1651e7d2d08",
+          "qa_status": "visual_qa_pass_catalog_linked_values_verified",
+          "sample": 2165,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-835-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "f89170d1-fef1-4b45-8868-38ed3ac6be95",
+      "sample": 2167,
+      "name": "Kısa Kollu V Yakalı Düğmeli Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 120,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/f89170d1-fef1-4b45-8868-38ed3ac6be95/caed969f55019508.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/f89170d1-fef1-4b45-8868-38ed3ac6be95/175df17e2095b6fa.jpg",
+        "https://modayakamoz.com/orj/a9d001fb0c079f442701.jpeg",
+        "https://modayakamoz.com/orj/0472ab19c98954428708.jpeg",
+        "https://modayakamoz.com/orj/ff8e42301c28beec0be7.jpeg",
+        "https://modayakamoz.com/orj/b9883d7bc14538c7b20d.jpeg",
+        "https://modayakamoz.com/orj/03e4c19cb96cd46eec72.jpeg",
+        {
+          "id": "97e3a625-f92c-49d1-ae94-797d276c65c0",
+          "url": "https://cdn.meluni.com.tr/ai-products/f89170d1-fef1-4b45-8868-38ed3ac6be95-olcu-oto-201fd186.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:26:25.649252+00:00"
+        },
+        {
+          "id": "8b0256f3-febf-5105-a9cb-17cf167ca1f2",
+          "url": "https://cdn.meluni.com.tr/ai-products/f89170d1-fef1-4b45-8868-38ed3ac6be95-size-chart-d656c33a2673.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:17:30.364541+00:00"
+        }
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "f89170d1-fef1-4b45-8868-38ed3ac6be95/fashion_model.jpg",
+          "sha256": "5fe0ec64363b995732d6fd80b9d64ac8416a93542b886124a56b5a45f6c9486a",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2167,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-836-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "f89170d1-fef1-4b45-8868-38ed3ac6be95/size_chart.jpg",
+          "sha256": "d656c33a267392914ca8117a9011c91844777a3f1b4ed953c7877fa74e63f82e",
+          "qa_status": "visual_qa_pass_catalog_linked_values_verified",
+          "sample": 2167,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-836-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
