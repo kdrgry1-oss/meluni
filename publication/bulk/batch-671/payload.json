@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-671",
+  "created_at": "2026-11-21T19:20:47.513474+00:00",
+  "catalog_poll_at": "2026-11-21T19:20:47.513474+00:00",
+  "products": [
+    {
+      "product_id": "62273ee1-3111-44d3-9e27-b38d717ef2a4",
+      "sample": 1958,
+      "name": "Kısa Kollu Kruvaze Yakalı Kısa Kiloş Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 105,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f1aa8949c9009715511b.jpeg",
+        "https://modayakamoz.com/orj/cd12113434ec5160466c.jpeg",
+        "https://modayakamoz.com/orj/6343267d4653ac820e48.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "62273ee1-3111-44d3-9e27-b38d717ef2a4/front.jpg",
+          "sha256": "d0cb2389b4948d63d27ddda755570e78b853a1d12f560ffa27fed25872bf6669",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1958,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-62273ee1-3111-44d3-9e27-b38d717ef2a4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "62273ee1-3111-44d3-9e27-b38d717ef2a4/back.jpg",
+          "sha256": "6419c636a4fd07a06b37611219d19afba14da85439ae50fd6a467663f91b18ec",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1958,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-62273ee1-3111-44d3-9e27-b38d717ef2a4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "62273ee1-3111-44d3-9e27-b38d717ef2a4/model.jpg",
+          "sha256": "6b36959e657942fb0faea0785b94b5de7a4a5975827e2fa5b12f5b64186c1ae6",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1958,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-62273ee1-3111-44d3-9e27-b38d717ef2a4/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
