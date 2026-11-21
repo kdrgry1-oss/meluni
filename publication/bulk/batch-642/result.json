@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-642",
+  "published_at_utc": "2026-11-21T16:26:54.716777+00:00",
+  "products": [
+    {
+      "product_id": "b3ef8035-8e58-42b7-bebd-42fe8671fcbf",
+      "sample": 1304,
+      "name": "Kapüşonlu Omuzlardan Açık Eteği Fırfırlı Kısa Modal Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b3ef8035-8e58-42b7-bebd-42fe8671fcbf-front-cb7744ed9c14.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b3ef8035-8e58-42b7-bebd-42fe8671fcbf-model-1100f70890b9.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
