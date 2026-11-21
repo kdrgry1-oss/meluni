@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-656",
+  "published_at_utc": "2026-11-21T17:54:38.793894+00:00",
+  "products": [
+    {
+      "product_id": "703069c0-2ac3-4be5-87d7-d123d12f1435",
+      "sample": 1833,
+      "name": "Kısa Kollu Düğmeli Mini Bodycon Fitilli Kaşkorse Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/703069c0-2ac3-4be5-87d7-d123d12f1435-front-fe86fde126a2.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/703069c0-2ac3-4be5-87d7-d123d12f1435-back-61a846747222.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/703069c0-2ac3-4be5-87d7-d123d12f1435-model-db9f06121fc6.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/703069c0-2ac3-4be5-87d7-d123d12f1435-size-chart-730e1712bb1f.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
