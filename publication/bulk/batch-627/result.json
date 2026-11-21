@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-627",
+  "published_at_utc": "2026-11-21T08:56:42.478502+00:00",
+  "products": [
+    {
+      "product_id": "b422fc19-3722-4fb2-8edf-9a18cfee4496",
+      "sample": 1289,
+      "name": "Daire Yakalı Omuzlardan Açık Dantel Detaylı Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b422fc19-3722-4fb2-8edf-9a18cfee4496-front-a38a9bb3523d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b422fc19-3722-4fb2-8edf-9a18cfee4496-back-f5eda455820d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b422fc19-3722-4fb2-8edf-9a18cfee4496-model-9dc234f288b8.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
