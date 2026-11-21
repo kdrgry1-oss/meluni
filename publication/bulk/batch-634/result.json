@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-634",
+  "published_at_utc": "2026-11-21T15:40:16.238884+00:00",
+  "products": [
+    {
+      "product_id": "4433b660-4e8d-42f6-a72f-c3eb6ad66f83",
+      "sample": 1296,
+      "name": "Ip Askılı V Yaka Detaylı Viskon Gecelik",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4433b660-4e8d-42f6-a72f-c3eb6ad66f83-front-640a6d043ba6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4433b660-4e8d-42f6-a72f-c3eb6ad66f83-back-a6c9328d900c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4433b660-4e8d-42f6-a72f-c3eb6ad66f83-model-5ebd2e41afb2.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/4433b660-4e8d-42f6-a72f-c3eb6ad66f83-size-chart-0887cff79475.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
