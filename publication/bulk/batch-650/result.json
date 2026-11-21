@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-650",
+  "published_at_utc": "2026-11-21T17:23:06.073365+00:00",
+  "products": [
+    {
+      "product_id": "234e34c7-5e2d-4979-b710-8d6034977aa4",
+      "sample": 1807,
+      "name": "Kısa Kollu Dantel Detaylı Düğmeli Waffle Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/234e34c7-5e2d-4979-b710-8d6034977aa4-front-69544d651cb3.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/234e34c7-5e2d-4979-b710-8d6034977aa4-back-2c08498c2271.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/234e34c7-5e2d-4979-b710-8d6034977aa4-model-97f233af040c.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/234e34c7-5e2d-4979-b710-8d6034977aa4-size-chart-5f63f2102845.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
