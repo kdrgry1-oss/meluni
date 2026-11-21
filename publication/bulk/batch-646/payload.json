@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-646",
+  "created_at": "2026-11-21T16:48:00.107717+00:00",
+  "catalog_poll_at": "2026-11-21T16:48:00.107717+00:00",
+  "products": [
+    {
+      "product_id": "cdffdb32-63c6-4f8b-b5c9-2d4672537aa2",
+      "sample": 1397,
+      "name": "Kolsuz Bisiklet Yaka Sandy Bluz ve Şort Etek Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 61,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/36e83f5ff962ec965566.jpeg",
+        "https://modayakamoz.com/orj/15134cb47f9868c46f3b.jpeg",
+        "https://modayakamoz.com/orj/27b28462b2e6a61b16db.jpeg",
+        "https://modayakamoz.com/orj/2fa332e2eb07cae8b6e7.jpeg",
+        "https://modayakamoz.com/orj/827c205f1a3d30e774b1.jpeg",
+        "https://modayakamoz.com/orj/7c3af6912c344bc6db57.jpeg",
+        {
+          "id": "670aed6a-6a64-4968-8a81-2da3e14d648c",
+          "url": "https://cdn.meluni.com.tr/ai-products/cdffdb32-63c6-4f8b-b5c9-2d4672537aa2-olcu-oto-1d7093bb.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:21:14.074125+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "cdffdb32-63c6-4f8b-b5c9-2d4672537aa2/front.jpg",
+          "sha256": "d3425eee5d8f7ee84bcc262c27f425b15597879a11a01f218ef6e7184580a72f",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1397,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cdffdb32-63c6-4f8b-b5c9-2d4672537aa2/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "cdffdb32-63c6-4f8b-b5c9-2d4672537aa2/back.jpg",
+          "sha256": "1284b06ac5aa72a4dbac9b06bdeadebd5d372ba1beede40878f9ed92823960fe",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1397,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cdffdb32-63c6-4f8b-b5c9-2d4672537aa2/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "cdffdb32-63c6-4f8b-b5c9-2d4672537aa2/model.jpg",
+          "sha256": "86984d2bc53cc06d384809798bcb9420613f53410942a1f2957dddfb7cafcad3",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1397,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-cdffdb32-63c6-4f8b-b5c9-2d4672537aa2/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
