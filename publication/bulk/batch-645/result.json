@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-645",
+  "published_at_utc": "2026-11-21T16:43:23.502179+00:00",
+  "products": [
+    {
+      "product_id": "6536abf9-3d1d-445a-9428-538a2f5e2353",
+      "sample": 1392,
+      "name": "Kolsuz Bisiklet Yaka Dantel Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6536abf9-3d1d-445a-9428-538a2f5e2353-front-9446e94d2e0b.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6536abf9-3d1d-445a-9428-538a2f5e2353-back-0479e2336426.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6536abf9-3d1d-445a-9428-538a2f5e2353-model-08d9341aa915.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6536abf9-3d1d-445a-9428-538a2f5e2353-size-chart-72d35293ac93.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
