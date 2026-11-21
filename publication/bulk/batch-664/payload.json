@@ -1,0 +1,62 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-664",
+  "created_at": "2026-11-21T18:36:19.319769+00:00",
+  "catalog_poll_at": "2026-11-21T18:36:19.319769+00:00",
+  "products": [
+    {
+      "product_id": "4cfd506a-5a20-4739-a8e6-1edf66b1fd13",
+      "sample": 1877,
+      "name": "Kısa Kollu Kare Yakalı Cep Detaylı Dalgıç Elbise Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 74,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2774cf1da640267428c3.jpeg",
+        "https://modayakamoz.com/orj/b8eb24a68479b7b64fef.jpeg",
+        "https://modayakamoz.com/orj/328af842804df2da14d8.jpeg",
+        "https://modayakamoz.com/orj/35912887ff71431b1db4.jpeg",
+        "https://modayakamoz.com/orj/99335ee07298993cff8a.jpeg",
+        "https://modayakamoz.com/orj/95b7c5ad1226503a7457.jpeg",
+        "https://modayakamoz.com/orj/bffd87c740e51d1ba8ee.jpeg",
+        {
+          "id": "11426814-4d13-494c-a924-5d74b950d029",
+          "url": "https://cdn.meluni.com.tr/ai-products/4112dd8d-50d1-4aa3-b8df-687cbfdc27e2-olcu-oto-8c7179ba.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:23:46.151169+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4cfd506a-5a20-4739-a8e6-1edf66b1fd13/front.jpg",
+          "sha256": "8be59645570f4e36d8e5a1d8b962336336aa26cca10c34110b9ad46ce0f1f7e4",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1877,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4cfd506a-5a20-4739-a8e6-1edf66b1fd13/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4cfd506a-5a20-4739-a8e6-1edf66b1fd13/back.jpg",
+          "sha256": "299b94685696ae294973f8865aba59ceaefe1f9b9e8a00fda12ee8c4c4ab1ea6",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1877,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4cfd506a-5a20-4739-a8e6-1edf66b1fd13/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4cfd506a-5a20-4739-a8e6-1edf66b1fd13/model.jpg",
+          "sha256": "4e56878827f8d7068063c77858b99b4764733b067a7fb3cdf0456865e46494f5",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1877,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4cfd506a-5a20-4739-a8e6-1edf66b1fd13/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "4cfd506a-5a20-4739-a8e6-1edf66b1fd13/size_chart.jpg",
+          "sha256": "b77705945002ceb97282a5e2dba1f2b0bd22a5918c7f1dee30ab73a6379bd889",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1877,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4cfd506a-5a20-4739-a8e6-1edf66b1fd13/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
