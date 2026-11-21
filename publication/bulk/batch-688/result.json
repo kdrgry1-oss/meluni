@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-688",
+  "published_at_utc": "2026-11-21T21:12:15.207760+00:00",
+  "products": [
+    {
+      "product_id": "d578280d-986b-40ed-a6b6-fe2aa799880a",
+      "sample": 2596,
+      "name": "Omuz Çoklu Askılı Önü Taş Işlemeli Balık Janjan Krep Maxi Boy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d578280d-986b-40ed-a6b6-fe2aa799880a-front-784b6d9e3018.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d578280d-986b-40ed-a6b6-fe2aa799880a-back-b0d30015ea0e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d578280d-986b-40ed-a6b6-fe2aa799880a-model-24006f003012.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
