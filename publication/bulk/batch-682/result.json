@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-682",
+  "published_at_utc": "2026-11-21T20:25:18.260961+00:00",
+  "products": [
+    {
+      "product_id": "5f8319b4-da56-4f15-b8c3-c39eaea3609b",
+      "sample": 2273,
+      "name": "Kısa Kollu V Yakalı Viskon Bluz",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5f8319b4-da56-4f15-b8c3-c39eaea3609b-size-chart-1c1adb06529f.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
