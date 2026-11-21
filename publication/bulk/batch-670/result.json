@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-670",
+  "published_at_utc": "2026-11-21T19:16:20.772968+00:00",
+  "products": [
+    {
+      "product_id": "9bb3a67b-4ee5-483c-8426-3f46b5cc17ba",
+      "sample": 1948,
+      "name": "Kısa Kollu Kruvaze Yakalı Kuşaklı Kısa Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9bb3a67b-4ee5-483c-8426-3f46b5cc17ba-front-d337bc7a56ef.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9bb3a67b-4ee5-483c-8426-3f46b5cc17ba-back-83d9a78fc9af.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9bb3a67b-4ee5-483c-8426-3f46b5cc17ba-model-c2df518b7e17.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/9bb3a67b-4ee5-483c-8426-3f46b5cc17ba-size-chart-73dc701db86f.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
