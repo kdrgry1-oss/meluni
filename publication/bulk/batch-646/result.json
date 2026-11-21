@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-646",
+  "published_at_utc": "2026-11-21T16:49:11.526296+00:00",
+  "products": [
+    {
+      "product_id": "cdffdb32-63c6-4f8b-b5c9-2d4672537aa2",
+      "sample": 1397,
+      "name": "Kolsuz Bisiklet Yaka Sandy Bluz ve Şort Etek Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/cdffdb32-63c6-4f8b-b5c9-2d4672537aa2-front-d3425eee5d8f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/cdffdb32-63c6-4f8b-b5c9-2d4672537aa2-back-1284b06ac5aa.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/cdffdb32-63c6-4f8b-b5c9-2d4672537aa2-model-86984d2bc53c.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
