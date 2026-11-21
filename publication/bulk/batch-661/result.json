@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-661",
+  "published_at_utc": "2026-11-21T18:23:09.513937+00:00",
+  "products": [
+    {
+      "product_id": "39dec33e-b1ec-40df-845c-171303316999",
+      "sample": 1874,
+      "name": "Kısa Kollu Kare Yakalı Cep Detaylı Dalgıç Elbise Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/39dec33e-b1ec-40df-845c-171303316999-front-322e8ecc6a79.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/39dec33e-b1ec-40df-845c-171303316999-back-00002e6d78f0.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/39dec33e-b1ec-40df-845c-171303316999-model-5639009cb18c.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/39dec33e-b1ec-40df-845c-171303316999-size-chart-b77705945002.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
