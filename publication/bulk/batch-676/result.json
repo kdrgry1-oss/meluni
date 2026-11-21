@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-676",
+  "published_at_utc": "2026-11-21T19:50:59.556413+00:00",
+  "products": [
+    {
+      "product_id": "ea10587b-6903-4153-9512-c042045d7ba9",
+      "sample": 2041,
+      "name": "Kısa Kollu V Dantel Yakalı Aerobin Bluz ve Pantolon Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ea10587b-6903-4153-9512-c042045d7ba9-front-179fc4a68957.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ea10587b-6903-4153-9512-c042045d7ba9-back-b0c30f50a193.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ea10587b-6903-4153-9512-c042045d7ba9-model-f67ebc1a4b04.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
