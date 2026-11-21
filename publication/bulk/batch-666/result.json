@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-666",
+  "published_at_utc": "2026-11-21T18:52:17.670572+00:00",
+  "products": [
+    {
+      "product_id": "ed7cb236-f694-4ed3-bd98-008951e535bc",
+      "sample": 1887,
+      "name": "Kısa Kollu Kayık Yaka Önü Asimetrik Detaylı Kısa Sandy Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ed7cb236-f694-4ed3-bd98-008951e535bc-front-5373c066137c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ed7cb236-f694-4ed3-bd98-008951e535bc-back-270c40f17b55.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ed7cb236-f694-4ed3-bd98-008951e535bc-model-11171c553f64.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
