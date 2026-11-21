@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-684",
+  "published_at_utc": "2026-11-21T20:41:07.027155+00:00",
+  "products": [
+    {
+      "product_id": "626f4814-00de-482c-8819-90f02bcc7d64",
+      "sample": 2518,
+      "name": "Likralı Yüksek Bel Efsane Kot Antrasit Renk 92cm Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-front-613bfb66595e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-back-94ce655672f6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-model-9ceefda5593c.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
