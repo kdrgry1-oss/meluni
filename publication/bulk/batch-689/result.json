@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-689",
+  "published_at_utc": "2026-11-21T21:28:22.177754+00:00",
+  "products": [
+    {
+      "product_id": "beabf15f-fc78-4d58-a7a8-0412f41ba801",
+      "sample": 2858,
+      "name": "Sıfır Kol Askılı V Yakalı Düğmeli Keten Ceket ve Şort Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/beabf15f-fc78-4d58-a7a8-0412f41ba801-front-e958ec0d0309.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/beabf15f-fc78-4d58-a7a8-0412f41ba801-back-548a38f568fc.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/beabf15f-fc78-4d58-a7a8-0412f41ba801-model-1922e1a6a932.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/beabf15f-fc78-4d58-a7a8-0412f41ba801-size-chart-9a3a52179c8c.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
