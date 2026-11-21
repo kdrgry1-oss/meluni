@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-640",
+  "created_at": "2026-11-21T16:14:32.128874+00:00",
+  "catalog_poll_at": "2026-11-21T16:14:32.128874+00:00",
+  "products": [
+    {
+      "product_id": "913c59ff-8767-4076-ba6f-07b744410361",
+      "sample": 1302,
+      "name": "Ip Askılı Önden Çapraz Detaylı Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 23,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/af6e67a0468e6138ba99.jpeg",
+        "https://modayakamoz.com/orj/dcc5baff57c969a2f80e.jpeg",
+        "https://modayakamoz.com/orj/367f1b224706bb0b1619.jpeg",
+        "https://modayakamoz.com/orj/f1a47326f57961cb0776.jpeg",
+        "https://modayakamoz.com/orj/cc22e72db7dbce80b928.jpeg",
+        {
+          "id": "906ab203-4adc-4ebc-b0b8-bc976bd1be22",
+          "url": "https://cdn.meluni.com.tr/ai-products/913c59ff-8767-4076-ba6f-07b744410361-olcu-oto-34651d6a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-09T05:19:01.234631+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "913c59ff-8767-4076-ba6f-07b744410361/front.jpg",
+          "sha256": "25a2a9b8668d4598ebc35657c0b100eee6ce44f55010a612579b90b76f3800ee",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1302,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-913c59ff-8767-4076-ba6f-07b744410361/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "913c59ff-8767-4076-ba6f-07b744410361/back.jpg",
+          "sha256": "10668bea143e4d4989531498f6ae91039a69e23178e54d87c489310f9a69434c",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1302,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-913c59ff-8767-4076-ba6f-07b744410361/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "913c59ff-8767-4076-ba6f-07b744410361/model.jpg",
+          "sha256": "ef20f02d4fb4bceac79c603308bed4adf53f973ac58d9b3195e7aa767c27d7be",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1302,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-913c59ff-8767-4076-ba6f-07b744410361/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
