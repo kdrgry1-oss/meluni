@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-687",
+  "created_at": "2026-11-21T21:00:46.905526+00:00",
+  "catalog_poll_at": "2026-11-21T21:00:46.905526+00:00",
+  "products": [
+    {
+      "product_id": "cf349a49-1adb-436a-8749-81f5ed017c23",
+      "sample": 2600,
+      "name": "Omuzdan Şerit Detaylı Yarı Balıkçı Yaka Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 13,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5deacc05fc9e3aee7fed.jpeg",
+        "https://modayakamoz.com/orj/c2d51c538c8cbeae1db8.jpeg",
+        "https://modayakamoz.com/orj/3cc8a4eea3a06a4728b6.jpeg",
+        {
+          "id": "f20b2c24-00d0-4259-a3bb-404bf660e4b0",
+          "url": "https://cdn.meluni.com.tr/ai-products/cf349a49-1adb-436a-8749-81f5ed017c23-olcu-oto-f13bffc3.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:18:30.394920+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "cf349a49-1adb-436a-8749-81f5ed017c23/front.jpg",
+          "sha256": "c74c4cb5e2218bf423a7cbd9425cfe929923b3e05d34765255f2a582a4995cd2",
+          "qa_status": "visual_source_qa_passed_verified_sister_framing_reused",
+          "sample": 2600,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2600-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "cf349a49-1adb-436a-8749-81f5ed017c23/back.jpg",
+          "sha256": "129c47853ef111d5dde1f9c5a3edb1e26bd3600b213660cb7dd7b084b4756e02",
+          "qa_status": "visual_source_qa_passed_verified_sister_framing_reused",
+          "sample": 2600,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2600-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "cf349a49-1adb-436a-8749-81f5ed017c23/fashion_model.jpg",
+          "sha256": "5f95cfaba54880524292699a0440124450e044dfb9725ce94ef6e7969b838ba2",
+          "qa_status": "visual_source_qa_passed_verified_sister_framing_reused",
+          "sample": 2600,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-2600-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
