@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-643",
+  "published_at_utc": "2026-11-21T16:31:46.201504+00:00",
+  "products": [
+    {
+      "product_id": "53b8a755-9419-499d-9118-0e0970a6c04c",
+      "sample": 1305,
+      "name": "Kolsuz Beli Dantelli Uzun Pera Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/53b8a755-9419-499d-9118-0e0970a6c04c-front-6188f3a59fb7.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/53b8a755-9419-499d-9118-0e0970a6c04c-model-9f0734176f91.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
