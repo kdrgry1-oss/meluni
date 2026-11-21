@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-638",
+  "created_at": "2026-11-21T16:04:37.567796+00:00",
+  "catalog_poll_at": "2026-11-21T16:04:37.567796+00:00",
+  "products": [
+    {
+      "product_id": "b71a2b94-3013-40f5-9a72-4056f02dbedd",
+      "sample": 1300,
+      "name": "Ip Askılı Yuvarlak Yaka Yırtmaçlı Uzun Müslim Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 30,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/fa97b9cfa411201b3431.jpeg",
+        "https://modayakamoz.com/orj/81a255d08324d8866bc8.jpeg",
+        "https://modayakamoz.com/orj/c0f99ae027c925f58e22.jpeg",
+        {
+          "id": "050262da-7b9a-4b70-969e-0c686c0cfccc",
+          "url": "https://cdn.meluni.com.tr/ai-products/b71a2b94-3013-40f5-9a72-4056f02dbedd-olcu-oto-6122484f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:26:50.276614+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "b71a2b94-3013-40f5-9a72-4056f02dbedd/front.jpg",
+          "sha256": "319a261365eac3015258a588930e4369f2944f3d6af152efa3490a4fb0ab8b88",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1300,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b71a2b94-3013-40f5-9a72-4056f02dbedd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b71a2b94-3013-40f5-9a72-4056f02dbedd/back.jpg",
+          "sha256": "6722fc972bf7e7921a8b60866d75c3856c9456a843f7431cfef8e58fcd5138af",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1300,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b71a2b94-3013-40f5-9a72-4056f02dbedd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b71a2b94-3013-40f5-9a72-4056f02dbedd/model.jpg",
+          "sha256": "84e6f04bc23fb3c9ac85c9bcab77f4da2f80a7cb0ea95708aff314d44494745b",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1300,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b71a2b94-3013-40f5-9a72-4056f02dbedd/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
