@@ -1,0 +1,48 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-688",
+  "created_at": "2026-11-21T21:11:04.547639+00:00",
+  "catalog_poll_at": "2026-11-21T21:11:04.547639+00:00",
+  "products": [
+    {
+      "product_id": "d578280d-986b-40ed-a6b6-fe2aa799880a",
+      "sample": 2596,
+      "name": "Omuz Çoklu Askılı Önü Taş Işlemeli Balık Janjan Krep Maxi Boy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 40,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a8c6098380b8a01c491f311797e4bb23.jpg",
+        "https://modayakamoz.com/orj/0792993812d9fc9faffd7baee2b05a78.jpg",
+        "https://modayakamoz.com/orj/4df21c25af4f76526a5c9b2378c7d59d.jpg",
+        "https://modayakamoz.com/orj/7eebfa3c7502758bd73e0c33eb7ae006.jpg",
+        "https://modayakamoz.com/orj/5809e307c81f85b2089157b424f02214.jpg",
+        "https://modayakamoz.com/orj/c1004cdcfaafb84b6550e7bf6f0e1b5a.jpg",
+        "https://modayakamoz.com/orj/4b8bc42e916f2bec048de24d64168115.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d578280d-986b-40ed-a6b6-fe2aa799880a/front.jpg",
+          "sha256": "784b6d9e3018d3aa0f98f1e20f1d9c55b4c5f11fac9a3e0e0e69dd53308859eb",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2596,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2596-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d578280d-986b-40ed-a6b6-fe2aa799880a/back.jpg",
+          "sha256": "b0d30015ea0e02b0b86827328c33ab633793e8c7a60316f1d76f462b59bbc930",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2596,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2596-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d578280d-986b-40ed-a6b6-fe2aa799880a/fashion_model.jpg",
+          "sha256": "24006f00301245a5eea6308c830a60205c6e6c995c869eb7879f24163212c744",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2596,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/2596-model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
