@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-673",
+  "created_at": "2026-11-21T19:30:56.274378+00:00",
+  "catalog_poll_at": "2026-11-21T19:30:56.274378+00:00",
+  "products": [
+    {
+      "product_id": "b43e018e-e425-4e63-b5eb-3b6f62c039d3",
+      "sample": 2024,
+      "name": "Kısa Kollu Tek Omuzu Açık Askı Toka Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 26,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/b43e018e-e425-4e63-b5eb-3b6f62c039d3/2c9cacb002e4bda9.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/b43e018e-e425-4e63-b5eb-3b6f62c039d3/855c6516c884fce4.jpg",
+        "https://modayakamoz.com/orj/e0fb495d5a24ae7cb3aa.jpeg",
+        "https://modayakamoz.com/orj/f9a7a3d3257bd9f14344.jpeg",
+        "https://modayakamoz.com/orj/3d7a4bd84b6e4ac4680d.jpeg",
+        "https://modayakamoz.com/orj/6558afe0879e57bc64bb.jpeg",
+        {
+          "id": "aafeb3bd-f2f9-4235-9a4e-788849f05ef2",
+          "url": "https://cdn.meluni.com.tr/ai-products/dc3f633b-607b-4f6b-91fd-100f54c91e21-olcu-oto-03150777.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-02T05:22:16.689619+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/b43e018e-e425-4e63-b5eb-3b6f62c039d3/9e5f513bce76f88d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b43e018e-e425-4e63-b5eb-3b6f62c039d3/front.jpg",
+          "sha256": "2c9cacb002e4bda9bc4dfbab9c824ef2a57531ad898bb9e4c08c889df1cf4ff0",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2024,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-788-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b43e018e-e425-4e63-b5eb-3b6f62c039d3/back.jpg",
+          "sha256": "855c6516c884fce4fbd32b86177bc48d4bb864f73ebe33c21546cfedab86706b",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2024,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-788-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b43e018e-e425-4e63-b5eb-3b6f62c039d3/model.jpg",
+          "sha256": "80841131bdf27a9189718e66c740d343dbef4bca3dd955e9a4ad89acb9282fed",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2024,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-788-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
