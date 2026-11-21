@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-647",
+  "created_at": "2026-11-21T16:54:39.535001+00:00",
+  "catalog_poll_at": "2026-11-21T16:54:39.535001+00:00",
+  "products": [
+    {
+      "product_id": "4e6286e3-ec90-4977-955c-85a52d246cd4",
+      "sample": 1481,
+      "name": "Kolsuz Yaka Onu Düğmeli Kuşaklı Uzun Trikoton Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 114,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4adc7997f705fd43c47e8cc9e378bac6.png",
+        "https://modayakamoz.com/orj/bd54a0e3e7ef66fd63a6993bf09c379e.png",
+        "https://modayakamoz.com/orj/d2261e9f89ae9530caca9db2b510f370.png",
+        "https://modayakamoz.com/orj/3a4942e203aa08750ff3316707a4852c.png",
+        "https://modayakamoz.com/orj/e9b77011d0919cc15b0c3dd30d7b1749.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "4e6286e3-ec90-4977-955c-85a52d246cd4/front.jpg",
+          "sha256": "ed1ccc1c5fb09e462a096bcba9aea2031d0da9c9d22b2939f8d4da817bdc3dda",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1481,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4e6286e3-ec90-4977-955c-85a52d246cd4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4e6286e3-ec90-4977-955c-85a52d246cd4/back.jpg",
+          "sha256": "b99f93d90cebee9bef43a7e611318370844761e4d88e82701cb842422e1bf748",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1481,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4e6286e3-ec90-4977-955c-85a52d246cd4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4e6286e3-ec90-4977-955c-85a52d246cd4/model.jpg",
+          "sha256": "9e492eb0a666cf037fcb2c49e9e855b86d84f7b57a9f15592eddae80944cb922",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1481,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4e6286e3-ec90-4977-955c-85a52d246cd4/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
