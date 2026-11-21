@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-668",
+  "published_at_utc": "2026-11-21T19:04:02.770377+00:00",
+  "products": [
+    {
+      "product_id": "ce800ff5-0095-43a2-8744-1e911f94f5c9",
+      "sample": 1895,
+      "name": "Kısa Kollu Kruvaze Yaka A Kesim Kalın Fitilli Kaşkorse Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ce800ff5-0095-43a2-8744-1e911f94f5c9-front-047251a1009c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ce800ff5-0095-43a2-8744-1e911f94f5c9-back-6d69af1ffb01.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ce800ff5-0095-43a2-8744-1e911f94f5c9-model-f6380ca5d68c.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
