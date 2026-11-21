@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-638",
+  "published_at_utc": "2026-11-21T16:05:44.515590+00:00",
+  "products": [
+    {
+      "product_id": "b71a2b94-3013-40f5-9a72-4056f02dbedd",
+      "sample": 1300,
+      "name": "Ip Askılı Yuvarlak Yaka Yırtmaçlı Uzun Müslim Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b71a2b94-3013-40f5-9a72-4056f02dbedd-front-319a261365ea.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b71a2b94-3013-40f5-9a72-4056f02dbedd-back-6722fc972bf7.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b71a2b94-3013-40f5-9a72-4056f02dbedd-model-84e6f04bc23f.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
