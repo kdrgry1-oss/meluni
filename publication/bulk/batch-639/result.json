@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-639",
+  "published_at_utc": "2026-11-21T16:10:50.408378+00:00",
+  "products": [
+    {
+      "product_id": "eebff4ae-a1ae-4e1d-bb89-079577088ea1",
+      "sample": 1301,
+      "name": "Ip Askılı Yuvarlak Yakalı Boncuk Detaylı Geniş Paçalı Pera Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/eebff4ae-a1ae-4e1d-bb89-079577088ea1-front-4410de316e85.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/eebff4ae-a1ae-4e1d-bb89-079577088ea1-back-2f9d0855445a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/eebff4ae-a1ae-4e1d-bb89-079577088ea1-model-fdb59b80f91d.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
