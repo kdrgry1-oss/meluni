@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-644",
+  "published_at_utc": "2026-11-21T16:37:34.534597+00:00",
+  "products": [
+    {
+      "product_id": "00865d7d-f833-42c5-a5fd-01e33e8a88ea",
+      "sample": 1378,
+      "name": "Kolsuz Askılı Yırtmaçlı Midi Etek Fitilli Kaşkorse Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/00865d7d-f833-42c5-a5fd-01e33e8a88ea-front-546d04e2ed69.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/00865d7d-f833-42c5-a5fd-01e33e8a88ea-back-56c8df1cbd49.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/00865d7d-f833-42c5-a5fd-01e33e8a88ea-model-b7a1209daa9b.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
