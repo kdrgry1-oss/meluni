@@ -1,0 +1,35 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-680",
+  "published_at_utc": "2026-11-21T20:15:57.057361+00:00",
+  "products": [
+    {
+      "product_id": "92d790bb-4c30-4782-b2a5-1b0cd96b4977",
+      "sample": 2139,
+      "name": "Kısa Kollu V Yakalı Dantelli Viskon Bluz",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/92d790bb-4c30-4782-b2a5-1b0cd96b4977-model-b3e6285f8485.jpg"
+      },
+      "gallery_image_count": 9
+    },
+    {
+      "product_id": "b0fb74f3-9bf2-4237-b842-ca1ecae39a26",
+      "sample": 2140,
+      "name": "Kısa Kollu V Yakalı Dantelli Viskon Bluz",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b0fb74f3-9bf2-4237-b842-ca1ecae39a26-model-b875ce858907.jpg"
+      },
+      "gallery_image_count": 9
+    },
+    {
+      "product_id": "21f4b4fa-8cf0-436c-9ae0-ec5f08d2a1ae",
+      "sample": 2141,
+      "name": "Kısa Kollu V Yakalı Dantelli Viskon Bluz",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/21f4b4fa-8cf0-436c-9ae0-ec5f08d2a1ae-model-26e03a633c2d.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
