@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-631",
+  "created_at": "2026-11-21T12:58:11.716407+00:00",
+  "catalog_poll_at": "2026-11-21T12:58:11.716407+00:00",
+  "products": [
+    {
+      "product_id": "fbb6f06c-05d5-4794-8271-fdf66d7dbb4d",
+      "sample": 1291,
+      "name": "Ip Askılı Kruvaze Yakalı Yırtmaçlı Midi Bürümcük Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 37,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/339d2d679ddd896a3073.jpeg",
+        "https://modayakamoz.com/orj/757da80a0dd61ca000b7.jpeg",
+        "https://modayakamoz.com/orj/e9e13760a432ba09fd0d.jpeg",
+        "https://modayakamoz.com/orj/812ed3b580226185801c.jpeg",
+        {
+          "id": "861d39c8-2c16-4656-b6df-4589e7e3fc80",
+          "url": "https://cdn.meluni.com.tr/ai-products/fbb6f06c-05d5-4794-8271-fdf66d7dbb4d-olcu-oto-135546bc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:19:20.716165+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "fbb6f06c-05d5-4794-8271-fdf66d7dbb4d/front.jpg",
+          "sha256": "95c356ddcfaf1b0bcf9ec8d7a546699acb7bc67dd3db4343ed4eb2d8a014922c",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1291,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fbb6f06c-05d5-4794-8271-fdf66d7dbb4d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "fbb6f06c-05d5-4794-8271-fdf66d7dbb4d/back.jpg",
+          "sha256": "c71204cee2e4d1f0c47758fb168c4cc6dcfbc12cbbbf8cce08f54def2d8b7bff",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1291,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fbb6f06c-05d5-4794-8271-fdf66d7dbb4d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "fbb6f06c-05d5-4794-8271-fdf66d7dbb4d/model.jpg",
+          "sha256": "53803af0d5fe2ffef9fbbb994b283fbf2ac9f6e01c8ad52ed011cf248e2e8b9c",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1291,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fbb6f06c-05d5-4794-8271-fdf66d7dbb4d/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "fbb6f06c-05d5-4794-8271-fdf66d7dbb4d/size_chart.jpg",
+          "sha256": "39fdd9b1ab28112ba5d9e2b33f71de5527082568a22cc17880cdd9cd9bd26d37",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1291,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fbb6f06c-05d5-4794-8271-fdf66d7dbb4d/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
