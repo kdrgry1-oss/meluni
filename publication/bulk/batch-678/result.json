@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-678",
+  "published_at_utc": "2026-11-21T20:05:02.232017+00:00",
+  "products": [
+    {
+      "product_id": "f1fd1277-4914-47c8-bccb-0df8299c4032",
+      "sample": 2051,
+      "name": "Kısa Kollu V Hakim Yaka Kolları Fırfırlı Dubai Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f1fd1277-4914-47c8-bccb-0df8299c4032-front-0c9b300c3134.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/f1fd1277-4914-47c8-bccb-0df8299c4032-back-10952d42d2f6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f1fd1277-4914-47c8-bccb-0df8299c4032-model-1c1ebc707981.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f1fd1277-4914-47c8-bccb-0df8299c4032-size-chart-fb854ac33f4c.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
