@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-652",
+  "created_at": "2026-11-21T17:32:05.837309+00:00",
+  "catalog_poll_at": "2026-11-21T17:32:05.837309+00:00",
+  "products": [
+    {
+      "product_id": "d4b15a36-b310-478c-b4e4-cd66f7d74d93",
+      "sample": 1809,
+      "name": "Kısa Kollu Dantel Detaylı Kısa Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 34,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/509cb71ee637faa8aa05.jpeg",
+        "https://modayakamoz.com/orj/a9984d6c7dde02f274fd.jpeg",
+        "https://modayakamoz.com/orj/37da0570e6fd7ea81770.jpeg",
+        "https://modayakamoz.com/orj/5641dd0d12fa656e9866.jpeg",
+        {
+          "id": "a14a1fdd-178b-4052-a1b6-a8e2ce41262a",
+          "url": "https://cdn.meluni.com.tr/ai-products/22599491-3d93-4e33-a9fa-af9726e2b0d4-olcu-oto-9d6a38e9.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-08T05:17:28.272066+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d4b15a36-b310-478c-b4e4-cd66f7d74d93/front.jpg",
+          "sha256": "7abc12b5b7416f8b2c8f5c7830eec3ae54b044c206dbafb393748ec1edbbcd20",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1809,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d4b15a36-b310-478c-b4e4-cd66f7d74d93/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d4b15a36-b310-478c-b4e4-cd66f7d74d93/back.jpg",
+          "sha256": "895a93f2170d1818a24973f209b01fc85fdd2b51e5469e0bd804b5903c405f84",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1809,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d4b15a36-b310-478c-b4e4-cd66f7d74d93/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d4b15a36-b310-478c-b4e4-cd66f7d74d93/model.jpg",
+          "sha256": "e26ee55ba2af9951bfe86d508c25f121bf3656910e33179c892f4d80401843ae",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1809,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d4b15a36-b310-478c-b4e4-cd66f7d74d93/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "d4b15a36-b310-478c-b4e4-cd66f7d74d93/size_chart.jpg",
+          "sha256": "81f54fea94fe4bffa274f53fa69e0188f0321c6dddef5741b71c4cdeee818be6",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1809,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d4b15a36-b310-478c-b4e4-cd66f7d74d93/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
