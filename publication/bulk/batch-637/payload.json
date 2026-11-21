@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-637",
+  "created_at": "2026-11-21T15:58:53.884743+00:00",
+  "catalog_poll_at": "2026-11-21T15:58:53.884743+00:00",
+  "products": [
+    {
+      "product_id": "4c143594-9320-416e-8822-41b5fb24cb6d",
+      "sample": 1299,
+      "name": "Ip Askılı Yaka Dantel Detaylı Kısa Viskon Gecelik",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1921ff5d589c2221a83a.jpeg",
+        "https://modayakamoz.com/orj/c8bdb667d242a3a49694.jpeg",
+        "https://modayakamoz.com/orj/ab5a3ac0e76efddf043e.jpeg",
+        "https://modayakamoz.com/orj/f245c954d0d33179e32b.jpeg",
+        {
+          "id": "24206bce-c908-4bfd-b46b-d49db08c53a3",
+          "url": "https://cdn.meluni.com.tr/ai-products/8d7e732b-54a6-4245-905a-e0b73a9d979f-olcu-oto-b9c7d831.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-08T05:21:42.930568+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4c143594-9320-416e-8822-41b5fb24cb6d/front.jpg",
+          "sha256": "2be97ab2748dbe0fd4eeba258fa759d262e415a8c5fe018b3a286a745575965f",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1299,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4c143594-9320-416e-8822-41b5fb24cb6d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4c143594-9320-416e-8822-41b5fb24cb6d/back.jpg",
+          "sha256": "26c6b38cfd2d3a660b45993e8070b9b9d3c1816e58e7baa346f3eaecb9598c9a",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1299,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4c143594-9320-416e-8822-41b5fb24cb6d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4c143594-9320-416e-8822-41b5fb24cb6d/model.jpg",
+          "sha256": "4a45dc52f441c3604599e1b3c0d7ee2ff8c1f69a3264c17f192cc6535df2427f",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1299,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4c143594-9320-416e-8822-41b5fb24cb6d/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "4c143594-9320-416e-8822-41b5fb24cb6d/size_chart.jpg",
+          "sha256": "4cea82641ec48e8bd6386401aa6ad890e749f0957718d7d929b6ea84567cc384",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1299,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4c143594-9320-416e-8822-41b5fb24cb6d/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
