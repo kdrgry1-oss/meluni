@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-656",
+  "created_at": "2026-11-21T17:53:22.542140+00:00",
+  "catalog_poll_at": "2026-11-21T17:53:22.542140+00:00",
+  "products": [
+    {
+      "product_id": "703069c0-2ac3-4be5-87d7-d123d12f1435",
+      "sample": 1833,
+      "name": "Kısa Kollu Düğmeli Mini Bodycon Fitilli Kaşkorse Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/723b4ff015308eac953e.jpeg",
+        "https://modayakamoz.com/orj/95c08ee6470e0429674a.jpeg",
+        "https://modayakamoz.com/orj/f3f2a51661674d3014f0.jpeg",
+        "https://modayakamoz.com/orj/60480aa5c25b32267b81.jpeg",
+        "https://modayakamoz.com/orj/4fbb7d45efedd4f99aeb.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "703069c0-2ac3-4be5-87d7-d123d12f1435/front.jpg",
+          "sha256": "fe86fde126a27162092b16de9bfa82d755b7fdf2e2114c8d706d9f004724849f",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1833,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-703069c0-2ac3-4be5-87d7-d123d12f1435/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "703069c0-2ac3-4be5-87d7-d123d12f1435/back.jpg",
+          "sha256": "61a846747222881b32730f8e5ecf6941f4189122228e222c706fbde452cc1f63",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1833,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-703069c0-2ac3-4be5-87d7-d123d12f1435/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "703069c0-2ac3-4be5-87d7-d123d12f1435/model.jpg",
+          "sha256": "db9f06121fc6f5db19c3e2728403830184bed0cd8b8adb6f1884d7186edaa9f3",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1833,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-703069c0-2ac3-4be5-87d7-d123d12f1435/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "703069c0-2ac3-4be5-87d7-d123d12f1435/size_chart.jpg",
+          "sha256": "730e1712bb1f933fade5780709f371d53d999b7ae03e0083bdd51b52d7d888f7",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1833,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-703069c0-2ac3-4be5-87d7-d123d12f1435/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
