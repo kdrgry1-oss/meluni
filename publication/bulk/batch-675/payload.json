@@ -1,0 +1,318 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-675",
+  "created_at": "2026-11-21T19:42:53.257433+00:00",
+  "catalog_poll_at": "2026-11-21T19:42:53.257433+00:00",
+  "products": [
+    {
+      "product_id": "3cdef2ba-a67c-4675-a365-93f6c652c75e",
+      "sample": 2096,
+      "name": "Kısa Kollu V Yakalı Beli Büzgülü Viskon Iki Iplik Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 30,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/3cdef2ba-a67c-4675-a365-93f6c652c75e/c9dadc83d3d69a9a.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/3cdef2ba-a67c-4675-a365-93f6c652c75e/23f88c1870a36063.jpg",
+        "https://modayakamoz.com/orj/73e6b8626e4540640662.jpeg",
+        "https://modayakamoz.com/orj/55eae9f271f1250871ec.jpeg",
+        "https://modayakamoz.com/orj/82559bef304d0ef5fb6f.jpeg",
+        "https://modayakamoz.com/orj/f9d5285975c7265f6dc5.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/3cdef2ba-a67c-4675-a365-93f6c652c75e/da29026aac55fca7.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "3cdef2ba-a67c-4675-a365-93f6c652c75e/front.jpg",
+          "sha256": "c9dadc83d3d69a9a8c117fbf2395495c59681c085267c4838231f1908ee879c1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2096,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-802-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3cdef2ba-a67c-4675-a365-93f6c652c75e/back.jpg",
+          "sha256": "23f88c1870a360632ba1c83a861ea3d9943e9bf0fe7a70178c406cec732317e8",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2096,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-802-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3cdef2ba-a67c-4675-a365-93f6c652c75e/model.jpg",
+          "sha256": "a4675c9ed2ea8d8a8073beaf5addc2591093c99e703dd802c1bddf7730a842dd",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2096,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-802-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "799e8ab4-b49d-4ac1-a407-c6e91952cb86",
+      "sample": 2097,
+      "name": "Kısa Kollu V Yakalı Beli Büzgülü Viskon Iki Iplik Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 102,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/799e8ab4-b49d-4ac1-a407-c6e91952cb86/0dccef5bdc9e4eeb.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/799e8ab4-b49d-4ac1-a407-c6e91952cb86/f378949463908010.jpg",
+        "https://modayakamoz.com/orj/01d63c94828558c7b6d3.jpeg",
+        "https://modayakamoz.com/orj/510007df4740c03d112f.jpeg",
+        "https://modayakamoz.com/orj/b73d51a7e7cef1d69361.jpeg",
+        "https://modayakamoz.com/orj/75309546fd83c52f08cf.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/799e8ab4-b49d-4ac1-a407-c6e91952cb86/da29026aac55fca7.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "799e8ab4-b49d-4ac1-a407-c6e91952cb86/front.jpg",
+          "sha256": "0dccef5bdc9e4eeb1b2a694c12314c9c5a1a15496399d8de148c19c969af0cb6",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2097,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-803-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "799e8ab4-b49d-4ac1-a407-c6e91952cb86/back.jpg",
+          "sha256": "f378949463908010011f9423d0a9032651d3b17970b13d4bf51e3eaac3b59d55",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2097,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-803-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "799e8ab4-b49d-4ac1-a407-c6e91952cb86/model.jpg",
+          "sha256": "8f13c5ccf7d564ec4d2fedb7a797f0c95ca354e3ced919601b736e32b229fb3c",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2097,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-803-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4",
+      "sample": 2098,
+      "name": "Kısa Kollu V Yakalı Beli Lastikli Kısa Krep Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 111,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4/e5fcf522fdc7b6b6.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4/db67a6537a95395d.jpg",
+        "https://cdn.meluni.com.tr/products/2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4/2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4-hd0-8e28f38b.jpg",
+        "https://cdn.meluni.com.tr/products/2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4/2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4-hd1-917e75d0.jpg",
+        "https://cdn.meluni.com.tr/products/2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4/2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4-hd2-601b5550.jpg",
+        {
+          "id": "d100b3c9-3d32-40b5-986b-5acc526a9caa",
+          "url": "https://cdn.meluni.com.tr/ai-products/9a0b6bfd-5010-4d9f-84f1-00be838032cc-olcu-oto-933c63bf.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:34:17.284654+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4/d50bd95d9cd4071a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4/front.jpg",
+          "sha256": "e5fcf522fdc7b6b6e9a1aa92d0a4d95a16c0dcf2b2f5ca99d0c6c664c9f55616",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2098,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-804-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4/back.jpg",
+          "sha256": "db67a6537a95395dfd123b513aed2e193d8e9510fa763d979a410cb16e689b08",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2098,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-804-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "2b89a3f8-cbb0-4c46-ada6-c96be1b1bcf4/model.jpg",
+          "sha256": "0f3dfb2a3b81cc904850c865149c9d666327cdf9264271980889c82a2fa28dd6",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2098,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-804-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "9a0b6bfd-5010-4d9f-84f1-00be838032cc",
+      "sample": 2100,
+      "name": "Kısa Kollu V Yakalı Beli Lastikli Kısa Krep Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 113,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/9a0b6bfd-5010-4d9f-84f1-00be838032cc/b9a6d6601fa6f491.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/9a0b6bfd-5010-4d9f-84f1-00be838032cc/7e0372359c9ebd5e.jpg",
+        "https://cdn.meluni.com.tr/products/9a0b6bfd-5010-4d9f-84f1-00be838032cc/9a0b6bfd-5010-4d9f-84f1-00be838032cc-hd0-c9b86b6b.jpg",
+        "https://cdn.meluni.com.tr/products/9a0b6bfd-5010-4d9f-84f1-00be838032cc/9a0b6bfd-5010-4d9f-84f1-00be838032cc-hd1-41f1600a.jpg",
+        "https://cdn.meluni.com.tr/products/9a0b6bfd-5010-4d9f-84f1-00be838032cc/9a0b6bfd-5010-4d9f-84f1-00be838032cc-hd2-9ba1fa47.jpg",
+        "https://cdn.meluni.com.tr/products/9a0b6bfd-5010-4d9f-84f1-00be838032cc/9a0b6bfd-5010-4d9f-84f1-00be838032cc-hd3-b54381db.jpg",
+        {
+          "id": "9d845398-02ef-407b-a767-501c771505ce",
+          "url": "https://cdn.meluni.com.tr/ai-products/9a0b6bfd-5010-4d9f-84f1-00be838032cc-olcu-oto-933c63bf.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:34:17.083788+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/9a0b6bfd-5010-4d9f-84f1-00be838032cc/d50bd95d9cd4071a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "9a0b6bfd-5010-4d9f-84f1-00be838032cc/front.jpg",
+          "sha256": "b9a6d6601fa6f491688d5b00210c9973498b65d21c893dab29737ebd5df0f21e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2100,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-806-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "9a0b6bfd-5010-4d9f-84f1-00be838032cc/back.jpg",
+          "sha256": "7e0372359c9ebd5e624b58de590366b847d8e0d06035c2dfbabb901364b1d2c1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2100,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-806-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9a0b6bfd-5010-4d9f-84f1-00be838032cc/model.jpg",
+          "sha256": "1ade5b21578c0c9b2b8791b11fd64305b7a8f52a940fc206d3b4d705df543792",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2100,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-806-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "9997f0fe-55e3-4679-9fcd-4e4c95b45ac7",
+      "sample": 2108,
+      "name": "Kısa Kollu V Yakalı Bluz ve Short Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 254,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/9997f0fe-55e3-4679-9fcd-4e4c95b45ac7/239db6149ce05089.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/9997f0fe-55e3-4679-9fcd-4e4c95b45ac7/48163d3c2d3f0349.jpg",
+        "https://cdn.meluni.com.tr/products/9997f0fe-55e3-4679-9fcd-4e4c95b45ac7/9997f0fe-55e3-4679-9fcd-4e4c95b45ac7-hd0-f67a4c88.jpg",
+        "https://cdn.meluni.com.tr/products/9997f0fe-55e3-4679-9fcd-4e4c95b45ac7/9997f0fe-55e3-4679-9fcd-4e4c95b45ac7-hd1-7f0d8e46.jpg",
+        "https://cdn.meluni.com.tr/products/9997f0fe-55e3-4679-9fcd-4e4c95b45ac7/9997f0fe-55e3-4679-9fcd-4e4c95b45ac7-hd2-4567b01a.jpg",
+        {
+          "id": "a61b75a6-8ab2-4b55-9b20-48f3549181fd",
+          "url": "https://cdn.meluni.com.tr/ai-products/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2-olcu-oto-fa9359e9.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:30:17.294022+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/9997f0fe-55e3-4679-9fcd-4e4c95b45ac7/b470e38fb4f913ee.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "9997f0fe-55e3-4679-9fcd-4e4c95b45ac7/front.jpg",
+          "sha256": "239db6149ce0508979c07b47e79a51c55f625463eb3294f05e32e2df6a077c2b",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2108,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-808-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "9997f0fe-55e3-4679-9fcd-4e4c95b45ac7/back.jpg",
+          "sha256": "48163d3c2d3f03493c84c31a5ddee408d39913a4b943b22a3a8838aca1aa6cbe",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2108,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-808-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9997f0fe-55e3-4679-9fcd-4e4c95b45ac7/model.jpg",
+          "sha256": "2ba97416c3c0e2838754d65a1340fcb39ef39e7c1ea5ffdf31a738f5999f51b9",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2108,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-808-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2",
+      "sample": 2110,
+      "name": "Kısa Kollu V Yakalı Bluz ve Short Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 179,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2/94bd7ebacc66aae6.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2/813c19ad30ebd269.jpg",
+        "https://cdn.meluni.com.tr/products/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2-hd0-60452ab3.jpg",
+        "https://cdn.meluni.com.tr/products/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2-hd1-e6f10156.jpg",
+        "https://cdn.meluni.com.tr/products/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2-hd2-d690a541.jpg",
+        "https://cdn.meluni.com.tr/products/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2-hd3-758cf849.jpg",
+        {
+          "id": "3fceded2-27a6-4f5e-a063-b8af1c51686f",
+          "url": "https://cdn.meluni.com.tr/ai-products/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2-olcu-oto-fa9359e9.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:30:17.151233+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2/b470e38fb4f913ee.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2/front.jpg",
+          "sha256": "94bd7ebacc66aae64102ca517f3e7374246a5ada3da52742da55017ad54dc1f4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2110,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-810-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2/back.jpg",
+          "sha256": "813c19ad30ebd2691f725597a29bf02364ee7a34f29fbd74e2aaa4e057fbfe25",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2110,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-810-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e480ca37-c2cf-4bc5-9c84-ad2c8a7998f2/model.jpg",
+          "sha256": "78c2adf958c4b50a35271ffa9b1bad6f63376da507405cb99f215e0071512860",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2110,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-810-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "75be9448-2e56-47d3-95ed-f23baf1607f3",
+      "sample": 2168,
+      "name": "Kısa Kollu V Yakalı Düğmeli Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 85,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/75be9448-2e56-47d3-95ed-f23baf1607f3/9c1deb8b21bbb729.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/75be9448-2e56-47d3-95ed-f23baf1607f3/669e7a1e42f879f2.jpg",
+        "https://modayakamoz.com/orj/f520eb18d6850e7f25d2.jpeg",
+        "https://modayakamoz.com/orj/3b1ce9daa8ce902c8454.jpeg",
+        "https://modayakamoz.com/orj/5c6aa6da02a7cdea83eb.jpeg",
+        "https://modayakamoz.com/orj/99d167b2569f9586435f.jpeg",
+        "https://modayakamoz.com/orj/160380279815e807cdc7.jpeg",
+        "https://modayakamoz.com/orj/aef5d14d71740ddd7559.jpeg",
+        "https://modayakamoz.com/orj/58d07121765c746eb3bb.jpeg",
+        {
+          "id": "ef4dec2a-c426-4b98-9a7f-9f6842c7d87b",
+          "url": "https://cdn.meluni.com.tr/ai-products/f89170d1-fef1-4b45-8868-38ed3ac6be95-olcu-oto-201fd186.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:26:25.783084+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/75be9448-2e56-47d3-95ed-f23baf1607f3/0d54e1988d4581b0.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "75be9448-2e56-47d3-95ed-f23baf1607f3/front.jpg",
+          "sha256": "9c1deb8b21bbb729b48b36a33472f2d64f80365b65ba389c4730fc740b3e591a",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2168,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-837-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "75be9448-2e56-47d3-95ed-f23baf1607f3/back.jpg",
+          "sha256": "669e7a1e42f879f2e58111e311f9257fac826862462ec0650fc7cb9656f5e5e6",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2168,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-837-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "75be9448-2e56-47d3-95ed-f23baf1607f3/model.jpg",
+          "sha256": "bdffc915dddfa413fb8c55d43b7179ce6627144a38147237e3d0ffe5cd524740",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2168,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-837-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
