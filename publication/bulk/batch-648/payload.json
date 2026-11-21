@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-648",
+  "created_at": "2026-11-21T16:59:43.698723+00:00",
+  "catalog_poll_at": "2026-11-21T16:59:43.698723+00:00",
+  "products": [
+    {
+      "product_id": "470672e7-b3ef-4403-9b6b-1d6e4dc0de12",
+      "sample": 1487,
+      "name": "Kolsuz Yakalı Düğmeli Kuşaklı Atlas Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 90,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/57b4fd4365054e204fb9.jpeg",
+        "https://modayakamoz.com/orj/9de0db9c4997303ca790.jpeg",
+        "https://modayakamoz.com/orj/3c3dfbd804af58cbcc42.jpeg",
+        "https://modayakamoz.com/orj/26e98d23dd5806ebac3a.jpeg",
+        "https://modayakamoz.com/orj/026f2793822b97786ff1.jpeg",
+        "https://modayakamoz.com/orj/afe84edfbad482735a9c.jpeg",
+        "https://modayakamoz.com/orj/b5e4669a102279c633d9.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "470672e7-b3ef-4403-9b6b-1d6e4dc0de12/front.jpg",
+          "sha256": "855ebaeae24600278f6299dfe2fa615dd69f6b683ed155ba21473db3122c6d64",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1487,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-470672e7-b3ef-4403-9b6b-1d6e4dc0de12/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "470672e7-b3ef-4403-9b6b-1d6e4dc0de12/back.jpg",
+          "sha256": "03c7afda0363e8e5be7fda8d30c0cbb695486029442281b50bcbc021d36ba8e2",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1487,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-470672e7-b3ef-4403-9b6b-1d6e4dc0de12/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "470672e7-b3ef-4403-9b6b-1d6e4dc0de12/model.jpg",
+          "sha256": "247310157693d300d0a2f5b39fa92ed05dc47e11cbe6cb86ab26a262413976fd",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1487,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-470672e7-b3ef-4403-9b6b-1d6e4dc0de12/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "470672e7-b3ef-4403-9b6b-1d6e4dc0de12/size_chart.jpg",
+          "sha256": "4ac252bc12776bbbcdd7358d7779aac468b371426ded43c5545a39f836816dce",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1487,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-470672e7-b3ef-4403-9b6b-1d6e4dc0de12/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
