@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-683",
+  "created_at": "2026-11-21T20:29:24.536587+00:00",
+  "catalog_poll_at": "2026-11-21T20:29:24.536587+00:00",
+  "products": [
+    {
+      "product_id": "bae7f863-d6a9-40ae-9db0-40d551a2f698",
+      "sample": 2346,
+      "name": "Kısa Kollu Yakalı Beli Kuşaklı Janjan Krep Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 76,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/bae7f863-d6a9-40ae-9db0-40d551a2f698-front-3acf82315901.jpg",
+        "https://cdn.meluni.com.tr/ai-products/bae7f863-d6a9-40ae-9db0-40d551a2f698-back-ba7b9b991666.jpg",
+        "https://modayakamoz.com/orj/859a0b62c10dabb31b44.jpeg",
+        "https://modayakamoz.com/orj/1af7157adf0f0c12d7cb.jpeg",
+        "https://modayakamoz.com/orj/03c9e6c6660123474101.jpeg",
+        "https://modayakamoz.com/orj/2ae20a222dd88d9b7f9d.jpeg",
+        {
+          "id": "60609685-eca7-4205-8043-133d1c99bf3b",
+          "url": "https://cdn.meluni.com.tr/ai-products/bae7f863-d6a9-40ae-9db0-40d551a2f698-olcu-oto-d2862604.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:17:03.364235+00:00"
+        },
+        {
+          "id": "e6942237-2324-59df-ad7e-24fe6961cdf3",
+          "url": "https://cdn.meluni.com.tr/ai-products/bae7f863-d6a9-40ae-9db0-40d551a2f698-size-chart-083c3791e401.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:10:33.476029+00:00"
+        }
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "bae7f863-d6a9-40ae-9db0-40d551a2f698/model.jpg",
+          "sha256": "9262a300d815d7df742f665883f000db9e49e744a941fb2ae66834f82bdfdc82",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2346,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-931-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
