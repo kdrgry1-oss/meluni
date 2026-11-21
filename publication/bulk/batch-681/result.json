@@ -1,0 +1,28 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-681",
+  "published_at_utc": "2026-11-21T20:20:58.013049+00:00",
+  "products": [
+    {
+      "product_id": "35e1546e-8bc4-4383-8688-6bf73a1924b9",
+      "sample": 2165,
+      "name": "Kısa Kollu V Yakalı Düğmeli Aerobin Bluz",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/35e1546e-8bc4-4383-8688-6bf73a1924b9-model-4708fa6ab7fb.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/35e1546e-8bc4-4383-8688-6bf73a1924b9-size-chart-e10fd8a8e0a6.jpg"
+      },
+      "gallery_image_count": 11
+    },
+    {
+      "product_id": "f89170d1-fef1-4b45-8868-38ed3ac6be95",
+      "sample": 2167,
+      "name": "Kısa Kollu V Yakalı Düğmeli Bluz",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f89170d1-fef1-4b45-8868-38ed3ac6be95-model-5fe0ec64363b.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f89170d1-fef1-4b45-8868-38ed3ac6be95-size-chart-d656c33a2673.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
