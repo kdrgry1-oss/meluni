@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-628",
+  "published_at_utc": "2026-11-21T12:20:26.038650+00:00",
+  "products": [
+    {
+      "product_id": "e15d0a69-db3e-4778-ae9e-d6934dec1a49",
+      "sample": 1290,
+      "name": "Ip Askılı Kruvaze Halka Detaylı Asimetrik Mini Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e15d0a69-db3e-4778-ae9e-d6934dec1a49-front-0e5d50478b5c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e15d0a69-db3e-4778-ae9e-d6934dec1a49-back-06b6957a8ed6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e15d0a69-db3e-4778-ae9e-d6934dec1a49-model-5a41b545c0c9.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
