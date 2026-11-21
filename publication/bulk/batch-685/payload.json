@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-685",
+  "created_at": "2026-11-21T20:47:04.815761+00:00",
+  "catalog_poll_at": "2026-11-21T20:47:04.815761+00:00",
+  "products": [
+    {
+      "product_id": "ae739816-34d1-47ce-a654-1ebabd3e7d25",
+      "sample": 2570,
+      "name": "Modal Yumuşak Dokulu Bisiklet Yaka Uzun Kollu Tişört Sweatshirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4998,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6ac3cc8bbed676ac3cc8bbed69.webp",
+        "https://modayakamoz.com/orj/TY6ac3cc8d96ddf6ac3cc8d96de2.webp",
+        "https://modayakamoz.com/orj/TY6ac3cc8f648616ac3cc8f64863.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "ae739816-34d1-47ce-a654-1ebabd3e7d25/front.jpg",
+          "sha256": "2076c79f7152dc77fa7dc78bc70e0b8388ee8791b200e3963d908c65bf5eb415",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2570,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2570-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ae739816-34d1-47ce-a654-1ebabd3e7d25/back.jpg",
+          "sha256": "44c7f75616a89343ce6b9f9c9275559fba382cbfc9b28491ba9580cb5c08f62d",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2570,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2570-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ae739816-34d1-47ce-a654-1ebabd3e7d25/fashion_model.jpg",
+          "sha256": "a56b3c31e0ed40ddc8b884c96f40ac46f0d40375aa1996deaaaa076dd2be2e63",
+          "qa_status": "visual_source_qa_passed_after_one_targeted_framing_correction",
+          "sample": 2570,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-2570-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
