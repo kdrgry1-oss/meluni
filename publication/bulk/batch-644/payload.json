@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-644",
+  "created_at": "2026-11-21T16:36:19.386883+00:00",
+  "catalog_poll_at": "2026-11-21T16:36:19.386883+00:00",
+  "products": [
+    {
+      "product_id": "00865d7d-f833-42c5-a5fd-01e33e8a88ea",
+      "sample": 1378,
+      "name": "Kolsuz Askılı Yırtmaçlı Midi Etek Fitilli Kaşkorse Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 20,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/00865d7d-f833-42c5-a5fd-01e33e8a88ea/00865d7d-f833-42c5-a5fd-01e33e8a88ea-hd0-322647a3.jpg",
+        "https://cdn.meluni.com.tr/products/00865d7d-f833-42c5-a5fd-01e33e8a88ea/00865d7d-f833-42c5-a5fd-01e33e8a88ea-hd1-f427a6dd.jpg",
+        "https://cdn.meluni.com.tr/products/00865d7d-f833-42c5-a5fd-01e33e8a88ea/00865d7d-f833-42c5-a5fd-01e33e8a88ea-hd2-e6073c9c.jpg",
+        "https://modayakamoz.com/orj/28a9fa862241f2ef893a.jpeg",
+        "https://cdn.meluni.com.tr/products/00865d7d-f833-42c5-a5fd-01e33e8a88ea/00865d7d-f833-42c5-a5fd-01e33e8a88ea-hd4-da67046b.jpg",
+        {
+          "id": "2934ea24-5c96-482c-9f80-071ac59aa85c",
+          "url": "https://cdn.meluni.com.tr/ai-products/00865d7d-f833-42c5-a5fd-01e33e8a88ea-olcu-oto-1c06341d.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:31:38.754532+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "00865d7d-f833-42c5-a5fd-01e33e8a88ea/front.jpg",
+          "sha256": "546d04e2ed6904a3b92f878a41a0b4ccee7a2d815574ace173b3bdda52e82fdc",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1378,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-00865d7d-f833-42c5-a5fd-01e33e8a88ea/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "00865d7d-f833-42c5-a5fd-01e33e8a88ea/back.jpg",
+          "sha256": "56c8df1cbd49eb1b5423348866a70946ef24fc62229c8b77ee38c7643d11fd67",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1378,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-00865d7d-f833-42c5-a5fd-01e33e8a88ea/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "00865d7d-f833-42c5-a5fd-01e33e8a88ea/model.jpg",
+          "sha256": "b7a1209daa9b1f77472103ac1dadb6f59552ab696093cead33d6417fbc0cfbf2",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1378,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-00865d7d-f833-42c5-a5fd-01e33e8a88ea/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
