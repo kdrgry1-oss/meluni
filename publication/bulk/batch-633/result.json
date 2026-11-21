@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-633",
+  "published_at_utc": "2026-11-21T13:26:10.545671+00:00",
+  "products": [
+    {
+      "product_id": "9feeb692-5da2-40d0-8e55-a64dec31812c",
+      "sample": 1295,
+      "name": "Ip Askılı V Dantel Yakalı Dantel Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9feeb692-5da2-40d0-8e55-a64dec31812c-front-c403d25907d2.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9feeb692-5da2-40d0-8e55-a64dec31812c-back-e9fb6f272e7b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9feeb692-5da2-40d0-8e55-a64dec31812c-model-832989e6907f.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/9feeb692-5da2-40d0-8e55-a64dec31812c-size-chart-1694c17b4ce1.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
