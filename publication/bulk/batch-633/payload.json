@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-633",
+  "created_at": "2026-11-21T13:24:32.073458+00:00",
+  "catalog_poll_at": "2026-11-21T13:24:32.073458+00:00",
+  "products": [
+    {
+      "product_id": "9feeb692-5da2-40d0-8e55-a64dec31812c",
+      "sample": 1295,
+      "name": "Ip Askılı V Dantel Yakalı Dantel Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8b51ad7867325814fcb1.jpeg",
+        "https://modayakamoz.com/orj/98635f4cf573e0f93510.jpeg",
+        "https://modayakamoz.com/orj/e7d4973a8f3468773d19.jpeg",
+        "https://modayakamoz.com/orj/7aed403a349cd7ab0895.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "9feeb692-5da2-40d0-8e55-a64dec31812c/front.jpg",
+          "sha256": "c403d25907d24cd0699ca1802846650a5f029973fbf7471ffbe3731600117e4a",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1295,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9feeb692-5da2-40d0-8e55-a64dec31812c/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "9feeb692-5da2-40d0-8e55-a64dec31812c/back.jpg",
+          "sha256": "e9fb6f272e7b000879dc64293cd47616fd59be7574ace4625905b40c4b17df21",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1295,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9feeb692-5da2-40d0-8e55-a64dec31812c/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9feeb692-5da2-40d0-8e55-a64dec31812c/model.jpg",
+          "sha256": "832989e6907f613a570c4f2aee6f4c96ad2cf9d69f7211398795c9fb776f32d3",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1295,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9feeb692-5da2-40d0-8e55-a64dec31812c/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "9feeb692-5da2-40d0-8e55-a64dec31812c/size_chart.jpg",
+          "sha256": "1694c17b4ce11c915e9efc310515b5dda8dca6199fa7f2008f848591607f0ec4",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1295,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9feeb692-5da2-40d0-8e55-a64dec31812c/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
