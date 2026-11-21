@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-684",
+  "created_at": "2026-11-21T20:39:53.696056+00:00",
+  "catalog_poll_at": "2026-11-21T20:39:53.696056+00:00",
+  "products": [
+    {
+      "product_id": "626f4814-00de-482c-8819-90f02bcc7d64",
+      "sample": 2518,
+      "name": "Likralı Yüksek Bel Efsane Kot Antrasit Renk 92cm Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-hd0-50e5acf2.jpg",
+        "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-hd1-bdd3cef8.jpg",
+        "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-hd2-9fa2de63.jpg",
+        "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-hd3-ff24b90e.jpg",
+        "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-hd4-2318e453.jpg",
+        "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-hd5-8c1b26a4.jpg",
+        "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-hd6-7959757c.jpg",
+        "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-hd7-119944c8.jpg",
+        {
+          "id": "140e5c14-a301-4fc2-b286-0ac0b8eaa002",
+          "url": "https://cdn.meluni.com.tr/ai-products/626f4814-00de-482c-8819-90f02bcc7d64-olcu-oto-3052e4a1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:21:47.333232+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "626f4814-00de-482c-8819-90f02bcc7d64/front.jpg",
+          "sha256": "613bfb66595eac3de72945d6c8e458603637414c06c3caa40213ab741e49cf94",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2518,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-626f4814/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "626f4814-00de-482c-8819-90f02bcc7d64/back.jpg",
+          "sha256": "94ce655672f6e4717c736f447efcac17518e6725b0090ac2d7865c62114d710d",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2518,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-626f4814/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "626f4814-00de-482c-8819-90f02bcc7d64/fashion_model.jpg",
+          "sha256": "9ceefda5593cc3881a849541c2448c38883fd10690f12ce9c6cb37e635f3786f",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 2518,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-626f4814/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
