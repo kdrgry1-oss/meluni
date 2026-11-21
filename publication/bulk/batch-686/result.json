@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-686",
+  "published_at_utc": "2026-11-21T20:56:13.683787+00:00",
+  "products": [
+    {
+      "product_id": "e7fdfba0-962d-49d3-b462-9fb37223ed0d",
+      "sample": 2599,
+      "name": "Omuzdan Şerit Detaylı Yarı Balıkçı Yaka Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e7fdfba0-962d-49d3-b462-9fb37223ed0d-front-e58e3386e440.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e7fdfba0-962d-49d3-b462-9fb37223ed0d-back-b125e7ddd2f1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e7fdfba0-962d-49d3-b462-9fb37223ed0d-model-9fb1a3880d1e.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
