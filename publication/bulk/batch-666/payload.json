@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-666",
+  "created_at": "2026-11-21T18:50:51.030805+00:00",
+  "catalog_poll_at": "2026-11-21T18:50:51.030805+00:00",
+  "products": [
+    {
+      "product_id": "ed7cb236-f694-4ed3-bd98-008951e535bc",
+      "sample": 1887,
+      "name": "Kısa Kollu Kayık Yaka Önü Asimetrik Detaylı Kısa Sandy Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 97,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/ed7cb236-f694-4ed3-bd98-008951e535bc/ed7cb236-f694-4ed3-bd98-008951e535bc-hd0-bd2f3bd7.jpg",
+        "https://cdn.meluni.com.tr/products/ed7cb236-f694-4ed3-bd98-008951e535bc/ed7cb236-f694-4ed3-bd98-008951e535bc-hd1-eab98bbd.jpg",
+        "https://cdn.meluni.com.tr/products/ed7cb236-f694-4ed3-bd98-008951e535bc/ed7cb236-f694-4ed3-bd98-008951e535bc-hd2-703df373.jpg",
+        {
+          "id": "8ff5da54-1114-4e4e-aa95-1d5f97e42008",
+          "url": "https://cdn.meluni.com.tr/ai-products/ed7cb236-f694-4ed3-bd98-008951e535bc-olcu-oto-93589378.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:34:03.402905+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "ed7cb236-f694-4ed3-bd98-008951e535bc/front.jpg",
+          "sha256": "5373c066137cc3826e4dfb53091758494a26055ee80ce0cc871bdfd3bd8df969",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1887,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ed7cb236-f694-4ed3-bd98-008951e535bc/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ed7cb236-f694-4ed3-bd98-008951e535bc/back.jpg",
+          "sha256": "270c40f17b554ea56c4e8a2da0885bd955764ca0040a785c8c0b68cdbf2ab396",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1887,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ed7cb236-f694-4ed3-bd98-008951e535bc/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ed7cb236-f694-4ed3-bd98-008951e535bc/model.jpg",
+          "sha256": "11171c553f64646cdf23b5a8089fef9ce464bb01d7d9ae5735391284e3f5a23d",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1887,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ed7cb236-f694-4ed3-bd98-008951e535bc/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
