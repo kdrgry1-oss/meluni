@@ -1,0 +1,151 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-674",
+  "created_at": "2026-11-21T19:35:33.882631+00:00",
+  "catalog_poll_at": "2026-11-21T19:35:33.882631+00:00",
+  "products": [
+    {
+      "product_id": "61a9969e-f808-44b9-b752-b78c316d11f9",
+      "sample": 2025,
+      "name": "Kısa Kollu Tek Omuzu Açık Askı Toka Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/61a9969e-f808-44b9-b752-b78c316d11f9/53a7c204e547814f.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/61a9969e-f808-44b9-b752-b78c316d11f9/895184535ed69c19.jpg",
+        "https://modayakamoz.com/orj/4f4f7516a39feb784452.jpeg",
+        "https://modayakamoz.com/orj/c9b371bb4cf7b7b01bed.jpeg",
+        "https://modayakamoz.com/orj/2f99139074e723ce3383.jpeg",
+        "https://modayakamoz.com/orj/0ee79699149f593c78d1.jpeg",
+        {
+          "id": "ffdc8764-f000-4012-9adb-268f6ff8c049",
+          "url": "https://cdn.meluni.com.tr/ai-products/dc3f633b-607b-4f6b-91fd-100f54c91e21-olcu-oto-03150777.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-02T05:22:16.642096+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/61a9969e-f808-44b9-b752-b78c316d11f9/9e5f513bce76f88d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "61a9969e-f808-44b9-b752-b78c316d11f9/front.jpg",
+          "sha256": "53a7c204e547814f0fd3da2d8f7ba704176fab0b36325cc59d7f85eda39c2e84",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2025,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-789-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "61a9969e-f808-44b9-b752-b78c316d11f9/back.jpg",
+          "sha256": "895184535ed69c19f204c93cb377eae2f6c0fc960288dd0af59ac2b489af0b87",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2025,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-789-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "61a9969e-f808-44b9-b752-b78c316d11f9/model.jpg",
+          "sha256": "f9d374c0d266bcfc1a73f452d5b38cc1ae4496823978afb04b55da309055cb24",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2025,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-789-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "e1f18f98-bba4-4173-b158-5dd0820cc6ab",
+      "sample": 2026,
+      "name": "Kısa Kollu Tek Omuzu Açık Askı Toka Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 41,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/e1f18f98-bba4-4173-b158-5dd0820cc6ab/0880818d70d92c71.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/e1f18f98-bba4-4173-b158-5dd0820cc6ab/0ffe56f64c1ac395.jpg",
+        "https://modayakamoz.com/orj/097ade5ed557e6e58b2e.jpeg",
+        "https://modayakamoz.com/orj/d0d5b9e3009be2f38d8c.jpeg",
+        "https://modayakamoz.com/orj/0dbc2f9db3daf21fd6fc.jpeg",
+        "https://modayakamoz.com/orj/eb5db5bb916eca632a4f.jpeg",
+        {
+          "id": "586f0a72-e513-4b2d-a58a-d7dd4c9d087f",
+          "url": "https://cdn.meluni.com.tr/ai-products/dc3f633b-607b-4f6b-91fd-100f54c91e21-olcu-oto-03150777.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-02T05:22:16.737965+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/e1f18f98-bba4-4173-b158-5dd0820cc6ab/9e5f513bce76f88d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e1f18f98-bba4-4173-b158-5dd0820cc6ab/front.jpg",
+          "sha256": "0880818d70d92c7152fc666f841060f031f8e1b7c2726ecfea7225077be6b7d9",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2026,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-790-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e1f18f98-bba4-4173-b158-5dd0820cc6ab/back.jpg",
+          "sha256": "0ffe56f64c1ac395e9f08e1450a8e9e8a1ba8206be95e34af942b1dce25ec87f",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2026,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-790-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e1f18f98-bba4-4173-b158-5dd0820cc6ab/model.jpg",
+          "sha256": "6c50f41475bafb2f9f56a393b6d6c7678dbf2f381d6beac61309e799afedbca0",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2026,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-790-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "04e5aed5-1e41-445e-8235-18e372be752b",
+      "sample": 2027,
+      "name": "Kısa Kollu Tek Omuzu Açık Askı Toka Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 85,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/04e5aed5-1e41-445e-8235-18e372be752b/b96337449d7e1763.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/04e5aed5-1e41-445e-8235-18e372be752b/8371fd58af44075d.jpg",
+        "https://modayakamoz.com/orj/d334103d00bf9d804376.jpeg",
+        "https://modayakamoz.com/orj/f8a792de50f2b713d9bf.jpeg",
+        "https://modayakamoz.com/orj/1b0b35162e63b2abf9b4.jpeg",
+        "https://modayakamoz.com/orj/cfa1d94a2de612f39ca8.jpeg",
+        "https://modayakamoz.com/orj/38b1e824c037f0daed2f.jpeg",
+        "https://modayakamoz.com/orj/ada9591d1c714fb30c0f.jpeg",
+        "https://modayakamoz.com/orj/e279e4d7c872dfe81078.jpeg",
+        "https://modayakamoz.com/orj/b88c5feda374ae6efeb9.jpeg",
+        {
+          "id": "03b50a59-c360-4972-9d4b-413fffdce3f3",
+          "url": "https://cdn.meluni.com.tr/ai-products/dc3f633b-607b-4f6b-91fd-100f54c91e21-olcu-oto-03150777.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-02T05:22:16.594343+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/04e5aed5-1e41-445e-8235-18e372be752b/9e5f513bce76f88d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "04e5aed5-1e41-445e-8235-18e372be752b/front.jpg",
+          "sha256": "b96337449d7e17633774c70f7554a16a941347273e3e78a46bb41e4dbf1d6633",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2027,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-791-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "04e5aed5-1e41-445e-8235-18e372be752b/back.jpg",
+          "sha256": "8371fd58af44075dcee2df2e7bb258f7d2d6814de49b7511a729b6a762d67859",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2027,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-791-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "04e5aed5-1e41-445e-8235-18e372be752b/model.jpg",
+          "sha256": "c34923b93a79c7a6826818e559c7e25ea7702ba1602ed61a6d0cc7369b183377",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2027,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-791-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
