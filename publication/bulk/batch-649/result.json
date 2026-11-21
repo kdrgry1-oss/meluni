@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-649",
+  "published_at_utc": "2026-11-21T17:12:39.208494+00:00",
+  "products": [
+    {
+      "product_id": "c2c8ad7c-7c5f-47db-b70b-9338e34fb038",
+      "sample": 1601,
+      "name": "Kısa Kollu Askılı Dantel Detaylı Dubai Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c2c8ad7c-7c5f-47db-b70b-9338e34fb038-front-3f2ccc84a9b9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c2c8ad7c-7c5f-47db-b70b-9338e34fb038-model-41306d0b684c.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/c2c8ad7c-7c5f-47db-b70b-9338e34fb038-size-chart-d490640639a5.jpg"
+      },
+      "gallery_image_count": 15
+    }
+  ],
+  "skipped": []
+}
