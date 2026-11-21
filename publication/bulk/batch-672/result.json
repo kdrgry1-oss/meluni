@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-672",
+  "published_at_utc": "2026-11-21T19:27:15.585322+00:00",
+  "products": [
+    {
+      "product_id": "51d36745-d502-4acb-9564-9d9b96d6b667",
+      "sample": 2002,
+      "name": "Kısa Kollu Omuzdan Açık Askılı Kısa Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/51d36745-d502-4acb-9564-9d9b96d6b667-front-9d79d84c27a9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/51d36745-d502-4acb-9564-9d9b96d6b667-back-c7018203733e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/51d36745-d502-4acb-9564-9d9b96d6b667-model-fa0153d3a707.jpg"
+      },
+      "gallery_image_count": 14
+    }
+  ],
+  "skipped": []
+}
