@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-673",
+  "published_at_utc": "2026-11-21T19:33:03.622536+00:00",
+  "products": [
+    {
+      "product_id": "b43e018e-e425-4e63-b5eb-3b6f62c039d3",
+      "sample": 2024,
+      "name": "Kısa Kollu Tek Omuzu Açık Askı Toka Detaylı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b43e018e-e425-4e63-b5eb-3b6f62c039d3-front-2c9cacb002e4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b43e018e-e425-4e63-b5eb-3b6f62c039d3-back-855c6516c884.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b43e018e-e425-4e63-b5eb-3b6f62c039d3-model-80841131bdf2.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
