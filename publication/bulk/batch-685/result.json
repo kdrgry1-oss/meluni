@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-685",
+  "published_at_utc": "2026-11-21T20:48:24.014629+00:00",
+  "products": [
+    {
+      "product_id": "ae739816-34d1-47ce-a654-1ebabd3e7d25",
+      "sample": 2570,
+      "name": "Modal Yumuşak Dokulu Bisiklet Yaka Uzun Kollu Tişört Sweatshirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/ae739816-34d1-47ce-a654-1ebabd3e7d25-front-2076c79f7152.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/ae739816-34d1-47ce-a654-1ebabd3e7d25-back-44c7f75616a8.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/ae739816-34d1-47ce-a654-1ebabd3e7d25-model-a56b3c31e0ed.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
