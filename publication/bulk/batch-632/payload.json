@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-632",
+  "created_at": "2026-11-21T13:04:15.398428+00:00",
+  "catalog_poll_at": "2026-11-21T13:04:15.398428+00:00",
+  "products": [
+    {
+      "product_id": "3022d6b8-a8bc-4e7e-947c-1bee882913ba",
+      "sample": 1294,
+      "name": "Ip Askılı V Dantel Yakalı Bürümcük Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7a155f2656cc045901a0.jpeg",
+        "https://modayakamoz.com/orj/039c2b08fcba1104f25b.jpeg",
+        "https://modayakamoz.com/orj/c5a402487fbd931e15f1.jpeg",
+        "https://modayakamoz.com/orj/341c5ec9607692cde467.jpeg",
+        {
+          "id": "b00f9482-e0b7-4093-ab3b-4ebb4e324734",
+          "url": "https://cdn.meluni.com.tr/ai-products/3022d6b8-a8bc-4e7e-947c-1bee882913ba-olcu-oto-5d96768c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-08T05:19:11.890907+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "3022d6b8-a8bc-4e7e-947c-1bee882913ba/front.jpg",
+          "sha256": "ae986e4ea5002f4a931ccf19ade9ff7261cd0e210c968c3aa242821418045c64",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1294,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3022d6b8-a8bc-4e7e-947c-1bee882913ba/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3022d6b8-a8bc-4e7e-947c-1bee882913ba/back.jpg",
+          "sha256": "e7c2e8a89f3d4544ea37c9e4cb8a90c2d248233f36921029a3fba883ea1101a2",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1294,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3022d6b8-a8bc-4e7e-947c-1bee882913ba/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3022d6b8-a8bc-4e7e-947c-1bee882913ba/model.jpg",
+          "sha256": "13d9fee0e38bd1e4bbf216a5f9b49e5568eb703a76bbc8914a6c17ce4bf943bb",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1294,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3022d6b8-a8bc-4e7e-947c-1bee882913ba/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
