@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-631",
+  "published_at_utc": "2026-11-21T12:59:22.743134+00:00",
+  "products": [
+    {
+      "product_id": "fbb6f06c-05d5-4794-8271-fdf66d7dbb4d",
+      "sample": 1291,
+      "name": "Ip Askılı Kruvaze Yakalı Yırtmaçlı Midi Bürümcük Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/fbb6f06c-05d5-4794-8271-fdf66d7dbb4d-front-95c356ddcfaf.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/fbb6f06c-05d5-4794-8271-fdf66d7dbb4d-back-c71204cee2e4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/fbb6f06c-05d5-4794-8271-fdf66d7dbb4d-model-53803af0d5fe.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/fbb6f06c-05d5-4794-8271-fdf66d7dbb4d-size-chart-39fdd9b1ab28.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
