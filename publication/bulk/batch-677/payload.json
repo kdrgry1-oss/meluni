@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-677",
+  "created_at": "2026-11-21T19:56:28.445870+00:00",
+  "catalog_poll_at": "2026-11-21T19:56:28.445870+00:00",
+  "products": [
+    {
+      "product_id": "5343ce10-6d82-4edb-81c1-80ff46855b7d",
+      "sample": 2042,
+      "name": "Kısa Kollu V Dantel Yakalı Düğmeli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 29,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3381407a989179a38b2f.jpeg",
+        "https://modayakamoz.com/orj/d89b8fd2e4c766074baa.jpeg",
+        "https://modayakamoz.com/orj/cea9db37f060a4799d7b.jpeg",
+        "https://modayakamoz.com/orj/dbc8cb8f703c1286fc68.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5343ce10-6d82-4edb-81c1-80ff46855b7d/front.jpg",
+          "sha256": "367e476c02467190f92b4da9f22c8f21f76b30cd879b5d845b380748b0f6c0f0",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2042,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5343ce10-6d82-4edb-81c1-80ff46855b7d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5343ce10-6d82-4edb-81c1-80ff46855b7d/back.jpg",
+          "sha256": "4a33fd501253a0ab938947bb4707419822fc615feb7de0e14b354980c2f8d40c",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2042,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5343ce10-6d82-4edb-81c1-80ff46855b7d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5343ce10-6d82-4edb-81c1-80ff46855b7d/model.jpg",
+          "sha256": "e7b59c1163803cdbd97ee4a81afd18419cebfd7a9a4062d12144ed144283ea8b",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2042,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5343ce10-6d82-4edb-81c1-80ff46855b7d/model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "5343ce10-6d82-4edb-81c1-80ff46855b7d/size-chart.jpg",
+          "sha256": "074aa77638acbd6270ac420aa22db7a6a38af0ef1f75888b16dbff08451ee855",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2042,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5343ce10-6d82-4edb-81c1-80ff46855b7d/size-chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
