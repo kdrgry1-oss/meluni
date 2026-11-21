@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-630",
+  "created_at": "2026-11-21T12:41:30.971433+00:00",
+  "catalog_poll_at": "2026-11-21T12:41:30.971433+00:00",
+  "products": [
+    {
+      "product_id": "01186b02-377c-4fcc-94e6-f40e6b4bf7ad",
+      "sample": 1292,
+      "name": "Ip Askılı Kruvaze Yakalı Yırtmaçlı Mıdı Burumcuk Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 78,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/fd7dfd00277d94214ccb.jpeg",
+        "https://modayakamoz.com/orj/d56c0d0bd83faab7a423.jpeg",
+        "https://modayakamoz.com/orj/c551c697e12185a2b2fa.jpeg",
+        "https://modayakamoz.com/orj/88f17e794aedf97f2a51.jpeg",
+        "https://modayakamoz.com/orj/916fd2492d18db91d4ee.jpeg",
+        "https://modayakamoz.com/orj/e0c24cd83378fb57879e.jpeg",
+        {
+          "id": "7c16c20d-9927-45ca-b383-c79cb8ffef0e",
+          "url": "https://cdn.meluni.com.tr/ai-products/fbb6f06c-05d5-4794-8271-fdf66d7dbb4d-olcu-oto-135546bc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:19:20.869868+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "01186b02-377c-4fcc-94e6-f40e6b4bf7ad/front.jpg",
+          "sha256": "d15ee4dd5ecd48f6e4045d522fe83513687c8936014eafbf0d61d11817eb3b55",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1292,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-01186b02/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "01186b02-377c-4fcc-94e6-f40e6b4bf7ad/back.jpg",
+          "sha256": "c468ce8f82b7fccd69c908d1d9d548cbfda55bef470b45cb67925b1f91a4243d",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1292,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-01186b02/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "01186b02-377c-4fcc-94e6-f40e6b4bf7ad/model.jpg",
+          "sha256": "b65a4bf0d79adb56af67aaddc716ddd21cce10bbb63fd55c4c3cf2be69fdfe84",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1292,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-01186b02/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "01186b02-377c-4fcc-94e6-f40e6b4bf7ad/size_chart.jpg",
+          "sha256": "d5e9c6a4952e6ff72aea0ffe1eb3466b56ab8cafe002839155b1b59a8f40aa53",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 1292,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-01186b02/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
