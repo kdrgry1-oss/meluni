@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-660",
+  "created_at": "2026-11-21T18:15:30.977476+00:00",
+  "catalog_poll_at": "2026-11-21T18:15:30.977476+00:00",
+  "products": [
+    {
+      "product_id": "8fc12241-8a7e-4f11-971f-41bc1896ef69",
+      "sample": 1852,
+      "name": "Kısa Kollu Hakim Yaka Fermuarlı Bürümcük Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e7bc635e6cdf06868475.jpeg",
+        "https://modayakamoz.com/orj/c0e7da14b42549e1faa8.jpeg",
+        "https://modayakamoz.com/orj/7bfbcb4a2701a47176ba.jpeg",
+        {
+          "id": "cb9285fa-4c3a-490b-a0f1-1e3328a1d5e7",
+          "url": "https://cdn.meluni.com.tr/ai-products/8fc12241-8a7e-4f11-971f-41bc1896ef69-olcu-oto-3942697e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:20:52.490451+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8fc12241-8a7e-4f11-971f-41bc1896ef69/front.jpg",
+          "sha256": "ef80fb7253ce6118c2f5ea2cf9b04d0fc74ff123a688d9aa2a69389a210fd6f4",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1852,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8fc12241-8a7e-4f11-971f-41bc1896ef69/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8fc12241-8a7e-4f11-971f-41bc1896ef69/back.jpg",
+          "sha256": "73fdd9f4dbca4070f8c95e249e0cb36423b93b9b0930a23a6f81926b9ae897a2",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1852,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8fc12241-8a7e-4f11-971f-41bc1896ef69/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8fc12241-8a7e-4f11-971f-41bc1896ef69/model.jpg",
+          "sha256": "9f122827d679998e25201d1f1a4ba05dacc94757e882d3abd567512a4fc1459e",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1852,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8fc12241-8a7e-4f11-971f-41bc1896ef69/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
