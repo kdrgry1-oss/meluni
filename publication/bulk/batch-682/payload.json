@@ -1,0 +1,49 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-682",
+  "created_at": "2026-11-21T20:24:11.007425+00:00",
+  "catalog_poll_at": "2026-11-21T20:24:11.007425+00:00",
+  "products": [
+    {
+      "product_id": "5f8319b4-da56-4f15-b8c3-c39eaea3609b",
+      "sample": 2273,
+      "name": "Kısa Kollu V Yakalı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 74,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/5f8319b4-da56-4f15-b8c3-c39eaea3609b/964cc5250af4abac.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/5f8319b4-da56-4f15-b8c3-c39eaea3609b/0cf18d51d35127ac.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/5f8319b4-da56-4f15-b8c3-c39eaea3609b/56fc6bcd0d027599.jpg",
+        "https://modayakamoz.com/orj/e48f9043e0a762db6434.jpeg",
+        "https://modayakamoz.com/orj/f540ac2f3c9834c11c6b.jpeg",
+        "https://modayakamoz.com/orj/32abfee1b23539480f07.jpeg",
+        "https://modayakamoz.com/orj/f1bd05818573419583d0.jpeg",
+        "https://modayakamoz.com/orj/3330de606734dc10a914.jpeg",
+        {
+          "id": "d3a0ea0d-0be7-4c83-88fc-5283cb377a2e",
+          "url": "https://cdn.meluni.com.tr/ai-products/5f8319b4-da56-4f15-b8c3-c39eaea3609b-olcu-oto-3fe461fd.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:23:49.503501+00:00"
+        },
+        {
+          "id": "3455650d-e807-5f34-b5b6-64ee724fcea0",
+          "url": "https://cdn.meluni.com.tr/ai-products/5f8319b4-da56-4f15-b8c3-c39eaea3609b-size-chart-1c1adb06529f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:17:30.364541+00:00"
+        }
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "5f8319b4-da56-4f15-b8c3-c39eaea3609b/size-chart.jpg",
+          "sha256": "1c1adb06529f89ebbf0259662866145ca4f617cd6cc5b1caf148eb85ad9d76e8",
+          "qa_status": "visual_qa_pass_catalog_linked_values_verified",
+          "sample": 2273,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-878-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
