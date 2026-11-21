@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-653",
+  "created_at": "2026-11-21T17:37:34.016670+00:00",
+  "catalog_poll_at": "2026-11-21T17:37:34.016670+00:00",
+  "products": [
+    {
+      "product_id": "a54093a0-cff8-4dba-893a-b52eb8e67f93",
+      "sample": 1817,
+      "name": "Kısa Kollu Derin Kruvaze Yakalı Kısa Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 50,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/926084a1167194eeefe7.jpeg",
+        "https://modayakamoz.com/orj/757faebb19a0de813b5c.jpeg",
+        "https://modayakamoz.com/orj/01ecd1d71d0a8d705862.jpeg",
+        "https://modayakamoz.com/orj/150490c29f89835a6f1d.jpeg",
+        {
+          "id": "ff6b8d86-3f7d-42d0-9df1-4186291a04f1",
+          "url": "https://cdn.meluni.com.tr/ai-products/a54093a0-cff8-4dba-893a-b52eb8e67f93-olcu-oto-28eee98d.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-30T05:19:40.765017+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "a54093a0-cff8-4dba-893a-b52eb8e67f93/front.jpg",
+          "sha256": "d71752ae3c5022ecc09d2789ed3f665d9581cf8924447d086b6ec0f939bdb8b1",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1817,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a54093a0-cff8-4dba-893a-b52eb8e67f93/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a54093a0-cff8-4dba-893a-b52eb8e67f93/back.jpg",
+          "sha256": "128b34a41845ae42660e92bff9117e77180c44811c785b2771d6c9d8a8107a1f",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1817,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a54093a0-cff8-4dba-893a-b52eb8e67f93/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a54093a0-cff8-4dba-893a-b52eb8e67f93/model.jpg",
+          "sha256": "c7a10bda2dcc656c4ed4cd00fe3e5839508abdfef2b4e2e85a72d47da59d083e",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1817,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a54093a0-cff8-4dba-893a-b52eb8e67f93/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
