@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-669",
+  "created_at": "2026-11-21T19:09:39.438857+00:00",
+  "catalog_poll_at": "2026-11-21T19:09:39.438857+00:00",
+  "products": [
+    {
+      "product_id": "f4713b7f-8de6-43ff-9bb5-5d1f9246747a",
+      "sample": 1931,
+      "name": "Kısa Kollu Kruvaze Yakalı Beli Kemerli Kısa Short Deri Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1d1a8d2793c8238aa1e147fcdf1f3ed0.jpeg",
+        "https://modayakamoz.com/orj/7c7d183d83cc8e9e6ada.jpeg",
+        "https://modayakamoz.com/orj/978b5aedae669924675a.jpeg",
+        "https://modayakamoz.com/orj/2395f0d3d0cc0fef4451.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "f4713b7f-8de6-43ff-9bb5-5d1f9246747a/front.jpg",
+          "sha256": "c1f89df34d00983af3f590ea13f827096acfba0322f774f7d0976b03edad7e98",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1931,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f4713b7f-8de6-43ff-9bb5-5d1f9246747a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f4713b7f-8de6-43ff-9bb5-5d1f9246747a/back.jpg",
+          "sha256": "f7e4e81f76ca015e35032a243cd8b8e676fc3836c2483525b2399e953a00c541",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1931,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f4713b7f-8de6-43ff-9bb5-5d1f9246747a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f4713b7f-8de6-43ff-9bb5-5d1f9246747a/model.jpg",
+          "sha256": "84573e7846e19a5ff04fd0f026019a26210dae478b1eada4198dee15e77b75bf",
+          "qa_status": "pass_visual_source_fidelity",
+          "sample": 1931,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f4713b7f-8de6-43ff-9bb5-5d1f9246747a/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
