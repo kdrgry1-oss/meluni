@@ -1,0 +1,87 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-680",
+  "created_at": "2026-11-21T20:14:20.607552+00:00",
+  "catalog_poll_at": "2026-11-21T20:14:20.607552+00:00",
+  "products": [
+    {
+      "product_id": "92d790bb-4c30-4782-b2a5-1b0cd96b4977",
+      "sample": 2139,
+      "name": "Kısa Kollu V Yakalı Dantelli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 56,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/92d790bb-4c30-4782-b2a5-1b0cd96b4977/9d867ddcf0cddefe.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/92d790bb-4c30-4782-b2a5-1b0cd96b4977/9348d9550c1f688a.jpg",
+        "https://modayakamoz.com/orj/847e6c2012788ef09cf5d573dc298a85.png",
+        "https://modayakamoz.com/orj/a66db0e22f31adb16566449d3de372e4.png",
+        "https://modayakamoz.com/orj/83b9944cf604d73a6822fdd97a18d418.png",
+        "https://modayakamoz.com/orj/fd14c6644025fe40f330b7b2ffe8c95d.png",
+        "https://modayakamoz.com/orj/e81a93fb049853ebf8bdaf39c82806ad.png",
+        "https://modayakamoz.com/orj/c004b58d0591c5b33485c58b421789b6.png"
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "92d790bb-4c30-4782-b2a5-1b0cd96b4977/model.jpg",
+          "sha256": "b3e6285f848512c2bc7b82ce294848cd5c7ce98cccb9317c41c2fe5ba2910f25",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2139,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-829-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "b0fb74f3-9bf2-4237-b842-ca1ecae39a26",
+      "sample": 2140,
+      "name": "Kısa Kollu V Yakalı Dantelli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 62,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/b0fb74f3-9bf2-4237-b842-ca1ecae39a26/e85eb4d71d9e8448.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/b0fb74f3-9bf2-4237-b842-ca1ecae39a26/18c65f860e394f2a.jpg",
+        "https://modayakamoz.com/orj/b6677873fa72248feaffb0cc64308a1a.png",
+        "https://modayakamoz.com/orj/40e3a8fe7cb03b0ad45f2896e77ffb9f.png",
+        "https://modayakamoz.com/orj/05dd628da042d061c1cb13d8cadbf14e.png",
+        "https://modayakamoz.com/orj/2eb6142da914e2f148eb49ff78aa35b7.png",
+        "https://modayakamoz.com/orj/3574197aaea6ba6b25ca37c497c42c1e.png",
+        "https://modayakamoz.com/orj/96b3f537bad29dac96be43d9088bce0f.png"
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "b0fb74f3-9bf2-4237-b842-ca1ecae39a26/model.jpg",
+          "sha256": "b875ce858907c19b8f1aa4d07613e9e58d8b49315500b7997d42a90c83d1b7b5",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2140,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-830-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "21f4b4fa-8cf0-436c-9ae0-ec5f08d2a1ae",
+      "sample": 2141,
+      "name": "Kısa Kollu V Yakalı Dantelli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 38,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/21f4b4fa-8cf0-436c-9ae0-ec5f08d2a1ae/215a55ac0b87dd01.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/21f4b4fa-8cf0-436c-9ae0-ec5f08d2a1ae/6291dc8aa5168f5c.jpg",
+        "https://modayakamoz.com/orj/b477d203b6f91c37bb11986ab70cd20a.png",
+        "https://modayakamoz.com/orj/50380e1a791203bf738ba7271072d33f.png",
+        "https://modayakamoz.com/orj/cec581199bc8dc62448dc77461aaac0d.png",
+        "https://modayakamoz.com/orj/ee091403549ea66ecebbf1b75df6b3d3.png",
+        "https://modayakamoz.com/orj/bd67e3dd7be4fa99ac5c42cecd5c3cf7.png",
+        "https://modayakamoz.com/orj/b75f33393942a2acfecc4560895b5f58.png"
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "21f4b4fa-8cf0-436c-9ae0-ec5f08d2a1ae/model.jpg",
+          "sha256": "26e03a633c2dd6f63bfa32405f505ba8aeebf0723e8938bc8f96acf1fa750c75",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2141,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-831-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
