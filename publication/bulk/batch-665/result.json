@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-665",
+  "published_at_utc": "2026-11-21T18:42:11.794645+00:00",
+  "products": [
+    {
+      "product_id": "a0003c0c-f08a-4202-9211-d96a604c6185",
+      "sample": 1878,
+      "name": "Kısa Kollu Kare Yakalı Kuşaklı Uzun Janjan Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a0003c0c-f08a-4202-9211-d96a604c6185-front-1f3fd5464cfe.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a0003c0c-f08a-4202-9211-d96a604c6185-back-cd2714239716.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a0003c0c-f08a-4202-9211-d96a604c6185-model-69d2eafc2e69.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
