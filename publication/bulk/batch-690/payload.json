@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-690",
+  "created_at": "2026-11-21T21:33:11.198413+00:00",
+  "catalog_poll_at": "2026-11-21T21:33:11.198413+00:00",
+  "products": [
+    {
+      "product_id": "82d495a5-a49e-45b1-83e1-1e731ee90fa7",
+      "sample": 2880,
+      "name": "Sıfır Kollu Çapraz V Yakalı Düğmeli Atlas Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 71,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/82d495a5-a49e-45b1-83e1-1e731ee90fa7/82d495a5-a49e-45b1-83e1-1e731ee90fa7-hd0-07c8a748.jpg",
+        "https://cdn.meluni.com.tr/products/82d495a5-a49e-45b1-83e1-1e731ee90fa7/82d495a5-a49e-45b1-83e1-1e731ee90fa7-hd1-a4a5acdb.jpg",
+        "https://cdn.meluni.com.tr/products/82d495a5-a49e-45b1-83e1-1e731ee90fa7/82d495a5-a49e-45b1-83e1-1e731ee90fa7-hd2-5299aab8.jpg",
+        "https://cdn.meluni.com.tr/products/82d495a5-a49e-45b1-83e1-1e731ee90fa7/82d495a5-a49e-45b1-83e1-1e731ee90fa7-hd3-c30c89b3.jpg",
+        "https://cdn.meluni.com.tr/products/82d495a5-a49e-45b1-83e1-1e731ee90fa7/82d495a5-a49e-45b1-83e1-1e731ee90fa7-hd4-351eb0ce.jpg",
+        {
+          "id": "46446d23-9114-45f6-8abc-0627f74115cc",
+          "url": "https://cdn.meluni.com.tr/ai-products/82d495a5-a49e-45b1-83e1-1e731ee90fa7-olcu-oto-b133c464.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:33:18.903460+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "82d495a5-a49e-45b1-83e1-1e731ee90fa7/front.jpg",
+          "sha256": "78ec0e8f4ccd95442803ef37ff5d24f73ee04f8a00f49f0e4dd4ae089a1ce9e6",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2880,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2880-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "82d495a5-a49e-45b1-83e1-1e731ee90fa7/back.jpg",
+          "sha256": "15b8fadc0e53d003a48e5be15a71bc559b258d39d0a91aec7928fe3632a980ac",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2880,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2880-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "82d495a5-a49e-45b1-83e1-1e731ee90fa7/fashion_model.jpg",
+          "sha256": "68e621917d7359114ab8521f936f2a456870ec15ba590a1b885cab6dfb52567a",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2880,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/2880-model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "82d495a5-a49e-45b1-83e1-1e731ee90fa7/size_chart.jpg",
+          "sha256": "bf4fb61cc18f2893301b18aa80aeb2bd3d5d4a99ee433ddb65b3d4da253e7fb6",
+          "qa_status": "exact_source_values_verified_passed",
+          "sample": 2880,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-2880-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
