@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-695",
+  "published_at_utc": "2026-11-22T10:27:14.744635+00:00",
+  "products": [
+    {
+      "product_id": "179beccb-5108-48df-bb68-815a619739fc",
+      "sample": 2944,
+      "name": "Tek Omuzu Açık Kısa Kollu Salaş Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/179beccb-5108-48df-bb68-815a619739fc-front-ed2e2d6d4173.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/179beccb-5108-48df-bb68-815a619739fc-back-a647a67e87e5.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/179beccb-5108-48df-bb68-815a619739fc-model-b5ead1bd68b5.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/179beccb-5108-48df-bb68-815a619739fc-size-chart-8c8ce0c23f1c.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
