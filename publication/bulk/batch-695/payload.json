@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-695",
+  "created_at": "2026-11-22T10:25:46.221150+00:00",
+  "catalog_poll_at": "2026-11-22T10:25:46.221150+00:00",
+  "products": [
+    {
+      "product_id": "179beccb-5108-48df-bb68-815a619739fc",
+      "sample": 2944,
+      "name": "Tek Omuzu Açık Kısa Kollu Salaş Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 87,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d3cefa1c3b3d55c09ca9.jpeg",
+        "https://modayakamoz.com/orj/72eddddbd2d52ec4f4cd.jpeg",
+        "https://modayakamoz.com/orj/1379678aea89bfaeb3aa.jpeg",
+        "https://modayakamoz.com/orj/d62716642fb9a7436d13.jpeg",
+        "https://modayakamoz.com/orj/de27456e1ebaf5fa1b4b.jpeg",
+        "https://modayakamoz.com/orj/e9fdc2396a005517ba0f.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "179beccb-5108-48df-bb68-815a619739fc/front.jpg",
+          "sha256": "ed2e2d6d4173fe03e93798b2eb7075db1a89964f0c7707b2145e406326aa7f15",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2944,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2944-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "179beccb-5108-48df-bb68-815a619739fc/back.jpg",
+          "sha256": "a647a67e87e58a454aea548f80babe148a65e20c87a66f5e8dc9de67d6a2cd53",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2944,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2944-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "179beccb-5108-48df-bb68-815a619739fc/fashion_model.jpg",
+          "sha256": "b5ead1bd68b51df038c23713ae5d1576b4036fd7d8225462da9921bc94a3c78b",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2944,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/2944-model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "179beccb-5108-48df-bb68-815a619739fc/size_chart.jpg",
+          "sha256": "8c8ce0c23f1ccda11344257a4690c0740b2db13377ee83dea7e8a2e6a27cd0b9",
+          "qa_status": "source_values_verified_pass",
+          "sample": 2944,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-2944-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
