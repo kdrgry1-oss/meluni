@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-694",
+  "published_at_utc": "2026-11-22T10:18:38.548204+00:00",
+  "products": [
+    {
+      "product_id": "bfd0f02a-ae94-43e7-9b8f-fa37cbd756fb",
+      "sample": 2935,
+      "name": "Tek Omuzdan Büzgü Detaylı Geniş Paçalı Uzun Sandy Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bfd0f02a-ae94-43e7-9b8f-fa37cbd756fb-front-937558bf9d3a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/bfd0f02a-ae94-43e7-9b8f-fa37cbd756fb-back-5cf3fc2de6c1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bfd0f02a-ae94-43e7-9b8f-fa37cbd756fb-model-f254f446c0e8.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/bfd0f02a-ae94-43e7-9b8f-fa37cbd756fb-size-chart-df24a8e75e75.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
