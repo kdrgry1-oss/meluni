@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-692",
+  "published_at_utc": "2026-11-22T10:05:42.517533+00:00",
+  "products": [
+    {
+      "product_id": "e16bd3d7-1754-46ec-9f30-11b5f8119642",
+      "sample": 2908,
+      "name": "Tek Askılı Toka Detaylı Yırtmaçlı Uzun Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e16bd3d7-1754-46ec-9f30-11b5f8119642-front-da58cf6e40f0.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e16bd3d7-1754-46ec-9f30-11b5f8119642-back-928ad88382a4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e16bd3d7-1754-46ec-9f30-11b5f8119642-model-108ce5ac1704.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
