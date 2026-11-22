@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-694",
+  "created_at": "2026-11-22T10:17:20.239292+00:00",
+  "catalog_poll_at": "2026-11-22T10:17:20.239292+00:00",
+  "products": [
+    {
+      "product_id": "bfd0f02a-ae94-43e7-9b8f-fa37cbd756fb",
+      "sample": 2935,
+      "name": "Tek Omuzdan Büzgü Detaylı Geniş Paçalı Uzun Sandy Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 39,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f6a5d855ef5ae4776b25.jpeg",
+        "https://modayakamoz.com/orj/e7df0d0545ea59a95977.jpeg",
+        "https://modayakamoz.com/orj/183f54c8360d9e5d9865.jpeg",
+        "https://modayakamoz.com/orj/dd2daff65472f3afd72e.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "bfd0f02a-ae94-43e7-9b8f-fa37cbd756fb/front.jpg",
+          "sha256": "937558bf9d3a1a070da4213f9bbec55935626b1e2b6086e2a0cdd71d38bacece",
+          "qa_status": "visual_source_qa_passed_verified_sister_framing_reused",
+          "sample": 2935,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2935-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "bfd0f02a-ae94-43e7-9b8f-fa37cbd756fb/back.jpg",
+          "sha256": "5cf3fc2de6c1bf8f9359811f5e0c07db5c65ead3d72f896a3ec2880e47bbdec2",
+          "qa_status": "visual_source_qa_passed_verified_sister_framing_reused",
+          "sample": 2935,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2935-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bfd0f02a-ae94-43e7-9b8f-fa37cbd756fb/fashion_model.jpg",
+          "sha256": "f254f446c0e8cf7a8a7b151cfd39af906362c2c5944fd65b2eeddf9bf0c47d27",
+          "qa_status": "visual_source_qa_passed_verified_sister_framing_reused",
+          "sample": 2935,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/2935-model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "bfd0f02a-ae94-43e7-9b8f-fa37cbd756fb/size_chart.jpg",
+          "sha256": "df24a8e75e755551dd6e0d60eb6713500f182361e3fb4d30ca13e4a47b3853fa",
+          "qa_status": "source_values_verified_pass_same_source_sha256",
+          "sample": 2935,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-2935-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
