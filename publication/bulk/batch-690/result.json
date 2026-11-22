@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-690",
+  "published_at_utc": "2026-11-22T09:54:33.837997+00:00",
+  "products": [
+    {
+      "product_id": "82d495a5-a49e-45b1-83e1-1e731ee90fa7",
+      "sample": 2880,
+      "name": "Sıfır Kollu Çapraz V Yakalı Düğmeli Atlas Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/82d495a5-a49e-45b1-83e1-1e731ee90fa7-front-78ec0e8f4ccd.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/82d495a5-a49e-45b1-83e1-1e731ee90fa7-back-15b8fadc0e53.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/82d495a5-a49e-45b1-83e1-1e731ee90fa7-model-68e621917d73.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/82d495a5-a49e-45b1-83e1-1e731ee90fa7-size-chart-bf4fb61cc18f.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
