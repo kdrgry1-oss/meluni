@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-692",
+  "created_at": "2026-11-22T10:04:35.674676+00:00",
+  "catalog_poll_at": "2026-11-22T10:04:35.674676+00:00",
+  "products": [
+    {
+      "product_id": "e16bd3d7-1754-46ec-9f30-11b5f8119642",
+      "sample": 2908,
+      "name": "Tek Askılı Toka Detaylı Yırtmaçlı Uzun Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 48,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/354d503a14455faefb5b.jpeg",
+        "https://modayakamoz.com/orj/4e1935524ab19245a64d.jpeg",
+        "https://modayakamoz.com/orj/a867ac985c8220dbd079.jpeg",
+        "https://modayakamoz.com/orj/5b059802a4ac8c585a3f.jpeg",
+        "https://modayakamoz.com/orj/c96bc9234c75e89ab763.jpeg",
+        "https://modayakamoz.com/orj/a4fcf24e597bbd1f36c7.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e16bd3d7-1754-46ec-9f30-11b5f8119642/front.jpg",
+          "sha256": "da58cf6e40f0438670501bfaafce841aa62049a672b98637e75e7c564eb1e60d",
+          "qa_status": "visual_source_qa_passed_verified_sister_framing_reused",
+          "sample": 2908,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2908-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e16bd3d7-1754-46ec-9f30-11b5f8119642/back.jpg",
+          "sha256": "928ad88382a489f541316ef1fd3ecf851027ab8ee0d8847ce0d8fe61fe50db33",
+          "qa_status": "visual_source_qa_passed_verified_sister_framing_reused",
+          "sample": 2908,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2908-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e16bd3d7-1754-46ec-9f30-11b5f8119642/fashion_model.jpg",
+          "sha256": "108ce5ac1704f518391cef9667b07ebfdd111bbca89c310407edab4d39509208",
+          "qa_status": "visual_source_qa_passed_verified_sister_framing_reused",
+          "sample": 2908,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/2908-model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
