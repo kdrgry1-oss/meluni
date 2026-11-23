@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-698",
+  "created_at": "2026-11-23T23:42:25.267077+00:00",
+  "catalog_poll_at": "2026-11-23T23:42:25.267077+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "f538c8ed-4d27-488d-b286-3226f070998e",
+      "sample": 3044,
+      "name": "Uzun Kollu Balıkçı Yaka Mini Fırfırlı Sandy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/68db474c422b3ce0b066.jpeg",
+        "https://modayakamoz.com/orj/ec33a723c77f5ac008d3.jpeg",
+        "https://modayakamoz.com/orj/48f50b453aa13ed67dee.jpeg",
+        "https://modayakamoz.com/orj/e81346199f3a7161ae92.jpeg",
+        {
+          "id": "d0107f56-8797-4836-9e6c-475adaac3179",
+          "url": "https://cdn.meluni.com.tr/ai-products/0392bbfe-3416-4539-b68a-7e4be9325e07-olcu-oto-4457c8aa.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-03T05:22:57.761009+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "f538c8ed-4d27-488d-b286-3226f070998e/front.jpg",
+          "sha256": "ca5526463e96b90255f1dde37d1b9b85a089eba3731a5e44f23b909fc61c8202",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3044,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3044-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f538c8ed-4d27-488d-b286-3226f070998e/back.jpg",
+          "sha256": "d95baea8e007605f46170823217caeeee69841bfe644812dda8cc4979924ebf0",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3044,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3044-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f538c8ed-4d27-488d-b286-3226f070998e/fashion_model.jpg",
+          "sha256": "574a5c844caa181160f4d885ae103543c342c56aef39323375e864675545e03e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3044,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3044-model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "f538c8ed-4d27-488d-b286-3226f070998e/size_chart.jpg",
+          "sha256": "f1d954ebd21fd41aa5f34b3639993e5f150163855868291b2b4350491cb058e2",
+          "qa_status": "all_values_source_verified_visual_qa_passed",
+          "sample": 3044,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-3044-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
