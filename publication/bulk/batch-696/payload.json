@@ -13,7 +13,14 @@
       "expected_original_images": [
         "https://modayakamoz.com/orj/36414277f768b0a000ec.jpeg",
         "https://modayakamoz.com/orj/5eaefd3f8cb6a7484554.jpeg",
-        "https://modayakamoz.com/orj/b2a4a61cd5fa7434151f.jpeg"
+        "https://modayakamoz.com/orj/b2a4a61cd5fa7434151f.jpeg",
+        {
+          "id": "af4462b8-6ecb-42ca-ace7-a93d640dd1e4",
+          "url": "https://cdn.meluni.com.tr/ai-products/200529c1-a23f-4642-9861-89094dac09c4-olcu-oto-98fb5bbe.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-11T05:20:08.201948+00:00"
+        }
       ],
       "assets": {
         "front": {
