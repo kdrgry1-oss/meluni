@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-699",
+  "created_at": "2026-11-23T23:53:18.114515+00:00",
+  "catalog_poll_at": "2026-11-23T23:53:18.114515+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "a7bbacc6-43c9-481e-91c8-9d436e517b5e",
+      "sample": 3134,
+      "name": "Uzun Kollu Bisiklet Yaka Viskon Iki Iplik Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/a7bbacc6-43c9-481e-91c8-9d436e517b5e-hd0-6a56c616.jpg",
+        "https://cdn.meluni.com.tr/ai-products/a7bbacc6-43c9-481e-91c8-9d436e517b5e-hd1-45dad023.jpg",
+        "https://cdn.meluni.com.tr/ai-products/a7bbacc6-43c9-481e-91c8-9d436e517b5e-hd2-de122802.jpg",
+        {
+          "id": "36ba6cc2-48d0-416a-a879-50ba74c47fd2",
+          "url": "https://cdn.meluni.com.tr/ai-products/a7bbacc6-43c9-481e-91c8-9d436e517b5e-olcu-oto-0b5d9b85.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:36:55.041498+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "a7bbacc6-43c9-481e-91c8-9d436e517b5e/front.jpg",
+          "sha256": "59b6d70412f6bc043f279d547de9afdd4e66ca4a4b7c9a766e2eb9fabd5d39a7",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3134,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3134-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a7bbacc6-43c9-481e-91c8-9d436e517b5e/back.jpg",
+          "sha256": "72bcf736e3175b1370c0ed01bd35a442f82ba48caa71339d1c279bafe493e77f",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3134,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3134-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a7bbacc6-43c9-481e-91c8-9d436e517b5e/fashion_model.jpg",
+          "sha256": "9eba46b3c9f3fcf5531bf0e63b31bbe09fda92433e225fc3113863bebcf0a819",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3134,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3134-model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "a7bbacc6-43c9-481e-91c8-9d436e517b5e/size_chart.jpg",
+          "sha256": "9f40d46edd8f9a19fba5b9f611183d6cff7684276270d187c60ba215d49af365",
+          "qa_status": "all_30_values_source_verified_visual_qa_passed",
+          "sample": 3134,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-3134-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
