@@ -1,0 +1,48 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-700",
+  "created_at": "2026-11-23T23:58:02.562746+00:00",
+  "catalog_poll_at": "2026-11-23T23:58:02.562746+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "c58b42cc-233c-4c88-aabd-c9b8e30b050c",
+      "sample": 3137,
+      "name": "Uzun Kollu Bisiklet Yaka Viskon Iki Iplik Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 170,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a83902942f01d2b180c1.jpeg",
+        "https://modayakamoz.com/orj/e8a78a15f611688690a7.jpeg",
+        "https://modayakamoz.com/orj/eb238d79c0e66004bca5.jpeg",
+        "https://modayakamoz.com/orj/5ae52762fff57b1212b4.jpeg",
+        "https://modayakamoz.com/orj/a45931904c741ce4631b.jpeg",
+        "https://modayakamoz.com/orj/4c5a201f110bd52a9996.jpeg",
+        "https://modayakamoz.com/orj/699c98eb9a17af8bd1c0.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c58b42cc-233c-4c88-aabd-c9b8e30b050c/front.jpg",
+          "sha256": "2687dc46d9a588d297e5f71937bebb8f53f1076c2aac14904d289f2cdee18bb7",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3137,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3137-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "c58b42cc-233c-4c88-aabd-c9b8e30b050c/back.jpg",
+          "sha256": "0f3ed85bfd4ffa49e21cf3da9061faba1d438dafd78cacd687fcc3572f97da2a",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3137,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3137-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c58b42cc-233c-4c88-aabd-c9b8e30b050c/fashion_model.jpg",
+          "sha256": "2c7c0d91f23c99e444328c4119c2f312417481b81c4f6c00ee84a00582667513",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3137,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3137-model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
