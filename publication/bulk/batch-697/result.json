@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-697",
+  "published_at_utc": "2026-11-23T23:28:24.876676+00:00",
+  "products": [
+    {
+      "product_id": "958e620e-884e-4e06-86e5-8c4438e38016",
+      "sample": 2942,
+      "name": "Tek Omuzu Açık Askılı Asimetrik Detaylı Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/958e620e-884e-4e06-86e5-8c4438e38016-front-6b68ec6ab903.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/958e620e-884e-4e06-86e5-8c4438e38016-back-5a3afe719d32.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/958e620e-884e-4e06-86e5-8c4438e38016-model-ff91e7be1340.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
