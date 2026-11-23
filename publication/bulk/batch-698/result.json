@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-698",
+  "published_at_utc": "2026-11-23T23:43:36.427028+00:00",
+  "products": [
+    {
+      "product_id": "f538c8ed-4d27-488d-b286-3226f070998e",
+      "sample": 3044,
+      "name": "Uzun Kollu Balıkçı Yaka Mini Fırfırlı Sandy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f538c8ed-4d27-488d-b286-3226f070998e-front-ca5526463e96.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/f538c8ed-4d27-488d-b286-3226f070998e-back-d95baea8e007.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f538c8ed-4d27-488d-b286-3226f070998e-model-574a5c844caa.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f538c8ed-4d27-488d-b286-3226f070998e-size-chart-f1d954ebd21f.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
