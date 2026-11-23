@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-696",
+  "created_at": "2026-11-23T23:19:00.534536+00:00",
+  "catalog_poll_at": "2026-11-23T23:19:00.534536+00:00",
+  "products": [
+    {
+      "product_id": "200529c1-a23f-4642-9861-89094dac09c4",
+      "sample": 2960,
+      "name": "Truvakar Kollu Bağlamalı Kısa Şifon Bolero Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/36414277f768b0a000ec.jpeg",
+        "https://modayakamoz.com/orj/5eaefd3f8cb6a7484554.jpeg",
+        "https://modayakamoz.com/orj/b2a4a61cd5fa7434151f.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "200529c1-a23f-4642-9861-89094dac09c4/front.jpg",
+          "sha256": "1320578eb4a3f0bf1322d07eb99ffb3b72f7441875572cf1bc822782ff1efec6",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2960,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2960-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "200529c1-a23f-4642-9861-89094dac09c4/back.jpg",
+          "sha256": "f7ac5e10ba6c6e33d53c48b14c3f48931a94dae73f493d6f32e1475d20771ca4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2960,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2960-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "200529c1-a23f-4642-9861-89094dac09c4/fashion_model.jpg",
+          "sha256": "75d4ffbef8fe5d15cb40627e669e8a6e3102f89bd80fd751bf4ba20906a945c8",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2960,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/2960-model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "publish_authorized_by_user": true
+}
