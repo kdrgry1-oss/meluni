@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-697",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "958e620e-884e-4e06-86e5-8c4438e38016",
+      "sample": 2942,
+      "name": "Tek Omuzu Açık Askılı Asimetrik Detaylı Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 40,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0b7603afb8bdfcd3bf54.jpeg",
+        "https://modayakamoz.com/orj/ca323904ae6740f98a20.jpeg",
+        "https://modayakamoz.com/orj/31d53498a47436ec0e88.jpeg",
+        {
+          "id": "27afd378-983b-4008-8842-6fc4d9abbe4e",
+          "url": "https://cdn.meluni.com.tr/ai-products/958e620e-884e-4e06-86e5-8c4438e38016-olcu-oto-49cf3650.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-10T05:28:46.057066+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "958e620e-884e-4e06-86e5-8c4438e38016/front.jpg",
+          "sha256": "6b68ec6ab9030870af17d5c03444c2328cf1d7cd0f163c88de40a6f9eac403f3",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2942,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2942-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "958e620e-884e-4e06-86e5-8c4438e38016/back.jpg",
+          "sha256": "5a3afe719d32f823b1ca512b7a3e1b44e9eb183658859ccbdedbe2aeb70564f2",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2942,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2942-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "958e620e-884e-4e06-86e5-8c4438e38016/fashion_model.jpg",
+          "sha256": "ff91e7be1340b572e6c7c8cabe9d9e50f93d1a0ccdb1a8dc1e433497d039fbd1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2942,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2942-model-1200x1800.jpg"
+        }
+      }
+    }
+  ],
+  "created_at": "2026-11-23T23:27:05.106599+00:00",
+  "catalog_poll_at": "2026-11-23T23:27:05.106653+00:00"
+}
