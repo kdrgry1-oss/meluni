@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-696",
+  "published_at_utc": "2026-11-23T23:22:43.507171+00:00",
+  "products": [
+    {
+      "product_id": "200529c1-a23f-4642-9861-89094dac09c4",
+      "sample": 2960,
+      "name": "Truvakar Kollu Bağlamalı Kısa Şifon Bolero Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/200529c1-a23f-4642-9861-89094dac09c4-front-1320578eb4a3.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/200529c1-a23f-4642-9861-89094dac09c4-back-f7ac5e10ba6c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/200529c1-a23f-4642-9861-89094dac09c4-model-75d4ffbef8fe.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
