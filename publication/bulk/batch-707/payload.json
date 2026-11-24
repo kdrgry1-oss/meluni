@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-707",
+  "created_at": "2026-11-24T00:38:37.941396+00:00",
+  "catalog_poll_at": "2026-11-24T00:38:37.941396+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "ade42674-263e-4cea-b1d9-16db3a54cecb",
+      "sample": 3175,
+      "name": "Uzun Kollu Bisiklet Yakalı Şerit Detaylı Viskon Iki Iplik Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 39,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192447-1-7973e76b08.jpg",
+        "https://modayakamoz.com/orj/janes-192447-2-801b3d949a.jpg",
+        "https://modayakamoz.com/orj/janes-192447-3-bafd623cab.jpg",
+        "https://modayakamoz.com/orj/janes-192447-7-9c47674015.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "ade42674-263e-4cea-b1d9-16db3a54cecb/front.jpg",
+          "sha256": "be4604451dbb36624295345e9c24e3cdabad13dcbb1eaedc70923a764430c09a",
+          "qa_status": "visual_source_qa_passed_after_one_targeted_correction",
+          "sample": 3175,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3175-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ade42674-263e-4cea-b1d9-16db3a54cecb/back.jpg",
+          "sha256": "e159817576a1c858cf02b297a7678712d2d9941305424ad99a2f7d0fc3c01082",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3175,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3175-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ade42674-263e-4cea-b1d9-16db3a54cecb/fashion_model.jpg",
+          "sha256": "5bec6345788dcb689c0fba19731d1d9b1fb3c149d96004de9819eb020034efd1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3175,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3175-model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
