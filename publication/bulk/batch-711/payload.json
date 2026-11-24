@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-711",
+  "created_at": "2026-11-24T01:10:26.410221+00:00",
+  "catalog_poll_at": "2026-11-24T01:10:26.410221+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "6eaf3c1f-a713-43e8-ac61-82fe24c82779",
+      "sample": 3797,
+      "name": "Yarım Fermuarlı Triko Kazak",
+      "active_at_poll": true,
+      "stock_at_poll": 4905,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68e826ba3e8c868e826ba3e8ca.png",
+        "https://modayakamoz.com/orj/TY68e826bb73cef68e826bb73cf2.png",
+        "https://modayakamoz.com/orj/TY68e826bcaf5a568e826bcaf5a7.png",
+        "https://modayakamoz.com/orj/TY68e826be2a76368e826be2a765.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "6eaf3c1f-a713-43e8-ac61-82fe24c82779/front.jpg",
+          "sha256": "ba0f4a83f82e7caed2f895441776affd032cecdd100d3de2828ca59544e65ff5",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3797,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6eaf3c1f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "6eaf3c1f-a713-43e8-ac61-82fe24c82779/back.jpg",
+          "sha256": "02c7dff2111aeb01bc3402098b9490d3543bfd3880c81deda395139d985c5fd7",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3797,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6eaf3c1f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "6eaf3c1f-a713-43e8-ac61-82fe24c82779/fashion_model.jpg",
+          "sha256": "8db2d4aba3dba52f83b01d7969f734e6d2bf18496d892b8cc8958ac2a3df5399",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3797,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6eaf3c1f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
