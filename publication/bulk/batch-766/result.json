@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-766",
+  "published_at_utc": "2026-11-24T23:23:14.510296+00:00",
+  "products": [
+    {
+      "product_id": "7d82e339-0b0a-471b-9759-e88f7dc7d49e",
+      "sample": 2491,
+      "name": "Kısa Kollu Önden Çapraz Detaylı Bluz ve Desenli Iki Iplik Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7d82e339-0b0a-471b-9759-e88f7dc7d49e-front-f31df5ee6d23.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7d82e339-0b0a-471b-9759-e88f7dc7d49e-back-e3f8fdeff220.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7d82e339-0b0a-471b-9759-e88f7dc7d49e-model-2aa3731155b1.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/7d82e339-0b0a-471b-9759-e88f7dc7d49e-size-chart-054e82a6649d.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
