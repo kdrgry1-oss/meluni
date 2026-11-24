@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-726",
+  "published_at_utc": "2026-11-24T02:53:15.356489+00:00",
+  "products": [
+    {
+      "product_id": "b5edc4e8-050c-4ad1-8591-a37eaebf72bc",
+      "sample": 3790,
+      "name": "Yarım Boğaz Triko Yumuşak Dokulu Pamuklu Ince Dokuma Kazak",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b5edc4e8-050c-4ad1-8591-a37eaebf72bc-front-04fff830d48f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b5edc4e8-050c-4ad1-8591-a37eaebf72bc-back-4fa796c14751.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b5edc4e8-050c-4ad1-8591-a37eaebf72bc-model-5245c3d2eb97.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
