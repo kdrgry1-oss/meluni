@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-732",
+  "published_at_utc": "2026-11-24T03:38:31.229775+00:00",
+  "products": [
+    {
+      "product_id": "26aff359-a9e3-46b1-925c-ae6204778a4a",
+      "sample": 4100,
+      "name": "Şık Leopar Kalp Baskılı Tişört",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/26aff359-a9e3-46b1-925c-ae6204778a4a-front-e35c3fb1177f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/26aff359-a9e3-46b1-925c-ae6204778a4a-back-cb5bd3f31b71.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/26aff359-a9e3-46b1-925c-ae6204778a4a-model-d36983905313.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
