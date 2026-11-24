@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-759",
+  "created_at": "2026-11-24T22:38:34.052573+00:00",
+  "catalog_poll_at": "2026-11-24T22:38:34.052573+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "fda04931-37cd-4581-bb44-5090e6fefc92",
+      "sample": 2444,
+      "name": "Kısa Kollu Yuvarlak Yaka Yırtmaçlı Cepli Viskon Uzun Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 16,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/051c586a44c85abdc97c.jpeg",
+        "https://modayakamoz.com/orj/9abf12476afb5e2b8ebb.jpeg",
+        "https://modayakamoz.com/orj/d9dbad67d24a9ce0bc13.jpeg",
+        "https://modayakamoz.com/orj/9757933d5e5e6baf46c1.jpeg",
+        "https://modayakamoz.com/orj/1875ba5ea06061294967.jpeg",
+        {
+          "id": "4c2dcca3-0c9f-49af-a1b1-9e1aac41572d",
+          "url": "https://cdn.meluni.com.tr/ai-products/20eba4a4-95d6-4ca4-a18e-eb1aba5004d2-olcu-oto-dde68925.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-24T05:15:10.433120+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "fda04931-37cd-4581-bb44-5090e6fefc92/front.jpg",
+          "sha256": "4704e6f1ca93e984a615e3ad68a07f7c10fc4443261676d0a6de7f1c28384fe2",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2444,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2444-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "fda04931-37cd-4581-bb44-5090e6fefc92/back.jpg",
+          "sha256": "882a28e1982f0758764464854103076b50a16fc4477f3e7b9a1ded67f9f14cec",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2444,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2444-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "fda04931-37cd-4581-bb44-5090e6fefc92/fashion_model.jpg",
+          "sha256": "dcca22314ced517ed44e23de25cd3c1a5d94bdb69ea75f7af3379bd48d5e1740",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2444,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2444-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "fda04931-37cd-4581-bb44-5090e6fefc92/size_chart.jpg",
+          "sha256": "79fc0f998851fefa39609b5a9f991121f244daa4267a53056b8580380a1d9181",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2444,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2444-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
