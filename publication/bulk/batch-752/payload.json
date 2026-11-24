@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-752",
+  "created_at": "2026-11-24T09:57:20.340316+00:00",
+  "catalog_poll_at": "2026-11-24T09:57:20.340316+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "9f4cc68a-c97b-4fc1-a056-73e491f18d83",
+      "sample": 2170,
+      "name": "Kısa Kollu V Yakalı Düğmeli Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 119,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c2062d54e33467542caa2758c31fc34c.jpeg",
+        "https://modayakamoz.com/orj/9663f51db6565cf91355085737e8e6b4.jpeg",
+        "https://modayakamoz.com/orj/8c243f44c6a71f8c1a707103df7b5697.jpeg",
+        "https://modayakamoz.com/orj/78a19bf0dee8d588204507406fb91112.jpeg",
+        "https://modayakamoz.com/orj/f002710cc8896866f508adecb3688584.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "9f4cc68a-c97b-4fc1-a056-73e491f18d83/front.jpg",
+          "sha256": "4a4543703e6e016051beb12de0e1a12df0489de9cc017d74f4e82682e18173c7",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2170,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2170-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "9f4cc68a-c97b-4fc1-a056-73e491f18d83/back.jpg",
+          "sha256": "0c766c4cbd95e687f70cde768adc8c2ffe98c489de66aa5bf80a73934a8d2aaf",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2170,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2170-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9f4cc68a-c97b-4fc1-a056-73e491f18d83/fashion_model.jpg",
+          "sha256": "533d514c53b0b7474fc4c9788f606234b0c8a35418d9e199f6c8f187929fb1a1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2170,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2170-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
