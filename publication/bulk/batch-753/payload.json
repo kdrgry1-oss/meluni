@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-753",
+  "created_at": "2026-11-24T10:59:18.456702+00:00",
+  "catalog_poll_at": "2026-11-24T10:59:18.456702+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "95c85c63-dd94-4ed0-bd80-023502bacbb7",
+      "sample": 1863,
+      "name": "Kısa Kollu Kalp V Yakalı Pileli Janjan Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 10,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7f84b5b652cd261e4bed.jpeg",
+        "https://modayakamoz.com/orj/5e204748e407093ef957.jpeg",
+        "https://modayakamoz.com/orj/439899a90b6c3255e0e9.jpeg",
+        "https://modayakamoz.com/orj/9e963016914b70b9a6b5469f1da17fa3.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "95c85c63-dd94-4ed0-bd80-023502bacbb7/front.jpg",
+          "sha256": "c486f0b987473e630179696b1b9acd5d5648845851a5e50ba5084638399b0752",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1863-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "95c85c63-dd94-4ed0-bd80-023502bacbb7/back.jpg",
+          "sha256": "23836bf0d44ae4353cdfae71e9e31459e3eadfc634d2b173eb180a499e661f79",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1863-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "95c85c63-dd94-4ed0-bd80-023502bacbb7/fashion_model.jpg",
+          "sha256": "311833762e206ce8e1e2fc30d1891ce56b85ed933bc9d69c2bbd06498d21a35b",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1863-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "95c85c63-dd94-4ed0-bd80-023502bacbb7/size_chart.jpg",
+          "sha256": "51730455436338ae234e1de656329266cbee9de2899533c8af51fbce3797cfc6",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1863-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
