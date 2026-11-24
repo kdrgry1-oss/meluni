@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-762",
+  "published_at_utc": "2026-11-24T23:00:51.322439+00:00",
+  "products": [
+    {
+      "product_id": "7ca73967-9188-4157-aaa4-98ed803bc6d5",
+      "sample": 2445,
+      "name": "Kısa Kollu Yuvarlak Yaka Çift Renkli Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7ca73967-9188-4157-aaa4-98ed803bc6d5-front-95329c96eb16.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7ca73967-9188-4157-aaa4-98ed803bc6d5-back-7169a060ecd1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7ca73967-9188-4157-aaa4-98ed803bc6d5-model-a6c932754a31.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/7ca73967-9188-4157-aaa4-98ed803bc6d5-size-chart-1ec5b3714d64.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
