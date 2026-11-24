@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-710",
+  "created_at": "2026-11-24T01:05:21.559714+00:00",
+  "catalog_poll_at": "2026-11-24T01:05:21.559714+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "bbc20edd-0e6a-46fa-81db-d237047cfa08",
+      "sample": 3669,
+      "name": "Uzun Kollu Yakalı Tek Düğme Detaylı Astarlı Krep Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/bbc20edd-0e6a-46fa-81db-d237047cfa08/bbc20edd-0e6a-46fa-81db-d237047cfa08-hd0-ff08f9b0.jpg",
+        "https://cdn.meluni.com.tr/products/bbc20edd-0e6a-46fa-81db-d237047cfa08/bbc20edd-0e6a-46fa-81db-d237047cfa08-hd1-1b1f6d66.jpg",
+        "https://cdn.meluni.com.tr/products/bbc20edd-0e6a-46fa-81db-d237047cfa08/bbc20edd-0e6a-46fa-81db-d237047cfa08-hd2-c82435ed.jpg",
+        "https://cdn.meluni.com.tr/products/bbc20edd-0e6a-46fa-81db-d237047cfa08/bbc20edd-0e6a-46fa-81db-d237047cfa08-hd3-d4d1c150.jpg",
+        "https://cdn.meluni.com.tr/products/bbc20edd-0e6a-46fa-81db-d237047cfa08/bbc20edd-0e6a-46fa-81db-d237047cfa08-hd4-f6b881e3.jpg",
+        {
+          "id": "472ac5ba-3c8a-4216-b5a8-7476b4f92da2",
+          "url": "https://cdn.meluni.com.tr/ai-products/bbc20edd-0e6a-46fa-81db-d237047cfa08-olcu-oto-90d36141.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:30:42.641660+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/bbc20edd-0e6a-46fa-81db-d237047cfa08/2699ac52dfc25b60.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "bbc20edd-0e6a-46fa-81db-d237047cfa08/front.jpg",
+          "sha256": "6fce7ed815f197aaee0779df654d7e0d8a881b4ca0cf76f0fbcbad1fbabb9390",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3669,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bbc20edd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "bbc20edd-0e6a-46fa-81db-d237047cfa08/back.jpg",
+          "sha256": "cf8d1442fb2b048b2cd40766984e5643343a6be5d26d252e9c7d002148f128a5",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3669,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bbc20edd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bbc20edd-0e6a-46fa-81db-d237047cfa08/fashion_model.jpg",
+          "sha256": "fb25335531bd7c265e78c08f61e64206530d1ee276e3fd4709e7f65abfe54ffd",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3669,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bbc20edd/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "bbc20edd-0e6a-46fa-81db-d237047cfa08/size_chart.jpg",
+          "sha256": "f404b14114278b3464ce12cc9f9ba4fda4d5ad77e91da4cf2d2cf282e36ded0a",
+          "qa_status": "source_values_and_visual_qa_passed",
+          "sample": 3669,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bbc20edd/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
