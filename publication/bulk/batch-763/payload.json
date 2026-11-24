@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-763",
+  "created_at": "2026-11-24T23:04:25.697158+00:00",
+  "catalog_poll_at": "2026-11-24T23:04:25.697158+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "a8e45ea3-c7d1-4a19-8371-cab505b02178",
+      "sample": 2524,
+      "name": "Madonna Yaka Drapeli Büzgü Detaylı Balık Uzun Abiye Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 3000,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a59184937c926a59184937c94.webp",
+        "https://modayakamoz.com/orj/TY6a59184a675606a59184a67562.webp",
+        "https://modayakamoz.com/orj/TY6a59184be2bb26a59184be2bb4.webp",
+        "https://modayakamoz.com/orj/TY6a59184d454c86a59184d454cb.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "a8e45ea3-c7d1-4a19-8371-cab505b02178/front.jpg",
+          "sha256": "b07b6e6ace538e05dcad10e65fa1cf82311ab3f2a9145f3396977c0ce933dc9e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2524,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2524-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a8e45ea3-c7d1-4a19-8371-cab505b02178/back.jpg",
+          "sha256": "5fb27cd5a61e4a49659dff93346f3a66285f4587d345e5611e699b4450dbe3ea",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2524,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2524-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a8e45ea3-c7d1-4a19-8371-cab505b02178/fashion_model.jpg",
+          "sha256": "e854393485409a7db7b983a9c5b71310d77dbcbb0d2414a0d8f74fc34be218f4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2524,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2524-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
