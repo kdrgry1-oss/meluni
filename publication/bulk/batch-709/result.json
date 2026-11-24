@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-709",
+  "published_at_utc": "2026-11-24T01:01:00.764400+00:00",
+  "products": [
+    {
+      "product_id": "637d1dc8-0139-435e-8861-237f2d802fb3",
+      "sample": 3552,
+      "name": "Uzun Kollu V Yakalı Pulpayet Detaylı Mini Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/637d1dc8-0139-435e-8861-237f2d802fb3-front-4511ef063f56.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/637d1dc8-0139-435e-8861-237f2d802fb3-back-dc118026e25a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/637d1dc8-0139-435e-8861-237f2d802fb3-model-ff2d9863aad1.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
