@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-749",
+  "created_at": "2026-11-24T08:46:08.103357+00:00",
+  "catalog_poll_at": "2026-11-24T08:46:08.103357+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "4f000d6e-108f-492f-8bf8-ce1d9800c873",
+      "sample": 1492,
+      "name": "Kolsuz Yakalı Taşlı Önü Açık Atlas Yelek",
+      "active_at_poll": true,
+      "stock_at_poll": 20,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/feef0c72ab5b18ccc87a.jpeg",
+        "https://modayakamoz.com/orj/1361544c1774e0637b2c.jpeg",
+        "https://modayakamoz.com/orj/e5f85be07b36f9fad645.jpeg",
+        "https://modayakamoz.com/orj/9574a56c56c0611beb08.jpeg",
+        {
+          "id": "475c7c3e-f8fd-4d9a-be71-467ee9b24f19",
+          "url": "https://cdn.meluni.com.tr/ai-products/5d12d7de-f0af-45e8-a762-6011fd13f4c7-olcu-oto-72ab9122.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-29T05:25:29.363006+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4f000d6e-108f-492f-8bf8-ce1d9800c873/front.jpg",
+          "sha256": "33c38c0896e8e69e1feec435e373f269aeab0ce12109cb90cd02ac58cd7727be",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1492,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1492-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4f000d6e-108f-492f-8bf8-ce1d9800c873/back.jpg",
+          "sha256": "1cfe40901e2ec2b60825985f9956790f341e491e54dcc66d241d41e56cf6774d",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1492,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1492-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4f000d6e-108f-492f-8bf8-ce1d9800c873/fashion_model.jpg",
+          "sha256": "854b1479eef1c11bf7eeb3206c31a8739cb65d6d0ab9473f1ba995d66f64d4cb",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1492,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1492-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "4f000d6e-108f-492f-8bf8-ce1d9800c873/size_chart.jpg",
+          "sha256": "0bd8f188e6a57c1b5d42c5a31454d4afe9dfd1e775a962e4171fd70f18217a97",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1492,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1492-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
