@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-739",
+  "created_at": "2026-11-24T05:44:40.529380+00:00",
+  "catalog_poll_at": "2026-11-24T05:44:40.529380+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8d7e732b-54a6-4245-905a-e0b73a9d979f",
+      "sample": 1243,
+      "name": "Ip Askılı Yaka Dantel Detaylı Kısa Viskon Gecelik",
+      "active_at_poll": true,
+      "stock_at_poll": 51,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0317febfbede1653893f.jpeg",
+        "https://modayakamoz.com/orj/3df76eb15ad9412fb59a.jpeg",
+        "https://modayakamoz.com/orj/49e18f3b9eb0554023a0.jpeg",
+        {
+          "id": "f450a8ac-f5ad-440e-9042-b43bfed3edb6",
+          "url": "https://cdn.meluni.com.tr/ai-products/8d7e732b-54a6-4245-905a-e0b73a9d979f-olcu-oto-b9c7d831.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-08T05:21:42.765835+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8d7e732b-54a6-4245-905a-e0b73a9d979f/front.jpg",
+          "sha256": "a32aa12385384fdf87e30b91d1526e57f584252ae230b0b5d55a1b49f33ff592",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1243,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1243-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8d7e732b-54a6-4245-905a-e0b73a9d979f/back.jpg",
+          "sha256": "0fe15c1a4721313e3d4c6b066675c58bdb5766d3fa85bd1d27828cb2ba3e06eb",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1243,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1243-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8d7e732b-54a6-4245-905a-e0b73a9d979f/fashion_model.jpg",
+          "sha256": "0adc049d6686191e4b5ce1d89b6945843ac34b7ce003c6f7372bf3985f879f9b",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1243,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1243-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
