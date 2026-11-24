@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-763",
+  "published_at_utc": "2026-11-24T23:06:01.144792+00:00",
+  "products": [
+    {
+      "product_id": "a8e45ea3-c7d1-4a19-8371-cab505b02178",
+      "sample": 2524,
+      "name": "Madonna Yaka Drapeli Büzgü Detaylı Balık Uzun Abiye Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a8e45ea3-c7d1-4a19-8371-cab505b02178-front-b07b6e6ace53.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a8e45ea3-c7d1-4a19-8371-cab505b02178-back-5fb27cd5a61e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a8e45ea3-c7d1-4a19-8371-cab505b02178-model-e85439348540.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
