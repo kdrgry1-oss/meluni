@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-738",
+  "created_at": "2026-11-24T05:29:06.610752+00:00",
+  "catalog_poll_at": "2026-11-24T05:29:06.610752+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "0cac1fc5-00a0-4060-8af3-329790cbef31",
+      "sample": 1139,
+      "name": "Ip Askılı Kruvaze Yakalı Yırtmaçlı Midi Aerobin Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e7d55da03c3b1a107555.jpeg",
+        "https://modayakamoz.com/orj/e94dfe52d3cac78e0ea1.jpeg",
+        "https://modayakamoz.com/orj/7357e5bcd39afdb3e1cf.jpeg",
+        "https://modayakamoz.com/orj/389bac19fa5077cbe979.jpeg",
+        {
+          "id": "8fdd66ac-ef53-4b0a-83fe-55a5ae25c48d",
+          "url": "https://cdn.meluni.com.tr/ai-products/0cac1fc5-00a0-4060-8af3-329790cbef31-olcu-oto-79fbbc13.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-26T05:24:11.705782+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "0cac1fc5-00a0-4060-8af3-329790cbef31/front.jpg",
+          "sha256": "4ae6e90e2ad31ef5e023ed799b11cb15b8c936d1d993f6fcc8f17607e8c50733",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1139,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1139-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0cac1fc5-00a0-4060-8af3-329790cbef31/back.jpg",
+          "sha256": "5d7581185f6d43cc32659cb629fcd9ac6e737a99a06b021b48bdbc9fc882fbbe",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1139,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1139-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0cac1fc5-00a0-4060-8af3-329790cbef31/fashion_model.jpg",
+          "sha256": "856b7bf910bf1dd55fcdaf2304ff5e026f911f03f0636bcf959cb24d5675cfe4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1139,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1139-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
