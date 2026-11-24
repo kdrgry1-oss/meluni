@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-706",
+  "created_at": "2026-11-24T00:32:55.986300+00:00",
+  "catalog_poll_at": "2026-11-24T00:32:55.986300+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "096a41eb-8729-4450-bb42-da461f3162e3",
+      "sample": 3174,
+      "name": "Uzun Kollu Bisiklet Yakalı Şerit Detaylı Viskon Iki Iplik Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 39,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192787-1-f29d64fc8e.jpg",
+        "https://modayakamoz.com/orj/janes-192787-2-9736fa7d7e.jpg",
+        "https://modayakamoz.com/orj/janes-192787-3-f2dce31a7c.jpg",
+        "https://modayakamoz.com/orj/janes-192787-4-b958995c82.jpg",
+        "https://modayakamoz.com/orj/janes-192787-6-8c91e65641.jpg",
+        "https://modayakamoz.com/orj/janes-192787-9-4d17caacc1.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "096a41eb-8729-4450-bb42-da461f3162e3/front.jpg",
+          "sha256": "b233bc77bbbcfbe58a24d9b2fa8921144c6e304230be3fb8ca97d3419426e8e0",
+          "qa_status": "visual_source_qa_passed_after_one_targeted_correction",
+          "sample": 3174,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3174-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "096a41eb-8729-4450-bb42-da461f3162e3/back.jpg",
+          "sha256": "4f97855e6d97ed1affc40d4d46faad2865d0e28bb0b7c13d8971527679b88951",
+          "qa_status": "visual_source_qa_passed_after_one_targeted_correction",
+          "sample": 3174,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3174-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "096a41eb-8729-4450-bb42-da461f3162e3/fashion_model.jpg",
+          "sha256": "342599f83c928c649d20e4687af81b91b9af48fb06fbb8fbb0d5167480813b8d",
+          "qa_status": "visual_source_qa_passed_after_one_targeted_correction",
+          "sample": 3174,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3174-model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
