@@ -1,0 +1,66 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-758",
+  "created_at": "2026-11-24T22:33:34.225537+00:00",
+  "catalog_poll_at": "2026-11-24T22:33:34.225537+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8cdbf6cd-f2e9-4994-b757-380da8118658",
+      "sample": 3259,
+      "name": "Uzun Kollu Fermuarlı Maxi Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 219,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/87189ed0937c43450a53.jpeg",
+        "https://modayakamoz.com/orj/59b971db628fc3b7f9ef.jpeg",
+        "https://modayakamoz.com/orj/a0591b553fa16eda8235.jpeg",
+        "https://modayakamoz.com/orj/ac69dc64b19c33e3ed3f.jpeg",
+        "https://modayakamoz.com/orj/1312a5626bccd8e5e68f.jpeg",
+        "https://modayakamoz.com/orj/c1a035435a00b6a070ab.jpeg",
+        "https://modayakamoz.com/orj/79be7c095aafb0f35726.jpeg",
+        "https://modayakamoz.com/orj/e43f0044d34170af0b6409d72f6b9e37.heic",
+        "https://modayakamoz.com/orj/b913d5de4b55005d875b41491edbc892.heic",
+        "https://modayakamoz.com/orj/da40649e15a6e4d62f8fa487b66d470d.heic",
+        "https://modayakamoz.com/orj/4254d3121981460942596f40ee2065d3.heic",
+        {
+          "id": "956ea46c-9043-47a8-b6ca-96d60426eded",
+          "url": "https://cdn.meluni.com.tr/ai-products/9b4a2efd-0d43-483d-830f-579318953eff-olcu-oto-d8f398bc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:17:59.017826+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8cdbf6cd-f2e9-4994-b757-380da8118658/front.jpg",
+          "sha256": "838b82e2709236c7cafffa7651d8375ec16594f3db6bc53fc69efddfaa47bb36",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3259,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3259-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8cdbf6cd-f2e9-4994-b757-380da8118658/back.jpg",
+          "sha256": "7ead351df310e3c28d0e13640d014a8f2b673f8d553bcef990e620f8fa9c3b38",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3259,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3259-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8cdbf6cd-f2e9-4994-b757-380da8118658/fashion_model.jpg",
+          "sha256": "952fc14753cf7c83f2d0384c17d2be8152a842d3bf241d4b12ed7c53e6595005",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3259,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3259-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "8cdbf6cd-f2e9-4994-b757-380da8118658/size_chart.jpg",
+          "sha256": "90d745b16edc22bb325220907eb6b1330f0f69cb353aa7dd9c10f0084dafad89",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3259,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3259-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
