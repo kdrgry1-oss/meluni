@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-712",
+  "created_at": "2026-11-24T01:17:50.876595+00:00",
+  "catalog_poll_at": "2026-11-24T01:17:50.876595+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "3dc95ca3-8bee-4720-88b7-f67dbe12b255",
+      "sample": 3362,
+      "name": "Uzun Kollu Kruvaze Yakalı Bağlamalı Dalgıç Janjan Krep Kiloş Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 10,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193220-1-e4f18f9f6c2f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193220-87c0f90696bc463d.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193220-c30ddf664cdd8693.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193220-00798848d0d57b10.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "3dc95ca3-8bee-4720-88b7-f67dbe12b255/front.jpg",
+          "sha256": "9b2a93854bdfd1f2389aa799421fee998a9c204111a78455f158ef8cb65fb348",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3362,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3dc95ca3/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "3dc95ca3-8bee-4720-88b7-f67dbe12b255/back.jpg",
+          "sha256": "76226e2754fdae821805937a23507196f8d18a5109aff835e29b7ed4244244f8",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3362,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3dc95ca3/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3dc95ca3-8bee-4720-88b7-f67dbe12b255/fashion_model.jpg",
+          "sha256": "ff4efe5da0cc9d7dc2b576e2ce1d788c15a4e403e636757f8fc73084376ae687",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3362,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3dc95ca3/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "3dc95ca3-8bee-4720-88b7-f67dbe12b255/size_chart.jpg",
+          "sha256": "15b2d950e41742b719e5fdc1d2e236dba3c6cb52dcf24ed595013fa6eb627631",
+          "qa_status": "source_values_and_visual_qa_passed",
+          "sample": 3362,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3dc95ca3/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
