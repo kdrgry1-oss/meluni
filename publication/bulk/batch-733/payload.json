@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-733",
+  "created_at": "2026-11-24T03:44:31.459500+00:00",
+  "catalog_poll_at": "2026-11-24T03:44:31.459500+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "eeb149fa-1bc5-4556-9fe4-de6d75f7d875",
+      "sample": 409,
+      "name": "Askılı Yuvarlak Yaka Fermuarlı Tül Detaylı Kısa Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/95a0609c5926daa9b0ff.jpeg",
+        "https://modayakamoz.com/orj/ce7dee83f7ce345c72db.jpeg",
+        "https://modayakamoz.com/orj/dfee4183719babb5e2a6.jpeg",
+        "https://modayakamoz.com/orj/8842e12ee3e88f5b9067.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "eeb149fa-1bc5-4556-9fe4-de6d75f7d875/front.jpg",
+          "sha256": "dc6c9a3e5b4f8fd3477840081c7feb90cd377b434b32328bef7c88439ee008b6",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 409,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-409-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "eeb149fa-1bc5-4556-9fe4-de6d75f7d875/back.jpg",
+          "sha256": "c69b653d2b6344af5441fc600d1cacd2327f2b90bb9fc0a9494bcca9bbab6d6a",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 409,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-409-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "eeb149fa-1bc5-4556-9fe4-de6d75f7d875/fashion_model.jpg",
+          "sha256": "d224186145d0127b0f96387722ff65a68227a6f1489f0bc0b2a29dd454d30b39",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 409,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-409-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "eeb149fa-1bc5-4556-9fe4-de6d75f7d875/size_chart.jpg",
+          "sha256": "8046bced5f8611ee5519387f0f8eac86d15574176882b0d418966b179a526482",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 409,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-409-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
