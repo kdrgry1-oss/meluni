@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-727",
+  "published_at_utc": "2026-11-24T03:00:04.819734+00:00",
+  "products": [
+    {
+      "product_id": "23924f57-6cc7-4942-a24e-5a64900a5fd9",
+      "sample": 3989,
+      "name": "ZIP Fermuarlı Kanguru Çepli Hoodie Maske Detaylı Swetshirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/23924f57-6cc7-4942-a24e-5a64900a5fd9-front-b4f3902184dc.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/23924f57-6cc7-4942-a24e-5a64900a5fd9-back-24f24728e74a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/23924f57-6cc7-4942-a24e-5a64900a5fd9-model-665bb07b4d8b.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
