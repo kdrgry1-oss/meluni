@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-755",
+  "created_at": "2026-11-24T12:03:13.756546+00:00",
+  "catalog_poll_at": "2026-11-24T12:03:13.756546+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "de4d5b8f-fe06-44e3-9872-74c8271ff21c",
+      "sample": 2426,
+      "name": "Kısa Kollu Yanı Yırtmaçlı Bisiklet Yaka Dizde Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d363a5f2fc2650528881.jpeg",
+        "https://modayakamoz.com/orj/a9e95cf879586f922d74.jpeg",
+        "https://modayakamoz.com/orj/b73888ba026dc2066b7e.jpeg",
+        "https://modayakamoz.com/orj/325e699748cc3ce07259.jpeg",
+        "https://modayakamoz.com/orj/0521e9d4141e4078c9a0.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "de4d5b8f-fe06-44e3-9872-74c8271ff21c/front.jpg",
+          "sha256": "f470cd950ab97b39fd2068d4a3d983f0195b82ec94204e91886aa56556c8ad14",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2426,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2426-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "de4d5b8f-fe06-44e3-9872-74c8271ff21c/back.jpg",
+          "sha256": "491bfca4e73afb5bde28ce6409ddbb452fe56b6e2fefec42be483ec4c08e145d",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2426,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2426-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "de4d5b8f-fe06-44e3-9872-74c8271ff21c/fashion_model.jpg",
+          "sha256": "27471fd24db0bc00a0c71cc599cf8be85c0c2c4c2b2b33685634b5ec33111678",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2426,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2426-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
