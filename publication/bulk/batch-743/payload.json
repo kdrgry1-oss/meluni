@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-743",
+  "created_at": "2026-11-24T06:43:04.619146+00:00",
+  "catalog_poll_at": "2026-11-24T06:43:04.619146+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "4c6aff56-2e67-49ed-963e-9d2b4060aaa4",
+      "sample": 1463,
+      "name": "Kolsuz V Yakalı Blok Renkli Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/777d9266942436760034.jpeg",
+        "https://modayakamoz.com/orj/5dca821f0af890fbb71e.jpeg",
+        "https://modayakamoz.com/orj/1ab0db1d85507e652749.jpeg",
+        "https://modayakamoz.com/orj/0265013d587565bacd2c.jpeg",
+        "https://modayakamoz.com/orj/7c1ae92fd891110a5748.jpeg",
+        {
+          "id": "dd14a096-82c3-4c70-8207-ff3fd1a38e12",
+          "url": "https://cdn.meluni.com.tr/ai-products/4c6aff56-2e67-49ed-963e-9d2b4060aaa4-olcu-oto-ba86cdb7.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:25:20.646134+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4c6aff56-2e67-49ed-963e-9d2b4060aaa4/front.jpg",
+          "sha256": "9fbb9f6d67a1bd2f7131b88b7402dc86775201f18a3981fd469e84063e112781",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1463,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1463-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4c6aff56-2e67-49ed-963e-9d2b4060aaa4/back.jpg",
+          "sha256": "2fafb7c7ef67499f9c30279e10fa66260699c557b4f3bedb7cc067ad130e26e4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1463,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1463-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4c6aff56-2e67-49ed-963e-9d2b4060aaa4/fashion_model.jpg",
+          "sha256": "206d9beb6304a6dde63324e1e35a155bec62891b5aa5302ba39dea0bed043289",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1463,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1463-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "4c6aff56-2e67-49ed-963e-9d2b4060aaa4/size_chart.jpg",
+          "sha256": "021fd6bc0e2cc9b05fe3f9fa4b74a300ea24a5ab1c328346ef2e9b92bb539be1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1463,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1463-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
