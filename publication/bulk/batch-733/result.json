@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-733",
+  "published_at_utc": "2026-11-24T03:45:52.479698+00:00",
+  "products": [
+    {
+      "product_id": "eeb149fa-1bc5-4556-9fe4-de6d75f7d875",
+      "sample": 409,
+      "name": "Askılı Yuvarlak Yaka Fermuarlı Tül Detaylı Kısa Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/eeb149fa-1bc5-4556-9fe4-de6d75f7d875-front-dc6c9a3e5b4f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/eeb149fa-1bc5-4556-9fe4-de6d75f7d875-back-c69b653d2b63.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/eeb149fa-1bc5-4556-9fe4-de6d75f7d875-model-d224186145d0.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/eeb149fa-1bc5-4556-9fe4-de6d75f7d875-size-chart-8046bced5f86.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
