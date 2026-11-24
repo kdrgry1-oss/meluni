@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-745",
+  "published_at_utc": "2026-11-24T07:23:26.448844+00:00",
+  "products": [
+    {
+      "product_id": "24d6e60b-dadc-483c-8147-03fc2e86176f",
+      "sample": 1367,
+      "name": "Kolları Suni Deri Astarlı Oduncu Kolej Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/24d6e60b-dadc-483c-8147-03fc2e86176f-front-c7bb7353136d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/24d6e60b-dadc-483c-8147-03fc2e86176f-back-9df446f4d170.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/24d6e60b-dadc-483c-8147-03fc2e86176f-model-a2cdf026c132.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
