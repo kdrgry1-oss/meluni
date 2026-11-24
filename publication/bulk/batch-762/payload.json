@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-762",
+  "created_at": "2026-11-24T22:59:28.369241+00:00",
+  "catalog_poll_at": "2026-11-24T22:59:28.369241+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7ca73967-9188-4157-aaa4-98ed803bc6d5",
+      "sample": 2445,
+      "name": "Kısa Kollu Yuvarlak Yaka Çift Renkli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1dc64d8bdf1532252468.jpeg",
+        "https://modayakamoz.com/orj/7a46cf0a33828d539dfe.jpeg",
+        "https://modayakamoz.com/orj/77a40b34ebd05a247afd.jpeg",
+        "https://modayakamoz.com/orj/45f7b5889110bff3d365.jpeg",
+        "https://modayakamoz.com/orj/7b2446fea601e9a751f2.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7ca73967-9188-4157-aaa4-98ed803bc6d5/front.jpg",
+          "sha256": "95329c96eb164999ca840c847d605109ff4094c862cf0bc1163bb2fdc3e1ab18",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2445,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2445-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7ca73967-9188-4157-aaa4-98ed803bc6d5/back.jpg",
+          "sha256": "7169a060ecd1678b9e6fea3b3aeb2177f82e34c0604d9fe0e229c946eee805af",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2445,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2445-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7ca73967-9188-4157-aaa4-98ed803bc6d5/fashion_model.jpg",
+          "sha256": "a6c932754a31fdebb9793e59dc0d74c7eb8eb23a0482bd95c3e9ca3e14bd6a13",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2445,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2445-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7ca73967-9188-4157-aaa4-98ed803bc6d5/size_chart.jpg",
+          "sha256": "1ec5b3714d64e1098bf3f950de4c571e3814b07c345e2231c11e5543d85a5e4b",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2445,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2445-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
