@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-742",
+  "created_at": "2026-11-24T06:32:45.666095+00:00",
+  "catalog_poll_at": "2026-11-24T06:32:45.666095+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "baed57f0-c807-4f24-aa3d-fb63ed3a8db0",
+      "sample": 1221,
+      "name": "Ip Askılı V Yakalı Pulpayet Detaylı Sandy Gümüş Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5954b497bf665223f73c.jpeg",
+        "https://modayakamoz.com/orj/3999c4c2c53170fca0a7.jpeg",
+        "https://modayakamoz.com/orj/38ab3c5ba5c50ef129b5.jpeg",
+        "https://modayakamoz.com/orj/c41b3ae16c090bd8fe70.jpeg",
+        {
+          "id": "bc61f817-0ba1-4dfa-af2f-ebc39ce36466",
+          "url": "https://cdn.meluni.com.tr/ai-products/baed57f0-c807-4f24-aa3d-fb63ed3a8db0-olcu-oto-581c14a4.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-21T05:26:57.402492+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "baed57f0-c807-4f24-aa3d-fb63ed3a8db0/front.jpg",
+          "sha256": "378cb589a68fa26fd46d4d01f9e17cc4a92eecc5ab41e0576a9ef58d51cb93c4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1221,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1221-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "baed57f0-c807-4f24-aa3d-fb63ed3a8db0/back.jpg",
+          "sha256": "c2de073eb3d4cb3bbd5860a8ba3b3b9bb4bcc896ceb9e712878641bb383c0799",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1221,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1221-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "baed57f0-c807-4f24-aa3d-fb63ed3a8db0/fashion_model.jpg",
+          "sha256": "e1a8a392f0bd718f58ddbf1b5385bdd3d74fda51d17c94f7a55d30cddedb3dcc",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1221,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1221-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "baed57f0-c807-4f24-aa3d-fb63ed3a8db0/size_chart.jpg",
+          "sha256": "167104b6185b2010c161aeb8d5e5686fd4d6c42ee3acbb565bc0947abeba65c8",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1221,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1221-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
