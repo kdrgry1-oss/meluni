@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-708",
+  "published_at_utc": "2026-11-24T00:48:43.658735+00:00",
+  "products": [
+    {
+      "product_id": "453dccd5-07bc-4936-a412-fa253fb2263c",
+      "sample": 3176,
+      "name": "Uzun Kollu Bluz ve Yüksek Bel Etek Şardonlu Kaşkorse Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/453dccd5-07bc-4936-a412-fa253fb2263c-front-aca50594272c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/453dccd5-07bc-4936-a412-fa253fb2263c-back-d6cebda04308.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/453dccd5-07bc-4936-a412-fa253fb2263c-model-96d10427f755.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/453dccd5-07bc-4936-a412-fa253fb2263c-size-chart-50062e61d542.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
