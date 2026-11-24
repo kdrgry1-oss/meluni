@@ -1,0 +1,40 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-750",
+  "created_at": "2026-11-24T08:55:50.796993+00:00",
+  "catalog_poll_at": "2026-11-24T08:55:50.796993+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "5d12d7de-f0af-45e8-a762-6011fd13f4c7",
+      "sample": 1491,
+      "name": "Kolsuz Yakalı Taşlı Önü Açık Atlas Yelek",
+      "active_at_poll": true,
+      "stock_at_poll": 19,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/5d12d7de-f0af-45e8-a762-6011fd13f4c7-front-70526703e264.jpg",
+        "https://cdn.meluni.com.tr/ai-products/5d12d7de-f0af-45e8-a762-6011fd13f4c7-back-113885e8fe21.jpg",
+        "https://cdn.meluni.com.tr/ai-products/5d12d7de-f0af-45e8-a762-6011fd13f4c7-model-a9e795de4784.jpg",
+        "https://modayakamoz.com/orj/e84d741bf23c5c61a046.jpeg",
+        "https://modayakamoz.com/orj/942208958ec6b89a8e8c.jpeg",
+        "https://modayakamoz.com/orj/5c79080bfef10bf47f41.jpeg",
+        {
+          "id": "959f936d-a08b-422e-8d22-c4360e64c94d",
+          "url": "https://cdn.meluni.com.tr/ai-products/5d12d7de-f0af-45e8-a762-6011fd13f4c7-olcu-oto-72ab9122.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-29T05:25:29.213964+00:00"
+        }
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "5d12d7de-f0af-45e8-a762-6011fd13f4c7/size_chart.jpg",
+          "sha256": "0bd8f188e6a57c1b5d42c5a31454d4afe9dfd1e775a962e4171fd70f18217a97",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1491,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1492-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
