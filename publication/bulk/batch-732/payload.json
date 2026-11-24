@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-732",
+  "created_at": "2026-11-24T03:37:23.702567+00:00",
+  "catalog_poll_at": "2026-11-24T03:37:23.702567+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "26aff359-a9e3-46b1-925c-ae6204778a4a",
+      "sample": 4100,
+      "name": "Şık Leopar Kalp Baskılı Tişört",
+      "active_at_poll": true,
+      "stock_at_poll": 4758,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY680d54f1b7f4d680d54f1b7f4f.png",
+        "https://modayakamoz.com/orj/TY680d54f2d8e65680d54f2d8e67.png",
+        "https://modayakamoz.com/orj/TY680d54f3bd70b680d54f3bd70d.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "26aff359-a9e3-46b1-925c-ae6204778a4a/front.jpg",
+          "sha256": "e35c3fb1177fa332f5f3e4e63634c4c1f37166c03adcf3cceb05590eb3777ad3",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 4100,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-4100-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "26aff359-a9e3-46b1-925c-ae6204778a4a/back.jpg",
+          "sha256": "cb5bd3f31b719e766522c22a57568dfe7cb93bf98100a11ac3b87e0a79b27323",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 4100,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-4100-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "26aff359-a9e3-46b1-925c-ae6204778a4a/fashion_model.jpg",
+          "sha256": "d36983905313418a7e5b8db0a58a1d796deee07c10afd1eed9be070a9078579e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 4100,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-4100-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
