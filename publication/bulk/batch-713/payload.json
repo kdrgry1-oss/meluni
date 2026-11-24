@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-713",
+  "created_at": "2026-11-24T01:23:09.336905+00:00",
+  "catalog_poll_at": "2026-11-24T01:23:09.336905+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "e30f75c5-5b2d-4326-9a41-1974ebc0eb3b",
+      "sample": 3363,
+      "name": "Uzun Kollu Kruvaze Yakalı Bağlamalı Dalgıç Janjan Krep Kiloş Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 125,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193219-1-d6f2c8658477.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193219-a518bbc7fe72f1b2.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193219-6a0f6ddeed0972ff.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193219-00798848d0d57b10.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e30f75c5-5b2d-4326-9a41-1974ebc0eb3b/front.jpg",
+          "sha256": "07fc31b79fbfb10fa28450d6ec6e961f7d5fc7e4d0123c2a84e7c3219b21987e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3363,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e30f75c5/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e30f75c5-5b2d-4326-9a41-1974ebc0eb3b/back.jpg",
+          "sha256": "6f541b47b074476130d525942d080f6db1de74ce4b14626afe29d82b490c32f4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3363,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e30f75c5/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e30f75c5-5b2d-4326-9a41-1974ebc0eb3b/fashion_model.jpg",
+          "sha256": "d04e91d26d3419a719c8bea801e71f39967a1d430a84b37b04c87cfdc3c8c55e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3363,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e30f75c5/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "e30f75c5-5b2d-4326-9a41-1974ebc0eb3b/size_chart.jpg",
+          "sha256": "5b6eb255c0a90114b471758521e9e1c379e239eb94fc68d9f5a5f95c28754207",
+          "qa_status": "source_values_and_visual_qa_passed",
+          "sample": 3363,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e30f75c5/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
