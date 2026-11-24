@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-766",
+  "created_at": "2026-11-24T23:21:49.754308+00:00",
+  "catalog_poll_at": "2026-11-24T23:21:49.754308+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7d82e339-0b0a-471b-9759-e88f7dc7d49e",
+      "sample": 2491,
+      "name": "Kısa Kollu Önden Çapraz Detaylı Bluz ve Desenli Iki Iplik Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 96,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/7d82e339-0b0a-471b-9759-e88f7dc7d49e/7d82e339-0b0a-471b-9759-e88f7dc7d49e-hd0-1de1d808.jpg",
+        "https://cdn.meluni.com.tr/products/7d82e339-0b0a-471b-9759-e88f7dc7d49e/7d82e339-0b0a-471b-9759-e88f7dc7d49e-hd1-c436bd91.jpg",
+        "https://cdn.meluni.com.tr/products/7d82e339-0b0a-471b-9759-e88f7dc7d49e/7d82e339-0b0a-471b-9759-e88f7dc7d49e-hd2-0bdc153a.jpg",
+        "https://cdn.meluni.com.tr/products/7d82e339-0b0a-471b-9759-e88f7dc7d49e/7d82e339-0b0a-471b-9759-e88f7dc7d49e-hd3-2c272ad2.jpg",
+        "https://cdn.meluni.com.tr/products/7d82e339-0b0a-471b-9759-e88f7dc7d49e/7d82e339-0b0a-471b-9759-e88f7dc7d49e-hd4-6b52b76b.jpg",
+        {
+          "id": "b6c83135-7d02-422b-99e5-43fb6f7aaa60",
+          "url": "https://cdn.meluni.com.tr/ai-products/7d82e339-0b0a-471b-9759-e88f7dc7d49e-olcu-oto-edb56edd.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:27:56.572747+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7d82e339-0b0a-471b-9759-e88f7dc7d49e/front.jpg",
+          "sha256": "f31df5ee6d234681a5eeb95d166607ef3fb0ef5addc765440080c0c9b6935291",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2491,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2491-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7d82e339-0b0a-471b-9759-e88f7dc7d49e/back.jpg",
+          "sha256": "e3f8fdeff2200b165ee84828f1629d26cbc2c9c31c2d197a713b2f84e3c02a65",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2491,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2491-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7d82e339-0b0a-471b-9759-e88f7dc7d49e/fashion_model.jpg",
+          "sha256": "2aa3731155b1b12dba3d20a7c8c8893287d82a9cbb9d765c70710e3ddc5be471",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2491,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2491-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7d82e339-0b0a-471b-9759-e88f7dc7d49e/size_chart.jpg",
+          "sha256": "054e82a6649d556835dfc5c27f29a1f58bdb3f27c14e3c32ccdfa9265703b96b",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2491,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2491-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
