@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-704",
+  "created_at": "2026-11-24T00:21:05.142032+00:00",
+  "catalog_poll_at": "2026-11-24T00:21:05.142032+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "63b93d98-5fa6-48c6-933f-38f28920be2f",
+      "sample": 3173,
+      "name": "Uzun Kollu Bisiklet Yakalı Şerit Detaylı Viskon Iki Iplik Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 111,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192449-1-1ff4f75c8c.jpg",
+        "https://modayakamoz.com/orj/janes-192449-2-e30692157d.jpg",
+        "https://modayakamoz.com/orj/janes-192449-3-03b091bc70.jpg",
+        "https://modayakamoz.com/orj/janes-192449-4-f966ac9a20.jpg",
+        "https://modayakamoz.com/orj/janes-192449-8-13e4383cf4.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "63b93d98-5fa6-48c6-933f-38f28920be2f/front.jpg",
+          "sha256": "50f1562b49575615b48dc2afa6b9d58da111304acacebfb0720d88b4560e4217",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3173,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3173-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "63b93d98-5fa6-48c6-933f-38f28920be2f/back.jpg",
+          "sha256": "456d5be5435b642aa63edeea7cbcbe10c0ad86c104498288e2de789b17e9438f",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3173,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3173-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "63b93d98-5fa6-48c6-933f-38f28920be2f/fashion_model.jpg",
+          "sha256": "5d3d6d49727ae483dfc004c0b3e9d986fe2bae0b39258eaeb869718d74dab389",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3173,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3173-model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
