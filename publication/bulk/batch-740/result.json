@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-740",
+  "published_at_utc": "2026-11-24T06:07:05.617187+00:00",
+  "products": [
+    {
+      "product_id": "91b678a3-5d24-44c6-892e-d48f866062a5",
+      "sample": 1464,
+      "name": "Kolsuz V Yakalı Blok Renkli Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/91b678a3-5d24-44c6-892e-d48f866062a5-front-f9cbcf3335cd.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/91b678a3-5d24-44c6-892e-d48f866062a5-back-7493c223749b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/91b678a3-5d24-44c6-892e-d48f866062a5-model-cf412e17458c.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
