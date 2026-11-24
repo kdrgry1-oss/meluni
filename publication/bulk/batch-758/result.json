@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-758",
+  "published_at_utc": "2026-11-24T22:35:06.325394+00:00",
+  "products": [
+    {
+      "product_id": "8cdbf6cd-f2e9-4994-b757-380da8118658",
+      "sample": 3259,
+      "name": "Uzun Kollu Fermuarlı Maxi Viskon Iki Iplik Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8cdbf6cd-f2e9-4994-b757-380da8118658-front-838b82e27092.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8cdbf6cd-f2e9-4994-b757-380da8118658-back-7ead351df310.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8cdbf6cd-f2e9-4994-b757-380da8118658-model-952fc14753cf.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/8cdbf6cd-f2e9-4994-b757-380da8118658-size-chart-90d745b16edc.jpg"
+      },
+      "gallery_image_count": 16
+    }
+  ],
+  "skipped": []
+}
