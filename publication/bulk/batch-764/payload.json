@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-764",
+  "created_at": "2026-11-24T23:09:23.968016+00:00",
+  "catalog_poll_at": "2026-11-24T23:09:23.968016+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "4e85dc4f-0ac6-4d8c-906c-88408241f1f3",
+      "sample": 2516,
+      "name": "Leopar Detay Üç Parça Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 59,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0d5d7e5b588f95e4c5c2002199c8b792.png",
+        "https://modayakamoz.com/orj/6f458bb4b97675e63bbcfa48dbffdebe.png",
+        "https://modayakamoz.com/orj/ab9998cd4a872515e7893aa3f13b7935.png",
+        "https://modayakamoz.com/orj/272a8628ee626b412320.jpeg",
+        "https://modayakamoz.com/orj/42c54a3c61d1549d665b.jpeg",
+        "https://modayakamoz.com/orj/4020cd90648414073bf3.jpeg",
+        "https://modayakamoz.com/orj/4a591d6bc4f754396bb2.jpeg",
+        "https://modayakamoz.com/orj/553a5fb727bd9cb717f6.jpeg",
+        "https://modayakamoz.com/orj/7faac3bf69985cbe91a5.jpeg",
+        "https://modayakamoz.com/orj/ebb8e5544ffca60c1a57.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "4e85dc4f-0ac6-4d8c-906c-88408241f1f3/front.jpg",
+          "sha256": "8d53519b244949c703c1fbc5a7bf60306a5303dce6c9aa494d6efe0ac6d792a7",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2516,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2516-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4e85dc4f-0ac6-4d8c-906c-88408241f1f3/back.jpg",
+          "sha256": "9138bdd04563c036bf8e0999f783a3a5d5a8315c463c690f71c82d33c4fa3802",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2516,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2516-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4e85dc4f-0ac6-4d8c-906c-88408241f1f3/fashion_model.jpg",
+          "sha256": "aa1b3dce90a56a3846f79de1e76db04ef5a2aa2f5b09c0073f0700c3c6953c25",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2516,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2516-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "4e85dc4f-0ac6-4d8c-906c-88408241f1f3/size_chart.jpg",
+          "sha256": "6ddd9ee979a96a9e6a89c5df4b32be27eb6c7454cd36299087ee69ce552cb9a2",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2516,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2516-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
