@@ -1,0 +1,31 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-744",
+  "created_at": "2026-11-24T07:03:24.616715+00:00",
+  "catalog_poll_at": "2026-11-24T07:03:24.616715+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "0cae3119-8346-4a09-a19d-3f27e39c72b7",
+      "sample": 1515,
+      "name": "Kolsuz Yuvarlak Yakalı Önden Asimetrik Fırfır Detaylı Uzun Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/aecb5800ff08cee4df38.jpeg",
+        "https://modayakamoz.com/orj/ecc379280fb1243f69bd.jpeg",
+        "https://modayakamoz.com/orj/a99f45b7c3993bc3f9ac.jpeg",
+        "https://modayakamoz.com/orj/54957b7884b05e537919.jpeg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "0cae3119-8346-4a09-a19d-3f27e39c72b7/size_chart.jpg",
+          "sha256": "39cacc2f3a7765b7c8052b3dfbdf7de06987b0be643391fe210ec3046b200a7e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1515,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1515-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
