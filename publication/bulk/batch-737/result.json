@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-737",
+  "published_at_utc": "2026-11-24T04:13:41.265119+00:00",
+  "products": [
+    {
+      "product_id": "5b1d236e-72d4-4a00-8e6b-8005e91b15c3",
+      "sample": 1240,
+      "name": "Ip Askılı Yaka Dantel Detaylı Kısa Kaşkorse Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5b1d236e-72d4-4a00-8e6b-8005e91b15c3-front-30ace488189b.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5b1d236e-72d4-4a00-8e6b-8005e91b15c3-back-bb9f66ec55a2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5b1d236e-72d4-4a00-8e6b-8005e91b15c3-model-0f148960f683.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
