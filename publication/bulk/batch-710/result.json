@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-710",
+  "published_at_utc": "2026-11-24T01:06:40.419761+00:00",
+  "products": [
+    {
+      "product_id": "bbc20edd-0e6a-46fa-81db-d237047cfa08",
+      "sample": 3669,
+      "name": "Uzun Kollu Yakalı Tek Düğme Detaylı Astarlı Krep Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bbc20edd-0e6a-46fa-81db-d237047cfa08-front-6fce7ed815f1.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/bbc20edd-0e6a-46fa-81db-d237047cfa08-back-cf8d1442fb2b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bbc20edd-0e6a-46fa-81db-d237047cfa08-model-fb25335531bd.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/bbc20edd-0e6a-46fa-81db-d237047cfa08-size-chart-f404b1411427.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
