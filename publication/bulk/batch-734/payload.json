@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-734",
+  "created_at": "2026-11-24T03:51:54.753073+00:00",
+  "catalog_poll_at": "2026-11-24T03:51:54.753073+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "f632ad39-0ba1-4795-a989-09f1f595300c",
+      "sample": 922,
+      "name": "Cep Detay Taytlı Sandy Etek",
+      "active_at_poll": true,
+      "stock_at_poll": 85,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/845fd33762755c5cbd2b.jpeg",
+        "https://modayakamoz.com/orj/9781fd6c3abc63e5e9d3.jpeg",
+        "https://modayakamoz.com/orj/347e7ec2428849ab74bd.jpeg",
+        "https://modayakamoz.com/orj/7b7574b2619d1e476102.jpeg",
+        "https://modayakamoz.com/orj/6b27fa257ad0bb3bd8b4.jpeg",
+        {
+          "id": "67a5710a-76dd-4a6d-b408-a4bc318e8162",
+          "url": "https://cdn.meluni.com.tr/ai-products/f632ad39-0ba1-4795-a989-09f1f595300c-olcu-oto-7b9d2e66.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:36:59.858497+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "f632ad39-0ba1-4795-a989-09f1f595300c/front.jpg",
+          "sha256": "078f49125b4a1e56d25913313a2481cd6dad05bc9eacc5ca1781768395f81eae",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 922,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-922-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f632ad39-0ba1-4795-a989-09f1f595300c/back.jpg",
+          "sha256": "204f0c11c3bb1ba1b4b4d504edfa43ce941c572034dd9a4604d110e90b041009",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 922,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-922-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f632ad39-0ba1-4795-a989-09f1f595300c/fashion_model.jpg",
+          "sha256": "63aa6f46d02228a18cc9acc32c0263f545216692b3e6f679e5bfe7cc44fe1991",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 922,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-922-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
