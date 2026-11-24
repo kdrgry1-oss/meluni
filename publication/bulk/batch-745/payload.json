@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-745",
+  "created_at": "2026-11-24T07:20:34.091998+00:00",
+  "catalog_poll_at": "2026-11-24T07:20:34.091998+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "24d6e60b-dadc-483c-8147-03fc2e86176f",
+      "sample": 1367,
+      "name": "Kolları Suni Deri Astarlı Oduncu Kolej Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 396,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68a398a825b4168a398a825b44.png",
+        "https://modayakamoz.com/orj/TY68a398a97df3268a398a97df35.png",
+        "https://modayakamoz.com/orj/TY68a398aaad48368a398aaad486.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "24d6e60b-dadc-483c-8147-03fc2e86176f/front.jpg",
+          "sha256": "c7bb7353136d0d77326bf956342fd0dbd48a7bb97dcfb03075ca076607480d8d",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1367,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1367-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "24d6e60b-dadc-483c-8147-03fc2e86176f/back.jpg",
+          "sha256": "9df446f4d1701a93d6032b6cb7d1377299a17392ec5c8bb5c4b5c848bd1c4dcc",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1367,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1367-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "24d6e60b-dadc-483c-8147-03fc2e86176f/fashion_model.jpg",
+          "sha256": "a2cdf026c1324ccb52d5675decf023b077d66b8c33f2b1b2e257da16e83e63cf",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1367,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1367-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
