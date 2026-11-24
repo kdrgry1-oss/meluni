@@ -1,0 +1,38 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-728",
+  "created_at": "2026-11-24T03:15:44.297024+00:00",
+  "catalog_poll_at": "2026-11-24T03:15:44.297024+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "68bbf4f0-a8a7-4dee-9a8f-4ba7c755f68f",
+      "sample": 4067,
+      "name": "Üç İplik Kapşonlu Ön ve Baskılı Hoodie- Beyaz SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 495,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68b4bc2b0882f68b4bc2b08833.png",
+        "https://modayakamoz.com/orj/TY68b4bc2c11a5168b4bc2c11a55.png",
+        "https://modayakamoz.com/orj/TY68b4bc2d0dd7668b4bc2d0dd79.png",
+        "https://modayakamoz.com/orj/TY68b4bc2e280a368b4bc2e280a6.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "68bbf4f0-a8a7-4dee-9a8f-4ba7c755f68f/front.jpg",
+          "sha256": "690f49578abb6c5c325fec8275fd9c2b836f9dc9c31159bbcbccbb126dfd9057",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 4067,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-4067-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "68bbf4f0-a8a7-4dee-9a8f-4ba7c755f68f/back.jpg",
+          "sha256": "3378975d7d67604ccf7837a5c04f94d132b4a0847c8a1923e39ff1a7b611a9ed",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 4067,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-4067-back-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
