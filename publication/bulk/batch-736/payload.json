@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-736",
+  "created_at": "2026-11-24T04:04:00.037391+00:00",
+  "catalog_poll_at": "2026-11-24T04:04:00.037391+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "ce29b62a-00cf-4e9f-bad6-7120e6dfb719",
+      "sample": 964,
+      "name": "Dokuma Cepli Bağcıklı Regular Fit Şort",
+      "active_at_poll": true,
+      "stock_at_poll": 4910,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a2075995b3366a2075995b339.webp",
+        "https://modayakamoz.com/orj/TY6a20759a6a3296a20759a6a32c.webp",
+        "https://modayakamoz.com/orj/TY6a20759b768886a20759b7688c.webp",
+        "https://modayakamoz.com/orj/TY6a20759c889c76a20759c889c9.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "ce29b62a-00cf-4e9f-bad6-7120e6dfb719/front.jpg",
+          "sha256": "103502d17a1b921be7874a8e6add4426c02bc445a87806ec6a80e72b521dfbf9",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 964,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-964-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ce29b62a-00cf-4e9f-bad6-7120e6dfb719/back.jpg",
+          "sha256": "a5bc1393d4f22c728d53f3e059b358cab349430b4a6fffce939c5de8f497c48f",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 964,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-964-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ce29b62a-00cf-4e9f-bad6-7120e6dfb719/fashion_model.jpg",
+          "sha256": "b186458c030d0ba2ed3e7cbbf7c797a7afc68140ea4e389a14f8c580784ee1ff",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 964,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-964-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
