@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-708",
+  "created_at": "2026-11-24T00:46:12.677425+00:00",
+  "catalog_poll_at": "2026-11-24T00:46:12.677425+00:00",
+  "products": [
+    {
+      "product_id": "453dccd5-07bc-4936-a412-fa253fb2263c",
+      "sample": 3176,
+      "name": "Uzun Kollu Bluz ve Yüksek Bel Etek Şardonlu Kaşkorse Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 273,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/453dccd5-07bc-4936-a412-fa253fb2263c/453dccd5-07bc-4936-a412-fa253fb2263c-hd0-659286c8.jpg",
+        "https://cdn.meluni.com.tr/products/453dccd5-07bc-4936-a412-fa253fb2263c/453dccd5-07bc-4936-a412-fa253fb2263c-hd1-64d0ed3c.jpg",
+        "https://cdn.meluni.com.tr/products/453dccd5-07bc-4936-a412-fa253fb2263c/453dccd5-07bc-4936-a412-fa253fb2263c-hd2-5fe5d17f.jpg",
+        {
+          "id": "5afe40ff-a044-4110-b523-c17170818dfa",
+          "url": "https://cdn.meluni.com.tr/ai-products/7d28d7eb-5d4a-457f-965d-9f0dc67e2f95-olcu-oto-9882fc51.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:30:30.171214+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "453dccd5-07bc-4936-a412-fa253fb2263c/front.jpg",
+          "sha256": "aca50594272ce702484fc7235a64ad5099a17b068c12367ebf011efbb3c7dbeb",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3176,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-453dccd5/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "453dccd5-07bc-4936-a412-fa253fb2263c/back.jpg",
+          "sha256": "d6cebda04308aba2382ea67f46600a19ecff9d0aaf04b48b45545d50cb614060",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3176,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-453dccd5/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "453dccd5-07bc-4936-a412-fa253fb2263c/fashion_model.jpg",
+          "sha256": "96d10427f755794194ca705a705534790e1e8ca3b6cd060794c7915082fe259a",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3176,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-453dccd5/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "453dccd5-07bc-4936-a412-fa253fb2263c/size_chart.jpg",
+          "sha256": "50062e61d54267261dc93fa0e92f526b1af2e10a3495081c945f76eeaab64c98",
+          "qa_status": "source_values_and_visual_qa_passed",
+          "sample": 3176,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-453dccd5/size_chart-1200x1800.jpg"
+        }
+      },
+      "publish_authorized_by_user": true
+    }
+  ]
+}
