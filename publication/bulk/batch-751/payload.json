@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-751",
+  "created_at": "2026-11-24T09:22:08.179562+00:00",
+  "catalog_poll_at": "2026-11-24T09:22:08.179562+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "514aecd2-196b-4301-af93-134f199c7ccb",
+      "sample": 1500,
+      "name": "Kolsuz Yandan Düğme Detaylı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ab7284673586039fda2b.jpeg",
+        "https://modayakamoz.com/orj/9eb2140d7d9efdb00e77.jpeg",
+        "https://modayakamoz.com/orj/b75a323fba7990c1daee.jpeg",
+        "https://modayakamoz.com/orj/3d20188f842546be38ca.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "514aecd2-196b-4301-af93-134f199c7ccb/front.jpg",
+          "sha256": "852f7f3f32932b69ca4801846b666f4b95fe44405f52e013059f388c02d3e2f3",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1500,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1500-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "514aecd2-196b-4301-af93-134f199c7ccb/back.jpg",
+          "sha256": "9840741f0f81e9c3694cb54569b5c9222889dd1a0616712b8db480db117611ab",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1500,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1500-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "514aecd2-196b-4301-af93-134f199c7ccb/fashion_model.jpg",
+          "sha256": "349f87cbce5b06c7f36a54dc79346fe3dc8b48cc73554aed6e75f90059d4b0dc",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1500,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1500-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "514aecd2-196b-4301-af93-134f199c7ccb/size_chart.jpg",
+          "sha256": "b507b7cb34c5429b6942a3ee437905d655396a9c8cbfe447440801f5699f61f1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1500,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1500-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
