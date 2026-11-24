@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-749",
+  "published_at_utc": "2026-11-24T08:49:39.507580+00:00",
+  "products": [
+    {
+      "product_id": "4f000d6e-108f-492f-8bf8-ce1d9800c873",
+      "sample": 1492,
+      "name": "Kolsuz Yakalı Taşlı Önü Açık Atlas Yelek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4f000d6e-108f-492f-8bf8-ce1d9800c873-front-33c38c0896e8.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4f000d6e-108f-492f-8bf8-ce1d9800c873-back-1cfe40901e2e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4f000d6e-108f-492f-8bf8-ce1d9800c873-model-854b1479eef1.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/4f000d6e-108f-492f-8bf8-ce1d9800c873-size-chart-0bd8f188e6a5.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
