@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-756",
+  "published_at_utc": "2026-11-24T12:19:14.927415+00:00",
+  "products": [
+    {
+      "product_id": "f9a2d708-1f8b-4f90-a227-f1063d2db2f5",
+      "sample": 2428,
+      "name": "Kısa Kollu Yarı Balıkça Yakalı Fularlı Yandan Pile Detaylı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f9a2d708-1f8b-4f90-a227-f1063d2db2f5-front-04a9e4d2f16b.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/f9a2d708-1f8b-4f90-a227-f1063d2db2f5-back-d8817c70346b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f9a2d708-1f8b-4f90-a227-f1063d2db2f5-model-8b9ffc46df10.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f9a2d708-1f8b-4f90-a227-f1063d2db2f5-size-chart-3973279f0a0d.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
