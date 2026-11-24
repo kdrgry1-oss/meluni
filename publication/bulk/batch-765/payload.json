@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-765",
+  "created_at": "2026-11-24T23:15:58.477125+00:00",
+  "catalog_poll_at": "2026-11-24T23:15:58.477125+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "e3afcefa-73a8-445b-b822-96d1a9980395",
+      "sample": 2492,
+      "name": "Kısa Kollu Önden Çapraz Detaylı Bluz ve Desenli Iki Iplik Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 95,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f2c61b506f3957acd799dfaa70832260.jpeg",
+        "https://modayakamoz.com/orj/6d60f4052bc840e6ca1e209b7e8e7794.jpeg",
+        "https://modayakamoz.com/orj/d743b4e28cc4d8f07040337132d1a69b.jpeg",
+        "https://modayakamoz.com/orj/71937731e699ecc5b7815e9b76816cb3.jpeg",
+        "https://modayakamoz.com/orj/cdd117d610226df06d898937efe06ccb.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e3afcefa-73a8-445b-b822-96d1a9980395/front.jpg",
+          "sha256": "773d9cd1bca135b7d60edd09056e199e0ed4f6e45e055bc92eb1d91a8ce29e3f",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2492,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2492-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "e3afcefa-73a8-445b-b822-96d1a9980395/back.jpg",
+          "sha256": "792acd87ca4002b672ef05d0d92fe1a57166325cd51b70acb1aa331c0f087318",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2492,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2492-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e3afcefa-73a8-445b-b822-96d1a9980395/fashion_model.jpg",
+          "sha256": "957db571504c1090f757c2c54f4189bb09db448fc7710329a81a1520aea57986",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2492,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2492-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "e3afcefa-73a8-445b-b822-96d1a9980395/size_chart.jpg",
+          "sha256": "14d9c0da82275897eb4be2cd046839a90180add970d8f0f5624801dafc0f09bb",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2492,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2492-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
