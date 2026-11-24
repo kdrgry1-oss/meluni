@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-768",
+  "created_at": "2026-11-24T23:33:20.968737+00:00",
+  "catalog_poll_at": "2026-11-24T23:33:20.968737+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "0cecd844-99ab-459a-bbbf-eddb30b15316",
+      "sample": 3324,
+      "name": "Uzun Kollu Kare Yakalı Dantelli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 75,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193734-1-fa9ef552b277.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193734-440fd998b541ee8f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193734-a9833bcb9a2259ab.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193734-cf38c29ca59fe014.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193734-6869bfd988185131.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193734-44c24ab9dc47a658.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0cecd844-99ab-459a-bbbf-eddb30b15316/front.jpg",
+          "sha256": "ef8c10db7ce46c09b53ceb310d3b8f3b0be062255a6160ef8b60ab52ad680a5c",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3324,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3324-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0cecd844-99ab-459a-bbbf-eddb30b15316/back.jpg",
+          "sha256": "e877e1b7aee630d5e3a2d2507d2253406a8776e2bc0d61421951dbb7e9e8c08a",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3324,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3324-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0cecd844-99ab-459a-bbbf-eddb30b15316/fashion_model.jpg",
+          "sha256": "c3bff38fdd7e46fcaad83e18473985bbb1bd96302714f264857fe2f2362700a8",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3324,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3324-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "0cecd844-99ab-459a-bbbf-eddb30b15316/size_chart.jpg",
+          "sha256": "7f23f43798162d8da5027d90a7085f09561df310cfde127091f87f65c7d60b40",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3324,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3324-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
