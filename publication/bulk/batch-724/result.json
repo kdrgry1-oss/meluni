@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-724",
+  "published_at_utc": "2026-11-24T02:40:48.079910+00:00",
+  "products": [
+    {
+      "product_id": "85404902-4a33-4c3d-bcf5-60861af96a00",
+      "sample": 3651,
+      "name": "Uzun Kollu Yakalı Düğmeli Wellsoft Kaban",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/85404902-4a33-4c3d-bcf5-60861af96a00-front-ab8a3ede4fba.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/85404902-4a33-4c3d-bcf5-60861af96a00-back-3258642de196.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/85404902-4a33-4c3d-bcf5-60861af96a00-model-2927d253c57a.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
