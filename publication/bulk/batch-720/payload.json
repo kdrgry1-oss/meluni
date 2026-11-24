@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-720",
+  "created_at": "2026-11-24T02:05:21.056591+00:00",
+  "catalog_poll_at": "2026-11-24T02:05:21.056591+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "91e6063f-8aa0-4524-808b-6bcf5972bb7a",
+      "sample": 3493,
+      "name": "Uzun Kollu V Yaka Kol Delikli Baklava Desen Detaylı Triko Kazak",
+      "active_at_poll": true,
+      "stock_at_poll": 157,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a096634aab97eef1b41e.jpeg",
+        "https://modayakamoz.com/orj/763fde15d86088ecf05c.jpeg",
+        "https://modayakamoz.com/orj/8ee9776857fa082b8a4e.jpeg",
+        "https://modayakamoz.com/orj/c280a4921ebc95daa762.jpeg",
+        "https://modayakamoz.com/orj/609cc16e12c7fb8de1f9.jpeg",
+        "https://modayakamoz.com/orj/8454a25e376b3c5a35ce.jpeg",
+        "https://modayakamoz.com/orj/99ec907709497765c5ef.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "91e6063f-8aa0-4524-808b-6bcf5972bb7a/front.jpg",
+          "sha256": "7e908ec3bb19f6757ee6babfcbc05a75837363ddb55348c16ab50ccbe7ad4e9c",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3493,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3493-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "91e6063f-8aa0-4524-808b-6bcf5972bb7a/back.jpg",
+          "sha256": "e656b65e13324697f24c07b0de946a2051458379d9cdd5cd7f502c6067482863",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3493,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3493-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "91e6063f-8aa0-4524-808b-6bcf5972bb7a/fashion_model.jpg",
+          "sha256": "8d07f4b302d36b5b9e2dd31bd525e790a61532a71a420a22ecaff8daf3ff203d",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3493,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3493-model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "91e6063f-8aa0-4524-808b-6bcf5972bb7a/size_chart.jpg",
+          "sha256": "cf3891da72923d1e9932aaf395a3824cf0ab6e1d5f647bd4cf04b9eaad6189fd",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3493,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-3493-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
