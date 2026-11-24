@@ -1,0 +1,57 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-740",
+  "created_at": "2026-11-24T06:04:43.374312+00:00",
+  "catalog_poll_at": "2026-11-24T06:04:43.374312+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "91b678a3-5d24-44c6-892e-d48f866062a5",
+      "sample": 1464,
+      "name": "Kolsuz V Yakalı Blok Renkli Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/37a01747019c84f21995.jpeg",
+        "https://modayakamoz.com/orj/ad92f24d848ec6b68e1b.jpeg",
+        "https://modayakamoz.com/orj/1ba481f3a64035698975.jpeg",
+        "https://modayakamoz.com/orj/935494f79c14f1837b1f.jpeg",
+        "https://modayakamoz.com/orj/e55e742f3b08b8b0ed9b.jpeg",
+        "https://modayakamoz.com/orj/7d47e1c4cd97cf174227.jpeg",
+        "https://modayakamoz.com/orj/a88987578785bf5b2d72.jpeg",
+        "https://modayakamoz.com/orj/b7c3812918d67b2e5840.jpeg",
+        "https://modayakamoz.com/orj/321059f23daf12c03b42.jpeg",
+        {
+          "id": "1fb2632b-65e6-4f6b-82b9-2d895fb031c3",
+          "url": "https://cdn.meluni.com.tr/ai-products/4c6aff56-2e67-49ed-963e-9d2b4060aaa4-olcu-oto-ba86cdb7.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:25:20.784427+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "91b678a3-5d24-44c6-892e-d48f866062a5/front.jpg",
+          "sha256": "f9cbcf3335cd2633987ac017ef4da129b1f633a125b3ad59abdc43ddf62302b4",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1464,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1464-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "91b678a3-5d24-44c6-892e-d48f866062a5/back.jpg",
+          "sha256": "7493c223749b318422755986a4fb5f6551338b7df4bdd1406a5358270bffbd27",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1464,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1464-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "91b678a3-5d24-44c6-892e-d48f866062a5/fashion_model.jpg",
+          "sha256": "cf412e17458c2871561114cae7660cf813e5d8190080ac4314fa3d26fe9fa424",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1464,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1464-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
