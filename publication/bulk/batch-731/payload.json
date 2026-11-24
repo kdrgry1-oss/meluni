@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-731",
+  "created_at": "2026-11-24T03:32:12.810873+00:00",
+  "catalog_poll_at": "2026-11-24T03:32:12.810873+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "68eed682-d367-4c79-9093-81b3ef0fb41b",
+      "sample": 4059,
+      "name": "Üç İplik Kapüşonlu Ön ve Baskılı Hoodie SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 5500,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68b36b090e9c768b36b090e9c9.png",
+        "https://modayakamoz.com/orj/TY68b36b0a0441a68b36b0a0441d.png",
+        "https://modayakamoz.com/orj/TY68b36b0ae9fc668b36b0ae9fc8.png",
+        "https://modayakamoz.com/orj/TY68b36b0bf121e68b36b0bf1220.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "68eed682-d367-4c79-9093-81b3ef0fb41b/front.jpg",
+          "sha256": "16dda672e2051a546dc9b1811ef2da8628c7461fadb594321134ea76c1415a33",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 4059,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-4059-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "68eed682-d367-4c79-9093-81b3ef0fb41b/back.jpg",
+          "sha256": "6779e19e5ef8d0d7d28a5dffeff0a98314d0150e17c203b1fccf8ee654b2c15d",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 4059,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-4059-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "68eed682-d367-4c79-9093-81b3ef0fb41b/fashion_model.jpg",
+          "sha256": "2de3dc0758af341676d6276c425bad64c6bd48933cfc161ba66190a0bb0cfefb",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 4059,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-4059-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
