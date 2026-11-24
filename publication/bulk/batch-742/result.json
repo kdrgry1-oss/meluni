@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-742",
+  "published_at_utc": "2026-11-24T06:34:25.549923+00:00",
+  "products": [
+    {
+      "product_id": "baed57f0-c807-4f24-aa3d-fb63ed3a8db0",
+      "sample": 1221,
+      "name": "Ip Askılı V Yakalı Pulpayet Detaylı Sandy Gümüş Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/baed57f0-c807-4f24-aa3d-fb63ed3a8db0-front-378cb589a68f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/baed57f0-c807-4f24-aa3d-fb63ed3a8db0-back-c2de073eb3d4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/baed57f0-c807-4f24-aa3d-fb63ed3a8db0-model-e1a8a392f0bd.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/baed57f0-c807-4f24-aa3d-fb63ed3a8db0-size-chart-167104b6185b.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
