@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-722",
+  "created_at": "2026-11-24T02:25:28.999155+00:00",
+  "catalog_poll_at": "2026-11-24T02:25:28.999155+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7e9c837e-66cd-46c6-a7af-0193636825aa",
+      "sample": 3614,
+      "name": "Uzun Kollu Yakadan Geçmeli Şerit Detaylı Büzgülü Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 154,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193840-1-6dc64116fb8f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193840-a52beda113ba6d96.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193840-4f260d2b01a0a371.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193840-ea850051f415c148.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193840-6ad5567b152706ec.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7e9c837e-66cd-46c6-a7af-0193636825aa/front.jpg",
+          "sha256": "55755255799a9dfdeb57aff7ba08460565692df85ef9833c903064c3c6f334ac",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3614,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3614-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7e9c837e-66cd-46c6-a7af-0193636825aa/back.jpg",
+          "sha256": "c8d360c411940f40e7225343112e07f702033868df9aa11086522857d16c1417",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3614,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3614-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7e9c837e-66cd-46c6-a7af-0193636825aa/fashion_model.jpg",
+          "sha256": "c4abcdf50c8ba54024d383eee50c80b90c43116b9e902ea101b574dae5389668",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3614,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3614-model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
