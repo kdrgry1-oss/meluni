@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-757",
+  "published_at_utc": "2026-11-24T22:28:08.753448+00:00",
+  "products": [
+    {
+      "product_id": "5786a32f-28f6-43a2-b051-6d8f525bc176",
+      "sample": 3030,
+      "name": "Uzun Kollu Balıkçı Yaka Derin Yırtmaç Detay Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5786a32f-28f6-43a2-b051-6d8f525bc176-front-d71c5d16ad09.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5786a32f-28f6-43a2-b051-6d8f525bc176-back-0801a2647aa2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5786a32f-28f6-43a2-b051-6d8f525bc176-model-e0194bf5015d.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5786a32f-28f6-43a2-b051-6d8f525bc176-size-chart-9f893c9a2e9a.jpg"
+      },
+      "gallery_image_count": 21
+    }
+  ],
+  "skipped": []
+}
