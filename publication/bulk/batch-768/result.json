@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-768",
+  "published_at_utc": "2026-11-24T23:34:49.376414+00:00",
+  "products": [
+    {
+      "product_id": "0cecd844-99ab-459a-bbbf-eddb30b15316",
+      "sample": 3324,
+      "name": "Uzun Kollu Kare Yakalı Dantelli Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0cecd844-99ab-459a-bbbf-eddb30b15316-front-ef8c10db7ce4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0cecd844-99ab-459a-bbbf-eddb30b15316-back-e877e1b7aee6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0cecd844-99ab-459a-bbbf-eddb30b15316-model-c3bff38fdd7e.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0cecd844-99ab-459a-bbbf-eddb30b15316-size-chart-7f23f4379816.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
