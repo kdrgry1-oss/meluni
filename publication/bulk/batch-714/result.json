@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-714",
+  "published_at_utc": "2026-11-24T01:30:00.696205+00:00",
+  "products": [
+    {
+      "product_id": "d6efa286-e35d-439f-aaeb-66713b21fae7",
+      "sample": 3366,
+      "name": "Uzun Kollu Kruvaze Yakalı Belden Kemerli Mini Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d6efa286-e35d-439f-aaeb-66713b21fae7-front-4fc6a61202b1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d6efa286-e35d-439f-aaeb-66713b21fae7-model-d35d4a66a0e2.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
