@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-769",
+  "published_at_utc": "2026-11-24T23:40:30.784636+00:00",
+  "products": [
+    {
+      "product_id": "e8d73f4f-fe5e-4687-b2a3-63e06b673195",
+      "sample": 3272,
+      "name": "Uzun Kollu Geometrik Yakalı Dantel Detaylı Midi Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e8d73f4f-fe5e-4687-b2a3-63e06b673195-front-0ccbee532371.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e8d73f4f-fe5e-4687-b2a3-63e06b673195-back-64a12987cbef.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e8d73f4f-fe5e-4687-b2a3-63e06b673195-model-9f6365fece43.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
