@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-756",
+  "created_at": "2026-11-24T12:16:47.368824+00:00",
+  "catalog_poll_at": "2026-11-24T12:16:47.368824+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "f9a2d708-1f8b-4f90-a227-f1063d2db2f5",
+      "sample": 2428,
+      "name": "Kısa Kollu Yarı Balıkça Yakalı Fularlı Yandan Pile Detaylı Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2cf01046712430625b8e.jpeg",
+        "https://modayakamoz.com/orj/260dfdcc73902e12d4c0.jpeg",
+        "https://modayakamoz.com/orj/d71c136be4e40e52a154.jpeg",
+        "https://modayakamoz.com/orj/693a0e8cb878f1cb618e.jpeg",
+        "https://modayakamoz.com/orj/19cc7b1e9bab592a339d.jpeg",
+        "https://modayakamoz.com/orj/8d43edb8bf78f5a36c7e.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "f9a2d708-1f8b-4f90-a227-f1063d2db2f5/front.jpg",
+          "sha256": "04a9e4d2f16b913849187da346b3a7cad0cdc4e09356e05fc33bb76c2db791a1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2428,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2428-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "f9a2d708-1f8b-4f90-a227-f1063d2db2f5/back.jpg",
+          "sha256": "d8817c70346b2c045a1ec5f18d9af82ecf6f4bfaf2eed52c1029dc422b8d4c81",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2428,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2428-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f9a2d708-1f8b-4f90-a227-f1063d2db2f5/fashion_model.jpg",
+          "sha256": "8b9ffc46df1032304c982761cf95d41df9ee8efd0e35c539ff86cf6e8c59e2c7",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2428,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2428-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "f9a2d708-1f8b-4f90-a227-f1063d2db2f5/size_chart.jpg",
+          "sha256": "3973279f0a0d2ff68fcb21a736aa9fff098e026a3b389a98d39e3f88f8c5e220",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2428,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2428-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
