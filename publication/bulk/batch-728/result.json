@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-728",
+  "published_at_utc": "2026-11-24T03:17:13.742740+00:00",
+  "products": [
+    {
+      "product_id": "68bbf4f0-a8a7-4dee-9a8f-4ba7c755f68f",
+      "sample": 4067,
+      "name": "Üç İplik Kapşonlu Ön ve Baskılı Hoodie- Beyaz SweatShirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/68bbf4f0-a8a7-4dee-9a8f-4ba7c755f68f-front-690f49578abb.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/68bbf4f0-a8a7-4dee-9a8f-4ba7c755f68f-back-3378975d7d67.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
