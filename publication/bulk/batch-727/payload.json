@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-727",
+  "created_at": "2026-11-24T02:58:48.474317+00:00",
+  "catalog_poll_at": "2026-11-24T02:58:48.474317+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "23924f57-6cc7-4942-a24e-5a64900a5fd9",
+      "sample": 3989,
+      "name": "ZIP Fermuarlı Kanguru Çepli Hoodie Maske Detaylı Swetshirt",
+      "active_at_poll": true,
+      "stock_at_poll": 250,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6912569e8abd16912569e8abd3.png",
+        "https://modayakamoz.com/orj/TY6912569f845746912569f84577.png",
+        "https://modayakamoz.com/orj/TY691256a056231691256a056234.png",
+        "https://modayakamoz.com/orj/TY691256a1414a3691256a1414a6.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "23924f57-6cc7-4942-a24e-5a64900a5fd9/front.jpg",
+          "sha256": "b4f3902184dc3fc4ca9c5f0e3be010eeb70e301b5c0509517c3fedf50cc9e6f0",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3989,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3989-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "23924f57-6cc7-4942-a24e-5a64900a5fd9/back.jpg",
+          "sha256": "24f24728e74aa6161ec17bdb04d2814f1963ba124847223b6209b3291da54146",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3989,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3989-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "23924f57-6cc7-4942-a24e-5a64900a5fd9/fashion_model.jpg",
+          "sha256": "665bb07b4d8b77e183c3344c3cef3f9b40b4602ee8fef59584a876e818c60c28",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3989,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3989-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
