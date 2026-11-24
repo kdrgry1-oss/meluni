@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-719",
+  "published_at_utc": "2026-11-24T01:59:44.971665+00:00",
+  "products": [
+    {
+      "product_id": "32a524e9-5b50-4181-a98c-3751384164b4",
+      "sample": 3491,
+      "name": "Uzun Kollu V Yaka Kol Delikli Baklava Desen Detaylı Triko Kazak",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/32a524e9-5b50-4181-a98c-3751384164b4-front-d4bcaab0ba02.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/32a524e9-5b50-4181-a98c-3751384164b4-back-64a7c2b98d37.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/32a524e9-5b50-4181-a98c-3751384164b4-model-62ffbcc8fc21.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/32a524e9-5b50-4181-a98c-3751384164b4-size-chart-9925099e8b32.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
