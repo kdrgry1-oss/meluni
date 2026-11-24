@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-759",
+  "published_at_utc": "2026-11-24T22:40:02.725941+00:00",
+  "products": [
+    {
+      "product_id": "fda04931-37cd-4581-bb44-5090e6fefc92",
+      "sample": 2444,
+      "name": "Kısa Kollu Yuvarlak Yaka Yırtmaçlı Cepli Viskon Uzun Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/fda04931-37cd-4581-bb44-5090e6fefc92-front-4704e6f1ca93.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/fda04931-37cd-4581-bb44-5090e6fefc92-back-882a28e1982f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/fda04931-37cd-4581-bb44-5090e6fefc92-model-dcca22314ced.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/fda04931-37cd-4581-bb44-5090e6fefc92-size-chart-79fc0f998851.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
