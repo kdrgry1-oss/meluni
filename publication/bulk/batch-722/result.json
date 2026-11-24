@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-722",
+  "published_at_utc": "2026-11-24T02:26:42.634560+00:00",
+  "products": [
+    {
+      "product_id": "7e9c837e-66cd-46c6-a7af-0193636825aa",
+      "sample": 3614,
+      "name": "Uzun Kollu Yakadan Geçmeli Şerit Detaylı Büzgülü Janjan Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7e9c837e-66cd-46c6-a7af-0193636825aa-front-55755255799a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7e9c837e-66cd-46c6-a7af-0193636825aa-back-c8d360c41194.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7e9c837e-66cd-46c6-a7af-0193636825aa-model-c4abcdf50c8b.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
