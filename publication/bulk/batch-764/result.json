@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-764",
+  "published_at_utc": "2026-11-24T23:10:51.188142+00:00",
+  "products": [
+    {
+      "product_id": "4e85dc4f-0ac6-4d8c-906c-88408241f1f3",
+      "sample": 2516,
+      "name": "Leopar Detay Üç Parça Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4e85dc4f-0ac6-4d8c-906c-88408241f1f3-front-8d53519b2449.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4e85dc4f-0ac6-4d8c-906c-88408241f1f3-back-9138bdd04563.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4e85dc4f-0ac6-4d8c-906c-88408241f1f3-model-aa1b3dce90a5.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/4e85dc4f-0ac6-4d8c-906c-88408241f1f3-size-chart-6ddd9ee979a9.jpg"
+      },
+      "gallery_image_count": 14
+    }
+  ],
+  "skipped": []
+}
