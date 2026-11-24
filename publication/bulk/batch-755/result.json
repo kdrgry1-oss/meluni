@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-755",
+  "published_at_utc": "2026-11-24T12:07:45.454705+00:00",
+  "products": [
+    {
+      "product_id": "de4d5b8f-fe06-44e3-9872-74c8271ff21c",
+      "sample": 2426,
+      "name": "Kısa Kollu Yanı Yırtmaçlı Bisiklet Yaka Dizde Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/de4d5b8f-fe06-44e3-9872-74c8271ff21c-front-f470cd950ab9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/de4d5b8f-fe06-44e3-9872-74c8271ff21c-back-491bfca4e73a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/de4d5b8f-fe06-44e3-9872-74c8271ff21c-model-27471fd24db0.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
