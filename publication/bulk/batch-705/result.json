@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-705",
+  "published_at_utc": "2026-11-24T00:27:55.869704+00:00",
+  "products": [
+    {
+      "product_id": "63b93d98-5fa6-48c6-933f-38f28920be2f",
+      "sample": 3173,
+      "name": "Uzun Kollu Bisiklet Yakalı Şerit Detaylı Viskon Iki Iplik Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/63b93d98-5fa6-48c6-933f-38f28920be2f-front-21c7be23c3c5.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/63b93d98-5fa6-48c6-933f-38f28920be2f-back-1c58413833fb.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/63b93d98-5fa6-48c6-933f-38f28920be2f-model-9ef8d20efa98.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
