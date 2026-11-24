@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-767",
+  "published_at_utc": "2026-11-24T23:28:45.354190+00:00",
+  "products": [
+    {
+      "product_id": "43e259a1-473b-4346-a28d-7141345a36fd",
+      "sample": 3207,
+      "name": "Uzun Kollu Degaje Yakalı Sandy Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/43e259a1-473b-4346-a28d-7141345a36fd-front-24f557756eea.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/43e259a1-473b-4346-a28d-7141345a36fd-back-396dac7a86c4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/43e259a1-473b-4346-a28d-7141345a36fd-model-bf86d14d16f2.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
