@@ -1,0 +1,49 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-716",
+  "created_at": "2026-11-24T01:39:14.013536+00:00",
+  "catalog_poll_at": "2026-11-24T01:39:14.013536+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8e4ec131-71f6-493d-87d3-0251b985d88f",
+      "sample": 3385,
+      "name": "Uzun Kollu Kruvaze Yakalı Düğmeli Asimetrik Detaylı Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 110,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192621-1-056033ed48.jpg",
+        "https://modayakamoz.com/orj/janes-192621-2-f24a0e900d.jpg",
+        "https://modayakamoz.com/orj/janes-192621-3-e802c71d18.jpg",
+        "https://modayakamoz.com/orj/janes-192621-4-688016282a.jpg",
+        "https://modayakamoz.com/orj/janes-192621-6-f2bbffeb75.jpg",
+        "https://modayakamoz.com/orj/janes-extra-192621-5d6e21b5ff779d3f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-192621-44e4b2ceefd171b3.jpg",
+        "https://modayakamoz.com/orj/janes-extra-192621-fa9f6988c1c6d730.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "8e4ec131-71f6-493d-87d3-0251b985d88f/front.jpg",
+          "sha256": "4ee787668581c0afbad9be95ca0c6b2b1e9b4259fb191f330047a544e213eede",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3385,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8e4ec131/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8e4ec131-71f6-493d-87d3-0251b985d88f/fashion_model.jpg",
+          "sha256": "672c458f5222d2a782a17779f669cde0a4f2a3e206d7276cf439dd41e81830b9",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3385,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8e4ec131/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "8e4ec131-71f6-493d-87d3-0251b985d88f/size_chart.jpg",
+          "sha256": "11518f7551bc2cf0eac1560b47247eeb9eaa38797406114c9315f02c3663bd15",
+          "qa_status": "source_values_and_visual_qa_passed",
+          "sample": 3385,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8e4ec131/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
