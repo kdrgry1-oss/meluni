@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-770",
+  "published_at_utc": "2026-11-24T23:52:01.707980+00:00",
+  "products": [
+    {
+      "product_id": "1ff25531-76d3-48b6-9395-5099692cd1aa",
+      "sample": 3931,
+      "name": "Yüksek Bel Yanları Lastik Düğmeli Kot Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/1ff25531-76d3-48b6-9395-5099692cd1aa-front-c8e8b7ea5d71.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/1ff25531-76d3-48b6-9395-5099692cd1aa-model-116b80a4af64.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
