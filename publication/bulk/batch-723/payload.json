@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-723",
+  "created_at": "2026-11-24T02:33:22.299012+00:00",
+  "catalog_poll_at": "2026-11-24T02:33:22.299012+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "43aa7ae2-a82b-4608-b8c5-39a944351830",
+      "sample": 3649,
+      "name": "Uzun Kollu Yakalı Düğmeli Wellsoft Kaban",
+      "active_at_poll": true,
+      "stock_at_poll": 35,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/359092f24bd44b5014ba34fb92df9310.jpg",
+        "https://modayakamoz.com/orj/6017190c581b74ef8f1c3819d2edf7dc.jpg",
+        "https://modayakamoz.com/orj/03e86a7d70a6cd6e437883fbc6ce1120.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "43aa7ae2-a82b-4608-b8c5-39a944351830/front.jpg",
+          "sha256": "641cfd6b391f0cdd70e1aa922b32081aedac3d2606ca0809bfb0645c28bceb34",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3649,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3649-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "43aa7ae2-a82b-4608-b8c5-39a944351830/back.jpg",
+          "sha256": "53f789b6fdd427c7d54147b4d9202797a5ede77482a0fc01f2474d9f27a7b0ec",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3649,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3649-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "43aa7ae2-a82b-4608-b8c5-39a944351830/fashion_model.jpg",
+          "sha256": "2182435e72bef4477b5254c42929d6d86ae75dc2c04ceecabd5c23eb2911f389",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3649,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3649-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
