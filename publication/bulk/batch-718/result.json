@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-718",
+  "published_at_utc": "2026-11-24T01:52:42.952288+00:00",
+  "products": [
+    {
+      "product_id": "a6fedeba-0b60-42fb-9e34-6b34931d90a1",
+      "sample": 3428,
+      "name": "Uzun Kollu Oduncu Gömlek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a6fedeba-0b60-42fb-9e34-6b34931d90a1-front-7a12cb570c2b.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a6fedeba-0b60-42fb-9e34-6b34931d90a1-back-29ca9128b566.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a6fedeba-0b60-42fb-9e34-6b34931d90a1-model-35f4e5ef019d.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
