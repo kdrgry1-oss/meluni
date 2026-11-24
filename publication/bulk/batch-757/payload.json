@@ -1,0 +1,71 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-757",
+  "created_at": "2026-11-24T22:26:05.788288+00:00",
+  "catalog_poll_at": "2026-11-24T22:26:05.788288+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "5786a32f-28f6-43a2-b051-6d8f525bc176",
+      "sample": 3030,
+      "name": "Uzun Kollu Balıkçı Yaka Derin Yırtmaç Detay Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 253,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/03fc8f10fea2c9fe96dc.jpeg",
+        "https://modayakamoz.com/orj/d1c07c026e99d94e35c4.jpeg",
+        "https://modayakamoz.com/orj/30b1a1dcb75fa64d05f1.jpeg",
+        "https://modayakamoz.com/orj/5c89697298a60c6e06b6.jpeg",
+        "https://modayakamoz.com/orj/a8f5d058aaffb91a806b.jpeg",
+        "https://modayakamoz.com/orj/863c7107cbd4398aab82.jpeg",
+        "https://modayakamoz.com/orj/9a34dff5615cb4f34f8c.jpeg",
+        "https://modayakamoz.com/orj/85e353e2f715f3e20640.jpeg",
+        "https://modayakamoz.com/orj/d7fdd9157a5c61c61eb1.jpeg",
+        "https://modayakamoz.com/orj/04214a67d563d28f42f5.jpeg",
+        "https://modayakamoz.com/orj/ebd2e71c0b1d60847469.jpeg",
+        "https://modayakamoz.com/orj/cc018f629198544b69c3.jpeg",
+        "https://modayakamoz.com/orj/a595e11eff3bda896987.jpeg",
+        "https://modayakamoz.com/orj/fd346d96a791ca4d1739.jpeg",
+        "https://modayakamoz.com/orj/637d5b3f7709e593a6ee.jpeg",
+        "https://modayakamoz.com/orj/bda5a57b9480e7cab7c6.jpeg",
+        {
+          "id": "f32bf8da-e1f1-4854-b268-fb85942e8252",
+          "url": "https://cdn.meluni.com.tr/ai-products/b3a884c9-8579-4fb4-bc43-fea0e4e842ac-olcu-oto-4647ada7.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-17T05:23:34.474708+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "5786a32f-28f6-43a2-b051-6d8f525bc176/front.jpg",
+          "sha256": "d71c5d16ad09a03c84a3987fd2880223e2c62c38c10fa502ae5b6cdaeef6ec13",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3030,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3030-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5786a32f-28f6-43a2-b051-6d8f525bc176/back.jpg",
+          "sha256": "0801a2647aa25eaeaba90192f5f019efa3b2341bb0f552caa866b249c11afd51",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3030,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3030-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5786a32f-28f6-43a2-b051-6d8f525bc176/fashion_model.jpg",
+          "sha256": "e0194bf5015d565ecc7f463a4c40482909f39254003b2283083625cc36035c99",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3030,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3030-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "5786a32f-28f6-43a2-b051-6d8f525bc176/size_chart.jpg",
+          "sha256": "9f893c9a2e9a5744bac0e8e2b99ff2525db435b7eb4d1b3560f786fbd0e5b61a",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3030,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3030-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
