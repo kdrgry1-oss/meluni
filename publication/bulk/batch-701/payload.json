@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-701",
+  "created_at": "2026-11-24T00:04:34.125958+00:00",
+  "catalog_poll_at": "2026-11-24T00:04:34.125958+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "ca7d410b-4be5-45fc-923e-9f17291ff48a",
+      "sample": 3136,
+      "name": "Uzun Kollu Bisiklet Yaka Viskon Iki Iplik Bluz ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 160,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f971cab0a88afa2a9eac.jpeg",
+        "https://modayakamoz.com/orj/62c05e27e405c08e6df4.jpeg",
+        "https://modayakamoz.com/orj/209675ea2fd4f998b852.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "ca7d410b-4be5-45fc-923e-9f17291ff48a/front.jpg",
+          "sha256": "97e66af3988530ec9c8b57c3bb84f2d298d6001c2d3da96dd0f4ba887c1cd0ee",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3136,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3136-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ca7d410b-4be5-45fc-923e-9f17291ff48a/back.jpg",
+          "sha256": "50f6147253c558711a6027ef8dcb0fede546df751b5aa7b2f949fd83fe268142",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3136,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3136-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ca7d410b-4be5-45fc-923e-9f17291ff48a/fashion_model.jpg",
+          "sha256": "1c49437651c9f8ba548a2912a53b83e14a9e74591e9a8a4b70a261854d0b2681",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3136,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3136-model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
