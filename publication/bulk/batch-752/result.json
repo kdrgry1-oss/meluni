@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-752",
+  "published_at_utc": "2026-11-24T10:00:11.043258+00:00",
+  "products": [
+    {
+      "product_id": "9f4cc68a-c97b-4fc1-a056-73e491f18d83",
+      "sample": 2170,
+      "name": "Kısa Kollu V Yakalı Düğmeli Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9f4cc68a-c97b-4fc1-a056-73e491f18d83-front-4a4543703e6e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9f4cc68a-c97b-4fc1-a056-73e491f18d83-back-0c766c4cbd95.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9f4cc68a-c97b-4fc1-a056-73e491f18d83-model-533d514c53b0.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
