@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-753",
+  "published_at_utc": "2026-11-24T11:05:40.727454+00:00",
+  "products": [
+    {
+      "product_id": "95c85c63-dd94-4ed0-bd80-023502bacbb7",
+      "sample": 1863,
+      "name": "Kısa Kollu Kalp V Yakalı Pileli Janjan Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/95c85c63-dd94-4ed0-bd80-023502bacbb7-front-c486f0b98747.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/95c85c63-dd94-4ed0-bd80-023502bacbb7-back-23836bf0d44a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/95c85c63-dd94-4ed0-bd80-023502bacbb7-model-311833762e20.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/95c85c63-dd94-4ed0-bd80-023502bacbb7-size-chart-517304554363.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
