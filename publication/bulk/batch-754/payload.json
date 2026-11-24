@@ -1,0 +1,40 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-754",
+  "created_at": "2026-11-24T11:32:38.453319+00:00",
+  "catalog_poll_at": "2026-11-24T11:32:38.453319+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "4af54422-434c-4585-8952-d1832df9fbef",
+      "sample": 2034,
+      "name": "Kısa Kollu Tül Detaylı Taşlı Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 93,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a2b7b94606af936c1e9f.jpeg",
+        "https://modayakamoz.com/orj/dbaf721a2a4ed383bf18.jpeg",
+        "https://modayakamoz.com/orj/39dce3a50d09379121c7.jpeg",
+        "https://modayakamoz.com/orj/43a05e69a016822fef9c.jpeg",
+        "https://modayakamoz.com/orj/584fecd6dd0c5285488d.jpeg",
+        "https://modayakamoz.com/orj/491c1452e97d4c6fee33.jpeg",
+        {
+          "id": "1af1e192-3c4e-4f56-a9b9-5159d6e8c2ac",
+          "url": "https://cdn.meluni.com.tr/ai-products/0afa94a2-672a-4bf8-83ec-d384eedcbcb1-olcu-oto-6846711a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:24:40.217708+00:00"
+        }
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "4af54422-434c-4585-8952-d1832df9fbef/size_chart.jpg",
+          "sha256": "97a53041eac21ea7c34f9fac2a778515bde243f78653cadf147a8904304fd37b",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2034,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2034-size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
