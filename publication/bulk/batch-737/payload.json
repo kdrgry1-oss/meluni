@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-737",
+  "created_at": "2026-11-24T04:12:19.321412+00:00",
+  "catalog_poll_at": "2026-11-24T04:12:19.321412+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "5b1d236e-72d4-4a00-8e6b-8005e91b15c3",
+      "sample": 1240,
+      "name": "Ip Askılı Yaka Dantel Detaylı Kısa Kaşkorse Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/736a288d6d8c083144de.jpeg",
+        "https://modayakamoz.com/orj/22a7a6065c1086deffce.jpeg",
+        "https://modayakamoz.com/orj/4adeddf81694824b33af.jpeg",
+        "https://modayakamoz.com/orj/5bd90dce7c70b17375cb.jpeg",
+        {
+          "id": "a09eef89-61a0-4586-af0c-d6f792248d89",
+          "url": "https://cdn.meluni.com.tr/ai-products/5b1d236e-72d4-4a00-8e6b-8005e91b15c3-olcu-oto-c65a917f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:23:06.513416+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "5b1d236e-72d4-4a00-8e6b-8005e91b15c3/front.jpg",
+          "sha256": "30ace488189bf23a5ef7d8aa61e103eaeb37faeb5bbdc55160e57456a05f6b23",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1240,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1240-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5b1d236e-72d4-4a00-8e6b-8005e91b15c3/back.jpg",
+          "sha256": "bb9f66ec55a2014f929db97d9219a57aee816839ba85a526feff12fdb353c709",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1240,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1240-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5b1d236e-72d4-4a00-8e6b-8005e91b15c3/fashion_model.jpg",
+          "sha256": "0f148960f68319701e06f8e772a2816ac262b87342e865514e3e42400b2b8e0f",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1240,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1240-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
