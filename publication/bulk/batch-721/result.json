@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-721",
+  "published_at_utc": "2026-11-24T02:15:25.340661+00:00",
+  "products": [
+    {
+      "product_id": "7645d430-8225-4c29-bb27-d369ba8e32f3",
+      "sample": 3512,
+      "name": "Uzun Kollu V Yakalı Desenli Süprem Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7645d430-8225-4c29-bb27-d369ba8e32f3-front-4795bc3a446d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7645d430-8225-4c29-bb27-d369ba8e32f3-back-c8816b3608bd.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7645d430-8225-4c29-bb27-d369ba8e32f3-model-4fe7673b237a.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/7645d430-8225-4c29-bb27-d369ba8e32f3-size-chart-283dbce71396.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
