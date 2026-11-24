@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-726",
+  "created_at": "2026-11-24T02:51:58.781338+00:00",
+  "catalog_poll_at": "2026-11-24T02:51:58.781338+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b5edc4e8-050c-4ad1-8591-a37eaebf72bc",
+      "sample": 3790,
+      "name": "Yarım Boğaz Triko Yumuşak Dokulu Pamuklu Ince Dokuma Kazak",
+      "active_at_poll": true,
+      "stock_at_poll": 1995,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY691ce30dad2a9691ce30dad2ab.png",
+        "https://modayakamoz.com/orj/TY691ce30eedfbf691ce30eedfc1.png",
+        "https://modayakamoz.com/orj/TY691ce3105b583691ce3105b586.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "b5edc4e8-050c-4ad1-8591-a37eaebf72bc/front.jpg",
+          "sha256": "04fff830d48f3213871c25e3bf4890593b6537200413b70e34a3e1a846bd2d57",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3790,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3790-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b5edc4e8-050c-4ad1-8591-a37eaebf72bc/back.jpg",
+          "sha256": "4fa796c147514f97caf737c95f046893cf7f3a06892442dc794d20e44ee6f2e0",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3790,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3790-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b5edc4e8-050c-4ad1-8591-a37eaebf72bc/fashion_model.jpg",
+          "sha256": "5245c3d2eb9764978f42459f403b209bcc100fd3e06cdce15b6e33ed33faf29e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3790,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3790-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
