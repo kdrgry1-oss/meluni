@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-767",
+  "created_at": "2026-11-24T23:27:00.790235+00:00",
+  "catalog_poll_at": "2026-11-24T23:27:00.790235+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "43e259a1-473b-4346-a28d-7141345a36fd",
+      "sample": 3207,
+      "name": "Uzun Kollu Degaje Yakalı Sandy Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 37,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192739-1-b98858b7c1.jpg",
+        "https://modayakamoz.com/orj/janes-192739-2-cd9f50a37e.jpg",
+        "https://modayakamoz.com/orj/janes-192739-3-8cc272c32c.jpg",
+        "https://modayakamoz.com/orj/janes-192739-4-66534e0b33.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "43e259a1-473b-4346-a28d-7141345a36fd/front.jpg",
+          "sha256": "24f557756eea82d22dc68770ea2df81446695bda67b39432981b128c54292075",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3207,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3207-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "43e259a1-473b-4346-a28d-7141345a36fd/back.jpg",
+          "sha256": "396dac7a86c41e134a68552bc33103a89ee60e78640d344332bfd4271df13664",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3207,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3207-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "43e259a1-473b-4346-a28d-7141345a36fd/fashion_model.jpg",
+          "sha256": "bf86d14d16f2d9833b26c1bf7fc5126954cfc1a15425dfe224aea5769c269fd2",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3207,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3207-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
