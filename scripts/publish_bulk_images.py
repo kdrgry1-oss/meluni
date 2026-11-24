@@ -72,7 +72,19 @@ async def main(payload_file, assets_root, result_file):
                     if pid not in eligible:continue
                     doc=eligible[pid];urls=staged[pid]; old=list(doc.get('images') or [])
                     prefix_count=p.get('preserve_leading_existing_count',0)
-                    if prefix_count:
+                    replacement=p.get('replace_previous_ai_assets')
+                    if replacement:
+                        previous=doc.get('ai_images_published_assets') or {}
+                        previous_id=doc.get('ai_images_publication_id')
+                        requested=p.get('expected_previous_ai_assets') or {}
+                        if (previous_id!=p.get('expected_previous_publication_id') or
+                            canon(previous)!=canon(requested) or
+                            set(requested)!={'front','back','fashion_model'} or
+                            len(old)<3 or old[:3]!=[requested['front'],requested['back'],requested['fashion_model']] or
+                            set(v for v in VIEWS if v in urls)!=set(requested)):
+                            raise RuntimeError(f'invalid previous AI gallery for replacement: {pid}')
+                        new=[urls[v] for v in ('front','back','fashion_model')]+old[3:]
+                    elif prefix_count:
                         if prefix_count not in (1,2) or {v for v in VIEWS if v in urls}!={'fashion_model'} or len(old)<prefix_count or not all(isinstance(x,str) and x.startswith('https://cdn.meluni.com.tr/') for x in old[:prefix_count]):
                             raise RuntimeError(f'invalid preserved gallery prefix: {pid}')
                         new=old[:prefix_count]+[urls['fashion_model']]+old[prefix_count:]

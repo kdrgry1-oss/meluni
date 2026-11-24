@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-705",
+  "created_at": "2026-11-24T00:26:36.728084+00:00",
+  "catalog_poll_at": "2026-11-24T00:26:36.728084+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "63b93d98-5fa6-48c6-933f-38f28920be2f",
+      "sample": 3173,
+      "name": "Uzun Kollu Bisiklet Yakalı Şerit Detaylı Viskon Iki Iplik Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 111,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/63b93d98-5fa6-48c6-933f-38f28920be2f-front-50f1562b4957.jpg",
+        "https://cdn.meluni.com.tr/ai-products/63b93d98-5fa6-48c6-933f-38f28920be2f-back-456d5be5435b.jpg",
+        "https://cdn.meluni.com.tr/ai-products/63b93d98-5fa6-48c6-933f-38f28920be2f-model-5d3d6d49727a.jpg",
+        "https://modayakamoz.com/orj/janes-192449-1-1ff4f75c8c.jpg",
+        "https://modayakamoz.com/orj/janes-192449-2-e30692157d.jpg",
+        "https://modayakamoz.com/orj/janes-192449-3-03b091bc70.jpg",
+        "https://modayakamoz.com/orj/janes-192449-4-f966ac9a20.jpg",
+        "https://modayakamoz.com/orj/janes-192449-8-13e4383cf4.jpg"
+      ],
+      "replace_previous_ai_assets": true,
+      "expected_previous_publication_id": "meluni-images-20261110-v3-704",
+      "expected_previous_ai_assets": {
+        "front": "https://cdn.meluni.com.tr/ai-products/63b93d98-5fa6-48c6-933f-38f28920be2f-front-50f1562b4957.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/63b93d98-5fa6-48c6-933f-38f28920be2f-back-456d5be5435b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/63b93d98-5fa6-48c6-933f-38f28920be2f-model-5d3d6d49727a.jpg"
+      },
+      "assets": {
+        "front": {
+          "file": "63b93d98-5fa6-48c6-933f-38f28920be2f/front.jpg",
+          "sha256": "21c7be23c3c5f24c301e0c6ef3d05a2a78b63cb0b38f4d8371198f554c4510c4",
+          "qa_status": "visual_source_qa_passed_after_one_targeted_correction",
+          "sample": 3173,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3173-front-correction1-1200x1800.jpg"
+        },
+        "back": {
+          "file": "63b93d98-5fa6-48c6-933f-38f28920be2f/back.jpg",
+          "sha256": "1c58413833fb693a6ad3a99da62fb8f51a7c2a5dbdc2734f283f3e045222f02d",
+          "qa_status": "visual_source_qa_passed_after_one_targeted_correction",
+          "sample": 3173,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3173-back-correction1-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "63b93d98-5fa6-48c6-933f-38f28920be2f/fashion_model.jpg",
+          "sha256": "9ef8d20efa982e5383168fc6181e7c172e9ea87c8652a6869a012718fe029875",
+          "qa_status": "visual_source_qa_passed_after_one_targeted_correction",
+          "sample": 3173,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3173-model-correction1-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
