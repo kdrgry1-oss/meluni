@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-715",
+  "published_at_utc": "2026-11-24T01:36:09.280260+00:00",
+  "products": [
+    {
+      "product_id": "06aff90e-7dca-4590-a227-3f3536cc0b36",
+      "sample": 3384,
+      "name": "Uzun Kollu Kruvaze Yakalı Düğmeli Asimetrik Detaylı Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/06aff90e-7dca-4590-a227-3f3536cc0b36-front-979d01894770.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/06aff90e-7dca-4590-a227-3f3536cc0b36-model-5aa77c7c65a1.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/06aff90e-7dca-4590-a227-3f3536cc0b36-size-chart-eab445b59b25.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
