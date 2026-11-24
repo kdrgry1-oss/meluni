@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-714",
+  "created_at": "2026-11-24T01:28:53.102218+00:00",
+  "catalog_poll_at": "2026-11-24T01:28:53.102218+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d6efa286-e35d-439f-aaeb-66713b21fae7",
+      "sample": 3366,
+      "name": "Uzun Kollu Kruvaze Yakalı Belden Kemerli Mini Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 31,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2786e2fb46b604927f61.jpeg",
+        "https://modayakamoz.com/orj/43c4126f3bf0fd758699.jpeg",
+        "https://modayakamoz.com/orj/afb498ddc3ed1a131548.jpeg",
+        "https://modayakamoz.com/orj/613afca97fb07f81652a.jpeg",
+        "https://modayakamoz.com/orj/c1a2b29dcee9dd195297.jpeg",
+        {
+          "id": "0316a59f-e358-48a1-836e-f23445c62325",
+          "url": "https://cdn.meluni.com.tr/ai-products/d6efa286-e35d-439f-aaeb-66713b21fae7-olcu-oto-379a2335.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-16T05:20:54.765505+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d6efa286-e35d-439f-aaeb-66713b21fae7/front.jpg",
+          "sha256": "4fc6a61202b105cf9a911cd2124e0e14d72771dbc7050e08dfd558cdffa54e9d",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3366,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d6efa286/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d6efa286-e35d-439f-aaeb-66713b21fae7/fashion_model.jpg",
+          "sha256": "d35d4a66a0e23f0d08b2fd44efd7e788b722a3ccfe221fc123aa1528bd4fce46",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3366,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d6efa286/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
