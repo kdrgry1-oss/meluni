@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-721",
+  "created_at": "2026-11-24T02:14:05.535061+00:00",
+  "catalog_poll_at": "2026-11-24T02:14:05.535061+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7645d430-8225-4c29-bb27-d369ba8e32f3",
+      "sample": 3512,
+      "name": "Uzun Kollu V Yakalı Desenli Süprem Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 300,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4406be7d4d8b269ba284.jpeg",
+        "https://modayakamoz.com/orj/65348d3f12707a8d2017.jpeg",
+        "https://modayakamoz.com/orj/d538fc01747adfe41527.jpeg",
+        "https://modayakamoz.com/orj/bb550d9c85ab6f6e8021.jpeg",
+        "https://modayakamoz.com/orj/7b3e77b6cce4ec2d9173.jpeg",
+        "https://modayakamoz.com/orj/909a30212365c3f4c707.jpeg",
+        "https://modayakamoz.com/orj/ff68daaad54cadcd11eb.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7645d430-8225-4c29-bb27-d369ba8e32f3/front.jpg",
+          "sha256": "4795bc3a446dcc9ebef43e0b4e2d4159073048483761a231235b1d209ff3b7ef",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3512,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3512-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7645d430-8225-4c29-bb27-d369ba8e32f3/back.jpg",
+          "sha256": "c8816b3608bd9904e52102454714e7403cac74c71b18f2d9d729417b4e4f1408",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3512,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3512-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7645d430-8225-4c29-bb27-d369ba8e32f3/fashion_model.jpg",
+          "sha256": "4fe7673b237ae265a8ccfc04771c99abdbbfa8d4697acbb6e3ed85685f7b2b0e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3512,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-3512-model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7645d430-8225-4c29-bb27-d369ba8e32f3/size_chart.jpg",
+          "sha256": "283dbce7139679f7324785188c89c986cdc3b4d74fe94cd2fe60b9d88e79429d",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3512,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-3512-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
