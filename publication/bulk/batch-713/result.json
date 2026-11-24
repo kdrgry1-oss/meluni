@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-713",
+  "published_at_utc": "2026-11-24T01:24:46.621431+00:00",
+  "products": [
+    {
+      "product_id": "e30f75c5-5b2d-4326-9a41-1974ebc0eb3b",
+      "sample": 3363,
+      "name": "Uzun Kollu Kruvaze Yakalı Bağlamalı Dalgıç Janjan Krep Kiloş Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e30f75c5-5b2d-4326-9a41-1974ebc0eb3b-front-07fc31b79fbf.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e30f75c5-5b2d-4326-9a41-1974ebc0eb3b-back-6f541b47b074.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e30f75c5-5b2d-4326-9a41-1974ebc0eb3b-model-d04e91d26d34.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e30f75c5-5b2d-4326-9a41-1974ebc0eb3b-size-chart-5b6eb255c0a9.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
