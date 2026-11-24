@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-718",
+  "created_at": "2026-11-24T01:51:32.100550+00:00",
+  "catalog_poll_at": "2026-11-24T01:51:32.100550+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "a6fedeba-0b60-42fb-9e34-6b34931d90a1",
+      "sample": 3428,
+      "name": "Uzun Kollu Oduncu Gömlek",
+      "active_at_poll": true,
+      "stock_at_poll": 291,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68a398bc1aad668a398bc1aad9.png",
+        "https://modayakamoz.com/orj/TY68a398bd5515f68a398bd55162.png",
+        "https://modayakamoz.com/orj/TY68a398be8464468a398be84647.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "a6fedeba-0b60-42fb-9e34-6b34931d90a1/front.jpg",
+          "sha256": "7a12cb570c2ba6df282a15ddd33e68ef570e1b0af13b5244a66d43e4f773b80a",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3428,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a6fedeba/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a6fedeba-0b60-42fb-9e34-6b34931d90a1/back.jpg",
+          "sha256": "29ca9128b56678ab5c2afbcda6e91c56ce7e70ae832966702963b5e84f37a705",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3428,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a6fedeba/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a6fedeba-0b60-42fb-9e34-6b34931d90a1/fashion_model.jpg",
+          "sha256": "35f4e5ef019db5723522267a9a217126788fbfec5f58ae03ba86d9c393d575aa",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 3428,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a6fedeba/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
