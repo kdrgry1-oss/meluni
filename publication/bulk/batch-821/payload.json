@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-821",
+  "created_at": "2026-11-25T18:49:04.036957+00:00",
+  "catalog_poll_at": "2026-11-25T18:49:04.036957+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "4161dfe7-aaa9-4377-97c8-b7e042dd2308",
+      "sample": 821,
+      "name": "Askılı Yuvarlak Yakalı Viskon Düğmeli Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 37,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/131a56f6f5ab248b200e.jpeg",
+        "https://modayakamoz.com/orj/99c048684d32d086e3c6.jpeg",
+        "https://modayakamoz.com/orj/a9cc9908a4c68d73c421.jpeg",
+        "https://modayakamoz.com/orj/be6a3b320f89b233b7b8.jpeg",
+        "https://modayakamoz.com/orj/304ac097ce926a8daddf.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "4161dfe7-aaa9-4377-97c8-b7e042dd2308/front.jpg",
+          "sha256": "ab53e9c1a4d31407a5445bd5a1deeac090077f620a58333c76d57f6326623d8a",
+          "qa_status": "visual_qa_passed",
+          "sample": 821,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4161dfe7-aaa9-4377-97c8-b7e042dd2308/front-1200x1800.png"
+        },
+        "back": {
+          "file": "4161dfe7-aaa9-4377-97c8-b7e042dd2308/back.jpg",
+          "sha256": "b788717e8ee3667859192a3cd3512a793bbb13a01659df3f5fb81ecd96d6741b",
+          "qa_status": "visual_qa_passed",
+          "sample": 821,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4161dfe7-aaa9-4377-97c8-b7e042dd2308/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "4161dfe7-aaa9-4377-97c8-b7e042dd2308/fashion_model.jpg",
+          "sha256": "eddf07de0190a87d95d50a1ac047b04fb0d76dc07f5aa2bad96e0e19b021645e",
+          "qa_status": "visual_qa_passed",
+          "sample": 821,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4161dfe7-aaa9-4377-97c8-b7e042dd2308/model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
