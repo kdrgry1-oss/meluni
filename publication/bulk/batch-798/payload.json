@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-798",
+  "created_at": "2026-11-25T05:03:22.082596+00:00",
+  "catalog_poll_at": "2026-11-25T05:03:22.082596+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7abb45ea-12a8-4bc6-b573-c7c2f02decb9",
+      "sample": 798,
+      "name": "Bisiklet Yaka 20/1 Düz Oversize T-Shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4560,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY662a20440fb09662a20440fb0c.webp",
+        "https://modayakamoz.com/orj/TY662a2045be080662a2045be083.webp",
+        "https://modayakamoz.com/orj/TY662a2047693b1662a2047693b3.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "7abb45ea-12a8-4bc6-b573-c7c2f02decb9/front.jpg",
+          "sha256": "d6e9dee62ff13fb188c70a9bffab358e78a5cce0ac0afc7dd4ee1bbf553a5b71",
+          "qa_status": "pass",
+          "sample": 798,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1052-front-1200x1800.png"
+        },
+        "back": {
+          "file": "7abb45ea-12a8-4bc6-b573-c7c2f02decb9/back.jpg",
+          "sha256": "e005f2f119b27ff2ad71f4302d35127fbd69de8d35dc9f3dc70a413dfdde5a92",
+          "qa_status": "pass",
+          "sample": 798,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1052-back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "7abb45ea-12a8-4bc6-b573-c7c2f02decb9/fashion_model.jpg",
+          "sha256": "0e1f4c852880bf15f324ae82a017bcca9cd78675f255740a74a983ab71887afb",
+          "qa_status": "pass_after_one_targeted_headroom_correction",
+          "sample": 798,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-1052-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
