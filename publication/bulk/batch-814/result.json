@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-814",
+  "published_at_utc": "2026-11-25T12:41:39.723719+00:00",
+  "products": [
+    {
+      "product_id": "d4fa5e23-c3d8-46f6-acf8-ce71a39b0a78",
+      "sample": 814,
+      "name": "Battal Big Size Basic Tişört Bisiklet Yaka T-Shirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d4fa5e23-c3d8-46f6-acf8-ce71a39b0a78-front-3becf5ebeb87.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d4fa5e23-c3d8-46f6-acf8-ce71a39b0a78-model-98c6d91ad284.jpg"
+      },
+      "gallery_image_count": 5
+    }
+  ],
+  "skipped": []
+}
