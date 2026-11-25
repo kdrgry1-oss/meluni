@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-824",
+  "created_at": "2026-11-25T19:29:41.888020+00:00",
+  "catalog_poll_at": "2026-11-25T19:29:41.888020+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "87dbf992-75a4-4fb3-bcf8-edca4f98a8f1",
+      "sample": 824,
+      "name": "Askılı V Yakalı Bluz ve Aerobin Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 32,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/87dbf992-75a4-4fb3-bcf8-edca4f98a8f1/87dbf992-75a4-4fb3-bcf8-edca4f98a8f1-hd0-4a9d4c9d.jpg",
+        "https://cdn.meluni.com.tr/products/87dbf992-75a4-4fb3-bcf8-edca4f98a8f1/87dbf992-75a4-4fb3-bcf8-edca4f98a8f1-hd1-aa730bab.jpg",
+        "https://cdn.meluni.com.tr/products/87dbf992-75a4-4fb3-bcf8-edca4f98a8f1/87dbf992-75a4-4fb3-bcf8-edca4f98a8f1-hd2-cdf78744.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "87dbf992-75a4-4fb3-bcf8-edca4f98a8f1/front.jpg",
+          "sha256": "28f2163778a32eb07b0b442b178aab66a73770e51c8d1f3b365192fea9be2b6f",
+          "qa_status": "visual_qa_passed",
+          "sample": 824,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87dbf992-75a4-4fb3-bcf8-edca4f98a8f1/front-1200x1800.png"
+        },
+        "back": {
+          "file": "87dbf992-75a4-4fb3-bcf8-edca4f98a8f1/back.jpg",
+          "sha256": "f0c165129471e74011d9894a139dfec4e51dfa4edf84e8ae91c7e1d7e3fc0729",
+          "qa_status": "visual_qa_passed",
+          "sample": 824,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87dbf992-75a4-4fb3-bcf8-edca4f98a8f1/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "87dbf992-75a4-4fb3-bcf8-edca4f98a8f1/fashion_model.jpg",
+          "sha256": "30ae84d60e47ca09288490db4f1cbd7f87fa05e175dc29b9b5e796a4b5f8df16",
+          "qa_status": "visual_qa_passed",
+          "sample": 824,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-87dbf992-75a4-4fb3-bcf8-edca4f98a8f1/model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
