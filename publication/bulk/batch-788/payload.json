@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-788",
+  "created_at": "2026-11-25T04:11:56.687249+00:00",
+  "catalog_poll_at": "2026-11-25T04:11:56.687249+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "15a7f713-5634-47df-bd7f-13d69eb6cd4d",
+      "sample": 788,
+      "name": "Pike Dokuma Cepli Lastikli Bağcıklı 4 Mevsim Eşofman",
+      "active_at_poll": true,
+      "stock_at_poll": 5995,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a734bfdf13356a734bfdf1337.webp",
+        "https://modayakamoz.com/orj/TY6a734bff430656a734bff43068.webp",
+        "https://modayakamoz.com/orj/TY6a734c00b377c6a734c00b377e.webp",
+        "https://modayakamoz.com/orj/TY6a734c028bc526a734c028bc55.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "15a7f713-5634-47df-bd7f-13d69eb6cd4d/front.jpg",
+          "sha256": "2c405aa0bc686dd5b9ed54817f79081ff9dfa82867b31c929451f84cfc94414f",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 788,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-15a7f713-5634-47df-bd7f-13d69eb6cd4d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "15a7f713-5634-47df-bd7f-13d69eb6cd4d/back.jpg",
+          "sha256": "79d66cd1bf055720baa75abc5d3e627a91fc73f57f3ca0718ce622b7cbec0673",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 788,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-15a7f713-5634-47df-bd7f-13d69eb6cd4d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "15a7f713-5634-47df-bd7f-13d69eb6cd4d/fashion_model.jpg",
+          "sha256": "afc500c9a0b20e1e1125e1ccf09308d2afc05b84b0699637afa94ab6fb922e29",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 788,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-15a7f713-5634-47df-bd7f-13d69eb6cd4d/model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
