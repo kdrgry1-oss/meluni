@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-782",
+  "created_at": "2026-11-25T01:18:09.774613+00:00",
+  "catalog_poll_at": "2026-11-25T01:18:09.774613+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "4d6c47fd-818a-4427-ab47-cdfe1886de18",
+      "sample": 43,
+      "name": "Arkadan Çapraz Detay Yuvarlak Yaka Maksi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 71,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0cecae768ad0d08a3703.jpeg",
+        "https://modayakamoz.com/orj/5055f39a2dac7eeec2c2.jpeg",
+        "https://modayakamoz.com/orj/3856e9e654bdf4eece25.jpeg",
+        "https://modayakamoz.com/orj/f190e1ff310a9da3aebb.jpeg",
+        {
+          "id": "e6ffee0d-b7e4-44ef-b98c-f39db7f598d8",
+          "url": "https://cdn.meluni.com.tr/ai-products/7af88225-bdd9-40e4-9508-3b349f03715a-olcu-oto-119ed7c5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:26:43.261000+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/4d6c47fd-818a-4427-ab47-cdfe1886de18/a225efb7a407466d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "4d6c47fd-818a-4427-ab47-cdfe1886de18/front.jpg",
+          "sha256": "60e0dbb49a8c58367b594830c9466e504b373db135f2698546ce886e2a3af3c0",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 43,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-43-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "4d6c47fd-818a-4427-ab47-cdfe1886de18/back.jpg",
+          "sha256": "74e216327b571c84b3b2753225037cce57404483de961dd7c18be53ea2de0875",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 43,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-43-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4d6c47fd-818a-4427-ab47-cdfe1886de18/fashion_model.jpg",
+          "sha256": "82c8a22cd1ceaad5c31bb959cc021329b1aa69e48e617b52e2ea61b1f6836f99",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 43,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-43-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "4d6c47fd-818a-4427-ab47-cdfe1886de18/size_chart.jpg",
+          "sha256": "4f1d1df560d4fd344fc9513cc6740baf1b7358c87727a8bacbfc836caf146ea7",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 43,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-43-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}

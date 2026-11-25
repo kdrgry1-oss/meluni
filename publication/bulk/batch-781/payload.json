@@ -2,7 +2,7 @@
   "schema_version": 3,
   "publication_id": "meluni-images-20261110-v3-781",
   "created_at": "2026-11-25T01:13:46.274370+00:00",
-  "catalog_poll_at": "2026-11-25T01:13:46.274370+00:00",
+  "catalog_poll_at": "2026-11-25T01:18:09.774613+00:00",
   "publish_authorized_by_user": true,
   "products": [
     {
@@ -47,6 +47,13 @@
           "qa_status": "visual_source_qa_passed",
           "sample": 41,
           "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-41-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7af88225-bdd9-40e4-9508-3b349f03715a/size_chart.jpg",
+          "sha256": "4f1d1df560d4fd344fc9513cc6740baf1b7358c87727a8bacbfc836caf146ea7",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 41,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-41-1200x1800.jpg"
         }
       }
     }
