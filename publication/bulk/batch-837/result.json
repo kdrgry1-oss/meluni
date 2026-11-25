@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-837",
+  "published_at_utc": "2026-11-25T22:55:47.879607+00:00",
+  "products": [
+    {
+      "product_id": "c796b633-df4c-475e-a529-6d3c99efdc64",
+      "sample": 837,
+      "name": "Askılı V Yakalı Çift Renkli Askıları Bağcık Detaylı Bürümcük Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c796b633-df4c-475e-a529-6d3c99efdc64-front-23deefc696b1.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c796b633-df4c-475e-a529-6d3c99efdc64-back-793947763339.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c796b633-df4c-475e-a529-6d3c99efdc64-model-e939fd78f5bd.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/c796b633-df4c-475e-a529-6d3c99efdc64-model-back-69dc5c765dca.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/c796b633-df4c-475e-a529-6d3c99efdc64-size-chart-fba03da06298.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
