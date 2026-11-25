@@ -1,0 +1,57 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-819",
+  "created_at": "2026-11-25T13:20:11.421873+00:00",
+  "catalog_poll_at": "2026-11-25T13:20:11.421873+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8ed6152e-25bd-46cc-a712-c6191d840b1d",
+      "sample": 819,
+      "name": "Kısa Kollu Bisiklet Yaka Triko Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/520f7830a2b6cef3459e.jpeg",
+        "https://modayakamoz.com/orj/106643-2024-08-31-09-21-26.jpeg",
+        "https://modayakamoz.com/orj/106643-2024-08-05-13-06-08.jpeg",
+        "https://modayakamoz.com/orj/1aac7b84eb87de8a92e0.jpeg",
+        "https://modayakamoz.com/orj/b92845baa35e0e6981b6.jpeg",
+        "https://modayakamoz.com/orj/4f72ed67c00efbc70a39.jpeg",
+        "https://modayakamoz.com/orj/106643-2024-08-31-09-20-54.jpeg",
+        "https://modayakamoz.com/orj/106643-2024-08-31-09-21-01.jpeg",
+        "https://modayakamoz.com/orj/106643-2024-08-31-09-21-14.jpeg",
+        {
+          "id": "b2cbc374-c338-54cb-a4b5-19f423c4b9bf",
+          "url": "https://cdn.meluni.com.tr/ai-products/8ed6152e-25bd-46cc-a712-c6191d840b1d-size-chart-2626123eb958.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:20:14.378903+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8ed6152e-25bd-46cc-a712-c6191d840b1d/front.jpg",
+          "sha256": "72d75f9a3f46b623b48ca45c64910fabf533ed6f6c6186e909dbf47982fdf41c",
+          "qa_status": "visual_qa_passed",
+          "sample": 819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1719-front-1200x1800.png"
+        },
+        "back": {
+          "file": "8ed6152e-25bd-46cc-a712-c6191d840b1d/back.jpg",
+          "sha256": "d8558d9cca2a2414bcab4f8066f1abb1fe5b131a16f9463c11bc6b61b7116088",
+          "qa_status": "visual_qa_passed_limited_rear_three_quarter_source",
+          "sample": 819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1719-back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "8ed6152e-25bd-46cc-a712-c6191d840b1d/fashion_model.jpg",
+          "sha256": "528701c939d834a3607cf094deedfbaa8fa2959c6a1bb2c573ad0e1651cd5249",
+          "qa_status": "visual_qa_passed_after_one_targeted_framing_correction",
+          "sample": 819,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-1719-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
