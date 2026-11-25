@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-804",
+  "published_at_utc": "2026-11-25T05:34:44.571955+00:00",
+  "products": [
+    {
+      "product_id": "229c9a3f-ecc9-4d89-b5bc-0e5af2e170dc",
+      "sample": 804,
+      "name": "Düz - Siyah Bomber Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/229c9a3f-ecc9-4d89-b5bc-0e5af2e170dc-front-8c3c4c1b921a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/229c9a3f-ecc9-4d89-b5bc-0e5af2e170dc-back-c06ba8088a23.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/229c9a3f-ecc9-4d89-b5bc-0e5af2e170dc-model-d3eaf3ac18f5.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
