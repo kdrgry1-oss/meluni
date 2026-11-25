@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-825",
+  "published_at_utc": "2026-11-25T19:44:50.327153+00:00",
+  "products": [
+    {
+      "product_id": "4588fd78-3e55-4fcb-b66b-dbbeec2a89a2",
+      "sample": 825,
+      "name": "Ip Askılı Yuvarlak Yakalı Cep Detaylı Salaş Süprem Uzun Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4588fd78-3e55-4fcb-b66b-dbbeec2a89a2-front-6f272eed7e60.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4588fd78-3e55-4fcb-b66b-dbbeec2a89a2-back-5995284d50a8.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/4588fd78-3e55-4fcb-b66b-dbbeec2a89a2-size-chart-8fba81dd9107.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
