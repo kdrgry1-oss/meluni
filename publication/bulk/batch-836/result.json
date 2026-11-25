@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-836",
+  "published_at_utc": "2026-11-25T22:45:07.544711+00:00",
+  "products": [
+    {
+      "product_id": "bfe9bdf6-85a8-4b57-a670-5c7590bcb12c",
+      "sample": 836,
+      "name": "Askılı Kruvaze Yakalı Önden Pile Detaylı Kısa Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bfe9bdf6-85a8-4b57-a670-5c7590bcb12c-front-fe707a1a4fda.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bfe9bdf6-85a8-4b57-a670-5c7590bcb12c-model-7d6129f5a956.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/bfe9bdf6-85a8-4b57-a670-5c7590bcb12c-size-chart-21a225788810.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
