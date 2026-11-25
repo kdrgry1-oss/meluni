@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-820",
+  "created_at": "2026-11-25T14:02:51.732609+00:00",
+  "catalog_poll_at": "2026-11-25T14:02:51.732609+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "e09bd5d8-4303-453d-beb7-c7ca67be6153",
+      "sample": 820,
+      "name": "Kısa Kollu Kruvaze Yaka Önden Asimetrik Detaylı Kısa Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 43,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/9c6c878c5453edb99127.jpeg",
+        "https://modayakamoz.com/orj/5e1dfc9900fa6796146f.jpeg",
+        "https://modayakamoz.com/orj/c15e97df67486eee73b1.jpeg",
+        {
+          "id": "6812591f-ba97-4306-8052-43c5bbab3ea8",
+          "url": "https://cdn.meluni.com.tr/ai-products/e09bd5d8-4303-453d-beb7-c7ca67be6153-olcu-oto-fa1d5f71.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-10T05:27:34.268691+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "e09bd5d8-4303-453d-beb7-c7ca67be6153/front.jpg",
+          "sha256": "952f40e885e39291d9b6ed94ae28a2048654f61cfd160005562f7f83dfb06478",
+          "qa_status": "visual_qa_passed",
+          "sample": 820,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e09bd5d8-4303-453d-beb7-c7ca67be6153/front-1200x1800.png"
+        },
+        "back": {
+          "file": "e09bd5d8-4303-453d-beb7-c7ca67be6153/back.jpg",
+          "sha256": "3b056036d987b2257142b39061023dbd8ae4404b1042aa4fbbb1a3a3133ddeb1",
+          "qa_status": "visual_qa_passed",
+          "sample": 820,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e09bd5d8-4303-453d-beb7-c7ca67be6153/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "e09bd5d8-4303-453d-beb7-c7ca67be6153/fashion_model.jpg",
+          "sha256": "ff11f534cd24834269baf07904e8d46158c473efa49ff4b12597577c6d301746",
+          "qa_status": "visual_qa_passed_after_one_targeted_framing_correction",
+          "sample": 820,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e09bd5d8-4303-453d-beb7-c7ca67be6153/model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
