@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-778",
+  "published_at_utc": "2026-11-25T01:42:40.913426+00:00",
+  "products": [
+    {
+      "product_id": "1b735504-95e7-4f5b-9cf5-3546c9fe81c9",
+      "sample": 1087,
+      "name": "Ip Askılı Derin V Yakalı Yırtmaçlı Uzun Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/1b735504-95e7-4f5b-9cf5-3546c9fe81c9-front-0b21d244c77f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/1b735504-95e7-4f5b-9cf5-3546c9fe81c9-back-8884188b9289.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/1b735504-95e7-4f5b-9cf5-3546c9fe81c9-model-c657ed7e22ee.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
