@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-830",
+  "published_at_utc": "2026-11-25T20:59:01.983795+00:00",
+  "products": [
+    {
+      "product_id": "83a50560-19fd-47ef-a916-a5094c55ccf5",
+      "sample": 830,
+      "name": "Kısa Kollu V Yakalı Bürümcük Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/83a50560-19fd-47ef-a916-a5094c55ccf5-front-b718026cfe74.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/83a50560-19fd-47ef-a916-a5094c55ccf5-back-6478cb8f7330.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/83a50560-19fd-47ef-a916-a5094c55ccf5-model-138222dd6add.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/83a50560-19fd-47ef-a916-a5094c55ccf5-model-back-412e1ad5ee1f.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
