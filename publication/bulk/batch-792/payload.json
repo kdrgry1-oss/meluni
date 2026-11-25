@@ -1,0 +1,33 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-792",
+  "created_at": "2026-11-25T04:33:32.486400+00:00",
+  "catalog_poll_at": "2026-11-25T04:33:32.486400+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "67351dae-5181-4264-8cd6-412bf3656567",
+      "sample": 792,
+      "name": "Polo Yaka Pike Düğmeli Basic Tişört T-Shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4598,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/67351dae-5181-4264-8cd6-412bf3656567-front-ab9af1c665b6.jpg",
+        "https://cdn.meluni.com.tr/ai-products/67351dae-5181-4264-8cd6-412bf3656567-back-3e16eabee242.jpg",
+        "https://modayakamoz.com/orj/TY69d28a0354c1a69d28a0354c1c.webp",
+        "https://modayakamoz.com/orj/TY69d28a060545369d28a0605455.webp",
+        "https://modayakamoz.com/orj/TY69d28a0b20cb369d28a0b20cb5.webp"
+      ],
+      "preserve_leading_existing_count": 2,
+      "assets": {
+        "fashion_model": {
+          "file": "67351dae-5181-4264-8cd6-412bf3656567/fashion_model.jpg",
+          "sha256": "0cb3139cab645919f8e1c139553361dc89e6d564f2f61d1237a9a28130505b3b",
+          "qa_status": "visual_source_qa_pass_after_one_targeted_framing_correction",
+          "sample": 792,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/fashion-1030-model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
