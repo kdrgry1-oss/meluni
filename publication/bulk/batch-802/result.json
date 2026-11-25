@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-802",
+  "published_at_utc": "2026-11-25T05:24:42.574617+00:00",
+  "products": [
+    {
+      "product_id": "168ccfa7-68a3-4057-82ca-85c70067ac8d",
+      "sample": 802,
+      "name": "Bomber Mont – Su İtici Ceket",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/168ccfa7-68a3-4057-82ca-85c70067ac8d-front-f89cc59b7eeb.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/168ccfa7-68a3-4057-82ca-85c70067ac8d-back-75c5b90746a6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/168ccfa7-68a3-4057-82ca-85c70067ac8d-model-1b0120438569.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
