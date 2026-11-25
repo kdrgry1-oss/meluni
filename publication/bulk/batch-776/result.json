@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-776",
+  "published_at_utc": "2026-11-25T01:37:41.967415+00:00",
+  "products": [
+    {
+      "product_id": "afbf65c6-29ec-449d-8bae-e2a8a1d56fff",
+      "sample": 1848,
+      "name": "Kısa Kollu Hakim V Yakalı Dokuma Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/afbf65c6-29ec-449d-8bae-e2a8a1d56fff-front-aa7d38c3e335.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/afbf65c6-29ec-449d-8bae-e2a8a1d56fff-back-99ca05bebd5f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/afbf65c6-29ec-449d-8bae-e2a8a1d56fff-model-96d94a02e94a.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
