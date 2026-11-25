@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-810",
+  "published_at_utc": "2026-11-25T09:04:37.891356+00:00",
+  "products": [
+    {
+      "product_id": "39bfdde6-28b7-45d9-99f9-08f2d75ddfa4",
+      "sample": 810,
+      "name": "Ip Askılı Dantelli Yırtmaçlı Viskon Gecelik",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/39bfdde6-28b7-45d9-99f9-08f2d75ddfa4-front-132a30050dda.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/39bfdde6-28b7-45d9-99f9-08f2d75ddfa4-back-74738afcae9e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/39bfdde6-28b7-45d9-99f9-08f2d75ddfa4-model-1f3815e537e5.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
