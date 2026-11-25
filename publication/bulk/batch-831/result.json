@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-831",
+  "published_at_utc": "2026-11-25T21:17:59.573519+00:00",
+  "products": [
+    {
+      "product_id": "68df7cf7-5c12-48c0-b58f-4ae09a25596a",
+      "sample": 831,
+      "name": "Ip Askılı Beli Lastikli Kısa Süprem Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/68df7cf7-5c12-48c0-b58f-4ae09a25596a-front-83270e87a46d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/68df7cf7-5c12-48c0-b58f-4ae09a25596a-back-c9d52e116787.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/68df7cf7-5c12-48c0-b58f-4ae09a25596a-model-966e9f81275e.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/68df7cf7-5c12-48c0-b58f-4ae09a25596a-model-back-26daf87a62f4.jpg"
+      },
+      "gallery_image_count": 14
+    }
+  ],
+  "skipped": []
+}
