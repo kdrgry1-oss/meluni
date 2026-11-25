@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-822",
+  "published_at_utc": "2026-11-25T19:02:15.429802+00:00",
+  "products": [
+    {
+      "product_id": "96ec5d9a-553b-4588-94ee-9516b084ad9f",
+      "sample": 822,
+      "name": "Ip Askılı V Yakalı Yırtmaçlı Uzun Süprem Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/96ec5d9a-553b-4588-94ee-9516b084ad9f-front-9671111306fc.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/96ec5d9a-553b-4588-94ee-9516b084ad9f-back-5da0261ec95b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/96ec5d9a-553b-4588-94ee-9516b084ad9f-model-86936b160b5d.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
