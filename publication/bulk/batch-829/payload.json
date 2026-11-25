@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-829",
+  "created_at": "2026-11-25T20:30:58.314619+00:00",
+  "catalog_poll_at": "2026-11-25T20:30:58.314619+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "fb705e4d-0c72-44a9-8656-e2954a61a93d",
+      "sample": 829,
+      "name": "Ceket Kolsuz Viskon Iki Iplik Bluz ve Pantolon Üçlü Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 139,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193859-1-5ffc9bc9360c.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193859-95625c45775c2bd9.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193859-9a7d94b8f04732f0.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193859-0f41f9385ad0899e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "fb705e4d-0c72-44a9-8656-e2954a61a93d/front.jpg",
+          "sha256": "ca04ec4185080ea29dc25814b65c9ab02e229c47fd245d52fa1fdcdb6047a67c",
+          "qa_status": "visual_qa_passed",
+          "sample": 829,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fb705e4d-0c72-44a9-8656-e2954a61a93d/front-1200x1800.png"
+        },
+        "back": {
+          "file": "fb705e4d-0c72-44a9-8656-e2954a61a93d/back.jpg",
+          "sha256": "9471b5a4b17397763d29eab6f109fb994c2e6ab1c705226ed7b2a0a589232e5d",
+          "qa_status": "visual_qa_passed",
+          "sample": 829,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fb705e4d-0c72-44a9-8656-e2954a61a93d/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "fb705e4d-0c72-44a9-8656-e2954a61a93d/fashion_model.jpg",
+          "sha256": "65e6f29866aaf04ec2130244a57e0c5da49d89d75bc65876a59856ace09f005f",
+          "qa_status": "visual_qa_passed",
+          "sample": 829,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fb705e4d-0c72-44a9-8656-e2954a61a93d/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "fb705e4d-0c72-44a9-8656-e2954a61a93d/fashion_model_back.jpg",
+          "sha256": "6c1b0b14824d45555661ce4c1b6da86044faac9e42f2c0b029dfe22fe0a555eb",
+          "qa_status": "visual_qa_passed",
+          "sample": 829,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fb705e4d-0c72-44a9-8656-e2954a61a93d/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
