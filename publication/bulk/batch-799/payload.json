@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-799",
+  "created_at": "2026-11-25T05:08:07.317568+00:00",
+  "catalog_poll_at": "2026-11-25T05:08:07.317568+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "66b11dc8-e9d6-48ff-b1be-105fe789e30e",
+      "sample": 799,
+      "name": "Bomber Mont – Su İtici Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 4988,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68e2e0fea82a968e2e0fea82aa.png",
+        "https://modayakamoz.com/orj/TY68e2e0ffc5d3068e2e0ffc5d33.png",
+        "https://modayakamoz.com/orj/TY68e2e100eb1a568e2e100eb1a8.png",
+        "https://modayakamoz.com/orj/TY68e2e1024200168e2e10242003.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "66b11dc8-e9d6-48ff-b1be-105fe789e30e/front.jpg",
+          "sha256": "4744a5adf828c5b2f9a69c41e0cde0108d73c7bd1527d36ea4a0f11304fdc939",
+          "qa_status": "visual_qa_passed",
+          "sample": 799,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1059-front-1200x1800.png"
+        },
+        "back": {
+          "file": "66b11dc8-e9d6-48ff-b1be-105fe789e30e/back.jpg",
+          "sha256": "81fc60e50512b473bb992c9f23dd06b0d226ef1bd88c664b3db680c33d359dab",
+          "qa_status": "visual_qa_passed",
+          "sample": 799,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1059-back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "66b11dc8-e9d6-48ff-b1be-105fe789e30e/fashion_model.jpg",
+          "sha256": "242608cb45f2be30ec0d966c6c983466938067325abf8bfa327711aa57f8f56b",
+          "qa_status": "visual_qa_passed_after_one_targeted_headroom_correction",
+          "sample": 799,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-1059-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
