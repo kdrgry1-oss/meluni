@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-839",
+  "published_at_utc": "2026-11-25T23:38:39.385201+00:00",
+  "products": [
+    {
+      "product_id": "2536af10-1ca4-413b-910b-de817ae150c4",
+      "sample": 839,
+      "name": "Askılı V Yakalı Çift Renk Şeritli Yırtmaçlı Uzun Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2536af10-1ca4-413b-910b-de817ae150c4-front-1b7592bc2aa6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2536af10-1ca4-413b-910b-de817ae150c4-back-62c045a67d97.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2536af10-1ca4-413b-910b-de817ae150c4-model-20a3cab7c445.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/2536af10-1ca4-413b-910b-de817ae150c4-model-back-61ea996928c6.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
