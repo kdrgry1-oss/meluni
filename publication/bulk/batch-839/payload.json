@@ -1,0 +1,62 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-839",
+  "created_at": "2026-11-25T23:36:08.734940+00:00",
+  "catalog_poll_at": "2026-11-25T23:36:08.734940+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "2536af10-1ca4-413b-910b-de817ae150c4",
+      "sample": 839,
+      "name": "Askılı V Yakalı Çift Renk Şeritli Yırtmaçlı Uzun Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 82,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/801ec85d8f950b5126cf.jpeg",
+        "https://modayakamoz.com/orj/cad92653972c1d898c6d.jpeg",
+        "https://modayakamoz.com/orj/085e963036450a1ee080.jpeg",
+        "https://modayakamoz.com/orj/8a98af23609480c62b0e.jpeg",
+        "https://modayakamoz.com/orj/6767f4cecf79328fc748.jpeg",
+        "https://modayakamoz.com/orj/a1a7b3aec6e6f6bcc746.jpeg",
+        "https://modayakamoz.com/orj/d542db02bb6f3279bc55.jpeg",
+        {
+          "id": "7ea68c88-09cb-4a5a-abdb-0f424df356cd",
+          "url": "https://cdn.meluni.com.tr/ai-products/2536af10-1ca4-413b-910b-de817ae150c4-olcu-oto-cfc91e2c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:26:56.080124+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "2536af10-1ca4-413b-910b-de817ae150c4/front.jpg",
+          "sha256": "1b7592bc2aa60676dcc50256d36269231b42796689cf1a57399d4cc19ab8127d",
+          "qa_status": "visual_qa_passed",
+          "sample": 839,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2536af10-1ca4-413b-910b-de817ae150c4/front-1200x1800.png"
+        },
+        "back": {
+          "file": "2536af10-1ca4-413b-910b-de817ae150c4/back.jpg",
+          "sha256": "62c045a67d97a7a88c395b77a8f5fd1859df174febb6d0d0a585c9a00a4addfe",
+          "qa_status": "visual_qa_passed",
+          "sample": 839,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2536af10-1ca4-413b-910b-de817ae150c4/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "2536af10-1ca4-413b-910b-de817ae150c4/fashion_model.jpg",
+          "sha256": "20a3cab7c445a9d5a4d6b52ad9580a07602e3b133a3db8752836a25c4e2864e7",
+          "qa_status": "visual_qa_passed",
+          "sample": 839,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2536af10-1ca4-413b-910b-de817ae150c4/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "2536af10-1ca4-413b-910b-de817ae150c4/fashion_model_back.jpg",
+          "sha256": "61ea996928c6da8644b055aa0d59cef39103b8627ab850a1005604eaf8b575b7",
+          "qa_status": "visual_qa_passed",
+          "sample": 839,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2536af10-1ca4-413b-910b-de817ae150c4/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
