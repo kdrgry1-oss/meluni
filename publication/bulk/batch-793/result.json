@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-793",
+  "published_at_utc": "2026-11-25T04:40:55.451405+00:00",
+  "products": [
+    {
+      "product_id": "3e265b32-104d-419a-8107-5464437cd9e0",
+      "sample": 793,
+      "name": "Regular Fit Tişört Bisiklet Yaka Kısa Kol Basıc T-Shirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3e265b32-104d-419a-8107-5464437cd9e0-front-93e837c9d001.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/3e265b32-104d-419a-8107-5464437cd9e0-back-3c8afda31278.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3e265b32-104d-419a-8107-5464437cd9e0-model-4ebcd0d139b9.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
