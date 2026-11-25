@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-794",
+  "created_at": "2026-11-25T04:43:40.167996+00:00",
+  "catalog_poll_at": "2026-11-25T04:43:40.167996+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "43b8cfc1-540f-4a95-b0c6-6e64c2f13525",
+      "sample": 794,
+      "name": "Balıkçı Yaka Regular Fit Triko Kazak",
+      "active_at_poll": true,
+      "stock_at_poll": 4991,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6aad38d8106d46aad38d8106d7.webp",
+        "https://modayakamoz.com/orj/TY6aad38d9270236aad38d927026.webp",
+        "https://modayakamoz.com/orj/TY6aad38da184f66aad38da184f9.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "43b8cfc1-540f-4a95-b0c6-6e64c2f13525/front.jpg",
+          "sha256": "f805784ef2d4eaeb54d9de4c5db3d66f53f6157187be20e64ef7ab60f5c736d1",
+          "qa_status": "visual_qa_passed",
+          "sample": 794,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1054-front-1200x1800.png"
+        },
+        "back": {
+          "file": "43b8cfc1-540f-4a95-b0c6-6e64c2f13525/back.jpg",
+          "sha256": "414418c6bbd577ab9643269a98a49f580f1c16c7f53f107ccc7b58ccbe88191d",
+          "qa_status": "visual_qa_passed",
+          "sample": 794,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1054-back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "43b8cfc1-540f-4a95-b0c6-6e64c2f13525/fashion_model.jpg",
+          "sha256": "4f7127ecfa9ce6432e4a92bb55e3a9cff5409b1d80e731681e2e7e33785092e4",
+          "qa_status": "visual_qa_passed_after_one_targeted_headroom_correction",
+          "sample": 794,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-1054-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
