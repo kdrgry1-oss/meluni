@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-789",
+  "published_at_utc": "2026-11-25T04:19:17.064618+00:00",
+  "products": [
+    {
+      "product_id": "600099db-789b-4016-a727-5825d1df6fb1",
+      "sample": 789,
+      "name": "Pike Dokuma Cepli Lastikli Bağcıklı 4 Mevsim Eşofman",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/600099db-789b-4016-a727-5825d1df6fb1-front-17456df9d7a0.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/600099db-789b-4016-a727-5825d1df6fb1-back-729f35eba068.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/600099db-789b-4016-a727-5825d1df6fb1-model-ac400cbebf98.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
