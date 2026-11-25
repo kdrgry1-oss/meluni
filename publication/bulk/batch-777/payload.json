@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-777",
+  "created_at": "2026-11-25T00:49:12.279139+00:00",
+  "catalog_poll_at": "2026-11-25T00:49:12.279139+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8375dabe-78b6-48a5-9879-2289e5730f57",
+      "sample": 981,
+      "name": "Elbise ve Kısa Kollu Tül Elbise Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 74,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b95e3e917841182c5847.jpeg",
+        "https://modayakamoz.com/orj/dd5d2f67dfd9b4ec20b1.jpeg",
+        "https://modayakamoz.com/orj/7143adca752e041d90b9.jpeg",
+        "https://modayakamoz.com/orj/de94e8535d7e77a3dc64.jpeg",
+        "https://modayakamoz.com/orj/35f6a350f20af2e8e245.jpeg",
+        {
+          "id": "d113b8a3-3613-4abd-aa16-88d5ed364d15",
+          "url": "https://cdn.meluni.com.tr/ai-products/8375dabe-78b6-48a5-9879-2289e5730f57-olcu-oto-70c343fb.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:20:31.558949+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8375dabe-78b6-48a5-9879-2289e5730f57/front.jpg",
+          "sha256": "46bb047f0da2b913b7ab3f5d21fe1440863a4e18ee78568904f17b0212423b21",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-981-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8375dabe-78b6-48a5-9879-2289e5730f57/back.jpg",
+          "sha256": "10b57100aba300e556c4fb870c360ff56a1b76399c1da5a0f1f5bcc0c73ae4a1",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-981-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8375dabe-78b6-48a5-9879-2289e5730f57/fashion_model.jpg",
+          "sha256": "0228166aef4a41c88e345f32343094dd3ade1421f96f1d38c0b5f955d8e2b47e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-981-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
