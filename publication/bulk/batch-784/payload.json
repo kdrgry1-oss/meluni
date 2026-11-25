@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-784",
+  "created_at": "2026-11-25T03:18:54.592610+00:00",
+  "catalog_poll_at": "2026-11-25T03:18:54.592610+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "57dc6634-bc63-4674-bfb7-a2165ded74b6",
+      "sample": 784,
+      "name": "Scuba Oversize Şerit Detaylı Fermuarlı Üst Eşofman Takımı",
+      "active_at_poll": true,
+      "stock_at_poll": 4785,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a9fae45c0fd96a9fae45c0fda.webp",
+        "https://modayakamoz.com/orj/TY6a9fae46c95c86a9fae46c95c9.webp",
+        "https://modayakamoz.com/orj/TY6a9fae47c89cb6a9fae47c89cd.webp",
+        "https://modayakamoz.com/orj/TY6a9fae48d4d7a6a9fae48d4d7b.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "57dc6634-bc63-4674-bfb7-a2165ded74b6/front.jpg",
+          "sha256": "de1f5094e8184d9aaafe46585e52019461bac5f30711db574d45b4b4df0d17d5",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 784,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-57dc6634-bc63-4674-bfb7-a2165ded74b6/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "57dc6634-bc63-4674-bfb7-a2165ded74b6/back.jpg",
+          "sha256": "ae269a25101dc352b8a6736e6a1c37afc13cf71253a0ca262725c4ae2d361722",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 784,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-57dc6634-bc63-4674-bfb7-a2165ded74b6/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "57dc6634-bc63-4674-bfb7-a2165ded74b6/fashion_model.jpg",
+          "sha256": "37e01dbd55ae4c7f766ebeda42807915dfaa5109cc5fdcd4783d6ba17739b923",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 784,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-57dc6634-bc63-4674-bfb7-a2165ded74b6/model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
