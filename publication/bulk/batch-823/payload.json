@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-823",
+  "created_at": "2026-11-25T19:14:52.233083+00:00",
+  "catalog_poll_at": "2026-11-25T19:14:52.233083+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8dde51b7-b5d1-41dc-b3fe-12de1859e232",
+      "sample": 823,
+      "name": "Ip Askılı V Yakalı Yırtmaçlı Uzun Süprem Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1d8189619e8f6e2eb05e.jpeg",
+        "https://modayakamoz.com/orj/e2d84b06fa8b756ba867.jpeg",
+        "https://modayakamoz.com/orj/59b2eb779cd614701acc.jpeg",
+        "https://modayakamoz.com/orj/7970a27a4d928c25a8d3.jpeg",
+        "https://modayakamoz.com/orj/581d187b9cbbbc8e89f6.jpeg",
+        "https://modayakamoz.com/orj/dd7151c39f592dd047ab.jpeg",
+        "https://modayakamoz.com/orj/3b33b1568b3290db50c1.jpeg",
+        {
+          "id": "8ece2f36-8d90-426d-884e-125c4fc6dada",
+          "url": "https://cdn.meluni.com.tr/ai-products/96ec5d9a-553b-4588-94ee-9516b084ad9f-olcu-oto-d95548d8.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-08T05:22:23.201983+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "8dde51b7-b5d1-41dc-b3fe-12de1859e232/front.jpg",
+          "sha256": "b9e85ed8cf7323ba7ee52e9b5cd90b9d02e90c9d8ac92f5d859ec37e33006666",
+          "qa_status": "visual_qa_passed",
+          "sample": 823,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8dde51b7-b5d1-41dc-b3fe-12de1859e232/front-1200x1800.png"
+        },
+        "back": {
+          "file": "8dde51b7-b5d1-41dc-b3fe-12de1859e232/back.jpg",
+          "sha256": "0efe45fcb9877f5cefceda1af47a4c006e7865a27ff0762f4835c57acbbcd9fd",
+          "qa_status": "visual_qa_passed",
+          "sample": 823,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8dde51b7-b5d1-41dc-b3fe-12de1859e232/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "8dde51b7-b5d1-41dc-b3fe-12de1859e232/fashion_model.jpg",
+          "sha256": "bc5c8e3de47f99384757d974da65cb9ef37ba9be0e663899d9b1510337773857",
+          "qa_status": "visual_qa_passed",
+          "sample": 823,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8dde51b7-b5d1-41dc-b3fe-12de1859e232/model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
