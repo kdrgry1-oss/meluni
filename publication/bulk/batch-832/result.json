@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-832",
+  "published_at_utc": "2026-11-25T21:31:09.215455+00:00",
+  "products": [
+    {
+      "product_id": "2a0284fb-161d-4201-8a14-6da69a9e91b3",
+      "sample": 832,
+      "name": "Ip Askılı Beli Lastikli Yırtmaçlı Midi Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2a0284fb-161d-4201-8a14-6da69a9e91b3-front-75f9e3c48f2d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2a0284fb-161d-4201-8a14-6da69a9e91b3-back-5c4262b0a60e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2a0284fb-161d-4201-8a14-6da69a9e91b3-model-11fa5a40f1f2.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/2a0284fb-161d-4201-8a14-6da69a9e91b3-model-back-fae03aa02f96.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/2a0284fb-161d-4201-8a14-6da69a9e91b3-size-chart-5f1178efe3e4.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
