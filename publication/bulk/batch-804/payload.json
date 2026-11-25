@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-804",
+  "created_at": "2026-11-25T05:33:25.827439+00:00",
+  "catalog_poll_at": "2026-11-25T05:33:25.827439+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "229c9a3f-ecc9-4d89-b5bc-0e5af2e170dc",
+      "sample": 804,
+      "name": "Düz - Siyah Bomber Ceket",
+      "active_at_poll": true,
+      "stock_at_poll": 657,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY65d4a300a2de665d4a300a2de8.webp",
+        "https://modayakamoz.com/orj/TY65d4a303dbb8465d4a303dbb86.webp",
+        "https://modayakamoz.com/orj/TY65d4a30b34a9465d4a30b34a97.webp",
+        "https://modayakamoz.com/orj/TY65d4a31239c3165d4a31239c32.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "229c9a3f-ecc9-4d89-b5bc-0e5af2e170dc/front.jpg",
+          "sha256": "8c3c4c1b921a76b4d1b6e0e3102e06aa904347dfa9203bc5b7c46948930210f0",
+          "qa_status": "visual_qa_passed",
+          "sample": 804,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1065-front-1200x1800.png"
+        },
+        "back": {
+          "file": "229c9a3f-ecc9-4d89-b5bc-0e5af2e170dc/back.jpg",
+          "sha256": "c06ba8088a2377752c72585d4c81b8e7e11813f9788663da64eb4410922ceffd",
+          "qa_status": "visual_qa_passed",
+          "sample": 804,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1065-back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "229c9a3f-ecc9-4d89-b5bc-0e5af2e170dc/fashion_model.jpg",
+          "sha256": "d3eaf3ac18f53b8ed380434864c7010ebfdd21917f9b3d6a4f942d535998a8a0",
+          "qa_status": "visual_qa_passed_after_one_targeted_headroom_correction",
+          "sample": 804,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-1065-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
