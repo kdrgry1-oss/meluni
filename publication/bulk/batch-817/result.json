@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-817",
+  "published_at_utc": "2026-11-25T13:12:36.972743+00:00",
+  "products": [
+    {
+      "product_id": "154620aa-9e50-4df0-a4b5-8830043dc986",
+      "sample": 817,
+      "name": "Düz Paça Beli Lastikli Spor Eşofman",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/154620aa-9e50-4df0-a4b5-8830043dc986-front-0406e9def83a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/154620aa-9e50-4df0-a4b5-8830043dc986-model-916ad34289e0.jpg"
+      },
+      "gallery_image_count": 4
+    }
+  ],
+  "skipped": []
+}
