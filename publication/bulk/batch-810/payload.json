@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-810",
+  "created_at": "2026-11-25T09:03:16.218858+00:00",
+  "catalog_poll_at": "2026-11-25T09:03:16.218858+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "39bfdde6-28b7-45d9-99f9-08f2d75ddfa4",
+      "sample": 810,
+      "name": "Ip Askılı Dantelli Yırtmaçlı Viskon Gecelik",
+      "active_at_poll": true,
+      "stock_at_poll": 48,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a762739461f944274369.jpeg",
+        "https://modayakamoz.com/orj/8f34ad30f02eaa2dee0d.jpeg",
+        "https://modayakamoz.com/orj/fd9c8f9f1c478778ce37.jpeg",
+        "https://modayakamoz.com/orj/a768b26fee6e1dd038a0.jpeg",
+        "https://modayakamoz.com/orj/fbdcfd3257017e85237d.jpeg",
+        "https://modayakamoz.com/orj/914d93ca9b3a672a9d58.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "39bfdde6-28b7-45d9-99f9-08f2d75ddfa4/front.jpg",
+          "sha256": "132a30050dda0b32cd48f2c9bf0e4793083d5fd2bfa85d13b85c81ea9b25edef",
+          "qa_status": "visual_qa_passed_after_one_targeted_correction",
+          "sample": 810,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-39bfdde6-28b7-45d9-99f9-08f2d75ddfa4/front-1200x1800.png"
+        },
+        "back": {
+          "file": "39bfdde6-28b7-45d9-99f9-08f2d75ddfa4/back.jpg",
+          "sha256": "74738afcae9e639cc11a95a2be50a7213b85325d6555e885ed96b8d49eb75e50",
+          "qa_status": "visual_qa_passed_after_one_targeted_correction",
+          "sample": 810,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-39bfdde6-28b7-45d9-99f9-08f2d75ddfa4/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "39bfdde6-28b7-45d9-99f9-08f2d75ddfa4/fashion_model.jpg",
+          "sha256": "1f3815e537e5ac35c7668080408f560b1cec6034e38bc395f4846c9fa0fdd63d",
+          "qa_status": "visual_qa_passed_after_one_targeted_correction",
+          "sample": 810,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-39bfdde6-28b7-45d9-99f9-08f2d75ddfa4/model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
