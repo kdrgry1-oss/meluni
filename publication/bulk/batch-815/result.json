@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-815",
+  "published_at_utc": "2026-11-25T12:52:20.647483+00:00",
+  "products": [
+    {
+      "product_id": "79ad5977-7ab7-4c76-9bc9-c9c55d761474",
+      "sample": 815,
+      "name": "Boyundan Geçmeli Pileli Sırtı Tamamen Açık Kısa Dalgıç Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/79ad5977-7ab7-4c76-9bc9-c9c55d761474-front-0a6e509ec5e1.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
