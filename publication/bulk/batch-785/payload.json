@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-785",
+  "created_at": "2026-11-25T03:31:02.555141+00:00",
+  "catalog_poll_at": "2026-11-25T03:31:02.555141+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d1394d31-d34d-43b4-8213-cb8e81e38a69",
+      "sample": 785,
+      "name": "Oversize Yarım Farmuarlı Yakalı SweatShirt",
+      "active_at_poll": true,
+      "stock_at_poll": 1237,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY66fb159a0606766fb159a06069.png",
+        "https://modayakamoz.com/orj/TY66fb159b602cd66fb159b602ce.png",
+        "https://modayakamoz.com/orj/TY66fb159f5ccf466fb159f5ccf7.png",
+        "https://modayakamoz.com/orj/TY66fb15a2ad32166fb15a2ad322.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "d1394d31-d34d-43b4-8213-cb8e81e38a69/front.jpg",
+          "sha256": "156e24b328f823704bcc6f453bc483167661389e4e8155f4468b8980ff70f5aa",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 785,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d1394d31-d34d-43b4-8213-cb8e81e38a69/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "d1394d31-d34d-43b4-8213-cb8e81e38a69/back.jpg",
+          "sha256": "a9c50dff65e782195d4c921b9cae5c89c6807c033ac77bd29893e77b8331f95c",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 785,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d1394d31-d34d-43b4-8213-cb8e81e38a69/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d1394d31-d34d-43b4-8213-cb8e81e38a69/fashion_model.jpg",
+          "sha256": "79971ddd3a1aeebb27ed15f847fad9f0d6449acdaec47ce1054aadd5bb906db0",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 785,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d1394d31-d34d-43b4-8213-cb8e81e38a69/model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
