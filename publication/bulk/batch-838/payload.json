@@ -1,0 +1,68 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-838",
+  "created_at": "2026-11-25T23:17:18.210689+00:00",
+  "catalog_poll_at": "2026-11-25T23:17:18.210689+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "764302d2-5c31-4464-ae64-f68075d6fe43",
+      "sample": 838,
+      "name": "Ip Askılı Dantelli Dalgıç Gecelik Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 68,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/238705d15d27c97e9dd1.jpeg",
+        "https://modayakamoz.com/orj/433550f3191fb71c27d6.jpeg",
+        "https://modayakamoz.com/orj/75ecd1426c633338847a.jpeg",
+        "https://modayakamoz.com/orj/6f2f4d886ee9f996bbce.jpeg",
+        "https://modayakamoz.com/orj/2db7cbb19b87b111a051.jpeg",
+        "https://modayakamoz.com/orj/d3e87f68aa03da394c4c.jpeg",
+        {
+          "id": "745b25cc-5ee0-429e-8f27-ed68f357867f",
+          "url": "https://cdn.meluni.com.tr/ai-products/e1847022-ff19-4df8-bf25-6a82530c00c9-olcu-oto-ca9fbbd5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-08T05:24:19.430695+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "764302d2-5c31-4464-ae64-f68075d6fe43/front.jpg",
+          "sha256": "c9346a7b99902f458a52941a9307d5a7b8ab0bb98497b0a3fe8fb9411a0b42d9",
+          "qa_status": "visual_qa_passed",
+          "sample": 838,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-764302d2-5c31-4464-ae64-f68075d6fe43/front-1200x1800.png"
+        },
+        "back": {
+          "file": "764302d2-5c31-4464-ae64-f68075d6fe43/back.jpg",
+          "sha256": "82ecbfb8cb7e482ab73d6dd42cfe89eacce9c6ca3204beb125bee78df3f0d218",
+          "qa_status": "visual_qa_passed",
+          "sample": 838,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-764302d2-5c31-4464-ae64-f68075d6fe43/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "764302d2-5c31-4464-ae64-f68075d6fe43/fashion_model.jpg",
+          "sha256": "91293c256960294d1f26b241f88d9d589c36b0aebf6ca35b801586c06db2ea49",
+          "qa_status": "visual_qa_passed",
+          "sample": 838,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-764302d2-5c31-4464-ae64-f68075d6fe43/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "764302d2-5c31-4464-ae64-f68075d6fe43/fashion_model_back.jpg",
+          "sha256": "1c5ca1f508aefe1d5f077155bc88ee81f2ce2a999699830ad31689570b5b9454",
+          "qa_status": "visual_qa_passed",
+          "sample": 838,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-764302d2-5c31-4464-ae64-f68075d6fe43/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "764302d2-5c31-4464-ae64-f68075d6fe43/size_chart.jpg",
+          "sha256": "817a8348bbc63f53594d4f813fe92fa2feb57c239135ed9c841b4541c91327e1",
+          "qa_status": "visual_qa_passed",
+          "sample": 838,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-764302d2-5c31-4464-ae64-f68075d6fe43/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
