@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-812",
+  "created_at": "2026-11-25T10:56:33.896235+00:00",
+  "catalog_poll_at": "2026-11-25T10:56:33.896235+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "9608e00c-2d44-410d-b491-cc2e30e2c93a",
+      "sample": 812,
+      "name": "Uzun Kollu Yakalı Krep Bluz ve Yırtmaçlı Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 159,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-194224-1-5e32cc131ef3.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194224-e25f1847bcc6368e.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194224-b45168685063b48f.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194224-f8ed602930df3c18.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194224-be8f2fb6986fb2b8.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194224-7bd4c1fe72e92055.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "9608e00c-2d44-410d-b491-cc2e30e2c93a/front.jpg",
+          "sha256": "e206e841f0524f6ca771e6f574c871daa0126f6f8fbef6e6bc91742da135bdea",
+          "qa_status": "visual_qa_passed_after_one_targeted_correction",
+          "sample": 812,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9608e00c-2d44-410d-b491-cc2e30e2c93a/front-1200x1800.png"
+        },
+        "back": {
+          "file": "9608e00c-2d44-410d-b491-cc2e30e2c93a/back.jpg",
+          "sha256": "c150d3da01a7d825cd993d9a54f4bd8bd78dda1e209633386a151fd32eedb998",
+          "qa_status": "visual_qa_passed",
+          "sample": 812,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9608e00c-2d44-410d-b491-cc2e30e2c93a/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "9608e00c-2d44-410d-b491-cc2e30e2c93a/fashion_model.jpg",
+          "sha256": "f7e2c05c6ec609d80921afa1f96f480e532984ee8618ad71e45e6319764c3e11",
+          "qa_status": "visual_qa_passed",
+          "sample": 812,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9608e00c-2d44-410d-b491-cc2e30e2c93a/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "9608e00c-2d44-410d-b491-cc2e30e2c93a/size_chart.jpg",
+          "sha256": "4ef02b4dcec49b756ddd40769c80878749e104f24cfd57d466e2578bbfd89129",
+          "qa_status": "visual_qa_passed",
+          "sample": 812,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9608e00c-2d44-410d-b491-cc2e30e2c93a/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
