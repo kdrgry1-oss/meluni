@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-805",
+  "published_at_utc": "2026-11-25T05:40:18.054705+00:00",
+  "products": [
+    {
+      "product_id": "12c6f6f5-78e1-431d-9a78-379d31c51cba",
+      "sample": 805,
+      "name": "Düz Bisiklet Yaka Sweat",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/12c6f6f5-78e1-431d-9a78-379d31c51cba-front-77fc48e4b03b.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/12c6f6f5-78e1-431d-9a78-379d31c51cba-back-25e8e6edba81.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/12c6f6f5-78e1-431d-9a78-379d31c51cba-model-c874a34d777c.jpg"
+      },
+      "gallery_image_count": 5
+    }
+  ],
+  "skipped": []
+}
