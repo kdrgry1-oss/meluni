@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-812",
+  "published_at_utc": "2026-11-25T11:00:35.974991+00:00",
+  "products": [
+    {
+      "product_id": "9608e00c-2d44-410d-b491-cc2e30e2c93a",
+      "sample": 812,
+      "name": "Uzun Kollu Yakalı Krep Bluz ve Yırtmaçlı Pantolon Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9608e00c-2d44-410d-b491-cc2e30e2c93a-front-e206e841f052.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9608e00c-2d44-410d-b491-cc2e30e2c93a-back-c150d3da01a7.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9608e00c-2d44-410d-b491-cc2e30e2c93a-model-f7e2c05c6ec6.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/9608e00c-2d44-410d-b491-cc2e30e2c93a-size-chart-4ef02b4dcec4.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
