@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-818",
+  "published_at_utc": "2026-11-25T13:16:42.630233+00:00",
+  "products": [
+    {
+      "product_id": "dfa4e76b-e41b-49c9-a347-25082406d16c",
+      "sample": 818,
+      "name": "Kısa Kollu Bisiklet Yaka Kısa Viskon Iki Iplik Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/dfa4e76b-e41b-49c9-a347-25082406d16c-front-29b2282a2448.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/dfa4e76b-e41b-49c9-a347-25082406d16c-model-7b1fbd39758d.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
