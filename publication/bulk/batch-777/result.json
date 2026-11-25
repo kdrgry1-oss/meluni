@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-777",
+  "published_at_utc": "2026-11-25T01:39:40.611352+00:00",
+  "products": [
+    {
+      "product_id": "8375dabe-78b6-48a5-9879-2289e5730f57",
+      "sample": 981,
+      "name": "Elbise ve Kısa Kollu Tül Elbise Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8375dabe-78b6-48a5-9879-2289e5730f57-front-46bb047f0da2.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8375dabe-78b6-48a5-9879-2289e5730f57-back-10b57100aba3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8375dabe-78b6-48a5-9879-2289e5730f57-model-0228166aef4a.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
