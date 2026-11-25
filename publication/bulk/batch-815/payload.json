@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-815",
+  "created_at": "2026-11-25T12:50:12.751418+00:00",
+  "catalog_poll_at": "2026-11-25T12:44:57.892064+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "79ad5977-7ab7-4c76-9bc9-c9c55d761474",
+      "sample": 815,
+      "name": "Boyundan Geçmeli Pileli Sırtı Tamamen Açık Kısa Dalgıç Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 84,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5e9e79cb8a2520be6691.jpeg",
+        "https://modayakamoz.com/orj/61a52c569f8a46c9d09b.jpeg",
+        "https://modayakamoz.com/orj/92f61b63df1165fa80af.jpeg",
+        {
+          "id": "e8a47bf4-42e0-4b76-be04-6983d0dcb17a",
+          "url": "https://cdn.meluni.com.tr/ai-products/824549b8-9ebc-4e99-8353-cbda760a924b-olcu-oto-9a1167b5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:27:45.835292+00:00"
+        },
+        {
+          "id": "f1c3c3fd-06bb-5da4-bb56-d98bdada3c11",
+          "url": "https://cdn.meluni.com.tr/ai-products/79ad5977-7ab7-4c76-9bc9-c9c55d761474-size-chart-95dfb253a258.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:20:14.378903+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "79ad5977-7ab7-4c76-9bc9-c9c55d761474/front.jpg",
+          "sha256": "0a6e509ec5e16fd40d7dbdc18f4cc35361f3981844ac7e784d49288d6cab983a",
+          "qa_status": "visual_qa_passed",
+          "sample": 815,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1064-front-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
