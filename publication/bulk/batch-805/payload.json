@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-805",
+  "created_at": "2026-11-25T05:39:01.679249+00:00",
+  "catalog_poll_at": "2026-11-25T05:39:01.679249+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "12c6f6f5-78e1-431d-9a78-379d31c51cba",
+      "sample": 805,
+      "name": "Düz Bisiklet Yaka Sweat",
+      "active_at_poll": true,
+      "stock_at_poll": 1100,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY65d4ae476ae6865d4ae476ae6a.webp",
+        "https://modayakamoz.com/orj/TY65d4ae496db3a65d4ae496db3c.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "12c6f6f5-78e1-431d-9a78-379d31c51cba/front.jpg",
+          "sha256": "77fc48e4b03be63835a58f82401bfbd7a58c08c211f72d2f3901c71cd1419e70",
+          "qa_status": "visual_qa_passed",
+          "sample": 805,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1066-front-1200x1800.png"
+        },
+        "back": {
+          "file": "12c6f6f5-78e1-431d-9a78-379d31c51cba/back.jpg",
+          "sha256": "25e8e6edba8112e846266d92ebd155b1bf6f22d1e2232e542323e1037d1e8e49",
+          "qa_status": "visual_qa_passed",
+          "sample": 805,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1066-back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "12c6f6f5-78e1-431d-9a78-379d31c51cba/fashion_model.jpg",
+          "sha256": "c874a34d777ceab1088f426c96cab6be601f4fe9fd6d9da1d6ca5ce5d2bc1270",
+          "qa_status": "visual_qa_passed_after_one_targeted_headroom_correction",
+          "sample": 805,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-1066-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
