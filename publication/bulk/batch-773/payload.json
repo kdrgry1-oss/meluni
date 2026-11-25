@@ -1,0 +1,48 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-773",
+  "created_at": "2026-11-25T00:14:31.695781+00:00",
+  "catalog_poll_at": "2026-11-25T00:14:31.695781+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8213c566-2060-41dc-85a9-bbad6a4d1ce9",
+      "sample": 3590,
+      "name": "Uzun Kollu V Yakalı Yırtmaçlı Uzun Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/8213c566-2060-41dc-85a9-bbad6a4d1ce9-front-9af9315ca38d.jpg",
+        "https://cdn.meluni.com.tr/ai-products/8213c566-2060-41dc-85a9-bbad6a4d1ce9-back-0fd209c05226.jpg",
+        "https://modayakamoz.com/orj/93cd788c5a6d6eda44be.jpeg",
+        "https://modayakamoz.com/orj/6032c4c5ebcff9652644.jpeg",
+        "https://modayakamoz.com/orj/80694ce6fedfb4f81987.jpeg",
+        "https://modayakamoz.com/orj/2990ca5af6efbb39e889.jpeg",
+        {
+          "id": "4faf93d7-8727-4ded-96b4-673ad3576643",
+          "url": "https://cdn.meluni.com.tr/ai-products/423559e0-b4a3-418b-80a2-8cb30999e8c7-olcu-oto-ede4312f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:18:40.616629+00:00"
+        },
+        {
+          "id": "bf313fa6-4cd1-52e4-9fd5-fe952090b5ed",
+          "url": "https://cdn.meluni.com.tr/ai-products/8213c566-2060-41dc-85a9-bbad6a4d1ce9-size-chart-63b826df7435.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-10T00:14:32.479537+00:00"
+        }
+      ],
+      "preserve_leading_existing_count": 2,
+      "assets": {
+        "fashion_model": {
+          "file": "8213c566-2060-41dc-85a9-bbad6a4d1ce9/fashion_model.jpg",
+          "sha256": "42ec88c5fb8217f8d7b5286ef93a97d5941b4a2e385a9a4c65e6fc8528671726",
+          "qa_status": "visual_source_qa_passed_after_one_targeted_correction",
+          "sample": 3590,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/fashion-1011-model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
