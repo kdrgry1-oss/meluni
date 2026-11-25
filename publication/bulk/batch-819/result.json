@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-819",
+  "published_at_utc": "2026-11-25T13:21:55.596529+00:00",
+  "products": [
+    {
+      "product_id": "8ed6152e-25bd-46cc-a712-c6191d840b1d",
+      "sample": 819,
+      "name": "Kısa Kollu Bisiklet Yaka Triko Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8ed6152e-25bd-46cc-a712-c6191d840b1d-front-72d75f9a3f46.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8ed6152e-25bd-46cc-a712-c6191d840b1d-back-d8558d9cca2a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8ed6152e-25bd-46cc-a712-c6191d840b1d-model-528701c939d8.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
