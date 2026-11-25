@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-782",
+  "published_at_utc": "2026-11-25T02:02:42.633294+00:00",
+  "products": [
+    {
+      "product_id": "4d6c47fd-818a-4427-ab47-cdfe1886de18",
+      "sample": 43,
+      "name": "Arkadan Çapraz Detay Yuvarlak Yaka Maksi Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4d6c47fd-818a-4427-ab47-cdfe1886de18-front-60e0dbb49a8c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4d6c47fd-818a-4427-ab47-cdfe1886de18-back-74e216327b57.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4d6c47fd-818a-4427-ab47-cdfe1886de18-model-82c8a22cd1ce.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/4d6c47fd-818a-4427-ab47-cdfe1886de18-size-chart-4f1d1df560d4.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
