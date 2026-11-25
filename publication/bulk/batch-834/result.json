@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-834",
+  "published_at_utc": "2026-11-25T22:08:59.863358+00:00",
+  "products": [
+    {
+      "product_id": "8c26b808-fff1-459a-adaf-de170ccd6575",
+      "sample": 834,
+      "name": "Askılı Kare Yakalı Bağcıklı Triko Pareo",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8c26b808-fff1-459a-adaf-de170ccd6575-front-8064f1dcf06f.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8c26b808-fff1-459a-adaf-de170ccd6575-back-1d4fdae03d7d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8c26b808-fff1-459a-adaf-de170ccd6575-model-f9eb3b21ff2b.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/8c26b808-fff1-459a-adaf-de170ccd6575-model-back-bc3cfde3efbc.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
