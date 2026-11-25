@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-834",
+  "created_at": "2026-11-25T22:06:22.174845+00:00",
+  "catalog_poll_at": "2026-11-25T22:06:22.174845+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8c26b808-fff1-459a-adaf-de170ccd6575",
+      "sample": 834,
+      "name": "Askılı Kare Yakalı Bağcıklı Triko Pareo",
+      "active_at_poll": true,
+      "stock_at_poll": 40,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/944cf056db5bc07f0e69699b77f5f6e3.png",
+        "https://modayakamoz.com/orj/1fe6bc0c2ef405eb1f0565a7b589eb66.png",
+        "https://modayakamoz.com/orj/903d88471a6f27101e284d2f9627753c.png",
+        "https://modayakamoz.com/orj/5674b40e2342980e854bb69cf36b4caf.png",
+        "https://modayakamoz.com/orj/0acbbf5ad442a82271fce2f13694b953.png",
+        "https://modayakamoz.com/orj/8102d4977d6b9f3924726dae1c311b6b.png",
+        "https://modayakamoz.com/orj/9febd707930f6b70e021b23bfef4a46f.png",
+        "https://modayakamoz.com/orj/c46d49de1733037727e8f2e0b6f58538.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "8c26b808-fff1-459a-adaf-de170ccd6575/front.jpg",
+          "sha256": "8064f1dcf06f940ed3eb1aa554494818bad1e0a38c747cb931b77276a949b105",
+          "qa_status": "visual_qa_passed",
+          "sample": 834,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8c26b808-fff1-459a-adaf-de170ccd6575/front-1200x1800.png"
+        },
+        "back": {
+          "file": "8c26b808-fff1-459a-adaf-de170ccd6575/back.jpg",
+          "sha256": "1d4fdae03d7df7eed8ead0dbbd0a1d9e21895ceabb4aaf54f4e73a7a4ddf15f5",
+          "qa_status": "visual_qa_passed",
+          "sample": 834,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8c26b808-fff1-459a-adaf-de170ccd6575/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "8c26b808-fff1-459a-adaf-de170ccd6575/fashion_model.jpg",
+          "sha256": "f9eb3b21ff2b1dcc9eb48b7e85efe6ad793ada73a0094c9a96863afd38a9f8ed",
+          "qa_status": "visual_qa_passed",
+          "sample": 834,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8c26b808-fff1-459a-adaf-de170ccd6575/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "8c26b808-fff1-459a-adaf-de170ccd6575/fashion_model_back.jpg",
+          "sha256": "bc3cfde3efbc1243f308213f36a0dec17f63e5558ae103e3b7ff8c65634e5c98",
+          "qa_status": "visual_qa_passed",
+          "sample": 834,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8c26b808-fff1-459a-adaf-de170ccd6575/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
