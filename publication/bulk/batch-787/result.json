@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-787",
+  "published_at_utc": "2026-11-25T04:06:13.046344+00:00",
+  "products": [
+    {
+      "product_id": "13b23e1f-70cf-4e9f-944b-a73b5f0503e2",
+      "sample": 787,
+      "name": "Kolsuz Yakalı Düğmeli Dubai Bluz ve Bağcıklı Kısa Şort Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/13b23e1f-70cf-4e9f-944b-a73b5f0503e2-front-8ab7eacf7d94.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/13b23e1f-70cf-4e9f-944b-a73b5f0503e2-back-1db5bf93b80f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/13b23e1f-70cf-4e9f-944b-a73b5f0503e2-model-c3bbdd41baa9.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
