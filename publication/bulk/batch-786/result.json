@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-786",
+  "published_at_utc": "2026-11-25T03:39:14.407440+00:00",
+  "products": [
+    {
+      "product_id": "26d2a96b-33e4-403d-81c3-ec07489343fc",
+      "sample": 786,
+      "name": "Oversize Yarım Farmuarlı Yakalı SweatShirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/26d2a96b-33e4-403d-81c3-ec07489343fc-front-4b934bac1928.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/26d2a96b-33e4-403d-81c3-ec07489343fc-back-ce4d7c58379a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/26d2a96b-33e4-403d-81c3-ec07489343fc-model-8a708de0a27c.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
