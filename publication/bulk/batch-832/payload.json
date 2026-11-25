@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-832",
+  "created_at": "2026-11-25T21:29:12.720587+00:00",
+  "catalog_poll_at": "2026-11-25T21:29:12.720587+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "2a0284fb-161d-4201-8a14-6da69a9e91b3",
+      "sample": 832,
+      "name": "Ip Askılı Beli Lastikli Yırtmaçlı Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 18,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/27f2f11fc0282006d087.jpeg",
+        "https://modayakamoz.com/orj/ba9740f4286a2fcf246f.jpeg",
+        "https://modayakamoz.com/orj/155f253cb160385036a4.jpeg",
+        "https://modayakamoz.com/orj/139eb6d94f688e1f6fad.jpeg",
+        "https://modayakamoz.com/orj/5c5d0d08a5f1b8a15179.jpeg",
+        "https://modayakamoz.com/orj/f7ec1cae056cbc572c20.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "2a0284fb-161d-4201-8a14-6da69a9e91b3/front.jpg",
+          "sha256": "75f9e3c48f2d4d6350335cebf762b633041227a5e0be5b636c5a2c1829add415",
+          "qa_status": "visual_qa_passed",
+          "sample": 832,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2a0284fb-161d-4201-8a14-6da69a9e91b3/front-1200x1800.png"
+        },
+        "back": {
+          "file": "2a0284fb-161d-4201-8a14-6da69a9e91b3/back.jpg",
+          "sha256": "5c4262b0a60eee491e8a6348a0341456c002dfa19c9eec961a83bc4cb4d2ed25",
+          "qa_status": "visual_qa_passed",
+          "sample": 832,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2a0284fb-161d-4201-8a14-6da69a9e91b3/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "2a0284fb-161d-4201-8a14-6da69a9e91b3/fashion_model.jpg",
+          "sha256": "11fa5a40f1f2911e55d29142f0a8b92497accdd9009e126d0d465fffb9cb7c8b",
+          "qa_status": "visual_qa_passed",
+          "sample": 832,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2a0284fb-161d-4201-8a14-6da69a9e91b3/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "2a0284fb-161d-4201-8a14-6da69a9e91b3/fashion_model_back.jpg",
+          "sha256": "fae03aa02f96d4d592b37ee995190a18025791b63ac972fd69c9c5217436a13f",
+          "qa_status": "visual_qa_passed",
+          "sample": 832,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2a0284fb-161d-4201-8a14-6da69a9e91b3/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "2a0284fb-161d-4201-8a14-6da69a9e91b3/size_chart.jpg",
+          "sha256": "5f1178efe3e441ab39df9676501cd85c9e5185d9f16797c6b8d90831c57c961a",
+          "qa_status": "visual_qa_passed",
+          "sample": 832,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2a0284fb-161d-4201-8a14-6da69a9e91b3/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
