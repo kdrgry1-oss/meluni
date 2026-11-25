@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-798",
+  "published_at_utc": "2026-11-25T05:05:03.971658+00:00",
+  "products": [
+    {
+      "product_id": "7abb45ea-12a8-4bc6-b573-c7c2f02decb9",
+      "sample": 798,
+      "name": "Bisiklet Yaka 20/1 Düz Oversize T-Shirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7abb45ea-12a8-4bc6-b573-c7c2f02decb9-front-d6e9dee62ff1.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7abb45ea-12a8-4bc6-b573-c7c2f02decb9-back-e005f2f119b2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7abb45ea-12a8-4bc6-b573-c7c2f02decb9-model-0e1f4c852880.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
