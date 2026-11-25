@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-793",
+  "created_at": "2026-11-25T04:38:34.921185+00:00",
+  "catalog_poll_at": "2026-11-25T04:38:34.921185+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "3e265b32-104d-419a-8107-5464437cd9e0",
+      "sample": 793,
+      "name": "Regular Fit Tişört Bisiklet Yaka Kısa Kol Basıc T-Shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4983,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY69dbbd67a5a4d69dbbd67a5a50.webp",
+        "https://modayakamoz.com/orj/TY69dbbd698912c69dbbd698912f.webp",
+        "https://modayakamoz.com/orj/TY69dbbd6aebd6269dbbd6aebd65.webp",
+        "https://modayakamoz.com/orj/TY69dbbd6c97def69dbbd6c97df3.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "3e265b32-104d-419a-8107-5464437cd9e0/front.jpg",
+          "sha256": "93e837c9d001b8922227c46499a2a4033dcbfd4a58388d1c6435622fb500b4fa",
+          "qa_status": "visual_review_pass",
+          "sample": 793,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1051-front-1200x1800.png"
+        },
+        "back": {
+          "file": "3e265b32-104d-419a-8107-5464437cd9e0/back.jpg",
+          "sha256": "3c8afda31278e04bd2c3d68716743e91a6aa6b9e43536351d5a8a67f81cd3035",
+          "qa_status": "visual_review_pass",
+          "sample": 793,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1051-back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "3e265b32-104d-419a-8107-5464437cd9e0/fashion_model.jpg",
+          "sha256": "4ebcd0d139b916b54505e571faad6481ae88e6a01da9d5fcf39ab78849a40c66",
+          "qa_status": "visual_review_pass",
+          "sample": 793,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-1051-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
