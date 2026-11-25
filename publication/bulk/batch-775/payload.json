@@ -1,0 +1,38 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-775",
+  "created_at": "2026-11-25T00:35:47.959805+00:00",
+  "catalog_poll_at": "2026-11-25T00:35:47.959805+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "9a41141a-5ff5-4683-8fd5-4f637cf2a4e4",
+      "sample": 1476,
+      "name": "Kolsuz V Yakalı Uzun Triko Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 52,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261021-reconcile/9a41141a-5ff5-4683-8fd5-4f637cf2a4e4/63012a0336a907b9.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261021-reconcile/9a41141a-5ff5-4683-8fd5-4f637cf2a4e4/3376f26c4a0667d5.jpg",
+        "https://modayakamoz.com/orj/a251e3cc423a23fac865164488e25875.png",
+        "https://modayakamoz.com/orj/6097d525ed761cd08b7515a429d3a0b9.png",
+        "https://modayakamoz.com/orj/5d95a7b3d5c0d1be016a.jpeg",
+        "https://modayakamoz.com/orj/51e20c9a72b2a0442458.jpeg",
+        "https://modayakamoz.com/orj/3a02544d2f06e9a5685f.jpeg",
+        "https://modayakamoz.com/orj/c120c6dde0917fc844f8.jpeg",
+        "https://modayakamoz.com/orj/cb667f7957b9d55b89b4.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261021-reconcile/9a41141a-5ff5-4683-8fd5-4f637cf2a4e4/9bfccb342cf5ef1a.jpg"
+      ],
+      "preserve_leading_existing_count": 2,
+      "assets": {
+        "fashion_model": {
+          "file": "9a41141a-5ff5-4683-8fd5-4f637cf2a4e4/fashion_model.jpg",
+          "sha256": "30425c3668d936ea1718b2fba7db2dea42008359fd5167ce40eee3a49e4fd901",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1476,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-603-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
