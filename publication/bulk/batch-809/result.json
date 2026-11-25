@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-809",
+  "published_at_utc": "2026-11-25T08:46:23.421258+00:00",
+  "products": [
+    {
+      "product_id": "5034059b-19a1-412c-a223-66446379ab29",
+      "sample": 809,
+      "name": "Iki Iplik Viskon Pamuk Kumaş Arma Detaylı Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5034059b-19a1-412c-a223-66446379ab29-front-5386131212f9.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5034059b-19a1-412c-a223-66446379ab29-back-a3fc7f106185.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5034059b-19a1-412c-a223-66446379ab29-model-f3cfc96a2b92.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
