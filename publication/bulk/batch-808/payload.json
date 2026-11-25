@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-808",
+  "created_at": "2026-11-25T05:53:01.236569+00:00",
+  "catalog_poll_at": "2026-11-25T05:53:01.236569+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "183a33e6-d616-4597-8f70-d25bafc50c4e",
+      "sample": 808,
+      "name": "Halka Yaka Detaylı Reglan Kollu Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 84,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b3f0b38a6370c29b17d8.jpeg",
+        "https://modayakamoz.com/orj/79577f1b4aa5e0e6fda6.jpeg",
+        "https://modayakamoz.com/orj/b0092b62ba0087cf1c7e.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "183a33e6-d616-4597-8f70-d25bafc50c4e/front.jpg",
+          "sha256": "16a673a1a88431306f1761c712cdb4b5a3f5c5950a5a5c8d890720c76751c49b",
+          "qa_status": "visual_qa_passed",
+          "sample": 808,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1071-front-1200x1800.png"
+        },
+        "back": {
+          "file": "183a33e6-d616-4597-8f70-d25bafc50c4e/back.jpg",
+          "sha256": "0606a2ab68c9d5d37aea7ea59d8e0e3501acb11cba24c0b87c0c308d00879385",
+          "qa_status": "visual_qa_passed",
+          "sample": 808,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1071-back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "183a33e6-d616-4597-8f70-d25bafc50c4e/fashion_model.jpg",
+          "sha256": "810bd7b07933541820f138f321bcd229eeeca0a2cf91c2525631514b19787d9b",
+          "qa_status": "visual_qa_passed",
+          "sample": 808,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-1071-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
