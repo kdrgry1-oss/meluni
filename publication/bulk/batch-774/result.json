@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-774",
+  "published_at_utc": "2026-11-25T01:32:31.513780+00:00",
+  "products": [
+    {
+      "product_id": "0e914649-f7a8-4cb8-bae5-4b699d2f8bf3",
+      "sample": 1477,
+      "name": "Kolsuz V Yakalı Uzun Triko Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0e914649-f7a8-4cb8-bae5-4b699d2f8bf3-front-b663198c0d9a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0e914649-f7a8-4cb8-bae5-4b699d2f8bf3-back-e38b31a87479.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0e914649-f7a8-4cb8-bae5-4b699d2f8bf3-model-7fcb800e7ab2.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0e914649-f7a8-4cb8-bae5-4b699d2f8bf3-size-chart-2722598fbe81.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
