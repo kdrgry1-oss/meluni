@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-820",
+  "published_at_utc": "2026-11-25T14:05:01.888116+00:00",
+  "products": [
+    {
+      "product_id": "e09bd5d8-4303-453d-beb7-c7ca67be6153",
+      "sample": 820,
+      "name": "Kısa Kollu Kruvaze Yaka Önden Asimetrik Detaylı Kısa Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e09bd5d8-4303-453d-beb7-c7ca67be6153-front-952f40e885e3.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e09bd5d8-4303-453d-beb7-c7ca67be6153-back-3b056036d987.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e09bd5d8-4303-453d-beb7-c7ca67be6153-model-ff11f534cd24.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
