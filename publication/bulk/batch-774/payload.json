@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-774",
+  "created_at": "2026-11-25T00:32:00.719724+00:00",
+  "catalog_poll_at": "2026-11-25T00:32:00.719724+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "0e914649-f7a8-4cb8-bae5-4b699d2f8bf3",
+      "sample": 1477,
+      "name": "Kolsuz V Yakalı Uzun Triko Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 119,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4d44bca5512a7d128faa83103ae1ada5.png",
+        "https://modayakamoz.com/orj/8eb7cb663cbef73c2f95aba588680540.png",
+        "https://modayakamoz.com/orj/af5a4c0684ee44748166.jpeg",
+        "https://modayakamoz.com/orj/0d7a933dc50579e0f7c7.jpeg",
+        "https://modayakamoz.com/orj/12fdc22a740464947a51.jpeg",
+        "https://modayakamoz.com/orj/48b96d388e684421d747.jpeg",
+        "https://modayakamoz.com/orj/30f96ea417fd39579cbd.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261021-reconcile/0e914649-f7a8-4cb8-bae5-4b699d2f8bf3/9bfccb342cf5ef1a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0e914649-f7a8-4cb8-bae5-4b699d2f8bf3/front.jpg",
+          "sha256": "b663198c0d9a654e5f0d38d6124e1f8bb2696f6a293f446b925a1ad4fede243c",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1477,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1477-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0e914649-f7a8-4cb8-bae5-4b699d2f8bf3/back.jpg",
+          "sha256": "e38b31a87479bb4a4ea5cd356a1b2a680a9c39a253f672dbfcad93949fc1b867",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1477,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1477-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0e914649-f7a8-4cb8-bae5-4b699d2f8bf3/fashion_model.jpg",
+          "sha256": "7fcb800e7ab2c48db51ce6b43d8f0e0e27f7fa49488771a269978920c7e706fb",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1477,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1477-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "0e914649-f7a8-4cb8-bae5-4b699d2f8bf3/size_chart.jpg",
+          "sha256": "2722598fbe8117b7efcf04b66de17b0f41d391b4d04315a96b446e90790f58d2",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1477,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1477-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
