@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-827",
+  "created_at": "2026-11-25T20:09:53.951186+00:00",
+  "catalog_poll_at": "2026-11-25T20:09:53.951186+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "989bd10a-75c1-4877-9811-b045559ded3a",
+      "sample": 827,
+      "name": "Ceket Kolsuz Viskon Iki Iplik Bluz ve Pantolon Üçlü Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 155,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-174272-1-57adbb05c00b.jpg",
+        "https://modayakamoz.com/orj/9b2ec38fac6b1fc1e807.jpeg",
+        "https://modayakamoz.com/orj/57eb3844e705d0cb161d.jpeg",
+        "https://modayakamoz.com/orj/6d3a3db61faf2364f623.jpeg",
+        "https://modayakamoz.com/orj/a3b6dd47e5068c90ef15.jpeg",
+        "https://modayakamoz.com/orj/janes-extra-174272-57adbb05c00be859.jpg",
+        "https://modayakamoz.com/orj/janes-extra-174272-99a824c887f780d2.jpg",
+        "https://modayakamoz.com/orj/janes-extra-174272-6ace6810431b7a86.jpg",
+        "https://modayakamoz.com/orj/janes-extra-174272-0f41f9385ad0899e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "989bd10a-75c1-4877-9811-b045559ded3a/front.jpg",
+          "sha256": "28c52be4567e4f150de938eeddc9d844046f5daee4c956733f90593ae96531b7",
+          "qa_status": "visual_qa_passed",
+          "sample": 827,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-989bd10a-75c1-4877-9811-b045559ded3a/front-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
