@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-814",
+  "created_at": "2026-11-25T12:38:27.305525+00:00",
+  "catalog_poll_at": "2026-11-25T12:27:58.418926+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d4fa5e23-c3d8-46f6-acf8-ce71a39b0a78",
+      "sample": 814,
+      "name": "Battal Big Size Basic Tişört Bisiklet Yaka T-Shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 2973,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a00c381df9696a00c381df96a.webp",
+        "https://modayakamoz.com/orj/TY6a00c3836f6c86a00c3836f6cb.webp",
+        "https://modayakamoz.com/orj/TY6a00c3858756d6a00c3858756f.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "d4fa5e23-c3d8-46f6-acf8-ce71a39b0a78/front.jpg",
+          "sha256": "3becf5ebeb87f9027f4814917e9a3c8b77bc8341d134d43cc321067e54f3b6b3",
+          "qa_status": "visual_qa_passed",
+          "sample": 814,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1058-front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "d4fa5e23-c3d8-46f6-acf8-ce71a39b0a78/fashion_model.jpg",
+          "sha256": "98c6d91ad2846a85783a294a3079c6a2fe56be8ac32b4ae20d52b53dd9a68e96",
+          "qa_status": "visual_qa_passed_after_one_targeted_headroom_correction",
+          "sample": 814,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/model-1058-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
