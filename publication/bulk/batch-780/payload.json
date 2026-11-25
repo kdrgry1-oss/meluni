@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-780",
+  "created_at": "2026-11-25T01:08:38.141885+00:00",
+  "catalog_poll_at": "2026-11-25T01:08:38.141885+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "ddf25b55-2119-4c80-b0bc-9e4cf9e06853",
+      "sample": 1442,
+      "name": "Kolsuz Tül Yuvarlak Yakalı Derin V Dekolteli Simli Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 55,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7037bf3a854f8cce48be.jpeg",
+        "https://modayakamoz.com/orj/f0d2b7e2b3c83e4de623.jpeg",
+        "https://modayakamoz.com/orj/6911ef0d7181489d7926.jpeg",
+        "https://modayakamoz.com/orj/60fe04be2b6f87d19e71.jpeg",
+        {
+          "id": "b713ad87-2b48-4c18-9354-2e8d8bb40848",
+          "url": "https://cdn.meluni.com.tr/ai-products/b06d6571-8d56-45ba-80a9-b7e94cb00ee1-olcu-oto-e35a769c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:19:30.455929+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "ddf25b55-2119-4c80-b0bc-9e4cf9e06853/front.jpg",
+          "sha256": "8a162f0b7d99e59c39130ebc5f94dd5adb1cd003d45ab1eb772489e1ea33939f",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1442,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1442-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "ddf25b55-2119-4c80-b0bc-9e4cf9e06853/back.jpg",
+          "sha256": "9cb99faaa3b44e33e1fb33ae564a7d877d588290516965b191b60137a3293180",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1442,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1442-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "ddf25b55-2119-4c80-b0bc-9e4cf9e06853/fashion_model.jpg",
+          "sha256": "1437db611e3833d2948af016b7333a1a3096b0d5dbb524202aa7c419e9a940d0",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1442,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1442-fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "ddf25b55-2119-4c80-b0bc-9e4cf9e06853/size_chart.jpg",
+          "sha256": "37d6da1155c65b1a82cd5d9ad0ee9f208a1400acf79e3ac2231bfa5b4ad90436",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1442,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/size-chart-1442-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
