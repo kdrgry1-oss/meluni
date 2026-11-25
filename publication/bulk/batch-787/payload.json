@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-787",
+  "created_at": "2026-11-25T04:04:50.235546+00:00",
+  "catalog_poll_at": "2026-11-25T04:04:50.235546+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "13b23e1f-70cf-4e9f-944b-a73b5f0503e2",
+      "sample": 787,
+      "name": "Kolsuz Yakalı Düğmeli Dubai Bluz ve Bağcıklı Kısa Şort Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 13,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/13b23e1f-70cf-4e9f-944b-a73b5f0503e2/13b23e1f-70cf-4e9f-944b-a73b5f0503e2-hd0-8484d3fe.jpg",
+        "https://cdn.meluni.com.tr/products/13b23e1f-70cf-4e9f-944b-a73b5f0503e2/13b23e1f-70cf-4e9f-944b-a73b5f0503e2-hd1-b3edb58f.jpg",
+        "https://cdn.meluni.com.tr/products/13b23e1f-70cf-4e9f-944b-a73b5f0503e2/13b23e1f-70cf-4e9f-944b-a73b5f0503e2-hd2-13bd7824.jpg",
+        {
+          "id": "e0fb8681-52aa-477f-980b-657b2868c8e8",
+          "url": "https://cdn.meluni.com.tr/ai-products/13b23e1f-70cf-4e9f-944b-a73b5f0503e2-olcu-oto-3839f0aa.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:34:00.053824+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "13b23e1f-70cf-4e9f-944b-a73b5f0503e2/front.jpg",
+          "sha256": "8ab7eacf7d94186e9ca6af1b89d67525adf14d3496cd625a58a2a9cf430baba2",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 787,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-13b23e1f-70cf-4e9f-944b-a73b5f0503e2/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "13b23e1f-70cf-4e9f-944b-a73b5f0503e2/back.jpg",
+          "sha256": "1db5bf93b80f514631c02d7376013a96e912dc444e2fc7ea2634108d1f4a8742",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 787,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-13b23e1f-70cf-4e9f-944b-a73b5f0503e2/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "13b23e1f-70cf-4e9f-944b-a73b5f0503e2/fashion_model.jpg",
+          "sha256": "c3bbdd41baa9241ae22a6dbc7e2aa4cbfe11bc540a07d52da80c8523d91e08ae",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 787,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-13b23e1f-70cf-4e9f-944b-a73b5f0503e2/model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
