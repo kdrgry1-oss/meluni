@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-807",
+  "published_at_utc": "2026-11-25T05:49:26.346686+00:00",
+  "products": [
+    {
+      "product_id": "718cf8b2-ce2b-4769-a9fc-c4c816d52f4a",
+      "sample": 807,
+      "name": "Halka Yaka Detaylı Reglan Kollu Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/718cf8b2-ce2b-4769-a9fc-c4c816d52f4a-front-6104bbe3035a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/718cf8b2-ce2b-4769-a9fc-c4c816d52f4a-back-a228343b1d90.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/718cf8b2-ce2b-4769-a9fc-c4c816d52f4a-model-3ceee2f210a2.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
