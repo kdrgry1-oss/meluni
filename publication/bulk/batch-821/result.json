@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-821",
+  "published_at_utc": "2026-11-25T18:51:18.094377+00:00",
+  "products": [
+    {
+      "product_id": "4161dfe7-aaa9-4377-97c8-b7e042dd2308",
+      "sample": 821,
+      "name": "Askılı Yuvarlak Yakalı Viskon Düğmeli Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4161dfe7-aaa9-4377-97c8-b7e042dd2308-front-ab53e9c1a4d3.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4161dfe7-aaa9-4377-97c8-b7e042dd2308-back-b788717e8ee3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4161dfe7-aaa9-4377-97c8-b7e042dd2308-model-eddf07de0190.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
