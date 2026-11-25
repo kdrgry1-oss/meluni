@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-772",
+  "created_at": "2026-11-25T00:04:53.861460+00:00",
+  "catalog_poll_at": "2026-11-25T00:04:53.861460+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "812db01e-9628-4b6c-94d1-0c1827189ca9",
+      "sample": 2882,
+      "name": "Sırt Inci ve Kurdela Detay Karpuz Kol Yerli Krep Bluz.",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7b599310111ba3232b40.jpeg",
+        "https://modayakamoz.com/orj/c4e760377d98d000b8ea.jpeg",
+        "https://modayakamoz.com/orj/fe882bb3591e2df78135.jpeg",
+        "https://modayakamoz.com/orj/b444586d833f70223d91.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "812db01e-9628-4b6c-94d1-0c1827189ca9/front.jpg",
+          "sha256": "6c88cf7736e45ba0943866d27d39c7819a4b033efc4567eadeb2371a7ca13c76",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2882,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2882-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "812db01e-9628-4b6c-94d1-0c1827189ca9/back.jpg",
+          "sha256": "d8afb516876ded7239cd50dba6e468b9f3353f4f240438741e1bff51c57ca55e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2882,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2882-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "812db01e-9628-4b6c-94d1-0c1827189ca9/fashion_model.jpg",
+          "sha256": "1ab933dceef8d5d64e3c8a5a8e51c0e58e6c9cbe72d8ac5b053105981a0270d0",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 2882,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2882-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
