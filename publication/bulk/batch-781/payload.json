@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-781",
+  "created_at": "2026-11-25T01:13:46.274370+00:00",
+  "catalog_poll_at": "2026-11-25T01:13:46.274370+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7af88225-bdd9-40e4-9508-3b349f03715a",
+      "sample": 41,
+      "name": "Arkadan Çapraz Detay Yuvarlak Yaka Maksi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 46,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f4dc677bb251814be456.jpeg",
+        "https://modayakamoz.com/orj/181683787d19b7a8fee5.jpeg",
+        "https://modayakamoz.com/orj/3f9c0ffe6edd4028aa87.jpeg",
+        "https://modayakamoz.com/orj/77ad8c5a983cbf43de5a.jpeg",
+        "https://modayakamoz.com/orj/b718442e99db79e766af.jpeg",
+        "https://modayakamoz.com/orj/a5fa1fcdc14ea2969651.jpeg",
+        {
+          "id": "4217b52c-cd18-4f2c-a85d-8c8d869f9b1b",
+          "url": "https://cdn.meluni.com.tr/ai-products/7af88225-bdd9-40e4-9508-3b349f03715a-olcu-oto-119ed7c5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:26:43.093779+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7af88225-bdd9-40e4-9508-3b349f03715a/front.jpg",
+          "sha256": "22c3d6868af8107c6668bfac075b2f7ec1b6ae4d8cc3bd0b5cafdae9f308f82e",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 41,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-41-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7af88225-bdd9-40e4-9508-3b349f03715a/back.jpg",
+          "sha256": "a81e2c8dcb9c1c8594cdc85c9c2b4cf126b2c73b72b730cd274f4478c04e22dd",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 41,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-41-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7af88225-bdd9-40e4-9508-3b349f03715a/fashion_model.jpg",
+          "sha256": "a541f701bd981bfa6b5e4995af9ce6dc11dd643e76af9253faed7ed346d9d696",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 41,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-41-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
