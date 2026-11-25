@@ -1,0 +1,57 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-828",
+  "created_at": "2026-11-25T20:21:36.231505+00:00",
+  "catalog_poll_at": "2026-11-25T20:21:36.231505+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4",
+      "sample": 828,
+      "name": "Ceket Kolsuz Viskon Iki Iplik Bluz ve Pantolon Üçlü Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 133,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-174271-1-162b4817ad69.jpg",
+        "https://modayakamoz.com/orj/df4fea42899a5650ff07.jpeg",
+        "https://modayakamoz.com/orj/189373e9872c7205823a.jpeg",
+        "https://modayakamoz.com/orj/b0f458f9e9f8326e53f4.jpeg",
+        "https://modayakamoz.com/orj/0792d1d56ddabd849523.jpeg",
+        "https://modayakamoz.com/orj/janes-extra-174271-0b8a3eb8e920460e.jpg",
+        "https://modayakamoz.com/orj/janes-extra-174271-5b3842749f9a5b92.jpg",
+        "https://modayakamoz.com/orj/janes-extra-174271-162b4817ad6958b5.jpg",
+        "https://modayakamoz.com/orj/janes-extra-174271-0f41f9385ad0899e.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4/front.jpg",
+          "sha256": "60b1360f7e09fff25b2a0a18b2956ede6c9c6292d13c8fe10a6255614826f44b",
+          "qa_status": "visual_qa_passed",
+          "sample": 828,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4/front-1200x1800.png"
+        },
+        "back": {
+          "file": "4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4/back.jpg",
+          "sha256": "fd9e946fd10cfd7d9fe47e6ed49d8c6c36ebd6036ada4f7d01e4763c7ce89fc9",
+          "qa_status": "visual_qa_passed",
+          "sample": 828,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4/fashion_model.jpg",
+          "sha256": "9eebfd11f7efed4d8155b972e7929581358c505a6f5a67ea8e32003504d7f4a8",
+          "qa_status": "visual_qa_passed",
+          "sample": 828,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4/fashion_model_back.jpg",
+          "sha256": "db3730eae50043128c35e24884a389fb44bca3866cf9b9711cafe1243d9f1083",
+          "qa_status": "visual_qa_passed",
+          "sample": 828,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
