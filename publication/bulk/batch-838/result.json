@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-838",
+  "published_at_utc": "2026-11-25T23:19:25.966361+00:00",
+  "products": [
+    {
+      "product_id": "764302d2-5c31-4464-ae64-f68075d6fe43",
+      "sample": 838,
+      "name": "Ip Askılı Dantelli Dalgıç Gecelik Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/764302d2-5c31-4464-ae64-f68075d6fe43-front-c9346a7b9990.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/764302d2-5c31-4464-ae64-f68075d6fe43-back-82ecbfb8cb7e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/764302d2-5c31-4464-ae64-f68075d6fe43-model-91293c256960.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/764302d2-5c31-4464-ae64-f68075d6fe43-model-back-1c5ca1f508ae.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/764302d2-5c31-4464-ae64-f68075d6fe43-size-chart-817a8348bbc6.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
