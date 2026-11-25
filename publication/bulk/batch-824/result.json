@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-824",
+  "published_at_utc": "2026-11-25T19:32:08.684214+00:00",
+  "products": [
+    {
+      "product_id": "87dbf992-75a4-4fb3-bcf8-edca4f98a8f1",
+      "sample": 824,
+      "name": "Askılı V Yakalı Bluz ve Aerobin Pantolon Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/87dbf992-75a4-4fb3-bcf8-edca4f98a8f1-front-28f2163778a3.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/87dbf992-75a4-4fb3-bcf8-edca4f98a8f1-back-f0c165129471.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/87dbf992-75a4-4fb3-bcf8-edca4f98a8f1-model-30ae84d60e47.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
