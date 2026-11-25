@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-828",
+  "published_at_utc": "2026-11-25T20:23:20.608331+00:00",
+  "products": [
+    {
+      "product_id": "4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4",
+      "sample": 828,
+      "name": "Ceket Kolsuz Viskon Iki Iplik Bluz ve Pantolon Üçlü Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4-front-60b1360f7e09.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4-back-fd9e946fd10c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4-model-9eebfd11f7ef.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/4d8dbcc2-54c6-414a-b5c6-df389dbe4ae4-model-back-db3730eae500.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
