@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-772",
+  "published_at_utc": "2026-11-25T00:06:37.427758+00:00",
+  "products": [
+    {
+      "product_id": "812db01e-9628-4b6c-94d1-0c1827189ca9",
+      "sample": 2882,
+      "name": "Sırt Inci ve Kurdela Detay Karpuz Kol Yerli Krep Bluz.",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/812db01e-9628-4b6c-94d1-0c1827189ca9-front-6c88cf7736e4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/812db01e-9628-4b6c-94d1-0c1827189ca9-back-d8afb516876d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/812db01e-9628-4b6c-94d1-0c1827189ca9-model-1ab933dceef8.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
