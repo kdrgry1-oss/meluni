@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-825",
+  "created_at": "2026-11-25T19:42:40.742491+00:00",
+  "catalog_poll_at": "2026-11-25T19:42:40.742491+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "4588fd78-3e55-4fcb-b66b-dbbeec2a89a2",
+      "sample": 825,
+      "name": "Ip Askılı Yuvarlak Yakalı Cep Detaylı Salaş Süprem Uzun Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 42,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4bc74fd8e85651de56a1.jpeg",
+        "https://modayakamoz.com/orj/030a569ae053138dcf2d.jpeg",
+        "https://modayakamoz.com/orj/526ebf788908706456cc.jpeg",
+        "https://modayakamoz.com/orj/ba79a09a52c2ae89303e.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "4588fd78-3e55-4fcb-b66b-dbbeec2a89a2/front.jpg",
+          "sha256": "6f272eed7e607951f6ab37bc49e58c54db661c4e6ed6165f45675649fde0e633",
+          "qa_status": "visual_qa_passed",
+          "sample": 825,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4588fd78-3e55-4fcb-b66b-dbbeec2a89a2/front-1200x1800.png"
+        },
+        "back": {
+          "file": "4588fd78-3e55-4fcb-b66b-dbbeec2a89a2/back.jpg",
+          "sha256": "5995284d50a8211e0b4016389d05bd0e96709add9b9a6994eea635552fe65af9",
+          "qa_status": "visual_qa_passed",
+          "sample": 825,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4588fd78-3e55-4fcb-b66b-dbbeec2a89a2/back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "4588fd78-3e55-4fcb-b66b-dbbeec2a89a2/size_chart.jpg",
+          "sha256": "8fba81dd91076eb285974248c9160fc64cc73d6dc9531356370357a7a0a40f36",
+          "qa_status": "visual_qa_passed",
+          "sample": 825,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4588fd78-3e55-4fcb-b66b-dbbeec2a89a2/size-chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
