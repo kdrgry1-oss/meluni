@@ -1,0 +1,66 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-837",
+  "created_at": "2026-11-25T22:53:55.566593+00:00",
+  "catalog_poll_at": "2026-11-25T22:53:55.566593+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "c796b633-df4c-475e-a529-6d3c99efdc64",
+      "sample": 837,
+      "name": "Askılı V Yakalı Çift Renkli Askıları Bağcık Detaylı Bürümcük Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 117,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ce7623f0462b4bc57978.jpeg",
+        "https://modayakamoz.com/orj/0bc93ff9fd16c5704daf.jpeg",
+        "https://modayakamoz.com/orj/1478811f326e8d4efc76.jpeg",
+        "https://modayakamoz.com/orj/d4129e36ca0426ce8490.jpeg",
+        {
+          "id": "e0973a5a-4760-4699-8ba8-b602e3961370",
+          "url": "https://cdn.meluni.com.tr/ai-products/b087c74b-1817-4528-a978-0ae310ec623f-olcu-oto-6d786790.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:23:55.260384+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c796b633-df4c-475e-a529-6d3c99efdc64/front.jpg",
+          "sha256": "23deefc696b12343037f438310edd48e30ca3329f99346fbf8ca12fb47da5ea4",
+          "qa_status": "visual_qa_passed",
+          "sample": 837,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c796b633-df4c-475e-a529-6d3c99efdc64/front-1200x1800.png"
+        },
+        "back": {
+          "file": "c796b633-df4c-475e-a529-6d3c99efdc64/back.jpg",
+          "sha256": "79394776333987103798e84023b0ad86ba5a35ed4c751e276f2f8b47e0ad296c",
+          "qa_status": "visual_qa_passed",
+          "sample": 837,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c796b633-df4c-475e-a529-6d3c99efdc64/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "c796b633-df4c-475e-a529-6d3c99efdc64/fashion_model.jpg",
+          "sha256": "e939fd78f5bdfb3ba4067433ec04249823e73650c737507ed09ccbbb5392ccb3",
+          "qa_status": "visual_qa_passed",
+          "sample": 837,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c796b633-df4c-475e-a529-6d3c99efdc64/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "c796b633-df4c-475e-a529-6d3c99efdc64/fashion_model_back.jpg",
+          "sha256": "69dc5c765dcaecfd2123ced850c2e3094b750a0b5e2acc63927ba8da968e8573",
+          "qa_status": "visual_qa_passed",
+          "sample": 837,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c796b633-df4c-475e-a529-6d3c99efdc64/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "c796b633-df4c-475e-a529-6d3c99efdc64/size_chart.jpg",
+          "sha256": "fba03da06298b48080c4000ffad2cb3ea274ef63fce275996284fa5978b399fd",
+          "qa_status": "visual_qa_passed",
+          "sample": 837,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c796b633-df4c-475e-a529-6d3c99efdc64/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
