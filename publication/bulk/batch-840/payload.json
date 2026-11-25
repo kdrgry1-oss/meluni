@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-840",
+  "created_at": "2026-11-25T23:59:16.263829+00:00",
+  "catalog_poll_at": "2026-11-25T23:59:16.263829+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "91a56ac6-3470-4526-b49e-b04ec5e339d9",
+      "sample": 840,
+      "name": "Askılı Yuvarlak Yaka Viskon Iki Iplik Bluz ve Eşofman Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 159,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/91a56ac6-3470-4526-b49e-b04ec5e339d9/91a56ac6-3470-4526-b49e-b04ec5e339d9-hd0-cc28732e.jpg",
+        "https://cdn.meluni.com.tr/products/91a56ac6-3470-4526-b49e-b04ec5e339d9/91a56ac6-3470-4526-b49e-b04ec5e339d9-hd1-bf7e3dad.jpg",
+        "https://cdn.meluni.com.tr/products/91a56ac6-3470-4526-b49e-b04ec5e339d9/91a56ac6-3470-4526-b49e-b04ec5e339d9-hd2-2056ab3f.jpg",
+        "https://cdn.meluni.com.tr/products/91a56ac6-3470-4526-b49e-b04ec5e339d9/91a56ac6-3470-4526-b49e-b04ec5e339d9-hd3-8d47b35b.jpg",
+        "https://cdn.meluni.com.tr/products/91a56ac6-3470-4526-b49e-b04ec5e339d9/91a56ac6-3470-4526-b49e-b04ec5e339d9-hd4-4606bfac.jpg",
+        {
+          "id": "b98a501d-b8c1-4e44-90a3-bfcd7bd9afce",
+          "url": "https://cdn.meluni.com.tr/ai-products/707c577b-1b27-43ce-bb63-c968e00a5855-olcu-oto-bc96a36c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:34:42.024675+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "91a56ac6-3470-4526-b49e-b04ec5e339d9/front.jpg",
+          "sha256": "73180f6c17868ee78193c702681d6c67045694937fc5e80b4a56bf064f8254f0",
+          "qa_status": "visual_qa_passed",
+          "sample": 840,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91a56ac6-3470-4526-b49e-b04ec5e339d9/front-1200x1800.png"
+        },
+        "back": {
+          "file": "91a56ac6-3470-4526-b49e-b04ec5e339d9/back.jpg",
+          "sha256": "92101b16af37724d5c1dcc5e97badafe5beea57634da293019e5956cd2fac8cb",
+          "qa_status": "visual_qa_passed",
+          "sample": 840,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91a56ac6-3470-4526-b49e-b04ec5e339d9/back-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "91a56ac6-3470-4526-b49e-b04ec5e339d9/fashion_model_back.jpg",
+          "sha256": "ddcd90d1ef197c47640a722adfa7fbff5c9be92445b2c7ca72f679d8f8e44992",
+          "qa_status": "visual_qa_passed",
+          "sample": 840,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-91a56ac6-3470-4526-b49e-b04ec5e339d9/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
