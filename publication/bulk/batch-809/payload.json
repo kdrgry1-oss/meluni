@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-809",
+  "created_at": "2026-11-25T08:44:59.000861+00:00",
+  "catalog_poll_at": "2026-11-25T08:44:59.000861+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "5034059b-19a1-412c-a223-66446379ab29",
+      "sample": 809,
+      "name": "Iki Iplik Viskon Pamuk Kumaş Arma Detaylı Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 114,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f4ed6abe2f666d94729cc4554b7c027c.jpeg",
+        "https://modayakamoz.com/orj/950a015631b3bc451e07d3c00c7208f7.jpeg",
+        "https://modayakamoz.com/orj/5edf6c1ebdd5804de3f2f80706cb8a85.jpeg",
+        "https://modayakamoz.com/orj/f8d21525986bc03b3234cde1c3903766.jpeg",
+        "https://modayakamoz.com/orj/dc73d5ed0d799727d45dfdf1cfdc155c.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5034059b-19a1-412c-a223-66446379ab29/front.jpg",
+          "sha256": "5386131212f99ceeff0d0caa1bd4764f4886ed615b70c8ab43506352bf6441e3",
+          "qa_status": "visual_qa_passed_after_one_targeted_correction",
+          "sample": 809,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5034059b-19a1-412c-a223-66446379ab29/front-1200x1800.png"
+        },
+        "back": {
+          "file": "5034059b-19a1-412c-a223-66446379ab29/back.jpg",
+          "sha256": "a3fc7f10618556e1a72e5be6d118eaff6ca836c2849d1f907d622f49bb3e6c8b",
+          "qa_status": "visual_qa_passed",
+          "sample": 809,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5034059b-19a1-412c-a223-66446379ab29/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "5034059b-19a1-412c-a223-66446379ab29/fashion_model.jpg",
+          "sha256": "f3cfc96a2b92e8c8e5678e83cecbbe5fea4487174a2ea1187bb20dac7b7410e0",
+          "qa_status": "visual_qa_passed_after_one_targeted_correction",
+          "sample": 809,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5034059b-19a1-412c-a223-66446379ab29/model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
