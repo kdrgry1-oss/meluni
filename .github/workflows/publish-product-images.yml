@@ -1,0 +1,1190 @@
+name: Publish reviewed Meluni product images
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: One-time server maintenance
+        required: true
+        type: choice
+        options:
+          - publish
+          - remove-empty-mongo-url
+          - inspect-catalog
+          - restore-mongo-url
+          - publish-bulk
+          - retract-qa-front
+      batch:
+        description: Bulk batch number (01–07)
+        required: false
+        type: choice
+        options:
+          - '01'
+          - '02'
+          - '03'
+          - '04'
+          - '05'
+          - '06'
+          - '07'
+          - '08'
+          - '09'
+          - '10'
+          - '11'
+          - '12'
+          - '13'
+          - '14'
+          - '15'
+          - '16'
+          - '17'
+          - '18'
+          - '19'
+          - '20'
+          - '21'
+          - '22'
+          - '23'
+          - '24'
+          - '25'
+          - '26'
+          - '27'
+          - '28'
+          - '29'
+          - '30'
+          - '31'
+          - '32'
+          - '33'
+          - '34'
+          - '35'
+          - '36'
+          - '37'
+          - '38'
+          - '39'
+          - '40'
+          - '41'
+          - '42'
+          - '43'
+          - '44'
+          - '45'
+          - '46'
+          - '47'
+          - '48'
+          - '49'
+          - '50'
+          - '51'
+          - '52'
+          - '53'
+          - '54'
+          - '55'
+          - '56'
+          - '57'
+          - '58'
+          - '59'
+          - '60'
+          - '61'
+          - '62'
+          - '63'
+          - '64'
+          - '65'
+          - '66'
+          - '67'
+          - '68'
+          - '69'
+          - '70'
+          - '71'
+          - '72'
+          - '73'
+          - '74'
+          - '75'
+          - '76'
+          - '77'
+          - '78'
+          - '79'
+          - '80'
+          - '81'
+          - '82'
+          - '83'
+          - '84'
+          - '85'
+          - '86'
+          - '87'
+          - '88'
+          - '89'
+          - '90'
+          - '91'
+          - '92'
+          - '93'
+          - '94'
+          - '95'
+          - '96'
+          - '97'
+          - '98'
+          - '99'
+          - '100'
+          - '101'
+          - '102'
+          - '103'
+          - '104'
+          - '105'
+          - '106'
+          - '107'
+          - '108'
+          - '109'
+          - '110'
+          - '111'
+          - '112'
+          - '113'
+          - '114'
+          - '115'
+          - '116'
+          - '117'
+          - '118'
+          - '119'
+          - '120'
+          - '121'
+          - '122'
+          - '123'
+          - '124'
+          - '125'
+          - '126'
+          - '127'
+          - '128'
+          - '129'
+          - '130'
+          - '131'
+          - '132'
+          - '133'
+          - '134'
+          - '135'
+          - '136'
+          - '137'
+          - '138'
+          - '139'
+          - '140'
+          - '141'
+          - '142'
+          - '143'
+          - '144'
+          - '145'
+          - '146'
+          - '147'
+          - '148'
+          - '149'
+          - '150'
+          - '151'
+          - '152'
+          - '153'
+          - '154'
+          - '155'
+          - '156'
+          - '157'
+          - '158'
+          - '159'
+          - '160'
+          - '161'
+          - '162'
+          - '163'
+          - '164'
+          - '165'
+          - '166'
+          - '167'
+          - '168'
+          - '169'
+          - '170'
+          - '171'
+          - '172'
+          - '173'
+          - '174'
+          - '175'
+          - '176'
+          - '177'
+          - '178'
+          - '179'
+          - '180'
+          - '181'
+          - '182'
+          - '183'
+          - '184'
+          - '185'
+          - '186'
+          - '187'
+          - '188'
+          - '189'
+          - '190'
+          - '191'
+          - '192'
+          - '193'
+          - '194'
+          - '195'
+          - '196'
+          - '197'
+          - '198'
+          - '199'
+          - '200'
+          - '201'
+          - '202'
+          - '203'
+          - '204'
+          - '205'
+          - '206'
+          - '207'
+          - '208'
+          - '209'
+          - '210'
+          - '211'
+          - '212'
+          - '213'
+          - '214'
+          - '215'
+          - '216'
+          - '217'
+          - '218'
+          - '219'
+          - '220'
+          - '221'
+          - '222'
+          - '223'
+          - '224'
+          - '225'
+          - '226'
+          - '227'
+          - '228'
+          - '229'
+          - '230'
+          - '231'
+          - '232'
+          - '233'
+          - '234'
+          - '235'
+          - '236'
+          - '237'
+          - '238'
+          - '239'
+          - '240'
+          - '241'
+          - '242'
+          - '243'
+          - '244'
+          - '245'
+          - '246'
+          - '247'
+          - '248'
+          - '249'
+          - '250'
+          - '251'
+          - '252'
+          - '253'
+          - '254'
+          - '255'
+          - '256'
+          - '257'
+          - '258'
+          - '259'
+          - '260'
+          - '261'
+          - '262'
+          - '263'
+          - '264'
+          - '265'
+          - '266'
+          - '267'
+          - '268'
+          - '269'
+          - '270'
+          - '271'
+          - '272'
+          - '273'
+          - '274'
+          - '275'
+          - '276'
+          - '277'
+          - '278'
+          - '279'
+          - '280'
+          - '281'
+          - '282'
+          - '283'
+          - '284'
+          - '285'
+          - '286'
+          - '287'
+          - '288'
+          - '289'
+          - '290'
+          - '291'
+          - '292'
+          - '293'
+          - '294'
+          - '295'
+          - '296'
+          - '297'
+          - '298'
+          - '299'
+          - '300'
+          - '301'
+          - '302'
+          - '303'
+          - '304'
+          - '305'
+          - '306'
+          - '307'
+          - '308'
+          - '309'
+          - '310'
+          - '311'
+          - '312'
+          - '313'
+          - '314'
+          - '315'
+          - '316'
+          - '317'
+          - '318'
+          - '319'
+          - '320'
+          - '321'
+          - '322'
+          - '323'
+          - '324'
+          - '325'
+          - '326'
+          - '327'
+          - '328'
+          - '329'
+          - '330'
+          - '331'
+          - '332'
+          - '333'
+          - '334'
+          - '335'
+          - '336'
+          - '337'
+          - '338'
+          - '339'
+          - '340'
+          - '341'
+          - '342'
+          - '343'
+          - '344'
+          - '345'
+          - '346'
+          - '347'
+          - '348'
+          - '349'
+          - '350'
+          - '351'
+          - '352'
+          - '353'
+          - '354'
+          - '355'
+          - '356'
+          - '357'
+          - '358'
+          - '359'
+          - '360'
+          - '361'
+          - '362'
+          - '363'
+          - '364'
+          - '365'
+          - '366'
+          - '367'
+          - '368'
+          - '369'
+          - '370'
+          - '371'
+          - '372'
+          - '373'
+          - '374'
+          - '375'
+          - '376'
+          - '377'
+          - '378'
+          - '379'
+          - '380'
+          - '381'
+          - '382'
+          - '383'
+          - '384'
+          - '385'
+          - '386'
+          - '387'
+          - '388'
+          - '389'
+          - '390'
+          - '391'
+          - '392'
+          - '393'
+          - '394'
+          - '395'
+          - '396'
+          - '397'
+          - '398'
+          - '399'
+          - '400'
+          - '401'
+          - '402'
+          - '403'
+          - '404'
+          - '405'
+          - '406'
+          - '407'
+          - '408'
+          - '409'
+          - '410'
+          - '411'
+          - '412'
+          - '413'
+          - '415'
+          - '416'
+          - '417'
+          - '418'
+          - '419'
+          - '420'
+          - '421'
+          - '422'
+          - '423'
+          - '424'
+          - '425'
+          - '426'
+          - '427'
+          - '428'
+          - '429'
+          - '430'
+          - '431'
+          - '432'
+          - '433'
+          - '434'
+          - '435'
+          - '436'
+          - '437'
+          - '438'
+          - '439'
+          - '440'
+          - '441'
+          - '442'
+          - '443'
+          - '444'
+          - '445'
+          - '446'
+          - '447'
+          - '448'
+          - '449'
+          - '450'
+          - '451'
+          - '452'
+          - '453'
+          - '454'
+          - '455'
+          - '456'
+          - '457'
+          - '458'
+          - '459'
+          - '460'
+          - '461'
+          - '462'
+          - '463'
+          - '464'
+          - '465'
+          - '466'
+          - '467'
+          - '468'
+          - '469'
+          - '470'
+          - '471'
+          - '472'
+          - '473'
+          - '474'
+          - '475'
+          - '476'
+          - '477'
+          - '478'
+          - '479'
+          - '480'
+          - '481'
+          - '482'
+          - '483'
+          - '484'
+          - '485'
+          - '486'
+          - '487'
+          - '488'
+          - '489'
+          - '490'
+          - '491'
+          - '492'
+          - '493'
+          - '494'
+          - '495'
+          - '496'
+          - '497'
+          - '498'
+          - '499'
+          - '500'
+          - '501'
+          - '502'
+          - '503'
+          - '504'
+          - '505'
+          - '506'
+          - '507'
+          - '508'
+          - '509'
+          - '510'
+          - '511'
+          - '512'
+          - '513'
+          - '514'
+          - '515'
+          - '516'
+          - '517'
+          - '518'
+          - '519'
+          - '520'
+          - '521'
+          - '522'
+          - '523'
+          - '524'
+          - '525'
+          - '526'
+          - '527'
+          - '528'
+          - '529'
+          - '530'
+          - '531'
+          - '532'
+          - '533'
+          - '534'
+          - '535'
+          - '536'
+          - '537'
+          - '538'
+          - '539'
+          - '540'
+          - '541'
+          - '542'
+          - '543'
+          - '544'
+          - '545'
+          - '546'
+          - '547'
+          - '548'
+          - '549'
+          - '550'
+          - '551'
+          - '552'
+          - '553'
+          - '554'
+          - '555'
+          - '556'
+          - '557'
+          - '558'
+          - '559'
+          - '560'
+          - '561'
+          - '562'
+          - '563'
+          - '564'
+          - '565'
+          - '566'
+          - '567'
+          - '568'
+          - '569'
+          - '570'
+          - '571'
+          - '572'
+          - '573'
+          - '574'
+          - '575'
+          - '576'
+          - '577'
+          - '578'
+          - '579'
+          - '580'
+          - '581'
+          - '582'
+          - '583'
+          - '584'
+          - '585'
+          - '586'
+          - '587'
+          - '588'
+          - '589'
+          - '590'
+          - '591'
+          - '592'
+          - '593'
+          - '594'
+          - '595'
+          - '596'
+          - '597'
+          - '598'
+          - '599'
+          - '600'
+          - '601'
+          - '602'
+          - '603'
+          - '604'
+          - '605'
+          - '606'
+          - '607'
+          - '608'
+          - '609'
+          - '610'
+          - '611'
+          - '612'
+          - '613'
+          - '614'
+          - '615'
+          - '616'
+          - '617'
+          - '618'
+          - '619'
+          - '620'
+          - '621'
+          - '622'
+          - '623'
+          - '624'
+          - '625'
+          - '626'
+          - '627'
+          - '628'
+          - '629'
+          - '630'
+          - '631'
+          - '632'
+          - '633'
+          - '634'
+          - '635'
+          - '636'
+          - '637'
+          - '638'
+          - '639'
+          - '640'
+          - '641'
+          - '642'
+          - '643'
+          - '644'
+          - '645'
+          - '646'
+          - '647'
+          - '648'
+          - '649'
+          - '650'
+          - '651'
+          - '652'
+          - '653'
+          - '654'
+          - '655'
+          - '656'
+          - '657'
+          - '658'
+          - '659'
+          - '660'
+          - '661'
+          - '662'
+          - '663'
+          - '664'
+          - '665'
+          - '666'
+          - '667'
+          - '668'
+          - '669'
+          - '670'
+          - '671'
+          - '672'
+          - '673'
+          - '674'
+          - '675'
+          - '676'
+          - '677'
+          - '678'
+          - '679'
+          - '680'
+          - '681'
+          - '682'
+          - '683'
+          - '684'
+          - '685'
+          - '686'
+          - '687'
+          - '688'
+          - '689'
+          - '690'
+          - '691'
+          - '692'
+          - '693'
+          - '694'
+          - '695'
+          - '696'
+          - '697'
+          - '698'
+          - '699'
+          - '700'
+          - '701'
+          - '702'
+          - '703'
+          - '704'
+          - '705'
+          - '706'
+          - '707'
+          - '708'
+          - '709'
+          - '710'
+          - '711'
+          - '712'
+          - '713'
+          - '714'
+          - '715'
+          - '716'
+          - '717'
+          - '718'
+          - '719'
+          - '720'
+          - '721'
+          - '722'
+          - '723'
+          - '724'
+          - '725'
+          - '726'
+          - '727'
+          - '728'
+          - '729'
+          - '730'
+          - '731'
+          - '732'
+          - '733'
+          - '734'
+          - '735'
+          - '736'
+          - '737'
+          - '738'
+          - '739'
+          - '740'
+          - '741'
+          - '742'
+          - '743'
+          - '744'
+          - '745'
+          - '746'
+          - '747'
+          - '748'
+          - '749'
+          - '750'
+          - '751'
+          - '752'
+          - '753'
+          - '754'
+          - '755'
+          - '756'
+          - '757'
+          - '758'
+          - '759'
+          - '760'
+          - '761'
+          - '762'
+          - '763'
+          - '764'
+          - '765'
+          - '766'
+          - '767'
+          - '768'
+          - '769'
+          - '770'
+          - '771'
+          - '772'
+          - '773'
+          - '774'
+          - '775'
+          - '776'
+          - '777'
+          - '778'
+          - '779'
+          - '780'
+          - '781'
+          - '782'
+          - '157'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: meluni-publish-images
+  cancel-in-progress: false
+
+jobs:
+  restore_mongo_url:
+    if: inputs.task == 'restore-mongo-url' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+    steps:
+      - name: Restore original Mongo URL line from server backup
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_meluni_publish"
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          else
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
+          fi
+          APP_ROOT="${DEPLOY_PATH:-/home/${SSH_USER}/apps/meluni}"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" python3 - "$APP_ROOT/shared/.env" <<'PY'
+          import pathlib, sys, os, tempfile
+          p=pathlib.Path(sys.argv[1]); current=p.read_bytes()
+          backups=sorted(p.parent.glob(p.name+'.before-mongo-removal-*'))
+          if not backups: raise SystemExit('Mongo setting backup not found')
+          original=backups[-1].read_bytes()
+          lines=original.splitlines(keepends=True)
+          matched=[line for line in lines if line.startswith(b'MONGO_URL=')]
+          if len(matched)!=1: raise SystemExit('Backup Mongo setting is ambiguous')
+          without=b''.join(line for line in lines if not line.startswith(b'MONGO_URL='))
+          if current!=without: raise SystemExit('Environment changed since removal; no restoration made')
+          with tempfile.NamedTemporaryFile(dir=p.parent,prefix=p.name+'.',delete=False) as f:
+              f.write(original); temp=pathlib.Path(f.name)
+          os.chmod(temp,p.stat().st_mode & 0o777)
+          temp.replace(p)
+          print('Original Mongo URL setting restored; all other settings unchanged.')
+          PY
+  inspect_catalog:
+    if: inputs.task == 'inspect-catalog' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+    steps:
+      - name: Inspect live catalog storage read only
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_meluni_publish"
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          else
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
+          fi
+          APP_ROOT="${DEPLOY_PATH:-/home/${SSH_USER}/apps/meluni}"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" bash -s -- "$APP_ROOT" <<'REMOTE'
+          set -euo pipefail
+          root="$1"
+          printf 'App service: '; systemctl is-active meluni 2>/dev/null || true
+          printf 'API response: '; curl -sS -o /dev/null -w '%{http_code}\n' --max-time 5 http://127.0.0.1:8000/api/health || true
+          printf 'Local product endpoint: '; curl -sS -o /tmp/meluni-catalog-inspect.json -w '%{http_code}\n' --max-time 8 'http://127.0.0.1:8000/api/products?limit=1' || true
+          python3 - <<'PY'
+          import json
+          try:
+              d=json.load(open('/tmp/meluni-catalog-inspect.json'))
+              print('Local product count:', d.get('total'), 'first id:', (d.get('products') or [{}])[0].get('id'))
+          except Exception as e:
+              print('Local product parse:', type(e).__name__)
+          PY
+          printf 'Backend target: '; readlink -f "$root/current/backend" || true
+          python3 - <<'PY'
+          import os, subprocess, urllib.parse
+          pid = subprocess.check_output(['systemctl','show','meluni','--property=MainPID','--value'], text=True).strip()
+          try:
+              env = dict(chunk.split(b'=',1) for chunk in open(f'/proc/{pid}/environ','rb').read().split(b'\0') if b'=' in chunk)
+              uri = env.get(b'MONGO_URL',b'').decode()
+              p = urllib.parse.urlsplit(uri) if uri else None
+              print('Running service Mongo URL set:', bool(uri), 'scheme:', p.scheme if p else '', 'host:', p.hostname if p else '', 'DB_NAME set:', bool(env.get(b'DB_NAME')))
+          except Exception as e:
+              print('Running service environment unavailable:', type(e).__name__)
+          PY
+          printf 'Backend product store declarations:\n'
+          rg -n 'MONGO_URL|AsyncIOMotorClient|sqlite3|DATABASE_URL|db = client' "$root/current/backend/routes/deps.py" 2>/dev/null | head -n 14 || true
+          sed -n '14,35p' "$root/current/backend/routes/deps.py" 2>/dev/null || true
+          printf 'Data and catalog files:\n'
+          find "$root/current" "$root/shared" -maxdepth 3 -type f \( -iname '*catalog*.json' -o -iname '*products*.json' -o -iname '*catalog*.sqlite*' -o -iname '*products*.sqlite*' -o -iname '*catalog*.db' -o -iname '*products*.db' \) -printf '%p %s bytes\n' 2>/dev/null | head -n 25 || true
+          printf 'Storage directories:\n'
+          find "$root/current/backend" "$root/shared" -maxdepth 2 -type d \( -name uploads -o -name data -o -name storage \) -print 2>/dev/null | head -n 25 || true
+          REMOTE
+  remove_empty_mongo_url:
+    if: inputs.task == 'remove-empty-mongo-url' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+    steps:
+      - name: Remove only empty Mongo URL line
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_meluni_publish"
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          else
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
+          fi
+          APP_ROOT="${DEPLOY_PATH:-/home/${SSH_USER}/apps/meluni}"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" bash -s -- "$APP_ROOT" <<'REMOTE'
+          set -euo pipefail
+          env_file="$1/shared/.env"
+          test -f "$env_file"
+          python3 - "$env_file" <<'PY'
+          import os, pathlib, sys, tempfile, datetime
+          p = pathlib.Path(sys.argv[1])
+          raw = p.read_bytes()
+          lines = raw.splitlines(keepends=True)
+          target = [i for i, line in enumerate(lines) if line.startswith(b'MONGO_URL=')]
+          if not target:
+              print('Mongo URL setting already absent; no change made.')
+              raise SystemExit(0)
+          if len(target) != 1:
+              raise SystemExit('Multiple Mongo URL settings; no change made.')
+          i = target[0]
+          suffix = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+          backup = p.with_name(p.name + '.before-mongo-removal-' + suffix)
+          backup.write_bytes(raw)
+          os.chmod(backup, p.stat().st_mode & 0o777)
+          with tempfile.NamedTemporaryFile(dir=p.parent, prefix=p.name + '.', delete=False) as f:
+              f.write(b''.join(line for j, line in enumerate(lines) if j != i))
+              temp = pathlib.Path(f.name)
+          os.chmod(temp, p.stat().st_mode & 0o777)
+          temp.replace(p)
+          print('Removed only Mongo URL setting; backup retained.')
+          PY
+          REMOTE
+  publish:
+    if: inputs.task == 'publish-bulk' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+      BATCH: ${{ inputs.batch }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Yayın paketini doğrula
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          import os
+          batch=os.environ['BATCH']
+          assert batch in {'01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','101','102','103','104','105','106','107','108','109','110','111','112','113','114','115','116','117','118','119','120','121','122','123','124','125','126','127','128','129','130','131','132','133','134','135','136','137','138','139','140','141','142','143','144','145','146','147','148','149','150','151','152','153','154','155','156','157','158','159','160','161','162','163','164','165','166','167','168','169','170','171','172','173','174','175','176','177','178','179','180','181','182','183','184','185','186','187','188','189','190','191','192','193','194','195','196','197','198','199','200','201','202','203','204','205','206','207','208','209','210','211','212','213','214','215','216','217','218','219','220','221','222','223','224','225','226','227','228','229','230','231','232','233','234','235','236','237','238','239','240','241','242','243','244','245','246','247','248','249','250','251','252','253','254','255','256','257','258','259','260','261','262','263','264','265','266','267','268','269','270','271','272','273','274','275','276','277','278','279','280','281','282','283','284','285','286','287','288','289','290','291','292','293','294','295','296','297','298','299','300','301','302','303','304','305','306','307','308','309','310','311','312','313','314','315','316','317','318','319','320','321','322','323','324','325','326','327','328','329','330','331','332','333','334','335','336','337','338','339','340','341','342','343','344','345','346','347','348','349','350','351','352','353','354','355','356','357','358','359','360','361','362','363','364','365','366','367','368','369','370','371','372','373','374','375','376','377','378','379','380','381','382','383','384','385','386','387','388','389','390','391','392','393','394','395','396','397','398','399','400','401','402','403','404','405','406','407','408','409','410','411','412','413','415','416','417','418','419','420','421','422','423','424','425','426','427','428','429','430','431','432','433','434','435','436','437','438','439','440','441','442','443','444','445','446','447','448','449','450','451','452','453','454','455','456','457','458','459','460','461','462','463','464','465','466','467','468','469','470','471','472','473','474','475','476','477','478','479','480','481','482','483','484','485','486','487','488','489','490','491','492','493','494','495','496','497','498','499','500','501','502','503','504','505','506','507','508','509','510','511','512','513','514','515','516','517','518','519','520','521','522','523','524','525','526','527','528','529','530','531','532','533','534','535','536','537','538','539','540','541','542','543','544','545','546','547','548','549','550','551','552','553','554','555','556','557','558','559','560','561','562','563','564','565','566','567','568','569','570','571','572','573','574','575','576','577','578','579','580','581','582','583','584','585','586','587','588','589','590','591','592','593','594','595','596','597','598','599','600','601','602','603','604','605','606','607','608','609','610','611','612','613','614','615','616','617','618','619','620','621','622','623','624','625','626','627','628','629','630','631','632','633','634','635','636','637','638','639','640','641','642','643','644','645','646','647','648','649','650','651','652','653','654','655','656','657','658','659','660','661','662','663','664','665','666','667','668','669','670','671','672','673','674','675','676','677','678','679','680','681','682','683','684','685','686','687','688','689','690','691','692','693','694','695','696','697','698','699','700','701','702','703','704','705','706','707','708','709','710','711','712','713','714','715','716','717','718','719','720','721','722','723','724','725','726','727','728','729','730','731','732','733','734','735','736','737','738','739','740','741','742','743','744','745','746','747','748','749','750','751','752','753','754','755','756','757','758','759','760','761','762','763','764','765','766','767','768','769','770','771','772','773','774','775','776','777','778','779','780','781','782'}
+          p=pathlib.Path(f'publication/bulk/batch-{batch}/payload.json')
+          data=json.loads(p.read_text())
+          assert data['publication_id']==f'meluni-images-20261110-v3-{batch}'
+          assert data['publish_authorized_by_user'] is True
+          assert 1<=len(data['products'])<=40
+          assert len({x['product_id'] for x in data['products']})==len(data['products'])
+          for product in data['products']:
+            assert product['active_at_poll'] is True and product['stock_at_poll']>0
+            assert product['assets'] and set(product['assets'])<={'front','back','fashion_model','fashion_model_back','size_chart'}
+            for asset in product['assets'].values():
+              path=pathlib.Path(f'publication/bulk/batch-{batch}/assets')/asset['file']
+              assert path.is_file()
+              assert hashlib.sha256(path.read_bytes()).hexdigest()==asset['sha256']
+              qa=asset['qa_status'].lower()
+              assert any(s in qa for s in ('pass','verified'))
+              assert not any(s in qa for s in ('fail','open','unverified','insufficient'))
+          print('Verified',len(data['products']),'in-stock products and QA-approved masters.')
+          PY
+
+      - name: SSH erişimini hazırla
+        run: |
+          set -euo pipefail
+          test -n "$SSH_HOST" && test -n "$SSH_USER" && test -n "$SSH_PRIVATE_KEY"
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_meluni_publish"
+          chmod 600 "$HOME/.ssh/id_meluni_publish"
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          else
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
+          fi
+          chmod 644 "$HOME/.ssh/known_hosts"
+          APP_ROOT="${DEPLOY_PATH:-/home/${SSH_USER}/apps/meluni}"
+          REMOTE_STAGE="${APP_ROOT}/shared/tmp/meluni-images-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          printf 'APP_ROOT=%s\nREMOTE_STAGE=%s\n' "$APP_ROOT" "$REMOTE_STAGE" >> "$GITHUB_ENV"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_STAGE'"
+
+      - name: Paket dosyalarını sunucuya kopyala
+        run: |
+          set -euo pipefail
+          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -r "publication/bulk/batch-$BATCH/payload.json" "publication/bulk/batch-$BATCH/assets" scripts/publish_bulk_images.py "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/"
+
+      - name: Sunucu veritabanı bağlantısını tanıla
+        run: |
+          set -euo pipefail
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" bash -s -- "$APP_ROOT" <<'REMOTE'
+          set -euo pipefail
+          APP_ROOT="$1"
+          set -a
+          . "$APP_ROOT/shared/.env"
+          set +a
+          printf 'Environment keys: '
+          sed -n 's/^\([A-Za-z_][A-Za-z0-9_]*\)=.*/\1/p' "$APP_ROOT/shared/.env" | sort -u | tr '\n' ' '
+          printf '\nMONGO_URL: '
+          if [ -n "${MONGO_URL:-}" ]; then
+            python3 -c 'import os,urllib.parse; u=urllib.parse.urlsplit(os.environ["MONGO_URL"]); print((u.scheme, u.hostname, u.port, u.path))'
+          else
+            printf 'unset\n'
+          fi
+          printf 'Mongo services: '
+          systemctl is-active mongod mongodb 2>/dev/null || true
+          printf 'Mongo listeners: '
+          ss -ltn 2>/dev/null | awk '$4 ~ /:27017$/ {print $4}' | tr '\n' ' '
+          printf '\nMongo sockets: '
+          for s in /tmp/mongodb-27017.sock /run/mongodb/mongodb-27017.sock; do [ ! -S "$s" ] || printf '%s ' "$s"; done
+          printf '\n'
+          REMOTE
+
+      - name: Güncel stok ve galeriyle karşılaştırıp yayımla
+        run: |
+          set -euo pipefail
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" bash -s -- "$APP_ROOT" "$REMOTE_STAGE" <<'REMOTE'
+          set -euo pipefail
+          APP_ROOT="$1"
+          REMOTE_STAGE="$2"
+          test -f "$APP_ROOT/shared/.env"
+          test -x "$APP_ROOT/shared/venv/bin/python"
+          cd "$APP_ROOT/current/backend"
+          "$APP_ROOT/shared/venv/bin/python" - "$REMOTE_STAGE" <<'PY'
+          import os, pathlib, subprocess, sys
+          stage=sys.argv[1]
+          pid=subprocess.check_output(['systemctl','show','meluni','--property=MainPID','--value'],text=True).strip()
+          raw=pathlib.Path(f'/proc/{pid}/environ').read_bytes()
+          env={k.decode():v.decode() for k,v in (part.split(b'=',1) for part in raw.split(b'\0') if b'=' in part)}
+          if not env.get('MONGO_URL') or not env.get('DB_NAME'):
+              raise SystemExit('Running application database settings unavailable')
+          os.execve(sys.executable,[sys.executable,f'{stage}/publish_bulk_images.py',f'{stage}/payload.json',f'{stage}/assets',f'{stage}/status.json'],env)
+          PY
+          REMOTE
+
+      - name: Yayın sonucunu geri al
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/status.json" "publication/bulk/batch-$BATCH/result.json"; then
+              break
+            fi
+            if [ "$attempt" -eq 3 ]; then exit 1; fi
+            sleep 3
+          done
+          cat "publication/bulk/batch-$BATCH/result.json"
+
+      - name: Sonucu dalda sakla
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "publication/bulk/batch-$BATCH/result.json"
+          git commit -m "Record Meluni image publication result [publisher status]"
+          git push origin HEAD:codex/meluni-publish-images-20261110
+
+      - name: Sunucudaki geçici dosyaları temizle
+        if: always() && env.REMOTE_STAGE != ''
+        run: |
+          set +e
+          if [ -f "$HOME/.ssh/id_meluni_publish" ] && [ -n "$REMOTE_STAGE" ]; then
+            ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" "rm -rf -- '$REMOTE_STAGE'"
+          fi
+          rm -f "$HOME/.ssh/id_meluni_publish"
+  retract_qa_front:
+    if: inputs.task == 'retract-qa-front' && github.ref == 'refs/heads/codex/meluni-publish-images-20261110'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - name: QA düzeltme paketini doğrula
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=json.loads(pathlib.Path('publication/qa-retractions/3413-front/payload.json').read_text())
+          assert p['product_id']=='709229de-e48f-4177-b806-7429ed2962b5'
+          assert p['expected_publication_id']=='meluni-images-20261110-v3-429'
+          assert p['authorized_by_user'] is True
+          assert p['expected_images'][0]==p['retract_url']
+          assert p['new_images']==p['expected_images'][1:]
+          assert len(p['new_images'])==7
+          PY
+      - name: SSH erişimini hazırla
+        run: |
+          set -euo pipefail
+          test -n "$SSH_HOST" && test -n "$SSH_USER" && test -n "$SSH_PRIVATE_KEY"
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_meluni_publish"
+          chmod 600 "$HOME/.ssh/id_meluni_publish"
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          else
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
+          fi
+          chmod 644 "$HOME/.ssh/known_hosts"
+          APP_ROOT="${DEPLOY_PATH:-/home/${SSH_USER}/apps/meluni}"
+          REMOTE_STAGE="${APP_ROOT}/shared/tmp/meluni-qa-retract-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          printf 'APP_ROOT=%s\nREMOTE_STAGE=%s\n' "$APP_ROOT" "$REMOTE_STAGE" >> "$GITHUB_ENV"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_STAGE'"
+      - name: QA düzeltmesini atomik uygula
+        run: |
+          set -euo pipefail
+          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes publication/qa-retractions/3413-front/payload.json scripts/retract_qa_image.py "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/"
+          ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" bash -s -- "$APP_ROOT" "$REMOTE_STAGE" <<'REMOTE'
+          set -euo pipefail
+          APP_ROOT="$1"
+          REMOTE_STAGE="$2"
+          test -x "$APP_ROOT/shared/venv/bin/python"
+          cd "$APP_ROOT/current/backend"
+          "$APP_ROOT/shared/venv/bin/python" - "$REMOTE_STAGE" <<'PY'
+          import os,pathlib,subprocess,sys
+          stage=sys.argv[1]
+          pid=subprocess.check_output(['systemctl','show','meluni','--property=MainPID','--value'],text=True).strip()
+          raw=pathlib.Path(f'/proc/{pid}/environ').read_bytes()
+          env={k.decode():v.decode() for k,v in (part.split(b'=',1) for part in raw.split(b'\0') if b'=' in part)}
+          if not env.get('MONGO_URL') or not env.get('DB_NAME'):
+              raise SystemExit('Running application database settings unavailable')
+          os.execve(sys.executable,[sys.executable,f'{stage}/retract_qa_image.py',f'{stage}/payload.json',f'{stage}/status.json'],env)
+          PY
+          REMOTE
+      - name: QA düzeltme sonucunu kaydet
+        run: |
+          set -euo pipefail
+          scp -P "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST:$REMOTE_STAGE/status.json" publication/qa-retractions/3413-front/result.json
+          cat publication/qa-retractions/3413-front/result.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add publication/qa-retractions/3413-front/result.json
+          git commit -m "Record Meluni QA image retraction result"
+          git push origin HEAD:codex/meluni-publish-images-20261110
+      - name: Sunucudaki geçici dosyaları temizle
+        if: always() && env.REMOTE_STAGE != ''
+        run: |
+          set +e
+          if [ -f "$HOME/.ssh/id_meluni_publish" ] && [ -n "$REMOTE_STAGE" ]; then
+            ssh -p "$SSH_PORT" -i "$HOME/.ssh/id_meluni_publish" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" "rm -rf -- '$REMOTE_STAGE'"
+          fi
+          rm -f "$HOME/.ssh/id_meluni_publish"
