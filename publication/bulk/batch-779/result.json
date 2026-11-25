@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-779",
+  "published_at_utc": "2026-11-25T01:47:44.313357+00:00",
+  "products": [
+    {
+      "product_id": "b06d6571-8d56-45ba-80a9-b7e94cb00ee1",
+      "sample": 1441,
+      "name": "Kolsuz Tül Yuvarlak Yakalı Derin V Dekolteli Simli Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b06d6571-8d56-45ba-80a9-b7e94cb00ee1-front-051621ec3591.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b06d6571-8d56-45ba-80a9-b7e94cb00ee1-back-23678a93c9a7.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b06d6571-8d56-45ba-80a9-b7e94cb00ee1-model-cc3d4d45ac75.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
