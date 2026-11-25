@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-791",
+  "created_at": "2026-11-25T04:30:39.235760+00:00",
+  "catalog_poll_at": "2026-11-25T04:30:39.235760+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "9ead243a-68c3-4d45-a9cb-01d3bcbad2dd",
+      "sample": 791,
+      "name": "Polar Dik Yaka Yarım Fermuarlı Uzun Kollu Regular Fit Sweatshirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4999,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6ac77a993ccb76ac77a993ccb9.webp",
+        "https://modayakamoz.com/orj/TY6ac77a9ac58406ac77a9ac5843.webp",
+        "https://modayakamoz.com/orj/TY6ac77a9ca77e06ac77a9ca77e3.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "9ead243a-68c3-4d45-a9cb-01d3bcbad2dd/front.jpg",
+          "sha256": "b596943672cdbf38258fd105a07a3d0c5ac6e633612a7109c88c792e0cb59133",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 791,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9ead243a-68c3-4d45-a9cb-01d3bcbad2dd/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "9ead243a-68c3-4d45-a9cb-01d3bcbad2dd/back.jpg",
+          "sha256": "163260ffcb8915678ed310aa0b592454dbf763cb8dcfc92ff25f5e5276f693c7",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 791,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9ead243a-68c3-4d45-a9cb-01d3bcbad2dd/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9ead243a-68c3-4d45-a9cb-01d3bcbad2dd/fashion_model.jpg",
+          "sha256": "13ecae3bc0fdfa603337c0578781ed7460fb587672161aa61abd57fde0dc4a03",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 791,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9ead243a-68c3-4d45-a9cb-01d3bcbad2dd/model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
