@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-783",
+  "published_at_utc": "2026-11-25T03:13:20.800472+00:00",
+  "products": [
+    {
+      "product_id": "d332d9e3-d0c0-4d78-8f0c-b49a15001b55",
+      "sample": 783,
+      "name": "Scuba Oversize Şerit Detaylı Fermuarlı Üst Eşofman Takımı",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d332d9e3-d0c0-4d78-8f0c-b49a15001b55-front-9d6b59b15afe.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d332d9e3-d0c0-4d78-8f0c-b49a15001b55-back-f0a70f63eb01.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d332d9e3-d0c0-4d78-8f0c-b49a15001b55-model-fd532a1c3290.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
