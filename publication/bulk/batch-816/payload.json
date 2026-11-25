@@ -1,0 +1,29 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-816",
+  "created_at": "2026-11-25T12:58:15.422737+00:00",
+  "catalog_poll_at": "2026-11-25T12:55:59.666227+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "314cc58a-2743-466a-9b44-3dec936d09f5",
+      "sample": 816,
+      "name": "Düz Paça Beli Lastikli Spor Eşofman",
+      "active_at_poll": true,
+      "stock_at_poll": 391,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6996010e391706996010e39172.webp",
+        "https://modayakamoz.com/orj/TY69960110ebb4369960110ebb45.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "314cc58a-2743-466a-9b44-3dec936d09f5/front.jpg",
+          "sha256": "3fca30dd945b8012112413ab28c804221c0082d9a0eaae0edf9c31bf7a42be99",
+          "qa_status": "visual_qa_passed",
+          "sample": 816,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1067-front-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
