@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-791",
+  "published_at_utc": "2026-11-25T04:31:57.422144+00:00",
+  "products": [
+    {
+      "product_id": "9ead243a-68c3-4d45-a9cb-01d3bcbad2dd",
+      "sample": 791,
+      "name": "Polar Dik Yaka Yarım Fermuarlı Uzun Kollu Regular Fit Sweatshirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9ead243a-68c3-4d45-a9cb-01d3bcbad2dd-front-b596943672cd.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9ead243a-68c3-4d45-a9cb-01d3bcbad2dd-back-163260ffcb89.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9ead243a-68c3-4d45-a9cb-01d3bcbad2dd-model-13ecae3bc0fd.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
