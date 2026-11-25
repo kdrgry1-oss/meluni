@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-811",
+  "created_at": "2026-11-25T09:49:54.601741+00:00",
+  "catalog_poll_at": "2026-11-25T09:49:54.601741+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "e113499a-f8b3-4402-8736-f0f6ac723c55",
+      "sample": 811,
+      "name": "Omuzlardan Açık Yakadan Çapraz Geçme Detaylı Süprem Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 70,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ca99e8b9a3aedc8e8e3c0bda761ee0fe.png",
+        "https://modayakamoz.com/orj/b0f80f24752698152c79c8fa471933bd.png",
+        "https://modayakamoz.com/orj/73063f8674e22abff35e05ce562ef556.png",
+        "https://modayakamoz.com/orj/3ef14d72caff0f49fa8523183e287c02.png",
+        "https://modayakamoz.com/orj/88935a670d2ce579dce2bbcc59722523.png",
+        "https://modayakamoz.com/orj/a6ba30d241043ea08151d2cdeb97d70c.png",
+        "https://modayakamoz.com/orj/19cee57f4cd728d98c11b0490003f778.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "e113499a-f8b3-4402-8736-f0f6ac723c55/front.jpg",
+          "sha256": "b6d791e11877494c02697fbc1ef981e239a439d9572317aa96c448895da24ab4",
+          "qa_status": "visual_qa_passed",
+          "sample": 811,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e113499a-f8b3-4402-8736-f0f6ac723c55/front-1200x1800.png"
+        },
+        "back": {
+          "file": "e113499a-f8b3-4402-8736-f0f6ac723c55/back.jpg",
+          "sha256": "c1418f3240dd30901a0a832b20e7b48e6f5538aeac5c737e1c3692b712912a2a",
+          "qa_status": "visual_qa_passed",
+          "sample": 811,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e113499a-f8b3-4402-8736-f0f6ac723c55/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "e113499a-f8b3-4402-8736-f0f6ac723c55/fashion_model.jpg",
+          "sha256": "2b98835dde6bc5fc2a99e57177d6629ce6d5a86b7e8a964bb25be0c8f7bdfd18",
+          "qa_status": "visual_qa_passed",
+          "sample": 811,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e113499a-f8b3-4402-8736-f0f6ac723c55/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "e113499a-f8b3-4402-8736-f0f6ac723c55/size_chart.jpg",
+          "sha256": "336e02692e1cc2d25a0a0a7f3fa77e8bd3b6667bd6776711a93c1dbd345cfaf9",
+          "qa_status": "visual_qa_passed",
+          "sample": 811,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e113499a-f8b3-4402-8736-f0f6ac723c55/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
