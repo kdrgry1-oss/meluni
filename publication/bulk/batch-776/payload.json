@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-776",
+  "created_at": "2026-11-25T00:41:50.465200+00:00",
+  "catalog_poll_at": "2026-11-25T00:41:50.465200+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "afbf65c6-29ec-449d-8bae-e2a8a1d56fff",
+      "sample": 1848,
+      "name": "Kısa Kollu Hakim V Yakalı Dokuma Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 126,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/debe8db939c5a14366449014a107bc08.jpeg",
+        "https://modayakamoz.com/orj/e32d97f347c138599b75.jpeg",
+        "https://modayakamoz.com/orj/37489eddba263a9921e0.jpeg",
+        "https://modayakamoz.com/orj/5e5134bf8f373a9a83c9.jpeg",
+        {
+          "id": "4d6cb628-8db7-4b61-9a81-1a818dd0b3db",
+          "url": "https://cdn.meluni.com.tr/ai-products/afbf65c6-29ec-449d-8bae-e2a8a1d56fff-olcu-oto-fe510e46.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-03T05:23:08.501179+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "afbf65c6-29ec-449d-8bae-e2a8a1d56fff/front.jpg",
+          "sha256": "aa7d38c3e33586a1bcb4e7f474c51ca3027139f4e2dc7db0684b010a5c1bb0cd",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1848,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1848-front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "afbf65c6-29ec-449d-8bae-e2a8a1d56fff/back.jpg",
+          "sha256": "99ca05bebd5f6774a6c4fed1abc2dc422ab6730e01091927e6fb82f86853b996",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1848,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1848-back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "afbf65c6-29ec-449d-8bae-e2a8a1d56fff/fashion_model.jpg",
+          "sha256": "96d94a02e94a0011c61d85bba2266f86f7e8adf18b02feb2f47d1febe6df39a9",
+          "qa_status": "visual_source_qa_passed",
+          "sample": 1848,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1848-fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
