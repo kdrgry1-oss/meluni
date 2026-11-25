@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-811",
+  "published_at_utc": "2026-11-25T09:53:32.229705+00:00",
+  "products": [
+    {
+      "product_id": "e113499a-f8b3-4402-8736-f0f6ac723c55",
+      "sample": 811,
+      "name": "Omuzlardan Açık Yakadan Çapraz Geçme Detaylı Süprem Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e113499a-f8b3-4402-8736-f0f6ac723c55-front-b6d791e11877.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/e113499a-f8b3-4402-8736-f0f6ac723c55-back-c1418f3240dd.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e113499a-f8b3-4402-8736-f0f6ac723c55-model-2b98835dde6b.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e113499a-f8b3-4402-8736-f0f6ac723c55-size-chart-336e02692e1c.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
