@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-797",
+  "published_at_utc": "2026-11-25T04:59:33.917437+00:00",
+  "products": [
+    {
+      "product_id": "c893762b-379e-4fd6-b679-11bf7196cc2a",
+      "sample": 797,
+      "name": "Balıkçı Yaka Regular Fit Triko Kazak",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c893762b-379e-4fd6-b679-11bf7196cc2a-front-4657e59afe76.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c893762b-379e-4fd6-b679-11bf7196cc2a-back-fd6ee4b2f100.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c893762b-379e-4fd6-b679-11bf7196cc2a-model-fb964b5dab6f.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
