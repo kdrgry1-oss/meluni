@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-833",
+  "published_at_utc": "2026-11-25T21:46:21.285476+00:00",
+  "products": [
+    {
+      "product_id": "2eae6456-64d3-4242-96e8-d352237fc3ef",
+      "sample": 833,
+      "name": "Askılı Kruvaze Yaka Yırtmaç Detaylı Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2eae6456-64d3-4242-96e8-d352237fc3ef-front-f7baba4c9f62.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2eae6456-64d3-4242-96e8-d352237fc3ef-back-fddf1067c181.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2eae6456-64d3-4242-96e8-d352237fc3ef-model-2811bff7a404.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/2eae6456-64d3-4242-96e8-d352237fc3ef-model-back-cf6ba406f26c.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
