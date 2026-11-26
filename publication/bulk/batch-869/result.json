@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-869",
+  "published_at_utc": "2026-11-26T11:09:09.043084+00:00",
+  "products": [
+    {
+      "product_id": "160de544-747a-4e45-aaa5-ba989c4efb21",
+      "sample": 869,
+      "name": "Kısa Kollu Bisiklet Yaka Yırtmaçlı Şerit Detaylı Modal Midi Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/160de544-747a-4e45-aaa5-ba989c4efb21-front-998da1feb4b4.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/160de544-747a-4e45-aaa5-ba989c4efb21-size-chart-13ef71cda201.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
