@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-882",
+  "published_at_utc": "2026-11-26T14:41:01.666599+00:00",
+  "products": [
+    {
+      "product_id": "d527a88b-1e14-4e02-9ccb-00d40d033aaa",
+      "sample": 882,
+      "name": "Kısa Kollu V Yakalı Maksi Boy Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d527a88b-1e14-4e02-9ccb-00d40d033aaa-front-5f4b05ba044f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d527a88b-1e14-4e02-9ccb-00d40d033aaa-model-eeb6f1e3a202.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d527a88b-1e14-4e02-9ccb-00d40d033aaa-size-chart-06dee6f623fc.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
