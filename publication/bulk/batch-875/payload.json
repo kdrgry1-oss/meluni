@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-875",
+  "created_at": "2026-11-26T12:39:03.749291+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "3fa218f0-f5c3-4d4f-a75d-60f6cf2713fc",
+      "sample": 875,
+      "name": "Kısa Kollu Bisiklet Yakalı Yandan Toka Detaylı Kısa Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8a0be3daee35ec8b852f.jpeg",
+        "https://modayakamoz.com/orj/37c0bf79caf4c3eed794.jpeg",
+        "https://modayakamoz.com/orj/aaee6c0aa30baf84ec0b.jpeg",
+        {
+          "id": "8198dd9f-85f1-48a7-afbc-a247c558d86f",
+          "url": "https://cdn.meluni.com.tr/ai-products/3fa218f0-f5c3-4d4f-a75d-60f6cf2713fc-olcu-oto-70e495c2.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-11T05:19:54.569514+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "3fa218f0-f5c3-4d4f-a75d-60f6cf2713fc/front.jpg",
+          "sha256": "7a418a7a32794ad5cf360f804931fdb05190f4683708c0315f6cf504fa62eff7",
+          "qa_status": "visual_qa_passed",
+          "sample": 875,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3fa218f0-f5c3-4d4f-a75d-60f6cf2713fc/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "3fa218f0-f5c3-4d4f-a75d-60f6cf2713fc/fashion_model.jpg",
+          "sha256": "bda0f4b1d7ae4e760c5daa5f52389718abac5c209eb8112183483423fa44364d",
+          "qa_status": "visual_qa_passed",
+          "sample": 875,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3fa218f0-f5c3-4d4f-a75d-60f6cf2713fc/fashion_model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
