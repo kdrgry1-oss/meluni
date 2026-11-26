@@ -1,0 +1,67 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-910",
+  "created_at": "2026-11-26T19:57:30.081400+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "de81fbd0-5f9e-43ae-a5b6-f8417e55ba45",
+      "sample": 910,
+      "name": "Kolsuz Düğmeli Yelek ve Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 106,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd0-bce9f26c.jpg",
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd1-e71bd493.jpg",
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd2-9103940a.jpg",
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd3-fdad1ce6.jpg",
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd4-f0d60469.jpg",
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd5-290fbee4.jpg",
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd6-fc0ab749.jpg",
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd7-1cc7c359.jpg",
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd8-02a05e33.jpg",
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd10-846ae4ab.jpg",
+        "https://cdn.meluni.com.tr/products/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45-hd11-332dc805.jpg",
+        {
+          "id": "611f19b5-d40d-47e4-8c8a-dee0d1afdd1b",
+          "url": "https://cdn.meluni.com.tr/ai-products/0068dcf6-33f7-49aa-ac4a-989be98f7db3-olcu-oto-27b5d487.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:35:02.162913+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261021-reconcile/de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/7ac7e39b2cf4e523.jpg"
+      ],
+      "move_existing_size_chart_last": true,
+      "assets": {
+        "front": {
+          "file": "de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/front.jpg",
+          "sha256": "788d63b5030b0b723c2469337dcaff7d5b7818fbfc93e017c5f80912e558a1a7",
+          "qa_status": "visual_qa_passed",
+          "sample": 910,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/front-1200x1800.png"
+        },
+        "back": {
+          "file": "de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/back.jpg",
+          "sha256": "7d55d7ebb79ed1c678c2dff0a10ca2c2c0dafdeb8197594399a2750c902968ed",
+          "qa_status": "visual_qa_passed",
+          "sample": 910,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/fashion_model.jpg",
+          "sha256": "b2fac32425bddd5f0086b06c4829ce0db8c116d2e38ea7bc3e068284d8797c68",
+          "qa_status": "visual_qa_passed",
+          "sample": 910,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/fashion_model_back.jpg",
+          "sha256": "36f0ea588400b358f5240bb90f1b2e4058be8fbe2de1f3398361ab16c142590d",
+          "qa_status": "visual_qa_passed",
+          "sample": 910,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-de81fbd0-5f9e-43ae-a5b6-f8417e55ba45/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
