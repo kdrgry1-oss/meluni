@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-873",
+  "published_at_utc": "2026-11-26T12:09:37.464877+00:00",
+  "products": [
+    {
+      "product_id": "6f2b77b7-e0cc-40fc-8b03-c3821daced9d",
+      "sample": 873,
+      "name": "Kısa Kollu Bisiklet Yakası Fiyonk Kolları Fırfırlı Janjan Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6f2b77b7-e0cc-40fc-8b03-c3821daced9d-front-b947c4e590e6.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6f2b77b7-e0cc-40fc-8b03-c3821daced9d-back-23ccf50f3621.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6f2b77b7-e0cc-40fc-8b03-c3821daced9d-model-95aed4086e99.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/6f2b77b7-e0cc-40fc-8b03-c3821daced9d-model-back-10372334f534.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6f2b77b7-e0cc-40fc-8b03-c3821daced9d-size-chart-803e60341237.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
