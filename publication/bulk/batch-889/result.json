@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-889",
+  "published_at_utc": "2026-11-26T16:41:13.392440+00:00",
+  "products": [
+    {
+      "product_id": "d93196f5-84c8-4fb3-8a4d-bb85c3b784bb",
+      "sample": 889,
+      "name": "Uzun Kollu Beli Dekolte Dantel Detaylı Yırtmaçlı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d93196f5-84c8-4fb3-8a4d-bb85c3b784bb-front-01c845711192.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d93196f5-84c8-4fb3-8a4d-bb85c3b784bb-back-669a86d8d938.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d93196f5-84c8-4fb3-8a4d-bb85c3b784bb-model-7ca10283a791.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/d93196f5-84c8-4fb3-8a4d-bb85c3b784bb-model-back-d63e1b7b8c6e.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d93196f5-84c8-4fb3-8a4d-bb85c3b784bb-size-chart-b650eb9c3fc1.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
