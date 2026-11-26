@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-900",
+  "created_at": "2026-11-26T18:35:03.075758+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "17ea56c6-4481-4876-aa18-5395daac04d8",
+      "sample": 900,
+      "name": "Yüksek Bel Lastikli Bağcıklı Geniş Kesim Iki Iplik Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 92,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/645bf12f0976216cabaa.jpeg",
+        "https://modayakamoz.com/orj/fc3e95dbaace8e024c0f.jpeg",
+        "https://modayakamoz.com/orj/f81eb7feb91a77401368.jpeg",
+        "https://modayakamoz.com/orj/d17453be206407c2b7e6.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "17ea56c6-4481-4876-aa18-5395daac04d8/front.jpg",
+          "sha256": "84186dc0e17672079a2a2de452ab0d27e4eba99b243bdf2fac02d10032d19cdf",
+          "qa_status": "visual_qa_passed",
+          "sample": 900,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-17ea56c6-4481-4876-aa18-5395daac04d8/front-1200x1800.png"
+        },
+        "back": {
+          "file": "17ea56c6-4481-4876-aa18-5395daac04d8/back.jpg",
+          "sha256": "5da8832977b6641e270624a13579792f5613185d1bc1aa3ceb2acd1a5478efce",
+          "qa_status": "visual_qa_passed",
+          "sample": 900,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-17ea56c6-4481-4876-aa18-5395daac04d8/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "17ea56c6-4481-4876-aa18-5395daac04d8/fashion_model.jpg",
+          "sha256": "9b48506ac8fd79b02e037b6ebd6e0b1139da238e0c6fca09aadfc341a0acbc70",
+          "qa_status": "visual_qa_passed",
+          "sample": 900,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-17ea56c6-4481-4876-aa18-5395daac04d8/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "17ea56c6-4481-4876-aa18-5395daac04d8/fashion_model_back.jpg",
+          "sha256": "da90eb2b86d7c9244683976f163cde3bdaea9ff5750c8c3168a42c6aa29d2056",
+          "qa_status": "visual_qa_passed",
+          "sample": 900,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-17ea56c6-4481-4876-aa18-5395daac04d8/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "17ea56c6-4481-4876-aa18-5395daac04d8/size_chart.jpg",
+          "sha256": "20ec1ee5eb236e08391d99f8b7da8a76a4c73b170d68515aaadc06921cbcb038",
+          "qa_status": "visual_qa_passed",
+          "sample": 900,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-17ea56c6-4481-4876-aa18-5395daac04d8/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
