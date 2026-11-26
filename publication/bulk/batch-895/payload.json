@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-895",
+  "created_at": "2026-11-26T17:58:23.145622+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b81b8937-e879-4cac-a704-3d4a9e28f26b",
+      "sample": 895,
+      "name": "Uzun Kollu Yakadan Göğüse Kadar Fermuar Detaylı Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4433280ae6d09efed8b7.jpeg",
+        "https://modayakamoz.com/orj/70b0888596d435e6508d.jpeg",
+        "https://modayakamoz.com/orj/e018309833a8d5145930.jpeg",
+        "https://modayakamoz.com/orj/8b1762bfdd8afe70668b.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b81b8937-e879-4cac-a704-3d4a9e28f26b/front.jpg",
+          "sha256": "7f582a0be3ad1cdfdf14b0ff70ceb436ed71b7e80cc739496aaf099071b4bf2b",
+          "qa_status": "visual_qa_passed",
+          "sample": 895,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b81b8937-e879-4cac-a704-3d4a9e28f26b/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "b81b8937-e879-4cac-a704-3d4a9e28f26b/fashion_model.jpg",
+          "sha256": "f2a5b806d9cd54de04006ffe00d54a58fd8878944fc10e8d85a52e0d2049f974",
+          "qa_status": "visual_qa_passed",
+          "sample": 895,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b81b8937-e879-4cac-a704-3d4a9e28f26b/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "b81b8937-e879-4cac-a704-3d4a9e28f26b/size_chart.jpg",
+          "sha256": "9c1cdcf7df532b3502974e75bde595ba118ffd2ddee68a9bd6a4262a60a1a75c",
+          "qa_status": "visual_qa_passed",
+          "sample": 895,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b81b8937-e879-4cac-a704-3d4a9e28f26b/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
