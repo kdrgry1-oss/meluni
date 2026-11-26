@@ -85,9 +85,10 @@ async def main(payload_file, assets_root, result_file):
                             raise RuntimeError(f'invalid previous AI gallery for replacement: {pid}')
                         new=[urls[v] for v in ('front','back','fashion_model')]+old[3:]
                     elif prefix_count:
-                        if prefix_count not in (1,2) or {v for v in VIEWS if v in urls}!={'fashion_model'} or len(old)<prefix_count or not all(isinstance(x,str) and x.startswith('https://cdn.meluni.com.tr/') for x in old[:prefix_count]):
+                        incoming={v for v in VIEWS if v in urls}
+                        if prefix_count not in (1,2) or incoming not in ({'fashion_model'},{'back','fashion_model_back'}) or (incoming=={'back','fashion_model_back'} and prefix_count!=1) or len(old)<prefix_count or not all(isinstance(x,str) and x.startswith('https://cdn.meluni.com.tr/') for x in old[:prefix_count]):
                             raise RuntimeError(f'invalid preserved gallery prefix: {pid}')
-                        new=old[:prefix_count]+[urls['fashion_model']]+old[prefix_count:]
+                        new=old[:prefix_count]+[urls[v] for v in VIEWS if v in urls]+old[prefix_count:]
                     else:
                         new=[urls[v] for v in ('front','back','fashion_model','fashion_model_back') if v in urls]+old
                     if p.get('move_existing_size_chart_last'):

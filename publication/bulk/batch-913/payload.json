@@ -1,0 +1,41 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-913",
+  "created_at": "2026-11-26T20:32:35.097669+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8daab953-fa02-4905-a8ae-13f808810545",
+      "sample": 913,
+      "name": "Kısa Kollu Bisiklet Yaka Cepli Kısa Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 25,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261021-reconcile/8daab953-fa02-4905-a8ae-13f808810545/7e585a524946dcf8.jpg",
+        "https://modayakamoz.com/orj/87eff1ad3dcda7df1320.jpeg",
+        "https://modayakamoz.com/orj/223bd0d5f8e8aea80f64.jpeg",
+        "https://modayakamoz.com/orj/97709dab7d2e13641c16.jpeg",
+        "https://modayakamoz.com/orj/3ab216627d98fefbb1dd.jpeg",
+        "https://modayakamoz.com/orj/ca17dedf457bfeb92f92.jpeg",
+        "https://modayakamoz.com/orj/9bca30ef08ac7129ee5c.jpeg"
+      ],
+      "preserve_leading_existing_count": 1,
+      "assets": {
+        "back": {
+          "file": "8daab953-fa02-4905-a8ae-13f808810545/back.jpg",
+          "sha256": "4c698c40965b41a4b59d23adb718f156b7d70d98095b46b42873557e005aea69",
+          "qa_status": "visual_qa_passed",
+          "sample": 913,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8daab953-fa02-4905-a8ae-13f808810545/back-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "8daab953-fa02-4905-a8ae-13f808810545/fashion_model_back.jpg",
+          "sha256": "dd9e6be2b8ed10fc0393334ec05a74dae818891bd0fe032831ddf06fa9fe7f34",
+          "qa_status": "visual_qa_passed",
+          "sample": 913,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8daab953-fa02-4905-a8ae-13f808810545/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
