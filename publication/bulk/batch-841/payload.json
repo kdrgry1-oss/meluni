@@ -1,0 +1,62 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-841",
+  "created_at": "2026-11-26T00:40:40.342064+00:00",
+  "catalog_poll_at": "2026-11-26T00:40:40.342064+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "c1c3dc81-2101-4619-9471-0fe3e018e268",
+      "sample": 841,
+      "name": "Uzun Kollu Hakim Yakalı Düğmeli Maxi Mikro Süprem Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 10,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/174510-2026-02-22-11-46-57.jpg",
+        "https://modayakamoz.com/orj/174510-2026-02-22-11-47-13.jpg",
+        "https://modayakamoz.com/orj/174510-2026-02-22-11-47-05.jpg",
+        "https://modayakamoz.com/orj/344335eac3a69a5d29d3.jpeg",
+        "https://modayakamoz.com/orj/3af69fe3412ec7a6fb3c.jpeg",
+        "https://modayakamoz.com/orj/5641a23331a62897fd9e.jpeg",
+        "https://modayakamoz.com/orj/89fde736031855a5a888.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c1c3dc81-2101-4619-9471-0fe3e018e268/front.jpg",
+          "sha256": "25b2cf8e5fc2a1801b64b121413739bae1881f926d5af3fa372afd10420c8a69",
+          "qa_status": "visual_qa_passed",
+          "sample": 841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1c3dc81-2101-4619-9471-0fe3e018e268/front-1200x1800.png"
+        },
+        "back": {
+          "file": "c1c3dc81-2101-4619-9471-0fe3e018e268/back.jpg",
+          "sha256": "772d6a7c01f1859b2708bb0a23eacefb8a3413e30e7e89d21deaf497e5e568d8",
+          "qa_status": "visual_qa_passed",
+          "sample": 841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1c3dc81-2101-4619-9471-0fe3e018e268/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "c1c3dc81-2101-4619-9471-0fe3e018e268/fashion_model.jpg",
+          "sha256": "84d35e60a64d7329f085987db25b0ac296afeb6a1801ed7d0bd30bdb6e025a96",
+          "qa_status": "visual_qa_passed",
+          "sample": 841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1c3dc81-2101-4619-9471-0fe3e018e268/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "c1c3dc81-2101-4619-9471-0fe3e018e268/fashion_model_back.jpg",
+          "sha256": "e1451d02d31e56b696db7e33d79acb46f67827e76ee11ed971a3898eca3c36ca",
+          "qa_status": "visual_qa_passed",
+          "sample": 841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1c3dc81-2101-4619-9471-0fe3e018e268/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "c1c3dc81-2101-4619-9471-0fe3e018e268/size_chart.jpg",
+          "sha256": "3391123b2d83e22e69e4dd4e7bd078971122768a6621ba081d24691a4d12c602",
+          "qa_status": "visual_qa_passed",
+          "sample": 841,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c1c3dc81-2101-4619-9471-0fe3e018e268/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
