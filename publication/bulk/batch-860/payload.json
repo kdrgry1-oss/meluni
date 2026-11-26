@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-860",
+  "created_at": "2026-11-26T08:45:50.367381+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "ac4619d5-d535-4028-b5fe-7fe5f6d83736",
+      "sample": 860,
+      "name": "Kolsuz Kruvaze Yakalı Düğmeli Midi Keten Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 41,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/cbe154fbb592783f78e9.jpeg",
+        "https://modayakamoz.com/orj/9d3174ec50c8a7ce48ec.jpeg",
+        "https://modayakamoz.com/orj/2567d637f4c47b1b07ba.jpeg",
+        "https://modayakamoz.com/orj/bd1f4f1e350f407b315e.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "ac4619d5-d535-4028-b5fe-7fe5f6d83736/front.jpg",
+          "sha256": "448e1d4f8fd2afddbc8a0a05e35ec2f14c00618301928a4fad5d5878e7efdc6d",
+          "qa_status": "visual_qa_passed",
+          "sample": 860,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac4619d5-d535-4028-b5fe-7fe5f6d83736/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "ac4619d5-d535-4028-b5fe-7fe5f6d83736/fashion_model.jpg",
+          "sha256": "f109a62e9d65d24136af989c1b07458f043451d4a9723359145a583eaab83a03",
+          "qa_status": "visual_qa_passed",
+          "sample": 860,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac4619d5-d535-4028-b5fe-7fe5f6d83736/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "ac4619d5-d535-4028-b5fe-7fe5f6d83736/size_chart.jpg",
+          "sha256": "5fc866242157b5f3e5b9903c66587462385f9e65de6fcd25f4b5e7970fe106d0",
+          "qa_status": "visual_qa_passed",
+          "sample": 860,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ac4619d5-d535-4028-b5fe-7fe5f6d83736/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
