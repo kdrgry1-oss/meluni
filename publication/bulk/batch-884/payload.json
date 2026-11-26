@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-884",
+  "created_at": "2026-11-26T15:02:39.187017+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7d84a773-4f02-467f-b4ab-5755dba124c4",
+      "sample": 884,
+      "name": "Kısa Kollu V Yakalı Midi Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 10,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/61aadecc9ac4f26e262c.jpeg",
+        "https://modayakamoz.com/orj/522d4f3ec8e24d98b063.jpeg",
+        "https://modayakamoz.com/orj/9d8aaa3632ed2f5c9b95.jpeg",
+        {
+          "id": "b26ddfe3-37e5-4df6-8a4e-dddcf04919d4",
+          "url": "https://cdn.meluni.com.tr/ai-products/7d84a773-4f02-467f-b4ab-5755dba124c4-olcu-oto-dc0ed585.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:21:35.045752+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7d84a773-4f02-467f-b4ab-5755dba124c4/front.jpg",
+          "sha256": "e2b9ab6a2803a6fef2f44bb17850f3e38c076ce389f16f7974632ec93dd2cc9d",
+          "qa_status": "visual_qa_passed",
+          "sample": 884,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7d84a773-4f02-467f-b4ab-5755dba124c4/front-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
