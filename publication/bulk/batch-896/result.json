@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-896",
+  "published_at_utc": "2026-11-26T18:04:03.031420+00:00",
+  "products": [
+    {
+      "product_id": "a5c5f5c1-0b51-4bba-a155-af6bf209375f",
+      "sample": 896,
+      "name": "Uzun Kollu Yakalı Beli Kuşaklı Mini Keten Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a5c5f5c1-0b51-4bba-a155-af6bf209375f-front-08c45bbac091.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a5c5f5c1-0b51-4bba-a155-af6bf209375f-model-31a319a028ce.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/a5c5f5c1-0b51-4bba-a155-af6bf209375f-size-chart-8491afed80d8.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
