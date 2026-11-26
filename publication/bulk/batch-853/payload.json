@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-853",
+  "created_at": "2026-11-26T06:47:50.627036+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "5ef02e08-51c7-49ab-b2e4-227cf386aaa0",
+      "sample": 853,
+      "name": "Askılı Yuvarlak Yakalı Yırtmaçlı Dantel Detaylı Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 113,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b60fd18f8b202679f477.jpeg",
+        "https://modayakamoz.com/orj/271fafda76751cc91d06.jpeg",
+        "https://modayakamoz.com/orj/18bcc6cabda8b336ab22.jpeg",
+        "https://modayakamoz.com/orj/f3331e066f112aca7066.jpeg",
+        "https://modayakamoz.com/orj/cc0c0dc746615c1527dd.jpeg",
+        "https://modayakamoz.com/orj/2fbda227e376f6b76c21.jpeg",
+        "https://modayakamoz.com/orj/861848a92646dfaf9da2.jpeg",
+        "https://modayakamoz.com/orj/00bbfcf28a770caa3b44.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5ef02e08-51c7-49ab-b2e4-227cf386aaa0/front.jpg",
+          "sha256": "91101d8d0e3791851b67ed4b1bdd55c25dc1cb0c66bce1baa652bbe2a2210d43",
+          "qa_status": "visual_qa_passed",
+          "sample": 853,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5ef02e08-51c7-49ab-b2e4-227cf386aaa0/front-1200x1800.png"
+        },
+        "back": {
+          "file": "5ef02e08-51c7-49ab-b2e4-227cf386aaa0/back.jpg",
+          "sha256": "4c951b225124cc31b327d8a732ee838f272ed0ff293dfbb65f47871c90cd77e6",
+          "qa_status": "visual_qa_passed",
+          "sample": 853,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5ef02e08-51c7-49ab-b2e4-227cf386aaa0/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "5ef02e08-51c7-49ab-b2e4-227cf386aaa0/fashion_model.jpg",
+          "sha256": "9e428190ec319fe1b8a251b4c6b6fef927d6ce031d183b04eeba3c3d38ca41fa",
+          "qa_status": "visual_qa_passed",
+          "sample": 853,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5ef02e08-51c7-49ab-b2e4-227cf386aaa0/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "5ef02e08-51c7-49ab-b2e4-227cf386aaa0/fashion_model_back.jpg",
+          "sha256": "5d0ba383996e6264260a271690af5294908d05ba0d5d72f11d38376a93373ab4",
+          "qa_status": "visual_qa_passed",
+          "sample": 853,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5ef02e08-51c7-49ab-b2e4-227cf386aaa0/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
