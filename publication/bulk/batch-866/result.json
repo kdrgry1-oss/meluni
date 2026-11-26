@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-866",
+  "published_at_utc": "2026-11-26T10:26:23.049155+00:00",
+  "products": [
+    {
+      "product_id": "f6b23bb4-1922-4191-93a4-7a9d27e51c52",
+      "sample": 866,
+      "name": "Üst Takım İki İplik Kumaş Bisiklet Yaka Tişört Cepli Diz Şort",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f6b23bb4-1922-4191-93a4-7a9d27e51c52-front-afc382c43e6e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f6b23bb4-1922-4191-93a4-7a9d27e51c52-model-b86b4c2815bc.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
