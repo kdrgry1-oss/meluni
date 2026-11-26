@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-858",
+  "created_at": "2026-11-26T08:17:23.451516+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "81fe10ce-0f54-41b1-b46b-d6c408ed200d",
+      "sample": 858,
+      "name": "Truvakar Kollu V Yakalı Yırtmaçlı Uzun Aerobin Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 62,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c47cb26628844a3d0042.jpeg",
+        "https://modayakamoz.com/orj/db5ab40c27b21ef96dff.jpeg",
+        "https://modayakamoz.com/orj/23da2bd362d3f77982dc.jpeg",
+        "https://modayakamoz.com/orj/428825cedd32b599e791.jpeg",
+        {
+          "id": "1d929b44-4617-44ca-ae3d-a7dc620b9dd4",
+          "url": "https://cdn.meluni.com.tr/ai-products/eb8f47d2-7e4c-47db-9b19-4f92c78a62a0-olcu-oto-3297e3fc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:23:39.136534+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "81fe10ce-0f54-41b1-b46b-d6c408ed200d/front.jpg",
+          "sha256": "e3ddb6734f5cc07b7b37f7c163f21d10ee1a0c974fb3ce86ee3663bf841c623d",
+          "qa_status": "visual_qa_passed",
+          "sample": 858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-81fe10ce-0f54-41b1-b46b-d6c408ed200d/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "81fe10ce-0f54-41b1-b46b-d6c408ed200d/fashion_model.jpg",
+          "sha256": "30b98268332082878ad83f742d03cf9b55ac80a46dab6a62f065436ef4ba3887",
+          "qa_status": "visual_qa_passed",
+          "sample": 858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-81fe10ce-0f54-41b1-b46b-d6c408ed200d/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "81fe10ce-0f54-41b1-b46b-d6c408ed200d/size_chart.jpg",
+          "sha256": "3b74a8d27412aeae168e6a30fc21d4c55225edb1fcd268877dc189b13052e635",
+          "qa_status": "visual_qa_passed",
+          "sample": 858,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-81fe10ce-0f54-41b1-b46b-d6c408ed200d/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
