@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-917",
+  "published_at_utc": "2026-11-26T21:03:18.107978+00:00",
+  "products": [
+    {
+      "product_id": "511d4a2d-ad5a-416a-930e-f0d603182587",
+      "sample": 917,
+      "name": "Kısa Kollu Kruvaze Yakalı Ön Asimetrik Volanlı Uzun Krep Elbise",
+      "urls": {
+        "back": "https://cdn.meluni.com.tr/ai-products/511d4a2d-ad5a-416a-930e-f0d603182587-back-1437d01fff2b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/511d4a2d-ad5a-416a-930e-f0d603182587-model-4b3b6e51fb34.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/511d4a2d-ad5a-416a-930e-f0d603182587-size-chart-c5284c31a1de.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
