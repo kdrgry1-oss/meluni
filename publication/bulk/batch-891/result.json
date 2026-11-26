@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-891",
+  "published_at_utc": "2026-11-26T17:27:38.262261+00:00",
+  "products": [
+    {
+      "product_id": "0b03646a-19a4-4f26-a0d5-6630a555a08c",
+      "sample": 891,
+      "name": "Uzun Kollu V Yakalı Dantelli Uzun Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0b03646a-19a4-4f26-a0d5-6630a555a08c-front-538da264440d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0b03646a-19a4-4f26-a0d5-6630a555a08c-model-444d8a69ad47.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0b03646a-19a4-4f26-a0d5-6630a555a08c-size-chart-1d918bc1207f.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
