@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-907",
+  "published_at_utc": "2026-11-26T19:35:21.560290+00:00",
+  "products": [
+    {
+      "product_id": "931eee92-9f5c-47a9-9b34-95261e237483",
+      "sample": 907,
+      "name": "Ip Askılı Kruvaze Yakalı Yırtmaçlı Midi Aerobin Elbise",
+      "urls": {
+        "back": "https://cdn.meluni.com.tr/ai-products/931eee92-9f5c-47a9-9b34-95261e237483-back-05585b1662c3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/931eee92-9f5c-47a9-9b34-95261e237483-model-c6fb9985f478.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/931eee92-9f5c-47a9-9b34-95261e237483-model-back-1add3ce1ff0a.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
