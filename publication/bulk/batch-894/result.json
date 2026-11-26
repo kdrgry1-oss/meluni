@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-894",
+  "published_at_utc": "2026-11-26T17:52:56.319724+00:00",
+  "products": [
+    {
+      "product_id": "90e70dc3-a4cd-4147-82b5-ef0af0f410c0",
+      "sample": 894,
+      "name": "Uzun Kollu V Yakalı Kısa Kaşkorse Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/90e70dc3-a4cd-4147-82b5-ef0af0f410c0-front-50ba5fc1f4a3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/90e70dc3-a4cd-4147-82b5-ef0af0f410c0-model-e5ebf5e63828.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/90e70dc3-a4cd-4147-82b5-ef0af0f410c0-size-chart-85e8176ffdf4.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
