@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-864",
+  "published_at_utc": "2026-11-26T09:50:19.775354+00:00",
+  "products": [
+    {
+      "product_id": "369c3e14-20c5-40d3-9ca7-01c2e24c84b6",
+      "sample": 864,
+      "name": "Truvakar Kollu Yakalı Gömlek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/369c3e14-20c5-40d3-9ca7-01c2e24c84b6-front-6db386eb245a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/369c3e14-20c5-40d3-9ca7-01c2e24c84b6-model-aafbbf679d3a.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/369c3e14-20c5-40d3-9ca7-01c2e24c84b6-size-chart-47078ec2a0d9.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
