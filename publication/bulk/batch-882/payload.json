@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-882",
+  "created_at": "2026-11-26T14:39:17.645349+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d527a88b-1e14-4e02-9ccb-00d40d033aaa",
+      "sample": 882,
+      "name": "Kısa Kollu V Yakalı Maksi Boy Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a0334cc0c758f88bdccb.jpeg",
+        "https://modayakamoz.com/orj/28d342d98cf9f55dfa5c.jpeg",
+        "https://modayakamoz.com/orj/86c93f46c103863f5d4f.jpeg",
+        "https://modayakamoz.com/orj/8edda75083d8d2172cf9.jpeg",
+        {
+          "id": "c871af42-6a76-4d96-a819-ab0efa798259",
+          "url": "https://cdn.meluni.com.tr/ai-products/dafc0680-48c6-4fab-800a-fcfbeb74aec2-olcu-oto-207c1fa1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-10T05:25:18.184913+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d527a88b-1e14-4e02-9ccb-00d40d033aaa/front.jpg",
+          "sha256": "5f4b05ba044f9b1a3c0b7ec2baceea0e6cfce3aade1e81c0e83579ef2491a3e1",
+          "qa_status": "visual_qa_passed",
+          "sample": 882,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d527a88b-1e14-4e02-9ccb-00d40d033aaa/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "d527a88b-1e14-4e02-9ccb-00d40d033aaa/fashion_model.jpg",
+          "sha256": "eeb6f1e3a202ab5fd2cc081028e9c4934f83b11742b4d54cd4c956acf9ae9f66",
+          "qa_status": "visual_qa_passed",
+          "sample": 882,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d527a88b-1e14-4e02-9ccb-00d40d033aaa/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "d527a88b-1e14-4e02-9ccb-00d40d033aaa/size_chart.jpg",
+          "sha256": "06dee6f623fcfc73bfff274c61f8c1a95d32d95689f5af8b0234b89a26f3f3fb",
+          "qa_status": "visual_qa_passed",
+          "sample": 882,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d527a88b-1e14-4e02-9ccb-00d40d033aaa/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
