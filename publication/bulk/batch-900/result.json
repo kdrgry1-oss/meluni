@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-900",
+  "published_at_utc": "2026-11-26T18:36:57.303245+00:00",
+  "products": [
+    {
+      "product_id": "17ea56c6-4481-4876-aa18-5395daac04d8",
+      "sample": 900,
+      "name": "Yüksek Bel Lastikli Bağcıklı Geniş Kesim Iki Iplik Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/17ea56c6-4481-4876-aa18-5395daac04d8-front-84186dc0e176.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/17ea56c6-4481-4876-aa18-5395daac04d8-back-5da8832977b6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/17ea56c6-4481-4876-aa18-5395daac04d8-model-9b48506ac8fd.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/17ea56c6-4481-4876-aa18-5395daac04d8-model-back-da90eb2b86d7.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/17ea56c6-4481-4876-aa18-5395daac04d8-size-chart-20ec1ee5eb23.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
