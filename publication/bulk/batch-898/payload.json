@@ -1,0 +1,65 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-898",
+  "created_at": "2026-11-26T18:21:23.319558+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "6400453e-f507-49dc-89bc-063dce0f5954",
+      "sample": 898,
+      "name": "Yüksek Omuzlu Yuvarlak Yakalı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 61,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c22c5438f716d8917d4a.jpeg",
+        "https://modayakamoz.com/orj/f0be21540861c96e67e0.jpeg",
+        "https://modayakamoz.com/orj/e30b6b5e52e03fee6fcc.jpeg",
+        "https://modayakamoz.com/orj/c12ddeca94550bca66e3.jpeg",
+        {
+          "id": "4b3033ca-e423-46ed-bdcf-8653e232993f",
+          "url": "https://cdn.meluni.com.tr/ai-products/6400453e-f507-49dc-89bc-063dce0f5954-olcu-oto-99f26c03.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:19:54.670381+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "6400453e-f507-49dc-89bc-063dce0f5954/front.jpg",
+          "sha256": "7da464a9004440d4755397580a95b502248f76f2028c7bcc75937760f9f7f829",
+          "qa_status": "visual_qa_passed",
+          "sample": 898,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6400453e-f507-49dc-89bc-063dce0f5954/front-1200x1800.png"
+        },
+        "back": {
+          "file": "6400453e-f507-49dc-89bc-063dce0f5954/back.jpg",
+          "sha256": "8a180f6e075e82adbfca26f30147987db4f5047e21a5766865bb880896323451",
+          "qa_status": "visual_qa_passed",
+          "sample": 898,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6400453e-f507-49dc-89bc-063dce0f5954/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "6400453e-f507-49dc-89bc-063dce0f5954/fashion_model.jpg",
+          "sha256": "3dd64eb45a81efad52fe40b67ebec38eef8a18f927ce206fe64910501f5275a7",
+          "qa_status": "visual_qa_passed",
+          "sample": 898,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6400453e-f507-49dc-89bc-063dce0f5954/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "6400453e-f507-49dc-89bc-063dce0f5954/fashion_model_back.jpg",
+          "sha256": "598fd05f8b4ba42de5b084f555f43b5bc5be2003c019b077a3be144012901e81",
+          "qa_status": "visual_qa_passed",
+          "sample": 898,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6400453e-f507-49dc-89bc-063dce0f5954/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "6400453e-f507-49dc-89bc-063dce0f5954/size_chart.jpg",
+          "sha256": "1cb0c49f27d3aae36dc074781979bd088e82b74ebd3c5b7b79a37a89189070c7",
+          "qa_status": "visual_qa_passed",
+          "sample": 898,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6400453e-f507-49dc-89bc-063dce0f5954/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
