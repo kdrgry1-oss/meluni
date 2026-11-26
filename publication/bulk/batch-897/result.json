@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-897",
+  "published_at_utc": "2026-11-26T18:13:40.009564+00:00",
+  "products": [
+    {
+      "product_id": "538b8916-d5fe-4f73-bb5c-1704fd6e50dc",
+      "sample": 897,
+      "name": "Uzun Kollu Yuvarlak Yaka Etek Ucu Şerit Detaylı Mini Dokuma Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/538b8916-d5fe-4f73-bb5c-1704fd6e50dc-front-1d699b63a615.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/538b8916-d5fe-4f73-bb5c-1704fd6e50dc-back-4c208c696af7.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/538b8916-d5fe-4f73-bb5c-1704fd6e50dc-model-b24ebef2f63a.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/538b8916-d5fe-4f73-bb5c-1704fd6e50dc-model-back-c848905b47c6.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/538b8916-d5fe-4f73-bb5c-1704fd6e50dc-size-chart-5fd8fffcb0ed.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
