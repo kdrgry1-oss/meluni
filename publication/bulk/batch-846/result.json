@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-846",
+  "published_at_utc": "2026-11-26T02:20:48.226892+00:00",
+  "products": [
+    {
+      "product_id": "9db9e2db-d92a-4dfd-9be8-79fcf7962650",
+      "sample": 846,
+      "name": "Kısa Kollu Bisiklet Yaka Şerit Detaylı Midi Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9db9e2db-d92a-4dfd-9be8-79fcf7962650-front-3f1fe8f3539d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9db9e2db-d92a-4dfd-9be8-79fcf7962650-model-98b61d5ff1cc.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/9db9e2db-d92a-4dfd-9be8-79fcf7962650-size-chart-6229336f8567.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
