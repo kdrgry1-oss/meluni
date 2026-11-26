@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-870",
+  "created_at": "2026-11-26T11:21:39.152824+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "fa871b6b-aedb-4c45-a653-14bdcb7e8619",
+      "sample": 870,
+      "name": "Kısa Kollu Bisiklet Yaka Yırtmaçlı Şerit Detaylı Modal Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 16,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c5115bb6887bddac2db2.jpeg",
+        "https://modayakamoz.com/orj/6416cb5f926f58d62cc3.jpeg",
+        "https://modayakamoz.com/orj/4e67b856179bd27db1ba.jpeg",
+        "https://modayakamoz.com/orj/c88a761ef64310719859.jpeg",
+        "https://modayakamoz.com/orj/b16bcf7f8375c4b6e48e.jpeg",
+        "https://modayakamoz.com/orj/20baa25e61dedc1e7e7f.jpeg",
+        "https://modayakamoz.com/orj/4e8f6eca0f008140ef58.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "fa871b6b-aedb-4c45-a653-14bdcb7e8619/front.jpg",
+          "sha256": "fdef88fcc04609145dbf7b0f989dddc3f85255b929bb5c74e6bf08e0c7fc06ee",
+          "qa_status": "visual_qa_passed",
+          "sample": 870,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fa871b6b-aedb-4c45-a653-14bdcb7e8619/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "fa871b6b-aedb-4c45-a653-14bdcb7e8619/fashion_model.jpg",
+          "sha256": "9993d219181c07173ef38de65e1797a650772d4f731cf8da0cde5498fff1f6c4",
+          "qa_status": "visual_qa_passed",
+          "sample": 870,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fa871b6b-aedb-4c45-a653-14bdcb7e8619/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "fa871b6b-aedb-4c45-a653-14bdcb7e8619/size_chart.jpg",
+          "sha256": "13ef71cda2015792406111c55483323d269242c2cfcaccdd9ba12ce997e2d17c",
+          "qa_status": "visual_qa_passed",
+          "sample": 870,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fa871b6b-aedb-4c45-a653-14bdcb7e8619/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
