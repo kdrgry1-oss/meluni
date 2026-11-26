@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-904",
+  "published_at_utc": "2026-11-26T19:09:11.892585+00:00",
+  "products": [
+    {
+      "product_id": "3da11568-9ae3-4291-b81a-7206078414da",
+      "sample": 904,
+      "name": "Kısa Kollu V Hakim Yaka Kuşaklı Midi Süprem Elbise",
+      "urls": {
+        "back": "https://cdn.meluni.com.tr/ai-products/3da11568-9ae3-4291-b81a-7206078414da-back-87ca05d08137.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3da11568-9ae3-4291-b81a-7206078414da-model-c022f4af94fb.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/3da11568-9ae3-4291-b81a-7206078414da-model-back-c83b9131dc1e.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/3da11568-9ae3-4291-b81a-7206078414da-size-chart-c6cbdde0c629.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
