@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-888",
+  "published_at_utc": "2026-11-26T16:25:07.734602+00:00",
+  "products": [
+    {
+      "product_id": "d2c0391d-cefb-4a34-b9a7-341a11e85495",
+      "sample": 888,
+      "name": "Kısa Kollu Bisiklet Yaka Dantelli Pileli Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d2c0391d-cefb-4a34-b9a7-341a11e85495-front-513cb9c6510c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d2c0391d-cefb-4a34-b9a7-341a11e85495-back-882746e92eb6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d2c0391d-cefb-4a34-b9a7-341a11e85495-model-4598f27de7c0.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/d2c0391d-cefb-4a34-b9a7-341a11e85495-model-back-00bde68e93dc.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
