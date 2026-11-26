@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-876",
+  "published_at_utc": "2026-11-26T12:51:06.151656+00:00",
+  "products": [
+    {
+      "product_id": "d3dd2c85-4a44-4891-bb39-9b7f70dcfc27",
+      "sample": 876,
+      "name": "Kısa Kollu Geometrik Yakalı Önden Açık Modal Mini Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d3dd2c85-4a44-4891-bb39-9b7f70dcfc27-front-0f0a3ce3d965.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d3dd2c85-4a44-4891-bb39-9b7f70dcfc27-model-a63824881728.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d3dd2c85-4a44-4891-bb39-9b7f70dcfc27-size-chart-0dc2f48dbae7.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
