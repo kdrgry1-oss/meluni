@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-885",
+  "created_at": "2026-11-26T15:33:05.423467+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "0695bf2d-c42d-4f68-8163-12d027866dc0",
+      "sample": 885,
+      "name": "Kol Dantel Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/28a3d49545b658a50f8c.jpeg",
+        "https://modayakamoz.com/orj/bd0f80222dba778b3596.jpeg",
+        "https://modayakamoz.com/orj/a01911b9100f59581661.jpeg",
+        "https://modayakamoz.com/orj/1d85041a5cc0f48cf628.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0695bf2d-c42d-4f68-8163-12d027866dc0/front.jpg",
+          "sha256": "f08109c027bbcbd7c70028d47f48beff3e50aad5644e44c06238a9742f174a75",
+          "qa_status": "visual_qa_passed",
+          "sample": 885,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0695bf2d-c42d-4f68-8163-12d027866dc0/front-1200x1800.png"
+        },
+        "back": {
+          "file": "0695bf2d-c42d-4f68-8163-12d027866dc0/back.jpg",
+          "sha256": "a9809a8aa3618044e640feaf88a899119dcb6eddb1a2ab1f0be2cbcebd9be7c3",
+          "qa_status": "visual_qa_passed",
+          "sample": 885,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0695bf2d-c42d-4f68-8163-12d027866dc0/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "0695bf2d-c42d-4f68-8163-12d027866dc0/fashion_model.jpg",
+          "sha256": "70f85a7964d525095627b41ee17b0ab68f705a84dd627ece4edd3bce6f1445e3",
+          "qa_status": "visual_qa_passed",
+          "sample": 885,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0695bf2d-c42d-4f68-8163-12d027866dc0/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "0695bf2d-c42d-4f68-8163-12d027866dc0/fashion_model_back.jpg",
+          "sha256": "9acdb9f1d5fb11bb06228641cde2242d99b94c2cb96cd0f31c161ff7f9805164",
+          "qa_status": "visual_qa_passed",
+          "sample": 885,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0695bf2d-c42d-4f68-8163-12d027866dc0/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
