@@ -1,0 +1,64 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-897",
+  "created_at": "2026-11-26T18:12:32.898471+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "538b8916-d5fe-4f73-bb5c-1704fd6e50dc",
+      "sample": 897,
+      "name": "Uzun Kollu Yuvarlak Yaka Etek Ucu Şerit Detaylı Mini Dokuma Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 48,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e1360239c51e5218ed3f.jpeg",
+        "https://modayakamoz.com/orj/0bc6e26d062a0db85aab.jpeg",
+        "https://modayakamoz.com/orj/0ff6cc92b861d984dc3a.jpeg",
+        {
+          "id": "4d5050d4-c0a7-4043-a214-930b9d11a2ea",
+          "url": "https://cdn.meluni.com.tr/ai-products/538b8916-d5fe-4f73-bb5c-1704fd6e50dc-olcu-oto-73aa02b1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-16T05:22:01.847842+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "538b8916-d5fe-4f73-bb5c-1704fd6e50dc/front.jpg",
+          "sha256": "1d699b63a615a1905861d60f0b8454e1973250e25dc3e02bbee8301341dc1c26",
+          "qa_status": "visual_qa_passed",
+          "sample": 897,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-538b8916-d5fe-4f73-bb5c-1704fd6e50dc/front-1200x1800.png"
+        },
+        "back": {
+          "file": "538b8916-d5fe-4f73-bb5c-1704fd6e50dc/back.jpg",
+          "sha256": "4c208c696af71da8ecf4457d072c35b31084937f029fa92589c62e046ea14df3",
+          "qa_status": "visual_qa_passed",
+          "sample": 897,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-538b8916-d5fe-4f73-bb5c-1704fd6e50dc/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "538b8916-d5fe-4f73-bb5c-1704fd6e50dc/fashion_model.jpg",
+          "sha256": "b24ebef2f63adaf2b2c6c271a14b7d0cb4b35aa1896bcb620679296d83a7e1ef",
+          "qa_status": "visual_qa_passed",
+          "sample": 897,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-538b8916-d5fe-4f73-bb5c-1704fd6e50dc/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "538b8916-d5fe-4f73-bb5c-1704fd6e50dc/fashion_model_back.jpg",
+          "sha256": "c848905b47c6a4b5d00e266cc3c650b3246a55024c7479d25407a83d3ce37cf0",
+          "qa_status": "visual_qa_passed",
+          "sample": 897,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-538b8916-d5fe-4f73-bb5c-1704fd6e50dc/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "538b8916-d5fe-4f73-bb5c-1704fd6e50dc/size_chart.jpg",
+          "sha256": "5fd8fffcb0ed08af89d19cc811f5f56f2a069f39f3cd40e541940e7b22fad275",
+          "qa_status": "visual_qa_passed",
+          "sample": 897,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-538b8916-d5fe-4f73-bb5c-1704fd6e50dc/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
