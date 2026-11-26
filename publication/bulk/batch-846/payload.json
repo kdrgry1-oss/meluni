@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-846",
+  "created_at": "2026-11-26T02:18:49.613070+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "9db9e2db-d92a-4dfd-9be8-79fcf7962650",
+      "sample": 846,
+      "name": "Kısa Kollu Bisiklet Yaka Şerit Detaylı Midi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 176,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/6652643cc0c2fe71891ebb99dd9582a0.jpeg",
+        "https://modayakamoz.com/orj/8374542af8a541b1620d3f462382c4c7.jpeg",
+        "https://modayakamoz.com/orj/c65cd654fa6e6b8a3f6f636e287986a2.jpeg",
+        "https://modayakamoz.com/orj/6d3b37fcb9383084b0a8e0e9d45284b6.jpeg",
+        "https://modayakamoz.com/orj/fe7fec2847a433c667f96698a6b68e0b.jpeg",
+        "https://modayakamoz.com/orj/9f9422d1ac8cfc8090c6373e4ed5e341.png",
+        "https://modayakamoz.com/orj/17e9bcc42fa6e582308d6827c0707934.png",
+        {
+          "id": "26a06a22-ac8d-4ef9-811f-4351d4a29299",
+          "url": "https://cdn.meluni.com.tr/ai-products/e66186cb-5577-4aa3-bcdb-7726ca46f773-olcu-oto-381ce9cf.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-09T05:24:13.069117+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "9db9e2db-d92a-4dfd-9be8-79fcf7962650/front.jpg",
+          "sha256": "3f1fe8f3539d0c862ce630f47f4321e302a66ed4c6586a4ee257ff8c779cb428",
+          "qa_status": "visual_qa_passed",
+          "sample": 846,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9db9e2db-d92a-4dfd-9be8-79fcf7962650/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "9db9e2db-d92a-4dfd-9be8-79fcf7962650/fashion_model.jpg",
+          "sha256": "98b61d5ff1ccee4461c83e3007c659b8a6d00867cc7c78120b5061c1bcfb57fd",
+          "qa_status": "visual_qa_passed",
+          "sample": 846,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9db9e2db-d92a-4dfd-9be8-79fcf7962650/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "9db9e2db-d92a-4dfd-9be8-79fcf7962650/size_chart.jpg",
+          "sha256": "6229336f8567b1ceeed37947f29ed4c165ecc3c7888eeb8e72ef82530932707f",
+          "qa_status": "visual_qa_passed",
+          "sample": 846,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9db9e2db-d92a-4dfd-9be8-79fcf7962650/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
