@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-902",
+  "published_at_utc": "2026-11-26T18:53:11.049458+00:00",
+  "products": [
+    {
+      "product_id": "d3ef6891-2507-41b6-91d8-ff34c6321102",
+      "sample": 902,
+      "name": "Ip Askılı Süprem Krop Bluz ve Yırtmaçlı Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d3ef6891-2507-41b6-91d8-ff34c6321102-front-0b6e20147918.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d3ef6891-2507-41b6-91d8-ff34c6321102-back-75213ae47e5f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d3ef6891-2507-41b6-91d8-ff34c6321102-model-4b015073d204.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/d3ef6891-2507-41b6-91d8-ff34c6321102-model-back-44cb39227111.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
