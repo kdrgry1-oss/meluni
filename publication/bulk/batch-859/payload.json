@@ -1,0 +1,39 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-859",
+  "created_at": "2026-11-26T08:28:12.223594+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b4f18567-0fe2-42f9-bb32-0c568ebee946",
+      "sample": 859,
+      "name": "Kısa Kollu Bisiklet Yaka Yan Şerit Detaylı Midi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 175,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b2b8f2375cead4a5366066619684f005.png",
+        "https://modayakamoz.com/orj/b7e352b45c652f340dfc33019fcc1006.png",
+        "https://modayakamoz.com/orj/0ec2e300b113346e58b3ce1eb67b07f0.jpeg",
+        "https://modayakamoz.com/orj/bd6e91e872e1a790bd0c62f7d292e0fb.jpeg",
+        "https://modayakamoz.com/orj/28ce19df3a36ccd4802f60b28323bdfb.jpeg",
+        "https://modayakamoz.com/orj/acbbda0ee8a54dfa8b0e2f22f6f97830.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b4f18567-0fe2-42f9-bb32-0c568ebee946/front.jpg",
+          "sha256": "99d9599a6f0991da10279c5dce58c7909969f3bdbeefbd3ee306e17d09853f2c",
+          "qa_status": "visual_qa_passed",
+          "sample": 859,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b4f18567-0fe2-42f9-bb32-0c568ebee946/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "b4f18567-0fe2-42f9-bb32-0c568ebee946/fashion_model.jpg",
+          "sha256": "c28244b1017216022a16a91547e4cff5b7f964f80b45b916f99e90d4ea61ca8e",
+          "qa_status": "visual_qa_passed",
+          "sample": 859,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b4f18567-0fe2-42f9-bb32-0c568ebee946/fashion_model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
