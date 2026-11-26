@@ -1,0 +1,50 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-871",
+  "created_at": "2026-11-26T11:31:58.430007+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "874fbbe2-7459-4eb0-85b3-45051410f7e5",
+      "sample": 871,
+      "name": "Kısa Kollu Bisiklet Yaka Çift Renkli Eteği Büzgülü Kısa Dalgıç Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5f6e91c43429a9e23aa0.jpeg",
+        "https://modayakamoz.com/orj/dc9f98ada16cce69772e.jpeg",
+        "https://modayakamoz.com/orj/f72bde7ece6129d9ef18.jpeg",
+        {
+          "id": "2474a9a2-59ec-418f-9e2a-484cdbf6e478",
+          "url": "https://cdn.meluni.com.tr/ai-products/874fbbe2-7459-4eb0-85b3-45051410f7e5-olcu-oto-06b8d257.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:22:33.514331+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "874fbbe2-7459-4eb0-85b3-45051410f7e5/front.jpg",
+          "sha256": "06715a9ed796d459b4062c42bf9a567c33ea55d9c669516dc34146c8b5d2ad08",
+          "qa_status": "visual_qa_passed",
+          "sample": 871,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-874fbbe2-7459-4eb0-85b3-45051410f7e5/front-1200x1800.png"
+        },
+        "back": {
+          "file": "874fbbe2-7459-4eb0-85b3-45051410f7e5/back.jpg",
+          "sha256": "805031ccee147c7a85ec7c51fcb4839d20afeca7fef065277dfddc35cf2308b0",
+          "qa_status": "visual_qa_passed",
+          "sample": 871,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-874fbbe2-7459-4eb0-85b3-45051410f7e5/back-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "874fbbe2-7459-4eb0-85b3-45051410f7e5/fashion_model_back.jpg",
+          "sha256": "582e16db0bf2197748b58ab2db862b135acaaeab42d28f0a98a5494eabc70e22",
+          "qa_status": "visual_qa_passed",
+          "sample": 871,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-874fbbe2-7459-4eb0-85b3-45051410f7e5/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
