@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-855",
+  "published_at_utc": "2026-11-26T07:13:55.824822+00:00",
+  "products": [
+    {
+      "product_id": "0091e9b4-0087-44c6-8ca9-98c8906947d8",
+      "sample": 855,
+      "name": "Madonna Yaka Midi Boy Modal Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0091e9b4-0087-44c6-8ca9-98c8906947d8-front-79a4d8442bf1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0091e9b4-0087-44c6-8ca9-98c8906947d8-model-fc7f1d64fbfa.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0091e9b4-0087-44c6-8ca9-98c8906947d8-size-chart-1ab34b5aabed.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
