@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-865",
+  "published_at_utc": "2026-11-26T10:15:06.565942+00:00",
+  "products": [
+    {
+      "product_id": "02da7f07-440a-47fe-a3ec-de6be0ba2770",
+      "sample": 865,
+      "name": "Kısa Kollu Bisiklet Yakalı Ribanalı Viskon Iki Iplik Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/02da7f07-440a-47fe-a3ec-de6be0ba2770-front-7399a55cb8c9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/02da7f07-440a-47fe-a3ec-de6be0ba2770-model-0d2f91e11ec3.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/02da7f07-440a-47fe-a3ec-de6be0ba2770-size-chart-5dbdb3d7d0fd.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
