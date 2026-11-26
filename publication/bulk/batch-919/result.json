@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-919",
+  "published_at_utc": "2026-11-26T21:17:18.580942+00:00",
+  "products": [
+    {
+      "product_id": "ef5b934b-4360-43a9-98a9-4b76e41d83d7",
+      "sample": 919,
+      "name": "Kısa Kollu Kalp Yaka Yanlardan Büzgü Detay Midi Krep Elbise",
+      "urls": {
+        "back": "https://cdn.meluni.com.tr/ai-products/ef5b934b-4360-43a9-98a9-4b76e41d83d7-back-ad2152a1d96a.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/ef5b934b-4360-43a9-98a9-4b76e41d83d7-size-chart-d5e285a7518c.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
