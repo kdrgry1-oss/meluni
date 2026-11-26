@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-874",
+  "published_at_utc": "2026-11-26T12:28:02.483167+00:00",
+  "products": [
+    {
+      "product_id": "970fda22-05eb-432d-b256-11011319b996",
+      "sample": 874,
+      "name": "Kısa Kollu Daire Yakalı Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/970fda22-05eb-432d-b256-11011319b996-front-9843b695e44a.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/970fda22-05eb-432d-b256-11011319b996-size-chart-85ad1740680d.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
