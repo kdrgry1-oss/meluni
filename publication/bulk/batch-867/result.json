@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-867",
+  "published_at_utc": "2026-11-26T10:39:01.808959+00:00",
+  "products": [
+    {
+      "product_id": "e9a4385c-2b64-4caa-9c69-4751ca288774",
+      "sample": 867,
+      "name": "Uzun Kollu Geometrik Yaka Detaylı Tüllü Yırtmaçlı Uzun Kadife Elbise",
+      "urls": {
+        "back": "https://cdn.meluni.com.tr/ai-products/e9a4385c-2b64-4caa-9c69-4751ca288774-back-7fcd1ed941aa.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e9a4385c-2b64-4caa-9c69-4751ca288774-model-e77f23faa695.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/e9a4385c-2b64-4caa-9c69-4751ca288774-model-back-71c648466adb.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/e9a4385c-2b64-4caa-9c69-4751ca288774-size-chart-95748d8d9911.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
