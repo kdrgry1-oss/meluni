@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-840",
+  "published_at_utc": "2026-11-26T00:01:39.890335+00:00",
+  "products": [
+    {
+      "product_id": "91a56ac6-3470-4526-b49e-b04ec5e339d9",
+      "sample": 840,
+      "name": "Askılı Yuvarlak Yaka Viskon Iki Iplik Bluz ve Eşofman Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/91a56ac6-3470-4526-b49e-b04ec5e339d9-front-73180f6c1786.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/91a56ac6-3470-4526-b49e-b04ec5e339d9-back-92101b16af37.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/91a56ac6-3470-4526-b49e-b04ec5e339d9-model-back-ddcd90d1ef19.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
