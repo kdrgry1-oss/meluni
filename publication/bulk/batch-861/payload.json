@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-861",
+  "created_at": "2026-11-26T09:03:58.291592+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "19258421-43ae-49ef-afe0-66c35e539427",
+      "sample": 861,
+      "name": "Kısa Kollu Yuvarlak Yaka Beyaz Yırtmaç Detaylı Viskon Boy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 17,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/48ce267f28a18b57824c.jpeg",
+        "https://modayakamoz.com/orj/b1aa5c6128a1f21609d0.jpeg",
+        "https://modayakamoz.com/orj/c4dde88fd16626d85816.jpeg",
+        "https://modayakamoz.com/orj/811183eaf16c03fc9045.jpeg",
+        {
+          "id": "66a09f3d-2428-40b8-9ca3-8dacf5aaed23",
+          "url": "https://cdn.meluni.com.tr/ai-products/6bb21f32-88ba-4710-8dca-69bcc6e82814-olcu-oto-314a3cf5.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:28:42.521435+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "19258421-43ae-49ef-afe0-66c35e539427/front.jpg",
+          "sha256": "5a53cba51c8c31ce56c532d28710ba852241cddd417c88b9c369f2503890ee2a",
+          "qa_status": "visual_qa_passed",
+          "sample": 861,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-19258421-43ae-49ef-afe0-66c35e539427/front-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "19258421-43ae-49ef-afe0-66c35e539427/size_chart.jpg",
+          "sha256": "98955272acbb6c1e0087d7e91bf2d609f6914d2712663910f0ee08a747ab8f7f",
+          "qa_status": "visual_qa_passed",
+          "sample": 861,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-19258421-43ae-49ef-afe0-66c35e539427/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
