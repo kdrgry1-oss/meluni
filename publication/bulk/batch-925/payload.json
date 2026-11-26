@@ -1,0 +1,50 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-925",
+  "created_at": "2026-11-26T22:11:39.456236+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "0afa94a2-672a-4bf8-83ec-d384eedcbcb1",
+      "sample": 925,
+      "name": "Kısa Kollu Tül Detaylı Taşlı Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e692ff96b3eaed02b2ec.jpeg",
+        "https://modayakamoz.com/orj/70d8c1d027ca5f3b5ae9.jpeg",
+        "https://modayakamoz.com/orj/54c841098bac65b38849.jpeg",
+        {
+          "id": "0c150327-3b8e-4832-957f-8b9a0e08185a",
+          "url": "https://cdn.meluni.com.tr/ai-products/0afa94a2-672a-4bf8-83ec-d384eedcbcb1-olcu-oto-6846711a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:24:40.043136+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "0afa94a2-672a-4bf8-83ec-d384eedcbcb1/front.jpg",
+          "sha256": "b0e1150e268b6507e304291f423f5ca1536c64df03652ea206d74146192e348e",
+          "qa_status": "visual_qa_passed",
+          "sample": 925,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0afa94a2-672a-4bf8-83ec-d384eedcbcb1/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "0afa94a2-672a-4bf8-83ec-d384eedcbcb1/back.jpg",
+          "sha256": "2820fe33503c62af68d9a0ecc60dc8ea5f5b2d05ea2ca234bf60b17595b0747b",
+          "qa_status": "visual_qa_passed",
+          "sample": 925,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0afa94a2-672a-4bf8-83ec-d384eedcbcb1/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "0afa94a2-672a-4bf8-83ec-d384eedcbcb1/fashion_model.jpg",
+          "sha256": "b835fbbc5e4a680dd8c062d46796a5ef56daef4184e92231030634616f5d5eea",
+          "qa_status": "visual_qa_passed",
+          "sample": 925,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0afa94a2-672a-4bf8-83ec-d384eedcbcb1/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
