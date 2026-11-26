@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-886",
+  "published_at_utc": "2026-11-26T15:50:46.094515+00:00",
+  "products": [
+    {
+      "product_id": "2556ff19-c025-42a2-807c-42dcddfb2d78",
+      "sample": 886,
+      "name": "Kısa Kollu Bisiklet Yaka Şerit Detaylı Viskon Iki Iplik Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2556ff19-c025-42a2-807c-42dcddfb2d78-front-d1981a35fcdf.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/2556ff19-c025-42a2-807c-42dcddfb2d78-back-209590314e3f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2556ff19-c025-42a2-807c-42dcddfb2d78-model-7cb8bc4612e6.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/2556ff19-c025-42a2-807c-42dcddfb2d78-model-back-1d505ad476c3.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/2556ff19-c025-42a2-807c-42dcddfb2d78-size-chart-402335426d21.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
