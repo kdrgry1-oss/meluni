@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-924",
+  "created_at": "2026-11-26T22:06:23.846079+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "39a8b6a9-e206-4143-a7e1-c738fee79f1a",
+      "sample": 924,
+      "name": "Kısa Kollu Tül Detaylı Taşlı Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 17,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/16db0bde873a79015d7f.jpeg",
+        "https://modayakamoz.com/orj/40e93a507560898aacbb.jpeg",
+        "https://modayakamoz.com/orj/a56c0ae115c7c4163a7f.jpeg",
+        "https://modayakamoz.com/orj/4c9bb87d1d66d89747eb.jpeg",
+        {
+          "id": "1ec1367e-53d0-4ee5-9c01-b1a666041544",
+          "url": "https://cdn.meluni.com.tr/ai-products/0afa94a2-672a-4bf8-83ec-d384eedcbcb1-olcu-oto-6846711a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:24:40.177362+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "39a8b6a9-e206-4143-a7e1-c738fee79f1a/front.jpg",
+          "sha256": "1e48bc942190b734e24805edfe4445dae4c321f15eef887acb20703fe864bb44",
+          "qa_status": "visual_qa_passed_after_one_targeted_detail_correction",
+          "sample": 924,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-39a8b6a9-e206-4143-a7e1-c738fee79f1a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "39a8b6a9-e206-4143-a7e1-c738fee79f1a/back.jpg",
+          "sha256": "0c5790017ce20a768e90a47cd870e300d2573069c40ab20d4bfea6d0fbff2c44",
+          "qa_status": "visual_qa_passed_after_one_targeted_sleeve_correction",
+          "sample": 924,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-39a8b6a9-e206-4143-a7e1-c738fee79f1a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "39a8b6a9-e206-4143-a7e1-c738fee79f1a/fashion_model.jpg",
+          "sha256": "e936fb34e5983bc461c25f57d68d65c282c6b79be215d93b8877cddb1abf869f",
+          "qa_status": "visual_qa_passed_after_one_targeted_framing_correction",
+          "sample": 924,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-39a8b6a9-e206-4143-a7e1-c738fee79f1a/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "39a8b6a9-e206-4143-a7e1-c738fee79f1a/size_chart.jpg",
+          "sha256": "a770716208ae4281d381d6117913d4736ce633efec9482d29fc21fa80e1b1ccb",
+          "qa_status": "visual_qa_passed_exact_source_values",
+          "sample": 924,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-39a8b6a9-e206-4143-a7e1-c738fee79f1a/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
