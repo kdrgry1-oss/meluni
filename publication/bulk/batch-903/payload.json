@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-903",
+  "created_at": "2026-11-26T18:58:44.458714+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "5d16e573-6133-40db-8ce3-dac6330a3506",
+      "sample": 903,
+      "name": "Ip Askılı Sırttan Çapraz Bağlama Detaylı Süprem Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 20,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e3e6fc490a328d77a236.jpeg",
+        "https://modayakamoz.com/orj/f1f8a8d04e3f2b2dc0bf.jpeg",
+        "https://modayakamoz.com/orj/abb421eb01b68e5ed900.jpeg",
+        "https://modayakamoz.com/orj/dc4efe39b048f2216d24.jpeg",
+        "https://modayakamoz.com/orj/a483744019117b97389e.jpeg",
+        "https://modayakamoz.com/orj/40de4e54770e361f3416.jpeg",
+        {
+          "id": "31780ffc-38cb-46fe-8352-627a86d950a6",
+          "url": "https://cdn.meluni.com.tr/ai-products/5d16e573-6133-40db-8ce3-dac6330a3506-olcu-oto-cfeae599.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:27:37.485577+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "5d16e573-6133-40db-8ce3-dac6330a3506/front.jpg",
+          "sha256": "4dc468502fb7b03df628f4441a4fcad286f6ebf8bf96ff1cb5ce235dbf8de4bd",
+          "qa_status": "visual_qa_passed",
+          "sample": 903,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5d16e573-6133-40db-8ce3-dac6330a3506/front-1200x1800.png"
+        },
+        "back": {
+          "file": "5d16e573-6133-40db-8ce3-dac6330a3506/back.jpg",
+          "sha256": "d0dea09f705c9930d727f731b0910994436783c94f3a89fa57fd3f6b4bae5504",
+          "qa_status": "visual_qa_passed",
+          "sample": 903,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5d16e573-6133-40db-8ce3-dac6330a3506/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "5d16e573-6133-40db-8ce3-dac6330a3506/fashion_model.jpg",
+          "sha256": "050c73ea8575b9184c7874ec58a36b789d0a9b95dd429c89cbb1e275ad80c173",
+          "qa_status": "visual_qa_passed",
+          "sample": 903,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5d16e573-6133-40db-8ce3-dac6330a3506/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "5d16e573-6133-40db-8ce3-dac6330a3506/fashion_model_back.jpg",
+          "sha256": "47cbad6b07bf6321e0e0ae7a2aaaee5c435d22a798d8d124c9a1c63c4cf01e5e",
+          "qa_status": "visual_qa_passed",
+          "sample": 903,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5d16e573-6133-40db-8ce3-dac6330a3506/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
