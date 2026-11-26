@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-849",
+  "published_at_utc": "2026-11-26T02:47:57.216992+00:00",
+  "products": [
+    {
+      "product_id": "929b40ca-7915-4f7e-8a8d-1204d6c31b73",
+      "sample": 849,
+      "name": "Sırttan Çapraz Detaylı V Yakalı Kısa Kiloş Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/929b40ca-7915-4f7e-8a8d-1204d6c31b73-front-e9dd9eb6d76f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/929b40ca-7915-4f7e-8a8d-1204d6c31b73-model-78c0b0e75292.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
