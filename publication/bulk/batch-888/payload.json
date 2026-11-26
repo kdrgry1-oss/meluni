@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-888",
+  "created_at": "2026-11-26T16:23:34.685853+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d2c0391d-cefb-4a34-b9a7-341a11e85495",
+      "sample": 888,
+      "name": "Kısa Kollu Bisiklet Yaka Dantelli Pileli Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c72c17ad4dd62fe977bb533b0c8df8cc.jpeg",
+        "https://modayakamoz.com/orj/2e892b2b97f37c2c69584349f05f3345.jpeg",
+        "https://modayakamoz.com/orj/2c92b38ec836396aefc0.jpeg",
+        "https://modayakamoz.com/orj/5efab33a432f5c99c86b.jpeg",
+        "https://modayakamoz.com/orj/0643b0037fa375980e25.jpeg",
+        "https://modayakamoz.com/orj/bb8f2ecaa2fb5874061f.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d2c0391d-cefb-4a34-b9a7-341a11e85495/front.jpg",
+          "sha256": "513cb9c6510c62cb6c528587ca26a7baef4b2f35497ab58214bf46e6d3914677",
+          "qa_status": "visual_qa_passed",
+          "sample": 888,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d2c0391d-cefb-4a34-b9a7-341a11e85495/front-1200x1800.png"
+        },
+        "back": {
+          "file": "d2c0391d-cefb-4a34-b9a7-341a11e85495/back.jpg",
+          "sha256": "882746e92eb64a5447adcba3c4388c36101d82ad919390a0f95f419a7952ce1b",
+          "qa_status": "visual_qa_passed",
+          "sample": 888,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d2c0391d-cefb-4a34-b9a7-341a11e85495/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "d2c0391d-cefb-4a34-b9a7-341a11e85495/fashion_model.jpg",
+          "sha256": "4598f27de7c0601f69c65ba2a3bab9fa6703c9f065298d837a26efff17bdc968",
+          "qa_status": "visual_qa_passed",
+          "sample": 888,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d2c0391d-cefb-4a34-b9a7-341a11e85495/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "d2c0391d-cefb-4a34-b9a7-341a11e85495/fashion_model_back.jpg",
+          "sha256": "00bde68e93dc1927e8a35ddfcbb7db8c337b379789570c1feb1e9e9e3f55168f",
+          "qa_status": "visual_qa_passed",
+          "sample": 888,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d2c0391d-cefb-4a34-b9a7-341a11e85495/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
