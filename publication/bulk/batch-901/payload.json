@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-901",
+  "created_at": "2026-11-26T18:42:34.687668+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "294a1e66-0236-4821-be0b-9cc16c77c624",
+      "sample": 901,
+      "name": "Ip Askılı Kruvaze Yakalı Janjan Süprem Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 33,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a97805d3300a9ae19e26.jpeg",
+        "https://modayakamoz.com/orj/85943045058b6bdc744c.jpeg",
+        "https://modayakamoz.com/orj/fe79207451b389e2bc72.jpeg",
+        "https://modayakamoz.com/orj/e0cf40e86f30df776576.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "294a1e66-0236-4821-be0b-9cc16c77c624/front.jpg",
+          "sha256": "9ae46c88c4af22186b2b05fbcefa1bbf0668fe07e34fd35cb16a7fbaf7b28e7c",
+          "qa_status": "visual_qa_passed",
+          "sample": 901,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-294a1e66-0236-4821-be0b-9cc16c77c624/front-1200x1800.png"
+        },
+        "back": {
+          "file": "294a1e66-0236-4821-be0b-9cc16c77c624/back.jpg",
+          "sha256": "a78e02969a522eccaf59428c9536878845607fe844741dd7e5fa9c5504645bc4",
+          "qa_status": "visual_qa_passed",
+          "sample": 901,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-294a1e66-0236-4821-be0b-9cc16c77c624/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "294a1e66-0236-4821-be0b-9cc16c77c624/fashion_model.jpg",
+          "sha256": "f31ceeba20a057f81ea74b95a664de6c3e8f10ff130a0a768554d708ebe0d046",
+          "qa_status": "visual_qa_passed",
+          "sample": 901,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-294a1e66-0236-4821-be0b-9cc16c77c624/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "294a1e66-0236-4821-be0b-9cc16c77c624/fashion_model_back.jpg",
+          "sha256": "83bd91acceb7706f7edf343b01ebce42b1a9cf7cc38d9d8f68fa980e40742eea",
+          "qa_status": "visual_qa_passed",
+          "sample": 901,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-294a1e66-0236-4821-be0b-9cc16c77c624/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "294a1e66-0236-4821-be0b-9cc16c77c624/size_chart.jpg",
+          "sha256": "e0ef28cfa1f87254844911d2b13f1800b065d6f92c4a267e73048a8093d9a873",
+          "qa_status": "visual_qa_passed",
+          "sample": 901,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-294a1e66-0236-4821-be0b-9cc16c77c624/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
