@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-889",
+  "created_at": "2026-11-26T16:39:35.439978+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d93196f5-84c8-4fb3-8a4d-bb85c3b784bb",
+      "sample": 889,
+      "name": "Uzun Kollu Beli Dekolte Dantel Detaylı Yırtmaçlı Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/973f8fd093cc6512692c.jpeg",
+        "https://modayakamoz.com/orj/fd015dfd170556f36a88.jpeg",
+        "https://modayakamoz.com/orj/f65ffaacd17e6aeedc22.jpeg",
+        "https://modayakamoz.com/orj/a7f544ae3ad6003a1c69.jpeg",
+        "https://modayakamoz.com/orj/f360fc51c05a737fa1f3.jpeg",
+        "https://modayakamoz.com/orj/3bc0734c8929e234c965.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d93196f5-84c8-4fb3-8a4d-bb85c3b784bb/front.jpg",
+          "sha256": "01c8457111928a4138c00e1d3550f16fdc545bb3b2d325fa99d5ec98d27dfc30",
+          "qa_status": "visual_qa_passed",
+          "sample": 889,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d93196f5-84c8-4fb3-8a4d-bb85c3b784bb/front-1200x1800.png"
+        },
+        "back": {
+          "file": "d93196f5-84c8-4fb3-8a4d-bb85c3b784bb/back.jpg",
+          "sha256": "669a86d8d9380bddfa1c6b4cf7f481bca65a93f142b60c3ae6f5feb8f66d0d82",
+          "qa_status": "visual_qa_passed",
+          "sample": 889,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d93196f5-84c8-4fb3-8a4d-bb85c3b784bb/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "d93196f5-84c8-4fb3-8a4d-bb85c3b784bb/fashion_model.jpg",
+          "sha256": "7ca10283a791124129fb746c468d9593b2279f15c9dc68bd2f95079cd2848dbd",
+          "qa_status": "visual_qa_passed",
+          "sample": 889,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d93196f5-84c8-4fb3-8a4d-bb85c3b784bb/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "d93196f5-84c8-4fb3-8a4d-bb85c3b784bb/fashion_model_back.jpg",
+          "sha256": "d63e1b7b8c6e50847175e26f150d2b111842e43e7c7697b8af8feb1c3048eb03",
+          "qa_status": "visual_qa_passed",
+          "sample": 889,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d93196f5-84c8-4fb3-8a4d-bb85c3b784bb/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "d93196f5-84c8-4fb3-8a4d-bb85c3b784bb/size_chart.jpg",
+          "sha256": "b650eb9c3fc149cc1c23848a625cb2116a86a52190f367a47b6193bcf27a0173",
+          "qa_status": "visual_qa_passed",
+          "sample": 889,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d93196f5-84c8-4fb3-8a4d-bb85c3b784bb/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
