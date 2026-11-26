@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-894",
+  "created_at": "2026-11-26T17:51:11.845848+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "90e70dc3-a4cd-4147-82b5-ef0af0f410c0",
+      "sample": 894,
+      "name": "Uzun Kollu V Yakalı Kısa Kaşkorse Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/06a51efcc5f07efb02babbc122008516.jpg",
+        "https://modayakamoz.com/orj/42cf639c34411d3a91f8c94b5779c5d3.jpg",
+        "https://modayakamoz.com/orj/86cf5acbf7cf3ed8b5f5f9724b5be1d2.jpg",
+        "https://modayakamoz.com/orj/f46a6b10d8b8e731fb9096980eb75ec4.jpg",
+        "https://modayakamoz.com/orj/4725d3cb2df433e4a15755e4df20436d.jpg",
+        {
+          "id": "7abafe20-0388-4863-8d22-4b2f97c666c5",
+          "url": "https://cdn.meluni.com.tr/ai-products/90e70dc3-a4cd-4147-82b5-ef0af0f410c0-olcu-oto-d702f29a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:25:21.750152+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "90e70dc3-a4cd-4147-82b5-ef0af0f410c0/front.jpg",
+          "sha256": "50ba5fc1f4a3a57b71d813ef727055117c3de074eb7d1d6bfaa59ed510121977",
+          "qa_status": "visual_qa_passed",
+          "sample": 894,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-90e70dc3-a4cd-4147-82b5-ef0af0f410c0/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "90e70dc3-a4cd-4147-82b5-ef0af0f410c0/fashion_model.jpg",
+          "sha256": "e5ebf5e63828f41ea7c35922d4d9d156a7c509753f8818cdb8aa1613d47a7d97",
+          "qa_status": "visual_qa_passed",
+          "sample": 894,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-90e70dc3-a4cd-4147-82b5-ef0af0f410c0/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "90e70dc3-a4cd-4147-82b5-ef0af0f410c0/size_chart.jpg",
+          "sha256": "85e8176ffdf475dd9910c52371d70f839ca49217d0e882f91c4d8b29e9b8aabb",
+          "qa_status": "visual_qa_passed",
+          "sample": 894,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-90e70dc3-a4cd-4147-82b5-ef0af0f410c0/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
