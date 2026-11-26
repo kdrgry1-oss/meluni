@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-852",
+  "created_at": "2026-11-26T06:34:24.777140+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d424e9eb-fb3a-428c-916b-05ac1dde3fc5",
+      "sample": 852,
+      "name": "Ip Askılı V Yakalı Beli Dantel Detaylı Kısa Süprem Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 57,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/2e28708f6ae729dd8b70.jpeg",
+        "https://modayakamoz.com/orj/3d158384c33a441634de.jpeg",
+        "https://modayakamoz.com/orj/c94de73e024a969428c9.jpeg",
+        "https://modayakamoz.com/orj/edf2d61ec410345b542f.jpeg",
+        "https://modayakamoz.com/orj/9b5a159a55b0a9cd9415.jpeg",
+        "https://modayakamoz.com/orj/9cc7bf1cc035a247c08f.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "d424e9eb-fb3a-428c-916b-05ac1dde3fc5/front.jpg",
+          "sha256": "a422656e722a96311c153e9e0a4c17db4cfbdbad3c2dc12e55b1b5cb0b046339",
+          "qa_status": "visual_qa_passed",
+          "sample": 852,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d424e9eb-fb3a-428c-916b-05ac1dde3fc5/front-1200x1800.png"
+        },
+        "back": {
+          "file": "d424e9eb-fb3a-428c-916b-05ac1dde3fc5/back.jpg",
+          "sha256": "f59fbb7e31ffe0edf3aac84491a8934c8d32c2909c7e4bae5018fda844190d21",
+          "qa_status": "visual_qa_passed",
+          "sample": 852,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d424e9eb-fb3a-428c-916b-05ac1dde3fc5/back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "d424e9eb-fb3a-428c-916b-05ac1dde3fc5/size_chart.jpg",
+          "sha256": "68304f24e401336a978e52514bee2bc8cb2b1657dfeae5912623fec020544440",
+          "qa_status": "visual_qa_passed",
+          "sample": 852,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d424e9eb-fb3a-428c-916b-05ac1dde3fc5/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
