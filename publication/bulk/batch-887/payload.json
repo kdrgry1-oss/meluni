@@ -1,0 +1,41 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-887",
+  "created_at": "2026-11-26T16:13:18.851821+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "a0f0a0f4-0a3d-40a1-83a2-a1c6911f6a96",
+      "sample": 887,
+      "name": "Dirsek Boy Kol Şeritli Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0ccafa7f551e251e4d908b4b8ea65b1f.jpg",
+        "https://modayakamoz.com/orj/5656d54a6e45c1495858cdafe0a1e80b.jpg",
+        "https://modayakamoz.com/orj/a9e01f96c9fa8dcc3d4ecc3979862df6.jpg",
+        "https://modayakamoz.com/orj/921ade45756d28f9d5fbb66634715465.jpg",
+        "https://modayakamoz.com/orj/b077582e9b29c5e130f24c99d9858869.jpg",
+        "https://modayakamoz.com/orj/c213c69be150c91c415eef30061a8432.jpg",
+        "https://modayakamoz.com/orj/33b2bd425a6b5d2cb868e4a439e9811d.jpg",
+        "https://modayakamoz.com/orj/4428930c21fe5c8baa8285c0d04b9535.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a0f0a0f4-0a3d-40a1-83a2-a1c6911f6a96/front.jpg",
+          "sha256": "eeeaba0b7e4341797c696a2b5cc9e2b65753a13b3af42b49fbca152591f4d34e",
+          "qa_status": "visual_qa_passed",
+          "sample": 887,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0f0a0f4-0a3d-40a1-83a2-a1c6911f6a96/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "a0f0a0f4-0a3d-40a1-83a2-a1c6911f6a96/fashion_model.jpg",
+          "sha256": "dc2e63d0c1992eb8a095563a2d8c5dba7c42cedb2723fb4b0db892058de5e285",
+          "qa_status": "visual_qa_passed",
+          "sample": 887,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0f0a0f4-0a3d-40a1-83a2-a1c6911f6a96/fashion_model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
