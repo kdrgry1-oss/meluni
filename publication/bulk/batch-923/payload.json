@@ -1,0 +1,42 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-923",
+  "created_at": "2026-11-26T21:58:43.498257+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "6cd62d08-3b6f-4105-88fd-2aaa31271eb7",
+      "sample": 923,
+      "name": "Kısa Kollu Madonna Yaka Arkadan Kurdela Detaylı Kısa Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/6cd62d08-3b6f-4105-88fd-2aaa31271eb7/f7b3f5d62d656fa3.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/6cd62d08-3b6f-4105-88fd-2aaa31271eb7/a7c46901c0788f29.jpg",
+        "https://modayakamoz.com/orj/4b12d32c90da7524d892.jpeg",
+        "https://modayakamoz.com/orj/6b2c88c0ba3e01554b10.jpeg",
+        "https://modayakamoz.com/orj/c91815341ddc80d5c203.jpeg",
+        "https://modayakamoz.com/orj/3726da1ab5c2fd73e8ba.jpeg",
+        "https://modayakamoz.com/orj/200d5636669426d1db3f.jpeg",
+        "https://modayakamoz.com/orj/2fecc290592b96854a35.jpeg",
+        "https://modayakamoz.com/orj/2de0add5b7c433858947.jpeg",
+        {
+          "id": "2a72329f-1c0f-49da-ae17-a8c6445c4782",
+          "url": "https://cdn.meluni.com.tr/ai-products/6cd62d08-3b6f-4105-88fd-2aaa31271eb7-olcu-oto-3f8bdf5d.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-26T05:18:42.699135+00:00"
+        }
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "6cd62d08-3b6f-4105-88fd-2aaa31271eb7/fashion_model.jpg",
+          "sha256": "5a90a993a7d44bbabf7cea0055d3b3a13b8c397af35599beca04c7464eec63f8",
+          "qa_status": "visual_qa_passed_after_one_targeted_framing_correction",
+          "sample": 923,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6cd62d08-3b6f-4105-88fd-2aaa31271eb7/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
