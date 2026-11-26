@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-848",
+  "published_at_utc": "2026-11-26T02:38:51.495496+00:00",
+  "products": [
+    {
+      "product_id": "460bcd21-0873-4886-9370-0c18e24d7e26",
+      "sample": 848,
+      "name": "Uzun Kollu Bisiklet Yaka Midi Kadife Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/460bcd21-0873-4886-9370-0c18e24d7e26-front-0c74129ef9e1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/460bcd21-0873-4886-9370-0c18e24d7e26-model-23a2c4a04712.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
