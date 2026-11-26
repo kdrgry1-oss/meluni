@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261126-v3-842",
+  "created_at": "2026-11-26T00:54:00.856108+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "9c8c7557-c505-47bf-881f-5b14406785c6",
+      "sample": 842,
+      "name": "Kısa Kollu Kruvaze Yakalı Ön Asimetrik Volanlı Uzun Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 92,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/682ab92cda60db946c19.jpeg",
+        "https://modayakamoz.com/orj/d2d078b33611aa363797.jpeg",
+        "https://modayakamoz.com/orj/2e3e79eb7be6dc15dd72.jpeg",
+        "https://modayakamoz.com/orj/fb3614bc375cb95af01e.jpeg",
+        "https://modayakamoz.com/orj/d666b09d5fdf8d41165f.jpeg",
+        {
+          "id": "44bb0aa4-5e28-4c70-a3ee-2687d78dcfa5",
+          "url": "https://cdn.meluni.com.tr/ai-products/8e5a5b78-2752-4b3d-8327-1af024638ea0-olcu-oto-ad203574.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:22:04.437985+00:00"
+        }
+      ],
+      "assets": {
+        "fashion_model": {
+          "file": "9c8c7557-c505-47bf-881f-5b14406785c6/fashion_model.jpg",
+          "sha256": "aaa0544a08a4eeb85e5d60d004b9660dc2a3493e3a63bfa6f85bc3c1827105a1",
+          "qa_status": "visual_qa_passed",
+          "sample": 842,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9c8c7557-c505-47bf-881f-5b14406785c6/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "9c8c7557-c505-47bf-881f-5b14406785c6/size_chart.jpg",
+          "sha256": "044e49a4919e76ad3dc071d201eacdebd12548f75a6b9ed17a1338b9f9395282",
+          "qa_status": "visual_qa_passed",
+          "sample": 842,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9c8c7557-c505-47bf-881f-5b14406785c6/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
