@@ -1,0 +1,38 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-849",
+  "created_at": "2026-11-26T02:46:16.526286+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "929b40ca-7915-4f7e-8a8d-1204d6c31b73",
+      "sample": 849,
+      "name": "Sırttan Çapraz Detaylı V Yakalı Kısa Kiloş Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f0e745accf15b79c242c.jpeg",
+        "https://modayakamoz.com/orj/966db784b47854dc3e22.jpeg",
+        "https://modayakamoz.com/orj/9badff34ac7a45161d12.jpeg",
+        "https://modayakamoz.com/orj/d5f119bc62d4a936472d.jpeg",
+        "https://modayakamoz.com/orj/cf1c36ebc50be4e8f14c.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "929b40ca-7915-4f7e-8a8d-1204d6c31b73/front.jpg",
+          "sha256": "e9dd9eb6d76f4ed80fc43660ee04ed1cacccbece74c00e726e816911df85ef56",
+          "qa_status": "visual_qa_passed",
+          "sample": 849,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-929b40ca-7915-4f7e-8a8d-1204d6c31b73/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "929b40ca-7915-4f7e-8a8d-1204d6c31b73/fashion_model.jpg",
+          "sha256": "78c0b0e75292980d684b568d9a1dbafdd9b5c46880d45fc388a6c6f5ce276e7a",
+          "qa_status": "visual_qa_passed",
+          "sample": 849,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-929b40ca-7915-4f7e-8a8d-1204d6c31b73/fashion_model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
