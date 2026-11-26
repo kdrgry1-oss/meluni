@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-866",
+  "created_at": "2026-11-26T10:24:40.125324+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "f6b23bb4-1922-4191-93a4-7a9d27e51c52",
+      "sample": 866,
+      "name": "Üst Takım İki İplik Kumaş Bisiklet Yaka Tişört Cepli Diz Şort",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a3a712a8b2c56a3a712a8b2c6.webp",
+        "https://modayakamoz.com/orj/TY6a3a712bdcf236a3a712bdcf25.webp",
+        "https://modayakamoz.com/orj/TY6a3a712d5c21a6a3a712d5c21c.webp",
+        "https://modayakamoz.com/orj/TY6a3a712ea48fd6a3a712ea48ff.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "f6b23bb4-1922-4191-93a4-7a9d27e51c52/front.jpg",
+          "sha256": "afc382c43e6efc42d4ae9ac899e4fd16298fc27b67f8d668543497cad0c0d803",
+          "qa_status": "visual_qa_passed",
+          "sample": 866,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f6b23bb4-1922-4191-93a4-7a9d27e51c52/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "f6b23bb4-1922-4191-93a4-7a9d27e51c52/fashion_model.jpg",
+          "sha256": "b86b4c2815bc5328eb4a2c199794778dba7950c8a71e3d2c408dbf937158b333",
+          "qa_status": "visual_qa_passed",
+          "sample": 866,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f6b23bb4-1922-4191-93a4-7a9d27e51c52/fashion_model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
