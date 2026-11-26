@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-876",
+  "created_at": "2026-11-26T12:49:36.334920+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d3dd2c85-4a44-4891-bb39-9b7f70dcfc27",
+      "sample": 876,
+      "name": "Kısa Kollu Geometrik Yakalı Önden Açık Modal Mini Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7597933bd654f9ad61b8.jpeg",
+        "https://modayakamoz.com/orj/d77a21477ca052fccb7d.jpeg",
+        "https://modayakamoz.com/orj/ef759047aa61e02fd02e.jpeg",
+        "https://modayakamoz.com/orj/732809b392e230656ee7.jpeg",
+        "https://modayakamoz.com/orj/b676ecc8107f60fac42b.jpeg",
+        {
+          "id": "2159f29a-d522-4b8c-a5bd-90df5004deff",
+          "url": "https://cdn.meluni.com.tr/ai-products/4968f13a-c9d7-44ca-8684-35a76c4cb0a6-olcu-oto-5b2c0e1e.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-10-09T05:17:03.064705+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d3dd2c85-4a44-4891-bb39-9b7f70dcfc27/front.jpg",
+          "sha256": "0f0a3ce3d965324c4a36a01a49cd2d785d017df6f17613c295f23fc3a88812c2",
+          "qa_status": "visual_qa_passed",
+          "sample": 876,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d3dd2c85-4a44-4891-bb39-9b7f70dcfc27/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "d3dd2c85-4a44-4891-bb39-9b7f70dcfc27/fashion_model.jpg",
+          "sha256": "a638248817280ed4100e2b722858bee304af48d26e7824a53e143a236980f7cb",
+          "qa_status": "visual_qa_passed",
+          "sample": 876,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d3dd2c85-4a44-4891-bb39-9b7f70dcfc27/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "d3dd2c85-4a44-4891-bb39-9b7f70dcfc27/size_chart.jpg",
+          "sha256": "0dc2f48dbae71499bb18ba072556f4c268fd3d6499ebad9020836ba9eb857eab",
+          "qa_status": "visual_qa_passed",
+          "sample": 876,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d3dd2c85-4a44-4891-bb39-9b7f70dcfc27/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
