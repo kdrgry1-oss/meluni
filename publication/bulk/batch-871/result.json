@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-871",
+  "published_at_utc": "2026-11-26T11:33:07.137925+00:00",
+  "products": [
+    {
+      "product_id": "874fbbe2-7459-4eb0-85b3-45051410f7e5",
+      "sample": 871,
+      "name": "Kısa Kollu Bisiklet Yaka Çift Renkli Eteği Büzgülü Kısa Dalgıç Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/874fbbe2-7459-4eb0-85b3-45051410f7e5-front-06715a9ed796.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/874fbbe2-7459-4eb0-85b3-45051410f7e5-back-805031ccee14.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/874fbbe2-7459-4eb0-85b3-45051410f7e5-model-back-582e16db0bf2.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
