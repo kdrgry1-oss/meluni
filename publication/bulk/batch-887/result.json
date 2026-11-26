@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-887",
+  "published_at_utc": "2026-11-26T16:14:37.830449+00:00",
+  "products": [
+    {
+      "product_id": "a0f0a0f4-0a3d-40a1-83a2-a1c6911f6a96",
+      "sample": 887,
+      "name": "Dirsek Boy Kol Şeritli Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a0f0a0f4-0a3d-40a1-83a2-a1c6911f6a96-front-eeeaba0b7e43.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a0f0a0f4-0a3d-40a1-83a2-a1c6911f6a96-model-dc2e63d0c199.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
