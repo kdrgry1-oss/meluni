@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-875",
+  "published_at_utc": "2026-11-26T12:40:24.882930+00:00",
+  "products": [
+    {
+      "product_id": "3fa218f0-f5c3-4d4f-a75d-60f6cf2713fc",
+      "sample": 875,
+      "name": "Kısa Kollu Bisiklet Yakalı Yandan Toka Detaylı Kısa Modal Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3fa218f0-f5c3-4d4f-a75d-60f6cf2713fc-front-7a418a7a3279.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3fa218f0-f5c3-4d4f-a75d-60f6cf2713fc-model-bda0f4b1d7ae.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
