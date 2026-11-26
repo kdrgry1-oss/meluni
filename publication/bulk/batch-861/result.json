@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-861",
+  "published_at_utc": "2026-11-26T09:05:15.498364+00:00",
+  "products": [
+    {
+      "product_id": "19258421-43ae-49ef-afe0-66c35e539427",
+      "sample": 861,
+      "name": "Kısa Kollu Yuvarlak Yaka Beyaz Yırtmaç Detaylı Viskon Boy Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/19258421-43ae-49ef-afe0-66c35e539427-front-5a53cba51c8c.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/19258421-43ae-49ef-afe0-66c35e539427-size-chart-98955272acbb.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
