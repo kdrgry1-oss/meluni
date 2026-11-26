@@ -1,0 +1,65 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-872",
+  "created_at": "2026-11-26T11:54:55.743133+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "4cc80a63-53ce-4e24-b758-a6b0c79ce62e",
+      "sample": 872,
+      "name": "Kısa Kollu Bisiklet Yakası Fiyonk Kolları Fırfırlı Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 17,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5052d3e1ceda9ad7632a.jpeg",
+        "https://modayakamoz.com/orj/074cf2601f6bfb443723.jpeg",
+        "https://modayakamoz.com/orj/5a8f427bb8f4c34530d2.jpeg",
+        "https://modayakamoz.com/orj/27aaf11fd6b16076a7be.jpeg",
+        {
+          "id": "111ea532-9315-4bd2-9cd5-b14ee942104c",
+          "url": "https://cdn.meluni.com.tr/ai-products/6f2b77b7-e0cc-40fc-8b03-c3821daced9d-olcu-oto-0ce56be1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-03T05:24:00.873883+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4cc80a63-53ce-4e24-b758-a6b0c79ce62e/front.jpg",
+          "sha256": "b031ad993b3c03c469c303ea8b75a1a9feaf718099ca1a05ef8dd8bfdbedddb4",
+          "qa_status": "visual_qa_passed",
+          "sample": 872,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4cc80a63-53ce-4e24-b758-a6b0c79ce62e/front-1200x1800.png"
+        },
+        "back": {
+          "file": "4cc80a63-53ce-4e24-b758-a6b0c79ce62e/back.jpg",
+          "sha256": "3562931ec4201ed866a85247487447146e8db4f6fbad8f0a52084c4b60220cb3",
+          "qa_status": "visual_qa_passed",
+          "sample": 872,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4cc80a63-53ce-4e24-b758-a6b0c79ce62e/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "4cc80a63-53ce-4e24-b758-a6b0c79ce62e/fashion_model.jpg",
+          "sha256": "9d82909e618af65e5f7a27f854709d1c8639b8f53ed85dc67ee47843b4750a68",
+          "qa_status": "visual_qa_passed",
+          "sample": 872,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4cc80a63-53ce-4e24-b758-a6b0c79ce62e/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "4cc80a63-53ce-4e24-b758-a6b0c79ce62e/fashion_model_back.jpg",
+          "sha256": "342c77df19ef1ec7b08314aaf6e5d7ea3cf14f9f34001a5e6dd72267dbf1d3f8",
+          "qa_status": "visual_qa_passed",
+          "sample": 872,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4cc80a63-53ce-4e24-b758-a6b0c79ce62e/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "4cc80a63-53ce-4e24-b758-a6b0c79ce62e/size_chart.jpg",
+          "sha256": "803e60341237b4128f631e6360c9c910eb9b1bad8f0feb2d9a357999e94fda86",
+          "qa_status": "visual_qa_passed",
+          "sample": 872,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4cc80a63-53ce-4e24-b758-a6b0c79ce62e/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
