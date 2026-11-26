@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-909",
+  "published_at_utc": "2026-11-26T19:51:13.227226+00:00",
+  "products": [
+    {
+      "product_id": "d8e4d7e4-166b-49a6-906f-361bdc72b9e2",
+      "sample": 909,
+      "name": "Kapşonlu Etek Detay Armalı Ters Dikiş Gorunumlu Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d8e4d7e4-166b-49a6-906f-361bdc72b9e2-front-265e1c21b925.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d8e4d7e4-166b-49a6-906f-361bdc72b9e2-back-45c75e938aa4.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d8e4d7e4-166b-49a6-906f-361bdc72b9e2-model-024b29cd70aa.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/d8e4d7e4-166b-49a6-906f-361bdc72b9e2-model-back-613fab148ff7.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
