@@ -1,0 +1,26 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-916",
+  "published_at_utc": "2026-11-26T20:58:34.074136+00:00",
+  "products": [
+    {
+      "product_id": "0cae3119-8346-4a09-a19d-3f27e39c72b7",
+      "sample": 916,
+      "name": "Kolsuz Yuvarlak Yakalı Önden Asimetrik Fırfır Detaylı Uzun Krep Elbise",
+      "urls": {
+        "back": "https://cdn.meluni.com.tr/ai-products/0cae3119-8346-4a09-a19d-3f27e39c72b7-back-ee078d500a53.jpg"
+      },
+      "gallery_image_count": 6
+    },
+    {
+      "product_id": "4af54422-434c-4585-8952-d1832df9fbef",
+      "sample": 916,
+      "name": "Kısa Kollu Tül Detaylı Taşlı Janjan Krep Bluz",
+      "urls": {
+        "back": "https://cdn.meluni.com.tr/ai-products/4af54422-434c-4585-8952-d1832df9fbef-back-52c8f2f1c8dc.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
