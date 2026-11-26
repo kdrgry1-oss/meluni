@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-847",
+  "published_at_utc": "2026-11-26T02:30:56.339123+00:00",
+  "products": [
+    {
+      "product_id": "26275b58-4fec-4816-975c-9c5c543ddb9f",
+      "sample": 847,
+      "name": "Uzun Kollu Bisiklet Yakalı Yırtmaçlı Düğmeli Midi Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/26275b58-4fec-4816-975c-9c5c543ddb9f-front-ee7210c118db.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/26275b58-4fec-4816-975c-9c5c543ddb9f-model-0389463a7d09.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/26275b58-4fec-4816-975c-9c5c543ddb9f-size-chart-44786bbbba3a.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
