@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-908",
+  "published_at_utc": "2026-11-26T19:44:06.624306+00:00",
+  "products": [
+    {
+      "product_id": "52bd1fcd-0dea-4d60-816c-6957475e2b37",
+      "sample": 908,
+      "name": "Kahve Kapşonlu Etek Detay Arma Ters Dikiş Gorunumlu Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/52bd1fcd-0dea-4d60-816c-6957475e2b37-front-bd4f44d83e93.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/52bd1fcd-0dea-4d60-816c-6957475e2b37-back-d7d078ec363c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/52bd1fcd-0dea-4d60-816c-6957475e2b37-model-28268ea5a4c0.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/52bd1fcd-0dea-4d60-816c-6957475e2b37-model-back-1b91b6cb50d2.jpg"
+      },
+      "gallery_image_count": 14
+    }
+  ],
+  "skipped": []
+}
