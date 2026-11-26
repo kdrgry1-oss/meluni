@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-851",
+  "created_at": "2026-11-26T05:35:21.752436+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "f1b8850f-f198-4e08-a355-68dc015b01bb",
+      "sample": 851,
+      "name": "Sıfır Kol V Yakalı Düğmeli Blok Renkli Atlas Yelek",
+      "active_at_poll": true,
+      "stock_at_poll": 62,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/aa3137316314f3c25a3380f6f39c5aff.png",
+        "https://modayakamoz.com/orj/d5246bbafa502000a2534abfaebd551d.png",
+        "https://modayakamoz.com/orj/b7217a013b6df5ba20fbe2e5c4c5a4eb.png",
+        "https://modayakamoz.com/orj/b6606c0863b4177dc122bd517aec9ed5.png",
+        "https://modayakamoz.com/orj/bb7fdec939f92e63d5617071b7d1c753.png",
+        "https://modayakamoz.com/orj/ed087dcdd0e3cc7875da2ad00fd6bdc5.png",
+        "https://modayakamoz.com/orj/89dd687818194d644c05cc29f5176d3d.png",
+        "https://modayakamoz.com/orj/b82d8ad2bc987c3139c31e292cf374fb.png",
+        "https://modayakamoz.com/orj/14dc7f99359a161e07391a41d9e2240b.png",
+        "https://modayakamoz.com/orj/b9d8ef39ccce4143a3bc47d1424749c9.png",
+        "https://modayakamoz.com/orj/48b121cb6caa17284289cccfab2ddf8b.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "f1b8850f-f198-4e08-a355-68dc015b01bb/front.jpg",
+          "sha256": "fd94f589bb845e44921a2ffbd8c70b2836c44add6361a1f7a67ced6b18867d5a",
+          "qa_status": "visual_qa_passed",
+          "sample": 851,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f1b8850f-f198-4e08-a355-68dc015b01bb/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "f1b8850f-f198-4e08-a355-68dc015b01bb/fashion_model.jpg",
+          "sha256": "ec266d5b5adb3c3b5534ece9865a6687f42627c03f958e06f78ae2b6c5cb6d38",
+          "qa_status": "visual_qa_passed",
+          "sample": 851,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f1b8850f-f198-4e08-a355-68dc015b01bb/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "f1b8850f-f198-4e08-a355-68dc015b01bb/size_chart.jpg",
+          "sha256": "d66da02ecc2252a42202b4c1daf9fc3b4660390706e4b4d18492520a3f1a4811",
+          "qa_status": "visual_qa_passed",
+          "sample": 851,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f1b8850f-f198-4e08-a355-68dc015b01bb/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
