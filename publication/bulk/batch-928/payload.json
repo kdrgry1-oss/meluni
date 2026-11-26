@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-928",
+  "created_at": "2026-11-26T23:58:48.390858+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7eb99745-b900-4bef-9c1f-224933d2653f",
+      "sample": 928,
+      "name": "Kısa Kollu V Yakalı Düğmeli Leopar Desen Detaylı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 191,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/07c073241fd5b30c403b.jpeg",
+        "https://modayakamoz.com/orj/480d28156a2b499454b9.jpeg",
+        "https://modayakamoz.com/orj/39bd735317a50ae56fa0.jpeg",
+        "https://modayakamoz.com/orj/b353ae23048f4829a82e.jpeg",
+        "https://modayakamoz.com/orj/4737f0d195a4172317df.jpeg",
+        "https://modayakamoz.com/orj/a51ff3d8e98466943680.jpeg",
+        {
+          "id": "4a676dfa-8561-450c-9eed-c89626d53720",
+          "url": "https://cdn.meluni.com.tr/ai-products/0d408f25-8b34-4a85-8b7e-9bdc05095c33-olcu-oto-c1665fbc.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:28:12.695124+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7eb99745-b900-4bef-9c1f-224933d2653f/front.jpg",
+          "sha256": "8a274e2ff1b638218178689109eb88c2fd8363e9048d8bfe5e099be40383de14",
+          "qa_status": "visual_qa_passed",
+          "sample": 928,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7eb99745-b900-4bef-9c1f-224933d2653f/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7eb99745-b900-4bef-9c1f-224933d2653f/back.jpg",
+          "sha256": "0cf59c05bdd38de06eee7a3cefbce9a9c590f48f3b9639eb886c3c698f8cc773",
+          "qa_status": "visual_qa_passed",
+          "sample": 928,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7eb99745-b900-4bef-9c1f-224933d2653f/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7eb99745-b900-4bef-9c1f-224933d2653f/fashion_model.jpg",
+          "sha256": "5a3ce08ef03f59f4b275a3fd06e0ff4986c7558cb9b9a10c6ce5e4f84e6f6e2a",
+          "qa_status": "visual_qa_passed",
+          "sample": 928,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7eb99745-b900-4bef-9c1f-224933d2653f/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7eb99745-b900-4bef-9c1f-224933d2653f/size_chart.jpg",
+          "sha256": "b80a49392649c8927ceae53c6a48c6ce25408775f3dd80f24edd2f45fce9fa63",
+          "qa_status": "visual_qa_passed_exact_source_values",
+          "sample": 928,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7eb99745-b900-4bef-9c1f-224933d2653f/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
