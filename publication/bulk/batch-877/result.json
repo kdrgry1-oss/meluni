@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-877",
+  "published_at_utc": "2026-11-26T13:06:37.095298+00:00",
+  "products": [
+    {
+      "product_id": "2a01b171-a838-42cf-9338-68ed20bf9d14",
+      "sample": 877,
+      "name": "Kısa Kollu Bısıklet Yakalı Dantel Detaylı Vıskon Ikı Iplık Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/2a01b171-a838-42cf-9338-68ed20bf9d14-front-82f38103b590.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/2a01b171-a838-42cf-9338-68ed20bf9d14-model-3e4dbc46a09d.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/2a01b171-a838-42cf-9338-68ed20bf9d14-size-chart-0a4abb18dd57.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
