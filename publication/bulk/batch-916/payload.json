@@ -1,0 +1,75 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-916",
+  "created_at": "2026-11-26T20:57:23.150522+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "0cae3119-8346-4a09-a19d-3f27e39c72b7",
+      "sample": 916,
+      "name": "Kolsuz Yuvarlak Yakalı Önden Asimetrik Fırfır Detaylı Uzun Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/aecb5800ff08cee4df38.jpeg",
+        "https://modayakamoz.com/orj/ecc379280fb1243f69bd.jpeg",
+        "https://modayakamoz.com/orj/a99f45b7c3993bc3f9ac.jpeg",
+        "https://modayakamoz.com/orj/54957b7884b05e537919.jpeg",
+        {
+          "id": "cb57d3ef-e14c-57d3-b64a-5d9f60b14e98",
+          "url": "https://cdn.meluni.com.tr/ai-products/0cae3119-8346-4a09-a19d-3f27e39c72b7-size-chart-39cacc2f3a77.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-24T07:05:40.146101+00:00"
+        }
+      ],
+      "assets": {
+        "back": {
+          "file": "0cae3119-8346-4a09-a19d-3f27e39c72b7/back.jpg",
+          "sha256": "ee078d500a536bffdb4985ddc37e52da0923f479da360194d0fd63d955fe3547",
+          "qa_status": "pass",
+          "sample": 916,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-1515-back-1200x1800.jpg"
+        }
+      }
+    },
+    {
+      "product_id": "4af54422-434c-4585-8952-d1832df9fbef",
+      "sample": 916,
+      "name": "Kısa Kollu Tül Detaylı Taşlı Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 93,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a2b7b94606af936c1e9f.jpeg",
+        "https://modayakamoz.com/orj/dbaf721a2a4ed383bf18.jpeg",
+        "https://modayakamoz.com/orj/39dce3a50d09379121c7.jpeg",
+        "https://modayakamoz.com/orj/43a05e69a016822fef9c.jpeg",
+        "https://modayakamoz.com/orj/584fecd6dd0c5285488d.jpeg",
+        "https://modayakamoz.com/orj/491c1452e97d4c6fee33.jpeg",
+        {
+          "id": "1af1e192-3c4e-4f56-a9b9-5159d6e8c2ac",
+          "url": "https://cdn.meluni.com.tr/ai-products/0afa94a2-672a-4bf8-83ec-d384eedcbcb1-olcu-oto-6846711a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:24:40.217708+00:00"
+        },
+        {
+          "id": "db65e2e4-88d7-5480-b18e-37f5f892bf14",
+          "url": "https://cdn.meluni.com.tr/ai-products/4af54422-434c-4585-8952-d1832df9fbef-size-chart-97a53041eac2.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-11-24T11:40:19.904287+00:00"
+        }
+      ],
+      "assets": {
+        "back": {
+          "file": "4af54422-434c-4585-8952-d1832df9fbef/back.jpg",
+          "sha256": "52c8f2f1c8dcd6e86a999978ea0d82286ef2790c9a792e7d7278abceb4e01485",
+          "qa_status": "pass",
+          "sample": 916,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/ghost-2034-back-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
