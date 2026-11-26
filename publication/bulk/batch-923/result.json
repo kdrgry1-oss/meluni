@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-923",
+  "published_at_utc": "2026-11-26T21:59:46.587049+00:00",
+  "products": [
+    {
+      "product_id": "6cd62d08-3b6f-4105-88fd-2aaa31271eb7",
+      "sample": 923,
+      "name": "Kısa Kollu Madonna Yaka Arkadan Kurdela Detaylı Kısa Krep Elbise",
+      "urls": {
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6cd62d08-3b6f-4105-88fd-2aaa31271eb7-model-5a90a993a7d4.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
