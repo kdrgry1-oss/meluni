@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-905",
+  "created_at": "2026-11-26T19:16:00.714613+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7722c1b3-823e-4721-a2bf-ddc926c304dc",
+      "sample": 905,
+      "name": "Kısa Kollu Önü Açık Kuşaklı Uzun Kimono",
+      "active_at_poll": true,
+      "stock_at_poll": 53,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1d4ea32ac2426a016826.jpeg",
+        "https://modayakamoz.com/orj/84a9b4d071f66fd272fb.jpeg",
+        "https://modayakamoz.com/orj/843475a36f6069015618.jpeg",
+        "https://modayakamoz.com/orj/7bd99d8e5293ea6aae59.jpeg",
+        "https://modayakamoz.com/orj/311bf56c0f8f46552cae.jpeg",
+        "https://modayakamoz.com/orj/71ed75270fff5a044c4a.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7722c1b3-823e-4721-a2bf-ddc926c304dc/front.jpg",
+          "sha256": "f890d612d7bfc490235b6b3c422f8024ad4a8d99165ee15c457f8648f2d586cb",
+          "qa_status": "visual_qa_passed",
+          "sample": 905,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7722c1b3-823e-4721-a2bf-ddc926c304dc/front-1200x1800.png"
+        },
+        "back": {
+          "file": "7722c1b3-823e-4721-a2bf-ddc926c304dc/back.jpg",
+          "sha256": "662a22870802b20f99320d75193f5b854cc36c079031f5c3451ee18043cc8d95",
+          "qa_status": "visual_qa_passed",
+          "sample": 905,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7722c1b3-823e-4721-a2bf-ddc926c304dc/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "7722c1b3-823e-4721-a2bf-ddc926c304dc/fashion_model.jpg",
+          "sha256": "bfcb198dcdcb9418454b67aa7042e04f953b1140322b5ccfc5d9f4c55a513de9",
+          "qa_status": "visual_qa_passed",
+          "sample": 905,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7722c1b3-823e-4721-a2bf-ddc926c304dc/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "7722c1b3-823e-4721-a2bf-ddc926c304dc/fashion_model_back.jpg",
+          "sha256": "5d7074592cc7499c8d7019ad4acde3834bf24f7f0048328e07315b99358378df",
+          "qa_status": "visual_qa_passed",
+          "sample": 905,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7722c1b3-823e-4721-a2bf-ddc926c304dc/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "7722c1b3-823e-4721-a2bf-ddc926c304dc/size_chart.jpg",
+          "sha256": "0eedd7158ed40d2c53d52c3982777d95e7dbd27b3c2872cdab304683d5b1f502",
+          "qa_status": "visual_qa_passed",
+          "sample": 905,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7722c1b3-823e-4721-a2bf-ddc926c304dc/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
