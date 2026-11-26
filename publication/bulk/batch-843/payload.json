@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-843",
+  "created_at": "2026-11-26T01:52:35.307291+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "231dd1d6-0dde-4a1b-81ab-34bc06d8c918",
+      "sample": 843,
+      "name": "Kolsuz Yarı Balıkçı Yakalı Dantel Detaylı Yırtmaçlı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 58,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5ea4b8658e0a4b689242.jpeg",
+        "https://modayakamoz.com/orj/eaeadeddcc993ad38021.jpeg",
+        "https://modayakamoz.com/orj/33061393d4343b3c1426.jpeg",
+        "https://modayakamoz.com/orj/aec409cfb5d2f1e42710.jpeg",
+        "https://modayakamoz.com/orj/87349bdca6171156408b.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "231dd1d6-0dde-4a1b-81ab-34bc06d8c918/front.jpg",
+          "sha256": "75941c36d89bb70696fffa9b7cf4f22e3a0772fdf0933f69ec2604e498ba0019",
+          "qa_status": "visual_qa_passed",
+          "sample": 843,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-231dd1d6-0dde-4a1b-81ab-34bc06d8c918/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "231dd1d6-0dde-4a1b-81ab-34bc06d8c918/fashion_model.jpg",
+          "sha256": "acc691b0cb494238da6f33f4a74f43c969b5ebf3bb4c3a8d1b9e4d9f909c5a5e",
+          "qa_status": "visual_qa_passed",
+          "sample": 843,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-231dd1d6-0dde-4a1b-81ab-34bc06d8c918/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "231dd1d6-0dde-4a1b-81ab-34bc06d8c918/size_chart.jpg",
+          "sha256": "97d2a9975f5eb1df48bf6cc86182272f07d70c1690ae1e909127cdef3580bb3c",
+          "qa_status": "visual_qa_passed",
+          "sample": 843,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-231dd1d6-0dde-4a1b-81ab-34bc06d8c918/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
