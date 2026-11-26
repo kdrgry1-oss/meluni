@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-851",
+  "published_at_utc": "2026-11-26T06:21:26.681197+00:00",
+  "products": [
+    {
+      "product_id": "f1b8850f-f198-4e08-a355-68dc015b01bb",
+      "sample": 851,
+      "name": "Sıfır Kol V Yakalı Düğmeli Blok Renkli Atlas Yelek",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f1b8850f-f198-4e08-a355-68dc015b01bb-front-fd94f589bb84.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f1b8850f-f198-4e08-a355-68dc015b01bb-model-ec266d5b5adb.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/f1b8850f-f198-4e08-a355-68dc015b01bb-size-chart-d66da02ecc22.jpg"
+      },
+      "gallery_image_count": 14
+    }
+  ],
+  "skipped": []
+}
