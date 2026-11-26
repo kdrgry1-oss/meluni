@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-915",
+  "created_at": "2026-11-26T20:52:48.072426+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "9b9dd4b9-38cf-42e3-ac11-af4235adcd00",
+      "sample": 915,
+      "name": "Uzun Kollu Yakalı Krep Bluz ve Yırtmaçlı Pantolon Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 70,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-194226-1-3cafe7335463.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194226-22e7cf46003aa56b.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194226-0dde21b1cbaf662e.jpg",
+        "https://modayakamoz.com/orj/janes-extra-194226-7bd4c1fe72e92055.jpg"
+      ],
+      "assets": {
+        "back": {
+          "file": "9b9dd4b9-38cf-42e3-ac11-af4235adcd00/back.jpg",
+          "sha256": "8491be0e1884a15ccd13ebe826ab7f77faa3210edea02dfab9b9e2aa99bff368",
+          "qa_status": "visual_qa_passed",
+          "sample": 915,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9b9dd4b9-38cf-42e3-ac11-af4235adcd00/back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "9b9dd4b9-38cf-42e3-ac11-af4235adcd00/size_chart.jpg",
+          "sha256": "4ef02b4dcec49b756ddd40769c80878749e104f24cfd57d466e2578bbfd89129",
+          "qa_status": "visual_qa_passed",
+          "sample": 915,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9b9dd4b9-38cf-42e3-ac11-af4235adcd00/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
