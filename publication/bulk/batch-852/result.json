@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-852",
+  "published_at_utc": "2026-11-26T06:35:42.094969+00:00",
+  "products": [
+    {
+      "product_id": "d424e9eb-fb3a-428c-916b-05ac1dde3fc5",
+      "sample": 852,
+      "name": "Ip Askılı V Yakalı Beli Dantel Detaylı Kısa Süprem Tulum",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d424e9eb-fb3a-428c-916b-05ac1dde3fc5-front-a422656e722a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/d424e9eb-fb3a-428c-916b-05ac1dde3fc5-back-f59fbb7e31ff.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d424e9eb-fb3a-428c-916b-05ac1dde3fc5-size-chart-68304f24e401.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
