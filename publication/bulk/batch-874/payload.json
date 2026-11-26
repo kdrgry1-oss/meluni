@@ -1,0 +1,39 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-874",
+  "created_at": "2026-11-26T12:26:27.496509+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "970fda22-05eb-432d-b256-11011319b996",
+      "sample": 874,
+      "name": "Kısa Kollu Daire Yakalı Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 64,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/414fbfa0683b20efd204.jpeg",
+        "https://modayakamoz.com/orj/6f205c803080f078783b.jpeg",
+        "https://modayakamoz.com/orj/78a0487dc1465dd0598b.jpeg",
+        "https://modayakamoz.com/orj/49bbcc0f1d2affd278bf.jpeg",
+        "https://modayakamoz.com/orj/80a9fe57367917c5e76d.jpeg",
+        "https://modayakamoz.com/orj/1dc1fd8932ac51763e28.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "970fda22-05eb-432d-b256-11011319b996/front.jpg",
+          "sha256": "9843b695e44a3d43c53e680fa4d796525fa717ee8566755182b6e6e6262610fa",
+          "qa_status": "visual_qa_passed",
+          "sample": 874,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-970fda22-05eb-432d-b256-11011319b996/front-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "970fda22-05eb-432d-b256-11011319b996/size_chart.jpg",
+          "sha256": "85ad1740680d657b623d036f06cda8c5317cb0b7bf7a496a3c58c893a96cbae2",
+          "qa_status": "visual_qa_passed",
+          "sample": 874,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-970fda22-05eb-432d-b256-11011319b996/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
