@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-841",
+  "published_at_utc": "2026-11-26T00:42:46.847087+00:00",
+  "products": [
+    {
+      "product_id": "c1c3dc81-2101-4619-9471-0fe3e018e268",
+      "sample": 841,
+      "name": "Uzun Kollu Hakim Yakalı Düğmeli Maxi Mikro Süprem Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c1c3dc81-2101-4619-9471-0fe3e018e268-front-25b2cf8e5fc2.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/c1c3dc81-2101-4619-9471-0fe3e018e268-back-772d6a7c01f1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c1c3dc81-2101-4619-9471-0fe3e018e268-model-84d35e60a64d.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/c1c3dc81-2101-4619-9471-0fe3e018e268-model-back-e1451d02d31e.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/c1c3dc81-2101-4619-9471-0fe3e018e268-size-chart-3391123b2d83.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
