@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-850",
+  "created_at": "2026-11-26T05:07:30.385058+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "6df3fd78-759b-4330-94d5-50fcdfa83a7f",
+      "sample": 850,
+      "name": "Uzun Kollu Bağcıklı Fırfırlı Keten Mini Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 10,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/173929-2025-12-15-12-10-16.jpg",
+        "https://modayakamoz.com/orj/173929-2025-12-15-12-10-21.jpg",
+        "https://modayakamoz.com/orj/173929-2025-12-15-12-10-26.jpg",
+        "https://modayakamoz.com/orj/173929-2025-12-15-12-10-30.jpg",
+        "https://modayakamoz.com/orj/c978375b340a08eb1ff3b927ffdeecd9.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "6df3fd78-759b-4330-94d5-50fcdfa83a7f/front.jpg",
+          "sha256": "162224fa9d010b8231aea3fd05ad3c41a5e054e9de876a0e4a314c382d886e84",
+          "qa_status": "visual_qa_passed",
+          "sample": 850,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6df3fd78-759b-4330-94d5-50fcdfa83a7f/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "6df3fd78-759b-4330-94d5-50fcdfa83a7f/fashion_model.jpg",
+          "sha256": "1c640da6cc4006e466a7c0059be09d3d01e455f459fd4eeeec3abc8bb129cb30",
+          "qa_status": "visual_qa_passed",
+          "sample": 850,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6df3fd78-759b-4330-94d5-50fcdfa83a7f/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "6df3fd78-759b-4330-94d5-50fcdfa83a7f/size_chart.jpg",
+          "sha256": "e21dd186c623150e1085d0a56bae6bb37fb269fd8f234bb43a03bb6241529a02",
+          "qa_status": "visual_qa_passed",
+          "sample": 850,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6df3fd78-759b-4330-94d5-50fcdfa83a7f/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
