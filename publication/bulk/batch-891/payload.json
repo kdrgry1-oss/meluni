@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-891",
+  "created_at": "2026-11-26T17:26:25.868190+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "0b03646a-19a4-4f26-a0d5-6630a555a08c",
+      "sample": 891,
+      "name": "Uzun Kollu V Yakalı Dantelli Uzun Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 159,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192645-1-3a6df0d267.jpg",
+        "https://modayakamoz.com/orj/janes-192645-2-7c58b27b65.jpg",
+        "https://modayakamoz.com/orj/janes-192645-3-64647287db.jpg",
+        "https://modayakamoz.com/orj/janes-192645-6-e28406e436.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0b03646a-19a4-4f26-a0d5-6630a555a08c/front.jpg",
+          "sha256": "538da264440dee5eb50039a909a728e80cb8f7905445f989fd10948dd21c97ce",
+          "qa_status": "visual_qa_passed",
+          "sample": 891,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0b03646a-19a4-4f26-a0d5-6630a555a08c/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "0b03646a-19a4-4f26-a0d5-6630a555a08c/fashion_model.jpg",
+          "sha256": "444d8a69ad476c4ab5fb26e6700108e6091797ed242e5fab24a14ccfdb8f90ad",
+          "qa_status": "visual_qa_passed",
+          "sample": 891,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0b03646a-19a4-4f26-a0d5-6630a555a08c/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "0b03646a-19a4-4f26-a0d5-6630a555a08c/size_chart.jpg",
+          "sha256": "1d918bc1207fc2766a48f28521d814d660ed33f167486781b963aebabb775750",
+          "qa_status": "visual_qa_passed",
+          "sample": 891,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0b03646a-19a4-4f26-a0d5-6630a555a08c/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
