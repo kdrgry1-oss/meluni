@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-854",
+  "created_at": "2026-11-26T07:01:29.478300+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7cf0e839-d405-45e1-8d4a-f9a84125e8b8",
+      "sample": 854,
+      "name": "Madonna Yaka Midi Boy Modal Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 62,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e5687ea09db18541d628.jpeg",
+        "https://modayakamoz.com/orj/d649d427d8e92b2b0b81.jpeg",
+        "https://modayakamoz.com/orj/d0d6357d9e7aa9256c33.jpeg",
+        "https://modayakamoz.com/orj/c4780318eae2a725f585.jpeg",
+        "https://modayakamoz.com/orj/6b96e1f371b9822e8b99.jpeg",
+        "https://modayakamoz.com/orj/1b95271e3393f40c40f6.jpeg",
+        "https://modayakamoz.com/orj/57e48019d0202ecf8882.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7cf0e839-d405-45e1-8d4a-f9a84125e8b8/front.jpg",
+          "sha256": "0b52fc6180ec5c5540870c599981e6a86da1d65ee57b9732f780d5802f513899",
+          "qa_status": "visual_qa_passed",
+          "sample": 854,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7cf0e839-d405-45e1-8d4a-f9a84125e8b8/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "7cf0e839-d405-45e1-8d4a-f9a84125e8b8/fashion_model.jpg",
+          "sha256": "63271d170bb01df347e7f1eca88cbac9587b7ee664c80e4531182a99bc9d68da",
+          "qa_status": "visual_qa_passed",
+          "sample": 854,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7cf0e839-d405-45e1-8d4a-f9a84125e8b8/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "7cf0e839-d405-45e1-8d4a-f9a84125e8b8/size_chart.jpg",
+          "sha256": "1ab34b5aabed6ff383feae4036f5c809433e8bcb0c7733cc3f892dd417b01c41",
+          "qa_status": "visual_qa_passed",
+          "sample": 854,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7cf0e839-d405-45e1-8d4a-f9a84125e8b8/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
