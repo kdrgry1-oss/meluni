@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-880",
+  "published_at_utc": "2026-11-26T13:54:42.038940+00:00",
+  "products": [
+    {
+      "product_id": "0cad4e24-c0ee-4374-aace-026834b95dae",
+      "sample": 880,
+      "name": "Kısa Kollu V Yakalı Düğmeli Triko Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0cad4e24-c0ee-4374-aace-026834b95dae-front-81510d8c088a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0cad4e24-c0ee-4374-aace-026834b95dae-back-a3430aa5686e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0cad4e24-c0ee-4374-aace-026834b95dae-model-5256d548da33.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/0cad4e24-c0ee-4374-aace-026834b95dae-model-back-630c6ded85e4.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/0cad4e24-c0ee-4374-aace-026834b95dae-size-chart-06b1da1e0005.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
