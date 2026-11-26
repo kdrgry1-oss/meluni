@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-895",
+  "published_at_utc": "2026-11-26T17:59:34.378008+00:00",
+  "products": [
+    {
+      "product_id": "b81b8937-e879-4cac-a704-3d4a9e28f26b",
+      "sample": 895,
+      "name": "Uzun Kollu Yakadan Göğüse Kadar Fermuar Detaylı Kadife Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b81b8937-e879-4cac-a704-3d4a9e28f26b-front-7f582a0be3ad.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b81b8937-e879-4cac-a704-3d4a9e28f26b-model-f2a5b806d9cd.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b81b8937-e879-4cac-a704-3d4a9e28f26b-size-chart-9c1cdcf7df53.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
