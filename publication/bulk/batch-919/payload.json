@@ -1,0 +1,39 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-919",
+  "created_at": "2026-11-26T21:16:18.350620+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "ef5b934b-4360-43a9-98a9-4b76e41d83d7",
+      "sample": 919,
+      "name": "Kısa Kollu Kalp Yaka Yanlardan Büzgü Detay Midi Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/6f5d17ab52991c5f493a.jpeg",
+        "https://modayakamoz.com/orj/98ff0f4e805ddb207b51.jpeg",
+        "https://modayakamoz.com/orj/1fc7304135acd0c7000e.jpeg",
+        "https://modayakamoz.com/orj/7652a27e1a87d9f111e5.jpeg",
+        "https://modayakamoz.com/orj/71993c32bb1fc04af2f5.jpeg",
+        "https://modayakamoz.com/orj/a3da7d0883ff608bb2a9.jpeg"
+      ],
+      "assets": {
+        "back": {
+          "file": "ef5b934b-4360-43a9-98a9-4b76e41d83d7/back.jpg",
+          "sha256": "ad2152a1d96ae66db6647397191474e3879d55fccb567c57c6f4df76286aaf6b",
+          "qa_status": "visual_qa_passed",
+          "sample": 919,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ef5b934b-4360-43a9-98a9-4b76e41d83d7/back-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "ef5b934b-4360-43a9-98a9-4b76e41d83d7/size_chart.jpg",
+          "sha256": "d5e285a7518cae859d360488dbff0574e21b5eec21593919e0b2a73de775c557",
+          "qa_status": "visual_qa_passed_exact_source_values",
+          "sample": 919,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-ef5b934b-4360-43a9-98a9-4b76e41d83d7/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
