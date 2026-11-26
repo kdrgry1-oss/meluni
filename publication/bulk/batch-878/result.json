@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-878",
+  "published_at_utc": "2026-11-26T13:20:29.476964+00:00",
+  "products": [
+    {
+      "product_id": "61dcf96c-1f27-46d3-a419-b68cfdf897ab",
+      "sample": 878,
+      "name": "Kısa Kollu V Yakalı Çizgili Süprem Midi Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/61dcf96c-1f27-46d3-a419-b68cfdf897ab-front-cf7e2a9938eb.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/61dcf96c-1f27-46d3-a419-b68cfdf897ab-back-035c855b3610.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/61dcf96c-1f27-46d3-a419-b68cfdf897ab-model-8885aa737bfc.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/61dcf96c-1f27-46d3-a419-b68cfdf897ab-model-back-23b09adebd7e.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/61dcf96c-1f27-46d3-a419-b68cfdf897ab-size-chart-d458afa3b3ed.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
