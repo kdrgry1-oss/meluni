@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-925",
+  "published_at_utc": "2026-11-26T22:12:49.501797+00:00",
+  "products": [
+    {
+      "product_id": "0afa94a2-672a-4bf8-83ec-d384eedcbcb1",
+      "sample": 925,
+      "name": "Kısa Kollu Tül Detaylı Taşlı Janjan Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0afa94a2-672a-4bf8-83ec-d384eedcbcb1-front-b0e1150e268b.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0afa94a2-672a-4bf8-83ec-d384eedcbcb1-back-2820fe33503c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0afa94a2-672a-4bf8-83ec-d384eedcbcb1-model-b835fbbc5e4a.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
