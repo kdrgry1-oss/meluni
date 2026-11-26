@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-850",
+  "published_at_utc": "2026-11-26T05:09:30.027874+00:00",
+  "products": [
+    {
+      "product_id": "6df3fd78-759b-4330-94d5-50fcdfa83a7f",
+      "sample": 850,
+      "name": "Uzun Kollu Bağcıklı Fırfırlı Keten Mini Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6df3fd78-759b-4330-94d5-50fcdfa83a7f-front-162224fa9d01.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6df3fd78-759b-4330-94d5-50fcdfa83a7f-model-1c640da6cc40.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6df3fd78-759b-4330-94d5-50fcdfa83a7f-size-chart-e21dd186c623.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
