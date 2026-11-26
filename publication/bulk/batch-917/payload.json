@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-917",
+  "created_at": "2026-11-26T21:02:18.483651+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "511d4a2d-ad5a-416a-930e-f0d603182587",
+      "sample": 917,
+      "name": "Kısa Kollu Kruvaze Yakalı Ön Asimetrik Volanlı Uzun Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 38,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/321bc42fa41cd43b28ac.jpeg",
+        "https://modayakamoz.com/orj/1131ce7e89758b7eb2f7.jpeg",
+        "https://modayakamoz.com/orj/6fcccf67487199f35ef5.jpeg",
+        "https://modayakamoz.com/orj/3b3fd4076566182d0f1f.jpeg",
+        "https://modayakamoz.com/orj/3bd8c0ad0c7d449bb0c9.jpeg",
+        {
+          "id": "699ac702-bee0-49e2-9d7a-8818e834e73b",
+          "url": "https://cdn.meluni.com.tr/ai-products/8e5a5b78-2752-4b3d-8327-1af024638ea0-olcu-oto-ad203574.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-15T05:22:04.391169+00:00"
+        }
+      ],
+      "assets": {
+        "back": {
+          "file": "511d4a2d-ad5a-416a-930e-f0d603182587/back.jpg",
+          "sha256": "1437d01fff2b6e53a15aeac71141e9f345b05fa3d89646b6a19436eb5efecf17",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 917,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-511d4a2d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "511d4a2d-ad5a-416a-930e-f0d603182587/fashion_model.jpg",
+          "sha256": "4b3b6e51fb34bd0213f4b3eedb3865dd3ca2299ea2f534d024c6faa42b004627",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 917,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-511d4a2d/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "511d4a2d-ad5a-416a-930e-f0d603182587/size_chart.jpg",
+          "sha256": "c5284c31a1de5fc5bfd9435c267d7d80c78731afb0fc02f1ca14d186c823991c",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 917,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-511d4a2d/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
