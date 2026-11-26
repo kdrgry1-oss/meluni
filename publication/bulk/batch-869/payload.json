@@ -1,0 +1,41 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-869",
+  "created_at": "2026-11-26T11:07:35.707056+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "160de544-747a-4e45-aaa5-ba989c4efb21",
+      "sample": 869,
+      "name": "Kısa Kollu Bisiklet Yaka Yırtmaçlı Şerit Detaylı Modal Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 50,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/580014357a3360fbe277.jpeg",
+        "https://modayakamoz.com/orj/1f03c445681b36bdf192.jpeg",
+        "https://modayakamoz.com/orj/404a73ee0c70e8cbb249.jpeg",
+        "https://modayakamoz.com/orj/7ceba38c4868ed2e2540.jpeg",
+        "https://modayakamoz.com/orj/cf6a0b7da2b1598ee612.jpeg",
+        "https://modayakamoz.com/orj/7ed1b3db058af270fb8f.jpeg",
+        "https://modayakamoz.com/orj/35d9055a0b50ef0c20a3.jpeg",
+        "https://modayakamoz.com/orj/10b18fd28a4c1e5f6ab8.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "160de544-747a-4e45-aaa5-ba989c4efb21/front.jpg",
+          "sha256": "998da1feb4b4a3479ea3c433644560c8987892e576ff3517327ee23bda766aa3",
+          "qa_status": "visual_qa_passed",
+          "sample": 869,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-160de544-747a-4e45-aaa5-ba989c4efb21/front-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "160de544-747a-4e45-aaa5-ba989c4efb21/size_chart.jpg",
+          "sha256": "13ef71cda2015792406111c55483323d269242c2cfcaccdd9ba12ce997e2d17c",
+          "qa_status": "visual_qa_passed",
+          "sample": 869,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-160de544-747a-4e45-aaa5-ba989c4efb21/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
