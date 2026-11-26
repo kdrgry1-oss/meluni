@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-918",
+  "created_at": "2026-11-26T21:08:20.377887+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b5094ecb-5002-481b-aacc-8b70507261e9",
+      "sample": 918,
+      "name": "Uzun Kollu Lazer Dalga Detaylı Kısa Janjan Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 51,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5be6ea756837bfccf820.jpeg",
+        "https://modayakamoz.com/orj/0ebdc519cb827a8c2ad6.jpeg",
+        "https://modayakamoz.com/orj/64d35cdc275848099cec.jpeg",
+        "https://modayakamoz.com/orj/518a4e5fa801960b8259.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b5094ecb-5002-481b-aacc-8b70507261e9/front.jpg",
+          "sha256": "78ca6ea4d216dbf2a15bb49e06fc440bbf9360f01124bc279294b164e281747b",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 918,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5094ecb/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b5094ecb-5002-481b-aacc-8b70507261e9/back.jpg",
+          "sha256": "b3e12f9c4c4a219857ecc7583a87c76d7ee82046efcaa38ee279c42ab27f8c13",
+          "qa_status": "visual_source_fidelity_pass_unpublished_draft",
+          "sample": 918,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5094ecb/back-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
