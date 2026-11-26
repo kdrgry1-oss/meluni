@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-848",
+  "created_at": "2026-11-26T02:37:07.203286+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "460bcd21-0873-4886-9370-0c18e24d7e26",
+      "sample": 848,
+      "name": "Uzun Kollu Bisiklet Yaka Midi Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e0e5507b3dae518c65b7.jpeg",
+        "https://modayakamoz.com/orj/72893ffab870ce3431f1.jpeg",
+        "https://modayakamoz.com/orj/2e0f8425c8619280743d.jpeg",
+        "https://modayakamoz.com/orj/8d0c26267f6e6818f59f.jpeg",
+        "https://modayakamoz.com/orj/501b91884d4044f621fa.jpeg",
+        "https://modayakamoz.com/orj/94c8c0029b38e35b4081.jpeg",
+        {
+          "id": "aafc0c1a-17bb-469b-85a2-d6978e860960",
+          "url": "https://cdn.meluni.com.tr/ai-products/460bcd21-0873-4886-9370-0c18e24d7e26-olcu-oto-e54dc05a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-27T05:22:03.962151+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "460bcd21-0873-4886-9370-0c18e24d7e26/front.jpg",
+          "sha256": "0c74129ef9e1e7e378d9584b817b300016789bafbd1e638a17cb8a9a58bd1759",
+          "qa_status": "visual_qa_passed",
+          "sample": 848,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-460bcd21-0873-4886-9370-0c18e24d7e26/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "460bcd21-0873-4886-9370-0c18e24d7e26/fashion_model.jpg",
+          "sha256": "23a2c4a0471230e3e1b5ef84c6243e932c5ede9f05bc04fac13fcb205a353bbf",
+          "qa_status": "visual_qa_passed",
+          "sample": 848,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-460bcd21-0873-4886-9370-0c18e24d7e26/fashion_model-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
