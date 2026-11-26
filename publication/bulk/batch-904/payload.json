@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-904",
+  "created_at": "2026-11-26T19:08:01.577729+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "3da11568-9ae3-4291-b81a-7206078414da",
+      "sample": 904,
+      "name": "Kısa Kollu V Hakim Yaka Kuşaklı Midi Süprem Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c772c7f5daf090acbeb4.jpeg",
+        "https://modayakamoz.com/orj/f2035370ee13229bf64d.jpeg",
+        "https://modayakamoz.com/orj/a816cddc04b5f0c90f5b.jpeg",
+        "https://modayakamoz.com/orj/1ed6a5eb81872e37cc5e.jpeg",
+        {
+          "id": "82aefb5e-95f4-4e9f-89d0-0ef14eeddffa",
+          "url": "https://cdn.meluni.com.tr/ai-products/a72aa37b-bb04-4633-9948-40e510277b20-olcu-oto-0b658dd1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-10T05:16:40.546095+00:00"
+        }
+      ],
+      "assets": {
+        "back": {
+          "file": "3da11568-9ae3-4291-b81a-7206078414da/back.jpg",
+          "sha256": "87ca05d081375568a51b6257996f33b5da839fee93ead5074725c1d1171a0739",
+          "qa_status": "visual_qa_passed",
+          "sample": 904,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3da11568-9ae3-4291-b81a-7206078414da/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "3da11568-9ae3-4291-b81a-7206078414da/fashion_model.jpg",
+          "sha256": "c022f4af94fbda3239e8ef1598d505040428b5862983517adf15da562feeab76",
+          "qa_status": "visual_qa_passed",
+          "sample": 904,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3da11568-9ae3-4291-b81a-7206078414da/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "3da11568-9ae3-4291-b81a-7206078414da/fashion_model_back.jpg",
+          "sha256": "c83b9131dc1e9ac96ddce02d8ffe17deccf600502db0c015de06c7b3284862c0",
+          "qa_status": "visual_qa_passed",
+          "sample": 904,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3da11568-9ae3-4291-b81a-7206078414da/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "3da11568-9ae3-4291-b81a-7206078414da/size_chart.jpg",
+          "sha256": "c6cbdde0c62965dc5d5eb6d9f599ae1af621102c149d098ef22c264585c2ec31",
+          "qa_status": "visual_qa_passed",
+          "sample": 904,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3da11568-9ae3-4291-b81a-7206078414da/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
