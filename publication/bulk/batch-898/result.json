@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-898",
+  "published_at_utc": "2026-11-26T18:22:26.728846+00:00",
+  "products": [
+    {
+      "product_id": "6400453e-f507-49dc-89bc-063dce0f5954",
+      "sample": 898,
+      "name": "Yüksek Omuzlu Yuvarlak Yakalı Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6400453e-f507-49dc-89bc-063dce0f5954-front-7da464a90044.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6400453e-f507-49dc-89bc-063dce0f5954-back-8a180f6e075e.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6400453e-f507-49dc-89bc-063dce0f5954-model-3dd64eb45a81.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/6400453e-f507-49dc-89bc-063dce0f5954-model-back-598fd05f8b4b.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6400453e-f507-49dc-89bc-063dce0f5954-size-chart-1cb0c49f27d3.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
