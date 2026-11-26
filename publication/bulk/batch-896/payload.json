@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-896",
+  "created_at": "2026-11-26T18:02:52.079151+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "a5c5f5c1-0b51-4bba-a155-af6bf209375f",
+      "sample": 896,
+      "name": "Uzun Kollu Yakalı Beli Kuşaklı Mini Keten Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/173638-2025-12-15-12-01-16.jpg",
+        "https://modayakamoz.com/orj/173638-2025-12-15-12-01-21.jpg",
+        "https://modayakamoz.com/orj/681b960423b2e0429fc8.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a5c5f5c1-0b51-4bba-a155-af6bf209375f/front.jpg",
+          "sha256": "08c45bbac09180bc21990e049c1431abb3ba2cc3981d2cb92cb3905b3194b7c7",
+          "qa_status": "visual_qa_passed",
+          "sample": 896,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a5c5f5c1-0b51-4bba-a155-af6bf209375f/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "a5c5f5c1-0b51-4bba-a155-af6bf209375f/fashion_model.jpg",
+          "sha256": "31a319a028ce6fc53a9950f383a5cd32d89cd37e4acb8cc4640ddcc91af803f0",
+          "qa_status": "visual_qa_passed",
+          "sample": 896,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a5c5f5c1-0b51-4bba-a155-af6bf209375f/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "a5c5f5c1-0b51-4bba-a155-af6bf209375f/size_chart.jpg",
+          "sha256": "8491afed80d8699deaaa855385fa6334ad45efd62fae9ba33a6797ace157febb",
+          "qa_status": "visual_qa_passed",
+          "sample": 896,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a5c5f5c1-0b51-4bba-a155-af6bf209375f/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
