@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-906",
+  "published_at_utc": "2026-11-26T19:25:11.474653+00:00",
+  "products": [
+    {
+      "product_id": "0d07603a-d984-4d71-9d59-50b10fb6a085",
+      "sample": 906,
+      "name": "Ip Askılı V Yakalı Beli Dantelli Uzun Süprem Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0d07603a-d984-4d71-9d59-50b10fb6a085-front-d9698f78b714.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0d07603a-d984-4d71-9d59-50b10fb6a085-back-73c4ae284821.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0d07603a-d984-4d71-9d59-50b10fb6a085-model-975990708089.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/0d07603a-d984-4d71-9d59-50b10fb6a085-model-back-1c90bad92d3b.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
