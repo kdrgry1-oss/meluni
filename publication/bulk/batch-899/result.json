@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-899",
+  "published_at_utc": "2026-11-26T18:29:11.027899+00:00",
+  "products": [
+    {
+      "product_id": "30760d48-83cf-470d-84c4-df6d7e3ac7ec",
+      "sample": 899,
+      "name": "Uzun Kollu Kruvaze Yaka Mini Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/30760d48-83cf-470d-84c4-df6d7e3ac7ec-front-e6102400f85b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/30760d48-83cf-470d-84c4-df6d7e3ac7ec-model-10b9c30157ea.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/30760d48-83cf-470d-84c4-df6d7e3ac7ec-size-chart-8f134b29996e.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
