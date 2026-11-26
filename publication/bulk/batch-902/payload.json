@@ -1,0 +1,59 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-902",
+  "created_at": "2026-11-26T18:51:50.385851+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d3ef6891-2507-41b6-91d8-ff34c6321102",
+      "sample": 902,
+      "name": "Ip Askılı Süprem Krop Bluz ve Yırtmaçlı Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 13,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8c3a059bc13e54c27aa0.jpeg",
+        "https://modayakamoz.com/orj/5717c66fb69d334290ec.jpeg",
+        "https://modayakamoz.com/orj/e6ccd2961f5131760d18.jpeg",
+        "https://modayakamoz.com/orj/daecfbd8f36bc3ffc53d.jpeg",
+        "https://modayakamoz.com/orj/1ec26912066e7b23b2f0.jpeg",
+        {
+          "id": "c102021f-35a7-44d0-a90e-37304fa1e4e8",
+          "url": "https://cdn.meluni.com.tr/ai-products/d3ef6891-2507-41b6-91d8-ff34c6321102-olcu-oto-65a1748d.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-11T05:20:33.198106+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d3ef6891-2507-41b6-91d8-ff34c6321102/front.jpg",
+          "sha256": "0b6e201479183330dd80cf566742e05ff732aec779586144b69f77d302536000",
+          "qa_status": "visual_qa_passed",
+          "sample": 902,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d3ef6891-2507-41b6-91d8-ff34c6321102/front-1200x1800.png"
+        },
+        "back": {
+          "file": "d3ef6891-2507-41b6-91d8-ff34c6321102/back.jpg",
+          "sha256": "75213ae47e5f345f1ec691d25d119be8d6da65523ea463881cbb6ba2c2f09f80",
+          "qa_status": "visual_qa_passed",
+          "sample": 902,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d3ef6891-2507-41b6-91d8-ff34c6321102/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "d3ef6891-2507-41b6-91d8-ff34c6321102/fashion_model.jpg",
+          "sha256": "4b015073d204d2ef12ad118f34e23a07f74ff7fdb49d4dd87a171d06a1241a06",
+          "qa_status": "visual_qa_passed",
+          "sample": 902,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d3ef6891-2507-41b6-91d8-ff34c6321102/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "d3ef6891-2507-41b6-91d8-ff34c6321102/fashion_model_back.jpg",
+          "sha256": "44cb392271119ba6c5d152d3c5158fb4631caa733dcdc490c77a3b67f4d0b011",
+          "qa_status": "visual_qa_passed",
+          "sample": 902,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d3ef6891-2507-41b6-91d8-ff34c6321102/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
