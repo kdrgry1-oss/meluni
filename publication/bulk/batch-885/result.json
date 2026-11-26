@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-885",
+  "published_at_utc": "2026-11-26T15:34:45.533623+00:00",
+  "products": [
+    {
+      "product_id": "0695bf2d-c42d-4f68-8163-12d027866dc0",
+      "sample": 885,
+      "name": "Kol Dantel Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/0695bf2d-c42d-4f68-8163-12d027866dc0-front-f08109c027bb.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/0695bf2d-c42d-4f68-8163-12d027866dc0-back-a9809a8aa361.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/0695bf2d-c42d-4f68-8163-12d027866dc0-model-70f85a7964d5.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/0695bf2d-c42d-4f68-8163-12d027866dc0-model-back-9acdb9f1d5fb.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
