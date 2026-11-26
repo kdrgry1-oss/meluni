@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-878",
+  "created_at": "2026-11-26T13:18:55.168227+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "61dcf96c-1f27-46d3-a419-b68cfdf897ab",
+      "sample": 878,
+      "name": "Kısa Kollu V Yakalı Çizgili Süprem Midi Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ec32ac0c46f892d0b44e.jpeg",
+        "https://modayakamoz.com/orj/b075c5834f2f822b2c5e.jpeg",
+        "https://modayakamoz.com/orj/4a3709895361c37b59ec.jpeg",
+        "https://modayakamoz.com/orj/8b1607f40da83ed0269c.jpeg",
+        "https://modayakamoz.com/orj/677eb176c2676c3396db.jpeg",
+        "https://modayakamoz.com/orj/55cba66df30cfc850a50.jpeg",
+        "https://modayakamoz.com/orj/606f1a7f4d6ca9494824.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "61dcf96c-1f27-46d3-a419-b68cfdf897ab/front.jpg",
+          "sha256": "cf7e2a9938eb69b209082f90237daf94812fede0b7f7b615542a138084e7b604",
+          "qa_status": "visual_qa_passed",
+          "sample": 878,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-61dcf96c-1f27-46d3-a419-b68cfdf897ab/front-1200x1800.png"
+        },
+        "back": {
+          "file": "61dcf96c-1f27-46d3-a419-b68cfdf897ab/back.jpg",
+          "sha256": "035c855b3610b01a47ebfe80814343325588f9fd4766c6fcedaefce8ab18f4ac",
+          "qa_status": "visual_qa_passed",
+          "sample": 878,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-61dcf96c-1f27-46d3-a419-b68cfdf897ab/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "61dcf96c-1f27-46d3-a419-b68cfdf897ab/fashion_model.jpg",
+          "sha256": "8885aa737bfc83cbb468e70d888153f686109aec6fcd781ea1627d7fea40fac1",
+          "qa_status": "visual_qa_passed",
+          "sample": 878,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-61dcf96c-1f27-46d3-a419-b68cfdf897ab/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "61dcf96c-1f27-46d3-a419-b68cfdf897ab/fashion_model_back.jpg",
+          "sha256": "23b09adebd7e41727c406cc4caa44f990469cdc737a0fa3e42a95c7031470a09",
+          "qa_status": "visual_qa_passed",
+          "sample": 878,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-61dcf96c-1f27-46d3-a419-b68cfdf897ab/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "61dcf96c-1f27-46d3-a419-b68cfdf897ab/size_chart.jpg",
+          "sha256": "d458afa3b3ed5bd795f6ecbf96976f705595e16414f02bc37da3fa06293104c7",
+          "qa_status": "visual_qa_passed",
+          "sample": 878,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-61dcf96c-1f27-46d3-a419-b68cfdf897ab/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
