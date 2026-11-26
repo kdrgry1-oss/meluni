@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-843",
+  "published_at_utc": "2026-11-26T01:54:05.885097+00:00",
+  "products": [
+    {
+      "product_id": "231dd1d6-0dde-4a1b-81ab-34bc06d8c918",
+      "sample": 843,
+      "name": "Kolsuz Yarı Balıkçı Yakalı Dantel Detaylı Yırtmaçlı Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/231dd1d6-0dde-4a1b-81ab-34bc06d8c918-front-75941c36d89b.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/231dd1d6-0dde-4a1b-81ab-34bc06d8c918-model-acc691b0cb49.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/231dd1d6-0dde-4a1b-81ab-34bc06d8c918-size-chart-97d2a9975f5e.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
