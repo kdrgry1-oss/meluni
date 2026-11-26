@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-857",
+  "created_at": "2026-11-26T08:08:55.823757+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "391be6c0-45be-4497-b55f-0fe80d7f173f",
+      "sample": 857,
+      "name": "Ip Askılı V Yakalı Düğmeli Midi Bürümcük Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 77,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/646760786696d21ac6be.jpeg",
+        "https://modayakamoz.com/orj/73e00d15efc3d5c41df1.jpeg",
+        "https://modayakamoz.com/orj/c0fd9938b2cc1cc700f4.jpeg",
+        "https://modayakamoz.com/orj/1b8c71d582cbf496f2cc.jpeg",
+        {
+          "id": "f73312fa-e532-4d78-b8fa-93a21041a2e5",
+          "url": "https://cdn.meluni.com.tr/ai-products/391be6c0-45be-4497-b55f-0fe80d7f173f-olcu-oto-f310b636.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-30T05:24:22.241962+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "391be6c0-45be-4497-b55f-0fe80d7f173f/front.jpg",
+          "sha256": "50642243c6cf4cabac325bc1b27655d8bc80af4f1eda917698b2af0bd60e146b",
+          "qa_status": "visual_qa_passed",
+          "sample": 857,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-391be6c0-45be-4497-b55f-0fe80d7f173f/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "391be6c0-45be-4497-b55f-0fe80d7f173f/fashion_model.jpg",
+          "sha256": "3d038c34885e9483dc360008212e7897e48ead1647e62801dd2fefe1dfd2a025",
+          "qa_status": "visual_qa_passed",
+          "sample": 857,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-391be6c0-45be-4497-b55f-0fe80d7f173f/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "391be6c0-45be-4497-b55f-0fe80d7f173f/size_chart.jpg",
+          "sha256": "033419dff1c38c38e0073d2d5e2ffaa32a41848de072e59576d9d223ed1e45d8",
+          "qa_status": "visual_qa_passed",
+          "sample": 857,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-391be6c0-45be-4497-b55f-0fe80d7f173f/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
