@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-853",
+  "published_at_utc": "2026-11-26T06:49:42.408122+00:00",
+  "products": [
+    {
+      "product_id": "5ef02e08-51c7-49ab-b2e4-227cf386aaa0",
+      "sample": 853,
+      "name": "Askılı Yuvarlak Yakalı Yırtmaçlı Dantel Detaylı Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5ef02e08-51c7-49ab-b2e4-227cf386aaa0-front-91101d8d0e37.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5ef02e08-51c7-49ab-b2e4-227cf386aaa0-back-4c951b225124.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5ef02e08-51c7-49ab-b2e4-227cf386aaa0-model-9e428190ec31.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/5ef02e08-51c7-49ab-b2e4-227cf386aaa0-model-back-5d0ba383996e.jpg"
+      },
+      "gallery_image_count": 12
+    }
+  ],
+  "skipped": []
+}
