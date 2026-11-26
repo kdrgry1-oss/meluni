@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-903",
+  "published_at_utc": "2026-11-26T18:59:47.791663+00:00",
+  "products": [
+    {
+      "product_id": "5d16e573-6133-40db-8ce3-dac6330a3506",
+      "sample": 903,
+      "name": "Ip Askılı Sırttan Çapraz Bağlama Detaylı Süprem Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5d16e573-6133-40db-8ce3-dac6330a3506-front-4dc468502fb7.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5d16e573-6133-40db-8ce3-dac6330a3506-back-d0dea09f705c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5d16e573-6133-40db-8ce3-dac6330a3506-model-050c73ea8575.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/5d16e573-6133-40db-8ce3-dac6330a3506-model-back-47cbad6b07bf.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
