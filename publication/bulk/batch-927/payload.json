@@ -1,0 +1,42 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-927",
+  "created_at": "2026-11-26T22:24:31.764747+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "366e7a29-0a47-4fbb-a87e-c845efebd5b7",
+      "sample": 927,
+      "name": "Kısa Kollu Tül Detaylı Taşlı Janjan Krep Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 20,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1ab44d3168bcca33d5a393ac7d6b4d0c.png",
+        "https://modayakamoz.com/orj/a51670567fc340b7024494087a1f37bd.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "366e7a29-0a47-4fbb-a87e-c845efebd5b7/front.jpg",
+          "sha256": "10bb593b6607861afdfbacbc29b0cf28cb9a35c93b1ce3efa701488ced042487",
+          "qa_status": "visual_qa_passed",
+          "sample": 927,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-366e7a29-0a47-4fbb-a87e-c845efebd5b7/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "366e7a29-0a47-4fbb-a87e-c845efebd5b7/back.jpg",
+          "sha256": "68ce54e6e5066e4b63b08ad0824eb820fd269219c7ee7a585ddf8ec76de753b8",
+          "qa_status": "visual_qa_passed",
+          "sample": 927,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-366e7a29-0a47-4fbb-a87e-c845efebd5b7/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "366e7a29-0a47-4fbb-a87e-c845efebd5b7/fashion_model.jpg",
+          "sha256": "1c390b20033b4978b32e570d31cfa9e2f2edd103953c95a652c6178e834f98c9",
+          "qa_status": "visual_qa_passed",
+          "sample": 927,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-366e7a29-0a47-4fbb-a87e-c845efebd5b7/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
