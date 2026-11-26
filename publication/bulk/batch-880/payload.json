@@ -1,0 +1,68 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-880",
+  "created_at": "2026-11-26T13:52:50.519511+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "0cad4e24-c0ee-4374-aace-026834b95dae",
+      "sample": 880,
+      "name": "Kısa Kollu V Yakalı Düğmeli Triko Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 57,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/0cad4e24-c0ee-4374-aace-026834b95dae/8f29b53e1c0b23ab.jpg",
+        "https://modayakamoz.com/orj/8ada4b35a77067c4d329.jpeg",
+        "https://modayakamoz.com/orj/0810f9daa3afbd1baf2e.jpeg",
+        "https://modayakamoz.com/orj/faa3407b1b81b5f0b63e.jpeg",
+        "https://modayakamoz.com/orj/c821c3285e3a30c3beb6.jpeg",
+        "https://modayakamoz.com/orj/592d22fa58d5e69e352b.jpeg",
+        {
+          "id": "8b1a5394-f3e2-4025-93e3-78a11a35ff48",
+          "url": "https://cdn.meluni.com.tr/ai-products/a5a2ec88-806e-49dd-a957-c9767821d61a-olcu-oto-1091ce92.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:20:53.408798+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/0cad4e24-c0ee-4374-aace-026834b95dae/53f4e2d89ce4e3bd.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "0cad4e24-c0ee-4374-aace-026834b95dae/front.jpg",
+          "sha256": "81510d8c088a3981c812c310beb63cf273f9addb68a55f4e20776660f4f8fcf0",
+          "qa_status": "visual_qa_passed",
+          "sample": 880,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0cad4e24-c0ee-4374-aace-026834b95dae/front-1200x1800.png"
+        },
+        "back": {
+          "file": "0cad4e24-c0ee-4374-aace-026834b95dae/back.jpg",
+          "sha256": "a3430aa5686e9661e2fb03ea2333319b45d729a8c1b6213741fb14d3acadb77f",
+          "qa_status": "visual_qa_passed",
+          "sample": 880,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0cad4e24-c0ee-4374-aace-026834b95dae/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "0cad4e24-c0ee-4374-aace-026834b95dae/fashion_model.jpg",
+          "sha256": "5256d548da338331837e25a15a3b806a795cc2b8d565445c3776e10a6a949ac9",
+          "qa_status": "visual_qa_passed",
+          "sample": 880,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0cad4e24-c0ee-4374-aace-026834b95dae/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "0cad4e24-c0ee-4374-aace-026834b95dae/fashion_model_back.jpg",
+          "sha256": "630c6ded85e4f73b23bfee35ff59c1036d94734e4d1b94169570a9cf53dfd939",
+          "qa_status": "visual_qa_passed",
+          "sample": 880,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0cad4e24-c0ee-4374-aace-026834b95dae/fashion_model_back-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "0cad4e24-c0ee-4374-aace-026834b95dae/size_chart.jpg",
+          "sha256": "06b1da1e000570fb56433c012381fc6a5d138d62f1ae92af69b170edcdb15dce",
+          "qa_status": "visual_qa_passed",
+          "sample": 880,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-0cad4e24-c0ee-4374-aace-026834b95dae/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
