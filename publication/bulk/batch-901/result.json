@@ -1,0 +1,21 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-901",
+  "published_at_utc": "2026-11-26T18:43:43.303211+00:00",
+  "products": [
+    {
+      "product_id": "294a1e66-0236-4821-be0b-9cc16c77c624",
+      "sample": 901,
+      "name": "Ip Askılı Kruvaze Yakalı Janjan Süprem Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/294a1e66-0236-4821-be0b-9cc16c77c624-front-9ae46c88c4af.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/294a1e66-0236-4821-be0b-9cc16c77c624-back-a78e02969a52.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/294a1e66-0236-4821-be0b-9cc16c77c624-model-f31ceeba20a0.jpg",
+        "fashion_model_back": "https://cdn.meluni.com.tr/ai-products/294a1e66-0236-4821-be0b-9cc16c77c624-model-back-83bd91acceb7.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/294a1e66-0236-4821-be0b-9cc16c77c624-size-chart-e0ef28cfa1f8.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
