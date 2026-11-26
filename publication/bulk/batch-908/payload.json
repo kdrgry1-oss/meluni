@@ -1,0 +1,63 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-908",
+  "created_at": "2026-11-26T19:43:04.045412+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "52bd1fcd-0dea-4d60-816c-6957475e2b37",
+      "sample": 908,
+      "name": "Kahve Kapşonlu Etek Detay Arma Ters Dikiş Gorunumlu Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 165,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/52bd1fcd-0dea-4d60-816c-6957475e2b37/52bd1fcd-0dea-4d60-816c-6957475e2b37-hd0-ed02543c.jpg",
+        "https://modayakamoz.com/orj/40492-2023-01-06-19-34-47.jpeg",
+        "https://cdn.meluni.com.tr/products/52bd1fcd-0dea-4d60-816c-6957475e2b37/52bd1fcd-0dea-4d60-816c-6957475e2b37-hd2-fdde62c1.jpg",
+        "https://modayakamoz.com/orj/40492-2023-02-28-13-04-26.jpeg",
+        "https://modayakamoz.com/orj/40492-2023-02-28-13-04-39.jpeg",
+        "https://cdn.meluni.com.tr/products/52bd1fcd-0dea-4d60-816c-6957475e2b37/52bd1fcd-0dea-4d60-816c-6957475e2b37-hd5-498002cc.jpg",
+        "https://cdn.meluni.com.tr/products/52bd1fcd-0dea-4d60-816c-6957475e2b37/52bd1fcd-0dea-4d60-816c-6957475e2b37-hd6-c5f12783.jpg",
+        "https://cdn.meluni.com.tr/products/52bd1fcd-0dea-4d60-816c-6957475e2b37/52bd1fcd-0dea-4d60-816c-6957475e2b37-hd7-d4285729.jpg",
+        "https://cdn.meluni.com.tr/products/52bd1fcd-0dea-4d60-816c-6957475e2b37/52bd1fcd-0dea-4d60-816c-6957475e2b37-hd8-a78cc8f7.jpg",
+        {
+          "id": "c9a2c7dd-77af-44b2-9663-ea417fb55c32",
+          "url": "https://cdn.meluni.com.tr/ai-products/52bd1fcd-0dea-4d60-816c-6957475e2b37-olcu-oto-ce20046f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T01:41:29.505787+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "52bd1fcd-0dea-4d60-816c-6957475e2b37/front.jpg",
+          "sha256": "bd4f44d83e93c2b110be85cbedd17ca1c0d555fde67a3ae2f714bdfcc4b50bb8",
+          "qa_status": "visual_qa_passed",
+          "sample": 908,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-52bd1fcd-0dea-4d60-816c-6957475e2b37/front-1200x1800.png"
+        },
+        "back": {
+          "file": "52bd1fcd-0dea-4d60-816c-6957475e2b37/back.jpg",
+          "sha256": "d7d078ec363c7c80ee2db96c84e0c785fbb771179af68aa00e164afc9903e3f4",
+          "qa_status": "visual_qa_passed",
+          "sample": 908,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-52bd1fcd-0dea-4d60-816c-6957475e2b37/back-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "52bd1fcd-0dea-4d60-816c-6957475e2b37/fashion_model.jpg",
+          "sha256": "28268ea5a4c042f9294401f7300c2ce8b393d9994502a25916962ee369c6ef2a",
+          "qa_status": "visual_qa_passed",
+          "sample": 908,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-52bd1fcd-0dea-4d60-816c-6957475e2b37/fashion_model-1200x1800.png"
+        },
+        "fashion_model_back": {
+          "file": "52bd1fcd-0dea-4d60-816c-6957475e2b37/fashion_model_back.jpg",
+          "sha256": "1b91b6cb50d2d4e7a75bde4874327787506fce8ce20370c8863f98e070de9a2d",
+          "qa_status": "visual_qa_passed",
+          "sample": 908,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-52bd1fcd-0dea-4d60-816c-6957475e2b37/fashion_model_back-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
