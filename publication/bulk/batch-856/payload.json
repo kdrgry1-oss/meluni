@@ -1,0 +1,57 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-856",
+  "created_at": "2026-11-26T07:24:24.863235+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "83316a7c-5e0e-4944-bafe-4e2d56fedceb",
+      "sample": 856,
+      "name": "Kısa Kollu Yırtmaç Detaylı Salaş Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 55,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b5e337718e1eeb568579.jpeg",
+        "https://modayakamoz.com/orj/a25351c1d362b2c30e60.jpeg",
+        "https://modayakamoz.com/orj/fb5581418d672e83c847.jpeg",
+        "https://modayakamoz.com/orj/cd4fbe08a646a9ab1551.jpeg",
+        "https://modayakamoz.com/orj/c1916cc1f6349c5be9ac.jpeg",
+        "https://modayakamoz.com/orj/277cb76b220c5c8fcaab.jpeg",
+        "https://modayakamoz.com/orj/5af03c6afcb40992b391.jpeg",
+        "https://modayakamoz.com/orj/80cb458b68fd07bea041.jpeg",
+        "https://modayakamoz.com/orj/08398859da6e6740269f.jpeg",
+        "https://modayakamoz.com/orj/137caf0af289a3a9b1a0.jpeg",
+        {
+          "id": "5560d730-7b6c-4cac-9d6b-7f8d7a812f2e",
+          "url": "https://cdn.meluni.com.tr/ai-products/d8f5a038-9f5d-44c8-9ff5-d24935cead6a-olcu-oto-7558a03c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:23:00.349083+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "83316a7c-5e0e-4944-bafe-4e2d56fedceb/front.jpg",
+          "sha256": "1e4e7ef3f1914e0782d318b366f6ec2f293bd177dbe0b68ad9fe41cd8c15230f",
+          "qa_status": "visual_qa_passed",
+          "sample": 856,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-83316a7c-5e0e-4944-bafe-4e2d56fedceb/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "83316a7c-5e0e-4944-bafe-4e2d56fedceb/fashion_model.jpg",
+          "sha256": "8135a1a87f7dd69e928b5907b372f92b19164af7069648522e883e64335dbaa7",
+          "qa_status": "visual_qa_passed",
+          "sample": 856,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-83316a7c-5e0e-4944-bafe-4e2d56fedceb/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "83316a7c-5e0e-4944-bafe-4e2d56fedceb/size_chart.jpg",
+          "sha256": "e99c9c7b7ee7306ef99d80c95efddaf79869dbe6700656d1c2bd921012d3261e",
+          "qa_status": "visual_qa_passed",
+          "sample": 856,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-83316a7c-5e0e-4944-bafe-4e2d56fedceb/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
