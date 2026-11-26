@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-920",
+  "published_at_utc": "2026-11-26T21:39:21.878583+00:00",
+  "products": [
+    {
+      "product_id": "6730d8ed-3780-44b5-b90c-6156793d4b3b",
+      "sample": 920,
+      "name": "Kısa Kollu Kruvaze Yakalı Işıltı Detaylı Midi Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6730d8ed-3780-44b5-b90c-6156793d4b3b-front-912bf2c0e0a0.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6730d8ed-3780-44b5-b90c-6156793d4b3b-back-5e06fdfc6398.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6730d8ed-3780-44b5-b90c-6156793d4b3b-size-chart-20d1ccf97aa9.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
