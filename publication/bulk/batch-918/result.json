@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-918",
+  "published_at_utc": "2026-11-26T21:09:18.741300+00:00",
+  "products": [
+    {
+      "product_id": "b5094ecb-5002-481b-aacc-8b70507261e9",
+      "sample": 918,
+      "name": "Uzun Kollu Lazer Dalga Detaylı Kısa Janjan Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b5094ecb-5002-481b-aacc-8b70507261e9-front-78ca6ea4d216.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b5094ecb-5002-481b-aacc-8b70507261e9-back-b3e12f9c4c4a.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
