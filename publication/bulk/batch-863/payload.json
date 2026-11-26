@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-863",
+  "created_at": "2026-11-26T09:38:37.559198+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b5d1755a-7ea5-4889-92ca-6829e7165a53",
+      "sample": 863,
+      "name": "Truvakar Kollu Yakalı Gömlek",
+      "active_at_poll": true,
+      "stock_at_poll": 32,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/bb53026ba67ff7d74f64.jpeg",
+        "https://modayakamoz.com/orj/cffc9182ba2db556114d.jpeg",
+        "https://modayakamoz.com/orj/2467d06e35553f9f5a13.jpeg",
+        "https://modayakamoz.com/orj/181eb5f3ffabce682ed7.jpeg",
+        {
+          "id": "9c26c0a2-7583-4f88-9dec-cb7b2450f0a4",
+          "url": "https://cdn.meluni.com.tr/ai-products/60784245-5d83-48f1-a625-f15843f34a4f-olcu-oto-e81d3d11.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-03T05:23:34.835891+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "b5d1755a-7ea5-4889-92ca-6829e7165a53/front.jpg",
+          "sha256": "6b9a6e9296a3e489d544db1e8bb136505085d2858dd31cdfe4a0d403f72e24af",
+          "qa_status": "visual_qa_passed",
+          "sample": 863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5d1755a-7ea5-4889-92ca-6829e7165a53/front-1200x1800.png"
+        },
+        "fashion_model": {
+          "file": "b5d1755a-7ea5-4889-92ca-6829e7165a53/fashion_model.jpg",
+          "sha256": "a602f7bd8183e79db4a0a42c051a4a576940b0a25024d583afb0dd1bd4811800",
+          "qa_status": "visual_qa_passed",
+          "sample": 863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5d1755a-7ea5-4889-92ca-6829e7165a53/fashion_model-1200x1800.png"
+        },
+        "size_chart": {
+          "file": "b5d1755a-7ea5-4889-92ca-6829e7165a53/size_chart.jpg",
+          "sha256": "47078ec2a0d96872053dd178a3a63896217b31b63b3e6a40a22ffe858b7dc30e",
+          "qa_status": "visual_qa_passed",
+          "sample": 863,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5d1755a-7ea5-4889-92ca-6829e7165a53/size_chart-1200x1800.png"
+        }
+      }
+    }
+  ]
+}
