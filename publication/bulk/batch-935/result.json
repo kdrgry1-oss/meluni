@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-935",
+  "published_at_utc": "2026-11-27T01:14:57.850909+00:00",
+  "products": [
+    {
+      "product_id": "bbd145bc-809a-4e7f-ba35-56ef15811a1a",
+      "sample": 935,
+      "name": "Askılı Kruvaze Yakalı Maksi Boy Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bbd145bc-809a-4e7f-ba35-56ef15811a1a-front-84d58f19b85a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bbd145bc-809a-4e7f-ba35-56ef15811a1a-model-28464d6c7d96.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/bbd145bc-809a-4e7f-ba35-56ef15811a1a-size-chart-bb08e3abefeb.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
