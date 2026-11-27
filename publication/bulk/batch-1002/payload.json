@@ -1,0 +1,42 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1002",
+  "created_at": "2026-11-27T12:24:55.846206+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c",
+      "sample": 1002,
+      "name": "Yüksek Bel Lastikli Bağcıklı Geniş Detaylı Deri Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 25,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193300-1-41d40ac75119.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193300-fb0760e8648ad79a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c/front.jpg",
+          "sha256": "bc073d2e922a4bd1056a1a22a82bfcaeb9052623f275361e516d58f502022dab",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1002,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c/fashion_model.jpg",
+          "sha256": "a8f7727cfcbfaa06624e63ba4c53af02438192265dc313e961beb6eb97ab5a9b",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1002,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c/size_chart.jpg",
+          "sha256": "943e4090912edf4b486726fe84699401d9997b19b4c102404b4f9a25e86914e9",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1002,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
