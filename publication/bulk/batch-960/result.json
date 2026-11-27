@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-960",
+  "published_at_utc": "2026-11-27T06:14:52.816049+00:00",
+  "products": [
+    {
+      "product_id": "5f9c9203-933c-4d0c-81f7-c7ed04310764",
+      "sample": 960,
+      "name": "Tek Askılı Diğer Omuzdan Fiyonk Detaylı Midi Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5f9c9203-933c-4d0c-81f7-c7ed04310764-front-d359ab533f3a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5f9c9203-933c-4d0c-81f7-c7ed04310764-model-627c795eba62.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5f9c9203-933c-4d0c-81f7-c7ed04310764-size-chart-756bf9d428ee.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
