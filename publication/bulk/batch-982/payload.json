@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-982",
+  "created_at": "2026-11-27T08:21:45.234834+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b290ebba-4322-427e-b336-095f7f62e8ec",
+      "sample": 982,
+      "name": "Uzun Kollu Degaje Yaka Taşlı Sandy Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 272,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8c16930898e0603e92a0.jpeg",
+        "https://modayakamoz.com/orj/35cbd5140d2d76b5629c.jpeg",
+        "https://modayakamoz.com/orj/f644c6d8ec650ad42b8a.jpeg",
+        "https://modayakamoz.com/orj/d1ff452cf8e5e8d7a5f7.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b290ebba-4322-427e-b336-095f7f62e8ec/front.jpg",
+          "sha256": "9909e3c34ea0801c640ed1451acf6f4e83633cb4eb98fb96831d27b02d425529",
+          "qa_status": "visual_qa_passed",
+          "sample": 982,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b290ebba-4322-427e-b336-095f7f62e8ec/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b290ebba-4322-427e-b336-095f7f62e8ec/back.jpg",
+          "sha256": "f0d3b78f4763ed7d5b825f461e10a9e129ac073d0896cc035c4dc1a8a7e0a1eb",
+          "qa_status": "visual_qa_passed",
+          "sample": 982,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b290ebba-4322-427e-b336-095f7f62e8ec/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b290ebba-4322-427e-b336-095f7f62e8ec/fashion_model.jpg",
+          "sha256": "db871afa6afdda06f4c8fad3beee720ef8c0e6310d026bcbec8d238058ebd4a9",
+          "qa_status": "visual_qa_passed",
+          "sample": 982,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b290ebba-4322-427e-b336-095f7f62e8ec/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "b290ebba-4322-427e-b336-095f7f62e8ec/size_chart.jpg",
+          "sha256": "0fdd42840b76f165a0f70f03a32483a21a9cc3c3b2ed13e2d56455fa22d616c0",
+          "qa_status": "exact_source_values_verified",
+          "sample": 982,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b290ebba-4322-427e-b336-095f7f62e8ec/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
