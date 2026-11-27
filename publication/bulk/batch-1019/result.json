@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1019",
+  "published_at_utc": "2026-11-27T14:33:55.827028+00:00",
+  "products": [
+    {
+      "product_id": "e2e6285f-c1b2-43be-8ef7-4a46db009b91",
+      "sample": 1019,
+      "name": "Sofya Keten Gömlek Pantolon Uzun Kollu Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e2e6285f-c1b2-43be-8ef7-4a46db009b91-front-0804ebc947c6.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/e2e6285f-c1b2-43be-8ef7-4a46db009b91-model-6cb64d44aa16.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
