@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1022",
+  "published_at_utc": "2026-11-27T15:34:29.740774+00:00",
+  "products": [
+    {
+      "product_id": "28f40414-a841-4767-8200-2d690a03e583",
+      "sample": 1022,
+      "name": "Kısa Kollu Bisiklet Yaka Tül Flok Baskı Detaylı Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/28f40414-a841-4767-8200-2d690a03e583-front-e301ecadb3dc.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/28f40414-a841-4767-8200-2d690a03e583-back-dca5dec601f8.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/28f40414-a841-4767-8200-2d690a03e583-model-24312ee5a115.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/28f40414-a841-4767-8200-2d690a03e583-size-chart-095e57e2c99a.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
