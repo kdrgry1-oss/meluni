@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1003",
+  "created_at": "2026-11-27T12:33:24.089845+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "a0d40b95-e9bb-4605-8474-86c6bc552395",
+      "sample": 1003,
+      "name": "Yüksek Belli Düğmeli Keten Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/30d70f4ce8994ca55087.jpeg",
+        "https://modayakamoz.com/orj/dc03b3d60333cbd3838a.jpeg",
+        "https://modayakamoz.com/orj/19894a17ae427ff68713.jpeg",
+        "https://modayakamoz.com/orj/a0f7f8d5bd4292d19388.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a0d40b95-e9bb-4605-8474-86c6bc552395/front.jpg",
+          "sha256": "ee20f93ed2ecb43b8cb64c9bc75053e02a02c72ebb3c50c55252fa58668c4525",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1003,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0d40b95-e9bb-4605-8474-86c6bc552395/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a0d40b95-e9bb-4605-8474-86c6bc552395/fashion_model.jpg",
+          "sha256": "28ece0a4c07e073c21ac2d997fa0d4d3a01353b56b036ba15f84a703cfe5b96c",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1003,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a0d40b95-e9bb-4605-8474-86c6bc552395/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
