@@ -1,0 +1,50 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-966",
+  "created_at": "2026-11-27T06:47:12.246440+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "732629a1-8841-4be2-832d-020191e0430c",
+      "sample": 966,
+      "name": "Tek Omuzdan Acık Onden Fıyonk Bagcık Detaylı Yırtmaçlı Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 34,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/ecf58ed6da82f5b81044.jpeg",
+        "https://modayakamoz.com/orj/8024766d157df666362e.jpeg",
+        "https://modayakamoz.com/orj/abe7ed5339f3684bd6df.jpeg",
+        {
+          "id": "64aaf7d5-6a4a-4bf2-a432-b4223fd19e8c",
+          "url": "https://cdn.meluni.com.tr/ai-products/732629a1-8841-4be2-832d-020191e0430c-olcu-oto-3bf8d705.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-30T05:17:31.565502+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "732629a1-8841-4be2-832d-020191e0430c/front.jpg",
+          "sha256": "8e17385ab27432c86db1b74cc080d087ee3b056141781ca430530d2aa35adaf4",
+          "qa_status": "visual_qa_passed",
+          "sample": 966,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-732629a1-8841-4be2-832d-020191e0430c/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "732629a1-8841-4be2-832d-020191e0430c/fashion_model.jpg",
+          "sha256": "294ca99f35879e4a6324f3c88f03501d091e09a4705b8f5e3faf81258afd0245",
+          "qa_status": "visual_qa_passed",
+          "sample": 966,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-732629a1-8841-4be2-832d-020191e0430c/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "732629a1-8841-4be2-832d-020191e0430c/size_chart.jpg",
+          "sha256": "5dd3ea8ae2403e68bbbdc7b66451fc7474deb08498279a866dd21a360d61879b",
+          "qa_status": "exact_source_values_verified",
+          "sample": 966,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-732629a1-8841-4be2-832d-020191e0430c/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
