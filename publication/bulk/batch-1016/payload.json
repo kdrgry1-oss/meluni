@@ -1,0 +1,31 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1016",
+  "created_at": "2026-11-27T14:07:02.289490+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "07eb5b3e-3e5d-451a-b4ff-f8899baefc6c",
+      "sample": 1016,
+      "name": "Uzun Kollu Düğmeli Kruvaze Yaka Detaylı Midi Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 77,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5379be8a18588cf8a1b5.jpeg",
+        "https://modayakamoz.com/orj/3e399a3c5e3f8da03565.jpeg",
+        "https://modayakamoz.com/orj/3ff0b2191d4dcd1ad3dc.jpeg",
+        "https://modayakamoz.com/orj/108e7add957aa17cebbf.jpeg",
+        "https://modayakamoz.com/orj/3ec50bf0227c692a2ec8.jpeg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "07eb5b3e-3e5d-451a-b4ff-f8899baefc6c/size_chart.jpg",
+          "sha256": "fd7416350d179966fd160dc7572a90421321f5cbb910624f73b53199b3e094de",
+          "qa_status": "passed_source_values_verified",
+          "sample": 1016,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-07eb5b3e-3e5d-451a-b4ff-f8899baefc6c/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
