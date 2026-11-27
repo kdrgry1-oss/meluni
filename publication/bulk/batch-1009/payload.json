@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1009",
+  "created_at": "2026-11-27T13:07:07.012444+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7e5d453a-8b41-4d31-ae97-33eca5c9dab0",
+      "sample": 1009,
+      "name": "Yüksek Bel Yanları Şerit Detaylı Uzun Sporcu Tayt",
+      "active_at_poll": true,
+      "stock_at_poll": 58,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d1d85397c43f670e828f.jpeg",
+        "https://modayakamoz.com/orj/a06fd6094208a2ad153c.jpeg",
+        "https://modayakamoz.com/orj/915f6f2d638e3a4dd26c.jpeg",
+        {
+          "id": "43c56a53-e015-4c00-b532-9f891fc5d7d2",
+          "url": "https://cdn.meluni.com.tr/ai-products/7e5d453a-8b41-4d31-ae97-33eca5c9dab0-olcu-oto-12a4a2f4.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:17:51.156201+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7e5d453a-8b41-4d31-ae97-33eca5c9dab0/front.jpg",
+          "sha256": "ab9876b3d602ae18cfe3575671c33301240dcbfa2f3003b44e9add9474713036",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1009,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7e5d453a-8b41-4d31-ae97-33eca5c9dab0/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7e5d453a-8b41-4d31-ae97-33eca5c9dab0/fashion_model.jpg",
+          "sha256": "b3fab3d574cca46badc6474c95117408ea1c82b91e6c62bda4979a8bd59293aa",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1009,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7e5d453a-8b41-4d31-ae97-33eca5c9dab0/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
