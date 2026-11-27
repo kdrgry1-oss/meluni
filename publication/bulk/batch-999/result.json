@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-999",
+  "published_at_utc": "2026-11-27T12:12:13.273840+00:00",
+  "products": [
+    {
+      "product_id": "3be1183b-c346-4098-b7ea-5f0015b8643f",
+      "sample": 999,
+      "name": "Yüksek Bel Kuşaklı Aerobin Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/3be1183b-c346-4098-b7ea-5f0015b8643f-front-6bb458b60e1f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/3be1183b-c346-4098-b7ea-5f0015b8643f-model-9d7212786ac9.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/3be1183b-c346-4098-b7ea-5f0015b8643f-size-chart-0b005abf8906.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
