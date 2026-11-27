@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-962",
+  "published_at_utc": "2026-11-27T06:27:06.742298+00:00",
+  "products": [
+    {
+      "product_id": "d66d3ec8-6460-4950-bac6-2f2c3547df84",
+      "sample": 962,
+      "name": "Tek Askılı Şerit Detaylı Düğmeli Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d66d3ec8-6460-4950-bac6-2f2c3547df84-front-a7034f7fcb8b.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d66d3ec8-6460-4950-bac6-2f2c3547df84-size-chart-5f8a3135b2bb.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
