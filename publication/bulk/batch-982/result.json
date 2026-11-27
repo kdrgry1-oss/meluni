@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-982",
+  "published_at_utc": "2026-11-27T08:22:57.970351+00:00",
+  "products": [
+    {
+      "product_id": "b290ebba-4322-427e-b336-095f7f62e8ec",
+      "sample": 982,
+      "name": "Uzun Kollu Degaje Yaka Taşlı Sandy Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b290ebba-4322-427e-b336-095f7f62e8ec-front-9909e3c34ea0.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b290ebba-4322-427e-b336-095f7f62e8ec-back-f0d3b78f4763.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b290ebba-4322-427e-b336-095f7f62e8ec-model-db871afa6afd.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b290ebba-4322-427e-b336-095f7f62e8ec-size-chart-0fdd42840b76.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
