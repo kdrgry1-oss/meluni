@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1012",
+  "published_at_utc": "2026-11-27T13:28:45.602924+00:00",
+  "products": [
+    {
+      "product_id": "1a30bb98-13e2-4493-aec0-171c02e56d5a",
+      "sample": 1012,
+      "name": "Yüksek Bel Düğmeli Jean Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/1a30bb98-13e2-4493-aec0-171c02e56d5a-front-268c07e1536c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/1a30bb98-13e2-4493-aec0-171c02e56d5a-model-5b976821897e.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
