@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-988",
+  "published_at_utc": "2026-11-27T09:57:48.571570+00:00",
+  "products": [
+    {
+      "product_id": "9d51a071-2906-4c5c-9681-dc68881993b7",
+      "sample": 988,
+      "name": "Uzun Kollu V Yakalı Triko Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9d51a071-2906-4c5c-9681-dc68881993b7-front-539d12b64686.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/9d51a071-2906-4c5c-9681-dc68881993b7-back-e38e99fb200f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9d51a071-2906-4c5c-9681-dc68881993b7-model-cf08004b1286.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/9d51a071-2906-4c5c-9681-dc68881993b7-size-chart-0a3bd67680ef.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
