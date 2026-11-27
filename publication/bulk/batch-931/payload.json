@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-931",
+  "created_at": "2026-11-27T00:38:40.321732+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "5a7f3038-7a35-4d9f-a669-aca8e536aee7",
+      "sample": 931,
+      "name": "Baklava Desen Detaylı Kalın Askılı Triko Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 96,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/fb6138639441c00b528e.jpeg",
+        "https://modayakamoz.com/orj/04faa7b513af8fd781d7.jpeg",
+        "https://modayakamoz.com/orj/5492c410f20eedf890ac.jpeg",
+        "https://modayakamoz.com/orj/a601e5b26bf3aa1f0418.jpeg",
+        "https://modayakamoz.com/orj/e77a4ae0071efb327d10.jpeg",
+        "https://modayakamoz.com/orj/4e6fc6c7a8372dffee0e.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "5a7f3038-7a35-4d9f-a669-aca8e536aee7/front.jpg",
+          "sha256": "5a348cbadb7efe526e3af579903d16c1648c65b8ed394a3fa0d8cbc27f585809",
+          "qa_status": "visual_qa_passed",
+          "sample": 931,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5a7f3038-7a35-4d9f-a669-aca8e536aee7/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5a7f3038-7a35-4d9f-a669-aca8e536aee7/back.jpg",
+          "sha256": "ed87b9df8b02aef819142781e750cb561a8d99fda525231090a453635ff53e72",
+          "qa_status": "visual_qa_passed",
+          "sample": 931,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5a7f3038-7a35-4d9f-a669-aca8e536aee7/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5a7f3038-7a35-4d9f-a669-aca8e536aee7/fashion_model.jpg",
+          "sha256": "96202570887d6227ec43274b4d1fa90f2544bc0b35555e549fec4b4337e09dcd",
+          "qa_status": "visual_qa_passed",
+          "sample": 931,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5a7f3038-7a35-4d9f-a669-aca8e536aee7/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "5a7f3038-7a35-4d9f-a669-aca8e536aee7/size_chart.jpg",
+          "sha256": "1de1e8bc6ebbcc620f512a2de5146d1012ec525a3ab3dda198bfd2c1fe65d774",
+          "qa_status": "exact_source_values_verified",
+          "sample": 931,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5a7f3038-7a35-4d9f-a669-aca8e536aee7/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
