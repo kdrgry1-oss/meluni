@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-931",
+  "published_at_utc": "2026-11-27T00:39:50.145508+00:00",
+  "products": [
+    {
+      "product_id": "5a7f3038-7a35-4d9f-a669-aca8e536aee7",
+      "sample": 931,
+      "name": "Baklava Desen Detaylı Kalın Askılı Triko Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5a7f3038-7a35-4d9f-a669-aca8e536aee7-front-5a348cbadb7e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5a7f3038-7a35-4d9f-a669-aca8e536aee7-back-ed87b9df8b02.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5a7f3038-7a35-4d9f-a669-aca8e536aee7-model-96202570887d.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/5a7f3038-7a35-4d9f-a669-aca8e536aee7-size-chart-1de1e8bc6ebb.jpg"
+      },
+      "gallery_image_count": 10
+    }
+  ],
+  "skipped": []
+}
