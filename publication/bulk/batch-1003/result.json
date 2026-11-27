@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1003",
+  "published_at_utc": "2026-11-27T12:34:55.100506+00:00",
+  "products": [
+    {
+      "product_id": "a0d40b95-e9bb-4605-8474-86c6bc552395",
+      "sample": 1003,
+      "name": "Yüksek Belli Düğmeli Keten Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a0d40b95-e9bb-4605-8474-86c6bc552395-front-ee20f93ed2ec.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a0d40b95-e9bb-4605-8474-86c6bc552395-model-28ece0a4c07e.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
