@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1006",
+  "created_at": "2026-11-27T12:49:17.355621+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375",
+      "sample": 1006,
+      "name": "Yüksek Bel Lastikli Cepli Deri Detaylı Dalgıç Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 334,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/661598a44f34d6e78554.jpeg",
+        "https://modayakamoz.com/orj/c6bdce850ef7ceb1619d.jpeg",
+        "https://modayakamoz.com/orj/b74bbaaf43d499e6a6e0.jpeg",
+        "https://modayakamoz.com/orj/211bf5c359b0c7d5a6d2.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375/front.jpg",
+          "sha256": "ab37739e670ce203d0d8c9be91683bd64850f1579b2c8d7ae3d03197335bf60a",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1006,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375/fashion_model.jpg",
+          "sha256": "bf16e4d8c3bf91db9357169a2c254940baa3c31d28baa92b2f593a270dcc731b",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1006,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375/size_chart.jpg",
+          "sha256": "c3fe40721a5ab21cc55b01cec8d7970d9ed7fda8ff17f202bfa050cb6249fcf6",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1006,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
