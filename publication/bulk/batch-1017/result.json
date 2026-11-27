@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1017",
+  "published_at_utc": "2026-11-27T14:16:42.296330+00:00",
+  "products": [
+    {
+      "product_id": "8baadab4-6462-4b3f-9f47-4c54c8106233",
+      "sample": 1017,
+      "name": "Uzun Kollu Balıkçı Yaka Omuz Katlamalı Dalgıç Kısa Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8baadab4-6462-4b3f-9f47-4c54c8106233-front-ace2e9a4c0ac.jpg"
+      },
+      "gallery_image_count": 4
+    }
+  ],
+  "skipped": []
+}
