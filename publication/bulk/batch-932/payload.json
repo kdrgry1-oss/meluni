@@ -1,0 +1,50 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-932",
+  "created_at": "2026-11-27T00:43:30.085495+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "676b909d-9f95-4bed-b277-a02aa9ed1021",
+      "sample": 932,
+      "name": "Balıkçı Yaka Kolsuz Incili Beli Kuşaklı Uzun Janjan Tulum",
+      "active_at_poll": true,
+      "stock_at_poll": 102,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/0cf0cc30c88a4105db9e.jpeg",
+        "https://modayakamoz.com/orj/0b937fc8970e27f9637d.jpeg",
+        "https://modayakamoz.com/orj/ccea040d13bd2e089bea.jpeg",
+        {
+          "id": "65383401-92b8-40d3-bd65-5c46dd8a088b",
+          "url": "https://cdn.meluni.com.tr/ai-products/676b909d-9f95-4bed-b277-a02aa9ed1021-olcu-oto-bf5b9f10.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-20T05:22:33.601921+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "676b909d-9f95-4bed-b277-a02aa9ed1021/front.jpg",
+          "sha256": "4dcb26e863268cb73321fab055c696dcd43eb22294cdeda36f5d0f25c05610e5",
+          "qa_status": "visual_qa_passed",
+          "sample": 932,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-676b909d-9f95-4bed-b277-a02aa9ed1021/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "676b909d-9f95-4bed-b277-a02aa9ed1021/back.jpg",
+          "sha256": "fe45d4b506c3e23c09eb65b0f20988638230edd7daa8b1af3556f866b008aef6",
+          "qa_status": "visual_qa_passed",
+          "sample": 932,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-676b909d-9f95-4bed-b277-a02aa9ed1021/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "676b909d-9f95-4bed-b277-a02aa9ed1021/fashion_model.jpg",
+          "sha256": "329dff404af2f77a3da91984b6492b8007e67f1b7d2ed393c0fcf86d2df9a883",
+          "qa_status": "visual_qa_passed",
+          "sample": 932,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-676b909d-9f95-4bed-b277-a02aa9ed1021/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
