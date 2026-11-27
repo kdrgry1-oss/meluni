@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-946",
+  "created_at": "2026-11-27T04:47:21.652688+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "e4614ad3-e2e9-4182-80c6-235343165122",
+      "sample": 946,
+      "name": "Kısa Kollu V Yakalı Cep Detaylı Midi Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 145,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/cda07b602330392d04ab.jpeg",
+        "https://modayakamoz.com/orj/55fcf3a61111abdb0a68.jpeg",
+        "https://modayakamoz.com/orj/bdad77db8fad8a523c1e.jpeg",
+        {
+          "id": "50448f02-6ae6-42c1-99e2-d18cfd7e5252",
+          "url": "https://cdn.meluni.com.tr/ai-products/e4614ad3-e2e9-4182-80c6-235343165122-olcu-oto-9b5f7ba2.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:24:36.303445+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "e4614ad3-e2e9-4182-80c6-235343165122/front.jpg",
+          "sha256": "7bc93fcd9a83983c2dab67f81243b4eeb02d5ca0ea265d32d7e63a3abbf1e831",
+          "qa_status": "visual_qa_passed",
+          "sample": 946,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e4614ad3-e2e9-4182-80c6-235343165122/front-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
