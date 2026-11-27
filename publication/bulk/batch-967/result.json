@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-967",
+  "published_at_utc": "2026-11-27T06:55:47.371530+00:00",
+  "products": [
+    {
+      "product_id": "802dda03-9dda-4582-89bf-05c0c82486d0",
+      "sample": 967,
+      "name": "Tek Omuzu Açık Omuzdan Pelerinli Midi Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/802dda03-9dda-4582-89bf-05c0c82486d0-front-340c5e92a085.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/802dda03-9dda-4582-89bf-05c0c82486d0-model-6d2a9a38b6b1.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
