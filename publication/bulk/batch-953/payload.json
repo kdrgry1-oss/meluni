@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-953",
+  "created_at": "2026-11-27T05:27:30.850169+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "bc143f52-92b0-4419-b617-ab798956d82d",
+      "sample": 953,
+      "name": "Kolsuz Bisiklet Yaka Arkadan Fiyonklu Süprem Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 135,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/1cf4face51ababba4efe.jpeg",
+        "https://modayakamoz.com/orj/72ec9cb1cc015a6f6ec2.jpeg",
+        "https://modayakamoz.com/orj/a16ae018bad5c33b8a75.jpeg",
+        "https://modayakamoz.com/orj/d06d837287c8b33d1904.jpeg",
+        {
+          "id": "0da80bc5-1fe3-45ae-8eb0-c8094913d403",
+          "url": "https://cdn.meluni.com.tr/ai-products/bc143f52-92b0-4419-b617-ab798956d82d-olcu-oto-3814b670.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-23T05:22:34.911906+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "bc143f52-92b0-4419-b617-ab798956d82d/front.jpg",
+          "sha256": "c5e3f975a4ea5772ce86ae4e196528f3d28ebcf551816a02f0da67c7eab62de6",
+          "qa_status": "visual_qa_passed",
+          "sample": 953,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bc143f52-92b0-4419-b617-ab798956d82d/front-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
