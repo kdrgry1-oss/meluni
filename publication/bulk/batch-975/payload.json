@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-975",
+  "created_at": "2026-11-27T07:38:44.255287+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "1bd71307-c5a7-4bd5-8685-0122e29db71b",
+      "sample": 975,
+      "name": "Uzun Kollu Balıkçı Yaka Fermuarlı Yırtmaçlı Viskon Iki Iplik Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c5ec609f24b069d9fecc.jpeg",
+        "https://modayakamoz.com/orj/99a30558ae678e2f855f.jpeg",
+        "https://modayakamoz.com/orj/72954f01106ac3f2cf26.jpeg",
+        "https://modayakamoz.com/orj/2e5e2c8da57df28e1e96.jpeg",
+        "https://modayakamoz.com/orj/8e0bcbe92120882dfb11.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/1bd71307-c5a7-4bd5-8685-0122e29db71b/0cfed2bbb2f54975.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "1bd71307-c5a7-4bd5-8685-0122e29db71b/front.jpg",
+          "sha256": "63eb8d841010535376bd2b60017669842baa642202bd972ce11e0206c3c17288",
+          "qa_status": "visual_qa_passed",
+          "sample": 975,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1bd71307-c5a7-4bd5-8685-0122e29db71b/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "1bd71307-c5a7-4bd5-8685-0122e29db71b/back.jpg",
+          "sha256": "fdc76462c4e64dbe9d490bd4f6539e289e83565e934d8afba5da78c4803b6d16",
+          "qa_status": "visual_qa_passed",
+          "sample": 975,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1bd71307-c5a7-4bd5-8685-0122e29db71b/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "1bd71307-c5a7-4bd5-8685-0122e29db71b/fashion_model.jpg",
+          "sha256": "487d3f3c4f47016f0ce27add466abc5c1fed96888a186dde1385bdc32906e4b1",
+          "qa_status": "visual_qa_passed",
+          "sample": 975,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1bd71307-c5a7-4bd5-8685-0122e29db71b/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "1bd71307-c5a7-4bd5-8685-0122e29db71b/size_chart.jpg",
+          "sha256": "a723be4edfbca3d318991b7fd45c576acdb666b02b076f7d8cc2250c2a84b1b5",
+          "qa_status": "exact_source_values_verified",
+          "sample": 975,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-1bd71307-c5a7-4bd5-8685-0122e29db71b/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
