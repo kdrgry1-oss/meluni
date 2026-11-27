@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-935",
+  "created_at": "2026-11-27T01:13:42.842180+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "bbd145bc-809a-4e7f-ba35-56ef15811a1a",
+      "sample": 935,
+      "name": "Askılı Kruvaze Yakalı Maksi Boy Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 15,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/077de20875deb7540be6.jpeg",
+        "https://modayakamoz.com/orj/a0b638631c4035e01810.jpeg",
+        "https://modayakamoz.com/orj/f6988f4519303a848048.jpeg",
+        "https://modayakamoz.com/orj/3146a8377ea7324b6d19.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "bbd145bc-809a-4e7f-ba35-56ef15811a1a/front.jpg",
+          "sha256": "84d58f19b85a97c78feb50797969d098aa856d2f4178ee858bd5018fe6738594",
+          "qa_status": "visual_qa_passed",
+          "sample": 935,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bbd145bc-809a-4e7f-ba35-56ef15811a1a/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "bbd145bc-809a-4e7f-ba35-56ef15811a1a/fashion_model.jpg",
+          "sha256": "28464d6c7d96e827533b8fe3431a3c9108ae1d00a274f781f6b13328edf9c70f",
+          "qa_status": "visual_qa_passed",
+          "sample": 935,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bbd145bc-809a-4e7f-ba35-56ef15811a1a/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "bbd145bc-809a-4e7f-ba35-56ef15811a1a/size_chart.jpg",
+          "sha256": "bb08e3abefebedf67d254037c537cb98f599b2db6850cbd253157a4b557916a3",
+          "qa_status": "exact_source_values_verified",
+          "sample": 935,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-bbd145bc-809a-4e7f-ba35-56ef15811a1a/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
