@@ -1,0 +1,60 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-981",
+  "created_at": "2026-11-27T08:13:12.065634+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d95c31c5-53b5-4f07-b841-3406366bbbef",
+      "sample": 981,
+      "name": "Uzun Kollu Bisiklet Yaka Kolları Çiçekli Waffle Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 104,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/3aa8a01cc86e66b4c87b.jpeg",
+        "https://modayakamoz.com/orj/3bc870352a3a3bd6a348.jpeg",
+        "https://modayakamoz.com/orj/441a461f46a8eb55612b.jpeg",
+        "https://modayakamoz.com/orj/4b47bd357e50b062b269.jpeg",
+        "https://modayakamoz.com/orj/7ffa53ee1ffeebb7df30.jpeg",
+        "https://modayakamoz.com/orj/402fd3d7b5674793d292.jpeg",
+        "https://modayakamoz.com/orj/f893e34fd8bbb42f6371.jpeg",
+        "https://modayakamoz.com/orj/518ab0f1bd7487498ca4.jpeg",
+        "https://modayakamoz.com/orj/a190458738b7b2a71f9e.jpeg",
+        "https://modayakamoz.com/orj/0e1257c8fcc0a5a7277b.jpeg",
+        "https://modayakamoz.com/orj/33cf5be53431bde5281c.jpeg",
+        "https://modayakamoz.com/orj/6e75c5f15233afdf78ac.jpeg",
+        "https://modayakamoz.com/orj/ac4569aaa8be8764ae2d.jpeg",
+        {
+          "id": "e901ea93-6e34-4550-9d79-20b9e815f0ef",
+          "url": "https://cdn.meluni.com.tr/ai-products/33a2f0f2-ed3b-4629-a422-f75b3acb03ec-olcu-oto-a21acb0c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-29T05:22:39.446979+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d95c31c5-53b5-4f07-b841-3406366bbbef/front.jpg",
+          "sha256": "f61b2c6d71a2e8d99e4cfc57520a3d2e33ae2bf23445cf37035164f565581972",
+          "qa_status": "visual_qa_passed",
+          "sample": 981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d95c31c5-53b5-4f07-b841-3406366bbbef/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "d95c31c5-53b5-4f07-b841-3406366bbbef/fashion_model.jpg",
+          "sha256": "9c3fe6a3be1bb0cc22c504aa66cb5baa14aad701a3296d84be3fc9c7933e70ae",
+          "qa_status": "visual_qa_passed",
+          "sample": 981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d95c31c5-53b5-4f07-b841-3406366bbbef/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "d95c31c5-53b5-4f07-b841-3406366bbbef/size_chart.jpg",
+          "sha256": "9a7ad24264d0024cb7565f8049dae0b7adbcc89c87c0f114d0a282fefc1c8f14",
+          "qa_status": "exact_source_values_verified",
+          "sample": 981,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d95c31c5-53b5-4f07-b841-3406366bbbef/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
