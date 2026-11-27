@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-986",
+  "published_at_utc": "2026-11-27T09:44:31.540706+00:00",
+  "products": [
+    {
+      "product_id": "a89ecd1c-5a73-4809-a630-62f214b3add1",
+      "sample": 986,
+      "name": "Uzun Kollu V Yakalı Pul Payet Işlemeli Krep Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a89ecd1c-5a73-4809-a630-62f214b3add1-front-70c32059012c.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a89ecd1c-5a73-4809-a630-62f214b3add1-back-cd34e33c03df.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a89ecd1c-5a73-4809-a630-62f214b3add1-model-856cb884c707.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/a89ecd1c-5a73-4809-a630-62f214b3add1-size-chart-d013cbd83646.jpg"
+      },
+      "gallery_image_count": 11
+    }
+  ],
+  "skipped": []
+}
