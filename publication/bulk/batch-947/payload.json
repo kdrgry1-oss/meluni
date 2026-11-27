@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-947",
+  "created_at": "2026-11-27T04:53:41.427584+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "9e6bb6bd-4a77-44fc-abeb-f2f9c122f443",
+      "sample": 947,
+      "name": "Kısa Kollu Yırtmaç Detaylı Salaş Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/18f90f4af6ae8244c8b5.jpeg",
+        "https://modayakamoz.com/orj/99b2a303d734e41476f1.jpeg",
+        "https://modayakamoz.com/orj/bebed6e81b03a98b78a3.jpeg",
+        "https://modayakamoz.com/orj/f45645dbad48ec32c938.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "9e6bb6bd-4a77-44fc-abeb-f2f9c122f443/front.jpg",
+          "sha256": "bc741c161354dbc855f76190ba92be75dd75afedf119b342edbe346f0b9c887f",
+          "qa_status": "visual_qa_passed",
+          "sample": 947,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9e6bb6bd-4a77-44fc-abeb-f2f9c122f443/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9e6bb6bd-4a77-44fc-abeb-f2f9c122f443/fashion_model.jpg",
+          "sha256": "537edc7ed33a30f13dd415424ea59470f48a295c7aaf9aa6f43d8dbde92e38f4",
+          "qa_status": "visual_qa_passed",
+          "sample": 947,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9e6bb6bd-4a77-44fc-abeb-f2f9c122f443/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "9e6bb6bd-4a77-44fc-abeb-f2f9c122f443/size_chart.jpg",
+          "sha256": "b2e2fb26416068d5d4eb498f18eeace4fe2ced3b574d9c5879c6d21d0f8855c2",
+          "qa_status": "exact_source_values_verified",
+          "sample": 947,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9e6bb6bd-4a77-44fc-abeb-f2f9c122f443/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
