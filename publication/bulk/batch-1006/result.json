@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1006",
+  "published_at_utc": "2026-11-27T12:50:49.038721+00:00",
+  "products": [
+    {
+      "product_id": "7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375",
+      "sample": 1006,
+      "name": "Yüksek Bel Lastikli Cepli Deri Detaylı Dalgıç Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375-front-ab37739e670c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375-model-bf16e4d8c3bf.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/7ef50ee5-cc0b-45db-a03c-ad8c7f4e9375-size-chart-c3fe40721a5a.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
