@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-997",
+  "published_at_utc": "2026-11-27T11:59:49.104914+00:00",
+  "products": [
+    {
+      "product_id": "f05d3b90-a6b4-428c-a1d8-0fd193e03011",
+      "sample": 997,
+      "name": "Yüksek Bel Geniş Paça Detaylı Cepli Krep (kemersiz) Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/f05d3b90-a6b4-428c-a1d8-0fd193e03011-front-f8679fac6bab.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/f05d3b90-a6b4-428c-a1d8-0fd193e03011-model-e914054d1f92.jpg"
+      },
+      "gallery_image_count": 4
+    }
+  ],
+  "skipped": []
+}
