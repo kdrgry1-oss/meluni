@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1005",
+  "published_at_utc": "2026-11-27T12:45:46.627849+00:00",
+  "products": [
+    {
+      "product_id": "4ca3296d-d7c7-4731-8352-1ef6fcbb2423",
+      "sample": 1005,
+      "name": "Yüksel Bel Lastikli Yandan Dügme Detaylı Midi Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4ca3296d-d7c7-4731-8352-1ef6fcbb2423-front-81c097e082fa.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4ca3296d-d7c7-4731-8352-1ef6fcbb2423-model-0fb4a98ef0ec.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
