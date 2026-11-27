@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1013",
+  "created_at": "2026-11-27T13:34:59.519168+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "27267a28-d4cc-4701-87b2-7e566c4877ee",
+      "sample": 1013,
+      "name": "Yüksek Bel Dantel Detaylı Paçaya Doğru Geniş Dalgıç Tayt Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 14,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/47bfba25f15863d5cf33.jpeg",
+        "https://modayakamoz.com/orj/9e4e5ca1745320d8da5f.jpeg",
+        "https://modayakamoz.com/orj/71136cde3c448b5e553f.jpeg",
+        "https://modayakamoz.com/orj/3af4d8c1453ba638c7a1.jpeg",
+        "https://modayakamoz.com/orj/b1e8eca0817a76558e3f.jpeg",
+        "https://modayakamoz.com/orj/fff47550bbf64884fcba.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "27267a28-d4cc-4701-87b2-7e566c4877ee/front.jpg",
+          "sha256": "8aa18067e7c01f91bc0d9d2cf6f02942a0965a50bed6cf25f5aa1d56759f8ad9",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1013,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-27267a28-d4cc-4701-87b2-7e566c4877ee/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "27267a28-d4cc-4701-87b2-7e566c4877ee/fashion_model.jpg",
+          "sha256": "e96031023fc1e0341da910bb1c788de97dca2876bf6fb651da6244ec0f52369c",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1013,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-27267a28-d4cc-4701-87b2-7e566c4877ee/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "27267a28-d4cc-4701-87b2-7e566c4877ee/size_chart.jpg",
+          "sha256": "4cf5e3a95488b5028ab3c058a7254e67f1d5a10ce74969f0e14d051a20092bc4",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1013,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-27267a28-d4cc-4701-87b2-7e566c4877ee/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
