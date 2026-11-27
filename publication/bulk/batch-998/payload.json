@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-998",
+  "created_at": "2026-11-27T12:04:31.733145+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "437088bb-de04-4cf2-bc3d-dff5fdad06a2",
+      "sample": 998,
+      "name": "Yüksek Bel Yan Şerit Detaylı Yırtmaçlı Viskon Iki Iplik Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 7,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/bdda20823738a0e498db.jpeg",
+        "https://modayakamoz.com/orj/d4870649ff4c89d6aea0.jpeg",
+        "https://modayakamoz.com/orj/e5e69fa3aa258287d439.jpeg",
+        {
+          "id": "2e674842-52e8-4218-8699-166857e7e668",
+          "url": "https://cdn.meluni.com.tr/ai-products/437088bb-de04-4cf2-bc3d-dff5fdad06a2-olcu-oto-1397d1e1.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:09:16.859778+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "437088bb-de04-4cf2-bc3d-dff5fdad06a2/front.jpg",
+          "sha256": "927a6ded0d5c7238138d4cde7e4930468df140f693581e385ac268e154ad70e8",
+          "qa_status": "pass_source_fidelity",
+          "sample": 998,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-437088bb-de04-4cf2-bc3d-dff5fdad06a2/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "437088bb-de04-4cf2-bc3d-dff5fdad06a2/fashion_model.jpg",
+          "sha256": "ca5bfc0f16550a91b9d951f6b1635689c594c5aa56b0e923cb49519941cb1c32",
+          "qa_status": "pass_source_fidelity",
+          "sample": 998,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-437088bb-de04-4cf2-bc3d-dff5fdad06a2/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
