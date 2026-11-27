@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-953",
+  "published_at_utc": "2026-11-27T05:28:30.543188+00:00",
+  "products": [
+    {
+      "product_id": "bc143f52-92b0-4419-b617-ab798956d82d",
+      "sample": 953,
+      "name": "Kolsuz Bisiklet Yaka Arkadan Fiyonklu Süprem Kısa Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bc143f52-92b0-4419-b617-ab798956d82d-front-c5e3f975a4ea.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
