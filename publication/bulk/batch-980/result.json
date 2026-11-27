@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-980",
+  "published_at_utc": "2026-11-27T08:07:56.334025+00:00",
+  "products": [
+    {
+      "product_id": "b89fee95-1541-4184-85c0-49a7b240e4d9",
+      "sample": 980,
+      "name": "Uzun Kollu Bisiklet Yaka Kelebek Detaylı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b89fee95-1541-4184-85c0-49a7b240e4d9-front-a32472b8b217.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b89fee95-1541-4184-85c0-49a7b240e4d9-back-de6e8371f622.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b89fee95-1541-4184-85c0-49a7b240e4d9-model-f7a81f6da6a1.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b89fee95-1541-4184-85c0-49a7b240e4d9-size-chart-23cd4e50c778.jpg"
+      },
+      "gallery_image_count": 19
+    }
+  ],
+  "skipped": []
+}
