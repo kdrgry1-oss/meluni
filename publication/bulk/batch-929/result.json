@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-929",
+  "published_at_utc": "2026-11-27T00:17:26.727501+00:00",
+  "products": [
+    {
+      "product_id": "53d710ba-d0e0-4ac9-8962-31253f0c8851",
+      "sample": 929,
+      "name": "Sıfır Kol Askılı V Yakalı Düğmeli Aerobin Ceket ve Şort Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/53d710ba-d0e0-4ac9-8962-31253f0c8851-front-7a8c3692676a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/53d710ba-d0e0-4ac9-8962-31253f0c8851-back-31279271a4c3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/53d710ba-d0e0-4ac9-8962-31253f0c8851-model-965efea42368.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
