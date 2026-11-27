@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-977",
+  "created_at": "2026-11-27T07:49:45.438193+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "89c2de65-c982-4044-9a0b-b6105ef8171a",
+      "sample": 977,
+      "name": "Uzun Kollu Balıkçı Yakalı Dekolte Tül Detaylı Kısa Kadife Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 38,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193895-1-99da163af3f0.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193895-4fe9a95f00d586a8.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193895-feae3ee9e959db65.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193895-042880c9df66e8f2.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193895-141bf709d807e49b.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/89c2de65-c982-4044-9a0b-b6105ef8171a/cee45d5e004e586c.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "89c2de65-c982-4044-9a0b-b6105ef8171a/front.jpg",
+          "sha256": "4b267b342c8f7c2081926a6c005dde05cfed3a728c8cc9ff320aa6dd6e8069da",
+          "qa_status": "visual_qa_passed_after_one_correction",
+          "sample": 977,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-89c2de65-c982-4044-9a0b-b6105ef8171a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "89c2de65-c982-4044-9a0b-b6105ef8171a/back.jpg",
+          "sha256": "b932fdcbf4bc51da2023a0b172b5ade466ba82dbc921fe7132303ebf3a7590c4",
+          "qa_status": "visual_qa_passed_after_one_correction",
+          "sample": 977,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-89c2de65-c982-4044-9a0b-b6105ef8171a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "89c2de65-c982-4044-9a0b-b6105ef8171a/fashion_model.jpg",
+          "sha256": "854b2cb3076b423a9d5a8d364aed59a3d4ca313f5bf9532dc527b8ccf5824436",
+          "qa_status": "visual_qa_passed_after_one_correction",
+          "sample": 977,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-89c2de65-c982-4044-9a0b-b6105ef8171a/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "89c2de65-c982-4044-9a0b-b6105ef8171a/size_chart.jpg",
+          "sha256": "208f1a7600751b6fd96267c10b3766c23bee750e782438759e2c74a2771fbe5d",
+          "qa_status": "exact_source_values_verified",
+          "sample": 977,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-89c2de65-c982-4044-9a0b-b6105ef8171a/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
