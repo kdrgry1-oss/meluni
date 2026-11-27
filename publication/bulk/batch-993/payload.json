@@ -1,0 +1,30 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-993",
+  "created_at": "2026-11-27T11:28:00.580751+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d1d12e04-bd01-42df-9917-2a432b2f5823",
+      "sample": 993,
+      "name": "Yüksek Bel Bağcıklı Geniş Paçalı Desenli Dalgıç Tayt",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192642-1-b782bfbf3c.jpg",
+        "https://modayakamoz.com/orj/janes-192642-2-884faa0a00.jpg",
+        "https://modayakamoz.com/orj/janes-192642-3-81a8e1251f.jpg",
+        "https://modayakamoz.com/orj/janes-192642-7-90ef80d799.jpg"
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "d1d12e04-bd01-42df-9917-2a432b2f5823/size_chart.jpg",
+          "sha256": "9e772844af0ad385f315dce702296cd198ed2dc85562e77593ffd57cf4f09501",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 993,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d1d12e04-bd01-42df-9917-2a432b2f5823/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
