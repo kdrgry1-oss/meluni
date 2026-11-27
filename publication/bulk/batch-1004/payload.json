@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1004",
+  "created_at": "2026-11-27T12:39:01.385964+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7564637f-4f83-48a7-8fba-fe1c4581cfd7",
+      "sample": 1004,
+      "name": "Yüksek Bel Şardonlu Fırsat Ürün Deri Toparlayıcı Tayt",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f99f898c4995d4484d5bc06b4a41ea27.jpg",
+        "https://modayakamoz.com/orj/36154b47646e2b972927889bc4593eb4.jpg",
+        "https://modayakamoz.com/orj/c16577d60f2eb2473ff3ac16e43fbe5e.jpg",
+        "https://modayakamoz.com/orj/d7be96881ab7845968524b9d0dfcdcb8.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7564637f-4f83-48a7-8fba-fe1c4581cfd7/front.jpg",
+          "sha256": "9e6ee2127834a9a226d4b235dcc953fbd08695684b58669c39a43881d4f06c3d",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1004,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7564637f-4f83-48a7-8fba-fe1c4581cfd7/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7564637f-4f83-48a7-8fba-fe1c4581cfd7/fashion_model.jpg",
+          "sha256": "cfd3ad3f6a4e9c70da709bbd56b8cd60e8699f7c230453462f7357c55874ebb6",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1004,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7564637f-4f83-48a7-8fba-fe1c4581cfd7/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
