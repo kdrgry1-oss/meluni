@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-939",
+  "created_at": "2026-11-27T01:45:29.167281+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "c025bbc3-1926-44c8-811a-2a97c430531f",
+      "sample": 939,
+      "name": "Bisiklet Yaka Kısa Yarasa Kollu Yırtmaçlı Oversize Merserize Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 6,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/156f47e550dde5851c70b9cd8a7bbf85.jpg",
+        "https://modayakamoz.com/orj/6e4473029760e69c4e702e24a791a51d.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "c025bbc3-1926-44c8-811a-2a97c430531f/front.jpg",
+          "sha256": "eab87f00447877e73694901d18500840347256f8290c30924405da4c47804ee5",
+          "qa_status": "visual_qa_passed",
+          "sample": 939,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c025bbc3-1926-44c8-811a-2a97c430531f/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c025bbc3-1926-44c8-811a-2a97c430531f/fashion_model.jpg",
+          "sha256": "a04ca7906498f36303e497f1d00d696756c81887b21f0f2e9f7581e07b24dd06",
+          "qa_status": "visual_qa_passed",
+          "sample": 939,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c025bbc3-1926-44c8-811a-2a97c430531f/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
