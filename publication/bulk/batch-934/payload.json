@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-934",
+  "created_at": "2026-11-27T00:55:56.642272+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "507cdc16-99a8-47cc-87cd-b574ce2ace90",
+      "sample": 934,
+      "name": "Balıkçı Yaka Tül Detaylı Yanlardan Açık Geniş Sandy Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/fcb4fe389e469327b081.jpeg",
+        "https://modayakamoz.com/orj/c289656357b7d9d7c119.jpeg",
+        "https://modayakamoz.com/orj/4d4f2e66080296fbe5a3.jpeg",
+        {
+          "id": "c0ba720d-c77e-471c-9d70-eb7be8a02f3f",
+          "url": "https://cdn.meluni.com.tr/ai-products/507cdc16-99a8-47cc-87cd-b574ce2ace90-olcu-oto-8fa3c558.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-23T05:22:47.223240+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "507cdc16-99a8-47cc-87cd-b574ce2ace90/front.jpg",
+          "sha256": "f7d1472736da70d3e9bf95b3c5552501289441c22cf4c8457a5f6429cb31c646",
+          "qa_status": "visual_qa_passed",
+          "sample": 934,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-507cdc16-99a8-47cc-87cd-b574ce2ace90/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "507cdc16-99a8-47cc-87cd-b574ce2ace90/fashion_model.jpg",
+          "sha256": "ce9973a7a739f4d33a8b75588f771b5101a6310da93fc9b34ad5811363471e4b",
+          "qa_status": "visual_qa_passed",
+          "sample": 934,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-507cdc16-99a8-47cc-87cd-b574ce2ace90/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
