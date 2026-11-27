@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1025",
+  "published_at_utc": "2026-11-27T18:45:34.983010+00:00",
+  "products": [
+    {
+      "product_id": "57548f01-e681-489e-924e-407d585c6e83",
+      "sample": 1025,
+      "name": "Kısa Kollu Bisiklet Yakalı Puantiye Tül Detaylı Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/57548f01-e681-489e-924e-407d585c6e83-front-632d12d409a4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/57548f01-e681-489e-924e-407d585c6e83-back-477982ba232f.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/57548f01-e681-489e-924e-407d585c6e83-model-ae176a78c2e8.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
