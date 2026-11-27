@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-999",
+  "created_at": "2026-11-27T12:10:28.607832+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "3be1183b-c346-4098-b7ea-5f0015b8643f",
+      "sample": 999,
+      "name": "Yüksek Bel Kuşaklı Aerobin Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 24,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/f5f01edd8242807f5d36ff5f3dd7a73d.jpeg",
+        "https://modayakamoz.com/orj/13ecd0d6964992770e16dce493e1fe7c.jpeg",
+        "https://modayakamoz.com/orj/8b1d34097774f8a0b03b.jpeg",
+        "https://modayakamoz.com/orj/2b6b939261e84a923471.jpeg",
+        "https://modayakamoz.com/orj/f6e55ada3bdef5716542.jpeg",
+        "https://modayakamoz.com/orj/58162fb7fc595b4f4ea8.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "3be1183b-c346-4098-b7ea-5f0015b8643f/front.jpg",
+          "sha256": "6bb458b60e1f288ddedacb49178e74bd0eafca1e1cc921557bc3bfe00396995f",
+          "qa_status": "pass_source_fidelity",
+          "sample": 999,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3be1183b-c346-4098-b7ea-5f0015b8643f/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "3be1183b-c346-4098-b7ea-5f0015b8643f/fashion_model.jpg",
+          "sha256": "9d7212786ac97295bcb9b08250fb1c991fa1df46de60b72f609deb842c028f53",
+          "qa_status": "pass_source_fidelity",
+          "sample": 999,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3be1183b-c346-4098-b7ea-5f0015b8643f/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "3be1183b-c346-4098-b7ea-5f0015b8643f/size_chart.jpg",
+          "sha256": "0b005abf890651bf889e9e5e247494d4c31320f51e68a0ac4d66a0660712caef",
+          "qa_status": "pass_source_fidelity",
+          "sample": 999,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-3be1183b-c346-4098-b7ea-5f0015b8643f/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
