@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-936",
+  "published_at_utc": "2026-11-27T01:21:45.192806+00:00",
+  "products": [
+    {
+      "product_id": "c86381dd-2249-4bd3-a80f-31bf3d9f6ff0",
+      "sample": 936,
+      "name": "Askılı Yuvarlak Yakalı Cepli Uzun Bürümcük Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c86381dd-2249-4bd3-a80f-31bf3d9f6ff0-front-df6d1e2cb5c9.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c86381dd-2249-4bd3-a80f-31bf3d9f6ff0-model-41b99530b6a4.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
