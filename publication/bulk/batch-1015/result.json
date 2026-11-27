@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1015",
+  "published_at_utc": "2026-11-27T13:49:10.306948+00:00",
+  "products": [
+    {
+      "product_id": "607c78a5-7e21-447f-96ff-86c5554ca710",
+      "sample": 1015,
+      "name": "Uzun Kollu Yakalı Mini Deri Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/607c78a5-7e21-447f-96ff-86c5554ca710-front-e5e536145f94.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/607c78a5-7e21-447f-96ff-86c5554ca710-back-32d4a9fb3083.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/607c78a5-7e21-447f-96ff-86c5554ca710-model-06b214e21768.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/607c78a5-7e21-447f-96ff-86c5554ca710-size-chart-8bb0515c5732.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
