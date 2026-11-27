@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1009",
+  "published_at_utc": "2026-11-27T13:08:23.710187+00:00",
+  "products": [
+    {
+      "product_id": "7e5d453a-8b41-4d31-ae97-33eca5c9dab0",
+      "sample": 1009,
+      "name": "Yüksek Bel Yanları Şerit Detaylı Uzun Sporcu Tayt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7e5d453a-8b41-4d31-ae97-33eca5c9dab0-front-ab9876b3d602.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7e5d453a-8b41-4d31-ae97-33eca5c9dab0-model-b3fab3d574cc.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
