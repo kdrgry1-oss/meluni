@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-995",
+  "published_at_utc": "2026-11-27T11:46:50.443710+00:00",
+  "products": [
+    {
+      "product_id": "73b6ed40-d49d-426a-b650-3e245c401af3",
+      "sample": 995,
+      "name": "Yüksek Bel Bağcıklı Leopar Desenli Modal Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/73b6ed40-d49d-426a-b650-3e245c401af3-front-98f88c51a493.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/73b6ed40-d49d-426a-b650-3e245c401af3-back-d0ad311b0786.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/73b6ed40-d49d-426a-b650-3e245c401af3-size-chart-27e956a04e8c.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
