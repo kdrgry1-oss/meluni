@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-946",
+  "published_at_utc": "2026-11-27T04:48:23.734310+00:00",
+  "products": [
+    {
+      "product_id": "e4614ad3-e2e9-4182-80c6-235343165122",
+      "sample": 946,
+      "name": "Kısa Kollu V Yakalı Cep Detaylı Midi Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/e4614ad3-e2e9-4182-80c6-235343165122-front-7bc93fcd9a83.jpg"
+      },
+      "gallery_image_count": 5
+    }
+  ],
+  "skipped": []
+}
