@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-938",
+  "published_at_utc": "2026-11-27T01:36:00.135194+00:00",
+  "products": [
+    {
+      "product_id": "453046c5-7e2b-47a8-8c7d-d35f606d774c",
+      "sample": 938,
+      "name": "Askılı Yuvarlak Yakalı Yırtmaçlı Uzun Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/453046c5-7e2b-47a8-8c7d-d35f606d774c-front-94e332e96576.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/453046c5-7e2b-47a8-8c7d-d35f606d774c-model-974a98d1a805.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
