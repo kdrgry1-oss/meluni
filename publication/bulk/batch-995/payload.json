@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-995",
+  "created_at": "2026-11-27T11:45:37.043036+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "73b6ed40-d49d-426a-b650-3e245c401af3",
+      "sample": 995,
+      "name": "Yüksek Bel Bağcıklı Leopar Desenli Modal Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 36,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b25895393192c57b8679.jpeg",
+        "https://modayakamoz.com/orj/06605640ef160d5f2c7f.jpeg",
+        "https://modayakamoz.com/orj/f65f3fa3b09487ddf09f.jpeg",
+        "https://modayakamoz.com/orj/0c288050e0153736856e.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "73b6ed40-d49d-426a-b650-3e245c401af3/front.jpg",
+          "sha256": "98f88c51a4931dbb6a237afce655e5c8acef97f43dc52b8b9063154510a79581",
+          "qa_status": "pass_source_fidelity",
+          "sample": 995,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73b6ed40-d49d-426a-b650-3e245c401af3/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "73b6ed40-d49d-426a-b650-3e245c401af3/back.jpg",
+          "sha256": "d0ad311b07868973ae9e5d9d883c81c7ff3558d8da4dbe3ccbb78da9841af20d",
+          "qa_status": "pass_source_fidelity",
+          "sample": 995,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73b6ed40-d49d-426a-b650-3e245c401af3/back-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "73b6ed40-d49d-426a-b650-3e245c401af3/size_chart.jpg",
+          "sha256": "27e956a04e8cc5072f70ad833a8a38982ae9073abb7d450204f3131517233a4d",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 995,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-73b6ed40-d49d-426a-b650-3e245c401af3/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
