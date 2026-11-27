@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-969",
+  "published_at_utc": "2026-11-27T07:06:11.024221+00:00",
+  "products": [
+    {
+      "product_id": "72a5e230-62f6-4a2a-ae7d-6b88555c469a",
+      "sample": 969,
+      "name": "Tek Omuzu Açık Omuzlardan Kurdela Detaylı Çift Renkli Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/72a5e230-62f6-4a2a-ae7d-6b88555c469a-front-46014b2d6fa3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/72a5e230-62f6-4a2a-ae7d-6b88555c469a-model-e7bbef72b06c.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/72a5e230-62f6-4a2a-ae7d-6b88555c469a-size-chart-4482ccc2b9af.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
