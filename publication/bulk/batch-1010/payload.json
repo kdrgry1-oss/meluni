@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1010",
+  "created_at": "2026-11-27T13:17:19.500938+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "9a7785f5-a547-4cf2-bf23-7b4c109352ad",
+      "sample": 1010,
+      "name": "Şifon Kumaş Astalı Kloş Kruvaze Yaka Midi Boy Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 116,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/58b67f108dc89af62590d68c0b446a57.jpg",
+        "https://modayakamoz.com/orj/2087267d1600ee77173442c959db209f.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "9a7785f5-a547-4cf2-bf23-7b4c109352ad/front.jpg",
+          "sha256": "2c99062ed700d1c0dabc9998e15eab249044592a556dd5787a6db8fa845f8905",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1010,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9a7785f5-a547-4cf2-bf23-7b4c109352ad/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9a7785f5-a547-4cf2-bf23-7b4c109352ad/fashion_model.jpg",
+          "sha256": "afbaa896233692d688e535d83de4b6e2ad67fd1c32f3bfec8f6e3bc944883f52",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1010,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9a7785f5-a547-4cf2-bf23-7b4c109352ad/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
