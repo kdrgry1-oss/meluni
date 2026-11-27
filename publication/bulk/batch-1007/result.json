@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1007",
+  "published_at_utc": "2026-11-27T12:56:16.117534+00:00",
+  "products": [
+    {
+      "product_id": "4b6914cc-61dc-4347-b179-89198b801567",
+      "sample": 1007,
+      "name": "Yüksek Bel Lastikli Yan Şerit Detaylı Deri Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/4b6914cc-61dc-4347-b179-89198b801567-front-e640528f5cbe.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/4b6914cc-61dc-4347-b179-89198b801567-model-c73191cea824.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
