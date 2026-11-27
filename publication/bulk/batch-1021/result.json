@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1021",
+  "published_at_utc": "2026-11-27T15:22:49.109404+00:00",
+  "products": [
+    {
+      "product_id": "6c51f6e1-b638-489f-a0ba-995982f56baf",
+      "sample": 1021,
+      "name": "Kısa Kollu Bisiklet Yaka Transparan Tül Detaylı Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6c51f6e1-b638-489f-a0ba-995982f56baf-front-9452760b5ad8.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6c51f6e1-b638-489f-a0ba-995982f56baf-back-6ee42f9fac27.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6c51f6e1-b638-489f-a0ba-995982f56baf-model-18c5bd670b5d.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
