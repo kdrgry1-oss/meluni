@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-966",
+  "published_at_utc": "2026-11-27T06:48:21.484667+00:00",
+  "products": [
+    {
+      "product_id": "732629a1-8841-4be2-832d-020191e0430c",
+      "sample": 966,
+      "name": "Tek Omuzdan Acık Onden Fıyonk Bagcık Detaylı Yırtmaçlı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/732629a1-8841-4be2-832d-020191e0430c-front-8e17385ab274.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/732629a1-8841-4be2-832d-020191e0430c-model-294ca99f3587.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/732629a1-8841-4be2-832d-020191e0430c-size-chart-5dd3ea8ae240.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
