@@ -1,0 +1,30 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-949",
+  "created_at": "2026-11-27T05:04:04.573057+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "82593d56-3406-4f8c-970c-31b75bd5d171",
+      "sample": 949,
+      "name": "T-Shirt V Yaka Slim Fit Likralı Tişört Body",
+      "active_at_poll": true,
+      "stock_at_poll": 597,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6995f32c24d876995f32c24d89.webp",
+        "https://modayakamoz.com/orj/TY6995f32d8cfaa6995f32d8cfad.webp",
+        "https://modayakamoz.com/orj/TY6995f32edb0e66995f32edb0e9.webp",
+        "https://modayakamoz.com/orj/TY6995f330259e86995f330259ea.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "82593d56-3406-4f8c-970c-31b75bd5d171/front.jpg",
+          "sha256": "bde699794ff0cf39bcdc17ebb74ce62fb8f2d9f0a70298c20922473538346a02",
+          "qa_status": "visual_qa_passed",
+          "sample": 949,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-82593d56-3406-4f8c-970c-31b75bd5d171/front-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
