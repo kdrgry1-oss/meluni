@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1001",
+  "created_at": "2026-11-27T12:20:14.141223+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "a4b1839a-995f-493a-8be0-48554ab0c86c",
+      "sample": 1001,
+      "name": "Yüksek Bel Lastikli Bağcıklı Geniş Detaylı Deri Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 83,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-193299-1-92abd82c6b21.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193299-9ee6bfe4005b3b05.jpg",
+        "https://modayakamoz.com/orj/janes-extra-193299-fb0760e8648ad79a.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a4b1839a-995f-493a-8be0-48554ab0c86c/front.jpg",
+          "sha256": "acf689151b11713506e3beeb127f4dc3e781411426d61d1b8395a7913e7e83fd",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1001,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a4b1839a-995f-493a-8be0-48554ab0c86c/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a4b1839a-995f-493a-8be0-48554ab0c86c/fashion_model.jpg",
+          "sha256": "00fb98040d8b0b449155f8483bab6987b8abe0ee6038911e56c649af05cff7f3",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1001,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a4b1839a-995f-493a-8be0-48554ab0c86c/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "a4b1839a-995f-493a-8be0-48554ab0c86c/size_chart.jpg",
+          "sha256": "943e4090912edf4b486726fe84699401d9997b19b4c102404b4f9a25e86914e9",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1001,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a4b1839a-995f-493a-8be0-48554ab0c86c/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
