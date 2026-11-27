@@ -1,0 +1,14 @@
+{
+  "status": "qa_views_retracted_and_verified",
+  "product_id": "de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4",
+  "retracted_views": {
+    "front": "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-front-56550a9f6dc2.jpg",
+    "back": "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-back-e21b2836942c.jpg"
+  },
+  "remaining_gallery_count": 6,
+  "remaining_assets": {
+    "fashion_model": "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-model-8ca40442ab76.jpg",
+    "size_chart": "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-size-chart-16cd20bea9a1.jpg"
+  },
+  "at": "2026-11-27T10:49:44.317956+00:00"
+}
