@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1000",
+  "created_at": "2026-11-27T12:15:43.196089+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6",
+      "sample": 1000,
+      "name": "Yüksek Bel Kuşaklı Deri Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 17,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/179131-2026-02-14-21-36-32.jpg",
+        "https://modayakamoz.com/orj/179131-2026-02-14-21-36-23.jpg",
+        "https://modayakamoz.com/orj/179131-2026-02-14-21-36-28.jpg",
+        "https://modayakamoz.com/orj/ca553995e0e6c86699be.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6/front.jpg",
+          "sha256": "777960332e026ed1ceeaafeae57aad7239472b8141b1c8b3a3686350e8f83268",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1000,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6/fashion_model.jpg",
+          "sha256": "9d982784a4a0e4980286100e98df5deba567eb341815e51111775693453dca79",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1000,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6/size_chart.jpg",
+          "sha256": "7fcfce5b4205e4331dc303ef16f1e6ccbb6c489f7cbbd228e0143e84a514f2a9",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1000,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
