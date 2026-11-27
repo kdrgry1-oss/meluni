@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-989",
+  "created_at": "2026-11-27T10:43:32.867238+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4",
+      "sample": 989,
+      "name": "Yakalı Omuzlardan Açık Fermuarlı Kravat Detaylı Dubai Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 250,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/5f1a4530ccdcf643f65f.jpeg",
+        "https://modayakamoz.com/orj/e828cf88435722db57f0.jpeg",
+        "https://modayakamoz.com/orj/364d9a6a9270d19c09ed.jpeg",
+        "https://modayakamoz.com/orj/3ee264eab9905abd2eef.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4/front.jpg",
+          "sha256": "56550a9f6dc2551c20cba73623eba25df2fb3b2021e85d6d7729549211a818c4",
+          "qa_status": "pass",
+          "sample": 989,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4/back.jpg",
+          "sha256": "e21b2836942cb86f658ce57a1cf3c10b21ba798d6f042b82ae70506f7e80e170",
+          "qa_status": "pass",
+          "sample": 989,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4/fashion_model.jpg",
+          "sha256": "8ca40442ab7685a0383431e0ad4e20c5f1da55b2ac32ae77d1a2ccb3aea3da35",
+          "qa_status": "pass",
+          "sample": 989,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4/size_chart.jpg",
+          "sha256": "16cd20bea9a1a867ad3e692b4fb09ae85be5d97ed88c2666f19a2c33d05b7a44",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 989,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
