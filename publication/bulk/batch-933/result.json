@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-933",
+  "published_at_utc": "2026-11-27T00:50:15.485673+00:00",
+  "products": [
+    {
+      "product_id": "b4a25d6c-f0a6-40da-a07c-66bedf002810",
+      "sample": 933,
+      "name": "Balıkcı Yaka Bağazlı Triko Pamuklu Kalın Fitilli Dokuma Kazak",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b4a25d6c-f0a6-40da-a07c-66bedf002810-front-0b9030693099.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b4a25d6c-f0a6-40da-a07c-66bedf002810-back-2b157d5f3e87.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b4a25d6c-f0a6-40da-a07c-66bedf002810-model-03876a49d03b.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
