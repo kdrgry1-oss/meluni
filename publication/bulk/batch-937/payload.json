@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-937",
+  "created_at": "2026-11-27T01:29:49.987309+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "dcae8c6b-d4ec-484e-bc88-923ee883455c",
+      "sample": 937,
+      "name": "Askılı Yuvarlak Yakalı Yırtmaçlı Uzun Viskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 199,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7312e5f5f6550be2e0cb.jpeg",
+        "https://modayakamoz.com/orj/a5a4e6fbc3acdee1c96b.jpeg",
+        "https://modayakamoz.com/orj/3a62f07369a3f6c89764.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "dcae8c6b-d4ec-484e-bc88-923ee883455c/front.jpg",
+          "sha256": "628ccc32ac335165159e05ea3623ec3964b915519997d2b7a48741df4d4b8836",
+          "qa_status": "visual_qa_passed",
+          "sample": 937,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dcae8c6b-d4ec-484e-bc88-923ee883455c/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "dcae8c6b-d4ec-484e-bc88-923ee883455c/fashion_model.jpg",
+          "sha256": "292b2c5a900fa7c4f5c5c12b84026800f4f71ade0fe5706a31a2afb8770119d7",
+          "qa_status": "visual_qa_passed",
+          "sample": 937,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-dcae8c6b-d4ec-484e-bc88-923ee883455c/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
