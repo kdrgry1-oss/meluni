@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-998",
+  "published_at_utc": "2026-11-27T12:05:45.156973+00:00",
+  "products": [
+    {
+      "product_id": "437088bb-de04-4cf2-bc3d-dff5fdad06a2",
+      "sample": 998,
+      "name": "Yüksek Bel Yan Şerit Detaylı Yırtmaçlı Viskon Iki Iplik Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/437088bb-de04-4cf2-bc3d-dff5fdad06a2-front-927a6ded0d5c.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/437088bb-de04-4cf2-bc3d-dff5fdad06a2-model-ca5bfc0f1655.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
