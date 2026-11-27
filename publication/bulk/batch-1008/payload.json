@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1008",
+  "created_at": "2026-11-27T13:02:55.239264+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "a331f895-a5f8-4b23-8aac-e18f58d510e6",
+      "sample": 1008,
+      "name": "Yüksek Bel Yanları Lastik Düğmeli Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 61,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4da437a5a66aa34eceb3.jpeg",
+        "https://modayakamoz.com/orj/6a05d35e24dd0fc5da2f.jpeg",
+        "https://modayakamoz.com/orj/aca4ced9dc5911cc5044.jpeg",
+        "https://modayakamoz.com/orj/41966987be1f5ec4b5b3.jpeg",
+        "https://modayakamoz.com/orj/33e6656c9ba27a45b99c.jpeg",
+        {
+          "id": "0b01dc77-b232-4906-afba-d0ab28394c18",
+          "url": "https://cdn.meluni.com.tr/ai-products/d49bb4b4-5d97-4854-a1f6-de7378a467b7-olcu-oto-d7819ff0.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:06:00.773590+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "a331f895-a5f8-4b23-8aac-e18f58d510e6/front.jpg",
+          "sha256": "b2227f78ede0e61291c45291ea7ca1c740c67f2b33faee0263ea7acc74acec99",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1008,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a331f895-a5f8-4b23-8aac-e18f58d510e6/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a331f895-a5f8-4b23-8aac-e18f58d510e6/fashion_model.jpg",
+          "sha256": "497f371dd4340f908bc81716ff8078a5355d773263f60120ab30c7f335c3116e",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1008,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a331f895-a5f8-4b23-8aac-e18f58d510e6/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
