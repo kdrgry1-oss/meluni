@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-955",
+  "created_at": "2026-11-27T05:37:44.542042+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "e723d98a-9e2f-4caf-9493-28e407cc6e34",
+      "sample": 955,
+      "name": "T-Shirt Bisiklet Yaka Slim Fit Likralı Tişört Body",
+      "active_at_poll": true,
+      "stock_at_poll": 490,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY699db8dff17a4699db8dff17a7.webp",
+        "https://modayakamoz.com/orj/TY699db8e0da366699db8e0da368.webp",
+        "https://modayakamoz.com/orj/TY699db8e1beb62699db8e1beb64.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "e723d98a-9e2f-4caf-9493-28e407cc6e34/front.jpg",
+          "sha256": "256336fe57bc3d74c32eb0ccf3dd01b6ef64f07a109f0aff1b494b9c81726b2a",
+          "qa_status": "visual_qa_passed",
+          "sample": 955,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e723d98a-9e2f-4caf-9493-28e407cc6e34/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e723d98a-9e2f-4caf-9493-28e407cc6e34/fashion_model.jpg",
+          "sha256": "18dd98bf719a7cfcb6988ad8109ee3c6308bbdf00acc6bfe3cd8ccc9af7dcfa8",
+          "qa_status": "visual_qa_passed",
+          "sample": 955,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e723d98a-9e2f-4caf-9493-28e407cc6e34/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
