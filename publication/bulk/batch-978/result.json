@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-978",
+  "published_at_utc": "2026-11-27T07:56:45.556524+00:00",
+  "products": [
+    {
+      "product_id": "b7536e74-507d-4173-bbf1-1b69451d9d8d",
+      "sample": 978,
+      "name": "Uzun Kollu Beli Kuşaklı Trikoton Tam Boy Gömlek Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/b7536e74-507d-4173-bbf1-1b69451d9d8d-front-06ba47658b92.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/b7536e74-507d-4173-bbf1-1b69451d9d8d-back-00b2e18cd2c3.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/b7536e74-507d-4173-bbf1-1b69451d9d8d-model-ad57f74cc3e5.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/b7536e74-507d-4173-bbf1-1b69451d9d8d-size-chart-88e330bfbd2c.jpg"
+      },
+      "gallery_image_count": 20
+    }
+  ],
+  "skipped": []
+}
