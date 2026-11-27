@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1019",
+  "created_at": "2026-11-27T14:32:28.147904+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "e2e6285f-c1b2-43be-8ef7-4a46db009b91",
+      "sample": 1019,
+      "name": "Sofya Keten Gömlek Pantolon Uzun Kollu Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 4900,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY6a9fae48b51e46a9fae48b51e5.webp",
+        "https://modayakamoz.com/orj/TY6a9fae49d96ac6a9fae49d96ae.webp",
+        "https://modayakamoz.com/orj/TY6a9fae4af344b6a9fae4af344c.webp",
+        "https://modayakamoz.com/orj/TY6a9fae4c37bad6a9fae4c37bae.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "e2e6285f-c1b2-43be-8ef7-4a46db009b91/front.jpg",
+          "sha256": "0804ebc947c65119f47a18f54b3e740c12cadc457a93168a5db51bb802ac17fb",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1019,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e2e6285f-c1b2-43be-8ef7-4a46db009b91/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e2e6285f-c1b2-43be-8ef7-4a46db009b91/fashion_model.jpg",
+          "sha256": "6cb64d44aa16cdd015380bfb145966a5c414263e2ea0f78dd91770781f495674",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1019,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e2e6285f-c1b2-43be-8ef7-4a46db009b91/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
