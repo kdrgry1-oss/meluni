@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-973",
+  "published_at_utc": "2026-11-27T07:28:14.667111+00:00",
+  "products": [
+    {
+      "product_id": "eb8f47d2-7e4c-47db-9b19-4f92c78a62a0",
+      "sample": 973,
+      "name": "Truvakar Kollu V Yakalı Yırtmaçlı Uzun Aerobin Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/eb8f47d2-7e4c-47db-9b19-4f92c78a62a0-front-081979e24ba2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/eb8f47d2-7e4c-47db-9b19-4f92c78a62a0-model-27d3c2d356f0.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/eb8f47d2-7e4c-47db-9b19-4f92c78a62a0-size-chart-07cef435ea4d.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
