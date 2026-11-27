@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-944",
+  "created_at": "2026-11-27T04:32:58.169950+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "6b020e46-7826-4732-a04e-43ab1efab7fd",
+      "sample": 944,
+      "name": "Kısa Kollu Kruvaze Yaka Eteği Volanlı Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 9,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/a837d3808a283f72bf0d.jpeg",
+        "https://modayakamoz.com/orj/7cd41b179bdf9c16bd1a.jpeg",
+        "https://modayakamoz.com/orj/6fb0ce9e370557dcf2a1.jpeg",
+        "https://modayakamoz.com/orj/033461d999f6594e1dc2.jpeg",
+        {
+          "id": "bd6f04f6-f1c7-44f8-981c-09af7455f77b",
+          "url": "https://cdn.meluni.com.tr/ai-products/a3872453-c41a-44fb-a233-5e0da3a247e1-olcu-oto-e4139c90.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-24T05:28:06.447161+00:00"
+        },
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261020/6b020e46-7826-4732-a04e-43ab1efab7fd/e583937fde48d3dd.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "6b020e46-7826-4732-a04e-43ab1efab7fd/front.jpg",
+          "sha256": "413382dea03d29e5688ab341bbb57f56db7ec7fa31ef091b0993082e40aca6c6",
+          "qa_status": "visual_qa_passed",
+          "sample": 944,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6b020e46-7826-4732-a04e-43ab1efab7fd/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "6b020e46-7826-4732-a04e-43ab1efab7fd/fashion_model.jpg",
+          "sha256": "968314c0945dc929ad8b83acd44e806c3ca6b44b22196b7c9fc121b009ff71f8",
+          "qa_status": "visual_qa_passed",
+          "sample": 944,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6b020e46-7826-4732-a04e-43ab1efab7fd/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "6b020e46-7826-4732-a04e-43ab1efab7fd/size_chart.jpg",
+          "sha256": "1e7098209a4e90d72437b7ffb542b1ca0add23c7c5eecef5b98ea8f10b293526",
+          "qa_status": "exact_source_values_verified",
+          "sample": 944,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6b020e46-7826-4732-a04e-43ab1efab7fd/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
