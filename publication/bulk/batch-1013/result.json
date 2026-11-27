@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1013",
+  "published_at_utc": "2026-11-27T13:36:19.645808+00:00",
+  "products": [
+    {
+      "product_id": "27267a28-d4cc-4701-87b2-7e566c4877ee",
+      "sample": 1013,
+      "name": "Yüksek Bel Dantel Detaylı Paçaya Doğru Geniş Dalgıç Tayt Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/27267a28-d4cc-4701-87b2-7e566c4877ee-front-8aa18067e7c0.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/27267a28-d4cc-4701-87b2-7e566c4877ee-model-e96031023fc1.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/27267a28-d4cc-4701-87b2-7e566c4877ee-size-chart-4cf5e3a95488.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
