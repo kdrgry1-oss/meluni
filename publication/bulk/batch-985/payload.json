@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-985",
+  "created_at": "2026-11-27T09:31:54.348160+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee",
+      "sample": 985,
+      "name": "Önü Açık Deri Ceket ve Askılı Yuvarlak Yakalı Mini Elbise Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 233,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e925e96866aa120764b4.jpeg",
+        "https://modayakamoz.com/orj/162b9368c9c56a80fc98.jpeg",
+        "https://modayakamoz.com/orj/116eb0156bbea97f8b29.jpeg",
+        "https://modayakamoz.com/orj/4de1e0217b9f0be305da.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee/b5edfd9d2a04e575.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee/front.jpg",
+          "sha256": "4695a914f1e8c43afd1a12553d0f39e44c0a45ae49d4ef62117b760331743aa2",
+          "qa_status": "pass",
+          "sample": 985,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee/back.jpg",
+          "sha256": "8854d438dbd5ebae6850fe7f3373f68c19265c8194bf34ab257132314227bd61",
+          "qa_status": "pass",
+          "sample": 985,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee/fashion_model.jpg",
+          "sha256": "2d5c50ab7f9a1b6e854d00079bad9dcb2df89fae238ecfac2bc0f779064b3895",
+          "qa_status": "pass",
+          "sample": 985,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee/size_chart.jpg",
+          "sha256": "02fc45f821044c45cdea0aa3bd4b516b07e08421b3f3302359d5c7abdeb650dc",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 985,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
