@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-930",
+  "published_at_utc": "2026-11-27T00:23:14.214568+00:00",
+  "products": [
+    {
+      "product_id": "8133c620-b94d-433f-a88c-f233f6f4e4c9",
+      "sample": 930,
+      "name": "Triko Yakalı Düğmesiz Açık Yaka Fitilli Kısa Kollu Regular Fit T-shirt",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/8133c620-b94d-433f-a88c-f233f6f4e4c9-front-39935c5f0eb4.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/8133c620-b94d-433f-a88c-f233f6f4e4c9-back-639433fd39f1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/8133c620-b94d-433f-a88c-f233f6f4e4c9-model-c021926d4d6d.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
