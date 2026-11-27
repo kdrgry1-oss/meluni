@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1023",
+  "published_at_utc": "2026-11-27T15:58:37.232720+00:00",
+  "products": [
+    {
+      "product_id": "a189f9e1-30de-427c-adcc-2440ca77e10a",
+      "sample": 1023,
+      "name": "Kısa Kollu Bisiklet Yakalı Tül Detaylı Kısa Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a189f9e1-30de-427c-adcc-2440ca77e10a-front-09d64114d711.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a189f9e1-30de-427c-adcc-2440ca77e10a-back-54988ac587b8.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a189f9e1-30de-427c-adcc-2440ca77e10a-model-c0dbf1229c44.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
