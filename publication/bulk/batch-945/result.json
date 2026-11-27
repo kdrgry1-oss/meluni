@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-945",
+  "published_at_utc": "2026-11-27T04:41:55.739143+00:00",
+  "products": [
+    {
+      "product_id": "44e9ee4b-69b0-4bb1-8387-a4e400843cfe",
+      "sample": 945,
+      "name": "Uzun Kollu Fermuarlı Kısa Modal Ceket ve Pantolon Ikili Takım",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/44e9ee4b-69b0-4bb1-8387-a4e400843cfe-size-chart-06518c1a5fb0.jpg"
+      },
+      "gallery_image_count": 5
+    }
+  ],
+  "skipped": []
+}
