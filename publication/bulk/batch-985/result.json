@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-985",
+  "published_at_utc": "2026-11-27T09:33:08.410607+00:00",
+  "products": [
+    {
+      "product_id": "7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee",
+      "sample": 985,
+      "name": "Önü Açık Deri Ceket ve Askılı Yuvarlak Yakalı Mini Elbise Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee-front-4695a914f1e8.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee-back-8854d438dbd5.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee-model-2d5c50ab7f9a.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/7cacb1f9-fe4c-4f1d-b80f-7b198e1452ee-size-chart-02fc45f82104.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
