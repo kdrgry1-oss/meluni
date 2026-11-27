@@ -1,0 +1,63 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-978",
+  "created_at": "2026-11-27T07:55:35.331708+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b7536e74-507d-4173-bbf1-1b69451d9d8d",
+      "sample": 978,
+      "name": "Uzun Kollu Beli Kuşaklı Trikoton Tam Boy Gömlek Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 203,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7f31e167e6701cfb4a86.jpeg",
+        "https://modayakamoz.com/orj/d45b082bd9055648b782.jpeg",
+        "https://modayakamoz.com/orj/c99f351fc36c1fd30abf.jpeg",
+        "https://modayakamoz.com/orj/d7b3f356a8fb8356b04f.jpeg",
+        "https://modayakamoz.com/orj/c38c5c910d86b49f8238.jpeg",
+        "https://modayakamoz.com/orj/b6c3a2aa1e8e3280df81.jpeg",
+        "https://modayakamoz.com/orj/1538d3b106a8b77b053e.jpeg",
+        "https://modayakamoz.com/orj/ad212f70d132b3d66cc1.jpeg",
+        "https://modayakamoz.com/orj/43d6269a38cb474caa36.jpeg",
+        "https://modayakamoz.com/orj/c8d97bfd37950fc6db1f.jpeg",
+        "https://modayakamoz.com/orj/eb0e71adc6717816be48.jpeg",
+        "https://modayakamoz.com/orj/janes-extra-175123-7120aaab23ade6f9.jpg",
+        "https://modayakamoz.com/orj/janes-extra-175123-6495559046011f16.jpg",
+        "https://modayakamoz.com/orj/janes-extra-175123-fbd2609489ec5a42.jpg",
+        "https://modayakamoz.com/orj/janes-extra-175123-141773b425363c47.jpg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/b7536e74-507d-4173-bbf1-1b69451d9d8d/f432b1d7a604841c.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b7536e74-507d-4173-bbf1-1b69451d9d8d/front.jpg",
+          "sha256": "06ba47658b92e6c6b1f9728b179b959c7c304db8a68bf3ab46930c11daf2ab1b",
+          "qa_status": "visual_qa_passed",
+          "sample": 978,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b7536e74-507d-4173-bbf1-1b69451d9d8d/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b7536e74-507d-4173-bbf1-1b69451d9d8d/back.jpg",
+          "sha256": "00b2e18cd2c3242d142164a22dc9fc3992446fec7db5fc8266186299f595f3cb",
+          "qa_status": "visual_qa_passed",
+          "sample": 978,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b7536e74-507d-4173-bbf1-1b69451d9d8d/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b7536e74-507d-4173-bbf1-1b69451d9d8d/fashion_model.jpg",
+          "sha256": "ad57f74cc3e55af4d378ab15d5965b7880382a40ca2f0c9db6d248f083c5a590",
+          "qa_status": "visual_qa_passed",
+          "sample": 978,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b7536e74-507d-4173-bbf1-1b69451d9d8d/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "b7536e74-507d-4173-bbf1-1b69451d9d8d/size_chart.jpg",
+          "sha256": "88e330bfbd2ca3519bc1292cc2dd4e2bcb9805a1cb97797460480c592d35bcfc",
+          "qa_status": "exact_source_values_verified",
+          "sample": 978,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b7536e74-507d-4173-bbf1-1b69451d9d8d/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
