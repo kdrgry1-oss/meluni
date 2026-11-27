@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1005",
+  "created_at": "2026-11-27T12:44:28.571211+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "4ca3296d-d7c7-4731-8352-1ef6fcbb2423",
+      "sample": 1005,
+      "name": "Yüksel Bel Lastikli Yandan Dügme Detaylı Midi Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 111,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c704832d77cefa0529b5.jpeg",
+        "https://modayakamoz.com/orj/b0e13394120e17844a8d.jpeg",
+        "https://modayakamoz.com/orj/d8eb0bf5ccd2d13a576e.jpeg",
+        {
+          "id": "9fa6213e-aeac-436a-8937-5b4308dfa064",
+          "url": "https://cdn.meluni.com.tr/ai-products/4ca3296d-d7c7-4731-8352-1ef6fcbb2423-olcu-oto-1e71b543.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T02:02:57.710636+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "4ca3296d-d7c7-4731-8352-1ef6fcbb2423/front.jpg",
+          "sha256": "81c097e082fa4c9dc84148951fdbcadeaf6982c33d294a57f17e0fba8a13d736",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1005,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4ca3296d-d7c7-4731-8352-1ef6fcbb2423/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "4ca3296d-d7c7-4731-8352-1ef6fcbb2423/fashion_model.jpg",
+          "sha256": "0fb4a98ef0ec7db935c673ade65b0296ed522488c9af321efb9aa45c37a75902",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1005,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-4ca3296d-d7c7-4731-8352-1ef6fcbb2423/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
