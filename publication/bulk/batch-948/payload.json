@@ -1,0 +1,38 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-948",
+  "created_at": "2026-11-27T04:57:59.756965+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "da0268d8-51f6-4014-865a-2576e53461e1",
+      "sample": 948,
+      "name": "Kısa Kollu Yuvarlak Yakalı Yırtmaçlı Midi Kaşkorse Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 49,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d6051b8a7754f42ed63c.jpeg",
+        "https://modayakamoz.com/orj/aec690655dfc8ea0270e.jpeg",
+        "https://modayakamoz.com/orj/d5df985721aae2837cee.jpeg",
+        "https://modayakamoz.com/orj/3b2097ab6a90f09c6e6f.jpeg",
+        "https://modayakamoz.com/orj/20fb7dc4c3ece78453dd.jpeg",
+        {
+          "id": "913516d3-9ad7-4d26-b1e2-a07353d538d9",
+          "url": "https://cdn.meluni.com.tr/ai-products/566b84b0-1fcb-430d-8b00-8664a909b652-olcu-oto-a7dd7b5c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:21:09.579063+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "da0268d8-51f6-4014-865a-2576e53461e1/front.jpg",
+          "sha256": "d32aba8592627d7269fdd6dc9cbca8020cb490bd8061e8af92b3a3493a07eeab",
+          "qa_status": "visual_qa_passed",
+          "sample": 948,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-da0268d8-51f6-4014-865a-2576e53461e1/front-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
