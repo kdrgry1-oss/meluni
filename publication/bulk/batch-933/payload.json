@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-933",
+  "created_at": "2026-11-27T00:48:54.660871+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b4a25d6c-f0a6-40da-a07c-66bedf002810",
+      "sample": 933,
+      "name": "Balıkcı Yaka Bağazlı Triko Pamuklu Kalın Fitilli Dokuma Kazak",
+      "active_at_poll": true,
+      "stock_at_poll": 997,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY690bbf238b640690bbf238b641.png",
+        "https://modayakamoz.com/orj/TY690bbf250e3f4690bbf250e3f8.png",
+        "https://modayakamoz.com/orj/TY690bbf264b335690bbf264b339.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "b4a25d6c-f0a6-40da-a07c-66bedf002810/front.jpg",
+          "sha256": "0b9030693099acaa8d990f72efb070efb3f4bc1867f50022e5081032a57f3d49",
+          "qa_status": "visual_qa_passed",
+          "sample": 933,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b4a25d6c-f0a6-40da-a07c-66bedf002810/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b4a25d6c-f0a6-40da-a07c-66bedf002810/back.jpg",
+          "sha256": "2b157d5f3e873cb2dc10c514fa1cf2bcedd6894b32654ca6b3550377bfbfb340",
+          "qa_status": "visual_qa_passed",
+          "sample": 933,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b4a25d6c-f0a6-40da-a07c-66bedf002810/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b4a25d6c-f0a6-40da-a07c-66bedf002810/fashion_model.jpg",
+          "sha256": "03876a49d03b6bf0c9d25d43f8f66618984f009c193faa8e8f2978ce6a00dba4",
+          "qa_status": "visual_qa_passed",
+          "sample": 933,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b4a25d6c-f0a6-40da-a07c-66bedf002810/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
