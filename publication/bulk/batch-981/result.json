@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-981",
+  "published_at_utc": "2026-11-27T08:14:17.426133+00:00",
+  "products": [
+    {
+      "product_id": "d95c31c5-53b5-4f07-b841-3406366bbbef",
+      "sample": 981,
+      "name": "Uzun Kollu Bisiklet Yaka Kolları Çiçekli Waffle Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d95c31c5-53b5-4f07-b841-3406366bbbef-front-f61b2c6d71a2.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d95c31c5-53b5-4f07-b841-3406366bbbef-model-9c3fe6a3be1b.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d95c31c5-53b5-4f07-b841-3406366bbbef-size-chart-9a7ad24264d0.jpg"
+      },
+      "gallery_image_count": 17
+    }
+  ],
+  "skipped": []
+}
