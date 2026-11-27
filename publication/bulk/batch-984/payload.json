@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-984",
+  "created_at": "2026-11-27T09:10:07.636672+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "110a9e79-5d00-4101-bfbe-be2b17426405",
+      "sample": 984,
+      "name": "Askılı Dantel Detaylı Kiloş Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 8,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/904b516cbce9bced8863.jpeg",
+        "https://modayakamoz.com/orj/a608fa71bb5b42f30c97.jpeg",
+        "https://modayakamoz.com/orj/3ed6b8261eb00d771441.jpeg",
+        "https://modayakamoz.com/orj/cec435608b409859377b.jpeg",
+        "https://modayakamoz.com/orj/27cf7b74a2f3ecd28444.jpeg",
+        "https://modayakamoz.com/orj/c36a57db460c55113c8e.jpeg",
+        "https://modayakamoz.com/orj/1b4a19118e9bf8d99a6b.jpeg",
+        "https://modayakamoz.com/orj/23b3ab425d302ce50f9c.jpeg",
+        "https://cdn.meluni.com.tr/uploads/meluni-photo-20261018/110a9e79-5d00-4101-bfbe-be2b17426405/38447c7d27b5d0dc.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "110a9e79-5d00-4101-bfbe-be2b17426405/front.jpg",
+          "sha256": "4dc758e9165d8a0ecb94fbf3908c6a6c6e608f5c35c2c0991997aa0aa727b86e",
+          "qa_status": "pass",
+          "sample": 984,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-110a9e79-5d00-4101-bfbe-be2b17426405/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "110a9e79-5d00-4101-bfbe-be2b17426405/back.jpg",
+          "sha256": "a33e5ba0e0eae470d7a6220516840848a21d4f6cd2d602fe8951a472b76c5690",
+          "qa_status": "pass",
+          "sample": 984,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-110a9e79-5d00-4101-bfbe-be2b17426405/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "110a9e79-5d00-4101-bfbe-be2b17426405/fashion_model.jpg",
+          "sha256": "7d98bb0df5533735c1c66aed8e356c17ab1ed329bda337a17de0d8ff6fe5e150",
+          "qa_status": "pass",
+          "sample": 984,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-110a9e79-5d00-4101-bfbe-be2b17426405/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "110a9e79-5d00-4101-bfbe-be2b17426405/size_chart.jpg",
+          "sha256": "9b3ea7a6aef09e44770df5c092001f582523c281981e6b9175cd773ba661dbc8",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 984,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-110a9e79-5d00-4101-bfbe-be2b17426405/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
