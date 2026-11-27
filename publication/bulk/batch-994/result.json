@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-994",
+  "published_at_utc": "2026-11-27T11:37:25.003534+00:00",
+  "products": [
+    {
+      "product_id": "64354a63-17fe-4d63-95ce-079144f19e21",
+      "sample": 994,
+      "name": "Yüksek Bel Bağcıklı Önden Yırtık Desenli Kot Pantolon",
+      "urls": {
+        "back": "https://cdn.meluni.com.tr/ai-products/64354a63-17fe-4d63-95ce-079144f19e21-back-658aa62c0a69.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/64354a63-17fe-4d63-95ce-079144f19e21-size-chart-dce5aa7cd441.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
