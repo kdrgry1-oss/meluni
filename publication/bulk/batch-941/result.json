@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-941",
+  "published_at_utc": "2026-11-27T02:03:54.546721+00:00",
+  "products": [
+    {
+      "product_id": "48f167eb-303f-4603-96f7-d52f00faab98",
+      "sample": 941,
+      "name": "Ip Askılı Kruvaze Kalp Yakalı Önden Asimetrık Detaylı Kısa Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/48f167eb-303f-4603-96f7-d52f00faab98-front-cde906cdc168.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/48f167eb-303f-4603-96f7-d52f00faab98-model-62adafd4f481.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
