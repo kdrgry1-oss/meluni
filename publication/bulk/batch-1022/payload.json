@@ -1,0 +1,54 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1022",
+  "created_at": "2026-11-27T15:32:39.408770+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "28f40414-a841-4767-8200-2d690a03e583",
+      "sample": 1022,
+      "name": "Kısa Kollu Bisiklet Yaka Tül Flok Baskı Detaylı Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 11,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/4c7a0f6c8e5c31f5b4ec.jpeg",
+        "https://modayakamoz.com/orj/0390e18019c9adc9f480.jpeg",
+        "https://modayakamoz.com/orj/f903c7ba8a13788d0419.jpeg",
+        "https://modayakamoz.com/orj/d1ee3997deb36d8405d6.jpeg",
+        "https://modayakamoz.com/orj/84df9173ab68ef2d2c21.jpeg",
+        "https://modayakamoz.com/orj/918fc11fcd73772ab2ae.jpeg",
+        "https://modayakamoz.com/orj/aca4ccae520b51c66baa.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "28f40414-a841-4767-8200-2d690a03e583/front.jpg",
+          "sha256": "e301ecadb3dc4760d080a27a01356f8ea8e66d2b3c788ba77fd7230b006b9d96",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1022,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28f40414-a841-4767-8200-2d690a03e583/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "28f40414-a841-4767-8200-2d690a03e583/back.jpg",
+          "sha256": "dca5dec601f84b4acb0c2e458e29cf78d8db26998be6bb6d246d6422139838c9",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1022,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28f40414-a841-4767-8200-2d690a03e583/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "28f40414-a841-4767-8200-2d690a03e583/fashion_model.jpg",
+          "sha256": "24312ee5a115ff0f8c205799bb7d6a6e0e3bfd5e46616a6a6101a002d5d44dd2",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1022,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28f40414-a841-4767-8200-2d690a03e583/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "28f40414-a841-4767-8200-2d690a03e583/size_chart.jpg",
+          "sha256": "095e57e2c99a069145a4f76e21294d4843dfee42016217e4442cd9476d0804ea",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1022,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-28f40414-a841-4767-8200-2d690a03e583/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
