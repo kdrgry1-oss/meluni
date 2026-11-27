@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-967",
+  "created_at": "2026-11-27T06:54:32.151988+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "802dda03-9dda-4582-89bf-05c0c82486d0",
+      "sample": 967,
+      "name": "Tek Omuzu Açık Omuzdan Pelerinli Midi Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 28,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/40b861a863746d768639.jpeg",
+        "https://modayakamoz.com/orj/06f777701aadb383a41a.jpeg",
+        "https://modayakamoz.com/orj/9d10d18aa09cf54abfb9.jpeg",
+        "https://modayakamoz.com/orj/b18312fdac62ab27adb6.jpeg",
+        "https://modayakamoz.com/orj/cc3032a14d490415c564.jpeg",
+        {
+          "id": "5eb48875-9478-40cd-a380-e7656b573f9b",
+          "url": "https://cdn.meluni.com.tr/ai-products/2fdfa951-8e89-469f-bb59-f0c093232eb7-olcu-oto-cd328cd4.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-12T05:27:30.918142+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "802dda03-9dda-4582-89bf-05c0c82486d0/front.jpg",
+          "sha256": "340c5e92a08595ffc48a332e1ae018b951f3adc28e106684d98206edfe2f4ca0",
+          "qa_status": "visual_qa_passed",
+          "sample": 967,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-802dda03-9dda-4582-89bf-05c0c82486d0/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "802dda03-9dda-4582-89bf-05c0c82486d0/fashion_model.jpg",
+          "sha256": "6d2a9a38b6b1e8a7b3c72925e65347070a3fa25d8541c608450d86c1f799583e",
+          "qa_status": "visual_qa_passed",
+          "sample": 967,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-802dda03-9dda-4582-89bf-05c0c82486d0/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
