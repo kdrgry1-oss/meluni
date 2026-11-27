@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1020",
+  "created_at": "2026-11-27T15:04:30.774387+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "9b32bc8e-97e6-4999-8477-8a8262f45a37",
+      "sample": 1020,
+      "name": "Tek Omuz Askılı Eteği Volanlı Janjan Krep Mini Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 32,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/e7ce4d30cc1c6050edde.jpeg",
+        "https://modayakamoz.com/orj/f018880f4712a08d6078.jpeg",
+        "https://modayakamoz.com/orj/25e445bec4507dc232c3.jpeg",
+        {
+          "id": "77b21403-3228-401d-a70a-ca53f7de9201",
+          "url": "https://cdn.meluni.com.tr/ai-products/9b32bc8e-97e6-4999-8477-8a8262f45a37-olcu-oto-75788d1a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-28T05:21:43.092481+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "9b32bc8e-97e6-4999-8477-8a8262f45a37/front.jpg",
+          "sha256": "5ade16d94908605beebcf93f8fc5dafac137caad84233bd73278f47525516e0c",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1020,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9b32bc8e-97e6-4999-8477-8a8262f45a37/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "9b32bc8e-97e6-4999-8477-8a8262f45a37/fashion_model.jpg",
+          "sha256": "f8df2870deff475162d6013d85ba5b91ed07f76ecd419173501577bcead1f5b0",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1020,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-9b32bc8e-97e6-4999-8477-8a8262f45a37/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
