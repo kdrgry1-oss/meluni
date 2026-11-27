@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-942",
+  "published_at_utc": "2026-11-27T04:03:57.486963+00:00",
+  "products": [
+    {
+      "product_id": "5f246d94-a550-49df-b82d-12c6a93cebe0",
+      "sample": 942,
+      "name": "Gri Kapşonlu Etek Detay Arma Ters Dikiş Gorunumlu Ikili Takım",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/5f246d94-a550-49df-b82d-12c6a93cebe0-front-03a0309f300a.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/5f246d94-a550-49df-b82d-12c6a93cebe0-back-2b8aa50855b1.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/5f246d94-a550-49df-b82d-12c6a93cebe0-model-bbe31fdefb7e.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
