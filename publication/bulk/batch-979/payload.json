@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-979",
+  "created_at": "2026-11-27T08:01:30.795744+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "6a1f7553-b424-4593-b3df-9b56475e97d6",
+      "sample": 979,
+      "name": "Uzun Kollu Bisiklet Yaka Asimetrik Detaylı Dantelli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 44,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/174965-2026-02-10-18-19-30.jpg",
+        "https://modayakamoz.com/orj/e8c2efe292ea0f976d41.jpeg",
+        "https://modayakamoz.com/orj/d8b4b0720d9e5576ccf9.jpeg",
+        "https://modayakamoz.com/orj/67c6a22f9e352eb7ce57.jpeg",
+        "https://modayakamoz.com/orj/a1e04c046a8c8d89cba6.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "6a1f7553-b424-4593-b3df-9b56475e97d6/front.jpg",
+          "sha256": "b4b48995b0c0c5e27b372a6e593b5725f95ae78a639e1c739d527bd7f43bb438",
+          "qa_status": "visual_qa_passed",
+          "sample": 979,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6a1f7553-b424-4593-b3df-9b56475e97d6/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "6a1f7553-b424-4593-b3df-9b56475e97d6/back.jpg",
+          "sha256": "ad1446058d1dfc860106c56866ded2ae322dc3615354f9f73ffabf602f2e3227",
+          "qa_status": "visual_qa_passed",
+          "sample": 979,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6a1f7553-b424-4593-b3df-9b56475e97d6/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "6a1f7553-b424-4593-b3df-9b56475e97d6/fashion_model.jpg",
+          "sha256": "c6be60be69cad973421ac94a500efac1f1794a0d6c54345e4c760eb46ba258cb",
+          "qa_status": "visual_qa_passed",
+          "sample": 979,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6a1f7553-b424-4593-b3df-9b56475e97d6/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "6a1f7553-b424-4593-b3df-9b56475e97d6/size_chart.jpg",
+          "sha256": "d8aaaa087c90a6ffd85b48c498ea7b21ce4e88447eb69578afa176fcaaa554d6",
+          "qa_status": "exact_source_values_verified",
+          "sample": 979,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-6a1f7553-b424-4593-b3df-9b56475e97d6/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
