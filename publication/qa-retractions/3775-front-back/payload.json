@@ -1,0 +1,40 @@
+{
+  "product_id": "de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4",
+  "expected_publication_id": "meluni-images-20261110-v3-989",
+  "authorized_by_user": true,
+  "views_to_retract": {
+    "front": "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-front-56550a9f6dc2.jpg",
+    "back": "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-back-e21b2836942c.jpg"
+  },
+  "expected_images": [
+    "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-front-56550a9f6dc2.jpg",
+    "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-back-e21b2836942c.jpg",
+    "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-model-8ca40442ab76.jpg",
+    "https://modayakamoz.com/orj/5f1a4530ccdcf643f65f.jpeg",
+    "https://modayakamoz.com/orj/e828cf88435722db57f0.jpeg",
+    "https://modayakamoz.com/orj/364d9a6a9270d19c09ed.jpeg",
+    "https://modayakamoz.com/orj/3ee264eab9905abd2eef.jpeg",
+    {
+      "id": "b61598ad-a1a1-59ab-a9e0-7533fe0af44e",
+      "url": "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-size-chart-16cd20bea9a1.jpg",
+      "is_size_table": true,
+      "alt": "Ölçü Tablosu",
+      "created_at": "2026-11-27T10:44:59.293172+00:00"
+    }
+  ],
+  "new_images": [
+    "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-model-8ca40442ab76.jpg",
+    "https://modayakamoz.com/orj/5f1a4530ccdcf643f65f.jpeg",
+    "https://modayakamoz.com/orj/e828cf88435722db57f0.jpeg",
+    "https://modayakamoz.com/orj/364d9a6a9270d19c09ed.jpeg",
+    "https://modayakamoz.com/orj/3ee264eab9905abd2eef.jpeg",
+    {
+      "id": "b61598ad-a1a1-59ab-a9e0-7533fe0af44e",
+      "url": "https://cdn.meluni.com.tr/ai-products/de0c6ef7-6b6d-4f03-9e41-a4ff531d9df4-size-chart-16cd20bea9a1.jpg",
+      "is_size_table": true,
+      "alt": "Ölçü Tablosu",
+      "created_at": "2026-11-27T10:44:59.293172+00:00"
+    }
+  ],
+  "reason": "Source photos conceal the lower blouse hem; ghost front and back invented its shape, so their QA approval is withdrawn. Keep approved model and exact source chart."
+}
