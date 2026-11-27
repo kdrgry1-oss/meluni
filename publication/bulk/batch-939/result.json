@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-939",
+  "published_at_utc": "2026-11-27T01:46:39.894039+00:00",
+  "products": [
+    {
+      "product_id": "c025bbc3-1926-44c8-811a-2a97c430531f",
+      "sample": 939,
+      "name": "Bisiklet Yaka Kısa Yarasa Kollu Yırtmaçlı Oversize Merserize Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/c025bbc3-1926-44c8-811a-2a97c430531f-front-eab87f004478.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/c025bbc3-1926-44c8-811a-2a97c430531f-model-a04ca7906498.jpg"
+      },
+      "gallery_image_count": 4
+    }
+  ],
+  "skipped": []
+}
