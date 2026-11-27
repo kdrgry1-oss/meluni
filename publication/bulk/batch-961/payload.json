@@ -1,0 +1,38 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-961",
+  "created_at": "2026-11-27T06:17:54.668944+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "2f0024cd-3ac7-4108-a8b4-befe8a57c71a",
+      "sample": 961,
+      "name": "Tek Askılı Diğer Omuzdan Fiyonk Detaylı Midi Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 32,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/2f0024cd-3ac7-4108-a8b4-befe8a57c71a-front-7e32f50343e1.jpg",
+        "https://cdn.meluni.com.tr/ai-products/2f0024cd-3ac7-4108-a8b4-befe8a57c71a-model-a53bccf56fb3.jpg",
+        "https://modayakamoz.com/orj/ef4bf9dcf1298158a9c4.jpeg",
+        "https://modayakamoz.com/orj/6b9365f41c648778a280.jpeg",
+        "https://modayakamoz.com/orj/5dae946d322735175f57.jpeg",
+        {
+          "id": "10edf823-9f14-4196-8db5-dd48e30e3ec2",
+          "url": "https://cdn.meluni.com.tr/ai-products/2f0024cd-3ac7-4108-a8b4-befe8a57c71a-olcu-oto-548fab4a.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-25T05:16:49.150382+00:00"
+        }
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "2f0024cd-3ac7-4108-a8b4-befe8a57c71a/size_chart.jpg",
+          "sha256": "756bf9d428eee7168457d9919c89b08aa3c5b039769e8ffdd917d4352e6ff6da",
+          "qa_status": "exact_source_values_verified",
+          "sample": 961,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-2f0024cd-3ac7-4108-a8b4-befe8a57c71a/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
