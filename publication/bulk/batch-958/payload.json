@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-958",
+  "created_at": "2026-11-27T05:55:23.275107+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b5b3720e-15e2-42f4-a7a3-7a9c4a5d2384",
+      "sample": 958,
+      "name": "Tek Askılı Toka Detaylı Yırtmaçlı Uzun Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 22,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/49e4a4cdc60b68877084.jpeg",
+        "https://modayakamoz.com/orj/83d53fa66a8f3707d140.jpeg",
+        "https://modayakamoz.com/orj/5f18ad049e404fe63585.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b5b3720e-15e2-42f4-a7a3-7a9c4a5d2384/front.jpg",
+          "sha256": "31f98225849496788e3ff8fcb62081cde521f29ee7d3b97d4c27605ecebce280",
+          "qa_status": "visual_qa_passed",
+          "sample": 958,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5b3720e-15e2-42f4-a7a3-7a9c4a5d2384/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b5b3720e-15e2-42f4-a7a3-7a9c4a5d2384/back.jpg",
+          "sha256": "802c13c5726a7aed6fc3b9a62ea71069700e127553492f17f9dfe25f1b17789f",
+          "qa_status": "visual_qa_passed",
+          "sample": 958,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5b3720e-15e2-42f4-a7a3-7a9c4a5d2384/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b5b3720e-15e2-42f4-a7a3-7a9c4a5d2384/fashion_model.jpg",
+          "sha256": "66c99eaeaec0c8e42a10ab9da0b45b351c475b268ced2cef46c4295bbb36e181",
+          "qa_status": "visual_qa_passed",
+          "sample": 958,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b5b3720e-15e2-42f4-a7a3-7a9c4a5d2384/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
