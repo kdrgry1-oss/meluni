@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1002",
+  "published_at_utc": "2026-11-27T12:26:06.227915+00:00",
+  "products": [
+    {
+      "product_id": "bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c",
+      "sample": 1002,
+      "name": "Yüksek Bel Lastikli Bağcıklı Geniş Detaylı Deri Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c-front-bc073d2e922a.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c-model-a8f7727cfcbf.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/bb0ec6f1-72dc-4f2a-9a03-692d9d67bd2c-size-chart-943e4090912e.jpg"
+      },
+      "gallery_image_count": 5
+    }
+  ],
+  "skipped": []
+}
