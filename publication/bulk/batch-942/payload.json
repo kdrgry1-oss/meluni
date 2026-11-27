@@ -1,0 +1,50 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-942",
+  "created_at": "2026-11-27T04:02:39.082121+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "5f246d94-a550-49df-b82d-12c6a93cebe0",
+      "sample": 942,
+      "name": "Gri Kapşonlu Etek Detay Arma Ters Dikiş Gorunumlu Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 27,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/ai-products/5f246d94-a550-49df-b82d-12c6a93cebe0-hd0-3bddd2f1.jpg",
+        "https://cdn.meluni.com.tr/ai-products/5f246d94-a550-49df-b82d-12c6a93cebe0-hd1-50406551.jpg",
+        "https://cdn.meluni.com.tr/ai-products/5f246d94-a550-49df-b82d-12c6a93cebe0-hd2-8a9c1570.jpg",
+        {
+          "id": "606a9aca-7fef-418f-99de-a480e4684e30",
+          "url": "https://cdn.meluni.com.tr/ai-products/52bd1fcd-0dea-4d60-816c-6957475e2b37-olcu-oto-ce20046f.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T01:41:29.779475+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "5f246d94-a550-49df-b82d-12c6a93cebe0/front.jpg",
+          "sha256": "03a0309f300a41c6cf8e20e9c39fa0948e6c030e876c64a443deb2a7eec3ee5d",
+          "qa_status": "visual_qa_passed",
+          "sample": 942,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f246d94-a550-49df-b82d-12c6a93cebe0/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "5f246d94-a550-49df-b82d-12c6a93cebe0/back.jpg",
+          "sha256": "2b8aa50855b1bceb35b4ad719db8685dc89f610237e431025350a14eb0a1e156",
+          "qa_status": "visual_qa_passed",
+          "sample": 942,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f246d94-a550-49df-b82d-12c6a93cebe0/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "5f246d94-a550-49df-b82d-12c6a93cebe0/fashion_model.jpg",
+          "sha256": "bbe31fdefb7e8cbc5c8f77b2873db2c4bb33e25a62b82b892786a79fd50459ce",
+          "qa_status": "visual_qa_passed",
+          "sample": 942,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5f246d94-a550-49df-b82d-12c6a93cebe0/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
