@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-957",
+  "published_at_utc": "2026-11-27T05:49:24.487166+00:00",
+  "products": [
+    {
+      "product_id": "52d8a5ae-584a-4260-a2ce-48753d2aa44a",
+      "sample": 957,
+      "name": "T-Shirt Bisiklet Yaka Slim Fit Likralı Tişört Body",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/52d8a5ae-584a-4260-a2ce-48753d2aa44a-front-b9f5eebb67fd.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/52d8a5ae-584a-4260-a2ce-48753d2aa44a-model-c10c6fe2ee41.jpg"
+      },
+      "gallery_image_count": 5
+    }
+  ],
+  "skipped": []
+}
