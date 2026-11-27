@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-947",
+  "published_at_utc": "2026-11-27T04:54:49.764389+00:00",
+  "products": [
+    {
+      "product_id": "9e6bb6bd-4a77-44fc-abeb-f2f9c122f443",
+      "sample": 947,
+      "name": "Kısa Kollu Yırtmaç Detaylı Salaş Viskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/9e6bb6bd-4a77-44fc-abeb-f2f9c122f443-front-bc741c161354.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/9e6bb6bd-4a77-44fc-abeb-f2f9c122f443-model-537edc7ed33a.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/9e6bb6bd-4a77-44fc-abeb-f2f9c122f443-size-chart-b2e2fb264160.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
