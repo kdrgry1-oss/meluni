@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-963",
+  "created_at": "2026-11-27T06:32:18.639185+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "5d5d141a-374f-4fc9-a88b-6397d5f3e595",
+      "sample": 963,
+      "name": "Tek Omuzdan Acık Onden Fıyonk Bagcık Detaylı Yırtmaçlı Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 35,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/45286f242adde23e0a5c.jpeg",
+        "https://modayakamoz.com/orj/974926d69713fa9e48b0.jpeg",
+        "https://modayakamoz.com/orj/7b42398d2837e05e90cd.jpeg",
+        "https://modayakamoz.com/orj/16bf73f04d1d70d8ffde.jpeg",
+        {
+          "id": "b88b549a-c28e-4773-9075-fdcb5f4ab26a",
+          "url": "https://cdn.meluni.com.tr/ai-products/732629a1-8841-4be2-832d-020191e0430c-olcu-oto-3bf8d705.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-30T05:17:31.713668+00:00"
+        }
+      ],
+      "assets": {
+        "size_chart": {
+          "file": "5d5d141a-374f-4fc9-a88b-6397d5f3e595/size_chart.jpg",
+          "sha256": "5dd3ea8ae2403e68bbbdc7b66451fc7474deb08498279a866dd21a360d61879b",
+          "qa_status": "exact_source_values_verified",
+          "sample": 963,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-5d5d141a-374f-4fc9-a88b-6397d5f3e595/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
