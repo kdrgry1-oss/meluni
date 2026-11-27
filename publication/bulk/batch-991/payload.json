@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-991",
+  "created_at": "2026-11-27T11:11:42.642357+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "62b590fc-a281-4380-9595-165130c1b6ee",
+      "sample": 991,
+      "name": "Yarım Fermuarlı Triko Kazak",
+      "active_at_poll": true,
+      "stock_at_poll": 5000,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY68f7f898db00f68f7f898db011.png",
+        "https://modayakamoz.com/orj/TY68f7f89a0c23e68f7f89a0c240.png",
+        "https://modayakamoz.com/orj/TY68f7f89b322ad68f7f89b322b0.png"
+      ],
+      "assets": {
+        "front": {
+          "file": "62b590fc-a281-4380-9595-165130c1b6ee/front.jpg",
+          "sha256": "3995929bb4101dced02d2d74be52b61e8bf419dd535a700aca0a1aaa727bced9",
+          "qa_status": "pass",
+          "sample": 991,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-62b590fc-a281-4380-9595-165130c1b6ee/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "62b590fc-a281-4380-9595-165130c1b6ee/back.jpg",
+          "sha256": "c7b1a05916081c58b3fff564b74a24440b48febbb0ee1166bf61bbae9932452f",
+          "qa_status": "pass",
+          "sample": 991,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-62b590fc-a281-4380-9595-165130c1b6ee/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "62b590fc-a281-4380-9595-165130c1b6ee/fashion_model.jpg",
+          "sha256": "2f0a87d770df4af2876d2563fe15baee7a72def07c8769ac1c4945260941c5ae",
+          "qa_status": "pass",
+          "sample": 991,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-62b590fc-a281-4380-9595-165130c1b6ee/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
