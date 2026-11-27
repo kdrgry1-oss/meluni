@@ -1,0 +1,62 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-980",
+  "created_at": "2026-11-27T08:06:49.369956+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b89fee95-1541-4184-85c0-49a7b240e4d9",
+      "sample": 980,
+      "name": "Uzun Kollu Bisiklet Yaka Kelebek Detaylı Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 105,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/522ec046c9bee0c9002a.jpeg",
+        "https://modayakamoz.com/orj/2088437d6f19c8ee8c90.jpeg",
+        "https://modayakamoz.com/orj/782b4cf86bdf111c0b86e354f07d34d1.jpeg",
+        "https://modayakamoz.com/orj/1786e6e5d925dbb5f893.jpeg",
+        "https://modayakamoz.com/orj/6e5bac875faf51e4b22c.jpeg",
+        "https://modayakamoz.com/orj/759fff66c4191d64dc93.jpeg",
+        "https://modayakamoz.com/orj/32c8a26f1093323e757d.jpeg",
+        "https://modayakamoz.com/orj/dd58e89883bf24100099.jpeg",
+        "https://modayakamoz.com/orj/51a98304eb33b4ad4a3c.jpeg",
+        "https://modayakamoz.com/orj/88ed9a465c75813906e336e5674b2047.jpeg",
+        "https://modayakamoz.com/orj/fffb78a78892824db254a6f28ebe5504.jpeg",
+        "https://modayakamoz.com/orj/eaee05118b945d60835d6cb3d000e5ea.jpeg",
+        "https://modayakamoz.com/orj/b74c9038af6cee6748384679a3357b05.jpeg",
+        "https://modayakamoz.com/orj/b372f5b68d9c7f0b29bf7f57d368d65c.jpeg",
+        "https://modayakamoz.com/orj/c7b7b61e58c427008ed3dd92a65013f3.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "b89fee95-1541-4184-85c0-49a7b240e4d9/front.jpg",
+          "sha256": "a32472b8b2179864d70d33bcdbe050814efd40453e571b99653d15b43a3b5bf4",
+          "qa_status": "visual_qa_passed",
+          "sample": 980,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b89fee95-1541-4184-85c0-49a7b240e4d9/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "b89fee95-1541-4184-85c0-49a7b240e4d9/back.jpg",
+          "sha256": "de6e8371f622d93cac72cf962971270895f266110a1129f242fdb88cc440eef9",
+          "qa_status": "visual_qa_passed",
+          "sample": 980,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b89fee95-1541-4184-85c0-49a7b240e4d9/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "b89fee95-1541-4184-85c0-49a7b240e4d9/fashion_model.jpg",
+          "sha256": "f7a81f6da6a157b3ef03e227acf81f47d1729fcaab9e559ecece487abe76c766",
+          "qa_status": "visual_qa_passed",
+          "sample": 980,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b89fee95-1541-4184-85c0-49a7b240e4d9/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "b89fee95-1541-4184-85c0-49a7b240e4d9/size_chart.jpg",
+          "sha256": "23cd4e50c7785758b568783cc810748ebbae174a3a4d473aa9acceccb8a9e137",
+          "qa_status": "exact_source_values_verified",
+          "sample": 980,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b89fee95-1541-4184-85c0-49a7b240e4d9/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
