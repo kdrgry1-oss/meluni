@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-944",
+  "published_at_utc": "2026-11-27T04:34:01.887375+00:00",
+  "products": [
+    {
+      "product_id": "6b020e46-7826-4732-a04e-43ab1efab7fd",
+      "sample": 944,
+      "name": "Kısa Kollu Kruvaze Yaka Eteği Volanlı Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6b020e46-7826-4732-a04e-43ab1efab7fd-front-413382dea03d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6b020e46-7826-4732-a04e-43ab1efab7fd-model-968314c0945d.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6b020e46-7826-4732-a04e-43ab1efab7fd-size-chart-1e7098209a4e.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
