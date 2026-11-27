@@ -1,0 +1,39 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-994",
+  "created_at": "2026-11-27T11:36:08.846359+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "64354a63-17fe-4d63-95ce-079144f19e21",
+      "sample": 994,
+      "name": "Yüksek Bel Bağcıklı Önden Yırtık Desenli Kot Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 49,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192984-1-5d9c0f9109.jpg",
+        "https://modayakamoz.com/orj/janes-192984-2-ae4aea49dd.jpg",
+        "https://modayakamoz.com/orj/janes-192984-3-a28623ab7b.jpg",
+        "https://modayakamoz.com/orj/janes-192984-4-4d10946ba2.jpg",
+        "https://modayakamoz.com/orj/janes-192984-5-e924ced4c9.jpg",
+        "https://modayakamoz.com/orj/janes-192984-9-b1daf089ad.jpg"
+      ],
+      "assets": {
+        "back": {
+          "file": "64354a63-17fe-4d63-95ce-079144f19e21/back.jpg",
+          "sha256": "658aa62c0a69e01c94609d537bba64c3630a3e921e0a8138149a8bc0a2ecd84a",
+          "qa_status": "pass_source_fidelity",
+          "sample": 994,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-64354a63-17fe-4d63-95ce-079144f19e21/back-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "64354a63-17fe-4d63-95ce-079144f19e21/size_chart.jpg",
+          "sha256": "dce5aa7cd4419f425b69c8ffd44f214fc9c65b4dd7c813e3b438916e1d1f7440",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 994,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-64354a63-17fe-4d63-95ce-079144f19e21/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
