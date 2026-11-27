@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-936",
+  "created_at": "2026-11-27T01:19:56.078828+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "c86381dd-2249-4bd3-a80f-31bf3d9f6ff0",
+      "sample": 936,
+      "name": "Askılı Yuvarlak Yakalı Cepli Uzun Bürümcük Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 10,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/295ab3bd01198271b101.jpeg",
+        "https://modayakamoz.com/orj/fb48ed421ae76146de6a.jpeg",
+        "https://modayakamoz.com/orj/e674706caef49854687d.jpeg",
+        {
+          "id": "f159847b-d8be-4295-ae73-41f4a9bdac08",
+          "url": "https://cdn.meluni.com.tr/ai-products/c86381dd-2249-4bd3-a80f-31bf3d9f6ff0-olcu-oto-9f20e994.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-13T05:23:12.204859+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "c86381dd-2249-4bd3-a80f-31bf3d9f6ff0/front.jpg",
+          "sha256": "df6d1e2cb5c93408499bc6625c1ffa377a85680b5506ed153f0c50ca4ba98eb1",
+          "qa_status": "visual_qa_passed",
+          "sample": 936,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c86381dd-2249-4bd3-a80f-31bf3d9f6ff0/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "c86381dd-2249-4bd3-a80f-31bf3d9f6ff0/fashion_model.jpg",
+          "sha256": "41b99530b6a4b45965b83e8b70588761b62ccef1e43da285c855fb551905fdf2",
+          "qa_status": "visual_qa_passed",
+          "sample": 936,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-c86381dd-2249-4bd3-a80f-31bf3d9f6ff0/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
