@@ -1,0 +1,18 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-950",
+  "published_at_utc": "2026-11-27T05:09:47.142448+00:00",
+  "products": [
+    {
+      "product_id": "d8ce713e-3bcc-4a0f-b265-a3fce5b6ce0a",
+      "sample": 950,
+      "name": "T-Shirt V Yaka Slim Fit Likralı Tişört Body",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/d8ce713e-3bcc-4a0f-b265-a3fce5b6ce0a-front-79976afcb4c5.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/d8ce713e-3bcc-4a0f-b265-a3fce5b6ce0a-model-57984ddd992d.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
