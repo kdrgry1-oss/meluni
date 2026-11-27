@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1015",
+  "created_at": "2026-11-27T13:47:50.207050+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "607c78a5-7e21-447f-96ff-86c5554ca710",
+      "sample": 1015,
+      "name": "Uzun Kollu Yakalı Mini Deri Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 17,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/02a1970a7f554607bf83.jpeg",
+        "https://modayakamoz.com/orj/b0b503c536a1f1f6512d.jpeg",
+        "https://modayakamoz.com/orj/8e866bf9cfd03de5ee0c.jpeg",
+        "https://modayakamoz.com/orj/02850ab36da90b661439.jpeg",
+        {
+          "id": "6bfd4b16-4323-4be5-a642-6c9c4449f05b",
+          "url": "https://cdn.meluni.com.tr/ai-products/dfed8866-f5af-4822-a3bc-576a897bc13b-olcu-oto-5912d1db.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-17T05:24:45.639223+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "607c78a5-7e21-447f-96ff-86c5554ca710/front.jpg",
+          "sha256": "e5e536145f9446bc6801eb8b5caa1ea2eae79bf9d433d8f25bb797575b64a816",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1015,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-607c78a5-7e21-447f-96ff-86c5554ca710/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "607c78a5-7e21-447f-96ff-86c5554ca710/back.jpg",
+          "sha256": "32d4a9fb3083131377973baaa60de954e4f18cb8b97fca900e64289f0ebd4058",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1015,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-607c78a5-7e21-447f-96ff-86c5554ca710/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "607c78a5-7e21-447f-96ff-86c5554ca710/fashion_model.jpg",
+          "sha256": "06b214e217685f94cb3d01af1fe059224cdec73ab0e02fbe188c5fcb0de03dd9",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1015,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-607c78a5-7e21-447f-96ff-86c5554ca710/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "607c78a5-7e21-447f-96ff-86c5554ca710/size_chart.jpg",
+          "sha256": "8bb0515c57325cfe4cc507f5f50e2eb767b08f344211c3806f83038f23e59de7",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1015,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-607c78a5-7e21-447f-96ff-86c5554ca710/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
