@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-968",
+  "created_at": "2026-11-27T07:00:21.155317+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "e97a8c75-88e2-447e-a5f7-c20f2944a299",
+      "sample": 968,
+      "name": "Tek Omuzu Açık Omuzlardan Kurdela Detaylı Çift Renkli Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 31,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/b2e722aab6056d363495.jpeg",
+        "https://modayakamoz.com/orj/7e5e9edc9e9e793c3d63.jpeg",
+        "https://modayakamoz.com/orj/644818eea9a9512f0688.jpeg",
+        "https://modayakamoz.com/orj/5f843942fa5c14d8cbca.jpeg",
+        {
+          "id": "85b2c87b-e60b-4162-82d8-dd2b89206d00",
+          "url": "https://cdn.meluni.com.tr/ai-products/a070eacf-61eb-4f77-b8a8-0c3381ac84af-olcu-oto-d033c62c.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-14T05:21:50.633887+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "e97a8c75-88e2-447e-a5f7-c20f2944a299/front.jpg",
+          "sha256": "2436ed96aa85b3771a8def3dbe06a66e167a3d31bbe30afe4b021af9b7bebc8e",
+          "qa_status": "visual_qa_passed",
+          "sample": 968,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e97a8c75-88e2-447e-a5f7-c20f2944a299/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "e97a8c75-88e2-447e-a5f7-c20f2944a299/fashion_model.jpg",
+          "sha256": "e646d957e1718bed02b9b510de602a58dade9cd52413e379c5c7ed673362de1c",
+          "qa_status": "visual_qa_passed",
+          "sample": 968,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e97a8c75-88e2-447e-a5f7-c20f2944a299/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "e97a8c75-88e2-447e-a5f7-c20f2944a299/size_chart.jpg",
+          "sha256": "4482ccc2b9afc24879f23ae39e5ec4baf59fcf5e79fbc900236e40078fe1ff12",
+          "qa_status": "exact_source_values_verified",
+          "sample": 968,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-e97a8c75-88e2-447e-a5f7-c20f2944a299/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
