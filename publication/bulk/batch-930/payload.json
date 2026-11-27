@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-930",
+  "created_at": "2026-11-27T00:21:55.104042+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8133c620-b94d-433f-a88c-f233f6f4e4c9",
+      "sample": 930,
+      "name": "Triko Yakalı Düğmesiz Açık Yaka Fitilli Kısa Kollu Regular Fit T-shirt",
+      "active_at_poll": true,
+      "stock_at_poll": 4553,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/TY69732661224cc69732661224ce.webp",
+        "https://modayakamoz.com/orj/TY6973266235f5f6973266235f61.webp",
+        "https://modayakamoz.com/orj/TY697326633aa10697326633aa11.webp",
+        "https://modayakamoz.com/orj/TY6973266446ce26973266446ce4.webp"
+      ],
+      "assets": {
+        "front": {
+          "file": "8133c620-b94d-433f-a88c-f233f6f4e4c9/front.jpg",
+          "sha256": "39935c5f0eb47a96105cf85db3910fda991577d259f9ce5d14705d6d37cbdf76",
+          "qa_status": "visual_qa_passed",
+          "sample": 930,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8133c620-b94d-433f-a88c-f233f6f4e4c9/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "8133c620-b94d-433f-a88c-f233f6f4e4c9/back.jpg",
+          "sha256": "639433fd39f1d0b0dd21cde0a63f4ae0edfb3095063f919df08f6f4d0406b5b5",
+          "qa_status": "visual_qa_passed",
+          "sample": 930,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8133c620-b94d-433f-a88c-f233f6f4e4c9/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "8133c620-b94d-433f-a88c-f233f6f4e4c9/fashion_model.jpg",
+          "sha256": "c021926d4d6d3f1b80ce6d3afb78860e259a0cb8c476d569d6c3b88ffd85499b",
+          "qa_status": "visual_qa_passed",
+          "sample": 930,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8133c620-b94d-433f-a88c-f233f6f4e4c9/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
