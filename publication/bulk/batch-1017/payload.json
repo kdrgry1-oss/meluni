@@ -1,0 +1,29 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1017",
+  "created_at": "2026-11-27T14:15:22.998056+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "8baadab4-6462-4b3f-9f47-4c54c8106233",
+      "sample": 1017,
+      "name": "Uzun Kollu Balıkçı Yaka Omuz Katlamalı Dalgıç Kısa Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 21,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/c834657e22de3ad0e0f7.jpeg",
+        "https://modayakamoz.com/orj/eaa49f91075fd27eeb95.jpeg",
+        "https://modayakamoz.com/orj/602d39eb1f5a4b353b0b.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "8baadab4-6462-4b3f-9f47-4c54c8106233/front.jpg",
+          "sha256": "ace2e9a4c0aca5caca050b37990e7cb06fe578b97758611f84100c0653ce4e8e",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1017,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-8baadab4-6462-4b3f-9f47-4c54c8106233/front-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
