@@ -1,0 +1,38 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-990",
+  "created_at": "2026-11-27T10:56:14.857228+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "b16d1cae-65a4-4194-a347-b9e1e6426811",
+      "sample": 990,
+      "name": "Yuksek Bel Önden Yırtık Desenli Şardonlu Dalgıç Tayt",
+      "active_at_poll": true,
+      "stock_at_poll": 106,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192297-1-d1e4cf2149.jpg",
+        "https://modayakamoz.com/orj/janes-192297-2-fa2b105dbd.jpg",
+        "https://modayakamoz.com/orj/janes-192297-3-53e6b087d9.jpg",
+        "https://modayakamoz.com/orj/janes-192297-4-aebe155bd7.jpg",
+        "https://modayakamoz.com/orj/janes-192297-8-d887887f99.jpg"
+      ],
+      "assets": {
+        "back": {
+          "file": "b16d1cae-65a4-4194-a347-b9e1e6426811/back.jpg",
+          "sha256": "ad7c708b4d7c6f4f6fc4007bde7e01e403a0bb88b666ab48d0816657fa557355",
+          "qa_status": "pass",
+          "sample": 990,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b16d1cae-65a4-4194-a347-b9e1e6426811/back-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "b16d1cae-65a4-4194-a347-b9e1e6426811/size_chart.jpg",
+          "sha256": "2af1601d1a883ffdc486cba28a1c56c0348c12202837b5f8c4a4a0516748a908",
+          "qa_status": "pass_exact_source_values_verified",
+          "sample": 990,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-b16d1cae-65a4-4194-a347-b9e1e6426811/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
