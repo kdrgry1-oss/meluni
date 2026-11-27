@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-962",
+  "created_at": "2026-11-27T06:25:47.470507+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "d66d3ec8-6460-4950-bac6-2f2c3547df84",
+      "sample": 962,
+      "name": "Tek Askılı Şerit Detaylı Düğmeli Viskon Bluz",
+      "active_at_poll": true,
+      "stock_at_poll": 51,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/8db85b4c26d2d23b2442.jpeg",
+        "https://modayakamoz.com/orj/e940f2fe4b62b64d449f.jpeg",
+        "https://modayakamoz.com/orj/efef783cdd4667394ab5.jpeg",
+        "https://modayakamoz.com/orj/8dafec7e72f4136a9bf5.jpeg",
+        {
+          "id": "c1c16f59-9f7d-41c9-9749-99ef5015dacb",
+          "url": "https://cdn.meluni.com.tr/ai-products/9ca115bc-24a2-4451-8237-4112282ccf28-olcu-oto-f2faad51.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-03T05:16:48.137741+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "d66d3ec8-6460-4950-bac6-2f2c3547df84/front.jpg",
+          "sha256": "a7034f7fcb8b48280e79a4c5ebcc576b42b5bc91e24016598c4e627ae3c5f1e4",
+          "qa_status": "visual_qa_passed",
+          "sample": 962,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d66d3ec8-6460-4950-bac6-2f2c3547df84/front-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "d66d3ec8-6460-4950-bac6-2f2c3547df84/size_chart.jpg",
+          "sha256": "5f8a3135b2bb3cb8c68132b2dfbb3e89846dbe1c233c48d21a8f71a37f5866d5",
+          "qa_status": "exact_source_values_verified",
+          "sample": 962,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-d66d3ec8-6460-4950-bac6-2f2c3547df84/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
