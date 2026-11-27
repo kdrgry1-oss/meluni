@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1025",
+  "created_at": "2026-11-27T18:43:03.730195+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "57548f01-e681-489e-924e-407d585c6e83",
+      "sample": 1025,
+      "name": "Kısa Kollu Bisiklet Yakalı Puantiye Tül Detaylı Janjan Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 12,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/691d15d7eef817990a04.jpeg",
+        "https://modayakamoz.com/orj/e947586c54dec71670a3.jpeg",
+        "https://modayakamoz.com/orj/04145b3ae5aeb00ef2a7.jpeg",
+        "https://modayakamoz.com/orj/ca1bbcd41b1f34348c0b.jpeg",
+        {
+          "id": "e2c9902f-eecd-4228-8887-b34f60acc4a9",
+          "url": "https://cdn.meluni.com.tr/ai-products/57548f01-e681-489e-924e-407d585c6e83-olcu-oto-360bfd38.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-09-03T05:23:40.254693+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "57548f01-e681-489e-924e-407d585c6e83/front.jpg",
+          "sha256": "632d12d409a4e51759b023b3f4372b332d0e341e2cf83474f3246ba741d0cb79",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1025,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-57548f01-e681-489e-924e-407d585c6e83/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "57548f01-e681-489e-924e-407d585c6e83/back.jpg",
+          "sha256": "477982ba232fae2a711ea7da521c201d4058b4f5d15fa8f248ef89ec6b4d7b02",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1025,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-57548f01-e681-489e-924e-407d585c6e83/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "57548f01-e681-489e-924e-407d585c6e83/fashion_model.jpg",
+          "sha256": "ae176a78c2e8ca23fbf81ba1c699a5a826251710299ee1b2f7d4124a4a4ba75f",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1025,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-57548f01-e681-489e-924e-407d585c6e83/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
