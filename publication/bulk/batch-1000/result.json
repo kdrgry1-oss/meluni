@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1000",
+  "published_at_utc": "2026-11-27T12:17:04.842748+00:00",
+  "products": [
+    {
+      "product_id": "a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6",
+      "sample": 1000,
+      "name": "Yüksek Bel Kuşaklı Deri Pantolon",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6-front-777960332e02.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6-model-9d982784a4a0.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/a5ed13e1-c1b4-42bf-9bd0-a3ab56d71dd6-size-chart-7fcfce5b4205.jpg"
+      },
+      "gallery_image_count": 7
+    }
+  ],
+  "skipped": []
+}
