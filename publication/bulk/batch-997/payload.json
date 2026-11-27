@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-997",
+  "created_at": "2026-11-27T11:58:26.664306+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "f05d3b90-a6b4-428c-a1d8-0fd193e03011",
+      "sample": 997,
+      "name": "Yüksek Bel Geniş Paça Detaylı Cepli Krep (kemersiz) Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 78,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/7d9133daf657624e28c5.jpeg",
+        "https://modayakamoz.com/orj/bd0259a60168848208e2.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "f05d3b90-a6b4-428c-a1d8-0fd193e03011/front.jpg",
+          "sha256": "f8679fac6bab8a2268bfcf7007455d89a266afe530d28dc7d8ac7f8fa0c2d517",
+          "qa_status": "pass_source_fidelity",
+          "sample": 997,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f05d3b90-a6b4-428c-a1d8-0fd193e03011/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "f05d3b90-a6b4-428c-a1d8-0fd193e03011/fashion_model.jpg",
+          "sha256": "e914054d1f924c77c5e4f3fa1e71389a8d44719c740373ee6ab9c52b6e998b7a",
+          "qa_status": "pass_source_fidelity",
+          "sample": 997,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-f05d3b90-a6b4-428c-a1d8-0fd193e03011/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
