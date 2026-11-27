@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1014",
+  "created_at": "2026-11-27T13:40:01.870704+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "34eff4f1-050d-4b3a-ba78-6426add746ac",
+      "sample": 1014,
+      "name": "Yüksek Bel Dantel Detaylı Paçaya Doğru Geniş Dalgıç Tayt Pantolon",
+      "active_at_poll": true,
+      "stock_at_poll": 29,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/janes-192603-1-2374660f64.jpg",
+        "https://modayakamoz.com/orj/janes-192603-2-9deefbfc5b.jpg",
+        "https://modayakamoz.com/orj/janes-192603-3-b0447997a0.jpg",
+        "https://modayakamoz.com/orj/janes-192603-7-b464f507f8.jpg"
+      ],
+      "assets": {
+        "front": {
+          "file": "34eff4f1-050d-4b3a-ba78-6426add746ac/front.jpg",
+          "sha256": "ff3da43a0f7fb8360bffc9e68f21b8fa10b5da03c832f66762ca77ef1a9c5132",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1014,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-34eff4f1-050d-4b3a-ba78-6426add746ac/front-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "34eff4f1-050d-4b3a-ba78-6426add746ac/fashion_model.jpg",
+          "sha256": "5dd5310ab9cd6a80ad39baa4a29b1a32da6733d586d51f704f384ffc9cb65ca8",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1014,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-34eff4f1-050d-4b3a-ba78-6426add746ac/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "34eff4f1-050d-4b3a-ba78-6426add746ac/size_chart.jpg",
+          "sha256": "4cf5e3a95488b5028ab3c058a7254e67f1d5a10ce74969f0e14d051a20092bc4",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1014,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-34eff4f1-050d-4b3a-ba78-6426add746ac/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
