@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-984",
+  "published_at_utc": "2026-11-27T09:11:25.128098+00:00",
+  "products": [
+    {
+      "product_id": "110a9e79-5d00-4101-bfbe-be2b17426405",
+      "sample": 984,
+      "name": "Askılı Dantel Detaylı Kiloş Janjan Krep Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/110a9e79-5d00-4101-bfbe-be2b17426405-front-4dc758e9165d.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/110a9e79-5d00-4101-bfbe-be2b17426405-back-a33e5ba0e0ea.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/110a9e79-5d00-4101-bfbe-be2b17426405-model-7d98bb0df553.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/110a9e79-5d00-4101-bfbe-be2b17426405-size-chart-9b3ea7a6aef0.jpg"
+      },
+      "gallery_image_count": 13
+    }
+  ],
+  "skipped": []
+}
