@@ -1,0 +1,17 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-993",
+  "published_at_utc": "2026-11-27T11:29:24.463614+00:00",
+  "products": [
+    {
+      "product_id": "d1d12e04-bd01-42df-9917-2a432b2f5823",
+      "sample": 993,
+      "name": "Yüksek Bel Bağcıklı Geniş Paçalı Desenli Dalgıç Tayt",
+      "urls": {
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/d1d12e04-bd01-42df-9917-2a432b2f5823-size-chart-9e772844af0a.jpg"
+      },
+      "gallery_image_count": 5
+    }
+  ],
+  "skipped": []
+}
