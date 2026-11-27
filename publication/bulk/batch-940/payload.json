@@ -1,0 +1,50 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-940",
+  "created_at": "2026-11-27T01:55:42.428096+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "fa56e66f-7c85-4e66-a57d-56301fa32037",
+      "sample": 940,
+      "name": "Boyundan Ip Askılı Bluz ve Kısa Ikili Takım",
+      "active_at_poll": true,
+      "stock_at_poll": 77,
+      "expected_original_images": [
+        "https://cdn.meluni.com.tr/products/fa56e66f-7c85-4e66-a57d-56301fa32037/fa56e66f-7c85-4e66-a57d-56301fa32037-hd0-e4c32e91.jpg",
+        "https://cdn.meluni.com.tr/products/fa56e66f-7c85-4e66-a57d-56301fa32037/fa56e66f-7c85-4e66-a57d-56301fa32037-hd1-a513c655.jpg",
+        "https://modayakamoz.com/orj/6c1a122ee3e9ef206e12.jpeg",
+        {
+          "id": "5ed0f086-8326-45ca-9c2f-05554306580f",
+          "url": "https://cdn.meluni.com.tr/ai-products/8093ced2-73d3-4b8a-8384-895f35c798a9-olcu-oto-951a206b.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-16T00:31:13.146405+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "fa56e66f-7c85-4e66-a57d-56301fa32037/front.jpg",
+          "sha256": "6b5f875b38f39e33767416342df6dceef9864cab7a06ecf1afe075b3f660dc73",
+          "qa_status": "visual_qa_passed",
+          "sample": 940,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fa56e66f-7c85-4e66-a57d-56301fa32037/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "fa56e66f-7c85-4e66-a57d-56301fa32037/back.jpg",
+          "sha256": "708cbb6c733f34d7b790b1ab53fea7a7fbae0394b7a5660bbcb25a9835e3ca93",
+          "qa_status": "visual_qa_passed",
+          "sample": 940,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fa56e66f-7c85-4e66-a57d-56301fa32037/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "fa56e66f-7c85-4e66-a57d-56301fa32037/fashion_model.jpg",
+          "sha256": "745aec2fa23f299b38ff649d9c59b26247e664c8df334abb377e9660e137c1a4",
+          "qa_status": "visual_qa_passed",
+          "sample": 940,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-fa56e66f-7c85-4e66-a57d-56301fa32037/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
