@@ -1,0 +1,19 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-991",
+  "published_at_utc": "2026-11-27T11:13:06.916656+00:00",
+  "products": [
+    {
+      "product_id": "62b590fc-a281-4380-9595-165130c1b6ee",
+      "sample": 991,
+      "name": "Yarım Fermuarlı Triko Kazak",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/62b590fc-a281-4380-9595-165130c1b6ee-front-3995929bb410.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/62b590fc-a281-4380-9595-165130c1b6ee-back-c7b1a0591608.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/62b590fc-a281-4380-9595-165130c1b6ee-model-2f0a87d770df.jpg"
+      },
+      "gallery_image_count": 6
+    }
+  ],
+  "skipped": []
+}
