@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-979",
+  "published_at_utc": "2026-11-27T08:02:53.395358+00:00",
+  "products": [
+    {
+      "product_id": "6a1f7553-b424-4593-b3df-9b56475e97d6",
+      "sample": 979,
+      "name": "Uzun Kollu Bisiklet Yaka Asimetrik Detaylı Dantelli Viskon Bluz",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/6a1f7553-b424-4593-b3df-9b56475e97d6-front-b4b48995b0c0.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/6a1f7553-b424-4593-b3df-9b56475e97d6-back-ad1446058d1d.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/6a1f7553-b424-4593-b3df-9b56475e97d6-model-c6be60be69ca.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/6a1f7553-b424-4593-b3df-9b56475e97d6-size-chart-d8aaaa087c90.jpg"
+      },
+      "gallery_image_count": 9
+    }
+  ],
+  "skipped": []
+}
