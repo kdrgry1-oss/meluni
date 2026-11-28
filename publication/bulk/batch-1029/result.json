@@ -1,0 +1,20 @@
+{
+  "status": "published_and_verified",
+  "publication_id": "meluni-images-20261110-v3-1029",
+  "published_at_utc": "2026-11-28T02:32:30.546446+00:00",
+  "products": [
+    {
+      "product_id": "a094f908-60e5-4ad4-9fd0-9e603a9cb4eb",
+      "sample": 1029,
+      "name": "Kısa Kollu Kruvaze Yakalı Çift Renkli Midi Vıskon Elbise",
+      "urls": {
+        "front": "https://cdn.meluni.com.tr/ai-products/a094f908-60e5-4ad4-9fd0-9e603a9cb4eb-front-c013d73ac01e.jpg",
+        "back": "https://cdn.meluni.com.tr/ai-products/a094f908-60e5-4ad4-9fd0-9e603a9cb4eb-back-22fe2009b2a5.jpg",
+        "fashion_model": "https://cdn.meluni.com.tr/ai-products/a094f908-60e5-4ad4-9fd0-9e603a9cb4eb-model-07851d9b8753.jpg",
+        "size_chart": "https://cdn.meluni.com.tr/ai-products/a094f908-60e5-4ad4-9fd0-9e603a9cb4eb-size-chart-6a9395f38374.jpg"
+      },
+      "gallery_image_count": 8
+    }
+  ],
+  "skipped": []
+}
