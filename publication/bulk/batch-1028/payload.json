@@ -1,0 +1,50 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1028",
+  "created_at": "2026-11-28T00:55:20.037540+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "7e0e51a6-94ba-40e9-be04-0a07e020412a",
+      "sample": 1028,
+      "name": "Kısa Kollu Kruvaze Yakalı Işıltı Detaylı Midi Krep Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 47,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/26860eb8819fead7420c.jpeg",
+        "https://modayakamoz.com/orj/61d3623f1d6cffccceb9.jpeg",
+        "https://modayakamoz.com/orj/42edf37dcddea55df031.jpeg",
+        {
+          "id": "f67157cc-428a-4efd-8bfa-d3631ebdbd25",
+          "url": "https://cdn.meluni.com.tr/ai-products/7e0e51a6-94ba-40e9-be04-0a07e020412a-olcu-oto-1da6ff17.jpg",
+          "is_size_table": true,
+          "alt": "Ölçü Tablosu",
+          "created_at": "2026-08-29T05:26:00.636972+00:00"
+        }
+      ],
+      "assets": {
+        "front": {
+          "file": "7e0e51a6-94ba-40e9-be04-0a07e020412a/front.jpg",
+          "sha256": "dd7a10852dd4331a8867c9f67403b4ac0a61153bee15888e498a4c31381d4df7",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1028,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7e0e51a6-94ba-40e9-be04-0a07e020412a/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "7e0e51a6-94ba-40e9-be04-0a07e020412a/back.jpg",
+          "sha256": "a460587fc8bd8abbf2cff653157b8bc485b2c3709de671d96ab61cb140b38810",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1028,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7e0e51a6-94ba-40e9-be04-0a07e020412a/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "7e0e51a6-94ba-40e9-be04-0a07e020412a/fashion_model.jpg",
+          "sha256": "fc98c1662988fdf795e59e4a9235c0dac212cee8e1c9ec599dd7e6cd5e4d29fa",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1028,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-7e0e51a6-94ba-40e9-be04-0a07e020412a/fashion_model-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
