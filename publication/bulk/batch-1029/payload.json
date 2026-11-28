@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "publication_id": "meluni-images-20261110-v3-1029",
+  "created_at": "2026-11-28T02:30:22.412928+00:00",
+  "publish_authorized_by_user": true,
+  "products": [
+    {
+      "product_id": "a094f908-60e5-4ad4-9fd0-9e603a9cb4eb",
+      "sample": 1029,
+      "name": "Kısa Kollu Kruvaze Yakalı Çift Renkli Midi Vıskon Elbise",
+      "active_at_poll": true,
+      "stock_at_poll": 101,
+      "expected_original_images": [
+        "https://modayakamoz.com/orj/d8452ac8ef7be0547c1c.jpeg",
+        "https://modayakamoz.com/orj/4db31d08b818c6b4831a.jpeg",
+        "https://modayakamoz.com/orj/3ee98803252c192f8510.jpeg",
+        "https://modayakamoz.com/orj/271c44114b2d8162c73a.jpeg"
+      ],
+      "assets": {
+        "front": {
+          "file": "a094f908-60e5-4ad4-9fd0-9e603a9cb4eb/front.jpg",
+          "sha256": "c013d73ac01e16ebf8a89683284b5ee9bcfadb890ed78e65185a94db32cee4f1",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1029,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a094f908-60e5-4ad4-9fd0-9e603a9cb4eb/front-1200x1800.jpg"
+        },
+        "back": {
+          "file": "a094f908-60e5-4ad4-9fd0-9e603a9cb4eb/back.jpg",
+          "sha256": "22fe2009b2a5f8173d504b9d468a11121d4ce89137ab8cc9b828cd842f08bdaa",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1029,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a094f908-60e5-4ad4-9fd0-9e603a9cb4eb/back-1200x1800.jpg"
+        },
+        "fashion_model": {
+          "file": "a094f908-60e5-4ad4-9fd0-9e603a9cb4eb/fashion_model.jpg",
+          "sha256": "07851d9b8753eb8054bcf3bae1d17cb0e472b1ab6f2ab7feb82ed55ed9b1eaed",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1029,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a094f908-60e5-4ad4-9fd0-9e603a9cb4eb/fashion_model-1200x1800.jpg"
+        },
+        "size_chart": {
+          "file": "a094f908-60e5-4ad4-9fd0-9e603a9cb4eb/size_chart.jpg",
+          "sha256": "6a9395f383749e8a53f7175ef90a2debad72de5d3d717f340b9d948e976c1b2c",
+          "qa_status": "pass_source_fidelity",
+          "sample": 1029,
+          "source_master": "/Users/kdrgry/Documents/ChatGPT/meluni-photo-assets-20261012/product-a094f908-60e5-4ad4-9fd0-9e603a9cb4eb/size_chart-1200x1800.jpg"
+        }
+      }
+    }
+  ]
+}
